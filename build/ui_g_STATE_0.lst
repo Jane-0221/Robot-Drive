@@ -1,0 +1,344 @@
+ARM GAS  C:\Users\fffff\AppData\Local\Temp\ccXqATOc.s 			page 1
+
+
+   1              		.cpu cortex-m7
+   2              		.arch armv7e-m
+   3              		.fpu fpv5-d16
+   4              		.eabi_attribute 28, 1
+   5              		.eabi_attribute 20, 1
+   6              		.eabi_attribute 21, 1
+   7              		.eabi_attribute 23, 3
+   8              		.eabi_attribute 24, 1
+   9              		.eabi_attribute 25, 1
+  10              		.eabi_attribute 26, 1
+  11              		.eabi_attribute 30, 6
+  12              		.eabi_attribute 34, 1
+  13              		.eabi_attribute 18, 4
+  14              		.file	"ui_g_STATE_0.c"
+  15              		.text
+  16              	.Ltext0:
+  17              		.cfi_sections	.debug_frame
+  18              		.file 1 "Drivers/UI/ui_g_STATE_0.c"
+  19              		.global	ui_g_STATE_0
+  20              		.section	.bss.ui_g_STATE_0,"aw",%nobits
+  21              		.align	2
+  24              	ui_g_STATE_0:
+  25 0000 00000000 		.space	60
+  25      00000000 
+  25      00000000 
+  25      00000000 
+  25      00000000 
+  26              		.global	ui_g_STATE_NewText
+  27              		.section	.data.ui_g_STATE_NewText,"aw"
+  28              		.align	2
+  31              	ui_g_STATE_NewText:
+  32 0000 0D000000 		.word	ui_g_STATE_0+13
+  33              		.section	.rodata
+  34              		.align	2
+  35              	.LC0:
+  36 0000 434F4E4E 		.ascii	"CONNECT\000"
+  36      45435400 
+  37              		.section	.text._ui_init_g_STATE_0,"ax",%progbits
+  38              		.align	1
+  39              		.global	_ui_init_g_STATE_0
+  40              		.syntax unified
+  41              		.thumb
+  42              		.thumb_func
+  44              	_ui_init_g_STATE_0:
+  45              	.LFB147:
+   1:Drivers/UI/ui_g_STATE_0.c **** //
+   2:Drivers/UI/ui_g_STATE_0.c **** // Created by RM UI Designer
+   3:Drivers/UI/ui_g_STATE_0.c **** //
+   4:Drivers/UI/ui_g_STATE_0.c **** 
+   5:Drivers/UI/ui_g_STATE_0.c **** #include "ui_g_STATE_0.h"
+   6:Drivers/UI/ui_g_STATE_0.c **** #include "string.h"
+   7:Drivers/UI/ui_g_STATE_0.c **** 
+   8:Drivers/UI/ui_g_STATE_0.c **** #define FRAME_ID 0
+   9:Drivers/UI/ui_g_STATE_0.c **** #define GROUP_ID 1
+  10:Drivers/UI/ui_g_STATE_0.c **** #define START_ID 0
+  11:Drivers/UI/ui_g_STATE_0.c **** 
+  12:Drivers/UI/ui_g_STATE_0.c **** ui_string_frame_t ui_g_STATE_0;
+ARM GAS  C:\Users\fffff\AppData\Local\Temp\ccXqATOc.s 			page 2
+
+
+  13:Drivers/UI/ui_g_STATE_0.c **** 
+  14:Drivers/UI/ui_g_STATE_0.c **** ui_interface_string_t* ui_g_STATE_NewText = &ui_g_STATE_0.option;
+  15:Drivers/UI/ui_g_STATE_0.c **** 
+  16:Drivers/UI/ui_g_STATE_0.c **** void _ui_init_g_STATE_0() {
+  46              		.loc 1 16 27
+  47              		.cfi_startproc
+  48              		@ args = 0, pretend = 0, frame = 0
+  49              		@ frame_needed = 1, uses_anonymous_args = 0
+  50 0000 80B5     		push	{r7, lr}
+  51              	.LCFI0:
+  52              		.cfi_def_cfa_offset 8
+  53              		.cfi_offset 7, -8
+  54              		.cfi_offset 14, -4
+  55 0002 00AF     		add	r7, sp, #0
+  56              	.LCFI1:
+  57              		.cfi_def_cfa_register 7
+  17:Drivers/UI/ui_g_STATE_0.c ****     ui_g_STATE_0.option.figure_name[0] = FRAME_ID;
+  58              		.loc 1 17 40
+  59 0004 294B     		ldr	r3, .L2
+  60 0006 0022     		movs	r2, #0
+  61 0008 5A73     		strb	r2, [r3, #13]
+  18:Drivers/UI/ui_g_STATE_0.c ****     ui_g_STATE_0.option.figure_name[1] = GROUP_ID;
+  62              		.loc 1 18 40
+  63 000a 284B     		ldr	r3, .L2
+  64 000c 0122     		movs	r2, #1
+  65 000e 9A73     		strb	r2, [r3, #14]
+  19:Drivers/UI/ui_g_STATE_0.c ****     ui_g_STATE_0.option.figure_name[2] = START_ID;
+  66              		.loc 1 19 40
+  67 0010 264B     		ldr	r3, .L2
+  68 0012 0022     		movs	r2, #0
+  69 0014 DA73     		strb	r2, [r3, #15]
+  20:Drivers/UI/ui_g_STATE_0.c ****     ui_g_STATE_0.option.operate_tpyel = 1;
+  70              		.loc 1 20 39
+  71 0016 254A     		ldr	r2, .L2
+  72 0018 137C     		ldrb	r3, [r2, #16]
+  73 001a 0121     		movs	r1, #1
+  74 001c 61F30203 		bfi	r3, r1, #0, #3
+  75 0020 1374     		strb	r3, [r2, #16]
+  21:Drivers/UI/ui_g_STATE_0.c ****     ui_g_STATE_0.option.figure_tpye = 7;
+  76              		.loc 1 21 37
+  77 0022 224A     		ldr	r2, .L2
+  78 0024 137C     		ldrb	r3, [r2, #16]
+  79 0026 43F03803 		orr	r3, r3, #56
+  80 002a 1374     		strb	r3, [r2, #16]
+  22:Drivers/UI/ui_g_STATE_0.c ****     ui_g_STATE_0.option.layer = 0;
+  81              		.loc 1 22 31
+  82 002c 1F4A     		ldr	r2, .L2
+  83 002e 138A     		ldrh	r3, [r2, #16]	@ movhi
+  84 0030 23F47073 		bic	r3, r3, #960
+  85 0034 1382     		strh	r3, [r2, #16]	@ movhi
+  23:Drivers/UI/ui_g_STATE_0.c ****     ui_g_STATE_0.option.font_size = 40;
+  86              		.loc 1 23 35
+  87 0036 1D4A     		ldr	r2, .L2
+  88 0038 1369     		ldr	r3, [r2, #16]
+  89 003a 2821     		movs	r1, #40
+  90 003c 61F39633 		bfi	r3, r1, #14, #9
+  91 0040 1361     		str	r3, [r2, #16]
+ARM GAS  C:\Users\fffff\AppData\Local\Temp\ccXqATOc.s 			page 3
+
+
+  24:Drivers/UI/ui_g_STATE_0.c ****     ui_g_STATE_0.option.start_x = 1505;
+  92              		.loc 1 24 33
+  93 0042 1A4A     		ldr	r2, .L2
+  94 0044 5369     		ldr	r3, [r2, #20]
+  95 0046 40F2E151 		movw	r1, #1505
+  96 004a 61F39423 		bfi	r3, r1, #10, #11
+  97 004e 5361     		str	r3, [r2, #20]
+  25:Drivers/UI/ui_g_STATE_0.c ****     ui_g_STATE_0.option.start_y = 416;
+  98              		.loc 1 25 33
+  99 0050 164A     		ldr	r2, .L2
+ 100 0052 D38A     		ldrh	r3, [r2, #22]	@ movhi
+ 101 0054 4FF4D071 		mov	r1, #416
+ 102 0058 61F34F13 		bfi	r3, r1, #5, #11
+ 103 005c D382     		strh	r3, [r2, #22]	@ movhi
+  26:Drivers/UI/ui_g_STATE_0.c ****     ui_g_STATE_0.option.color = 6;
+ 104              		.loc 1 26 31
+ 105 005e 134A     		ldr	r2, .L2
+ 106 0060 537C     		ldrb	r3, [r2, #17]
+ 107 0062 0621     		movs	r1, #6
+ 108 0064 61F38503 		bfi	r3, r1, #2, #4
+ 109 0068 5374     		strb	r3, [r2, #17]
+  27:Drivers/UI/ui_g_STATE_0.c ****     ui_g_STATE_0.option.str_length = 7;
+ 110              		.loc 1 27 36
+ 111 006a 104A     		ldr	r2, .L2
+ 112 006c 538A     		ldrh	r3, [r2, #18]	@ movhi
+ 113 006e 0721     		movs	r1, #7
+ 114 0070 61F3CF13 		bfi	r3, r1, #7, #9
+ 115 0074 5382     		strh	r3, [r2, #18]	@ movhi
+  28:Drivers/UI/ui_g_STATE_0.c ****     ui_g_STATE_0.option.width = 4;
+ 116              		.loc 1 28 31
+ 117 0076 0D4A     		ldr	r2, .L2
+ 118 0078 938A     		ldrh	r3, [r2, #20]	@ movhi
+ 119 007a 0421     		movs	r1, #4
+ 120 007c 61F30903 		bfi	r3, r1, #0, #10
+ 121 0080 9382     		strh	r3, [r2, #20]	@ movhi
+  29:Drivers/UI/ui_g_STATE_0.c ****     strcpy(ui_g_STATE_NewText->string, "CONNECT");
+ 122              		.loc 1 29 30
+ 123 0082 0B4B     		ldr	r3, .L2+4
+ 124 0084 1B68     		ldr	r3, [r3]
+ 125 0086 0F33     		adds	r3, r3, #15
+ 126              		.loc 1 29 5
+ 127 0088 0A49     		ldr	r1, .L2+8
+ 128 008a 1A46     		mov	r2, r3
+ 129 008c 0B46     		mov	r3, r1
+ 130 008e 03CB     		ldmia	r3!, {r0, r1}
+ 131 0090 1060     		str	r0, [r2]	@ unaligned
+ 132 0092 5160     		str	r1, [r2, #4]	@ unaligned
+  30:Drivers/UI/ui_g_STATE_0.c **** 
+  31:Drivers/UI/ui_g_STATE_0.c ****     ui_proc_string_frame(&ui_g_STATE_0);
+ 133              		.loc 1 31 5
+ 134 0094 0548     		ldr	r0, .L2
+ 135 0096 FFF7FEFF 		bl	ui_proc_string_frame
+  32:Drivers/UI/ui_g_STATE_0.c ****     SEND_MESSAGE((uint8_t *) &ui_g_STATE_0, sizeof(ui_g_STATE_0));
+ 136              		.loc 1 32 5
+ 137 009a 6423     		movs	r3, #100
+ 138 009c 3C22     		movs	r2, #60
+ 139 009e 0349     		ldr	r1, .L2
+ARM GAS  C:\Users\fffff\AppData\Local\Temp\ccXqATOc.s 			page 4
+
+
+ 140 00a0 0548     		ldr	r0, .L2+12
+ 141 00a2 FFF7FEFF 		bl	HAL_UART_Transmit
+  33:Drivers/UI/ui_g_STATE_0.c **** }
+ 142              		.loc 1 33 1
+ 143 00a6 00BF     		nop
+ 144 00a8 80BD     		pop	{r7, pc}
+ 145              	.L3:
+ 146 00aa 00BF     		.align	2
+ 147              	.L2:
+ 148 00ac 00000000 		.word	ui_g_STATE_0
+ 149 00b0 00000000 		.word	ui_g_STATE_NewText
+ 150 00b4 00000000 		.word	.LC0
+ 151 00b8 00000000 		.word	huart7
+ 152              		.cfi_endproc
+ 153              	.LFE147:
+ 155              		.section	.text._ui_update_g_STATE_0,"ax",%progbits
+ 156              		.align	1
+ 157              		.global	_ui_update_g_STATE_0
+ 158              		.syntax unified
+ 159              		.thumb
+ 160              		.thumb_func
+ 162              	_ui_update_g_STATE_0:
+ 163              	.LFB148:
+  34:Drivers/UI/ui_g_STATE_0.c **** 
+  35:Drivers/UI/ui_g_STATE_0.c **** void _ui_update_g_STATE_0() {
+ 164              		.loc 1 35 29
+ 165              		.cfi_startproc
+ 166              		@ args = 0, pretend = 0, frame = 0
+ 167              		@ frame_needed = 1, uses_anonymous_args = 0
+ 168 0000 80B5     		push	{r7, lr}
+ 169              	.LCFI2:
+ 170              		.cfi_def_cfa_offset 8
+ 171              		.cfi_offset 7, -8
+ 172              		.cfi_offset 14, -4
+ 173 0002 00AF     		add	r7, sp, #0
+ 174              	.LCFI3:
+ 175              		.cfi_def_cfa_register 7
+  36:Drivers/UI/ui_g_STATE_0.c ****     ui_g_STATE_0.option.operate_tpyel = 2;
+ 176              		.loc 1 36 39
+ 177 0004 084A     		ldr	r2, .L5
+ 178 0006 137C     		ldrb	r3, [r2, #16]
+ 179 0008 0221     		movs	r1, #2
+ 180 000a 61F30203 		bfi	r3, r1, #0, #3
+ 181 000e 1374     		strb	r3, [r2, #16]
+  37:Drivers/UI/ui_g_STATE_0.c **** 
+  38:Drivers/UI/ui_g_STATE_0.c ****     ui_proc_string_frame(&ui_g_STATE_0);
+ 182              		.loc 1 38 5
+ 183 0010 0548     		ldr	r0, .L5
+ 184 0012 FFF7FEFF 		bl	ui_proc_string_frame
+  39:Drivers/UI/ui_g_STATE_0.c ****     SEND_MESSAGE((uint8_t *) &ui_g_STATE_0, sizeof(ui_g_STATE_0));
+ 185              		.loc 1 39 5
+ 186 0016 6423     		movs	r3, #100
+ 187 0018 3C22     		movs	r2, #60
+ 188 001a 0349     		ldr	r1, .L5
+ 189 001c 0348     		ldr	r0, .L5+4
+ 190 001e FFF7FEFF 		bl	HAL_UART_Transmit
+  40:Drivers/UI/ui_g_STATE_0.c **** }
+ARM GAS  C:\Users\fffff\AppData\Local\Temp\ccXqATOc.s 			page 5
+
+
+ 191              		.loc 1 40 1
+ 192 0022 00BF     		nop
+ 193 0024 80BD     		pop	{r7, pc}
+ 194              	.L6:
+ 195 0026 00BF     		.align	2
+ 196              	.L5:
+ 197 0028 00000000 		.word	ui_g_STATE_0
+ 198 002c 00000000 		.word	huart7
+ 199              		.cfi_endproc
+ 200              	.LFE148:
+ 202              		.section	.text._ui_remove_g_STATE_0,"ax",%progbits
+ 203              		.align	1
+ 204              		.global	_ui_remove_g_STATE_0
+ 205              		.syntax unified
+ 206              		.thumb
+ 207              		.thumb_func
+ 209              	_ui_remove_g_STATE_0:
+ 210              	.LFB149:
+  41:Drivers/UI/ui_g_STATE_0.c **** 
+  42:Drivers/UI/ui_g_STATE_0.c **** void _ui_remove_g_STATE_0() {
+ 211              		.loc 1 42 29
+ 212              		.cfi_startproc
+ 213              		@ args = 0, pretend = 0, frame = 0
+ 214              		@ frame_needed = 1, uses_anonymous_args = 0
+ 215 0000 80B5     		push	{r7, lr}
+ 216              	.LCFI4:
+ 217              		.cfi_def_cfa_offset 8
+ 218              		.cfi_offset 7, -8
+ 219              		.cfi_offset 14, -4
+ 220 0002 00AF     		add	r7, sp, #0
+ 221              	.LCFI5:
+ 222              		.cfi_def_cfa_register 7
+  43:Drivers/UI/ui_g_STATE_0.c ****     ui_g_STATE_0.option.operate_tpyel = 3;
+ 223              		.loc 1 43 39
+ 224 0004 084A     		ldr	r2, .L8
+ 225 0006 137C     		ldrb	r3, [r2, #16]
+ 226 0008 0321     		movs	r1, #3
+ 227 000a 61F30203 		bfi	r3, r1, #0, #3
+ 228 000e 1374     		strb	r3, [r2, #16]
+  44:Drivers/UI/ui_g_STATE_0.c **** 
+  45:Drivers/UI/ui_g_STATE_0.c ****     ui_proc_string_frame(&ui_g_STATE_0);
+ 229              		.loc 1 45 5
+ 230 0010 0548     		ldr	r0, .L8
+ 231 0012 FFF7FEFF 		bl	ui_proc_string_frame
+  46:Drivers/UI/ui_g_STATE_0.c ****     SEND_MESSAGE((uint8_t *) &ui_g_STATE_0, sizeof(ui_g_STATE_0));
+ 232              		.loc 1 46 5
+ 233 0016 6423     		movs	r3, #100
+ 234 0018 3C22     		movs	r2, #60
+ 235 001a 0349     		ldr	r1, .L8
+ 236 001c 0348     		ldr	r0, .L8+4
+ 237 001e FFF7FEFF 		bl	HAL_UART_Transmit
+  47:Drivers/UI/ui_g_STATE_0.c **** }...
+ 238              		.loc 1 47 1
+ 239 0022 00BF     		nop
+ 240 0024 80BD     		pop	{r7, pc}
+ 241              	.L9:
+ 242 0026 00BF     		.align	2
+ARM GAS  C:\Users\fffff\AppData\Local\Temp\ccXqATOc.s 			page 6
+
+
+ 243              	.L8:
+ 244 0028 00000000 		.word	ui_g_STATE_0
+ 245 002c 00000000 		.word	huart7
+ 246              		.cfi_endproc
+ 247              	.LFE149:
+ 249              		.text
+ 250              	.Letext0:
+ 251              		.file 2 "C:/msys64/mingw64/arm-none-eabi/include/machine/_default_types.h"
+ 252              		.file 3 "C:/msys64/mingw64/arm-none-eabi/include/sys/_stdint.h"
+ 253              		.file 4 "Drivers/CMSIS/Device/ST/STM32H7xx/Include/stm32h723xx.h"
+ 254              		.file 5 "Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal_def.h"
+ 255              		.file 6 "Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal_dma.h"
+ 256              		.file 7 "Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal_uart.h"
+ 257              		.file 8 "Drivers/UI/ui_types.h"
+ 258              		.file 9 "Core/Inc/usart.h"
+ 259              		.file 10 "Drivers/UI/ui_g_STATE_0.h"
+ 260              		.file 11 "Drivers/UI/ui_interface.h"
+ARM GAS  C:\Users\fffff\AppData\Local\Temp\ccXqATOc.s 			page 7
+
+
+DEFINED SYMBOLS
+                            *ABS*:00000000 ui_g_STATE_0.c
+C:\Users\fffff\AppData\Local\Temp\ccXqATOc.s:24     .bss.ui_g_STATE_0:00000000 ui_g_STATE_0
+C:\Users\fffff\AppData\Local\Temp\ccXqATOc.s:21     .bss.ui_g_STATE_0:00000000 $d
+C:\Users\fffff\AppData\Local\Temp\ccXqATOc.s:31     .data.ui_g_STATE_NewText:00000000 ui_g_STATE_NewText
+C:\Users\fffff\AppData\Local\Temp\ccXqATOc.s:28     .data.ui_g_STATE_NewText:00000000 $d
+C:\Users\fffff\AppData\Local\Temp\ccXqATOc.s:34     .rodata:00000000 $d
+C:\Users\fffff\AppData\Local\Temp\ccXqATOc.s:38     .text._ui_init_g_STATE_0:00000000 $t
+C:\Users\fffff\AppData\Local\Temp\ccXqATOc.s:44     .text._ui_init_g_STATE_0:00000000 _ui_init_g_STATE_0
+C:\Users\fffff\AppData\Local\Temp\ccXqATOc.s:148    .text._ui_init_g_STATE_0:000000ac $d
+C:\Users\fffff\AppData\Local\Temp\ccXqATOc.s:156    .text._ui_update_g_STATE_0:00000000 $t
+C:\Users\fffff\AppData\Local\Temp\ccXqATOc.s:162    .text._ui_update_g_STATE_0:00000000 _ui_update_g_STATE_0
+C:\Users\fffff\AppData\Local\Temp\ccXqATOc.s:197    .text._ui_update_g_STATE_0:00000028 $d
+C:\Users\fffff\AppData\Local\Temp\ccXqATOc.s:203    .text._ui_remove_g_STATE_0:00000000 $t
+C:\Users\fffff\AppData\Local\Temp\ccXqATOc.s:209    .text._ui_remove_g_STATE_0:00000000 _ui_remove_g_STATE_0
+C:\Users\fffff\AppData\Local\Temp\ccXqATOc.s:244    .text._ui_remove_g_STATE_0:00000028 $d
+
+UNDEFINED SYMBOLS
+ui_proc_string_frame
+HAL_UART_Transmit
+huart7

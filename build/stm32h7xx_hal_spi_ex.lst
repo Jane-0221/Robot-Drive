@@ -1,0 +1,719 @@
+ARM GAS  C:\Users\fffff\AppData\Local\Temp\cciAXmVw.s 			page 1
+
+
+   1              		.cpu cortex-m7
+   2              		.arch armv7e-m
+   3              		.fpu fpv5-d16
+   4              		.eabi_attribute 28, 1
+   5              		.eabi_attribute 20, 1
+   6              		.eabi_attribute 21, 1
+   7              		.eabi_attribute 23, 3
+   8              		.eabi_attribute 24, 1
+   9              		.eabi_attribute 25, 1
+  10              		.eabi_attribute 26, 1
+  11              		.eabi_attribute 30, 6
+  12              		.eabi_attribute 34, 1
+  13              		.eabi_attribute 18, 4
+  14              		.file	"stm32h7xx_hal_spi_ex.c"
+  15              		.text
+  16              	.Ltext0:
+  17              		.cfi_sections	.debug_frame
+  18              		.file 1 "Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_spi_ex.c"
+  19              		.section	.text.HAL_SPIEx_FlushRxFifo,"ax",%progbits
+  20              		.align	1
+  21              		.global	HAL_SPIEx_FlushRxFifo
+  22              		.syntax unified
+  23              		.thumb
+  24              		.thumb_func
+  26              	HAL_SPIEx_FlushRxFifo:
+  27              	.LFB144:
+   1:Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_spi_ex.c **** /**
+   2:Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_spi_ex.c ****   ******************************************************************************
+   3:Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_spi_ex.c ****   * @file    stm32h7xx_hal_spi_ex.c
+   4:Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_spi_ex.c ****   * @author  MCD Application Team
+   5:Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_spi_ex.c ****   * @brief   Extended SPI HAL module driver.
+   6:Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_spi_ex.c ****   *          This file provides firmware functions to manage the following
+   7:Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_spi_ex.c ****   *          SPI peripheral extended functionalities :
+   8:Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_spi_ex.c ****   *           + IO operation functions
+   9:Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_spi_ex.c ****   *           + Peripheral Control functions
+  10:Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_spi_ex.c ****   *
+  11:Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_spi_ex.c ****   ******************************************************************************
+  12:Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_spi_ex.c ****   * @attention
+  13:Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_spi_ex.c ****   *
+  14:Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_spi_ex.c ****   * Copyright (c) 2017 STMicroelectronics.
+  15:Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_spi_ex.c ****   * All rights reserved.
+  16:Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_spi_ex.c ****   *
+  17:Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_spi_ex.c ****   * This software is licensed under terms that can be found in the LICENSE file
+  18:Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_spi_ex.c ****   * in the root directory of this software component.
+  19:Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_spi_ex.c ****   * If no LICENSE file comes with this software, it is provided AS-IS.
+  20:Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_spi_ex.c ****   *
+  21:Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_spi_ex.c ****   ******************************************************************************
+  22:Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_spi_ex.c ****   */
+  23:Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_spi_ex.c **** 
+  24:Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_spi_ex.c **** /* Includes ------------------------------------------------------------------*/
+  25:Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_spi_ex.c **** #include "stm32h7xx_hal.h"
+  26:Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_spi_ex.c **** 
+  27:Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_spi_ex.c **** /** @addtogroup STM32H7xx_HAL_Driver
+  28:Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_spi_ex.c ****   * @{
+  29:Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_spi_ex.c ****   */
+  30:Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_spi_ex.c **** 
+  31:Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_spi_ex.c **** /** @defgroup SPIEx SPIEx
+ARM GAS  C:\Users\fffff\AppData\Local\Temp\cciAXmVw.s 			page 2
+
+
+  32:Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_spi_ex.c ****   * @brief SPI Extended HAL module driver
+  33:Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_spi_ex.c ****   * @{
+  34:Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_spi_ex.c ****   */
+  35:Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_spi_ex.c **** #ifdef HAL_SPI_MODULE_ENABLED
+  36:Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_spi_ex.c **** 
+  37:Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_spi_ex.c **** /* Private typedef -----------------------------------------------------------*/
+  38:Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_spi_ex.c **** /* Private defines -----------------------------------------------------------*/
+  39:Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_spi_ex.c **** /* Private macros ------------------------------------------------------------*/
+  40:Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_spi_ex.c **** /* Private variables ---------------------------------------------------------*/
+  41:Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_spi_ex.c **** /* Private function prototypes -----------------------------------------------*/
+  42:Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_spi_ex.c **** /* Exported functions --------------------------------------------------------*/
+  43:Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_spi_ex.c **** 
+  44:Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_spi_ex.c **** /** @defgroup SPIEx_Exported_Functions SPIEx Exported Functions
+  45:Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_spi_ex.c ****   * @{
+  46:Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_spi_ex.c ****   */
+  47:Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_spi_ex.c **** 
+  48:Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_spi_ex.c **** /** @defgroup SPIEx_Exported_Functions_Group1 IO operation functions
+  49:Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_spi_ex.c ****   *  @brief   Data transfers functions
+  50:Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_spi_ex.c ****   *
+  51:Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_spi_ex.c **** @verbatim
+  52:Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_spi_ex.c ****   ==============================================================================
+  53:Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_spi_ex.c ****                       ##### IO operation functions #####
+  54:Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_spi_ex.c ****  ===============================================================================
+  55:Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_spi_ex.c ****  [..]
+  56:Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_spi_ex.c ****     This subsection provides a set of extended functions to manage the SPI
+  57:Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_spi_ex.c ****     data transfers.
+  58:Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_spi_ex.c **** 
+  59:Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_spi_ex.c ****     (#) SPIEx function:
+  60:Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_spi_ex.c ****         (++) HAL_SPIEx_FlushRxFifo()
+  61:Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_spi_ex.c ****         (++) HAL_SPIEx_EnableLockConfiguration()
+  62:Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_spi_ex.c ****         (++) HAL_SPIEx_ConfigureUnderrun()
+  63:Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_spi_ex.c **** 
+  64:Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_spi_ex.c **** @endverbatim
+  65:Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_spi_ex.c ****   * @{
+  66:Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_spi_ex.c ****   */
+  67:Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_spi_ex.c **** 
+  68:Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_spi_ex.c **** /**
+  69:Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_spi_ex.c ****   * @brief Flush the RX fifo.
+  70:Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_spi_ex.c ****   * @param  hspi: pointer to a SPI_HandleTypeDef structure that contains
+  71:Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_spi_ex.c ****   *               the configuration information for the specified SPI module.
+  72:Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_spi_ex.c ****   * @retval HAL status
+  73:Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_spi_ex.c ****   */
+  74:Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_spi_ex.c **** HAL_StatusTypeDef HAL_SPIEx_FlushRxFifo(const SPI_HandleTypeDef *hspi)
+  75:Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_spi_ex.c **** {
+  28              		.loc 1 75 1
+  29              		.cfi_startproc
+  30              		@ args = 0, pretend = 0, frame = 24
+  31              		@ frame_needed = 1, uses_anonymous_args = 0
+  32              		@ link register save eliminated.
+  33 0000 80B4     		push	{r7}
+  34              	.LCFI0:
+  35              		.cfi_def_cfa_offset 4
+  36              		.cfi_offset 7, -4
+  37 0002 87B0     		sub	sp, sp, #28
+  38              	.LCFI1:
+  39              		.cfi_def_cfa_offset 32
+  40 0004 00AF     		add	r7, sp, #0
+ARM GAS  C:\Users\fffff\AppData\Local\Temp\cciAXmVw.s 			page 3
+
+
+  41              	.LCFI2:
+  42              		.cfi_def_cfa_register 7
+  43 0006 7860     		str	r0, [r7, #4]
+  76:Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_spi_ex.c ****   uint8_t  count  = 0;
+  44              		.loc 1 76 12
+  45 0008 0023     		movs	r3, #0
+  46 000a FB75     		strb	r3, [r7, #23]
+  77:Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_spi_ex.c ****   uint32_t itflag = hspi->Instance->SR;
+  47              		.loc 1 77 25
+  48 000c 7B68     		ldr	r3, [r7, #4]
+  49 000e 1B68     		ldr	r3, [r3]
+  50              		.loc 1 77 12
+  51 0010 5B69     		ldr	r3, [r3, #20]
+  52 0012 3B61     		str	r3, [r7, #16]
+  78:Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_spi_ex.c ****   __IO uint32_t tmpreg;
+  79:Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_spi_ex.c **** 
+  80:Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_spi_ex.c ****   while (((hspi->Instance->SR & SPI_FLAG_FRLVL) !=  SPI_RX_FIFO_0PACKET) || ((itflag & SPI_FLAG_RXW
+  53              		.loc 1 80 9
+  54 0014 20E0     		b	.L2
+  55              	.L8:
+  81:Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_spi_ex.c ****   {
+  82:Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_spi_ex.c ****     count += (uint8_t)4UL;
+  56              		.loc 1 82 11
+  57 0016 FB7D     		ldrb	r3, [r7, #23]
+  58 0018 0433     		adds	r3, r3, #4
+  59 001a FB75     		strb	r3, [r7, #23]
+  83:Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_spi_ex.c ****     tmpreg = hspi->Instance->RXDR;
+  60              		.loc 1 83 18
+  61 001c 7B68     		ldr	r3, [r7, #4]
+  62 001e 1B68     		ldr	r3, [r3]
+  63              		.loc 1 83 28
+  64 0020 1B6B     		ldr	r3, [r3, #48]
+  65              		.loc 1 83 12
+  66 0022 FB60     		str	r3, [r7, #12]
+  84:Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_spi_ex.c ****     UNUSED(tmpreg); /* To avoid GCC warning */
+  67              		.loc 1 84 5
+  68 0024 FB68     		ldr	r3, [r7, #12]
+  85:Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_spi_ex.c **** 
+  86:Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_spi_ex.c ****     if (IS_SPI_HIGHEND_INSTANCE(hspi->Instance))
+  69              		.loc 1 86 9
+  70 0026 7B68     		ldr	r3, [r7, #4]
+  71 0028 1B68     		ldr	r3, [r3]
+  72              		.loc 1 86 8
+  73 002a 154A     		ldr	r2, .L9
+  74 002c 9342     		cmp	r3, r2
+  75 002e 09D0     		beq	.L3
+  76              		.loc 1 86 9 discriminator 1
+  77 0030 7B68     		ldr	r3, [r7, #4]
+  78 0032 1B68     		ldr	r3, [r3]
+  79 0034 134A     		ldr	r2, .L9+4
+  80 0036 9342     		cmp	r3, r2
+  81 0038 04D0     		beq	.L3
+  82              		.loc 1 86 9 is_stmt 0 discriminator 2
+  83 003a 7B68     		ldr	r3, [r7, #4]
+  84 003c 1B68     		ldr	r3, [r3]
+  85 003e 124A     		ldr	r2, .L9+8
+  86 0040 9342     		cmp	r3, r2
+ARM GAS  C:\Users\fffff\AppData\Local\Temp\cciAXmVw.s 			page 4
+
+
+  87 0042 04D1     		bne	.L4
+  88              	.L3:
+  87:Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_spi_ex.c ****     {
+  88:Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_spi_ex.c ****       if (count > SPI_HIGHEND_FIFO_SIZE)
+  89              		.loc 1 88 10 is_stmt 1
+  90 0044 FB7D     		ldrb	r3, [r7, #23]	@ zero_extendqisi2
+  91 0046 102B     		cmp	r3, #16
+  92 0048 06D9     		bls	.L2
+  89:Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_spi_ex.c ****       {
+  90:Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_spi_ex.c ****         return HAL_TIMEOUT;
+  93              		.loc 1 90 16
+  94 004a 0323     		movs	r3, #3
+  95 004c 11E0     		b	.L6
+  96              	.L4:
+  91:Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_spi_ex.c ****       }
+  92:Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_spi_ex.c ****     }
+  93:Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_spi_ex.c ****     else
+  94:Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_spi_ex.c ****     {
+  95:Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_spi_ex.c ****       if (count > SPI_LOWEND_FIFO_SIZE)
+  97              		.loc 1 95 10
+  98 004e FB7D     		ldrb	r3, [r7, #23]	@ zero_extendqisi2
+  99 0050 082B     		cmp	r3, #8
+ 100 0052 01D9     		bls	.L2
+  96:Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_spi_ex.c ****       {
+  97:Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_spi_ex.c ****         return HAL_TIMEOUT;
+ 101              		.loc 1 97 16
+ 102 0054 0323     		movs	r3, #3
+ 103 0056 0CE0     		b	.L6
+ 104              	.L2:
+  80:Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_spi_ex.c ****   {
+ 105              		.loc 1 80 16
+ 106 0058 7B68     		ldr	r3, [r7, #4]
+ 107 005a 1B68     		ldr	r3, [r3]
+  80:Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_spi_ex.c ****   {
+ 108              		.loc 1 80 26
+ 109 005c 5B69     		ldr	r3, [r3, #20]
+  80:Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_spi_ex.c ****   {
+ 110              		.loc 1 80 31
+ 111 005e 03F4C043 		and	r3, r3, #24576
+  80:Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_spi_ex.c ****   {
+ 112              		.loc 1 80 74
+ 113 0062 002B     		cmp	r3, #0
+ 114 0064 D7D1     		bne	.L8
+  80:Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_spi_ex.c ****   {
+ 115              		.loc 1 80 86 discriminator 1
+ 116 0066 3B69     		ldr	r3, [r7, #16]
+ 117 0068 03F40043 		and	r3, r3, #32768
+  80:Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_spi_ex.c ****   {
+ 118              		.loc 1 80 74 discriminator 1
+ 119 006c 002B     		cmp	r3, #0
+ 120 006e D2D1     		bne	.L8
+  98:Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_spi_ex.c ****       }
+  99:Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_spi_ex.c ****     }
+ 100:Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_spi_ex.c ****   }
+ 101:Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_spi_ex.c ****   return HAL_OK;
+ 121              		.loc 1 101 10
+ 122 0070 0023     		movs	r3, #0
+ARM GAS  C:\Users\fffff\AppData\Local\Temp\cciAXmVw.s 			page 5
+
+
+ 123              	.L6:
+ 102:Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_spi_ex.c **** }
+ 124              		.loc 1 102 1
+ 125 0072 1846     		mov	r0, r3
+ 126 0074 1C37     		adds	r7, r7, #28
+ 127              	.LCFI3:
+ 128              		.cfi_def_cfa_offset 4
+ 129 0076 BD46     		mov	sp, r7
+ 130              	.LCFI4:
+ 131              		.cfi_def_cfa_register 13
+ 132              		@ sp needed
+ 133 0078 5DF8047B 		ldr	r7, [sp], #4
+ 134              	.LCFI5:
+ 135              		.cfi_restore 7
+ 136              		.cfi_def_cfa_offset 0
+ 137 007c 7047     		bx	lr
+ 138              	.L10:
+ 139 007e 00BF     		.align	2
+ 140              	.L9:
+ 141 0080 00300140 		.word	1073819648
+ 142 0084 00380040 		.word	1073756160
+ 143 0088 003C0040 		.word	1073757184
+ 144              		.cfi_endproc
+ 145              	.LFE144:
+ 147              		.section	.text.HAL_SPIEx_EnableLockConfiguration,"ax",%progbits
+ 148              		.align	1
+ 149              		.global	HAL_SPIEx_EnableLockConfiguration
+ 150              		.syntax unified
+ 151              		.thumb
+ 152              		.thumb_func
+ 154              	HAL_SPIEx_EnableLockConfiguration:
+ 155              	.LFB145:
+ 103:Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_spi_ex.c **** 
+ 104:Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_spi_ex.c **** 
+ 105:Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_spi_ex.c **** /**
+ 106:Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_spi_ex.c ****   * @brief  Enable the Lock for the AF configuration of associated IOs
+ 107:Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_spi_ex.c ****   *         and write protect the Content of Configuration register 2
+ 108:Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_spi_ex.c ****   *         when SPI is enabled
+ 109:Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_spi_ex.c ****   * @param  hspi: pointer to a SPI_HandleTypeDef structure that contains
+ 110:Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_spi_ex.c ****   *               the configuration information for SPI module.
+ 111:Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_spi_ex.c ****   * @retval None
+ 112:Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_spi_ex.c ****   */
+ 113:Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_spi_ex.c **** HAL_StatusTypeDef HAL_SPIEx_EnableLockConfiguration(SPI_HandleTypeDef *hspi)
+ 114:Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_spi_ex.c **** {
+ 156              		.loc 1 114 1
+ 157              		.cfi_startproc
+ 158              		@ args = 0, pretend = 0, frame = 16
+ 159              		@ frame_needed = 1, uses_anonymous_args = 0
+ 160              		@ link register save eliminated.
+ 161 0000 80B4     		push	{r7}
+ 162              	.LCFI6:
+ 163              		.cfi_def_cfa_offset 4
+ 164              		.cfi_offset 7, -4
+ 165 0002 85B0     		sub	sp, sp, #20
+ 166              	.LCFI7:
+ 167              		.cfi_def_cfa_offset 24
+ 168 0004 00AF     		add	r7, sp, #0
+ARM GAS  C:\Users\fffff\AppData\Local\Temp\cciAXmVw.s 			page 6
+
+
+ 169              	.LCFI8:
+ 170              		.cfi_def_cfa_register 7
+ 171 0006 7860     		str	r0, [r7, #4]
+ 115:Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_spi_ex.c ****   HAL_StatusTypeDef errorcode = HAL_OK;
+ 172              		.loc 1 115 21
+ 173 0008 0023     		movs	r3, #0
+ 174 000a FB73     		strb	r3, [r7, #15]
+ 116:Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_spi_ex.c **** 
+ 117:Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_spi_ex.c ****   /* Process Locked */
+ 118:Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_spi_ex.c ****   __HAL_LOCK(hspi);
+ 175              		.loc 1 118 3
+ 176 000c 7B68     		ldr	r3, [r7, #4]
+ 177 000e 93F88030 		ldrb	r3, [r3, #128]	@ zero_extendqisi2
+ 178 0012 012B     		cmp	r3, #1
+ 179 0014 01D1     		bne	.L12
+ 180              		.loc 1 118 3 is_stmt 0 discriminator 1
+ 181 0016 0223     		movs	r3, #2
+ 182              		.loc 1 118 3
+ 183 0018 46E0     		b	.L13
+ 184              	.L12:
+ 185              		.loc 1 118 3 discriminator 2
+ 186 001a 7B68     		ldr	r3, [r7, #4]
+ 187 001c 0122     		movs	r2, #1
+ 188 001e 83F88020 		strb	r2, [r3, #128]
+ 119:Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_spi_ex.c **** 
+ 120:Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_spi_ex.c ****   if (hspi->State != HAL_SPI_STATE_READY)
+ 189              		.loc 1 120 11 is_stmt 1
+ 190 0022 7B68     		ldr	r3, [r7, #4]
+ 191 0024 93F88130 		ldrb	r3, [r3, #129]
+ 192 0028 DBB2     		uxtb	r3, r3
+ 193              		.loc 1 120 6
+ 194 002a 012B     		cmp	r3, #1
+ 195 002c 0BD0     		beq	.L14
+ 121:Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_spi_ex.c ****   {
+ 122:Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_spi_ex.c ****     errorcode = HAL_BUSY;
+ 196              		.loc 1 122 15
+ 197 002e 0223     		movs	r3, #2
+ 198 0030 FB73     		strb	r3, [r7, #15]
+ 123:Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_spi_ex.c ****     hspi->State = HAL_SPI_STATE_READY;
+ 199              		.loc 1 123 17
+ 200 0032 7B68     		ldr	r3, [r7, #4]
+ 201 0034 0122     		movs	r2, #1
+ 202 0036 83F88120 		strb	r2, [r3, #129]
+ 124:Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_spi_ex.c ****     /* Process Unlocked */
+ 125:Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_spi_ex.c ****     __HAL_UNLOCK(hspi);
+ 203              		.loc 1 125 5
+ 204 003a 7B68     		ldr	r3, [r7, #4]
+ 205 003c 0022     		movs	r2, #0
+ 206 003e 83F88020 		strb	r2, [r3, #128]
+ 126:Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_spi_ex.c ****     return errorcode;
+ 207              		.loc 1 126 12
+ 208 0042 FB7B     		ldrb	r3, [r7, #15]	@ zero_extendqisi2
+ 209 0044 30E0     		b	.L13
+ 210              	.L14:
+ 127:Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_spi_ex.c ****   }
+ 128:Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_spi_ex.c **** 
+ 129:Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_spi_ex.c ****   /* Check if the SPI is disabled to edit IOLOCK bit */
+ARM GAS  C:\Users\fffff\AppData\Local\Temp\cciAXmVw.s 			page 7
+
+
+ 130:Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_spi_ex.c ****   if ((hspi->Instance->CR1 & SPI_CR1_SPE) != SPI_CR1_SPE)
+ 211              		.loc 1 130 12
+ 212 0046 7B68     		ldr	r3, [r7, #4]
+ 213 0048 1B68     		ldr	r3, [r3]
+ 214              		.loc 1 130 22
+ 215 004a 1B68     		ldr	r3, [r3]
+ 216              		.loc 1 130 28
+ 217 004c 03F00103 		and	r3, r3, #1
+ 218              		.loc 1 130 6
+ 219 0050 012B     		cmp	r3, #1
+ 220 0052 08D0     		beq	.L15
+ 131:Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_spi_ex.c ****   {
+ 132:Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_spi_ex.c ****     SET_BIT(hspi->Instance->CR1, SPI_CR1_IOLOCK);
+ 221              		.loc 1 132 5
+ 222 0054 7B68     		ldr	r3, [r7, #4]
+ 223 0056 1B68     		ldr	r3, [r3]
+ 224 0058 1A68     		ldr	r2, [r3]
+ 225 005a 7B68     		ldr	r3, [r7, #4]
+ 226 005c 1B68     		ldr	r3, [r3]
+ 227 005e 42F48032 		orr	r2, r2, #65536
+ 228 0062 1A60     		str	r2, [r3]
+ 229 0064 17E0     		b	.L16
+ 230              	.L15:
+ 133:Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_spi_ex.c ****   }
+ 134:Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_spi_ex.c ****   else
+ 135:Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_spi_ex.c ****   {
+ 136:Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_spi_ex.c ****     /* Disable SPI peripheral */
+ 137:Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_spi_ex.c ****     __HAL_SPI_DISABLE(hspi);
+ 231              		.loc 1 137 5
+ 232 0066 7B68     		ldr	r3, [r7, #4]
+ 233 0068 1B68     		ldr	r3, [r3]
+ 234 006a 1A68     		ldr	r2, [r3]
+ 235 006c 7B68     		ldr	r3, [r7, #4]
+ 236 006e 1B68     		ldr	r3, [r3]
+ 237 0070 22F00102 		bic	r2, r2, #1
+ 238 0074 1A60     		str	r2, [r3]
+ 138:Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_spi_ex.c **** 
+ 139:Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_spi_ex.c ****     SET_BIT(hspi->Instance->CR1, SPI_CR1_IOLOCK);
+ 239              		.loc 1 139 5
+ 240 0076 7B68     		ldr	r3, [r7, #4]
+ 241 0078 1B68     		ldr	r3, [r3]
+ 242 007a 1A68     		ldr	r2, [r3]
+ 243 007c 7B68     		ldr	r3, [r7, #4]
+ 244 007e 1B68     		ldr	r3, [r3]
+ 245 0080 42F48032 		orr	r2, r2, #65536
+ 246 0084 1A60     		str	r2, [r3]
+ 140:Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_spi_ex.c **** 
+ 141:Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_spi_ex.c ****     /* Enable SPI peripheral */
+ 142:Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_spi_ex.c ****     __HAL_SPI_ENABLE(hspi);
+ 247              		.loc 1 142 5
+ 248 0086 7B68     		ldr	r3, [r7, #4]
+ 249 0088 1B68     		ldr	r3, [r3]
+ 250 008a 1A68     		ldr	r2, [r3]
+ 251 008c 7B68     		ldr	r3, [r7, #4]
+ 252 008e 1B68     		ldr	r3, [r3]
+ 253 0090 42F00102 		orr	r2, r2, #1
+ 254 0094 1A60     		str	r2, [r3]
+ARM GAS  C:\Users\fffff\AppData\Local\Temp\cciAXmVw.s 			page 8
+
+
+ 255              	.L16:
+ 143:Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_spi_ex.c ****   }
+ 144:Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_spi_ex.c **** 
+ 145:Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_spi_ex.c ****   hspi->State = HAL_SPI_STATE_READY;
+ 256              		.loc 1 145 15
+ 257 0096 7B68     		ldr	r3, [r7, #4]
+ 258 0098 0122     		movs	r2, #1
+ 259 009a 83F88120 		strb	r2, [r3, #129]
+ 146:Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_spi_ex.c ****   /* Process Unlocked */
+ 147:Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_spi_ex.c ****   __HAL_UNLOCK(hspi);
+ 260              		.loc 1 147 3
+ 261 009e 7B68     		ldr	r3, [r7, #4]
+ 262 00a0 0022     		movs	r2, #0
+ 263 00a2 83F88020 		strb	r2, [r3, #128]
+ 148:Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_spi_ex.c ****   return errorcode;
+ 264              		.loc 1 148 10
+ 265 00a6 FB7B     		ldrb	r3, [r7, #15]	@ zero_extendqisi2
+ 266              	.L13:
+ 149:Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_spi_ex.c **** }
+ 267              		.loc 1 149 1
+ 268 00a8 1846     		mov	r0, r3
+ 269 00aa 1437     		adds	r7, r7, #20
+ 270              	.LCFI9:
+ 271              		.cfi_def_cfa_offset 4
+ 272 00ac BD46     		mov	sp, r7
+ 273              	.LCFI10:
+ 274              		.cfi_def_cfa_register 13
+ 275              		@ sp needed
+ 276 00ae 5DF8047B 		ldr	r7, [sp], #4
+ 277              	.LCFI11:
+ 278              		.cfi_restore 7
+ 279              		.cfi_def_cfa_offset 0
+ 280 00b2 7047     		bx	lr
+ 281              		.cfi_endproc
+ 282              	.LFE145:
+ 284              		.section	.text.HAL_SPIEx_ConfigureUnderrun,"ax",%progbits
+ 285              		.align	1
+ 286              		.global	HAL_SPIEx_ConfigureUnderrun
+ 287              		.syntax unified
+ 288              		.thumb
+ 289              		.thumb_func
+ 291              	HAL_SPIEx_ConfigureUnderrun:
+ 292              	.LFB146:
+ 150:Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_spi_ex.c **** 
+ 151:Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_spi_ex.c **** /**
+ 152:Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_spi_ex.c ****   * @brief  Configure the UNDERRUN condition and behavior of slave transmitter.
+ 153:Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_spi_ex.c ****   * @param  hspi: pointer to a SPI_HandleTypeDef structure that contains
+ 154:Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_spi_ex.c ****   *               the configuration information for SPI module.
+ 155:Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_spi_ex.c ****   * @param  UnderrunDetection : Detection of underrun condition at slave transmitter
+ 156:Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_spi_ex.c ****   *                             This parameter can be a value of @ref SPI_Underrun_Detection.
+ 157:Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_spi_ex.c ****   * @param  UnderrunBehaviour : Behavior of slave transmitter at underrun condition
+ 158:Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_spi_ex.c ****   *                             This parameter can be a value of @ref SPI_Underrun_Behaviour.
+ 159:Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_spi_ex.c ****   * @retval None
+ 160:Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_spi_ex.c ****   */
+ 161:Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_spi_ex.c **** HAL_StatusTypeDef HAL_SPIEx_ConfigureUnderrun(SPI_HandleTypeDef *hspi, uint32_t UnderrunDetection,
+ 162:Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_spi_ex.c ****                                               uint32_t UnderrunBehaviour)
+ 163:Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_spi_ex.c **** {
+ARM GAS  C:\Users\fffff\AppData\Local\Temp\cciAXmVw.s 			page 9
+
+
+ 293              		.loc 1 163 1
+ 294              		.cfi_startproc
+ 295              		@ args = 0, pretend = 0, frame = 24
+ 296              		@ frame_needed = 1, uses_anonymous_args = 0
+ 297              		@ link register save eliminated.
+ 298 0000 80B4     		push	{r7}
+ 299              	.LCFI12:
+ 300              		.cfi_def_cfa_offset 4
+ 301              		.cfi_offset 7, -4
+ 302 0002 87B0     		sub	sp, sp, #28
+ 303              	.LCFI13:
+ 304              		.cfi_def_cfa_offset 32
+ 305 0004 00AF     		add	r7, sp, #0
+ 306              	.LCFI14:
+ 307              		.cfi_def_cfa_register 7
+ 308 0006 F860     		str	r0, [r7, #12]
+ 309 0008 B960     		str	r1, [r7, #8]
+ 310 000a 7A60     		str	r2, [r7, #4]
+ 164:Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_spi_ex.c ****   HAL_StatusTypeDef errorcode = HAL_OK;
+ 311              		.loc 1 164 21
+ 312 000c 0023     		movs	r3, #0
+ 313 000e FB75     		strb	r3, [r7, #23]
+ 165:Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_spi_ex.c **** 
+ 166:Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_spi_ex.c ****   /* Process Locked */
+ 167:Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_spi_ex.c ****   __HAL_LOCK(hspi);
+ 314              		.loc 1 167 3
+ 315 0010 FB68     		ldr	r3, [r7, #12]
+ 316 0012 93F88030 		ldrb	r3, [r3, #128]	@ zero_extendqisi2
+ 317 0016 012B     		cmp	r3, #1
+ 318 0018 01D1     		bne	.L18
+ 319              		.loc 1 167 3 is_stmt 0 discriminator 1
+ 320 001a 0223     		movs	r3, #2
+ 321              		.loc 1 167 3
+ 322 001c 62E0     		b	.L19
+ 323              	.L18:
+ 324              		.loc 1 167 3 discriminator 2
+ 325 001e FB68     		ldr	r3, [r7, #12]
+ 326 0020 0122     		movs	r2, #1
+ 327 0022 83F88020 		strb	r2, [r3, #128]
+ 168:Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_spi_ex.c **** 
+ 169:Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_spi_ex.c ****   /* Check State and Insure that Underrun configuration is managed only by Salve */
+ 170:Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_spi_ex.c ****   if ((hspi->State != HAL_SPI_STATE_READY) || (hspi->Init.Mode != SPI_MODE_SLAVE))
+ 328              		.loc 1 170 12 is_stmt 1
+ 329 0026 FB68     		ldr	r3, [r7, #12]
+ 330 0028 93F88130 		ldrb	r3, [r3, #129]
+ 331 002c DBB2     		uxtb	r3, r3
+ 332              		.loc 1 170 6
+ 333 002e 012B     		cmp	r3, #1
+ 334 0030 03D1     		bne	.L20
+ 335              		.loc 1 170 58 discriminator 1
+ 336 0032 FB68     		ldr	r3, [r7, #12]
+ 337 0034 5B68     		ldr	r3, [r3, #4]
+ 338              		.loc 1 170 44 discriminator 1
+ 339 0036 002B     		cmp	r3, #0
+ 340 0038 0BD0     		beq	.L21
+ 341              	.L20:
+ 171:Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_spi_ex.c ****   {
+ARM GAS  C:\Users\fffff\AppData\Local\Temp\cciAXmVw.s 			page 10
+
+
+ 172:Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_spi_ex.c ****     errorcode = HAL_BUSY;
+ 342              		.loc 1 172 15
+ 343 003a 0223     		movs	r3, #2
+ 344 003c FB75     		strb	r3, [r7, #23]
+ 173:Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_spi_ex.c ****     hspi->State = HAL_SPI_STATE_READY;
+ 345              		.loc 1 173 17
+ 346 003e FB68     		ldr	r3, [r7, #12]
+ 347 0040 0122     		movs	r2, #1
+ 348 0042 83F88120 		strb	r2, [r3, #129]
+ 174:Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_spi_ex.c ****     /* Process Unlocked */
+ 175:Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_spi_ex.c ****     __HAL_UNLOCK(hspi);
+ 349              		.loc 1 175 5
+ 350 0046 FB68     		ldr	r3, [r7, #12]
+ 351 0048 0022     		movs	r2, #0
+ 352 004a 83F88020 		strb	r2, [r3, #128]
+ 176:Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_spi_ex.c ****     return errorcode;
+ 353              		.loc 1 176 12
+ 354 004e FB7D     		ldrb	r3, [r7, #23]	@ zero_extendqisi2
+ 355 0050 48E0     		b	.L19
+ 356              	.L21:
+ 177:Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_spi_ex.c ****   }
+ 178:Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_spi_ex.c **** 
+ 179:Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_spi_ex.c ****   /* Check the parameters */
+ 180:Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_spi_ex.c ****   assert_param(IS_SPI_UNDERRUN_DETECTION(UnderrunDetection));
+ 181:Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_spi_ex.c ****   assert_param(IS_SPI_UNDERRUN_BEHAVIOUR(UnderrunBehaviour));
+ 182:Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_spi_ex.c **** 
+ 183:Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_spi_ex.c ****   /* Check if the SPI is disabled to edit CFG1 register */
+ 184:Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_spi_ex.c ****   if ((hspi->Instance->CR1 & SPI_CR1_SPE) != SPI_CR1_SPE)
+ 357              		.loc 1 184 12
+ 358 0052 FB68     		ldr	r3, [r7, #12]
+ 359 0054 1B68     		ldr	r3, [r3]
+ 360              		.loc 1 184 22
+ 361 0056 1B68     		ldr	r3, [r3]
+ 362              		.loc 1 184 28
+ 363 0058 03F00103 		and	r3, r3, #1
+ 364              		.loc 1 184 6
+ 365 005c 012B     		cmp	r3, #1
+ 366 005e 14D0     		beq	.L22
+ 185:Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_spi_ex.c ****   {
+ 186:Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_spi_ex.c ****     /* Configure Underrun fields */
+ 187:Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_spi_ex.c ****     MODIFY_REG(hspi->Instance->CFG1, SPI_CFG1_UDRDET, UnderrunDetection);
+ 367              		.loc 1 187 5
+ 368 0060 FB68     		ldr	r3, [r7, #12]
+ 369 0062 1B68     		ldr	r3, [r3]
+ 370 0064 9B68     		ldr	r3, [r3, #8]
+ 371 0066 23F4C051 		bic	r1, r3, #6144
+ 372 006a FB68     		ldr	r3, [r7, #12]
+ 373 006c 1B68     		ldr	r3, [r3]
+ 374 006e BA68     		ldr	r2, [r7, #8]
+ 375 0070 0A43     		orrs	r2, r2, r1
+ 376 0072 9A60     		str	r2, [r3, #8]
+ 188:Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_spi_ex.c ****     MODIFY_REG(hspi->Instance->CFG1, SPI_CFG1_UDRCFG, UnderrunBehaviour);
+ 377              		.loc 1 188 5
+ 378 0074 FB68     		ldr	r3, [r7, #12]
+ 379 0076 1B68     		ldr	r3, [r3]
+ 380 0078 9B68     		ldr	r3, [r3, #8]
+ 381 007a 23F4C061 		bic	r1, r3, #1536
+ARM GAS  C:\Users\fffff\AppData\Local\Temp\cciAXmVw.s 			page 11
+
+
+ 382 007e FB68     		ldr	r3, [r7, #12]
+ 383 0080 1B68     		ldr	r3, [r3]
+ 384 0082 7A68     		ldr	r2, [r7, #4]
+ 385 0084 0A43     		orrs	r2, r2, r1
+ 386 0086 9A60     		str	r2, [r3, #8]
+ 387 0088 23E0     		b	.L23
+ 388              	.L22:
+ 189:Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_spi_ex.c ****   }
+ 190:Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_spi_ex.c ****   else
+ 191:Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_spi_ex.c ****   {
+ 192:Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_spi_ex.c ****     /* Disable SPI peripheral */
+ 193:Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_spi_ex.c ****     __HAL_SPI_DISABLE(hspi);
+ 389              		.loc 1 193 5
+ 390 008a FB68     		ldr	r3, [r7, #12]
+ 391 008c 1B68     		ldr	r3, [r3]
+ 392 008e 1A68     		ldr	r2, [r3]
+ 393 0090 FB68     		ldr	r3, [r7, #12]
+ 394 0092 1B68     		ldr	r3, [r3]
+ 395 0094 22F00102 		bic	r2, r2, #1
+ 396 0098 1A60     		str	r2, [r3]
+ 194:Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_spi_ex.c **** 
+ 195:Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_spi_ex.c ****     /* Configure Underrun fields */
+ 196:Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_spi_ex.c ****     MODIFY_REG(hspi->Instance->CFG1, SPI_CFG1_UDRDET, UnderrunDetection);
+ 397              		.loc 1 196 5
+ 398 009a FB68     		ldr	r3, [r7, #12]
+ 399 009c 1B68     		ldr	r3, [r3]
+ 400 009e 9B68     		ldr	r3, [r3, #8]
+ 401 00a0 23F4C051 		bic	r1, r3, #6144
+ 402 00a4 FB68     		ldr	r3, [r7, #12]
+ 403 00a6 1B68     		ldr	r3, [r3]
+ 404 00a8 BA68     		ldr	r2, [r7, #8]
+ 405 00aa 0A43     		orrs	r2, r2, r1
+ 406 00ac 9A60     		str	r2, [r3, #8]
+ 197:Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_spi_ex.c ****     MODIFY_REG(hspi->Instance->CFG1, SPI_CFG1_UDRCFG, UnderrunBehaviour);
+ 407              		.loc 1 197 5
+ 408 00ae FB68     		ldr	r3, [r7, #12]
+ 409 00b0 1B68     		ldr	r3, [r3]
+ 410 00b2 9B68     		ldr	r3, [r3, #8]
+ 411 00b4 23F4C061 		bic	r1, r3, #1536
+ 412 00b8 FB68     		ldr	r3, [r7, #12]
+ 413 00ba 1B68     		ldr	r3, [r3]
+ 414 00bc 7A68     		ldr	r2, [r7, #4]
+ 415 00be 0A43     		orrs	r2, r2, r1
+ 416 00c0 9A60     		str	r2, [r3, #8]
+ 198:Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_spi_ex.c **** 
+ 199:Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_spi_ex.c ****     /* Enable SPI peripheral */
+ 200:Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_spi_ex.c ****     __HAL_SPI_ENABLE(hspi);
+ 417              		.loc 1 200 5
+ 418 00c2 FB68     		ldr	r3, [r7, #12]
+ 419 00c4 1B68     		ldr	r3, [r3]
+ 420 00c6 1A68     		ldr	r2, [r3]
+ 421 00c8 FB68     		ldr	r3, [r7, #12]
+ 422 00ca 1B68     		ldr	r3, [r3]
+ 423 00cc 42F00102 		orr	r2, r2, #1
+ 424 00d0 1A60     		str	r2, [r3]
+ 425              	.L23:
+ 201:Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_spi_ex.c ****   }
+ARM GAS  C:\Users\fffff\AppData\Local\Temp\cciAXmVw.s 			page 12
+
+
+ 202:Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_spi_ex.c **** 
+ 203:Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_spi_ex.c **** 
+ 204:Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_spi_ex.c ****   hspi->State = HAL_SPI_STATE_READY;
+ 426              		.loc 1 204 15
+ 427 00d2 FB68     		ldr	r3, [r7, #12]
+ 428 00d4 0122     		movs	r2, #1
+ 429 00d6 83F88120 		strb	r2, [r3, #129]
+ 205:Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_spi_ex.c ****   /* Process Unlocked */
+ 206:Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_spi_ex.c ****   __HAL_UNLOCK(hspi);
+ 430              		.loc 1 206 3
+ 431 00da FB68     		ldr	r3, [r7, #12]
+ 432 00dc 0022     		movs	r2, #0
+ 433 00de 83F88020 		strb	r2, [r3, #128]
+ 207:Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_spi_ex.c ****   return errorcode;
+ 434              		.loc 1 207 10
+ 435 00e2 FB7D     		ldrb	r3, [r7, #23]	@ zero_extendqisi2
+ 436              	.L19:
+ 208:Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_spi_ex.c **** }
+ 437              		.loc 1 208 1
+ 438 00e4 1846     		mov	r0, r3
+ 439 00e6 1C37     		adds	r7, r7, #28
+ 440              	.LCFI15:
+ 441              		.cfi_def_cfa_offset 4
+ 442 00e8 BD46     		mov	sp, r7
+ 443              	.LCFI16:
+ 444              		.cfi_def_cfa_register 13
+ 445              		@ sp needed
+ 446 00ea 5DF8047B 		ldr	r7, [sp], #4
+ 447              	.LCFI17:
+ 448              		.cfi_restore 7
+ 449              		.cfi_def_cfa_offset 0
+ 450 00ee 7047     		bx	lr
+ 451              		.cfi_endproc
+ 452              	.LFE146:
+ 454              		.text
+ 455              	.Letext0:
+ 456              		.file 2 "C:/msys64/mingw64/arm-none-eabi/include/machine/_default_types.h"
+ 457              		.file 3 "C:/msys64/mingw64/arm-none-eabi/include/sys/_stdint.h"
+ 458              		.file 4 "Drivers/CMSIS/Device/ST/STM32H7xx/Include/stm32h723xx.h"
+ 459              		.file 5 "Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal_def.h"
+ 460              		.file 6 "Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal_dma.h"
+ 461              		.file 7 "Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal_spi.h"
+ARM GAS  C:\Users\fffff\AppData\Local\Temp\cciAXmVw.s 			page 13
+
+
+DEFINED SYMBOLS
+                            *ABS*:00000000 stm32h7xx_hal_spi_ex.c
+C:\Users\fffff\AppData\Local\Temp\cciAXmVw.s:20     .text.HAL_SPIEx_FlushRxFifo:00000000 $t
+C:\Users\fffff\AppData\Local\Temp\cciAXmVw.s:26     .text.HAL_SPIEx_FlushRxFifo:00000000 HAL_SPIEx_FlushRxFifo
+C:\Users\fffff\AppData\Local\Temp\cciAXmVw.s:141    .text.HAL_SPIEx_FlushRxFifo:00000080 $d
+C:\Users\fffff\AppData\Local\Temp\cciAXmVw.s:148    .text.HAL_SPIEx_EnableLockConfiguration:00000000 $t
+C:\Users\fffff\AppData\Local\Temp\cciAXmVw.s:154    .text.HAL_SPIEx_EnableLockConfiguration:00000000 HAL_SPIEx_EnableLockConfiguration
+C:\Users\fffff\AppData\Local\Temp\cciAXmVw.s:285    .text.HAL_SPIEx_ConfigureUnderrun:00000000 $t
+C:\Users\fffff\AppData\Local\Temp\cciAXmVw.s:291    .text.HAL_SPIEx_ConfigureUnderrun:00000000 HAL_SPIEx_ConfigureUnderrun
+
+NO UNDEFINED SYMBOLS

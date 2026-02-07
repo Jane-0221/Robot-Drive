@@ -1,0 +1,261 @@
+ARM GAS  C:\Users\fffff\AppData\Local\Temp\cckc5IHv.s 			page 1
+
+
+   1              		.cpu cortex-m7
+   2              		.arch armv7e-m
+   3              		.fpu fpv5-d16
+   4              		.eabi_attribute 28, 1
+   5              		.eabi_attribute 20, 1
+   6              		.eabi_attribute 21, 1
+   7              		.eabi_attribute 23, 3
+   8              		.eabi_attribute 24, 1
+   9              		.eabi_attribute 25, 1
+  10              		.eabi_attribute 26, 1
+  11              		.eabi_attribute 30, 6
+  12              		.eabi_attribute 34, 1
+  13              		.eabi_attribute 18, 4
+  14              		.file	"ws2812.c"
+  15              		.text
+  16              	.Ltext0:
+  17              		.cfi_sections	.debug_frame
+  18              		.file 1 "Drivers/Chip/ws2812/ws2812.c"
+  19              		.section	.text.WS2812_Ctrl,"ax",%progbits
+  20              		.align	1
+  21              		.global	WS2812_Ctrl
+  22              		.syntax unified
+  23              		.thumb
+  24              		.thumb_func
+  26              	WS2812_Ctrl:
+  27              	.LFB144:
+   1:Drivers/Chip/ws2812/ws2812.c **** #include "ws2812.h"
+   2:Drivers/Chip/ws2812/ws2812.c **** 
+   3:Drivers/Chip/ws2812/ws2812.c **** #define WS2812_LowLevel    0xC0     // 0§´§í
+   4:Drivers/Chip/ws2812/ws2812.c **** #define WS2812_HighLevel   0xF0     // 1§´§í
+   5:Drivers/Chip/ws2812/ws2812.c **** 
+   6:Drivers/Chip/ws2812/ws2812.c **** void WS2812_Ctrl(uint8_t r, uint8_t g, uint8_t b)
+   7:Drivers/Chip/ws2812/ws2812.c **** {
+  28              		.loc 1 7 1
+  29              		.cfi_startproc
+  30              		@ args = 0, pretend = 0, frame = 48
+  31              		@ frame_needed = 1, uses_anonymous_args = 0
+  32 0000 80B5     		push	{r7, lr}
+  33              	.LCFI0:
+  34              		.cfi_def_cfa_offset 8
+  35              		.cfi_offset 7, -8
+  36              		.cfi_offset 14, -4
+  37 0002 8CB0     		sub	sp, sp, #48
+  38              	.LCFI1:
+  39              		.cfi_def_cfa_offset 56
+  40 0004 00AF     		add	r7, sp, #0
+  41              	.LCFI2:
+  42              		.cfi_def_cfa_register 7
+  43 0006 0346     		mov	r3, r0
+  44 0008 FB71     		strb	r3, [r7, #7]
+  45 000a 0B46     		mov	r3, r1
+  46 000c BB71     		strb	r3, [r7, #6]
+  47 000e 1346     		mov	r3, r2
+  48 0010 7B71     		strb	r3, [r7, #5]
+   8:Drivers/Chip/ws2812/ws2812.c ****     uint8_t txbuf[24];
+   9:Drivers/Chip/ws2812/ws2812.c ****     uint8_t res = 0;
+  49              		.loc 1 9 13
+ARM GAS  C:\Users\fffff\AppData\Local\Temp\cckc5IHv.s 			page 2
+
+
+  50 0012 0023     		movs	r3, #0
+  51 0014 FB73     		strb	r3, [r7, #15]
+  52              	.LBB2:
+  10:Drivers/Chip/ws2812/ws2812.c ****     for (int i = 0; i < 8; i++)
+  53              		.loc 1 10 14
+  54 0016 0023     		movs	r3, #0
+  55 0018 FB62     		str	r3, [r7, #44]
+  56              		.loc 1 10 5
+  57 001a 38E0     		b	.L2
+  58              	.L9:
+  11:Drivers/Chip/ws2812/ws2812.c ****     {
+  12:Drivers/Chip/ws2812/ws2812.c ****         txbuf[7-i]  = (((g>>i)&0x01) ? WS2812_HighLevel : WS2812_LowLevel)>>1;
+  59              		.loc 1 12 27
+  60 001c BA79     		ldrb	r2, [r7, #6]	@ zero_extendqisi2
+  61 001e FB6A     		ldr	r3, [r7, #44]
+  62 0020 42FA03F3 		asr	r3, r2, r3
+  63              		.loc 1 12 31
+  64 0024 03F00103 		and	r3, r3, #1
+  65              		.loc 1 12 21
+  66 0028 002B     		cmp	r3, #0
+  67 002a 01D0     		beq	.L3
+  68              		.loc 1 12 21 is_stmt 0 discriminator 1
+  69 002c 7822     		movs	r2, #120
+  70 002e 00E0     		b	.L4
+  71              	.L3:
+  72              		.loc 1 12 21 discriminator 2
+  73 0030 6022     		movs	r2, #96
+  74              	.L4:
+  75              		.loc 1 12 16 is_stmt 1 discriminator 4
+  76 0032 FB6A     		ldr	r3, [r7, #44]
+  77 0034 C3F10703 		rsb	r3, r3, #7
+  78              		.loc 1 12 21 discriminator 4
+  79 0038 3033     		adds	r3, r3, #48
+  80 003a 3B44     		add	r3, r3, r7
+  81 003c 03F8202C 		strb	r2, [r3, #-32]
+  13:Drivers/Chip/ws2812/ws2812.c ****         txbuf[15-i] = (((r>>i)&0x01) ? WS2812_HighLevel : WS2812_LowLevel)>>1;
+  82              		.loc 1 13 27
+  83 0040 FA79     		ldrb	r2, [r7, #7]	@ zero_extendqisi2
+  84 0042 FB6A     		ldr	r3, [r7, #44]
+  85 0044 42FA03F3 		asr	r3, r2, r3
+  86              		.loc 1 13 31
+  87 0048 03F00103 		and	r3, r3, #1
+  88              		.loc 1 13 21
+  89 004c 002B     		cmp	r3, #0
+  90 004e 01D0     		beq	.L5
+  91              		.loc 1 13 21 is_stmt 0 discriminator 1
+  92 0050 7822     		movs	r2, #120
+  93 0052 00E0     		b	.L6
+  94              	.L5:
+  95              		.loc 1 13 21 discriminator 2
+  96 0054 6022     		movs	r2, #96
+  97              	.L6:
+  98              		.loc 1 13 17 is_stmt 1 discriminator 4
+  99 0056 FB6A     		ldr	r3, [r7, #44]
+ 100 0058 C3F10F03 		rsb	r3, r3, #15
+ 101              		.loc 1 13 21 discriminator 4
+ 102 005c 3033     		adds	r3, r3, #48
+ARM GAS  C:\Users\fffff\AppData\Local\Temp\cckc5IHv.s 			page 3
+
+
+ 103 005e 3B44     		add	r3, r3, r7
+ 104 0060 03F8202C 		strb	r2, [r3, #-32]
+  14:Drivers/Chip/ws2812/ws2812.c ****         txbuf[23-i] = (((b>>i)&0x01) ? WS2812_HighLevel : WS2812_LowLevel)>>1;
+ 105              		.loc 1 14 27
+ 106 0064 7A79     		ldrb	r2, [r7, #5]	@ zero_extendqisi2
+ 107 0066 FB6A     		ldr	r3, [r7, #44]
+ 108 0068 42FA03F3 		asr	r3, r2, r3
+ 109              		.loc 1 14 31
+ 110 006c 03F00103 		and	r3, r3, #1
+ 111              		.loc 1 14 21
+ 112 0070 002B     		cmp	r3, #0
+ 113 0072 01D0     		beq	.L7
+ 114              		.loc 1 14 21 is_stmt 0 discriminator 1
+ 115 0074 7822     		movs	r2, #120
+ 116 0076 00E0     		b	.L8
+ 117              	.L7:
+ 118              		.loc 1 14 21 discriminator 2
+ 119 0078 6022     		movs	r2, #96
+ 120              	.L8:
+ 121              		.loc 1 14 17 is_stmt 1 discriminator 4
+ 122 007a FB6A     		ldr	r3, [r7, #44]
+ 123 007c C3F11703 		rsb	r3, r3, #23
+ 124              		.loc 1 14 21 discriminator 4
+ 125 0080 3033     		adds	r3, r3, #48
+ 126 0082 3B44     		add	r3, r3, r7
+ 127 0084 03F8202C 		strb	r2, [r3, #-32]
+  10:Drivers/Chip/ws2812/ws2812.c ****     {
+ 128              		.loc 1 10 29 discriminator 2
+ 129 0088 FB6A     		ldr	r3, [r7, #44]
+ 130 008a 0133     		adds	r3, r3, #1
+ 131 008c FB62     		str	r3, [r7, #44]
+ 132              	.L2:
+  10:Drivers/Chip/ws2812/ws2812.c ****     {
+ 133              		.loc 1 10 23 discriminator 1
+ 134 008e FB6A     		ldr	r3, [r7, #44]
+ 135 0090 072B     		cmp	r3, #7
+ 136 0092 C3DD     		ble	.L9
+ 137              	.LBE2:
+  15:Drivers/Chip/ws2812/ws2812.c ****     }
+  16:Drivers/Chip/ws2812/ws2812.c ****     HAL_SPI_Transmit(&WS2812_SPI_UNIT, &res, 0, 0xFFFF);
+ 138              		.loc 1 16 5
+ 139 0094 07F10F01 		add	r1, r7, #15
+ 140 0098 4FF6FF73 		movw	r3, #65535
+ 141 009c 0022     		movs	r2, #0
+ 142 009e 1448     		ldr	r0, .L13
+ 143 00a0 FFF7FEFF 		bl	HAL_SPI_Transmit
+  17:Drivers/Chip/ws2812/ws2812.c ****     while (WS2812_SPI_UNIT.State != HAL_SPI_STATE_READY);
+ 144              		.loc 1 17 11
+ 145 00a4 00BF     		nop
+ 146              	.L10:
+ 147              		.loc 1 17 27 discriminator 1
+ 148 00a6 124B     		ldr	r3, .L13
+ 149 00a8 93F88130 		ldrb	r3, [r3, #129]
+ 150 00ac DBB2     		uxtb	r3, r3
+ 151              		.loc 1 17 34 discriminator 1
+ 152 00ae 012B     		cmp	r3, #1
+ 153 00b0 F9D1     		bne	.L10
+ARM GAS  C:\Users\fffff\AppData\Local\Temp\cckc5IHv.s 			page 4
+
+
+  18:Drivers/Chip/ws2812/ws2812.c ****     HAL_SPI_Transmit(&WS2812_SPI_UNIT, txbuf, 24, 0xFFFF);
+ 154              		.loc 1 18 5
+ 155 00b2 07F11001 		add	r1, r7, #16
+ 156 00b6 4FF6FF73 		movw	r3, #65535
+ 157 00ba 1822     		movs	r2, #24
+ 158 00bc 0C48     		ldr	r0, .L13
+ 159 00be FFF7FEFF 		bl	HAL_SPI_Transmit
+ 160              	.LBB3:
+  19:Drivers/Chip/ws2812/ws2812.c ****     for (int i = 0; i < 100; i++)
+ 161              		.loc 1 19 14
+ 162 00c2 0023     		movs	r3, #0
+ 163 00c4 BB62     		str	r3, [r7, #40]
+ 164              		.loc 1 19 5
+ 165 00c6 0AE0     		b	.L11
+ 166              	.L12:
+  20:Drivers/Chip/ws2812/ws2812.c ****     {
+  21:Drivers/Chip/ws2812/ws2812.c ****         HAL_SPI_Transmit(&WS2812_SPI_UNIT, &res, 1, 0xFFFF);
+ 167              		.loc 1 21 9
+ 168 00c8 07F10F01 		add	r1, r7, #15
+ 169 00cc 4FF6FF73 		movw	r3, #65535
+ 170 00d0 0122     		movs	r2, #1
+ 171 00d2 0748     		ldr	r0, .L13
+ 172 00d4 FFF7FEFF 		bl	HAL_SPI_Transmit
+  19:Drivers/Chip/ws2812/ws2812.c ****     for (int i = 0; i < 100; i++)
+ 173              		.loc 1 19 31 discriminator 3
+ 174 00d8 BB6A     		ldr	r3, [r7, #40]
+ 175 00da 0133     		adds	r3, r3, #1
+ 176 00dc BB62     		str	r3, [r7, #40]
+ 177              	.L11:
+  19:Drivers/Chip/ws2812/ws2812.c ****     for (int i = 0; i < 100; i++)
+ 178              		.loc 1 19 23 discriminator 1
+ 179 00de BB6A     		ldr	r3, [r7, #40]
+ 180 00e0 632B     		cmp	r3, #99
+ 181 00e2 F1DD     		ble	.L12
+ 182              	.LBE3:
+  22:Drivers/Chip/ws2812/ws2812.c ****     }
+  23:Drivers/Chip/ws2812/ws2812.c **** }...
+ 183              		.loc 1 23 1
+ 184 00e4 00BF     		nop
+ 185 00e6 00BF     		nop
+ 186 00e8 3037     		adds	r7, r7, #48
+ 187              	.LCFI3:
+ 188              		.cfi_def_cfa_offset 8
+ 189 00ea BD46     		mov	sp, r7
+ 190              	.LCFI4:
+ 191              		.cfi_def_cfa_register 13
+ 192              		@ sp needed
+ 193 00ec 80BD     		pop	{r7, pc}
+ 194              	.L14:
+ 195 00ee 00BF     		.align	2
+ 196              	.L13:
+ 197 00f0 00000000 		.word	hspi6
+ 198              		.cfi_endproc
+ 199              	.LFE144:
+ 201              		.text
+ 202              	.Letext0:
+ 203              		.file 2 "C:/msys64/mingw64/arm-none-eabi/include/machine/_default_types.h"
+ARM GAS  C:\Users\fffff\AppData\Local\Temp\cckc5IHv.s 			page 5
+
+
+ 204              		.file 3 "C:/msys64/mingw64/arm-none-eabi/include/sys/_stdint.h"
+ 205              		.file 4 "Drivers/CMSIS/Device/ST/STM32H7xx/Include/stm32h723xx.h"
+ 206              		.file 5 "Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal_def.h"
+ 207              		.file 6 "Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal_dma.h"
+ 208              		.file 7 "Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal_spi.h"
+ 209              		.file 8 "Drivers/Chip/ws2812/ws2812.h"
+ARM GAS  C:\Users\fffff\AppData\Local\Temp\cckc5IHv.s 			page 6
+
+
+DEFINED SYMBOLS
+                            *ABS*:00000000 ws2812.c
+C:\Users\fffff\AppData\Local\Temp\cckc5IHv.s:20     .text.WS2812_Ctrl:00000000 $t
+C:\Users\fffff\AppData\Local\Temp\cckc5IHv.s:26     .text.WS2812_Ctrl:00000000 WS2812_Ctrl
+C:\Users\fffff\AppData\Local\Temp\cckc5IHv.s:197    .text.WS2812_Ctrl:000000f0 $d
+
+UNDEFINED SYMBOLS
+HAL_SPI_Transmit
+hspi6

@@ -1,0 +1,803 @@
+ARM GAS  C:\Users\fffff\AppData\Local\Temp\ccQGTeGb.s 			page 1
+
+
+   1              		.cpu cortex-m7
+   2              		.arch armv7e-m
+   3              		.fpu fpv5-d16
+   4              		.eabi_attribute 28, 1
+   5              		.eabi_attribute 20, 1
+   6              		.eabi_attribute 21, 1
+   7              		.eabi_attribute 23, 3
+   8              		.eabi_attribute 24, 1
+   9              		.eabi_attribute 25, 1
+  10              		.eabi_attribute 26, 1
+  11              		.eabi_attribute 30, 6
+  12              		.eabi_attribute 34, 1
+  13              		.eabi_attribute 18, 4
+  14              		.file	"octospi.c"
+  15              		.text
+  16              	.Ltext0:
+  17              		.cfi_sections	.debug_frame
+  18              		.file 1 "Core/Src/octospi.c"
+  19              		.global	hospi2
+  20              		.section	.bss.hospi2,"aw",%nobits
+  21              		.align	2
+  24              	hospi2:
+  25 0000 00000000 		.space	92
+  25      00000000 
+  25      00000000 
+  25      00000000 
+  25      00000000 
+  26              		.section	.text.MX_OCTOSPI2_Init,"ax",%progbits
+  27              		.align	1
+  28              		.global	MX_OCTOSPI2_Init
+  29              		.syntax unified
+  30              		.thumb
+  31              		.thumb_func
+  33              	MX_OCTOSPI2_Init:
+  34              	.LFB144:
+   1:Core/Src/octospi.c **** /* USER CODE BEGIN Header */
+   2:Core/Src/octospi.c **** /**
+   3:Core/Src/octospi.c ****   ******************************************************************************
+   4:Core/Src/octospi.c ****   * @file    octospi.c
+   5:Core/Src/octospi.c ****   * @brief   This file provides code for the configuration
+   6:Core/Src/octospi.c ****   *          of the OCTOSPI instances.
+   7:Core/Src/octospi.c ****   ******************************************************************************
+   8:Core/Src/octospi.c ****   * @attention
+   9:Core/Src/octospi.c ****   *
+  10:Core/Src/octospi.c ****   * Copyright (c) 2024 STMicroelectronics.
+  11:Core/Src/octospi.c ****   * All rights reserved.
+  12:Core/Src/octospi.c ****   *
+  13:Core/Src/octospi.c ****   * This software is licensed under terms that can be found in the LICENSE file
+  14:Core/Src/octospi.c ****   * in the root directory of this software component.
+  15:Core/Src/octospi.c ****   * If no LICENSE file comes with this software, it is provided AS-IS.
+  16:Core/Src/octospi.c ****   *
+  17:Core/Src/octospi.c ****   ******************************************************************************
+  18:Core/Src/octospi.c ****   */
+  19:Core/Src/octospi.c **** /* USER CODE END Header */
+  20:Core/Src/octospi.c **** /* Includes ------------------------------------------------------------------*/
+  21:Core/Src/octospi.c **** #include "octospi.h"
+  22:Core/Src/octospi.c **** 
+ARM GAS  C:\Users\fffff\AppData\Local\Temp\ccQGTeGb.s 			page 2
+
+
+  23:Core/Src/octospi.c **** /* USER CODE BEGIN 0 */
+  24:Core/Src/octospi.c **** 
+  25:Core/Src/octospi.c **** /* USER CODE END 0 */
+  26:Core/Src/octospi.c **** 
+  27:Core/Src/octospi.c **** OSPI_HandleTypeDef hospi2;
+  28:Core/Src/octospi.c **** 
+  29:Core/Src/octospi.c **** /* OCTOSPI2 init function */
+  30:Core/Src/octospi.c **** void MX_OCTOSPI2_Init(void)
+  31:Core/Src/octospi.c **** {
+  35              		.loc 1 31 1
+  36              		.cfi_startproc
+  37              		@ args = 0, pretend = 0, frame = 24
+  38              		@ frame_needed = 1, uses_anonymous_args = 0
+  39 0000 80B5     		push	{r7, lr}
+  40              	.LCFI0:
+  41              		.cfi_def_cfa_offset 8
+  42              		.cfi_offset 7, -8
+  43              		.cfi_offset 14, -4
+  44 0002 86B0     		sub	sp, sp, #24
+  45              	.LCFI1:
+  46              		.cfi_def_cfa_offset 32
+  47 0004 00AF     		add	r7, sp, #0
+  48              	.LCFI2:
+  49              		.cfi_def_cfa_register 7
+  32:Core/Src/octospi.c **** 
+  33:Core/Src/octospi.c ****   /* USER CODE BEGIN OCTOSPI2_Init 0 */
+  34:Core/Src/octospi.c **** 
+  35:Core/Src/octospi.c ****   /* USER CODE END OCTOSPI2_Init 0 */
+  36:Core/Src/octospi.c **** 
+  37:Core/Src/octospi.c ****   OSPIM_CfgTypeDef sOspiManagerCfg = {0};
+  50              		.loc 1 37 20
+  51 0006 3B46     		mov	r3, r7
+  52 0008 0022     		movs	r2, #0
+  53 000a 1A60     		str	r2, [r3]
+  54 000c 5A60     		str	r2, [r3, #4]
+  55 000e 9A60     		str	r2, [r3, #8]
+  56 0010 DA60     		str	r2, [r3, #12]
+  57 0012 1A61     		str	r2, [r3, #16]
+  58 0014 5A61     		str	r2, [r3, #20]
+  38:Core/Src/octospi.c **** 
+  39:Core/Src/octospi.c ****   /* USER CODE BEGIN OCTOSPI2_Init 1 */
+  40:Core/Src/octospi.c **** 
+  41:Core/Src/octospi.c ****   /* USER CODE END OCTOSPI2_Init 1 */
+  42:Core/Src/octospi.c ****   hospi2.Instance = OCTOSPI2;
+  59              		.loc 1 42 19
+  60 0016 284B     		ldr	r3, .L5
+  61 0018 284A     		ldr	r2, .L5+4
+  62 001a 1A60     		str	r2, [r3]
+  43:Core/Src/octospi.c ****   hospi2.Init.FifoThreshold = 8;
+  63              		.loc 1 43 29
+  64 001c 264B     		ldr	r3, .L5
+  65 001e 0822     		movs	r2, #8
+  66 0020 5A60     		str	r2, [r3, #4]
+  44:Core/Src/octospi.c ****   hospi2.Init.DualQuad = HAL_OSPI_DUALQUAD_DISABLE;
+  67              		.loc 1 44 24
+  68 0022 254B     		ldr	r3, .L5
+  69 0024 0022     		movs	r2, #0
+ARM GAS  C:\Users\fffff\AppData\Local\Temp\ccQGTeGb.s 			page 3
+
+
+  70 0026 9A60     		str	r2, [r3, #8]
+  45:Core/Src/octospi.c ****   hospi2.Init.MemoryType = HAL_OSPI_MEMTYPE_MICRON;
+  71              		.loc 1 45 26
+  72 0028 234B     		ldr	r3, .L5
+  73 002a 0022     		movs	r2, #0
+  74 002c DA60     		str	r2, [r3, #12]
+  46:Core/Src/octospi.c ****   hospi2.Init.DeviceSize = 23;
+  75              		.loc 1 46 26
+  76 002e 224B     		ldr	r3, .L5
+  77 0030 1722     		movs	r2, #23
+  78 0032 1A61     		str	r2, [r3, #16]
+  47:Core/Src/octospi.c ****   hospi2.Init.ChipSelectHighTime = 1;
+  79              		.loc 1 47 34
+  80 0034 204B     		ldr	r3, .L5
+  81 0036 0122     		movs	r2, #1
+  82 0038 5A61     		str	r2, [r3, #20]
+  48:Core/Src/octospi.c ****   hospi2.Init.FreeRunningClock = HAL_OSPI_FREERUNCLK_DISABLE;
+  83              		.loc 1 48 32
+  84 003a 1F4B     		ldr	r3, .L5
+  85 003c 0022     		movs	r2, #0
+  86 003e 9A61     		str	r2, [r3, #24]
+  49:Core/Src/octospi.c ****   hospi2.Init.ClockMode = HAL_OSPI_CLOCK_MODE_3;
+  87              		.loc 1 49 25
+  88 0040 1D4B     		ldr	r3, .L5
+  89 0042 0122     		movs	r2, #1
+  90 0044 DA61     		str	r2, [r3, #28]
+  50:Core/Src/octospi.c ****   hospi2.Init.WrapSize = HAL_OSPI_WRAP_NOT_SUPPORTED;
+  91              		.loc 1 50 24
+  92 0046 1C4B     		ldr	r3, .L5
+  93 0048 0022     		movs	r2, #0
+  94 004a 1A62     		str	r2, [r3, #32]
+  51:Core/Src/octospi.c ****   hospi2.Init.ClockPrescaler = 3;
+  95              		.loc 1 51 30
+  96 004c 1A4B     		ldr	r3, .L5
+  97 004e 0322     		movs	r2, #3
+  98 0050 5A62     		str	r2, [r3, #36]
+  52:Core/Src/octospi.c ****   hospi2.Init.SampleShifting = HAL_OSPI_SAMPLE_SHIFTING_HALFCYCLE;
+  99              		.loc 1 52 30
+ 100 0052 194B     		ldr	r3, .L5
+ 101 0054 4FF08042 		mov	r2, #1073741824
+ 102 0058 9A62     		str	r2, [r3, #40]
+  53:Core/Src/octospi.c ****   hospi2.Init.DelayHoldQuarterCycle = HAL_OSPI_DHQC_DISABLE;
+ 103              		.loc 1 53 37
+ 104 005a 174B     		ldr	r3, .L5
+ 105 005c 0022     		movs	r2, #0
+ 106 005e DA62     		str	r2, [r3, #44]
+  54:Core/Src/octospi.c ****   hospi2.Init.ChipSelectBoundary = 0;
+ 107              		.loc 1 54 34
+ 108 0060 154B     		ldr	r3, .L5
+ 109 0062 0022     		movs	r2, #0
+ 110 0064 1A63     		str	r2, [r3, #48]
+  55:Core/Src/octospi.c ****   hospi2.Init.DelayBlockBypass = HAL_OSPI_DELAY_BLOCK_BYPASSED;
+ 111              		.loc 1 55 32
+ 112 0066 144B     		ldr	r3, .L5
+ 113 0068 0822     		movs	r2, #8
+ 114 006a 5A63     		str	r2, [r3, #52]
+  56:Core/Src/octospi.c ****   hospi2.Init.MaxTran = 0;
+ARM GAS  C:\Users\fffff\AppData\Local\Temp\ccQGTeGb.s 			page 4
+
+
+ 115              		.loc 1 56 23
+ 116 006c 124B     		ldr	r3, .L5
+ 117 006e 0022     		movs	r2, #0
+ 118 0070 9A63     		str	r2, [r3, #56]
+  57:Core/Src/octospi.c ****   hospi2.Init.Refresh = 0;
+ 119              		.loc 1 57 23
+ 120 0072 114B     		ldr	r3, .L5
+ 121 0074 0022     		movs	r2, #0
+ 122 0076 DA63     		str	r2, [r3, #60]
+  58:Core/Src/octospi.c ****   if (HAL_OSPI_Init(&hospi2) != HAL_OK)
+ 123              		.loc 1 58 7
+ 124 0078 0F48     		ldr	r0, .L5
+ 125 007a FFF7FEFF 		bl	HAL_OSPI_Init
+ 126 007e 0346     		mov	r3, r0
+ 127              		.loc 1 58 6 discriminator 1
+ 128 0080 002B     		cmp	r3, #0
+ 129 0082 01D0     		beq	.L2
+  59:Core/Src/octospi.c ****   {
+  60:Core/Src/octospi.c ****     Error_Handler();
+ 130              		.loc 1 60 5
+ 131 0084 FFF7FEFF 		bl	Error_Handler
+ 132              	.L2:
+  61:Core/Src/octospi.c ****   }
+  62:Core/Src/octospi.c ****   sOspiManagerCfg.ClkPort = 1;
+ 133              		.loc 1 62 27
+ 134 0088 0123     		movs	r3, #1
+ 135 008a 3B60     		str	r3, [r7]
+  63:Core/Src/octospi.c ****   sOspiManagerCfg.NCSPort = 1;
+ 136              		.loc 1 63 27
+ 137 008c 0123     		movs	r3, #1
+ 138 008e BB60     		str	r3, [r7, #8]
+  64:Core/Src/octospi.c ****   sOspiManagerCfg.IOLowPort = HAL_OSPIM_IOPORT_1_LOW;
+ 139              		.loc 1 64 29
+ 140 0090 4FF00113 		mov	r3, #65537
+ 141 0094 FB60     		str	r3, [r7, #12]
+  65:Core/Src/octospi.c ****   if (HAL_OSPIM_Config(&hospi2, &sOspiManagerCfg, HAL_OSPI_TIMEOUT_DEFAULT_VALUE) != HAL_OK)
+ 142              		.loc 1 65 7
+ 143 0096 3B46     		mov	r3, r7
+ 144 0098 41F28832 		movw	r2, #5000
+ 145 009c 1946     		mov	r1, r3
+ 146 009e 0648     		ldr	r0, .L5
+ 147 00a0 FFF7FEFF 		bl	HAL_OSPIM_Config
+ 148 00a4 0346     		mov	r3, r0
+ 149              		.loc 1 65 6 discriminator 1
+ 150 00a6 002B     		cmp	r3, #0
+ 151 00a8 01D0     		beq	.L4
+  66:Core/Src/octospi.c ****   {
+  67:Core/Src/octospi.c ****     Error_Handler();
+ 152              		.loc 1 67 5
+ 153 00aa FFF7FEFF 		bl	Error_Handler
+ 154              	.L4:
+  68:Core/Src/octospi.c ****   }
+  69:Core/Src/octospi.c ****   /* USER CODE BEGIN OCTOSPI2_Init 2 */
+  70:Core/Src/octospi.c **** 
+  71:Core/Src/octospi.c ****   /* USER CODE END OCTOSPI2_Init 2 */
+  72:Core/Src/octospi.c **** 
+  73:Core/Src/octospi.c **** }
+ARM GAS  C:\Users\fffff\AppData\Local\Temp\ccQGTeGb.s 			page 5
+
+
+ 155              		.loc 1 73 1
+ 156 00ae 00BF     		nop
+ 157 00b0 1837     		adds	r7, r7, #24
+ 158              	.LCFI3:
+ 159              		.cfi_def_cfa_offset 8
+ 160 00b2 BD46     		mov	sp, r7
+ 161              	.LCFI4:
+ 162              		.cfi_def_cfa_register 13
+ 163              		@ sp needed
+ 164 00b4 80BD     		pop	{r7, pc}
+ 165              	.L6:
+ 166 00b6 00BF     		.align	2
+ 167              	.L5:
+ 168 00b8 00000000 		.word	hospi2
+ 169 00bc 00A00052 		.word	1375772672
+ 170              		.cfi_endproc
+ 171              	.LFE144:
+ 173              		.section	.text.HAL_OSPI_MspInit,"ax",%progbits
+ 174              		.align	1
+ 175              		.global	HAL_OSPI_MspInit
+ 176              		.syntax unified
+ 177              		.thumb
+ 178              		.thumb_func
+ 180              	HAL_OSPI_MspInit:
+ 181              	.LFB145:
+  74:Core/Src/octospi.c **** 
+  75:Core/Src/octospi.c **** void HAL_OSPI_MspInit(OSPI_HandleTypeDef* ospiHandle)
+  76:Core/Src/octospi.c **** {
+ 182              		.loc 1 76 1
+ 183              		.cfi_startproc
+ 184              		@ args = 0, pretend = 0, frame = 240
+ 185              		@ frame_needed = 1, uses_anonymous_args = 0
+ 186 0000 80B5     		push	{r7, lr}
+ 187              	.LCFI5:
+ 188              		.cfi_def_cfa_offset 8
+ 189              		.cfi_offset 7, -8
+ 190              		.cfi_offset 14, -4
+ 191 0002 BCB0     		sub	sp, sp, #240
+ 192              	.LCFI6:
+ 193              		.cfi_def_cfa_offset 248
+ 194 0004 00AF     		add	r7, sp, #0
+ 195              	.LCFI7:
+ 196              		.cfi_def_cfa_register 7
+ 197 0006 7860     		str	r0, [r7, #4]
+  77:Core/Src/octospi.c **** 
+  78:Core/Src/octospi.c ****   GPIO_InitTypeDef GPIO_InitStruct = {0};
+ 198              		.loc 1 78 20
+ 199 0008 07F1DC03 		add	r3, r7, #220
+ 200 000c 0022     		movs	r2, #0
+ 201 000e 1A60     		str	r2, [r3]
+ 202 0010 5A60     		str	r2, [r3, #4]
+ 203 0012 9A60     		str	r2, [r3, #8]
+ 204 0014 DA60     		str	r2, [r3, #12]
+ 205 0016 1A61     		str	r2, [r3, #16]
+  79:Core/Src/octospi.c ****   RCC_PeriphCLKInitTypeDef PeriphClkInitStruct = {0};
+ 206              		.loc 1 79 28
+ 207 0018 07F12003 		add	r3, r7, #32
+ARM GAS  C:\Users\fffff\AppData\Local\Temp\ccQGTeGb.s 			page 6
+
+
+ 208 001c B822     		movs	r2, #184
+ 209 001e 0021     		movs	r1, #0
+ 210 0020 1846     		mov	r0, r3
+ 211 0022 FFF7FEFF 		bl	memset
+  80:Core/Src/octospi.c ****   if(ospiHandle->Instance==OCTOSPI2)
+ 212              		.loc 1 80 16
+ 213 0026 7B68     		ldr	r3, [r7, #4]
+ 214 0028 1B68     		ldr	r3, [r3]
+ 215              		.loc 1 80 5
+ 216 002a 7A4A     		ldr	r2, .L11
+ 217 002c 9342     		cmp	r3, r2
+ 218 002e 40F0EC80 		bne	.L10
+  81:Core/Src/octospi.c ****   {
+  82:Core/Src/octospi.c ****   /* USER CODE BEGIN OCTOSPI2_MspInit 0 */
+  83:Core/Src/octospi.c **** 
+  84:Core/Src/octospi.c ****   /* USER CODE END OCTOSPI2_MspInit 0 */
+  85:Core/Src/octospi.c **** 
+  86:Core/Src/octospi.c ****   /** Initializes the peripherals clock
+  87:Core/Src/octospi.c ****   */
+  88:Core/Src/octospi.c ****     PeriphClkInitStruct.PeriphClockSelection = RCC_PERIPHCLK_OSPI;
+ 219              		.loc 1 88 46
+ 220 0032 4FF00072 		mov	r2, #33554432
+ 221 0036 4FF00003 		mov	r3, #0
+ 222 003a C7E90823 		strd	r2, [r7, #32]
+  89:Core/Src/octospi.c ****     PeriphClkInitStruct.OspiClockSelection = RCC_OSPICLKSOURCE_D1HCLK;
+ 223              		.loc 1 89 44
+ 224 003e 0023     		movs	r3, #0
+ 225 0040 FB66     		str	r3, [r7, #108]
+  90:Core/Src/octospi.c ****     if (HAL_RCCEx_PeriphCLKConfig(&PeriphClkInitStruct) != HAL_OK)
+ 226              		.loc 1 90 9
+ 227 0042 07F12003 		add	r3, r7, #32
+ 228 0046 1846     		mov	r0, r3
+ 229 0048 FFF7FEFF 		bl	HAL_RCCEx_PeriphCLKConfig
+ 230 004c 0346     		mov	r3, r0
+ 231              		.loc 1 90 8 discriminator 1
+ 232 004e 002B     		cmp	r3, #0
+ 233 0050 01D0     		beq	.L9
+  91:Core/Src/octospi.c ****     {
+  92:Core/Src/octospi.c ****       Error_Handler();
+ 234              		.loc 1 92 7
+ 235 0052 FFF7FEFF 		bl	Error_Handler
+ 236              	.L9:
+ 237              	.LBB2:
+  93:Core/Src/octospi.c ****     }
+  94:Core/Src/octospi.c **** 
+  95:Core/Src/octospi.c ****     /* OCTOSPI2 clock enable */
+  96:Core/Src/octospi.c ****     __HAL_RCC_OCTOSPIM_CLK_ENABLE();
+ 238              		.loc 1 96 5
+ 239 0056 704B     		ldr	r3, .L11+4
+ 240 0058 D3F8D430 		ldr	r3, [r3, #212]
+ 241 005c 6E4A     		ldr	r2, .L11+4
+ 242 005e 43F40013 		orr	r3, r3, #2097152
+ 243 0062 C2F8D430 		str	r3, [r2, #212]
+ 244 0066 6C4B     		ldr	r3, .L11+4
+ 245 0068 D3F8D430 		ldr	r3, [r3, #212]
+ 246 006c 03F40013 		and	r3, r3, #2097152
+ 247 0070 FB61     		str	r3, [r7, #28]
+ARM GAS  C:\Users\fffff\AppData\Local\Temp\ccQGTeGb.s 			page 7
+
+
+ 248 0072 FB69     		ldr	r3, [r7, #28]
+ 249              	.LBE2:
+ 250              	.LBB3:
+  97:Core/Src/octospi.c ****     __HAL_RCC_OSPI2_CLK_ENABLE();
+ 251              		.loc 1 97 5
+ 252 0074 684B     		ldr	r3, .L11+4
+ 253 0076 D3F8D430 		ldr	r3, [r3, #212]
+ 254 007a 674A     		ldr	r2, .L11+4
+ 255 007c 43F40023 		orr	r3, r3, #524288
+ 256 0080 C2F8D430 		str	r3, [r2, #212]
+ 257 0084 644B     		ldr	r3, .L11+4
+ 258 0086 D3F8D430 		ldr	r3, [r3, #212]
+ 259 008a 03F40023 		and	r3, r3, #524288
+ 260 008e BB61     		str	r3, [r7, #24]
+ 261 0090 BB69     		ldr	r3, [r7, #24]
+ 262              	.LBE3:
+ 263              	.LBB4:
+  98:Core/Src/octospi.c **** 
+  99:Core/Src/octospi.c ****     __HAL_RCC_GPIOA_CLK_ENABLE();
+ 264              		.loc 1 99 5
+ 265 0092 614B     		ldr	r3, .L11+4
+ 266 0094 D3F8E030 		ldr	r3, [r3, #224]
+ 267 0098 5F4A     		ldr	r2, .L11+4
+ 268 009a 43F00103 		orr	r3, r3, #1
+ 269 009e C2F8E030 		str	r3, [r2, #224]
+ 270 00a2 5D4B     		ldr	r3, .L11+4
+ 271 00a4 D3F8E030 		ldr	r3, [r3, #224]
+ 272 00a8 03F00103 		and	r3, r3, #1
+ 273 00ac 7B61     		str	r3, [r7, #20]
+ 274 00ae 7B69     		ldr	r3, [r7, #20]
+ 275              	.LBE4:
+ 276              	.LBB5:
+ 100:Core/Src/octospi.c ****     __HAL_RCC_GPIOB_CLK_ENABLE();
+ 277              		.loc 1 100 5
+ 278 00b0 594B     		ldr	r3, .L11+4
+ 279 00b2 D3F8E030 		ldr	r3, [r3, #224]
+ 280 00b6 584A     		ldr	r2, .L11+4
+ 281 00b8 43F00203 		orr	r3, r3, #2
+ 282 00bc C2F8E030 		str	r3, [r2, #224]
+ 283 00c0 554B     		ldr	r3, .L11+4
+ 284 00c2 D3F8E030 		ldr	r3, [r3, #224]
+ 285 00c6 03F00203 		and	r3, r3, #2
+ 286 00ca 3B61     		str	r3, [r7, #16]
+ 287 00cc 3B69     		ldr	r3, [r7, #16]
+ 288              	.LBE5:
+ 289              	.LBB6:
+ 101:Core/Src/octospi.c ****     __HAL_RCC_GPIOE_CLK_ENABLE();
+ 290              		.loc 1 101 5
+ 291 00ce 524B     		ldr	r3, .L11+4
+ 292 00d0 D3F8E030 		ldr	r3, [r3, #224]
+ 293 00d4 504A     		ldr	r2, .L11+4
+ 294 00d6 43F01003 		orr	r3, r3, #16
+ 295 00da C2F8E030 		str	r3, [r2, #224]
+ 296 00de 4E4B     		ldr	r3, .L11+4
+ 297 00e0 D3F8E030 		ldr	r3, [r3, #224]
+ 298 00e4 03F01003 		and	r3, r3, #16
+ 299 00e8 FB60     		str	r3, [r7, #12]
+ARM GAS  C:\Users\fffff\AppData\Local\Temp\ccQGTeGb.s 			page 8
+
+
+ 300 00ea FB68     		ldr	r3, [r7, #12]
+ 301              	.LBE6:
+ 302              	.LBB7:
+ 102:Core/Src/octospi.c ****     __HAL_RCC_GPIOD_CLK_ENABLE();
+ 303              		.loc 1 102 5
+ 304 00ec 4A4B     		ldr	r3, .L11+4
+ 305 00ee D3F8E030 		ldr	r3, [r3, #224]
+ 306 00f2 494A     		ldr	r2, .L11+4
+ 307 00f4 43F00803 		orr	r3, r3, #8
+ 308 00f8 C2F8E030 		str	r3, [r2, #224]
+ 309 00fc 464B     		ldr	r3, .L11+4
+ 310 00fe D3F8E030 		ldr	r3, [r3, #224]
+ 311 0102 03F00803 		and	r3, r3, #8
+ 312 0106 BB60     		str	r3, [r7, #8]
+ 313 0108 BB68     		ldr	r3, [r7, #8]
+ 314              	.LBE7:
+ 103:Core/Src/octospi.c ****     /**OCTOSPI2 GPIO Configuration
+ 104:Core/Src/octospi.c ****     PA1     ------> OCTOSPIM_P1_IO3
+ 105:Core/Src/octospi.c ****     PA3     ------> OCTOSPIM_P1_IO2
+ 106:Core/Src/octospi.c ****     PB0     ------> OCTOSPIM_P1_IO1
+ 107:Core/Src/octospi.c ****     PB2     ------> OCTOSPIM_P1_CLK
+ 108:Core/Src/octospi.c ****     PE11     ------> OCTOSPIM_P1_NCS
+ 109:Core/Src/octospi.c ****     PD11     ------> OCTOSPIM_P1_IO0
+ 110:Core/Src/octospi.c ****     */
+ 111:Core/Src/octospi.c ****     GPIO_InitStruct.Pin = GPIO_PIN_1;
+ 315              		.loc 1 111 25
+ 316 010a 0223     		movs	r3, #2
+ 317 010c C7F8DC30 		str	r3, [r7, #220]
+ 112:Core/Src/octospi.c ****     GPIO_InitStruct.Mode = GPIO_MODE_AF_PP;
+ 318              		.loc 1 112 26
+ 319 0110 0223     		movs	r3, #2
+ 320 0112 C7F8E030 		str	r3, [r7, #224]
+ 113:Core/Src/octospi.c ****     GPIO_InitStruct.Pull = GPIO_NOPULL;
+ 321              		.loc 1 113 26
+ 322 0116 0023     		movs	r3, #0
+ 323 0118 C7F8E430 		str	r3, [r7, #228]
+ 114:Core/Src/octospi.c ****     GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_VERY_HIGH;
+ 324              		.loc 1 114 27
+ 325 011c 0323     		movs	r3, #3
+ 326 011e C7F8E830 		str	r3, [r7, #232]
+ 115:Core/Src/octospi.c ****     GPIO_InitStruct.Alternate = GPIO_AF9_OCTOSPIM_P1;
+ 327              		.loc 1 115 31
+ 328 0122 0923     		movs	r3, #9
+ 329 0124 C7F8EC30 		str	r3, [r7, #236]
+ 116:Core/Src/octospi.c ****     HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
+ 330              		.loc 1 116 5
+ 331 0128 07F1DC03 		add	r3, r7, #220
+ 332 012c 1946     		mov	r1, r3
+ 333 012e 3B48     		ldr	r0, .L11+8
+ 334 0130 FFF7FEFF 		bl	HAL_GPIO_Init
+ 117:Core/Src/octospi.c **** 
+ 118:Core/Src/octospi.c ****     GPIO_InitStruct.Pin = GPIO_PIN_3;
+ 335              		.loc 1 118 25
+ 336 0134 0823     		movs	r3, #8
+ 337 0136 C7F8DC30 		str	r3, [r7, #220]
+ 119:Core/Src/octospi.c ****     GPIO_InitStruct.Mode = GPIO_MODE_AF_PP;
+ 338              		.loc 1 119 26
+ARM GAS  C:\Users\fffff\AppData\Local\Temp\ccQGTeGb.s 			page 9
+
+
+ 339 013a 0223     		movs	r3, #2
+ 340 013c C7F8E030 		str	r3, [r7, #224]
+ 120:Core/Src/octospi.c ****     GPIO_InitStruct.Pull = GPIO_NOPULL;
+ 341              		.loc 1 120 26
+ 342 0140 0023     		movs	r3, #0
+ 343 0142 C7F8E430 		str	r3, [r7, #228]
+ 121:Core/Src/octospi.c ****     GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_VERY_HIGH;
+ 344              		.loc 1 121 27
+ 345 0146 0323     		movs	r3, #3
+ 346 0148 C7F8E830 		str	r3, [r7, #232]
+ 122:Core/Src/octospi.c ****     GPIO_InitStruct.Alternate = GPIO_AF6_OCTOSPIM_P1;
+ 347              		.loc 1 122 31
+ 348 014c 0623     		movs	r3, #6
+ 349 014e C7F8EC30 		str	r3, [r7, #236]
+ 123:Core/Src/octospi.c ****     HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
+ 350              		.loc 1 123 5
+ 351 0152 07F1DC03 		add	r3, r7, #220
+ 352 0156 1946     		mov	r1, r3
+ 353 0158 3048     		ldr	r0, .L11+8
+ 354 015a FFF7FEFF 		bl	HAL_GPIO_Init
+ 124:Core/Src/octospi.c **** 
+ 125:Core/Src/octospi.c ****     GPIO_InitStruct.Pin = GPIO_PIN_0;
+ 355              		.loc 1 125 25
+ 356 015e 0123     		movs	r3, #1
+ 357 0160 C7F8DC30 		str	r3, [r7, #220]
+ 126:Core/Src/octospi.c ****     GPIO_InitStruct.Mode = GPIO_MODE_AF_PP;
+ 358              		.loc 1 126 26
+ 359 0164 0223     		movs	r3, #2
+ 360 0166 C7F8E030 		str	r3, [r7, #224]
+ 127:Core/Src/octospi.c ****     GPIO_InitStruct.Pull = GPIO_NOPULL;
+ 361              		.loc 1 127 26
+ 362 016a 0023     		movs	r3, #0
+ 363 016c C7F8E430 		str	r3, [r7, #228]
+ 128:Core/Src/octospi.c ****     GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_VERY_HIGH;
+ 364              		.loc 1 128 27
+ 365 0170 0323     		movs	r3, #3
+ 366 0172 C7F8E830 		str	r3, [r7, #232]
+ 129:Core/Src/octospi.c ****     GPIO_InitStruct.Alternate = GPIO_AF4_OCTOSPIM_P1;
+ 367              		.loc 1 129 31
+ 368 0176 0423     		movs	r3, #4
+ 369 0178 C7F8EC30 		str	r3, [r7, #236]
+ 130:Core/Src/octospi.c ****     HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
+ 370              		.loc 1 130 5
+ 371 017c 07F1DC03 		add	r3, r7, #220
+ 372 0180 1946     		mov	r1, r3
+ 373 0182 2748     		ldr	r0, .L11+12
+ 374 0184 FFF7FEFF 		bl	HAL_GPIO_Init
+ 131:Core/Src/octospi.c **** 
+ 132:Core/Src/octospi.c ****     GPIO_InitStruct.Pin = GPIO_PIN_2;
+ 375              		.loc 1 132 25
+ 376 0188 0423     		movs	r3, #4
+ 377 018a C7F8DC30 		str	r3, [r7, #220]
+ 133:Core/Src/octospi.c ****     GPIO_InitStruct.Mode = GPIO_MODE_AF_PP;
+ 378              		.loc 1 133 26
+ 379 018e 0223     		movs	r3, #2
+ 380 0190 C7F8E030 		str	r3, [r7, #224]
+ 134:Core/Src/octospi.c ****     GPIO_InitStruct.Pull = GPIO_NOPULL;
+ARM GAS  C:\Users\fffff\AppData\Local\Temp\ccQGTeGb.s 			page 10
+
+
+ 381              		.loc 1 134 26
+ 382 0194 0023     		movs	r3, #0
+ 383 0196 C7F8E430 		str	r3, [r7, #228]
+ 135:Core/Src/octospi.c ****     GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_VERY_HIGH;
+ 384              		.loc 1 135 27
+ 385 019a 0323     		movs	r3, #3
+ 386 019c C7F8E830 		str	r3, [r7, #232]
+ 136:Core/Src/octospi.c ****     GPIO_InitStruct.Alternate = GPIO_AF9_OCTOSPIM_P1;
+ 387              		.loc 1 136 31
+ 388 01a0 0923     		movs	r3, #9
+ 389 01a2 C7F8EC30 		str	r3, [r7, #236]
+ 137:Core/Src/octospi.c ****     HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
+ 390              		.loc 1 137 5
+ 391 01a6 07F1DC03 		add	r3, r7, #220
+ 392 01aa 1946     		mov	r1, r3
+ 393 01ac 1C48     		ldr	r0, .L11+12
+ 394 01ae FFF7FEFF 		bl	HAL_GPIO_Init
+ 138:Core/Src/octospi.c **** 
+ 139:Core/Src/octospi.c ****     GPIO_InitStruct.Pin = GPIO_PIN_11;
+ 395              		.loc 1 139 25
+ 396 01b2 4FF40063 		mov	r3, #2048
+ 397 01b6 C7F8DC30 		str	r3, [r7, #220]
+ 140:Core/Src/octospi.c ****     GPIO_InitStruct.Mode = GPIO_MODE_AF_PP;
+ 398              		.loc 1 140 26
+ 399 01ba 0223     		movs	r3, #2
+ 400 01bc C7F8E030 		str	r3, [r7, #224]
+ 141:Core/Src/octospi.c ****     GPIO_InitStruct.Pull = GPIO_NOPULL;
+ 401              		.loc 1 141 26
+ 402 01c0 0023     		movs	r3, #0
+ 403 01c2 C7F8E430 		str	r3, [r7, #228]
+ 142:Core/Src/octospi.c ****     GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_VERY_HIGH;
+ 404              		.loc 1 142 27
+ 405 01c6 0323     		movs	r3, #3
+ 406 01c8 C7F8E830 		str	r3, [r7, #232]
+ 143:Core/Src/octospi.c ****     GPIO_InitStruct.Alternate = GPIO_AF11_OCTOSPIM_P1;
+ 407              		.loc 1 143 31
+ 408 01cc 0B23     		movs	r3, #11
+ 409 01ce C7F8EC30 		str	r3, [r7, #236]
+ 144:Core/Src/octospi.c ****     HAL_GPIO_Init(GPIOE, &GPIO_InitStruct);
+ 410              		.loc 1 144 5
+ 411 01d2 07F1DC03 		add	r3, r7, #220
+ 412 01d6 1946     		mov	r1, r3
+ 413 01d8 1248     		ldr	r0, .L11+16
+ 414 01da FFF7FEFF 		bl	HAL_GPIO_Init
+ 145:Core/Src/octospi.c **** 
+ 146:Core/Src/octospi.c ****     GPIO_InitStruct.Pin = GPIO_PIN_11;
+ 415              		.loc 1 146 25
+ 416 01de 4FF40063 		mov	r3, #2048
+ 417 01e2 C7F8DC30 		str	r3, [r7, #220]
+ 147:Core/Src/octospi.c ****     GPIO_InitStruct.Mode = GPIO_MODE_AF_PP;
+ 418              		.loc 1 147 26
+ 419 01e6 0223     		movs	r3, #2
+ 420 01e8 C7F8E030 		str	r3, [r7, #224]
+ 148:Core/Src/octospi.c ****     GPIO_InitStruct.Pull = GPIO_NOPULL;
+ 421              		.loc 1 148 26
+ 422 01ec 0023     		movs	r3, #0
+ 423 01ee C7F8E430 		str	r3, [r7, #228]
+ARM GAS  C:\Users\fffff\AppData\Local\Temp\ccQGTeGb.s 			page 11
+
+
+ 149:Core/Src/octospi.c ****     GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_VERY_HIGH;
+ 424              		.loc 1 149 27
+ 425 01f2 0323     		movs	r3, #3
+ 426 01f4 C7F8E830 		str	r3, [r7, #232]
+ 150:Core/Src/octospi.c ****     GPIO_InitStruct.Alternate = GPIO_AF9_OCTOSPIM_P1;
+ 427              		.loc 1 150 31
+ 428 01f8 0923     		movs	r3, #9
+ 429 01fa C7F8EC30 		str	r3, [r7, #236]
+ 151:Core/Src/octospi.c ****     HAL_GPIO_Init(GPIOD, &GPIO_InitStruct);
+ 430              		.loc 1 151 5
+ 431 01fe 07F1DC03 		add	r3, r7, #220
+ 432 0202 1946     		mov	r1, r3
+ 433 0204 0848     		ldr	r0, .L11+20
+ 434 0206 FFF7FEFF 		bl	HAL_GPIO_Init
+ 435              	.L10:
+ 152:Core/Src/octospi.c **** 
+ 153:Core/Src/octospi.c ****   /* USER CODE BEGIN OCTOSPI2_MspInit 1 */
+ 154:Core/Src/octospi.c **** 
+ 155:Core/Src/octospi.c ****   /* USER CODE END OCTOSPI2_MspInit 1 */
+ 156:Core/Src/octospi.c ****   }
+ 157:Core/Src/octospi.c **** }
+ 436              		.loc 1 157 1
+ 437 020a 00BF     		nop
+ 438 020c F037     		adds	r7, r7, #240
+ 439              	.LCFI8:
+ 440              		.cfi_def_cfa_offset 8
+ 441 020e BD46     		mov	sp, r7
+ 442              	.LCFI9:
+ 443              		.cfi_def_cfa_register 13
+ 444              		@ sp needed
+ 445 0210 80BD     		pop	{r7, pc}
+ 446              	.L12:
+ 447 0212 00BF     		.align	2
+ 448              	.L11:
+ 449 0214 00A00052 		.word	1375772672
+ 450 0218 00440258 		.word	1476543488
+ 451 021c 00000258 		.word	1476526080
+ 452 0220 00040258 		.word	1476527104
+ 453 0224 00100258 		.word	1476530176
+ 454 0228 000C0258 		.word	1476529152
+ 455              		.cfi_endproc
+ 456              	.LFE145:
+ 458              		.section	.text.HAL_OSPI_MspDeInit,"ax",%progbits
+ 459              		.align	1
+ 460              		.global	HAL_OSPI_MspDeInit
+ 461              		.syntax unified
+ 462              		.thumb
+ 463              		.thumb_func
+ 465              	HAL_OSPI_MspDeInit:
+ 466              	.LFB146:
+ 158:Core/Src/octospi.c **** 
+ 159:Core/Src/octospi.c **** void HAL_OSPI_MspDeInit(OSPI_HandleTypeDef* ospiHandle)
+ 160:Core/Src/octospi.c **** {
+ 467              		.loc 1 160 1
+ 468              		.cfi_startproc
+ 469              		@ args = 0, pretend = 0, frame = 8
+ 470              		@ frame_needed = 1, uses_anonymous_args = 0
+ARM GAS  C:\Users\fffff\AppData\Local\Temp\ccQGTeGb.s 			page 12
+
+
+ 471 0000 80B5     		push	{r7, lr}
+ 472              	.LCFI10:
+ 473              		.cfi_def_cfa_offset 8
+ 474              		.cfi_offset 7, -8
+ 475              		.cfi_offset 14, -4
+ 476 0002 82B0     		sub	sp, sp, #8
+ 477              	.LCFI11:
+ 478              		.cfi_def_cfa_offset 16
+ 479 0004 00AF     		add	r7, sp, #0
+ 480              	.LCFI12:
+ 481              		.cfi_def_cfa_register 7
+ 482 0006 7860     		str	r0, [r7, #4]
+ 161:Core/Src/octospi.c **** 
+ 162:Core/Src/octospi.c ****   if(ospiHandle->Instance==OCTOSPI2)
+ 483              		.loc 1 162 16
+ 484 0008 7B68     		ldr	r3, [r7, #4]
+ 485 000a 1B68     		ldr	r3, [r3]
+ 486              		.loc 1 162 5
+ 487 000c 144A     		ldr	r2, .L16
+ 488 000e 9342     		cmp	r3, r2
+ 489 0010 21D1     		bne	.L15
+ 163:Core/Src/octospi.c ****   {
+ 164:Core/Src/octospi.c ****   /* USER CODE BEGIN OCTOSPI2_MspDeInit 0 */
+ 165:Core/Src/octospi.c **** 
+ 166:Core/Src/octospi.c ****   /* USER CODE END OCTOSPI2_MspDeInit 0 */
+ 167:Core/Src/octospi.c ****     /* Peripheral clock disable */
+ 168:Core/Src/octospi.c ****     __HAL_RCC_OCTOSPIM_CLK_DISABLE();
+ 490              		.loc 1 168 5
+ 491 0012 144B     		ldr	r3, .L16+4
+ 492 0014 D3F8D430 		ldr	r3, [r3, #212]
+ 493 0018 124A     		ldr	r2, .L16+4
+ 494 001a 23F40013 		bic	r3, r3, #2097152
+ 495 001e C2F8D430 		str	r3, [r2, #212]
+ 169:Core/Src/octospi.c ****     __HAL_RCC_OSPI2_CLK_DISABLE();
+ 496              		.loc 1 169 5
+ 497 0022 104B     		ldr	r3, .L16+4
+ 498 0024 D3F8D430 		ldr	r3, [r3, #212]
+ 499 0028 0E4A     		ldr	r2, .L16+4
+ 500 002a 23F40023 		bic	r3, r3, #524288
+ 501 002e C2F8D430 		str	r3, [r2, #212]
+ 170:Core/Src/octospi.c **** 
+ 171:Core/Src/octospi.c ****     /**OCTOSPI2 GPIO Configuration
+ 172:Core/Src/octospi.c ****     PA1     ------> OCTOSPIM_P1_IO3
+ 173:Core/Src/octospi.c ****     PA3     ------> OCTOSPIM_P1_IO2
+ 174:Core/Src/octospi.c ****     PB0     ------> OCTOSPIM_P1_IO1
+ 175:Core/Src/octospi.c ****     PB2     ------> OCTOSPIM_P1_CLK
+ 176:Core/Src/octospi.c ****     PE11     ------> OCTOSPIM_P1_NCS
+ 177:Core/Src/octospi.c ****     PD11     ------> OCTOSPIM_P1_IO0
+ 178:Core/Src/octospi.c ****     */
+ 179:Core/Src/octospi.c ****     HAL_GPIO_DeInit(GPIOA, GPIO_PIN_1|GPIO_PIN_3);
+ 502              		.loc 1 179 5
+ 503 0032 0A21     		movs	r1, #10
+ 504 0034 0C48     		ldr	r0, .L16+8
+ 505 0036 FFF7FEFF 		bl	HAL_GPIO_DeInit
+ 180:Core/Src/octospi.c **** 
+ 181:Core/Src/octospi.c ****     HAL_GPIO_DeInit(GPIOB, GPIO_PIN_0|GPIO_PIN_2);
+ 506              		.loc 1 181 5
+ARM GAS  C:\Users\fffff\AppData\Local\Temp\ccQGTeGb.s 			page 13
+
+
+ 507 003a 0521     		movs	r1, #5
+ 508 003c 0B48     		ldr	r0, .L16+12
+ 509 003e FFF7FEFF 		bl	HAL_GPIO_DeInit
+ 182:Core/Src/octospi.c **** 
+ 183:Core/Src/octospi.c ****     HAL_GPIO_DeInit(GPIOE, GPIO_PIN_11);
+ 510              		.loc 1 183 5
+ 511 0042 4FF40061 		mov	r1, #2048
+ 512 0046 0A48     		ldr	r0, .L16+16
+ 513 0048 FFF7FEFF 		bl	HAL_GPIO_DeInit
+ 184:Core/Src/octospi.c **** 
+ 185:Core/Src/octospi.c ****     HAL_GPIO_DeInit(GPIOD, GPIO_PIN_11);
+ 514              		.loc 1 185 5
+ 515 004c 4FF40061 		mov	r1, #2048
+ 516 0050 0848     		ldr	r0, .L16+20
+ 517 0052 FFF7FEFF 		bl	HAL_GPIO_DeInit
+ 518              	.L15:
+ 186:Core/Src/octospi.c **** 
+ 187:Core/Src/octospi.c ****   /* USER CODE BEGIN OCTOSPI2_MspDeInit 1 */
+ 188:Core/Src/octospi.c **** 
+ 189:Core/Src/octospi.c ****   /* USER CODE END OCTOSPI2_MspDeInit 1 */
+ 190:Core/Src/octospi.c ****   }
+ 191:Core/Src/octospi.c **** }
+ 519              		.loc 1 191 1
+ 520 0056 00BF     		nop
+ 521 0058 0837     		adds	r7, r7, #8
+ 522              	.LCFI13:
+ 523              		.cfi_def_cfa_offset 8
+ 524 005a BD46     		mov	sp, r7
+ 525              	.LCFI14:
+ 526              		.cfi_def_cfa_register 13
+ 527              		@ sp needed
+ 528 005c 80BD     		pop	{r7, pc}
+ 529              	.L17:
+ 530 005e 00BF     		.align	2
+ 531              	.L16:
+ 532 0060 00A00052 		.word	1375772672
+ 533 0064 00440258 		.word	1476543488
+ 534 0068 00000258 		.word	1476526080
+ 535 006c 00040258 		.word	1476527104
+ 536 0070 00100258 		.word	1476530176
+ 537 0074 000C0258 		.word	1476529152
+ 538              		.cfi_endproc
+ 539              	.LFE146:
+ 541              		.text
+ 542              	.Letext0:
+ 543              		.file 2 "C:/msys64/mingw64/arm-none-eabi/include/machine/_default_types.h"
+ 544              		.file 3 "C:/msys64/mingw64/arm-none-eabi/include/sys/_stdint.h"
+ 545              		.file 4 "Drivers/CMSIS/Device/ST/STM32H7xx/Include/stm32h723xx.h"
+ 546              		.file 5 "Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal_def.h"
+ 547              		.file 6 "Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal_rcc_ex.h"
+ 548              		.file 7 "Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal_gpio.h"
+ 549              		.file 8 "Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal_mdma.h"
+ 550              		.file 9 "Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal_ospi.h"
+ 551              		.file 10 "Core/Inc/octospi.h"
+ 552              		.file 11 "Core/Inc/main.h"
+ARM GAS  C:\Users\fffff\AppData\Local\Temp\ccQGTeGb.s 			page 14
+
+
+DEFINED SYMBOLS
+                            *ABS*:00000000 octospi.c
+C:\Users\fffff\AppData\Local\Temp\ccQGTeGb.s:24     .bss.hospi2:00000000 hospi2
+C:\Users\fffff\AppData\Local\Temp\ccQGTeGb.s:21     .bss.hospi2:00000000 $d
+C:\Users\fffff\AppData\Local\Temp\ccQGTeGb.s:27     .text.MX_OCTOSPI2_Init:00000000 $t
+C:\Users\fffff\AppData\Local\Temp\ccQGTeGb.s:33     .text.MX_OCTOSPI2_Init:00000000 MX_OCTOSPI2_Init
+C:\Users\fffff\AppData\Local\Temp\ccQGTeGb.s:168    .text.MX_OCTOSPI2_Init:000000b8 $d
+C:\Users\fffff\AppData\Local\Temp\ccQGTeGb.s:174    .text.HAL_OSPI_MspInit:00000000 $t
+C:\Users\fffff\AppData\Local\Temp\ccQGTeGb.s:180    .text.HAL_OSPI_MspInit:00000000 HAL_OSPI_MspInit
+C:\Users\fffff\AppData\Local\Temp\ccQGTeGb.s:449    .text.HAL_OSPI_MspInit:00000214 $d
+C:\Users\fffff\AppData\Local\Temp\ccQGTeGb.s:459    .text.HAL_OSPI_MspDeInit:00000000 $t
+C:\Users\fffff\AppData\Local\Temp\ccQGTeGb.s:465    .text.HAL_OSPI_MspDeInit:00000000 HAL_OSPI_MspDeInit
+C:\Users\fffff\AppData\Local\Temp\ccQGTeGb.s:532    .text.HAL_OSPI_MspDeInit:00000060 $d
+
+UNDEFINED SYMBOLS
+HAL_OSPI_Init
+Error_Handler
+HAL_OSPIM_Config
+memset
+HAL_RCCEx_PeriphCLKConfig
+HAL_GPIO_Init
+HAL_GPIO_DeInit

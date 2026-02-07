@@ -1,0 +1,245 @@
+ARM GAS  C:\Users\fffff\AppData\Local\Temp\ccb9YzMg.s 			page 1
+
+
+   1              		.cpu cortex-m7
+   2              		.arch armv7e-m
+   3              		.fpu fpv5-d16
+   4              		.eabi_attribute 28, 1
+   5              		.eabi_attribute 20, 1
+   6              		.eabi_attribute 21, 1
+   7              		.eabi_attribute 23, 3
+   8              		.eabi_attribute 24, 1
+   9              		.eabi_attribute 25, 1
+  10              		.eabi_attribute 26, 1
+  11              		.eabi_attribute 30, 6
+  12              		.eabi_attribute 34, 1
+  13              		.eabi_attribute 18, 4
+  14              		.file	"USB_VirCom.c"
+  15              		.text
+  16              	.Ltext0:
+  17              		.cfi_sections	.debug_frame
+  18              		.file 1 "User/BSP/USB_VirCom.c"
+  19              		.section	.text.VirCom_send,"ax",%progbits
+  20              		.align	1
+  21              		.global	VirCom_send
+  22              		.syntax unified
+  23              		.thumb
+  24              		.thumb_func
+  26              	VirCom_send:
+  27              	.LFB148:
+   1:User/BSP/USB_VirCom.c **** /**
+   2:User/BSP/USB_VirCom.c ****  * @file USB_VirCom.c
+   3:User/BSP/USB_VirCom.c ****  * @author sethome
+   4:User/BSP/USB_VirCom.c ****  * @brief 虚拟串口数据发送
+   5:User/BSP/USB_VirCom.c ****  * @version 0.1
+   6:User/BSP/USB_VirCom.c ****  * @date 2022-11-20
+   7:User/BSP/USB_VirCom.c ****  *
+   8:User/BSP/USB_VirCom.c ****  * @copyright Copyright (c) 2022
+   9:User/BSP/USB_VirCom.c ****  *
+  10:User/BSP/USB_VirCom.c ****  */
+  11:User/BSP/USB_VirCom.c **** #include "usbd_cdc_if.h"
+  12:User/BSP/USB_VirCom.c **** #include "USB_VirCom.h"
+  13:User/BSP/USB_VirCom.c **** #include "crc8_crc16.h"
+  14:User/BSP/USB_VirCom.c **** #include "Stm32_time.h"
+  15:User/BSP/USB_VirCom.c **** #include "Auto_control.h"
+  16:User/BSP/USB_VirCom.c **** #include "Global_status.h"
+  17:User/BSP/USB_VirCom.c **** #include "fifo.h"
+  18:User/BSP/USB_VirCom.c **** 
+  19:User/BSP/USB_VirCom.c **** void VirCom_send(uint8_t data[], uint16_t len)
+  20:User/BSP/USB_VirCom.c **** {
+  28              		.loc 1 20 1
+  29              		.cfi_startproc
+  30              		@ args = 0, pretend = 0, frame = 8
+  31              		@ frame_needed = 1, uses_anonymous_args = 0
+  32 0000 80B5     		push	{r7, lr}
+  33              	.LCFI0:
+  34              		.cfi_def_cfa_offset 8
+  35              		.cfi_offset 7, -8
+  36              		.cfi_offset 14, -4
+  37 0002 82B0     		sub	sp, sp, #8
+  38              	.LCFI1:
+ARM GAS  C:\Users\fffff\AppData\Local\Temp\ccb9YzMg.s 			page 2
+
+
+  39              		.cfi_def_cfa_offset 16
+  40 0004 00AF     		add	r7, sp, #0
+  41              	.LCFI2:
+  42              		.cfi_def_cfa_register 7
+  43 0006 7860     		str	r0, [r7, #4]
+  44 0008 0B46     		mov	r3, r1
+  45 000a 7B80     		strh	r3, [r7, #2]	@ movhi
+  21:User/BSP/USB_VirCom.c ****   if (CDC_Transmit_HS(data, len) == 1) // 判断数据是否发送
+  46              		.loc 1 21 7
+  47 000c 7B88     		ldrh	r3, [r7, #2]
+  48 000e 1946     		mov	r1, r3
+  49 0010 7868     		ldr	r0, [r7, #4]
+  50 0012 FFF7FEFF 		bl	CDC_Transmit_HS
+  51 0016 0346     		mov	r3, r0
+  52              		.loc 1 21 6 discriminator 1
+  53 0018 012B     		cmp	r3, #1
+  54 001a 05D1     		bne	.L3
+  22:User/BSP/USB_VirCom.c ****   {
+  23:User/BSP/USB_VirCom.c ****     // USB忙碌数据转入缓冲区
+  24:User/BSP/USB_VirCom.c **** 
+  25:User/BSP/USB_VirCom.c ****     fifo_s_puts(&USB_send_fifo, (char *)data, (int)len);
+  55              		.loc 1 25 5
+  56 001c 7B88     		ldrh	r3, [r7, #2]
+  57 001e 1A46     		mov	r2, r3
+  58 0020 7968     		ldr	r1, [r7, #4]
+  59 0022 0348     		ldr	r0, .L4
+  60 0024 FFF7FEFF 		bl	fifo_s_puts
+  61              	.L3:
+  26:User/BSP/USB_VirCom.c ****   }
+  27:User/BSP/USB_VirCom.c **** }
+  62              		.loc 1 27 1
+  63 0028 00BF     		nop
+  64 002a 0837     		adds	r7, r7, #8
+  65              	.LCFI3:
+  66              		.cfi_def_cfa_offset 8
+  67 002c BD46     		mov	sp, r7
+  68              	.LCFI4:
+  69              		.cfi_def_cfa_register 13
+  70              		@ sp needed
+  71 002e 80BD     		pop	{r7, pc}
+  72              	.L5:
+  73              		.align	2
+  74              	.L4:
+  75 0030 00000000 		.word	USB_send_fifo
+  76              		.cfi_endproc
+  77              	.LFE148:
+  79              		.section	.text.VirCom_rev,"ax",%progbits
+  80              		.align	1
+  81              		.global	VirCom_rev
+  82              		.syntax unified
+  83              		.thumb
+  84              		.thumb_func
+  86              	VirCom_rev:
+  87              	.LFB149:
+  28:User/BSP/USB_VirCom.c **** 
+  29:User/BSP/USB_VirCom.c **** void VirCom_rev(uint8_t data[], uint16_t len)
+  30:User/BSP/USB_VirCom.c **** {
+ARM GAS  C:\Users\fffff\AppData\Local\Temp\ccb9YzMg.s 			page 3
+
+
+  88              		.loc 1 30 1
+  89              		.cfi_startproc
+  90              		@ args = 0, pretend = 0, frame = 8
+  91              		@ frame_needed = 1, uses_anonymous_args = 0
+  92              		@ link register save eliminated.
+  93 0000 80B4     		push	{r7}
+  94              	.LCFI5:
+  95              		.cfi_def_cfa_offset 4
+  96              		.cfi_offset 7, -4
+  97 0002 83B0     		sub	sp, sp, #12
+  98              	.LCFI6:
+  99              		.cfi_def_cfa_offset 16
+ 100 0004 00AF     		add	r7, sp, #0
+ 101              	.LCFI7:
+ 102              		.cfi_def_cfa_register 7
+ 103 0006 7860     		str	r0, [r7, #4]
+ 104 0008 0B46     		mov	r3, r1
+ 105 000a 7B80     		strh	r3, [r7, #2]	@ movhi
+  31:User/BSP/USB_VirCom.c ****   // if(data[0]==0xA5){
+  32:User/BSP/USB_VirCom.c ****   //   Global.Auto.input.Auto_control_online=100;
+  33:User/BSP/USB_VirCom.c ****   //   decodeMINIPCdata(&fromMINIPC,data,len);
+  34:User/BSP/USB_VirCom.c ****   //   MINIPC_to_STM32();
+  35:User/BSP/USB_VirCom.c ****   // }
+  36:User/BSP/USB_VirCom.c **** }
+ 106              		.loc 1 36 1
+ 107 000c 00BF     		nop
+ 108 000e 0C37     		adds	r7, r7, #12
+ 109              	.LCFI8:
+ 110              		.cfi_def_cfa_offset 4
+ 111 0010 BD46     		mov	sp, r7
+ 112              	.LCFI9:
+ 113              		.cfi_def_cfa_register 13
+ 114              		@ sp needed
+ 115 0012 5DF8047B 		ldr	r7, [sp], #4
+ 116              	.LCFI10:
+ 117              		.cfi_restore 7
+ 118              		.cfi_def_cfa_offset 0
+ 119 0016 7047     		bx	lr
+ 120              		.cfi_endproc
+ 121              	.LFE149:
+ 123              		.section	.text.__io_putchar,"ax",%progbits
+ 124              		.align	1
+ 125              		.global	__io_putchar
+ 126              		.syntax unified
+ 127              		.thumb
+ 128              		.thumb_func
+ 130              	__io_putchar:
+ 131              	.LFB150:
+  37:User/BSP/USB_VirCom.c **** 
+  38:User/BSP/USB_VirCom.c **** #include "stdio.h"
+  39:User/BSP/USB_VirCom.c **** #ifdef __GNUC__
+  40:User/BSP/USB_VirCom.c **** #define PUTCHAR_PROTOTYPE int __io_putchar(int ch)
+  41:User/BSP/USB_VirCom.c **** #else
+  42:User/BSP/USB_VirCom.c **** #define PUTCHAR_PROTOTYPE int fputc(int ch, FILE *f)
+  43:User/BSP/USB_VirCom.c **** #endif
+  44:User/BSP/USB_VirCom.c **** PUTCHAR_PROTOTYPE
+  45:User/BSP/USB_VirCom.c **** {
+ARM GAS  C:\Users\fffff\AppData\Local\Temp\ccb9YzMg.s 			page 4
+
+
+ 132              		.loc 1 45 1
+ 133              		.cfi_startproc
+ 134              		@ args = 0, pretend = 0, frame = 8
+ 135              		@ frame_needed = 1, uses_anonymous_args = 0
+ 136 0000 80B5     		push	{r7, lr}
+ 137              	.LCFI11:
+ 138              		.cfi_def_cfa_offset 8
+ 139              		.cfi_offset 7, -8
+ 140              		.cfi_offset 14, -4
+ 141 0002 82B0     		sub	sp, sp, #8
+ 142              	.LCFI12:
+ 143              		.cfi_def_cfa_offset 16
+ 144 0004 00AF     		add	r7, sp, #0
+ 145              	.LCFI13:
+ 146              		.cfi_def_cfa_register 7
+ 147 0006 7860     		str	r0, [r7, #4]
+  46:User/BSP/USB_VirCom.c ****   VirCom_send((uint8_t *)&ch, 1);
+ 148              		.loc 1 46 3
+ 149 0008 3B1D     		adds	r3, r7, #4
+ 150 000a 0121     		movs	r1, #1
+ 151 000c 1846     		mov	r0, r3
+ 152 000e FFF7FEFF 		bl	VirCom_send
+  47:User/BSP/USB_VirCom.c **** 
+  48:User/BSP/USB_VirCom.c ****   return ch;
+ 153              		.loc 1 48 10
+ 154 0012 7B68     		ldr	r3, [r7, #4]
+  49:User/BSP/USB_VirCom.c **** }...
+ 155              		.loc 1 49 1
+ 156 0014 1846     		mov	r0, r3
+ 157 0016 0837     		adds	r7, r7, #8
+ 158              	.LCFI14:
+ 159              		.cfi_def_cfa_offset 8
+ 160 0018 BD46     		mov	sp, r7
+ 161              	.LCFI15:
+ 162              		.cfi_def_cfa_register 13
+ 163              		@ sp needed
+ 164 001a 80BD     		pop	{r7, pc}
+ 165              		.cfi_endproc
+ 166              	.LFE150:
+ 168              		.text
+ 169              	.Letext0:
+ 170              		.file 2 "C:/msys64/mingw64/arm-none-eabi/include/machine/_default_types.h"
+ 171              		.file 3 "C:/msys64/mingw64/arm-none-eabi/include/sys/_stdint.h"
+ 172              		.file 4 "Algorithm/fifo.h"
+ 173              		.file 5 "USB_DEVICE/App/usbd_cdc_if.h"
+ARM GAS  C:\Users\fffff\AppData\Local\Temp\ccb9YzMg.s 			page 5
+
+
+DEFINED SYMBOLS
+                            *ABS*:00000000 USB_VirCom.c
+C:\Users\fffff\AppData\Local\Temp\ccb9YzMg.s:20     .text.VirCom_send:00000000 $t
+C:\Users\fffff\AppData\Local\Temp\ccb9YzMg.s:26     .text.VirCom_send:00000000 VirCom_send
+C:\Users\fffff\AppData\Local\Temp\ccb9YzMg.s:75     .text.VirCom_send:00000030 $d
+C:\Users\fffff\AppData\Local\Temp\ccb9YzMg.s:80     .text.VirCom_rev:00000000 $t
+C:\Users\fffff\AppData\Local\Temp\ccb9YzMg.s:86     .text.VirCom_rev:00000000 VirCom_rev
+C:\Users\fffff\AppData\Local\Temp\ccb9YzMg.s:124    .text.__io_putchar:00000000 $t
+C:\Users\fffff\AppData\Local\Temp\ccb9YzMg.s:130    .text.__io_putchar:00000000 __io_putchar
+
+UNDEFINED SYMBOLS
+CDC_Transmit_HS
+fifo_s_puts
+USB_send_fifo

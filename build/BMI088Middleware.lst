@@ -1,0 +1,596 @@
+ARM GAS  C:\Users\fffff\AppData\Local\Temp\ccAYLMIt.s 			page 1
+
+
+   1              		.cpu cortex-m7
+   2              		.arch armv7e-m
+   3              		.fpu fpv5-d16
+   4              		.eabi_attribute 28, 1
+   5              		.eabi_attribute 20, 1
+   6              		.eabi_attribute 21, 1
+   7              		.eabi_attribute 23, 3
+   8              		.eabi_attribute 24, 1
+   9              		.eabi_attribute 25, 1
+  10              		.eabi_attribute 26, 1
+  11              		.eabi_attribute 30, 6
+  12              		.eabi_attribute 34, 1
+  13              		.eabi_attribute 18, 4
+  14              		.file	"BMI088Middleware.c"
+  15              		.text
+  16              	.Ltext0:
+  17              		.cfi_sections	.debug_frame
+  18              		.file 1 "Drivers/Chip/bmi088/BMI088Middleware.c"
+  19              		.section	.text.BMI088_GPIO_init,"ax",%progbits
+  20              		.align	1
+  21              		.global	BMI088_GPIO_init
+  22              		.syntax unified
+  23              		.thumb
+  24              		.thumb_func
+  26              	BMI088_GPIO_init:
+  27              	.LFB144:
+   1:Drivers/Chip/bmi088/BMI088Middleware.c **** #include "BMI088Middleware.h"
+   2:Drivers/Chip/bmi088/BMI088Middleware.c **** #include "main.h"
+   3:Drivers/Chip/bmi088/BMI088Middleware.c **** 
+   4:Drivers/Chip/bmi088/BMI088Middleware.c **** #define BMI088_USING_SPI_UNIT hspi2
+   5:Drivers/Chip/bmi088/BMI088Middleware.c **** 
+   6:Drivers/Chip/bmi088/BMI088Middleware.c **** extern SPI_HandleTypeDef BMI088_USING_SPI_UNIT;
+   7:Drivers/Chip/bmi088/BMI088Middleware.c **** 
+   8:Drivers/Chip/bmi088/BMI088Middleware.c **** /**
+   9:Drivers/Chip/bmi088/BMI088Middleware.c **** ************************************************************************
+  10:Drivers/Chip/bmi088/BMI088Middleware.c **** * @brief:      	BMI088_GPIO_init(void)
+  11:Drivers/Chip/bmi088/BMI088Middleware.c **** * @param:       void
+  12:Drivers/Chip/bmi088/BMI088Middleware.c **** * @retval:     	void
+  13:Drivers/Chip/bmi088/BMI088Middleware.c **** * @details:    	BMI088传感器GPIO初始化函数
+  14:Drivers/Chip/bmi088/BMI088Middleware.c **** ************************************************************************
+  15:Drivers/Chip/bmi088/BMI088Middleware.c **** **/
+  16:Drivers/Chip/bmi088/BMI088Middleware.c **** void BMI088_GPIO_init(void)
+  17:Drivers/Chip/bmi088/BMI088Middleware.c **** {
+  28              		.loc 1 17 1
+  29              		.cfi_startproc
+  30              		@ args = 0, pretend = 0, frame = 0
+  31              		@ frame_needed = 1, uses_anonymous_args = 0
+  32              		@ link register save eliminated.
+  33 0000 80B4     		push	{r7}
+  34              	.LCFI0:
+  35              		.cfi_def_cfa_offset 4
+  36              		.cfi_offset 7, -4
+  37 0002 00AF     		add	r7, sp, #0
+  38              	.LCFI1:
+  39              		.cfi_def_cfa_register 7
+  18:Drivers/Chip/bmi088/BMI088Middleware.c **** }
+  40              		.loc 1 18 1
+ARM GAS  C:\Users\fffff\AppData\Local\Temp\ccAYLMIt.s 			page 2
+
+
+  41 0004 00BF     		nop
+  42 0006 BD46     		mov	sp, r7
+  43              	.LCFI2:
+  44              		.cfi_def_cfa_register 13
+  45              		@ sp needed
+  46 0008 5DF8047B 		ldr	r7, [sp], #4
+  47              	.LCFI3:
+  48              		.cfi_restore 7
+  49              		.cfi_def_cfa_offset 0
+  50 000c 7047     		bx	lr
+  51              		.cfi_endproc
+  52              	.LFE144:
+  54              		.section	.text.BMI088_com_init,"ax",%progbits
+  55              		.align	1
+  56              		.global	BMI088_com_init
+  57              		.syntax unified
+  58              		.thumb
+  59              		.thumb_func
+  61              	BMI088_com_init:
+  62              	.LFB145:
+  19:Drivers/Chip/bmi088/BMI088Middleware.c **** /**
+  20:Drivers/Chip/bmi088/BMI088Middleware.c **** ************************************************************************
+  21:Drivers/Chip/bmi088/BMI088Middleware.c **** * @brief:      	BMI088_com_init(void)
+  22:Drivers/Chip/bmi088/BMI088Middleware.c **** * @param:       void
+  23:Drivers/Chip/bmi088/BMI088Middleware.c **** * @retval:     	void
+  24:Drivers/Chip/bmi088/BMI088Middleware.c **** * @details:    	BMI088传感器通信初始化函数
+  25:Drivers/Chip/bmi088/BMI088Middleware.c **** ************************************************************************
+  26:Drivers/Chip/bmi088/BMI088Middleware.c **** **/
+  27:Drivers/Chip/bmi088/BMI088Middleware.c **** void BMI088_com_init(void)
+  28:Drivers/Chip/bmi088/BMI088Middleware.c **** {
+  63              		.loc 1 28 1
+  64              		.cfi_startproc
+  65              		@ args = 0, pretend = 0, frame = 0
+  66              		@ frame_needed = 1, uses_anonymous_args = 0
+  67              		@ link register save eliminated.
+  68 0000 80B4     		push	{r7}
+  69              	.LCFI4:
+  70              		.cfi_def_cfa_offset 4
+  71              		.cfi_offset 7, -4
+  72 0002 00AF     		add	r7, sp, #0
+  73              	.LCFI5:
+  74              		.cfi_def_cfa_register 7
+  29:Drivers/Chip/bmi088/BMI088Middleware.c **** }
+  75              		.loc 1 29 1
+  76 0004 00BF     		nop
+  77 0006 BD46     		mov	sp, r7
+  78              	.LCFI6:
+  79              		.cfi_def_cfa_register 13
+  80              		@ sp needed
+  81 0008 5DF8047B 		ldr	r7, [sp], #4
+  82              	.LCFI7:
+  83              		.cfi_restore 7
+  84              		.cfi_def_cfa_offset 0
+  85 000c 7047     		bx	lr
+  86              		.cfi_endproc
+  87              	.LFE145:
+  89              		.section	.text.BMI088_delay_ms,"ax",%progbits
+ARM GAS  C:\Users\fffff\AppData\Local\Temp\ccAYLMIt.s 			page 3
+
+
+  90              		.align	1
+  91              		.global	BMI088_delay_ms
+  92              		.syntax unified
+  93              		.thumb
+  94              		.thumb_func
+  96              	BMI088_delay_ms:
+  97              	.LFB146:
+  30:Drivers/Chip/bmi088/BMI088Middleware.c **** /**
+  31:Drivers/Chip/bmi088/BMI088Middleware.c **** ************************************************************************
+  32:Drivers/Chip/bmi088/BMI088Middleware.c **** * @brief:      	BMI088_delay_ms(uint16_t ms)
+  33:Drivers/Chip/bmi088/BMI088Middleware.c **** * @param:       ms - 要延迟的毫秒数
+  34:Drivers/Chip/bmi088/BMI088Middleware.c **** * @retval:     	void
+  35:Drivers/Chip/bmi088/BMI088Middleware.c **** * @details:    	延迟指定毫秒数的函数，基于微秒延迟实现
+  36:Drivers/Chip/bmi088/BMI088Middleware.c **** ************************************************************************
+  37:Drivers/Chip/bmi088/BMI088Middleware.c **** **/
+  38:Drivers/Chip/bmi088/BMI088Middleware.c **** void BMI088_delay_ms(uint16_t ms)
+  39:Drivers/Chip/bmi088/BMI088Middleware.c **** {
+  98              		.loc 1 39 1
+  99              		.cfi_startproc
+ 100              		@ args = 0, pretend = 0, frame = 8
+ 101              		@ frame_needed = 1, uses_anonymous_args = 0
+ 102 0000 80B5     		push	{r7, lr}
+ 103              	.LCFI8:
+ 104              		.cfi_def_cfa_offset 8
+ 105              		.cfi_offset 7, -8
+ 106              		.cfi_offset 14, -4
+ 107 0002 82B0     		sub	sp, sp, #8
+ 108              	.LCFI9:
+ 109              		.cfi_def_cfa_offset 16
+ 110 0004 00AF     		add	r7, sp, #0
+ 111              	.LCFI10:
+ 112              		.cfi_def_cfa_register 7
+ 113 0006 0346     		mov	r3, r0
+ 114 0008 FB80     		strh	r3, [r7, #6]	@ movhi
+  40:Drivers/Chip/bmi088/BMI088Middleware.c ****     while (ms--)
+ 115              		.loc 1 40 11
+ 116 000a 03E0     		b	.L4
+ 117              	.L5:
+  41:Drivers/Chip/bmi088/BMI088Middleware.c ****     {
+  42:Drivers/Chip/bmi088/BMI088Middleware.c ****         BMI088_delay_us(1000);
+ 118              		.loc 1 42 9
+ 119 000c 4FF47A70 		mov	r0, #1000
+ 120 0010 FFF7FEFF 		bl	BMI088_delay_us
+ 121              	.L4:
+  40:Drivers/Chip/bmi088/BMI088Middleware.c ****     while (ms--)
+ 122              		.loc 1 40 14
+ 123 0014 FB88     		ldrh	r3, [r7, #6]
+ 124 0016 5A1E     		subs	r2, r3, #1
+ 125 0018 FA80     		strh	r2, [r7, #6]	@ movhi
+  40:Drivers/Chip/bmi088/BMI088Middleware.c ****     while (ms--)
+ 126              		.loc 1 40 12
+ 127 001a 002B     		cmp	r3, #0
+ 128 001c F6D1     		bne	.L5
+  43:Drivers/Chip/bmi088/BMI088Middleware.c ****     }
+  44:Drivers/Chip/bmi088/BMI088Middleware.c **** }
+ 129              		.loc 1 44 1
+ 130 001e 00BF     		nop
+ARM GAS  C:\Users\fffff\AppData\Local\Temp\ccAYLMIt.s 			page 4
+
+
+ 131 0020 00BF     		nop
+ 132 0022 0837     		adds	r7, r7, #8
+ 133              	.LCFI11:
+ 134              		.cfi_def_cfa_offset 8
+ 135 0024 BD46     		mov	sp, r7
+ 136              	.LCFI12:
+ 137              		.cfi_def_cfa_register 13
+ 138              		@ sp needed
+ 139 0026 80BD     		pop	{r7, pc}
+ 140              		.cfi_endproc
+ 141              	.LFE146:
+ 143              		.section	.text.BMI088_delay_us,"ax",%progbits
+ 144              		.align	1
+ 145              		.global	BMI088_delay_us
+ 146              		.syntax unified
+ 147              		.thumb
+ 148              		.thumb_func
+ 150              	BMI088_delay_us:
+ 151              	.LFB147:
+  45:Drivers/Chip/bmi088/BMI088Middleware.c **** /**
+  46:Drivers/Chip/bmi088/BMI088Middleware.c **** ************************************************************************
+  47:Drivers/Chip/bmi088/BMI088Middleware.c **** * @brief:      	BMI088_delay_us(uint16_t us)
+  48:Drivers/Chip/bmi088/BMI088Middleware.c **** * @param:       us - 要延迟的微秒数
+  49:Drivers/Chip/bmi088/BMI088Middleware.c **** * @retval:     	void
+  50:Drivers/Chip/bmi088/BMI088Middleware.c **** * @details:    	微秒级延迟函数，使用SysTick定时器实现
+  51:Drivers/Chip/bmi088/BMI088Middleware.c **** ************************************************************************
+  52:Drivers/Chip/bmi088/BMI088Middleware.c **** **/
+  53:Drivers/Chip/bmi088/BMI088Middleware.c **** void BMI088_delay_us(uint16_t us)
+  54:Drivers/Chip/bmi088/BMI088Middleware.c **** {
+ 152              		.loc 1 54 1
+ 153              		.cfi_startproc
+ 154              		@ args = 0, pretend = 0, frame = 8
+ 155              		@ frame_needed = 1, uses_anonymous_args = 0
+ 156 0000 80B5     		push	{r7, lr}
+ 157              	.LCFI13:
+ 158              		.cfi_def_cfa_offset 8
+ 159              		.cfi_offset 7, -8
+ 160              		.cfi_offset 14, -4
+ 161 0002 82B0     		sub	sp, sp, #8
+ 162              	.LCFI14:
+ 163              		.cfi_def_cfa_offset 16
+ 164 0004 00AF     		add	r7, sp, #0
+ 165              	.LCFI15:
+ 166              		.cfi_def_cfa_register 7
+ 167 0006 0346     		mov	r3, r0
+ 168 0008 FB80     		strh	r3, [r7, #6]	@ movhi
+  55:Drivers/Chip/bmi088/BMI088Middleware.c **** 
+  56:Drivers/Chip/bmi088/BMI088Middleware.c ****     // uint32_t ticks = 0;
+  57:Drivers/Chip/bmi088/BMI088Middleware.c ****     // uint32_t told = 0;
+  58:Drivers/Chip/bmi088/BMI088Middleware.c ****     // uint32_t tnow = 0;
+  59:Drivers/Chip/bmi088/BMI088Middleware.c ****     // uint32_t tcnt = 0;
+  60:Drivers/Chip/bmi088/BMI088Middleware.c ****     // uint32_t reload = 0;
+  61:Drivers/Chip/bmi088/BMI088Middleware.c ****     // reload = SysTick->LOAD;
+  62:Drivers/Chip/bmi088/BMI088Middleware.c ****     // ticks = us * 480;
+  63:Drivers/Chip/bmi088/BMI088Middleware.c ****     // told = SysTick->VAL;
+  64:Drivers/Chip/bmi088/BMI088Middleware.c ****     // while (1)
+  65:Drivers/Chip/bmi088/BMI088Middleware.c ****     // {
+ARM GAS  C:\Users\fffff\AppData\Local\Temp\ccAYLMIt.s 			page 5
+
+
+  66:Drivers/Chip/bmi088/BMI088Middleware.c ****     //     tnow = SysTick->VAL;
+  67:Drivers/Chip/bmi088/BMI088Middleware.c ****     //     if (tnow != told)
+  68:Drivers/Chip/bmi088/BMI088Middleware.c ****     //     {
+  69:Drivers/Chip/bmi088/BMI088Middleware.c ****     //         if (tnow < told)
+  70:Drivers/Chip/bmi088/BMI088Middleware.c ****     //         {
+  71:Drivers/Chip/bmi088/BMI088Middleware.c ****     //             tcnt += told - tnow;
+  72:Drivers/Chip/bmi088/BMI088Middleware.c ****     //         }
+  73:Drivers/Chip/bmi088/BMI088Middleware.c ****     //         else
+  74:Drivers/Chip/bmi088/BMI088Middleware.c ****     //         {
+  75:Drivers/Chip/bmi088/BMI088Middleware.c ****     //             tcnt += reload - tnow + told;
+  76:Drivers/Chip/bmi088/BMI088Middleware.c ****     //         }
+  77:Drivers/Chip/bmi088/BMI088Middleware.c ****     //         told = tnow;
+  78:Drivers/Chip/bmi088/BMI088Middleware.c ****     //         if (tcnt >= ticks)
+  79:Drivers/Chip/bmi088/BMI088Middleware.c ****     //         {
+  80:Drivers/Chip/bmi088/BMI088Middleware.c ****     //             break;
+  81:Drivers/Chip/bmi088/BMI088Middleware.c ****     //         }
+  82:Drivers/Chip/bmi088/BMI088Middleware.c ****     //     }
+  83:Drivers/Chip/bmi088/BMI088Middleware.c ****     // }
+  84:Drivers/Chip/bmi088/BMI088Middleware.c ****     HAL_Delay(us / 1000); // by sethome that no us,it is ms. If time enough,please change it.
+ 169              		.loc 1 84 5
+ 170 000a FB88     		ldrh	r3, [r7, #6]
+ 171 000c 054A     		ldr	r2, .L7
+ 172 000e A2FB0323 		umull	r2, r3, r2, r3
+ 173 0012 9B09     		lsrs	r3, r3, #6
+ 174 0014 9BB2     		uxth	r3, r3
+ 175 0016 1846     		mov	r0, r3
+ 176 0018 FFF7FEFF 		bl	HAL_Delay
+  85:Drivers/Chip/bmi088/BMI088Middleware.c **** }
+ 177              		.loc 1 85 1
+ 178 001c 00BF     		nop
+ 179 001e 0837     		adds	r7, r7, #8
+ 180              	.LCFI16:
+ 181              		.cfi_def_cfa_offset 8
+ 182 0020 BD46     		mov	sp, r7
+ 183              	.LCFI17:
+ 184              		.cfi_def_cfa_register 13
+ 185              		@ sp needed
+ 186 0022 80BD     		pop	{r7, pc}
+ 187              	.L8:
+ 188              		.align	2
+ 189              	.L7:
+ 190 0024 D34D6210 		.word	274877907
+ 191              		.cfi_endproc
+ 192              	.LFE147:
+ 194              		.section	.text.BMI088_ACCEL_NS_L,"ax",%progbits
+ 195              		.align	1
+ 196              		.global	BMI088_ACCEL_NS_L
+ 197              		.syntax unified
+ 198              		.thumb
+ 199              		.thumb_func
+ 201              	BMI088_ACCEL_NS_L:
+ 202              	.LFB148:
+  86:Drivers/Chip/bmi088/BMI088Middleware.c **** /**
+  87:Drivers/Chip/bmi088/BMI088Middleware.c **** ************************************************************************
+  88:Drivers/Chip/bmi088/BMI088Middleware.c **** * @brief:      	BMI088_ACCEL_NS_L(void)
+  89:Drivers/Chip/bmi088/BMI088Middleware.c **** * @param:       void
+  90:Drivers/Chip/bmi088/BMI088Middleware.c **** * @retval:     	void
+ARM GAS  C:\Users\fffff\AppData\Local\Temp\ccAYLMIt.s 			page 6
+
+
+  91:Drivers/Chip/bmi088/BMI088Middleware.c **** * @details:    	将BMI088加速度计片选信号置低，使其处于选中状态
+  92:Drivers/Chip/bmi088/BMI088Middleware.c **** ************************************************************************
+  93:Drivers/Chip/bmi088/BMI088Middleware.c **** **/
+  94:Drivers/Chip/bmi088/BMI088Middleware.c **** void BMI088_ACCEL_NS_L(void)
+  95:Drivers/Chip/bmi088/BMI088Middleware.c **** {
+ 203              		.loc 1 95 1
+ 204              		.cfi_startproc
+ 205              		@ args = 0, pretend = 0, frame = 0
+ 206              		@ frame_needed = 1, uses_anonymous_args = 0
+ 207 0000 80B5     		push	{r7, lr}
+ 208              	.LCFI18:
+ 209              		.cfi_def_cfa_offset 8
+ 210              		.cfi_offset 7, -8
+ 211              		.cfi_offset 14, -4
+ 212 0002 00AF     		add	r7, sp, #0
+ 213              	.LCFI19:
+ 214              		.cfi_def_cfa_register 7
+  96:Drivers/Chip/bmi088/BMI088Middleware.c ****     HAL_GPIO_WritePin(ACC_CS_GPIO_Port, ACC_CS_Pin, GPIO_PIN_RESET);
+ 215              		.loc 1 96 5
+ 216 0004 0022     		movs	r2, #0
+ 217 0006 0121     		movs	r1, #1
+ 218 0008 0248     		ldr	r0, .L10
+ 219 000a FFF7FEFF 		bl	HAL_GPIO_WritePin
+  97:Drivers/Chip/bmi088/BMI088Middleware.c **** }
+ 220              		.loc 1 97 1
+ 221 000e 00BF     		nop
+ 222 0010 80BD     		pop	{r7, pc}
+ 223              	.L11:
+ 224 0012 00BF     		.align	2
+ 225              	.L10:
+ 226 0014 00080258 		.word	1476528128
+ 227              		.cfi_endproc
+ 228              	.LFE148:
+ 230              		.section	.text.BMI088_ACCEL_NS_H,"ax",%progbits
+ 231              		.align	1
+ 232              		.global	BMI088_ACCEL_NS_H
+ 233              		.syntax unified
+ 234              		.thumb
+ 235              		.thumb_func
+ 237              	BMI088_ACCEL_NS_H:
+ 238              	.LFB149:
+  98:Drivers/Chip/bmi088/BMI088Middleware.c **** /**
+  99:Drivers/Chip/bmi088/BMI088Middleware.c **** ************************************************************************
+ 100:Drivers/Chip/bmi088/BMI088Middleware.c **** * @brief:      	BMI088_ACCEL_NS_H(void)
+ 101:Drivers/Chip/bmi088/BMI088Middleware.c **** * @param:       void
+ 102:Drivers/Chip/bmi088/BMI088Middleware.c **** * @retval:     	void
+ 103:Drivers/Chip/bmi088/BMI088Middleware.c **** * @details:    	将BMI088加速度计片选信号置高，使其处于非选中状态
+ 104:Drivers/Chip/bmi088/BMI088Middleware.c **** ************************************************************************
+ 105:Drivers/Chip/bmi088/BMI088Middleware.c **** **/
+ 106:Drivers/Chip/bmi088/BMI088Middleware.c **** void BMI088_ACCEL_NS_H(void)
+ 107:Drivers/Chip/bmi088/BMI088Middleware.c **** {
+ 239              		.loc 1 107 1
+ 240              		.cfi_startproc
+ 241              		@ args = 0, pretend = 0, frame = 0
+ 242              		@ frame_needed = 1, uses_anonymous_args = 0
+ 243 0000 80B5     		push	{r7, lr}
+ 244              	.LCFI20:
+ARM GAS  C:\Users\fffff\AppData\Local\Temp\ccAYLMIt.s 			page 7
+
+
+ 245              		.cfi_def_cfa_offset 8
+ 246              		.cfi_offset 7, -8
+ 247              		.cfi_offset 14, -4
+ 248 0002 00AF     		add	r7, sp, #0
+ 249              	.LCFI21:
+ 250              		.cfi_def_cfa_register 7
+ 108:Drivers/Chip/bmi088/BMI088Middleware.c ****     HAL_GPIO_WritePin(ACC_CS_GPIO_Port, ACC_CS_Pin, GPIO_PIN_SET);
+ 251              		.loc 1 108 5
+ 252 0004 0122     		movs	r2, #1
+ 253 0006 0121     		movs	r1, #1
+ 254 0008 0248     		ldr	r0, .L13
+ 255 000a FFF7FEFF 		bl	HAL_GPIO_WritePin
+ 109:Drivers/Chip/bmi088/BMI088Middleware.c **** }
+ 256              		.loc 1 109 1
+ 257 000e 00BF     		nop
+ 258 0010 80BD     		pop	{r7, pc}
+ 259              	.L14:
+ 260 0012 00BF     		.align	2
+ 261              	.L13:
+ 262 0014 00080258 		.word	1476528128
+ 263              		.cfi_endproc
+ 264              	.LFE149:
+ 266              		.section	.text.BMI088_GYRO_NS_L,"ax",%progbits
+ 267              		.align	1
+ 268              		.global	BMI088_GYRO_NS_L
+ 269              		.syntax unified
+ 270              		.thumb
+ 271              		.thumb_func
+ 273              	BMI088_GYRO_NS_L:
+ 274              	.LFB150:
+ 110:Drivers/Chip/bmi088/BMI088Middleware.c **** /**
+ 111:Drivers/Chip/bmi088/BMI088Middleware.c **** ************************************************************************
+ 112:Drivers/Chip/bmi088/BMI088Middleware.c **** * @brief:      	BMI088_GYRO_NS_L(void)
+ 113:Drivers/Chip/bmi088/BMI088Middleware.c **** * @param:       void
+ 114:Drivers/Chip/bmi088/BMI088Middleware.c **** * @retval:     	void
+ 115:Drivers/Chip/bmi088/BMI088Middleware.c **** * @details:    	将BMI088陀螺仪片选信号置低，使其处于选中状态
+ 116:Drivers/Chip/bmi088/BMI088Middleware.c **** ************************************************************************
+ 117:Drivers/Chip/bmi088/BMI088Middleware.c **** **/
+ 118:Drivers/Chip/bmi088/BMI088Middleware.c **** void BMI088_GYRO_NS_L(void)
+ 119:Drivers/Chip/bmi088/BMI088Middleware.c **** {
+ 275              		.loc 1 119 1
+ 276              		.cfi_startproc
+ 277              		@ args = 0, pretend = 0, frame = 0
+ 278              		@ frame_needed = 1, uses_anonymous_args = 0
+ 279 0000 80B5     		push	{r7, lr}
+ 280              	.LCFI22:
+ 281              		.cfi_def_cfa_offset 8
+ 282              		.cfi_offset 7, -8
+ 283              		.cfi_offset 14, -4
+ 284 0002 00AF     		add	r7, sp, #0
+ 285              	.LCFI23:
+ 286              		.cfi_def_cfa_register 7
+ 120:Drivers/Chip/bmi088/BMI088Middleware.c ****     HAL_GPIO_WritePin(GYRO_CS_GPIO_Port, GYRO_CS_Pin, GPIO_PIN_RESET);
+ 287              		.loc 1 120 5
+ 288 0004 0022     		movs	r2, #0
+ 289 0006 0821     		movs	r1, #8
+ 290 0008 0248     		ldr	r0, .L16
+ARM GAS  C:\Users\fffff\AppData\Local\Temp\ccAYLMIt.s 			page 8
+
+
+ 291 000a FFF7FEFF 		bl	HAL_GPIO_WritePin
+ 121:Drivers/Chip/bmi088/BMI088Middleware.c **** }
+ 292              		.loc 1 121 1
+ 293 000e 00BF     		nop
+ 294 0010 80BD     		pop	{r7, pc}
+ 295              	.L17:
+ 296 0012 00BF     		.align	2
+ 297              	.L16:
+ 298 0014 00080258 		.word	1476528128
+ 299              		.cfi_endproc
+ 300              	.LFE150:
+ 302              		.section	.text.BMI088_GYRO_NS_H,"ax",%progbits
+ 303              		.align	1
+ 304              		.global	BMI088_GYRO_NS_H
+ 305              		.syntax unified
+ 306              		.thumb
+ 307              		.thumb_func
+ 309              	BMI088_GYRO_NS_H:
+ 310              	.LFB151:
+ 122:Drivers/Chip/bmi088/BMI088Middleware.c **** /**
+ 123:Drivers/Chip/bmi088/BMI088Middleware.c **** ************************************************************************
+ 124:Drivers/Chip/bmi088/BMI088Middleware.c **** * @brief:      	BMI088_GYRO_NS_H(void)
+ 125:Drivers/Chip/bmi088/BMI088Middleware.c **** * @param:       void
+ 126:Drivers/Chip/bmi088/BMI088Middleware.c **** * @retval:     	void
+ 127:Drivers/Chip/bmi088/BMI088Middleware.c **** * @details:    	将BMI088陀螺仪片选信号置高，使其处于非选中状态
+ 128:Drivers/Chip/bmi088/BMI088Middleware.c **** ************************************************************************
+ 129:Drivers/Chip/bmi088/BMI088Middleware.c **** **/
+ 130:Drivers/Chip/bmi088/BMI088Middleware.c **** void BMI088_GYRO_NS_H(void)
+ 131:Drivers/Chip/bmi088/BMI088Middleware.c **** {
+ 311              		.loc 1 131 1
+ 312              		.cfi_startproc
+ 313              		@ args = 0, pretend = 0, frame = 0
+ 314              		@ frame_needed = 1, uses_anonymous_args = 0
+ 315 0000 80B5     		push	{r7, lr}
+ 316              	.LCFI24:
+ 317              		.cfi_def_cfa_offset 8
+ 318              		.cfi_offset 7, -8
+ 319              		.cfi_offset 14, -4
+ 320 0002 00AF     		add	r7, sp, #0
+ 321              	.LCFI25:
+ 322              		.cfi_def_cfa_register 7
+ 132:Drivers/Chip/bmi088/BMI088Middleware.c ****     HAL_GPIO_WritePin(GYRO_CS_GPIO_Port, GYRO_CS_Pin, GPIO_PIN_SET);
+ 323              		.loc 1 132 5
+ 324 0004 0122     		movs	r2, #1
+ 325 0006 0821     		movs	r1, #8
+ 326 0008 0248     		ldr	r0, .L19
+ 327 000a FFF7FEFF 		bl	HAL_GPIO_WritePin
+ 133:Drivers/Chip/bmi088/BMI088Middleware.c **** }
+ 328              		.loc 1 133 1
+ 329 000e 00BF     		nop
+ 330 0010 80BD     		pop	{r7, pc}
+ 331              	.L20:
+ 332 0012 00BF     		.align	2
+ 333              	.L19:
+ 334 0014 00080258 		.word	1476528128
+ 335              		.cfi_endproc
+ 336              	.LFE151:
+ARM GAS  C:\Users\fffff\AppData\Local\Temp\ccAYLMIt.s 			page 9
+
+
+ 338              		.section	.text.BMI088_read_write_byte,"ax",%progbits
+ 339              		.align	1
+ 340              		.global	BMI088_read_write_byte
+ 341              		.syntax unified
+ 342              		.thumb
+ 343              		.thumb_func
+ 345              	BMI088_read_write_byte:
+ 346              	.LFB152:
+ 134:Drivers/Chip/bmi088/BMI088Middleware.c **** /**
+ 135:Drivers/Chip/bmi088/BMI088Middleware.c **** ************************************************************************
+ 136:Drivers/Chip/bmi088/BMI088Middleware.c **** * @brief:      	BMI088_read_write_byte(uint8_t txdata)
+ 137:Drivers/Chip/bmi088/BMI088Middleware.c **** * @param:       txdata - 要发送的数据
+ 138:Drivers/Chip/bmi088/BMI088Middleware.c **** * @retval:     	uint8_t - 接收到的数据
+ 139:Drivers/Chip/bmi088/BMI088Middleware.c **** * @details:    	通过BMI088使用的SPI总线进行单字节的读写操作
+ 140:Drivers/Chip/bmi088/BMI088Middleware.c **** ************************************************************************
+ 141:Drivers/Chip/bmi088/BMI088Middleware.c **** **/
+ 142:Drivers/Chip/bmi088/BMI088Middleware.c **** uint8_t BMI088_read_write_byte(uint8_t txdata)
+ 143:Drivers/Chip/bmi088/BMI088Middleware.c **** {
+ 347              		.loc 1 143 1
+ 348              		.cfi_startproc
+ 349              		@ args = 0, pretend = 0, frame = 16
+ 350              		@ frame_needed = 1, uses_anonymous_args = 0
+ 351 0000 80B5     		push	{r7, lr}
+ 352              	.LCFI26:
+ 353              		.cfi_def_cfa_offset 8
+ 354              		.cfi_offset 7, -8
+ 355              		.cfi_offset 14, -4
+ 356 0002 86B0     		sub	sp, sp, #24
+ 357              	.LCFI27:
+ 358              		.cfi_def_cfa_offset 32
+ 359 0004 02AF     		add	r7, sp, #8
+ 360              	.LCFI28:
+ 361              		.cfi_def_cfa 7, 24
+ 362 0006 0346     		mov	r3, r0
+ 363 0008 FB71     		strb	r3, [r7, #7]
+ 144:Drivers/Chip/bmi088/BMI088Middleware.c ****     uint8_t rx_data;
+ 145:Drivers/Chip/bmi088/BMI088Middleware.c ****     HAL_SPI_TransmitReceive(&BMI088_USING_SPI_UNIT, &txdata, &rx_data, 1, 1000);
+ 364              		.loc 1 145 5
+ 365 000a 07F10F02 		add	r2, r7, #15
+ 366 000e F91D     		adds	r1, r7, #7
+ 367 0010 4FF47A73 		mov	r3, #1000
+ 368 0014 0093     		str	r3, [sp]
+ 369 0016 0123     		movs	r3, #1
+ 370 0018 0348     		ldr	r0, .L23
+ 371 001a FFF7FEFF 		bl	HAL_SPI_TransmitReceive
+ 146:Drivers/Chip/bmi088/BMI088Middleware.c ****     return rx_data;
+ 372              		.loc 1 146 12
+ 373 001e FB7B     		ldrb	r3, [r7, #15]	@ zero_extendqisi2
+ 147:Drivers/Chip/bmi088/BMI088Middleware.c **** }
+ 374              		.loc 1 147 1
+ 375 0020 1846     		mov	r0, r3
+ 376 0022 1037     		adds	r7, r7, #16
+ 377              	.LCFI29:
+ 378              		.cfi_def_cfa_offset 8
+ 379 0024 BD46     		mov	sp, r7
+ 380              	.LCFI30:
+ 381              		.cfi_def_cfa_register 13
+ARM GAS  C:\Users\fffff\AppData\Local\Temp\ccAYLMIt.s 			page 10
+
+
+ 382              		@ sp needed
+ 383 0026 80BD     		pop	{r7, pc}
+ 384              	.L24:
+ 385              		.align	2
+ 386              	.L23:
+ 387 0028 00000000 		.word	hspi2
+ 388              		.cfi_endproc
+ 389              	.LFE152:
+ 391              		.text
+ 392              	.Letext0:
+ 393              		.file 2 "C:/msys64/mingw64/arm-none-eabi/include/machine/_default_types.h"
+ 394              		.file 3 "C:/msys64/mingw64/arm-none-eabi/include/sys/_stdint.h"
+ 395              		.file 4 "Drivers/CMSIS/Device/ST/STM32H7xx/Include/stm32h723xx.h"
+ 396              		.file 5 "Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal_def.h"
+ 397              		.file 6 "Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal_gpio.h"
+ 398              		.file 7 "Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal_dma.h"
+ 399              		.file 8 "Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal_spi.h"
+ 400              		.file 9 "Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal.h"
+ARM GAS  C:\Users\fffff\AppData\Local\Temp\ccAYLMIt.s 			page 11
+
+
+DEFINED SYMBOLS
+                            *ABS*:00000000 BMI088Middleware.c
+C:\Users\fffff\AppData\Local\Temp\ccAYLMIt.s:20     .text.BMI088_GPIO_init:00000000 $t
+C:\Users\fffff\AppData\Local\Temp\ccAYLMIt.s:26     .text.BMI088_GPIO_init:00000000 BMI088_GPIO_init
+C:\Users\fffff\AppData\Local\Temp\ccAYLMIt.s:55     .text.BMI088_com_init:00000000 $t
+C:\Users\fffff\AppData\Local\Temp\ccAYLMIt.s:61     .text.BMI088_com_init:00000000 BMI088_com_init
+C:\Users\fffff\AppData\Local\Temp\ccAYLMIt.s:90     .text.BMI088_delay_ms:00000000 $t
+C:\Users\fffff\AppData\Local\Temp\ccAYLMIt.s:96     .text.BMI088_delay_ms:00000000 BMI088_delay_ms
+C:\Users\fffff\AppData\Local\Temp\ccAYLMIt.s:150    .text.BMI088_delay_us:00000000 BMI088_delay_us
+C:\Users\fffff\AppData\Local\Temp\ccAYLMIt.s:144    .text.BMI088_delay_us:00000000 $t
+C:\Users\fffff\AppData\Local\Temp\ccAYLMIt.s:190    .text.BMI088_delay_us:00000024 $d
+C:\Users\fffff\AppData\Local\Temp\ccAYLMIt.s:195    .text.BMI088_ACCEL_NS_L:00000000 $t
+C:\Users\fffff\AppData\Local\Temp\ccAYLMIt.s:201    .text.BMI088_ACCEL_NS_L:00000000 BMI088_ACCEL_NS_L
+C:\Users\fffff\AppData\Local\Temp\ccAYLMIt.s:226    .text.BMI088_ACCEL_NS_L:00000014 $d
+C:\Users\fffff\AppData\Local\Temp\ccAYLMIt.s:231    .text.BMI088_ACCEL_NS_H:00000000 $t
+C:\Users\fffff\AppData\Local\Temp\ccAYLMIt.s:237    .text.BMI088_ACCEL_NS_H:00000000 BMI088_ACCEL_NS_H
+C:\Users\fffff\AppData\Local\Temp\ccAYLMIt.s:262    .text.BMI088_ACCEL_NS_H:00000014 $d
+C:\Users\fffff\AppData\Local\Temp\ccAYLMIt.s:267    .text.BMI088_GYRO_NS_L:00000000 $t
+C:\Users\fffff\AppData\Local\Temp\ccAYLMIt.s:273    .text.BMI088_GYRO_NS_L:00000000 BMI088_GYRO_NS_L
+C:\Users\fffff\AppData\Local\Temp\ccAYLMIt.s:298    .text.BMI088_GYRO_NS_L:00000014 $d
+C:\Users\fffff\AppData\Local\Temp\ccAYLMIt.s:303    .text.BMI088_GYRO_NS_H:00000000 $t
+C:\Users\fffff\AppData\Local\Temp\ccAYLMIt.s:309    .text.BMI088_GYRO_NS_H:00000000 BMI088_GYRO_NS_H
+C:\Users\fffff\AppData\Local\Temp\ccAYLMIt.s:334    .text.BMI088_GYRO_NS_H:00000014 $d
+C:\Users\fffff\AppData\Local\Temp\ccAYLMIt.s:339    .text.BMI088_read_write_byte:00000000 $t
+C:\Users\fffff\AppData\Local\Temp\ccAYLMIt.s:345    .text.BMI088_read_write_byte:00000000 BMI088_read_write_byte
+C:\Users\fffff\AppData\Local\Temp\ccAYLMIt.s:387    .text.BMI088_read_write_byte:00000028 $d
+
+UNDEFINED SYMBOLS
+HAL_Delay
+HAL_GPIO_WritePin
+HAL_SPI_TransmitReceive
+hspi2

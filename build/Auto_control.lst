@@ -1,0 +1,714 @@
+ARM GAS  C:\Users\23671\AppData\Local\Temp\ccPpZKId.s 			page 1
+
+
+   1              		.cpu cortex-m7
+   2              		.arch armv7e-m
+   3              		.fpu fpv5-d16
+   4              		.eabi_attribute 28, 1
+   5              		.eabi_attribute 20, 1
+   6              		.eabi_attribute 21, 1
+   7              		.eabi_attribute 23, 3
+   8              		.eabi_attribute 24, 1
+   9              		.eabi_attribute 25, 1
+  10              		.eabi_attribute 26, 1
+  11              		.eabi_attribute 30, 6
+  12              		.eabi_attribute 34, 1
+  13              		.eabi_attribute 18, 4
+  14              		.file	"Auto_control.c"
+  15              		.text
+  16              	.Ltext0:
+  17              		.cfi_sections	.debug_frame
+  18              		.file 1 "User/Software/Auto_control.c"
+  19              		.global	toMINIPC
+  20              		.section	.bss.toMINIPC,"aw",%nobits
+  21              		.align	2
+  24              	toMINIPC:
+  25 0000 00000000 		.space	20
+  25      00000000 
+  25      00000000 
+  25      00000000 
+  25      00000000 
+  26              		.global	fromMINIPC
+  27              		.section	.bss.fromMINIPC,"aw",%nobits
+  28              		.align	2
+  31              	fromMINIPC:
+  32 0000 00000000 		.space	14
+  32      00000000 
+  32      00000000 
+  32      0000
+  33              		.global	data
+  34              		.section	.bss.data,"aw",%nobits
+  35              		.align	2
+  38              	data:
+  39 0000 00000000 		.space	128
+  39      00000000 
+  39      00000000 
+  39      00000000 
+  39      00000000 
+  40              		.global	rx_data
+  41              		.section	.bss.rx_data,"aw",%nobits
+  42              		.align	2
+  45              	rx_data:
+  46 0000 00000000 		.space	100
+  46      00000000 
+  46      00000000 
+  46      00000000 
+  46      00000000 
+  47              		.section	.text.decodeMINIPCdata,"ax",%progbits
+  48              		.align	1
+  49              		.global	decodeMINIPCdata
+  50              		.syntax unified
+ARM GAS  C:\Users\23671\AppData\Local\Temp\ccPpZKId.s 			page 2
+
+
+  51              		.thumb
+  52              		.thumb_func
+  54              	decodeMINIPCdata:
+  55              	.LFB147:
+   1:User/Software/Auto_control.c **** #include "Auto_control.h"
+   2:User/Software/Auto_control.c **** #include "Global_status.h"
+   3:User/Software/Auto_control.c **** #include "Gimbal.h"
+   4:User/Software/Auto_control.c **** 
+   5:User/Software/Auto_control.c **** #include "IMU_updata.h"
+   6:User/Software/Auto_control.c **** #include "referee_system.h"
+   7:User/Software/Auto_control.c **** #include "UART_data_txrx.h"
+   8:User/Software/Auto_control.c **** 
+   9:User/Software/Auto_control.c **** #include "CRC8_CRC16.h"
+  10:User/Software/Auto_control.c **** #include "string.h"
+  11:User/Software/Auto_control.c **** 
+  12:User/Software/Auto_control.c **** STM32_data_t toMINIPC;
+  13:User/Software/Auto_control.c **** MINIPC_data_t fromMINIPC;
+  14:User/Software/Auto_control.c **** 
+  15:User/Software/Auto_control.c **** uint8_t data[128];
+  16:User/Software/Auto_control.c **** uint8_t rx_data[100];
+  17:User/Software/Auto_control.c **** 
+  18:User/Software/Auto_control.c **** void decodeMINIPCdata(MINIPC_data_t *target, unsigned char buff[], unsigned int len)
+  19:User/Software/Auto_control.c **** {
+  56              		.loc 1 19 1
+  57              		.cfi_startproc
+  58              		@ args = 0, pretend = 0, frame = 16
+  59              		@ frame_needed = 1, uses_anonymous_args = 0
+  60 0000 80B5     		push	{r7, lr}
+  61              	.LCFI0:
+  62              		.cfi_def_cfa_offset 8
+  63              		.cfi_offset 7, -8
+  64              		.cfi_offset 14, -4
+  65 0002 84B0     		sub	sp, sp, #16
+  66              	.LCFI1:
+  67              		.cfi_def_cfa_offset 24
+  68 0004 00AF     		add	r7, sp, #0
+  69              	.LCFI2:
+  70              		.cfi_def_cfa_register 7
+  71 0006 F860     		str	r0, [r7, #12]
+  72 0008 B960     		str	r1, [r7, #8]
+  73 000a 7A60     		str	r2, [r7, #4]
+  20:User/Software/Auto_control.c ****     memcpy(target, buff, len);
+  74              		.loc 1 20 5
+  75 000c 7A68     		ldr	r2, [r7, #4]
+  76 000e B968     		ldr	r1, [r7, #8]
+  77 0010 F868     		ldr	r0, [r7, #12]
+  78 0012 FFF7FEFF 		bl	memcpy
+  21:User/Software/Auto_control.c **** }
+  79              		.loc 1 21 1
+  80 0016 00BF     		nop
+  81 0018 1037     		adds	r7, r7, #16
+  82              	.LCFI3:
+  83              		.cfi_def_cfa_offset 8
+  84 001a BD46     		mov	sp, r7
+  85              	.LCFI4:
+  86              		.cfi_def_cfa_register 13
+  87              		@ sp needed
+ARM GAS  C:\Users\23671\AppData\Local\Temp\ccPpZKId.s 			page 3
+
+
+  88 001c 80BD     		pop	{r7, pc}
+  89              		.cfi_endproc
+  90              	.LFE147:
+  92              		.section	.text.encodeSTM32,"ax",%progbits
+  93              		.align	1
+  94              		.global	encodeSTM32
+  95              		.syntax unified
+  96              		.thumb
+  97              		.thumb_func
+  99              	encodeSTM32:
+ 100              	.LFB148:
+  22:User/Software/Auto_control.c **** 
+  23:User/Software/Auto_control.c **** int encodeSTM32(STM32_data_t *target, unsigned char tx_buff[], unsigned int len)
+  24:User/Software/Auto_control.c **** {
+ 101              		.loc 1 24 1
+ 102              		.cfi_startproc
+ 103              		@ args = 0, pretend = 0, frame = 16
+ 104              		@ frame_needed = 1, uses_anonymous_args = 0
+ 105 0000 80B5     		push	{r7, lr}
+ 106              	.LCFI5:
+ 107              		.cfi_def_cfa_offset 8
+ 108              		.cfi_offset 7, -8
+ 109              		.cfi_offset 14, -4
+ 110 0002 84B0     		sub	sp, sp, #16
+ 111              	.LCFI6:
+ 112              		.cfi_def_cfa_offset 24
+ 113 0004 00AF     		add	r7, sp, #0
+ 114              	.LCFI7:
+ 115              		.cfi_def_cfa_register 7
+ 116 0006 F860     		str	r0, [r7, #12]
+ 117 0008 B960     		str	r1, [r7, #8]
+ 118 000a 7A60     		str	r2, [r7, #4]
+  25:User/Software/Auto_control.c ****     memcpy(tx_buff, target, len);
+ 119              		.loc 1 25 5
+ 120 000c 7A68     		ldr	r2, [r7, #4]
+ 121 000e F968     		ldr	r1, [r7, #12]
+ 122 0010 B868     		ldr	r0, [r7, #8]
+ 123 0012 FFF7FEFF 		bl	memcpy
+  26:User/Software/Auto_control.c ****     return 0;
+ 124              		.loc 1 26 12
+ 125 0016 0023     		movs	r3, #0
+  27:User/Software/Auto_control.c **** }
+ 126              		.loc 1 27 1
+ 127 0018 1846     		mov	r0, r3
+ 128 001a 1037     		adds	r7, r7, #16
+ 129              	.LCFI8:
+ 130              		.cfi_def_cfa_offset 8
+ 131 001c BD46     		mov	sp, r7
+ 132              	.LCFI9:
+ 133              		.cfi_def_cfa_register 13
+ 134              		@ sp needed
+ 135 001e 80BD     		pop	{r7, pc}
+ 136              		.cfi_endproc
+ 137              	.LFE148:
+ 139              		.section	.text.STM32_to_MINIPC,"ax",%progbits
+ 140              		.align	1
+ 141              		.global	STM32_to_MINIPC
+ARM GAS  C:\Users\23671\AppData\Local\Temp\ccPpZKId.s 			page 4
+
+
+ 142              		.syntax unified
+ 143              		.thumb
+ 144              		.thumb_func
+ 146              	STM32_to_MINIPC:
+ 147              	.LFB149:
+  28:User/Software/Auto_control.c **** 
+  29:User/Software/Auto_control.c **** void STM32_to_MINIPC()
+  30:User/Software/Auto_control.c **** {
+ 148              		.loc 1 30 1
+ 149              		.cfi_startproc
+ 150              		@ args = 0, pretend = 0, frame = 0
+ 151              		@ frame_needed = 1, uses_anonymous_args = 0
+ 152 0000 2DE9F041 		push	{r4, r5, r6, r7, r8, lr}
+ 153              	.LCFI10:
+ 154              		.cfi_def_cfa_offset 24
+ 155              		.cfi_offset 4, -24
+ 156              		.cfi_offset 5, -20
+ 157              		.cfi_offset 6, -16
+ 158              		.cfi_offset 7, -12
+ 159              		.cfi_offset 8, -8
+ 160              		.cfi_offset 14, -4
+ 161 0004 2DED028B 		vpush.64	{d8}
+ 162              	.LCFI11:
+ 163              		.cfi_def_cfa_offset 32
+ 164              		.cfi_offset 80, -32
+ 165              		.cfi_offset 81, -28
+ 166 0008 C2B0     		sub	sp, sp, #264
+ 167              	.LCFI12:
+ 168              		.cfi_def_cfa_offset 296
+ 169 000a 42AF     		add	r7, sp, #264
+ 170              	.LCFI13:
+ 171              		.cfi_def_cfa 7, 32
+  31:User/Software/Auto_control.c ****     toMINIPC.FrameHeader.sof = 0xA5;
+ 172              		.loc 1 31 30
+ 173 000c 404B     		ldr	r3, .L7
+ 174 000e A522     		movs	r2, #165
+ 175 0010 1A70     		strb	r2, [r3]
+  32:User/Software/Auto_control.c ****     toMINIPC.FrameHeader.crc8 = 0x00;
+ 176              		.loc 1 32 31
+ 177 0012 3F4B     		ldr	r3, .L7
+ 178 0014 0022     		movs	r2, #0
+ 179 0016 5A70     		strb	r2, [r3, #1]
+  33:User/Software/Auto_control.c ****     toMINIPC.To_minipc_data.curr_pitch = IMU_data.AHRS.pitch;
+ 180              		.loc 1 33 55
+ 181 0018 3E4B     		ldr	r3, .L7+4
+ 182 001a D3F8A020 		ldr	r2, [r3, #160]	@ float
+ 183              		.loc 1 33 40
+ 184 001e 3C4B     		ldr	r3, .L7
+ 185 0020 C3F80620 		str	r2, [r3, #6]	@ unaligned
+  34:User/Software/Auto_control.c ****     toMINIPC.To_minipc_data.curr_yaw = IMU_data.AHRS.yaw;
+ 186              		.loc 1 34 53
+ 187 0024 3B4B     		ldr	r3, .L7+4
+ 188 0026 D3F8A420 		ldr	r2, [r3, #164]	@ float
+ 189              		.loc 1 34 38
+ 190 002a 394B     		ldr	r3, .L7
+ 191 002c C3F80220 		str	r2, [r3, #2]	@ unaligned
+  35:User/Software/Auto_control.c ****     toMINIPC.To_minipc_data.curr_omega = cos(IMU_data.AHRS.pitch) * IMU_data.gyro[2] - sin(IMU_data
+ARM GAS  C:\Users\23671\AppData\Local\Temp\ccPpZKId.s 			page 5
+
+
+ 192              		.loc 1 35 59
+ 193 0030 384B     		ldr	r3, .L7+4
+ 194 0032 D3ED287A 		vldr.32	s15, [r3, #160]
+ 195              		.loc 1 35 42
+ 196 0036 B7EEE77A 		vcvt.f64.f32	d7, s15
+ 197 003a B0EE470B 		vmov.f64	d0, d7
+ 198 003e FFF7FEFF 		bl	cos
+ 199 0042 B0EE406B 		vmov.f64	d6, d0
+ 200              		.loc 1 35 82 discriminator 1
+ 201 0046 334B     		ldr	r3, .L7+4
+ 202 0048 D3ED027A 		vldr.32	s15, [r3, #8]
+ 203 004c B7EEE77A 		vcvt.f64.f32	d7, s15
+ 204              		.loc 1 35 67 discriminator 1
+ 205 0050 26EE078B 		vmul.f64	d8, d6, d7
+ 206              		.loc 1 35 105 discriminator 1
+ 207 0054 2F4B     		ldr	r3, .L7+4
+ 208 0056 D3ED287A 		vldr.32	s15, [r3, #160]
+ 209              		.loc 1 35 88 discriminator 1
+ 210 005a B7EEE77A 		vcvt.f64.f32	d7, s15
+ 211 005e B0EE470B 		vmov.f64	d0, d7
+ 212 0062 FFF7FEFF 		bl	sin
+ 213 0066 B0EE406B 		vmov.f64	d6, d0
+ 214              		.loc 1 35 128 discriminator 2
+ 215 006a 2A4B     		ldr	r3, .L7+4
+ 216 006c D3ED017A 		vldr.32	s15, [r3, #4]
+ 217 0070 B7EEE77A 		vcvt.f64.f32	d7, s15
+ 218              		.loc 1 35 113 discriminator 2
+ 219 0074 26EE077B 		vmul.f64	d7, d6, d7
+ 220              		.loc 1 35 86 discriminator 2
+ 221 0078 38EE477B 		vsub.f64	d7, d8, d7
+ 222 007c F7EEC77B 		vcvt.f32.f64	s15, d7
+ 223              		.loc 1 35 40 discriminator 2
+ 224 0080 234B     		ldr	r3, .L7
+ 225 0082 17EE902A 		vmov	r2, s15
+ 226 0086 C3F80A20 		str	r2, [r3, #10]	@ unaligned
+  36:User/Software/Auto_control.c ****     toMINIPC.To_minipc_data.autoaim = 1;
+ 227              		.loc 1 36 37
+ 228 008a 214B     		ldr	r3, .L7
+ 229 008c 0122     		movs	r2, #1
+ 230 008e DA73     		strb	r2, [r3, #15]
+  37:User/Software/Auto_control.c ****     if (Referee_data.robot_id >= 100)
+ 231              		.loc 1 37 21
+ 232 0090 214B     		ldr	r3, .L7+8
+ 233 0092 1B79     		ldrb	r3, [r3, #4]	@ zero_extendqisi2
+ 234              		.loc 1 37 8
+ 235 0094 632B     		cmp	r3, #99
+ 236 0096 03D9     		bls	.L5
+  38:User/Software/Auto_control.c ****         toMINIPC.To_minipc_data.enemy_color = 1;
+ 237              		.loc 1 38 45
+ 238 0098 1D4B     		ldr	r3, .L7
+ 239 009a 0122     		movs	r2, #1
+ 240 009c 1A74     		strb	r2, [r3, #16]
+ 241 009e 02E0     		b	.L6
+ 242              	.L5:
+  39:User/Software/Auto_control.c ****     else
+  40:User/Software/Auto_control.c ****         toMINIPC.To_minipc_data.enemy_color = 0;
+ 243              		.loc 1 40 45
+ARM GAS  C:\Users\23671\AppData\Local\Temp\ccPpZKId.s 			page 6
+
+
+ 244 00a0 1B4B     		ldr	r3, .L7
+ 245 00a2 0022     		movs	r2, #0
+ 246 00a4 1A74     		strb	r2, [r3, #16]
+ 247              	.L6:
+  41:User/Software/Auto_control.c ****     toMINIPC.To_minipc_data.state = 0;
+ 248              		.loc 1 41 35
+ 249 00a6 1A4B     		ldr	r3, .L7
+ 250 00a8 0022     		movs	r2, #0
+ 251 00aa 9A73     		strb	r2, [r3, #14]
+  42:User/Software/Auto_control.c ****     toMINIPC.FrameTailer.crc16 = get_CRC16_check_sum((uint8_t *)&toMINIPC.FrameHeader.sof, 17, 0xff
+ 252              		.loc 1 42 34
+ 253 00ac 4FF6FF72 		movw	r2, #65535
+ 254 00b0 1121     		movs	r1, #17
+ 255 00b2 1748     		ldr	r0, .L7
+ 256 00b4 FFF7FEFF 		bl	get_CRC16_check_sum
+ 257 00b8 0346     		mov	r3, r0
+ 258 00ba 1A46     		mov	r2, r3
+ 259              		.loc 1 42 32 discriminator 1
+ 260 00bc 144B     		ldr	r3, .L7
+ 261 00be A3F81120 		strh	r2, [r3, #17]	@ unaligned
+  43:User/Software/Auto_control.c ****     toMINIPC.enter = 0x0A;
+ 262              		.loc 1 43 20
+ 263 00c2 134B     		ldr	r3, .L7
+ 264 00c4 0A22     		movs	r2, #10
+ 265 00c6 DA74     		strb	r2, [r3, #19]
+  44:User/Software/Auto_control.c ****     encodeSTM32(&toMINIPC, data, sizeof(STM32_data_t));
+ 266              		.loc 1 44 5
+ 267 00c8 1422     		movs	r2, #20
+ 268 00ca 1449     		ldr	r1, .L7+12
+ 269 00cc 1048     		ldr	r0, .L7
+ 270 00ce FFF7FEFF 		bl	encodeSTM32
+  45:User/Software/Auto_control.c ****     // VirCom_send(data, sizeof(STM32_data_t));
+  46:User/Software/Auto_control.c ****     UART_send_data(UART1_data, data, sizeof(STM32_data_t));
+ 271              		.loc 1 46 5
+ 272 00d2 134B     		ldr	r3, .L7+16
+ 273 00d4 1422     		movs	r2, #20
+ 274 00d6 4192     		str	r2, [sp, #260]
+ 275 00d8 104A     		ldr	r2, .L7+12
+ 276 00da 4092     		str	r2, [sp, #256]
+ 277 00dc 1A68     		ldr	r2, [r3]	@ unaligned
+ 278 00de 9046     		mov	r8, r2
+ 279 00e0 5A68     		ldr	r2, [r3, #4]	@ unaligned
+ 280 00e2 1646     		mov	r6, r2
+ 281 00e4 9A68     		ldr	r2, [r3, #8]	@ unaligned
+ 282 00e6 1546     		mov	r5, r2
+ 283 00e8 DA68     		ldr	r2, [r3, #12]	@ unaligned
+ 284 00ea 1446     		mov	r4, r2
+ 285 00ec 6846     		mov	r0, sp
+ 286 00ee 1033     		adds	r3, r3, #16
+ 287 00f0 FD22     		movs	r2, #253
+ 288 00f2 1946     		mov	r1, r3
+ 289 00f4 FFF7FEFF 		bl	memcpy
+ 290 00f8 4046     		mov	r0, r8
+ 291 00fa 3146     		mov	r1, r6
+ 292 00fc 2A46     		mov	r2, r5
+ 293 00fe 2346     		mov	r3, r4
+ 294 0100 FFF7FEFF 		bl	UART_send_data
+ARM GAS  C:\Users\23671\AppData\Local\Temp\ccPpZKId.s 			page 7
+
+
+  47:User/Software/Auto_control.c **** }
+ 295              		.loc 1 47 1
+ 296 0104 00BF     		nop
+ 297 0106 BD46     		mov	sp, r7
+ 298              	.LCFI14:
+ 299              		.cfi_def_cfa_register 13
+ 300              		@ sp needed
+ 301 0108 BDEC028B 		vldm	sp!, {d8}
+ 302              	.LCFI15:
+ 303              		.cfi_restore 80
+ 304              		.cfi_restore 81
+ 305              		.cfi_def_cfa_offset 24
+ 306 010c BDE8F081 		pop	{r4, r5, r6, r7, r8, pc}
+ 307              	.L8:
+ 308              		.align	2
+ 309              	.L7:
+ 310 0110 00000000 		.word	toMINIPC
+ 311 0114 00000000 		.word	IMU_data
+ 312 0118 00000000 		.word	Referee_data
+ 313 011c 00000000 		.word	data
+ 314 0120 00000000 		.word	UART1_data
+ 315              		.cfi_endproc
+ 316              	.LFE149:
+ 318              		.section	.text.MINIPC_to_STM32,"ax",%progbits
+ 319              		.align	1
+ 320              		.global	MINIPC_to_STM32
+ 321              		.syntax unified
+ 322              		.thumb
+ 323              		.thumb_func
+ 325              	MINIPC_to_STM32:
+ 326              	.LFB150:
+  48:User/Software/Auto_control.c **** 
+  49:User/Software/Auto_control.c **** void MINIPC_to_STM32()
+  50:User/Software/Auto_control.c **** {
+ 327              		.loc 1 50 1
+ 328              		.cfi_startproc
+ 329              		@ args = 0, pretend = 0, frame = 0
+ 330              		@ frame_needed = 1, uses_anonymous_args = 0
+ 331              		@ link register save eliminated.
+ 332 0000 80B4     		push	{r7}
+ 333              	.LCFI16:
+ 334              		.cfi_def_cfa_offset 4
+ 335              		.cfi_offset 7, -4
+ 336 0002 00AF     		add	r7, sp, #0
+ 337              	.LCFI17:
+ 338              		.cfi_def_cfa_register 7
+  51:User/Software/Auto_control.c ****     if (fromMINIPC.from_minipc_data.shoot_yaw == 0)
+ 339              		.loc 1 51 36
+ 340 0004 404B     		ldr	r3, .L22
+ 341 0006 D3F80230 		ldr	r3, [r3, #2]	@ unaligned
+ 342              		.loc 1 51 8
+ 343 000a 07EE903A 		vmov	s15, r3
+ 344 000e F5EE407A 		vcmp.f32	s15, #0
+ 345 0012 F1EE10FA 		vmrs	APSR_nzcv, FPSCR
+ 346 0016 72D0     		beq	.L21
+  52:User/Software/Auto_control.c ****         return;
+  53:User/Software/Auto_control.c ****     // static float pre_pitch, pre_yaw;
+ARM GAS  C:\Users\23671\AppData\Local\Temp\ccPpZKId.s 			page 8
+
+
+  54:User/Software/Auto_control.c ****     if (fabs(fromMINIPC.from_minipc_data.shoot_yaw - IMU_data.AHRS.yaw) > PI / 2.0f) // 过零点处理
+ 347              		.loc 1 54 41
+ 348 0018 3B4B     		ldr	r3, .L22
+ 349 001a D3F80220 		ldr	r2, [r3, #2]	@ unaligned
+ 350 001e 1346     		mov	r3, r2
+ 351 0020 1A46     		mov	r2, r3	@ float
+ 352              		.loc 1 54 67
+ 353 0022 3A4B     		ldr	r3, .L22+4
+ 354 0024 D3ED297A 		vldr.32	s15, [r3, #164]
+ 355              		.loc 1 54 52
+ 356 0028 07EE102A 		vmov	s14, r2
+ 357 002c 77EE677A 		vsub.f32	s15, s14, s15
+ 358              		.loc 1 54 9
+ 359 0030 F0EEE77A 		vabs.f32	s15, s15
+ 360              		.loc 1 54 8
+ 361 0034 9FED367A 		vldr.32	s14, .L22+8
+ 362 0038 F4EEC77A 		vcmpe.f32	s15, s14
+ 363 003c F1EE10FA 		vmrs	APSR_nzcv, FPSCR
+ 364 0040 34DD     		ble	.L12
+  55:User/Software/Auto_control.c ****     {
+  56:User/Software/Auto_control.c ****         if (fromMINIPC.from_minipc_data.shoot_yaw > PI / 2.0f)
+ 365              		.loc 1 56 40
+ 366 0042 314B     		ldr	r3, .L22
+ 367 0044 D3F80230 		ldr	r3, [r3, #2]	@ unaligned
+ 368              		.loc 1 56 12
+ 369 0048 DFED317A 		vldr.32	s15, .L22+8
+ 370 004c 07EE103A 		vmov	s14, r3
+ 371 0050 B4EEE77A 		vcmpe.f32	s14, s15
+ 372 0054 F1EE10FA 		vmrs	APSR_nzcv, FPSCR
+ 373 0058 0EDD     		ble	.L20
+  57:User/Software/Auto_control.c ****             fromMINIPC.from_minipc_data.shoot_yaw -= 2 * PI;
+ 374              		.loc 1 57 40
+ 375 005a 2B4B     		ldr	r3, .L22
+ 376 005c D3F80230 		ldr	r3, [r3, #2]	@ unaligned
+ 377              		.loc 1 57 51
+ 378 0060 DFED2C7A 		vldr.32	s15, .L22+12
+ 379 0064 07EE103A 		vmov	s14, r3
+ 380 0068 77EE677A 		vsub.f32	s15, s14, s15
+ 381 006c 264B     		ldr	r3, .L22
+ 382 006e 17EE902A 		vmov	r2, s15
+ 383 0072 C3F80220 		str	r2, [r3, #2]	@ unaligned
+ 384 0076 19E0     		b	.L12
+ 385              	.L20:
+  58:User/Software/Auto_control.c ****         else if (fromMINIPC.from_minipc_data.shoot_yaw < -PI / 2.0f)
+ 386              		.loc 1 58 45
+ 387 0078 234B     		ldr	r3, .L22
+ 388 007a D3F80230 		ldr	r3, [r3, #2]	@ unaligned
+ 389              		.loc 1 58 17
+ 390 007e DFED267A 		vldr.32	s15, .L22+16
+ 391 0082 07EE103A 		vmov	s14, r3
+ 392 0086 B4EEE77A 		vcmpe.f32	s14, s15
+ 393 008a F1EE10FA 		vmrs	APSR_nzcv, FPSCR
+ 394 008e 0DD5     		bpl	.L12
+  59:User/Software/Auto_control.c ****             fromMINIPC.from_minipc_data.shoot_yaw += 2 * PI;
+ 395              		.loc 1 59 40
+ 396 0090 1D4B     		ldr	r3, .L22
+ 397 0092 D3F80230 		ldr	r3, [r3, #2]	@ unaligned
+ARM GAS  C:\Users\23671\AppData\Local\Temp\ccPpZKId.s 			page 9
+
+
+ 398              		.loc 1 59 51
+ 399 0096 DFED1F7A 		vldr.32	s15, .L22+12
+ 400 009a 07EE103A 		vmov	s14, r3
+ 401 009e 77EE277A 		vadd.f32	s15, s14, s15
+ 402 00a2 194B     		ldr	r3, .L22
+ 403 00a4 17EE902A 		vmov	r2, s15
+ 404 00a8 C3F80220 		str	r2, [r3, #2]	@ unaligned
+ 405              	.L12:
+  60:User/Software/Auto_control.c ****     }
+  61:User/Software/Auto_control.c ****     Global.Auto.input.shoot_pitch = fromMINIPC.from_minipc_data.shoot_pitch - IMU_data.AHRS.pitch;
+ 406              		.loc 1 61 64
+ 407 00ac 164B     		ldr	r3, .L22
+ 408 00ae D3F80620 		ldr	r2, [r3, #6]	@ unaligned
+ 409 00b2 1346     		mov	r3, r2
+ 410 00b4 1A46     		mov	r2, r3	@ float
+ 411              		.loc 1 61 92
+ 412 00b6 154B     		ldr	r3, .L22+4
+ 413 00b8 D3ED287A 		vldr.32	s15, [r3, #160]
+ 414              		.loc 1 61 77
+ 415 00bc 07EE102A 		vmov	s14, r2
+ 416 00c0 77EE677A 		vsub.f32	s15, s14, s15
+ 417              		.loc 1 61 35
+ 418 00c4 154B     		ldr	r3, .L22+20
+ 419 00c6 C3ED0B7A 		vstr.32	s15, [r3, #44]
+  62:User/Software/Auto_control.c ****     Global.Auto.input.shoot_yaw = fromMINIPC.from_minipc_data.shoot_yaw - IMU_data.AHRS.yaw;
+ 420              		.loc 1 62 62
+ 421 00ca 0F4B     		ldr	r3, .L22
+ 422 00cc D3F80220 		ldr	r2, [r3, #2]	@ unaligned
+ 423 00d0 1346     		mov	r3, r2
+ 424 00d2 1A46     		mov	r2, r3	@ float
+ 425              		.loc 1 62 88
+ 426 00d4 0D4B     		ldr	r3, .L22+4
+ 427 00d6 D3ED297A 		vldr.32	s15, [r3, #164]
+ 428              		.loc 1 62 73
+ 429 00da 07EE102A 		vmov	s14, r2
+ 430 00de 77EE677A 		vsub.f32	s15, s14, s15
+ 431              		.loc 1 62 33
+ 432 00e2 0E4B     		ldr	r3, .L22+20
+ 433 00e4 C3ED0A7A 		vstr.32	s15, [r3, #40]
+  63:User/Software/Auto_control.c ****     Global.Auto.input.fire = fromMINIPC.from_minipc_data.fire;
+ 434              		.loc 1 63 57
+ 435 00e8 074B     		ldr	r3, .L22
+ 436 00ea 9A7A     		ldrb	r2, [r3, #10]	@ zero_extendqisi2
+ 437              		.loc 1 63 28
+ 438 00ec 0B4B     		ldr	r3, .L22+20
+ 439 00ee 83F83420 		strb	r2, [r3, #52]
+  64:User/Software/Auto_control.c ****     Global.Auto.input.target_id = fromMINIPC.from_minipc_data.target_id;
+ 440              		.loc 1 64 62
+ 441 00f2 054B     		ldr	r3, .L22
+ 442 00f4 DA7A     		ldrb	r2, [r3, #11]	@ zero_extendqisi2
+ 443              		.loc 1 64 33
+ 444 00f6 094B     		ldr	r3, .L22+20
+ 445 00f8 83F83520 		strb	r2, [r3, #53]
+ 446 00fc 00E0     		b	.L9
+ 447              	.L21:
+  52:User/Software/Auto_control.c ****     // static float pre_pitch, pre_yaw;
+ 448              		.loc 1 52 9
+ARM GAS  C:\Users\23671\AppData\Local\Temp\ccPpZKId.s 			page 10
+
+
+ 449 00fe 00BF     		nop
+ 450              	.L9:
+  65:User/Software/Auto_control.c **** }
+ 451              		.loc 1 65 1
+ 452 0100 BD46     		mov	sp, r7
+ 453              	.LCFI18:
+ 454              		.cfi_def_cfa_register 13
+ 455              		@ sp needed
+ 456 0102 5DF8047B 		ldr	r7, [sp], #4
+ 457              	.LCFI19:
+ 458              		.cfi_restore 7
+ 459              		.cfi_def_cfa_offset 0
+ 460 0106 7047     		bx	lr
+ 461              	.L23:
+ 462              		.align	2
+ 463              	.L22:
+ 464 0108 00000000 		.word	fromMINIPC
+ 465 010c 00000000 		.word	IMU_data
+ 466 0110 DA0FC93F 		.word	1070141402
+ 467 0114 DA0FC940 		.word	1086918618
+ 468 0118 DA0FC9BF 		.word	-1077342246
+ 469 011c 00000000 		.word	Global
+ 470              		.cfi_endproc
+ 471              	.LFE150:
+ 473              		.section	.text.Auto_control,"ax",%progbits
+ 474              		.align	1
+ 475              		.global	Auto_control
+ 476              		.syntax unified
+ 477              		.thumb
+ 478              		.thumb_func
+ 480              	Auto_control:
+ 481              	.LFB151:
+  66:User/Software/Auto_control.c **** 
+  67:User/Software/Auto_control.c **** void Auto_control()
+  68:User/Software/Auto_control.c **** {
+ 482              		.loc 1 68 1
+ 483              		.cfi_startproc
+ 484              		@ args = 0, pretend = 0, frame = 0
+ 485              		@ frame_needed = 1, uses_anonymous_args = 0
+ 486 0000 80B5     		push	{r7, lr}
+ 487              	.LCFI20:
+ 488              		.cfi_def_cfa_offset 8
+ 489              		.cfi_offset 7, -8
+ 490              		.cfi_offset 14, -4
+ 491 0002 00AF     		add	r7, sp, #0
+ 492              	.LCFI21:
+ 493              		.cfi_def_cfa_register 7
+  69:User/Software/Auto_control.c ****     // if (Global.Auto.input.Auto_control_online >= 1)
+  70:User/Software/Auto_control.c ****     //{
+  71:User/Software/Auto_control.c ****     Gimbal_set_yaw_angle((180.0 / 3.14159265358979323846) * IMU_data.AHRS.yaw_rad_cnt + (180.0 / 3.
+ 494              		.loc 1 71 74
+ 495 0004 1C4B     		ldr	r3, .L25+8
+ 496 0006 D3ED2D7A 		vldr.32	s15, [r3, #180]
+ 497 000a B7EEE77A 		vcvt.f64.f32	d7, s15
+ 498              		.loc 1 71 59
+ 499 000e 9FED186B 		vldr.64	d6, .L25
+ 500 0012 27EE066B 		vmul.f64	d6, d7, d6
+ARM GAS  C:\Users\23671\AppData\Local\Temp\ccPpZKId.s 			page 11
+
+
+ 501              		.loc 1 71 142
+ 502 0016 194B     		ldr	r3, .L25+12
+ 503 0018 D3ED0A7A 		vldr.32	s15, [r3, #40]
+ 504 001c B7EEE77A 		vcvt.f64.f32	d7, s15
+ 505              		.loc 1 71 122
+ 506 0020 9FED135B 		vldr.64	d5, .L25
+ 507 0024 27EE057B 		vmul.f64	d7, d7, d5
+ 508              		.loc 1 71 87
+ 509 0028 36EE077B 		vadd.f64	d7, d6, d7
+ 510              		.loc 1 71 5
+ 511 002c F7EEC77B 		vcvt.f32.f64	s15, d7
+ 512 0030 B0EE670A 		vmov.f32	s0, s15
+ 513 0034 FFF7FEFF 		bl	Gimbal_set_yaw_angle
+  72:User/Software/Auto_control.c ****     Gimbal_set_pitch_angle((180.0 / 3.14159265358979323846) * IMU_data.AHRS.pitch + (180.0 / 3.1415
+ 514              		.loc 1 72 76
+ 515 0038 0F4B     		ldr	r3, .L25+8
+ 516 003a D3ED287A 		vldr.32	s15, [r3, #160]
+ 517 003e B7EEE77A 		vcvt.f64.f32	d7, s15
+ 518              		.loc 1 72 61
+ 519 0042 9FED0B6B 		vldr.64	d6, .L25
+ 520 0046 27EE066B 		vmul.f64	d6, d7, d6
+ 521              		.loc 1 72 138
+ 522 004a 0C4B     		ldr	r3, .L25+12
+ 523 004c D3ED0B7A 		vldr.32	s15, [r3, #44]
+ 524 0050 B7EEE77A 		vcvt.f64.f32	d7, s15
+ 525              		.loc 1 72 118
+ 526 0054 9FED065B 		vldr.64	d5, .L25
+ 527 0058 27EE057B 		vmul.f64	d7, d7, d5
+ 528              		.loc 1 72 83
+ 529 005c 36EE077B 		vadd.f64	d7, d6, d7
+ 530              		.loc 1 72 5
+ 531 0060 F7EEC77B 		vcvt.f32.f64	s15, d7
+ 532 0064 B0EE670A 		vmov.f32	s0, s15
+ 533 0068 FFF7FEFF 		bl	Gimbal_set_pitch_angle
+  73:User/Software/Auto_control.c ****     // Global.Auto.input.Auto_control_online = 0;
+  74:User/Software/Auto_control.c ****     //}
+  75:User/Software/Auto_control.c **** }
+ 534              		.loc 1 75 1
+ 535 006c 00BF     		nop
+ 536 006e 80BD     		pop	{r7, pc}
+ 537              	.L26:
+ 538              		.align	3
+ 539              	.L25:
+ 540 0070 F8C1631A 		.word	442745336
+ 541 0074 DCA54C40 		.word	1078765020
+ 542 0078 00000000 		.word	IMU_data
+ 543 007c 00000000 		.word	Global
+ 544              		.cfi_endproc
+ 545              	.LFE151:
+ 547              		.text
+ 548              	.Letext0:
+ 549              		.file 2 "D:/MSYS2/mingw64/arm-none-eabi/include/machine/_default_types.h"
+ 550              		.file 3 "D:/MSYS2/mingw64/arm-none-eabi/include/sys/_stdint.h"
+ 551              		.file 4 "User/Software/Auto_control.h"
+ 552              		.file 5 "User/Software/Global_status.h"
+ 553              		.file 6 "Drivers/CMSIS/Device/ST/STM32H7xx/Include/stm32h723xx.h"
+ 554              		.file 7 "D:/MSYS2/mingw64/lib/gcc/arm-none-eabi/13.3.0/include/stddef.h"
+ARM GAS  C:\Users\23671\AppData\Local\Temp\ccPpZKId.s 			page 12
+
+
+ 555              		.file 8 "Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal_def.h"
+ 556              		.file 9 "Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal_dma.h"
+ 557              		.file 10 "Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal_uart.h"
+ 558              		.file 11 "Core/Inc/struct_typedef.h"
+ 559              		.file 12 "Algorithm/Kalman_Filter_c.h"
+ 560              		.file 13 "User/Hardware/IMU_updata.h"
+ 561              		.file 14 "User/Hardware/referee_system.h"
+ 562              		.file 15 "User/BSP/UART_data_txrx.h"
+ 563              		.file 16 "User/Software/Gimbal.h"
+ 564              		.file 17 "D:/MSYS2/mingw64/arm-none-eabi/include/math.h"
+ 565              		.file 18 "Algorithm/CRC8_CRC16.h"
+ 566              		.file 19 "D:/MSYS2/mingw64/arm-none-eabi/include/string.h"
+ARM GAS  C:\Users\23671\AppData\Local\Temp\ccPpZKId.s 			page 13
+
+
+DEFINED SYMBOLS
+                            *ABS*:00000000 Auto_control.c
+C:\Users\23671\AppData\Local\Temp\ccPpZKId.s:24     .bss.toMINIPC:00000000 toMINIPC
+C:\Users\23671\AppData\Local\Temp\ccPpZKId.s:21     .bss.toMINIPC:00000000 $d
+C:\Users\23671\AppData\Local\Temp\ccPpZKId.s:31     .bss.fromMINIPC:00000000 fromMINIPC
+C:\Users\23671\AppData\Local\Temp\ccPpZKId.s:28     .bss.fromMINIPC:00000000 $d
+C:\Users\23671\AppData\Local\Temp\ccPpZKId.s:38     .bss.data:00000000 data
+C:\Users\23671\AppData\Local\Temp\ccPpZKId.s:35     .bss.data:00000000 $d
+C:\Users\23671\AppData\Local\Temp\ccPpZKId.s:45     .bss.rx_data:00000000 rx_data
+C:\Users\23671\AppData\Local\Temp\ccPpZKId.s:42     .bss.rx_data:00000000 $d
+C:\Users\23671\AppData\Local\Temp\ccPpZKId.s:48     .text.decodeMINIPCdata:00000000 $t
+C:\Users\23671\AppData\Local\Temp\ccPpZKId.s:54     .text.decodeMINIPCdata:00000000 decodeMINIPCdata
+C:\Users\23671\AppData\Local\Temp\ccPpZKId.s:93     .text.encodeSTM32:00000000 $t
+C:\Users\23671\AppData\Local\Temp\ccPpZKId.s:99     .text.encodeSTM32:00000000 encodeSTM32
+C:\Users\23671\AppData\Local\Temp\ccPpZKId.s:140    .text.STM32_to_MINIPC:00000000 $t
+C:\Users\23671\AppData\Local\Temp\ccPpZKId.s:146    .text.STM32_to_MINIPC:00000000 STM32_to_MINIPC
+C:\Users\23671\AppData\Local\Temp\ccPpZKId.s:310    .text.STM32_to_MINIPC:00000110 $d
+C:\Users\23671\AppData\Local\Temp\ccPpZKId.s:319    .text.MINIPC_to_STM32:00000000 $t
+C:\Users\23671\AppData\Local\Temp\ccPpZKId.s:325    .text.MINIPC_to_STM32:00000000 MINIPC_to_STM32
+C:\Users\23671\AppData\Local\Temp\ccPpZKId.s:464    .text.MINIPC_to_STM32:00000108 $d
+C:\Users\23671\AppData\Local\Temp\ccPpZKId.s:474    .text.Auto_control:00000000 $t
+C:\Users\23671\AppData\Local\Temp\ccPpZKId.s:480    .text.Auto_control:00000000 Auto_control
+C:\Users\23671\AppData\Local\Temp\ccPpZKId.s:540    .text.Auto_control:00000070 $d
+
+UNDEFINED SYMBOLS
+memcpy
+cos
+sin
+get_CRC16_check_sum
+UART_send_data
+IMU_data
+Referee_data
+UART1_data
+Global
+Gimbal_set_yaw_angle
+Gimbal_set_pitch_angle

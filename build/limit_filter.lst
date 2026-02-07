@@ -1,0 +1,1056 @@
+ARM GAS  C:\Users\fffff\AppData\Local\Temp\ccKQEgif.s 			page 1
+
+
+   1              		.cpu cortex-m7
+   2              		.arch armv7e-m
+   3              		.fpu fpv5-d16
+   4              		.eabi_attribute 28, 1
+   5              		.eabi_attribute 20, 1
+   6              		.eabi_attribute 21, 1
+   7              		.eabi_attribute 23, 3
+   8              		.eabi_attribute 24, 1
+   9              		.eabi_attribute 25, 1
+  10              		.eabi_attribute 26, 1
+  11              		.eabi_attribute 30, 6
+  12              		.eabi_attribute 34, 1
+  13              		.eabi_attribute 18, 4
+  14              		.file	"limit_filter.c"
+  15              		.text
+  16              	.Ltext0:
+  17              		.cfi_sections	.debug_frame
+  18              		.file 1 "User/Software/limit_filter.c"
+  19              		.global	data_0_ramp
+  20              		.section	.bss.data_0_ramp,"aw",%nobits
+  21              		.align	2
+  24              	data_0_ramp:
+  25 0000 00000000 		.space	28
+  25      00000000 
+  25      00000000 
+  25      00000000 
+  25      00000000 
+  26              		.global	data_1_ramp
+  27              		.section	.bss.data_1_ramp,"aw",%nobits
+  28              		.align	2
+  31              	data_1_ramp:
+  32 0000 00000000 		.space	28
+  32      00000000 
+  32      00000000 
+  32      00000000 
+  32      00000000 
+  33              		.global	data_2_ramp
+  34              		.section	.bss.data_2_ramp,"aw",%nobits
+  35              		.align	2
+  38              	data_2_ramp:
+  39 0000 00000000 		.space	28
+  39      00000000 
+  39      00000000 
+  39      00000000 
+  39      00000000 
+  40              		.global	data_3_ramp
+  41              		.section	.bss.data_3_ramp,"aw",%nobits
+  42              		.align	2
+  45              	data_3_ramp:
+  46 0000 00000000 		.space	28
+  46      00000000 
+  46      00000000 
+  46      00000000 
+  46      00000000 
+  47              		.global	data_4_ramp
+  48              		.section	.bss.data_4_ramp,"aw",%nobits
+  49              		.align	2
+ARM GAS  C:\Users\fffff\AppData\Local\Temp\ccKQEgif.s 			page 2
+
+
+  52              	data_4_ramp:
+  53 0000 00000000 		.space	28
+  53      00000000 
+  53      00000000 
+  53      00000000 
+  53      00000000 
+  54              		.global	data_5_ramp
+  55              		.section	.bss.data_5_ramp,"aw",%nobits
+  56              		.align	2
+  59              	data_5_ramp:
+  60 0000 00000000 		.space	28
+  60      00000000 
+  60      00000000 
+  60      00000000 
+  60      00000000 
+  61              		.global	data_6_ramp
+  62              		.section	.bss.data_6_ramp,"aw",%nobits
+  63              		.align	2
+  66              	data_6_ramp:
+  67 0000 00000000 		.space	28
+  67      00000000 
+  67      00000000 
+  67      00000000 
+  67      00000000 
+  68              		.global	data_7_ramp
+  69              		.section	.bss.data_7_ramp,"aw",%nobits
+  70              		.align	2
+  73              	data_7_ramp:
+  74 0000 00000000 		.space	28
+  74      00000000 
+  74      00000000 
+  74      00000000 
+  74      00000000 
+  75              		.section	.bss.static_filtered_data,"aw",%nobits
+  76              		.align	2
+  79              	static_filtered_data:
+  80 0000 00000000 		.space	32
+  80      00000000 
+  80      00000000 
+  80      00000000 
+  80      00000000 
+  81              		.global	smoothed_data
+  82              		.section	.bss.smoothed_data,"aw",%nobits
+  83              		.align	2
+  86              	smoothed_data:
+  87 0000 00000000 		.space	32
+  87      00000000 
+  87      00000000 
+  87      00000000 
+  87      00000000 
+  88              		.section	.text.limit_filter_init,"ax",%progbits
+  89              		.align	1
+  90              		.global	limit_filter_init
+  91              		.syntax unified
+  92              		.thumb
+  93              		.thumb_func
+  95              	limit_filter_init:
+ARM GAS  C:\Users\fffff\AppData\Local\Temp\ccKQEgif.s 			page 3
+
+
+  96              	.LFB147:
+   1:User/Software/limit_filter.c **** #include "limit_filter.h"
+   2:User/Software/limit_filter.c **** #include <math.h>
+   3:User/Software/limit_filter.c **** #include "referee_system.h"
+   4:User/Software/limit_filter.c **** #include "ramp_generator.h"
+   5:User/Software/limit_filter.c **** 
+   6:User/Software/limit_filter.c **** // 限幅阈值（可以根据实际情况调整）
+   7:User/Software/limit_filter.c **** #define THRESHOLD_DATA_0 2.0f
+   8:User/Software/limit_filter.c **** #define THRESHOLD_DATA_1 2.0f
+   9:User/Software/limit_filter.c **** #define THRESHOLD_DATA_2 2.0f
+  10:User/Software/limit_filter.c **** #define THRESHOLD_DATA_3 2.0f
+  11:User/Software/limit_filter.c **** #define THRESHOLD_DATA_4 2.0f
+  12:User/Software/limit_filter.c **** #define THRESHOLD_DATA_5 1000.0f
+  13:User/Software/limit_filter.c **** #define THRESHOLD_DATA_6 2.0f
+  14:User/Software/limit_filter.c **** #define THRESHOLD_DATA_7 100
+  15:User/Software/limit_filter.c **** // 定义斜坡发生器实例，每个需要平滑的数据字段对应一个
+  16:User/Software/limit_filter.c **** RampGenerator data_0_ramp;
+  17:User/Software/limit_filter.c **** RampGenerator data_1_ramp;
+  18:User/Software/limit_filter.c **** RampGenerator data_2_ramp;
+  19:User/Software/limit_filter.c **** RampGenerator data_3_ramp;
+  20:User/Software/limit_filter.c **** RampGenerator data_4_ramp;
+  21:User/Software/limit_filter.c **** RampGenerator data_5_ramp;
+  22:User/Software/limit_filter.c **** RampGenerator data_6_ramp;
+  23:User/Software/limit_filter.c **** RampGenerator data_7_ramp;
+  24:User/Software/limit_filter.c **** // 全局滤波变量
+  25:User/Software/limit_filter.c **** static ext_custom_robot_data_t static_filtered_data;
+  26:User/Software/limit_filter.c **** smoothed_robot_data_t smoothed_data;
+  27:User/Software/limit_filter.c **** // 初始化限幅滤波器
+  28:User/Software/limit_filter.c **** void limit_filter_init(ext_custom_robot_data_t* filtered_data)
+  29:User/Software/limit_filter.c **** {
+  97              		.loc 1 29 1
+  98              		.cfi_startproc
+  99              		@ args = 0, pretend = 0, frame = 8
+ 100              		@ frame_needed = 1, uses_anonymous_args = 0
+ 101              		@ link register save eliminated.
+ 102 0000 80B4     		push	{r7}
+ 103              	.LCFI0:
+ 104              		.cfi_def_cfa_offset 4
+ 105              		.cfi_offset 7, -4
+ 106 0002 83B0     		sub	sp, sp, #12
+ 107              	.LCFI1:
+ 108              		.cfi_def_cfa_offset 16
+ 109 0004 00AF     		add	r7, sp, #0
+ 110              	.LCFI2:
+ 111              		.cfi_def_cfa_register 7
+ 112 0006 7860     		str	r0, [r7, #4]
+  30:User/Software/limit_filter.c ****     static_filtered_data.data_0 = filtered_data->data_0;
+ 113              		.loc 1 30 48
+ 114 0008 7B68     		ldr	r3, [r7, #4]
+ 115 000a 1B68     		ldr	r3, [r3]	@ float
+ 116              		.loc 1 30 33
+ 117 000c 124A     		ldr	r2, .L2
+ 118 000e 1360     		str	r3, [r2]	@ float
+  31:User/Software/limit_filter.c ****     static_filtered_data.data_1 = filtered_data->data_1;
+ 119              		.loc 1 31 48
+ 120 0010 7B68     		ldr	r3, [r7, #4]
+ 121 0012 5B68     		ldr	r3, [r3, #4]	@ float
+ARM GAS  C:\Users\fffff\AppData\Local\Temp\ccKQEgif.s 			page 4
+
+
+ 122              		.loc 1 31 33
+ 123 0014 104A     		ldr	r2, .L2
+ 124 0016 5360     		str	r3, [r2, #4]	@ float
+  32:User/Software/limit_filter.c ****     static_filtered_data.data_2 = filtered_data->data_2;
+ 125              		.loc 1 32 48
+ 126 0018 7B68     		ldr	r3, [r7, #4]
+ 127 001a 9B68     		ldr	r3, [r3, #8]	@ float
+ 128              		.loc 1 32 33
+ 129 001c 0E4A     		ldr	r2, .L2
+ 130 001e 9360     		str	r3, [r2, #8]	@ float
+  33:User/Software/limit_filter.c ****     static_filtered_data.data_3 = filtered_data->data_3;
+ 131              		.loc 1 33 48
+ 132 0020 7B68     		ldr	r3, [r7, #4]
+ 133 0022 DB68     		ldr	r3, [r3, #12]	@ float
+ 134              		.loc 1 33 33
+ 135 0024 0C4A     		ldr	r2, .L2
+ 136 0026 D360     		str	r3, [r2, #12]	@ float
+  34:User/Software/limit_filter.c ****     static_filtered_data.data_4 = filtered_data->data_4;
+ 137              		.loc 1 34 48
+ 138 0028 7B68     		ldr	r3, [r7, #4]
+ 139 002a 1B69     		ldr	r3, [r3, #16]	@ float
+ 140              		.loc 1 34 33
+ 141 002c 0A4A     		ldr	r2, .L2
+ 142 002e 1361     		str	r3, [r2, #16]	@ float
+  35:User/Software/limit_filter.c ****     static_filtered_data.data_5 = filtered_data->data_5;
+ 143              		.loc 1 35 48
+ 144 0030 7B68     		ldr	r3, [r7, #4]
+ 145 0032 5B69     		ldr	r3, [r3, #20]	@ float
+ 146              		.loc 1 35 33
+ 147 0034 084A     		ldr	r2, .L2
+ 148 0036 5361     		str	r3, [r2, #20]	@ float
+  36:User/Software/limit_filter.c ****     static_filtered_data.data_6 = filtered_data->data_6;
+ 149              		.loc 1 36 48
+ 150 0038 7B68     		ldr	r3, [r7, #4]
+ 151 003a 9B69     		ldr	r3, [r3, #24]	@ float
+ 152              		.loc 1 36 33
+ 153 003c 064A     		ldr	r2, .L2
+ 154 003e 9361     		str	r3, [r2, #24]	@ float
+  37:User/Software/limit_filter.c ****     static_filtered_data.data_7 = filtered_data->data_7;
+ 155              		.loc 1 37 48
+ 156 0040 7B68     		ldr	r3, [r7, #4]
+ 157 0042 B3F91C20 		ldrsh	r2, [r3, #28]
+ 158              		.loc 1 37 33
+ 159 0046 044B     		ldr	r3, .L2
+ 160 0048 9A83     		strh	r2, [r3, #28]	@ movhi
+  38:User/Software/limit_filter.c **** 
+  39:User/Software/limit_filter.c **** 
+  40:User/Software/limit_filter.c **** }
+ 161              		.loc 1 40 1
+ 162 004a 00BF     		nop
+ 163 004c 0C37     		adds	r7, r7, #12
+ 164              	.LCFI3:
+ 165              		.cfi_def_cfa_offset 4
+ 166 004e BD46     		mov	sp, r7
+ 167              	.LCFI4:
+ 168              		.cfi_def_cfa_register 13
+ 169              		@ sp needed
+ARM GAS  C:\Users\fffff\AppData\Local\Temp\ccKQEgif.s 			page 5
+
+
+ 170 0050 5DF8047B 		ldr	r7, [sp], #4
+ 171              	.LCFI5:
+ 172              		.cfi_restore 7
+ 173              		.cfi_def_cfa_offset 0
+ 174 0054 7047     		bx	lr
+ 175              	.L3:
+ 176 0056 00BF     		.align	2
+ 177              	.L2:
+ 178 0058 00000000 		.word	static_filtered_data
+ 179              		.cfi_endproc
+ 180              	.LFE147:
+ 182              		.section	.text.update_limit_filter,"ax",%progbits
+ 183              		.align	1
+ 184              		.global	update_limit_filter
+ 185              		.syntax unified
+ 186              		.thumb
+ 187              		.thumb_func
+ 189              	update_limit_filter:
+ 190              	.LFB148:
+  41:User/Software/limit_filter.c **** 
+  42:User/Software/limit_filter.c **** // 更新限幅滤波器
+  43:User/Software/limit_filter.c **** void update_limit_filter(ext_custom_robot_data_t* raw_data, ext_custom_robot_data_t* filtered_data)
+  44:User/Software/limit_filter.c **** {
+ 191              		.loc 1 44 1
+ 192              		.cfi_startproc
+ 193              		@ args = 0, pretend = 0, frame = 8
+ 194              		@ frame_needed = 1, uses_anonymous_args = 0
+ 195              		@ link register save eliminated.
+ 196 0000 B0B4     		push	{r4, r5, r7}
+ 197              	.LCFI6:
+ 198              		.cfi_def_cfa_offset 12
+ 199              		.cfi_offset 4, -12
+ 200              		.cfi_offset 5, -8
+ 201              		.cfi_offset 7, -4
+ 202 0002 83B0     		sub	sp, sp, #12
+ 203              	.LCFI7:
+ 204              		.cfi_def_cfa_offset 24
+ 205 0004 00AF     		add	r7, sp, #0
+ 206              	.LCFI8:
+ 207              		.cfi_def_cfa_register 7
+ 208 0006 7860     		str	r0, [r7, #4]
+ 209 0008 3960     		str	r1, [r7]
+  45:User/Software/limit_filter.c ****     // 对 data_0 应用限幅滤波
+  46:User/Software/limit_filter.c ****     if (fabs(raw_data->data_0 - static_filtered_data.data_0) <= THRESHOLD_DATA_0)
+ 210              		.loc 1 46 22
+ 211 000a 7B68     		ldr	r3, [r7, #4]
+ 212 000c 93ED007A 		vldr.32	s14, [r3]
+ 213              		.loc 1 46 53
+ 214 0010 5C4B     		ldr	r3, .L27
+ 215 0012 D3ED007A 		vldr.32	s15, [r3]
+ 216              		.loc 1 46 31
+ 217 0016 77EE677A 		vsub.f32	s15, s14, s15
+ 218              		.loc 1 46 9
+ 219 001a F0EEE77A 		vabs.f32	s15, s15
+ 220              		.loc 1 46 8
+ 221 001e B0EE007A 		vmov.f32	s14, #2.0e+0
+ 222 0022 F4EEC77A 		vcmpe.f32	s15, s14
+ARM GAS  C:\Users\fffff\AppData\Local\Temp\ccKQEgif.s 			page 6
+
+
+ 223 0026 F1EE10FA 		vmrs	APSR_nzcv, FPSCR
+ 224 002a 03D8     		bhi	.L5
+  47:User/Software/limit_filter.c ****     {
+  48:User/Software/limit_filter.c ****         static_filtered_data.data_0 = raw_data->data_0;
+ 225              		.loc 1 48 47
+ 226 002c 7B68     		ldr	r3, [r7, #4]
+ 227 002e 1B68     		ldr	r3, [r3]	@ float
+ 228              		.loc 1 48 37
+ 229 0030 544A     		ldr	r2, .L27
+ 230 0032 1360     		str	r3, [r2]	@ float
+ 231              	.L5:
+  49:User/Software/limit_filter.c ****     }
+  50:User/Software/limit_filter.c **** 
+  51:User/Software/limit_filter.c ****     // 对 data_1 应用限幅滤波
+  52:User/Software/limit_filter.c ****     if (fabs(raw_data->data_1 - static_filtered_data.data_1) <= THRESHOLD_DATA_1)
+ 232              		.loc 1 52 22
+ 233 0034 7B68     		ldr	r3, [r7, #4]
+ 234 0036 93ED017A 		vldr.32	s14, [r3, #4]
+ 235              		.loc 1 52 53
+ 236 003a 524B     		ldr	r3, .L27
+ 237 003c D3ED017A 		vldr.32	s15, [r3, #4]
+ 238              		.loc 1 52 31
+ 239 0040 77EE677A 		vsub.f32	s15, s14, s15
+ 240              		.loc 1 52 9
+ 241 0044 F0EEE77A 		vabs.f32	s15, s15
+ 242              		.loc 1 52 8
+ 243 0048 B0EE007A 		vmov.f32	s14, #2.0e+0
+ 244 004c F4EEC77A 		vcmpe.f32	s15, s14
+ 245 0050 F1EE10FA 		vmrs	APSR_nzcv, FPSCR
+ 246 0054 03D8     		bhi	.L7
+  53:User/Software/limit_filter.c ****     {
+  54:User/Software/limit_filter.c ****         static_filtered_data.data_1 = raw_data->data_1;
+ 247              		.loc 1 54 47
+ 248 0056 7B68     		ldr	r3, [r7, #4]
+ 249 0058 5B68     		ldr	r3, [r3, #4]	@ float
+ 250              		.loc 1 54 37
+ 251 005a 4A4A     		ldr	r2, .L27
+ 252 005c 5360     		str	r3, [r2, #4]	@ float
+ 253              	.L7:
+  55:User/Software/limit_filter.c ****     }
+  56:User/Software/limit_filter.c **** 
+  57:User/Software/limit_filter.c ****     // 对 data_2 应用限幅滤波
+  58:User/Software/limit_filter.c ****     if (fabs(raw_data->data_2 - static_filtered_data.data_2) <= THRESHOLD_DATA_2)
+ 254              		.loc 1 58 22
+ 255 005e 7B68     		ldr	r3, [r7, #4]
+ 256 0060 93ED027A 		vldr.32	s14, [r3, #8]
+ 257              		.loc 1 58 53
+ 258 0064 474B     		ldr	r3, .L27
+ 259 0066 D3ED027A 		vldr.32	s15, [r3, #8]
+ 260              		.loc 1 58 31
+ 261 006a 77EE677A 		vsub.f32	s15, s14, s15
+ 262              		.loc 1 58 9
+ 263 006e F0EEE77A 		vabs.f32	s15, s15
+ 264              		.loc 1 58 8
+ 265 0072 B0EE007A 		vmov.f32	s14, #2.0e+0
+ 266 0076 F4EEC77A 		vcmpe.f32	s15, s14
+ 267 007a F1EE10FA 		vmrs	APSR_nzcv, FPSCR
+ARM GAS  C:\Users\fffff\AppData\Local\Temp\ccKQEgif.s 			page 7
+
+
+ 268 007e 03D8     		bhi	.L9
+  59:User/Software/limit_filter.c ****     {
+  60:User/Software/limit_filter.c ****         static_filtered_data.data_2 = raw_data->data_2;
+ 269              		.loc 1 60 47
+ 270 0080 7B68     		ldr	r3, [r7, #4]
+ 271 0082 9B68     		ldr	r3, [r3, #8]	@ float
+ 272              		.loc 1 60 37
+ 273 0084 3F4A     		ldr	r2, .L27
+ 274 0086 9360     		str	r3, [r2, #8]	@ float
+ 275              	.L9:
+  61:User/Software/limit_filter.c ****     }
+  62:User/Software/limit_filter.c **** 
+  63:User/Software/limit_filter.c ****     // 对 data_3 应用限幅滤波
+  64:User/Software/limit_filter.c ****     if (fabs(raw_data->data_3 - static_filtered_data.data_3) <= THRESHOLD_DATA_3)
+ 276              		.loc 1 64 22
+ 277 0088 7B68     		ldr	r3, [r7, #4]
+ 278 008a 93ED037A 		vldr.32	s14, [r3, #12]
+ 279              		.loc 1 64 53
+ 280 008e 3D4B     		ldr	r3, .L27
+ 281 0090 D3ED037A 		vldr.32	s15, [r3, #12]
+ 282              		.loc 1 64 31
+ 283 0094 77EE677A 		vsub.f32	s15, s14, s15
+ 284              		.loc 1 64 9
+ 285 0098 F0EEE77A 		vabs.f32	s15, s15
+ 286              		.loc 1 64 8
+ 287 009c B0EE007A 		vmov.f32	s14, #2.0e+0
+ 288 00a0 F4EEC77A 		vcmpe.f32	s15, s14
+ 289 00a4 F1EE10FA 		vmrs	APSR_nzcv, FPSCR
+ 290 00a8 03D8     		bhi	.L11
+  65:User/Software/limit_filter.c ****     {
+  66:User/Software/limit_filter.c ****         static_filtered_data.data_3 = raw_data->data_3;
+ 291              		.loc 1 66 47
+ 292 00aa 7B68     		ldr	r3, [r7, #4]
+ 293 00ac DB68     		ldr	r3, [r3, #12]	@ float
+ 294              		.loc 1 66 37
+ 295 00ae 354A     		ldr	r2, .L27
+ 296 00b0 D360     		str	r3, [r2, #12]	@ float
+ 297              	.L11:
+  67:User/Software/limit_filter.c ****     }
+  68:User/Software/limit_filter.c **** 
+  69:User/Software/limit_filter.c ****     // 对 data_4 应用限幅滤波
+  70:User/Software/limit_filter.c ****     if (fabs(raw_data->data_4 - static_filtered_data.data_4) <= THRESHOLD_DATA_4)
+ 298              		.loc 1 70 22
+ 299 00b2 7B68     		ldr	r3, [r7, #4]
+ 300 00b4 93ED047A 		vldr.32	s14, [r3, #16]
+ 301              		.loc 1 70 53
+ 302 00b8 324B     		ldr	r3, .L27
+ 303 00ba D3ED047A 		vldr.32	s15, [r3, #16]
+ 304              		.loc 1 70 31
+ 305 00be 77EE677A 		vsub.f32	s15, s14, s15
+ 306              		.loc 1 70 9
+ 307 00c2 F0EEE77A 		vabs.f32	s15, s15
+ 308              		.loc 1 70 8
+ 309 00c6 B0EE007A 		vmov.f32	s14, #2.0e+0
+ 310 00ca F4EEC77A 		vcmpe.f32	s15, s14
+ 311 00ce F1EE10FA 		vmrs	APSR_nzcv, FPSCR
+ 312 00d2 03D8     		bhi	.L13
+ARM GAS  C:\Users\fffff\AppData\Local\Temp\ccKQEgif.s 			page 8
+
+
+  71:User/Software/limit_filter.c ****     {
+  72:User/Software/limit_filter.c ****         static_filtered_data.data_4 = raw_data->data_4;
+ 313              		.loc 1 72 47
+ 314 00d4 7B68     		ldr	r3, [r7, #4]
+ 315 00d6 1B69     		ldr	r3, [r3, #16]	@ float
+ 316              		.loc 1 72 37
+ 317 00d8 2A4A     		ldr	r2, .L27
+ 318 00da 1361     		str	r3, [r2, #16]	@ float
+ 319              	.L13:
+  73:User/Software/limit_filter.c ****     }
+  74:User/Software/limit_filter.c **** 
+  75:User/Software/limit_filter.c ****     // 对 data_5 应用限幅滤波
+  76:User/Software/limit_filter.c ****     if (fabs(raw_data->data_5 - static_filtered_data.data_5) <= THRESHOLD_DATA_5)
+ 320              		.loc 1 76 22
+ 321 00dc 7B68     		ldr	r3, [r7, #4]
+ 322 00de 93ED057A 		vldr.32	s14, [r3, #20]
+ 323              		.loc 1 76 53
+ 324 00e2 284B     		ldr	r3, .L27
+ 325 00e4 D3ED057A 		vldr.32	s15, [r3, #20]
+ 326              		.loc 1 76 31
+ 327 00e8 77EE677A 		vsub.f32	s15, s14, s15
+ 328              		.loc 1 76 9
+ 329 00ec F0EEE77A 		vabs.f32	s15, s15
+ 330              		.loc 1 76 8
+ 331 00f0 9FED257A 		vldr.32	s14, .L27+4
+ 332 00f4 F4EEC77A 		vcmpe.f32	s15, s14
+ 333 00f8 F1EE10FA 		vmrs	APSR_nzcv, FPSCR
+ 334 00fc 03D8     		bhi	.L15
+  77:User/Software/limit_filter.c ****     {
+  78:User/Software/limit_filter.c ****         static_filtered_data.data_5 = raw_data->data_5;
+ 335              		.loc 1 78 47
+ 336 00fe 7B68     		ldr	r3, [r7, #4]
+ 337 0100 5B69     		ldr	r3, [r3, #20]	@ float
+ 338              		.loc 1 78 37
+ 339 0102 204A     		ldr	r2, .L27
+ 340 0104 5361     		str	r3, [r2, #20]	@ float
+ 341              	.L15:
+  79:User/Software/limit_filter.c ****     }
+  80:User/Software/limit_filter.c **** 
+  81:User/Software/limit_filter.c ****     // 对 data_6 应用限幅滤波
+  82:User/Software/limit_filter.c ****     if (fabs(raw_data->data_6 - static_filtered_data.data_6) <= THRESHOLD_DATA_6)
+ 342              		.loc 1 82 22
+ 343 0106 7B68     		ldr	r3, [r7, #4]
+ 344 0108 93ED067A 		vldr.32	s14, [r3, #24]
+ 345              		.loc 1 82 53
+ 346 010c 1D4B     		ldr	r3, .L27
+ 347 010e D3ED067A 		vldr.32	s15, [r3, #24]
+ 348              		.loc 1 82 31
+ 349 0112 77EE677A 		vsub.f32	s15, s14, s15
+ 350              		.loc 1 82 9
+ 351 0116 F0EEE77A 		vabs.f32	s15, s15
+ 352              		.loc 1 82 8
+ 353 011a B0EE007A 		vmov.f32	s14, #2.0e+0
+ 354 011e F4EEC77A 		vcmpe.f32	s15, s14
+ 355 0122 F1EE10FA 		vmrs	APSR_nzcv, FPSCR
+ 356 0126 03D8     		bhi	.L17
+  83:User/Software/limit_filter.c ****     {
+ARM GAS  C:\Users\fffff\AppData\Local\Temp\ccKQEgif.s 			page 9
+
+
+  84:User/Software/limit_filter.c ****         static_filtered_data.data_6 = raw_data->data_6;
+ 357              		.loc 1 84 47
+ 358 0128 7B68     		ldr	r3, [r7, #4]
+ 359 012a 9B69     		ldr	r3, [r3, #24]	@ float
+ 360              		.loc 1 84 37
+ 361 012c 154A     		ldr	r2, .L27
+ 362 012e 9361     		str	r3, [r2, #24]	@ float
+ 363              	.L17:
+  85:User/Software/limit_filter.c ****     }
+  86:User/Software/limit_filter.c **** 
+  87:User/Software/limit_filter.c ****     // 对 data_7 应用限幅滤波
+  88:User/Software/limit_filter.c ****     if (abs(raw_data->data_7 - static_filtered_data.data_7) <= THRESHOLD_DATA_7)
+ 364              		.loc 1 88 21
+ 365 0130 7B68     		ldr	r3, [r7, #4]
+ 366 0132 B3F91C30 		ldrsh	r3, [r3, #28]
+ 367 0136 1A46     		mov	r2, r3
+ 368              		.loc 1 88 52
+ 369 0138 124B     		ldr	r3, .L27
+ 370 013a B3F91C30 		ldrsh	r3, [r3, #28]
+ 371              		.loc 1 88 30
+ 372 013e D31A     		subs	r3, r2, r3
+ 373              		.loc 1 88 8
+ 374 0140 13F1640F 		cmn	r3, #100
+ 375 0144 0EDB     		blt	.L19
+ 376              		.loc 1 88 21 discriminator 1
+ 377 0146 7B68     		ldr	r3, [r7, #4]
+ 378 0148 B3F91C30 		ldrsh	r3, [r3, #28]
+ 379 014c 1A46     		mov	r2, r3
+ 380              		.loc 1 88 52 discriminator 1
+ 381 014e 0D4B     		ldr	r3, .L27
+ 382 0150 B3F91C30 		ldrsh	r3, [r3, #28]
+ 383              		.loc 1 88 30 discriminator 1
+ 384 0154 D31A     		subs	r3, r2, r3
+ 385              		.loc 1 88 61 discriminator 1
+ 386 0156 642B     		cmp	r3, #100
+ 387 0158 04DC     		bgt	.L19
+  89:User/Software/limit_filter.c ****     {
+  90:User/Software/limit_filter.c ****         static_filtered_data.data_7 = raw_data->data_7;
+ 388              		.loc 1 90 47
+ 389 015a 7B68     		ldr	r3, [r7, #4]
+ 390 015c B3F91C20 		ldrsh	r2, [r3, #28]
+ 391              		.loc 1 90 37
+ 392 0160 084B     		ldr	r3, .L27
+ 393 0162 9A83     		strh	r2, [r3, #28]	@ movhi
+ 394              	.L19:
+  91:User/Software/limit_filter.c ****     }
+  92:User/Software/limit_filter.c **** 
+  93:User/Software/limit_filter.c ****     // 更新滤波后的数据
+  94:User/Software/limit_filter.c ****     *filtered_data = static_filtered_data;
+ 395              		.loc 1 94 20
+ 396 0164 3B68     		ldr	r3, [r7]
+ 397 0166 074A     		ldr	r2, .L27
+ 398 0168 1C46     		mov	r4, r3
+ 399 016a 1546     		mov	r5, r2
+ 400 016c 0FCD     		ldmia	r5!, {r0, r1, r2, r3}
+ 401 016e 0FC4     		stmia	r4!, {r0, r1, r2, r3}
+ 402 0170 95E80F00 		ldm	r5, {r0, r1, r2, r3}
+ARM GAS  C:\Users\fffff\AppData\Local\Temp\ccKQEgif.s 			page 10
+
+
+ 403 0174 84E80F00 		stm	r4, {r0, r1, r2, r3}
+  95:User/Software/limit_filter.c **** }
+ 404              		.loc 1 95 1
+ 405 0178 00BF     		nop
+ 406 017a 0C37     		adds	r7, r7, #12
+ 407              	.LCFI9:
+ 408              		.cfi_def_cfa_offset 12
+ 409 017c BD46     		mov	sp, r7
+ 410              	.LCFI10:
+ 411              		.cfi_def_cfa_register 13
+ 412              		@ sp needed
+ 413 017e B0BC     		pop	{r4, r5, r7}
+ 414              	.LCFI11:
+ 415              		.cfi_restore 7
+ 416              		.cfi_restore 5
+ 417              		.cfi_restore 4
+ 418              		.cfi_def_cfa_offset 0
+ 419 0180 7047     		bx	lr
+ 420              	.L28:
+ 421 0182 00BF     		.align	2
+ 422              	.L27:
+ 423 0184 00000000 		.word	static_filtered_data
+ 424 0188 00007A44 		.word	1148846080
+ 425              		.cfi_endproc
+ 426              	.LFE148:
+ 428              		.section	.text.init_smoothed_data_init,"ax",%progbits
+ 429              		.align	1
+ 430              		.global	init_smoothed_data_init
+ 431              		.syntax unified
+ 432              		.thumb
+ 433              		.thumb_func
+ 435              	init_smoothed_data_init:
+ 436              	.LFB149:
+  96:User/Software/limit_filter.c ****  // 初始化每个斜坡发生器实例
+  97:User/Software/limit_filter.c **** void init_smoothed_data_init()
+  98:User/Software/limit_filter.c ****  {
+ 437              		.loc 1 98 2
+ 438              		.cfi_startproc
+ 439              		@ args = 0, pretend = 0, frame = 0
+ 440              		@ frame_needed = 1, uses_anonymous_args = 0
+ 441 0000 80B5     		push	{r7, lr}
+ 442              	.LCFI12:
+ 443              		.cfi_def_cfa_offset 8
+ 444              		.cfi_offset 7, -8
+ 445              		.cfi_offset 14, -4
+ 446 0002 00AF     		add	r7, sp, #0
+ 447              	.LCFI13:
+ 448              		.cfi_def_cfa_register 7
+  99:User/Software/limit_filter.c ****    
+ 100:User/Software/limit_filter.c ****     RampGenerator_Init(&data_0_ramp, 10, 1.0f, 1.0f, 3.0f);  //
+ 449              		.loc 1 100 5
+ 450 0004 B0EE081A 		vmov.f32	s2, #3.0e+0
+ 451 0008 F7EE000A 		vmov.f32	s1, #1.0e+0
+ 452 000c B7EE000A 		vmov.f32	s0, #1.0e+0
+ 453 0010 0A21     		movs	r1, #10
+ 454 0012 3648     		ldr	r0, .L30
+ 455 0014 FFF7FEFF 		bl	RampGenerator_Init
+ARM GAS  C:\Users\fffff\AppData\Local\Temp\ccKQEgif.s 			page 11
+
+
+ 101:User/Software/limit_filter.c ****     RampGenerator_Init(&data_1_ramp, 10, 1.0f, 1.0f, 3.0f);  //
+ 456              		.loc 1 101 5
+ 457 0018 B0EE081A 		vmov.f32	s2, #3.0e+0
+ 458 001c F7EE000A 		vmov.f32	s1, #1.0e+0
+ 459 0020 B7EE000A 		vmov.f32	s0, #1.0e+0
+ 460 0024 0A21     		movs	r1, #10
+ 461 0026 3248     		ldr	r0, .L30+4
+ 462 0028 FFF7FEFF 		bl	RampGenerator_Init
+ 102:User/Software/limit_filter.c ****     RampGenerator_Init(&data_2_ramp, 10, 2.0f, 2.0f, 3.0f);
+ 463              		.loc 1 102 5
+ 464 002c B0EE081A 		vmov.f32	s2, #3.0e+0
+ 465 0030 F0EE000A 		vmov.f32	s1, #2.0e+0
+ 466 0034 B0EE000A 		vmov.f32	s0, #2.0e+0
+ 467 0038 0A21     		movs	r1, #10
+ 468 003a 2E48     		ldr	r0, .L30+8
+ 469 003c FFF7FEFF 		bl	RampGenerator_Init
+ 103:User/Software/limit_filter.c ****     RampGenerator_Init(&data_3_ramp, 10, 2.0f, 2.0f, 3.0f);
+ 470              		.loc 1 103 5
+ 471 0040 B0EE081A 		vmov.f32	s2, #3.0e+0
+ 472 0044 F0EE000A 		vmov.f32	s1, #2.0e+0
+ 473 0048 B0EE000A 		vmov.f32	s0, #2.0e+0
+ 474 004c 0A21     		movs	r1, #10
+ 475 004e 2A48     		ldr	r0, .L30+12
+ 476 0050 FFF7FEFF 		bl	RampGenerator_Init
+ 104:User/Software/limit_filter.c ****     RampGenerator_Init(&data_4_ramp, 10, 2.0f, 2.0f, 3.0f);
+ 477              		.loc 1 104 5
+ 478 0054 B0EE081A 		vmov.f32	s2, #3.0e+0
+ 479 0058 F0EE000A 		vmov.f32	s1, #2.0e+0
+ 480 005c B0EE000A 		vmov.f32	s0, #2.0e+0
+ 481 0060 0A21     		movs	r1, #10
+ 482 0062 2648     		ldr	r0, .L30+16
+ 483 0064 FFF7FEFF 		bl	RampGenerator_Init
+ 105:User/Software/limit_filter.c ****     RampGenerator_Init(&data_5_ramp, 10, 60.0f, 60.0f, 360.0f);//末端待调试
+ 484              		.loc 1 105 5
+ 485 0068 9FED251A 		vldr.32	s2, .L30+20
+ 486 006c DFED250A 		vldr.32	s1, .L30+24
+ 487 0070 9FED240A 		vldr.32	s0, .L30+24
+ 488 0074 0A21     		movs	r1, #10
+ 489 0076 2448     		ldr	r0, .L30+28
+ 490 0078 FFF7FEFF 		bl	RampGenerator_Init
+ 106:User/Software/limit_filter.c ****     RampGenerator_Init(&data_6_ramp, 10, 1.0f, 1.0f, 3.0f);
+ 491              		.loc 1 106 5
+ 492 007c B0EE081A 		vmov.f32	s2, #3.0e+0
+ 493 0080 F7EE000A 		vmov.f32	s1, #1.0e+0
+ 494 0084 B7EE000A 		vmov.f32	s0, #1.0e+0
+ 495 0088 0A21     		movs	r1, #10
+ 496 008a 2048     		ldr	r0, .L30+32
+ 497 008c FFF7FEFF 		bl	RampGenerator_Init
+ 107:User/Software/limit_filter.c ****     RampGenerator_Init(&data_7_ramp, 10, 1.0f, 1.0f, 3.0f); // 假设data_7也在-1.5到1.5范围内
+ 498              		.loc 1 107 5
+ 499 0090 B0EE081A 		vmov.f32	s2, #3.0e+0
+ 500 0094 F7EE000A 		vmov.f32	s1, #1.0e+0
+ 501 0098 B7EE000A 		vmov.f32	s0, #1.0e+0
+ 502 009c 0A21     		movs	r1, #10
+ 503 009e 1C48     		ldr	r0, .L30+36
+ 504 00a0 FFF7FEFF 		bl	RampGenerator_Init
+ 108:User/Software/limit_filter.c ****     
+ARM GAS  C:\Users\fffff\AppData\Local\Temp\ccKQEgif.s 			page 12
+
+
+ 109:User/Software/limit_filter.c ****     // 初始化平滑数据结构
+ 110:User/Software/limit_filter.c ****     smoothed_data.data_0 = filtered_data.data_0;
+ 505              		.loc 1 110 41
+ 506 00a4 1B4B     		ldr	r3, .L30+40
+ 507 00a6 1B68     		ldr	r3, [r3]	@ float
+ 508              		.loc 1 110 26
+ 509 00a8 1B4A     		ldr	r2, .L30+44
+ 510 00aa 1360     		str	r3, [r2]	@ float
+ 111:User/Software/limit_filter.c ****     smoothed_data.data_1 = filtered_data.data_1;
+ 511              		.loc 1 111 41
+ 512 00ac 194B     		ldr	r3, .L30+40
+ 513 00ae 5B68     		ldr	r3, [r3, #4]	@ float
+ 514              		.loc 1 111 26
+ 515 00b0 194A     		ldr	r2, .L30+44
+ 516 00b2 5360     		str	r3, [r2, #4]	@ float
+ 112:User/Software/limit_filter.c ****     smoothed_data.data_2 = filtered_data.data_2;
+ 517              		.loc 1 112 41
+ 518 00b4 174B     		ldr	r3, .L30+40
+ 519 00b6 9B68     		ldr	r3, [r3, #8]	@ float
+ 520              		.loc 1 112 26
+ 521 00b8 174A     		ldr	r2, .L30+44
+ 522 00ba 9360     		str	r3, [r2, #8]	@ float
+ 113:User/Software/limit_filter.c ****     smoothed_data.data_3 = filtered_data.data_3;
+ 523              		.loc 1 113 41
+ 524 00bc 154B     		ldr	r3, .L30+40
+ 525 00be DB68     		ldr	r3, [r3, #12]	@ float
+ 526              		.loc 1 113 26
+ 527 00c0 154A     		ldr	r2, .L30+44
+ 528 00c2 D360     		str	r3, [r2, #12]	@ float
+ 114:User/Software/limit_filter.c ****     smoothed_data.data_4 = filtered_data.data_4;
+ 529              		.loc 1 114 41
+ 530 00c4 134B     		ldr	r3, .L30+40
+ 531 00c6 1B69     		ldr	r3, [r3, #16]	@ float
+ 532              		.loc 1 114 26
+ 533 00c8 134A     		ldr	r2, .L30+44
+ 534 00ca 1361     		str	r3, [r2, #16]	@ float
+ 115:User/Software/limit_filter.c ****     smoothed_data.data_5 = filtered_data.data_5;
+ 535              		.loc 1 115 41
+ 536 00cc 114B     		ldr	r3, .L30+40
+ 537 00ce 5B69     		ldr	r3, [r3, #20]	@ float
+ 538              		.loc 1 115 26
+ 539 00d0 114A     		ldr	r2, .L30+44
+ 540 00d2 5361     		str	r3, [r2, #20]	@ float
+ 116:User/Software/limit_filter.c ****     smoothed_data.data_6 = filtered_data.data_6;
+ 541              		.loc 1 116 41
+ 542 00d4 0F4B     		ldr	r3, .L30+40
+ 543 00d6 9B69     		ldr	r3, [r3, #24]	@ float
+ 544              		.loc 1 116 26
+ 545 00d8 0F4A     		ldr	r2, .L30+44
+ 546 00da 9361     		str	r3, [r2, #24]	@ float
+ 117:User/Software/limit_filter.c ****     smoothed_data.data_7 = filtered_data.data_7;
+ 547              		.loc 1 117 41
+ 548 00dc 0D4B     		ldr	r3, .L30+40
+ 549 00de B3F91C20 		ldrsh	r2, [r3, #28]
+ 550              		.loc 1 117 26
+ 551 00e2 0D4B     		ldr	r3, .L30+44
+ 552 00e4 9A83     		strh	r2, [r3, #28]	@ movhi
+ARM GAS  C:\Users\fffff\AppData\Local\Temp\ccKQEgif.s 			page 13
+
+
+ 118:User/Software/limit_filter.c **** }
+ 553              		.loc 1 118 1
+ 554 00e6 00BF     		nop
+ 555 00e8 80BD     		pop	{r7, pc}
+ 556              	.L31:
+ 557 00ea 00BF     		.align	2
+ 558              	.L30:
+ 559 00ec 00000000 		.word	data_0_ramp
+ 560 00f0 00000000 		.word	data_1_ramp
+ 561 00f4 00000000 		.word	data_2_ramp
+ 562 00f8 00000000 		.word	data_3_ramp
+ 563 00fc 00000000 		.word	data_4_ramp
+ 564 0100 0000B443 		.word	1135869952
+ 565 0104 00007042 		.word	1114636288
+ 566 0108 00000000 		.word	data_5_ramp
+ 567 010c 00000000 		.word	data_6_ramp
+ 568 0110 00000000 		.word	data_7_ramp
+ 569 0114 00000000 		.word	filtered_data
+ 570 0118 00000000 		.word	smoothed_data
+ 571              		.cfi_endproc
+ 572              	.LFE149:
+ 574              		.section	.text.update_smoothed_data,"ax",%progbits
+ 575              		.align	1
+ 576              		.global	update_smoothed_data
+ 577              		.syntax unified
+ 578              		.thumb
+ 579              		.thumb_func
+ 581              	update_smoothed_data:
+ 582              	.LFB150:
+ 119:User/Software/limit_filter.c **** // 在主循环或定时器中断中定期调用的更新函数
+ 120:User/Software/limit_filter.c **** void update_smoothed_data(unsigned long current_time_ms)
+ 121:User/Software/limit_filter.c ****  {
+ 583              		.loc 1 121 2
+ 584              		.cfi_startproc
+ 585              		@ args = 0, pretend = 0, frame = 40
+ 586              		@ frame_needed = 1, uses_anonymous_args = 0
+ 587 0000 80B5     		push	{r7, lr}
+ 588              	.LCFI14:
+ 589              		.cfi_def_cfa_offset 8
+ 590              		.cfi_offset 7, -8
+ 591              		.cfi_offset 14, -4
+ 592 0002 8AB0     		sub	sp, sp, #40
+ 593              	.LCFI15:
+ 594              		.cfi_def_cfa_offset 48
+ 595 0004 00AF     		add	r7, sp, #0
+ 596              	.LCFI16:
+ 597              		.cfi_def_cfa_register 7
+ 598 0006 7860     		str	r0, [r7, #4]
+ 122:User/Software/limit_filter.c ****     // 获取当前原始数据
+ 123:User/Software/limit_filter.c ****     float target_data_0 = filtered_data.data_0;
+ 599              		.loc 1 123 11
+ 600 0008 564B     		ldr	r3, .L33
+ 601 000a 1B68     		ldr	r3, [r3]	@ float
+ 602 000c 7B62     		str	r3, [r7, #36]	@ float
+ 124:User/Software/limit_filter.c ****     float target_data_1 = filtered_data.data_1;
+ 603              		.loc 1 124 11
+ 604 000e 554B     		ldr	r3, .L33
+ARM GAS  C:\Users\fffff\AppData\Local\Temp\ccKQEgif.s 			page 14
+
+
+ 605 0010 5B68     		ldr	r3, [r3, #4]	@ float
+ 606 0012 3B62     		str	r3, [r7, #32]	@ float
+ 125:User/Software/limit_filter.c ****     float target_data_2 = filtered_data.data_2;
+ 607              		.loc 1 125 11
+ 608 0014 534B     		ldr	r3, .L33
+ 609 0016 9B68     		ldr	r3, [r3, #8]	@ float
+ 610 0018 FB61     		str	r3, [r7, #28]	@ float
+ 126:User/Software/limit_filter.c ****     float target_data_3 = filtered_data.data_3;
+ 611              		.loc 1 126 11
+ 612 001a 524B     		ldr	r3, .L33
+ 613 001c DB68     		ldr	r3, [r3, #12]	@ float
+ 614 001e BB61     		str	r3, [r7, #24]	@ float
+ 127:User/Software/limit_filter.c ****     float target_data_4 = filtered_data.data_4;
+ 615              		.loc 1 127 11
+ 616 0020 504B     		ldr	r3, .L33
+ 617 0022 1B69     		ldr	r3, [r3, #16]	@ float
+ 618 0024 7B61     		str	r3, [r7, #20]	@ float
+ 128:User/Software/limit_filter.c ****     float target_data_5 = filtered_data.data_5;
+ 619              		.loc 1 128 11
+ 620 0026 4F4B     		ldr	r3, .L33
+ 621 0028 5B69     		ldr	r3, [r3, #20]	@ float
+ 622 002a 3B61     		str	r3, [r7, #16]	@ float
+ 129:User/Software/limit_filter.c ****     float target_data_6 = filtered_data.data_6;
+ 623              		.loc 1 129 11
+ 624 002c 4D4B     		ldr	r3, .L33
+ 625 002e 9B69     		ldr	r3, [r3, #24]	@ float
+ 626 0030 FB60     		str	r3, [r7, #12]	@ float
+ 130:User/Software/limit_filter.c ****     short target_data_7 = filtered_data.data_7;
+ 627              		.loc 1 130 11
+ 628 0032 4C4B     		ldr	r3, .L33
+ 629 0034 9B8B     		ldrh	r3, [r3, #28]	@ movhi
+ 630 0036 7B81     		strh	r3, [r7, #10]	@ movhi
+ 131:User/Software/limit_filter.c ****     
+ 132:User/Software/limit_filter.c ****     // 更新每个斜坡发生器的目标值
+ 133:User/Software/limit_filter.c ****     RampGenerator_SetTarget(&data_0_ramp, target_data_0);
+ 631              		.loc 1 133 5
+ 632 0038 97ED090A 		vldr.32	s0, [r7, #36]
+ 633 003c 4A48     		ldr	r0, .L33+4
+ 634 003e FFF7FEFF 		bl	RampGenerator_SetTarget
+ 134:User/Software/limit_filter.c ****     RampGenerator_SetTarget(&data_1_ramp, target_data_1);
+ 635              		.loc 1 134 5
+ 636 0042 97ED080A 		vldr.32	s0, [r7, #32]
+ 637 0046 4948     		ldr	r0, .L33+8
+ 638 0048 FFF7FEFF 		bl	RampGenerator_SetTarget
+ 135:User/Software/limit_filter.c ****     RampGenerator_SetTarget(&data_2_ramp, target_data_2);
+ 639              		.loc 1 135 5
+ 640 004c 97ED070A 		vldr.32	s0, [r7, #28]
+ 641 0050 4748     		ldr	r0, .L33+12
+ 642 0052 FFF7FEFF 		bl	RampGenerator_SetTarget
+ 136:User/Software/limit_filter.c ****     RampGenerator_SetTarget(&data_3_ramp, target_data_3);
+ 643              		.loc 1 136 5
+ 644 0056 97ED060A 		vldr.32	s0, [r7, #24]
+ 645 005a 4648     		ldr	r0, .L33+16
+ 646 005c FFF7FEFF 		bl	RampGenerator_SetTarget
+ 137:User/Software/limit_filter.c ****     RampGenerator_SetTarget(&data_4_ramp, target_data_4);
+ 647              		.loc 1 137 5
+ 648 0060 97ED050A 		vldr.32	s0, [r7, #20]
+ARM GAS  C:\Users\fffff\AppData\Local\Temp\ccKQEgif.s 			page 15
+
+
+ 649 0064 4448     		ldr	r0, .L33+20
+ 650 0066 FFF7FEFF 		bl	RampGenerator_SetTarget
+ 138:User/Software/limit_filter.c ****     RampGenerator_SetTarget(&data_5_ramp, target_data_5);
+ 651              		.loc 1 138 5
+ 652 006a 97ED040A 		vldr.32	s0, [r7, #16]
+ 653 006e 4348     		ldr	r0, .L33+24
+ 654 0070 FFF7FEFF 		bl	RampGenerator_SetTarget
+ 139:User/Software/limit_filter.c ****     RampGenerator_SetTarget(&data_6_ramp, target_data_6);
+ 655              		.loc 1 139 5
+ 656 0074 97ED030A 		vldr.32	s0, [r7, #12]
+ 657 0078 4148     		ldr	r0, .L33+28
+ 658 007a FFF7FEFF 		bl	RampGenerator_SetTarget
+ 140:User/Software/limit_filter.c ****     RampGenerator_SetTarget(&data_7_ramp, (float)target_data_7); // 转换为浮点数
+ 659              		.loc 1 140 5
+ 660 007e B7F90A30 		ldrsh	r3, [r7, #10]
+ 661 0082 07EE903A 		vmov	s15, r3	@ int
+ 662 0086 F8EEE77A 		vcvt.f32.s32	s15, s15
+ 663 008a B0EE670A 		vmov.f32	s0, s15
+ 664 008e 3D48     		ldr	r0, .L33+32
+ 665 0090 FFF7FEFF 		bl	RampGenerator_SetTarget
+ 141:User/Software/limit_filter.c ****     
+ 142:User/Software/limit_filter.c ****     // 更新所有斜坡发生器实例
+ 143:User/Software/limit_filter.c ****     RampGenerator_Update(&data_0_ramp, current_time_ms);
+ 666              		.loc 1 143 5
+ 667 0094 7968     		ldr	r1, [r7, #4]
+ 668 0096 3448     		ldr	r0, .L33+4
+ 669 0098 FFF7FEFF 		bl	RampGenerator_Update
+ 144:User/Software/limit_filter.c ****     RampGenerator_Update(&data_1_ramp, current_time_ms);
+ 670              		.loc 1 144 5
+ 671 009c 7968     		ldr	r1, [r7, #4]
+ 672 009e 3348     		ldr	r0, .L33+8
+ 673 00a0 FFF7FEFF 		bl	RampGenerator_Update
+ 145:User/Software/limit_filter.c ****     RampGenerator_Update(&data_2_ramp, current_time_ms);
+ 674              		.loc 1 145 5
+ 675 00a4 7968     		ldr	r1, [r7, #4]
+ 676 00a6 3248     		ldr	r0, .L33+12
+ 677 00a8 FFF7FEFF 		bl	RampGenerator_Update
+ 146:User/Software/limit_filter.c ****     RampGenerator_Update(&data_3_ramp, current_time_ms);
+ 678              		.loc 1 146 5
+ 679 00ac 7968     		ldr	r1, [r7, #4]
+ 680 00ae 3148     		ldr	r0, .L33+16
+ 681 00b0 FFF7FEFF 		bl	RampGenerator_Update
+ 147:User/Software/limit_filter.c ****     RampGenerator_Update(&data_4_ramp, current_time_ms);
+ 682              		.loc 1 147 5
+ 683 00b4 7968     		ldr	r1, [r7, #4]
+ 684 00b6 3048     		ldr	r0, .L33+20
+ 685 00b8 FFF7FEFF 		bl	RampGenerator_Update
+ 148:User/Software/limit_filter.c ****     RampGenerator_Update(&data_5_ramp, current_time_ms);
+ 686              		.loc 1 148 5
+ 687 00bc 7968     		ldr	r1, [r7, #4]
+ 688 00be 2F48     		ldr	r0, .L33+24
+ 689 00c0 FFF7FEFF 		bl	RampGenerator_Update
+ 149:User/Software/limit_filter.c ****     RampGenerator_Update(&data_6_ramp, current_time_ms);
+ 690              		.loc 1 149 5
+ 691 00c4 7968     		ldr	r1, [r7, #4]
+ 692 00c6 2E48     		ldr	r0, .L33+28
+ 693 00c8 FFF7FEFF 		bl	RampGenerator_Update
+ARM GAS  C:\Users\fffff\AppData\Local\Temp\ccKQEgif.s 			page 16
+
+
+ 150:User/Software/limit_filter.c ****     RampGenerator_Update(&data_7_ramp, current_time_ms);
+ 694              		.loc 1 150 5
+ 695 00cc 7968     		ldr	r1, [r7, #4]
+ 696 00ce 2D48     		ldr	r0, .L33+32
+ 697 00d0 FFF7FEFF 		bl	RampGenerator_Update
+ 151:User/Software/limit_filter.c ****     
+ 152:User/Software/limit_filter.c ****     // 获取平滑后的值
+ 153:User/Software/limit_filter.c ****     smoothed_data.data_0 = RampGenerator_GetCurrent(&data_0_ramp);
+ 698              		.loc 1 153 28
+ 699 00d4 2448     		ldr	r0, .L33+4
+ 700 00d6 FFF7FEFF 		bl	RampGenerator_GetCurrent
+ 701 00da F0EE407A 		vmov.f32	s15, s0
+ 702              		.loc 1 153 26 discriminator 1
+ 703 00de 2A4B     		ldr	r3, .L33+36
+ 704 00e0 C3ED007A 		vstr.32	s15, [r3]
+ 154:User/Software/limit_filter.c ****     smoothed_data.data_1 = RampGenerator_GetCurrent(&data_1_ramp);
+ 705              		.loc 1 154 28
+ 706 00e4 2148     		ldr	r0, .L33+8
+ 707 00e6 FFF7FEFF 		bl	RampGenerator_GetCurrent
+ 708 00ea F0EE407A 		vmov.f32	s15, s0
+ 709              		.loc 1 154 26 discriminator 1
+ 710 00ee 264B     		ldr	r3, .L33+36
+ 711 00f0 C3ED017A 		vstr.32	s15, [r3, #4]
+ 155:User/Software/limit_filter.c ****     smoothed_data.data_2 = RampGenerator_GetCurrent(&data_2_ramp);
+ 712              		.loc 1 155 28
+ 713 00f4 1E48     		ldr	r0, .L33+12
+ 714 00f6 FFF7FEFF 		bl	RampGenerator_GetCurrent
+ 715 00fa F0EE407A 		vmov.f32	s15, s0
+ 716              		.loc 1 155 26 discriminator 1
+ 717 00fe 224B     		ldr	r3, .L33+36
+ 718 0100 C3ED027A 		vstr.32	s15, [r3, #8]
+ 156:User/Software/limit_filter.c ****     smoothed_data.data_3 = RampGenerator_GetCurrent(&data_3_ramp);
+ 719              		.loc 1 156 28
+ 720 0104 1B48     		ldr	r0, .L33+16
+ 721 0106 FFF7FEFF 		bl	RampGenerator_GetCurrent
+ 722 010a F0EE407A 		vmov.f32	s15, s0
+ 723              		.loc 1 156 26 discriminator 1
+ 724 010e 1E4B     		ldr	r3, .L33+36
+ 725 0110 C3ED037A 		vstr.32	s15, [r3, #12]
+ 157:User/Software/limit_filter.c ****     smoothed_data.data_4 = RampGenerator_GetCurrent(&data_4_ramp);
+ 726              		.loc 1 157 28
+ 727 0114 1848     		ldr	r0, .L33+20
+ 728 0116 FFF7FEFF 		bl	RampGenerator_GetCurrent
+ 729 011a F0EE407A 		vmov.f32	s15, s0
+ 730              		.loc 1 157 26 discriminator 1
+ 731 011e 1A4B     		ldr	r3, .L33+36
+ 732 0120 C3ED047A 		vstr.32	s15, [r3, #16]
+ 158:User/Software/limit_filter.c ****     smoothed_data.data_5 = RampGenerator_GetCurrent(&data_5_ramp);
+ 733              		.loc 1 158 28
+ 734 0124 1548     		ldr	r0, .L33+24
+ 735 0126 FFF7FEFF 		bl	RampGenerator_GetCurrent
+ 736 012a F0EE407A 		vmov.f32	s15, s0
+ 737              		.loc 1 158 26 discriminator 1
+ 738 012e 164B     		ldr	r3, .L33+36
+ 739 0130 C3ED057A 		vstr.32	s15, [r3, #20]
+ 159:User/Software/limit_filter.c ****     smoothed_data.data_6 = RampGenerator_GetCurrent(&data_6_ramp);
+ 740              		.loc 1 159 28
+ARM GAS  C:\Users\fffff\AppData\Local\Temp\ccKQEgif.s 			page 17
+
+
+ 741 0134 1248     		ldr	r0, .L33+28
+ 742 0136 FFF7FEFF 		bl	RampGenerator_GetCurrent
+ 743 013a F0EE407A 		vmov.f32	s15, s0
+ 744              		.loc 1 159 26 discriminator 1
+ 745 013e 124B     		ldr	r3, .L33+36
+ 746 0140 C3ED067A 		vstr.32	s15, [r3, #24]
+ 160:User/Software/limit_filter.c ****     smoothed_data.data_7 = (short)RampGenerator_GetCurrent(&data_7_ramp); // 转回短整型
+ 747              		.loc 1 160 35
+ 748 0144 0F48     		ldr	r0, .L33+32
+ 749 0146 FFF7FEFF 		bl	RampGenerator_GetCurrent
+ 750 014a F0EE407A 		vmov.f32	s15, s0
+ 751              		.loc 1 160 28 discriminator 1
+ 752 014e FDEEE77A 		vcvt.s32.f32	s15, s15
+ 753 0152 17EE903A 		vmov	r3, s15	@ int
+ 754 0156 1AB2     		sxth	r2, r3
+ 755              		.loc 1 160 26 discriminator 1
+ 756 0158 0B4B     		ldr	r3, .L33+36
+ 757 015a 9A83     		strh	r2, [r3, #28]	@ movhi
+ 161:User/Software/limit_filter.c **** }...
+ 758              		.loc 1 161 1
+ 759 015c 00BF     		nop
+ 760 015e 2837     		adds	r7, r7, #40
+ 761              	.LCFI17:
+ 762              		.cfi_def_cfa_offset 8
+ 763 0160 BD46     		mov	sp, r7
+ 764              	.LCFI18:
+ 765              		.cfi_def_cfa_register 13
+ 766              		@ sp needed
+ 767 0162 80BD     		pop	{r7, pc}
+ 768              	.L34:
+ 769              		.align	2
+ 770              	.L33:
+ 771 0164 00000000 		.word	filtered_data
+ 772 0168 00000000 		.word	data_0_ramp
+ 773 016c 00000000 		.word	data_1_ramp
+ 774 0170 00000000 		.word	data_2_ramp
+ 775 0174 00000000 		.word	data_3_ramp
+ 776 0178 00000000 		.word	data_4_ramp
+ 777 017c 00000000 		.word	data_5_ramp
+ 778 0180 00000000 		.word	data_6_ramp
+ 779 0184 00000000 		.word	data_7_ramp
+ 780 0188 00000000 		.word	smoothed_data
+ 781              		.cfi_endproc
+ 782              	.LFE150:
+ 784              		.text
+ 785              	.Letext0:
+ 786              		.file 2 "User/Hardware/referee_system.h"
+ 787              		.file 3 "User/Software/limit_filter.h"
+ 788              		.file 4 "Algorithm/ramp_generator.h"
+ARM GAS  C:\Users\fffff\AppData\Local\Temp\ccKQEgif.s 			page 18
+
+
+DEFINED SYMBOLS
+                            *ABS*:00000000 limit_filter.c
+C:\Users\fffff\AppData\Local\Temp\ccKQEgif.s:24     .bss.data_0_ramp:00000000 data_0_ramp
+C:\Users\fffff\AppData\Local\Temp\ccKQEgif.s:21     .bss.data_0_ramp:00000000 $d
+C:\Users\fffff\AppData\Local\Temp\ccKQEgif.s:31     .bss.data_1_ramp:00000000 data_1_ramp
+C:\Users\fffff\AppData\Local\Temp\ccKQEgif.s:28     .bss.data_1_ramp:00000000 $d
+C:\Users\fffff\AppData\Local\Temp\ccKQEgif.s:38     .bss.data_2_ramp:00000000 data_2_ramp
+C:\Users\fffff\AppData\Local\Temp\ccKQEgif.s:35     .bss.data_2_ramp:00000000 $d
+C:\Users\fffff\AppData\Local\Temp\ccKQEgif.s:45     .bss.data_3_ramp:00000000 data_3_ramp
+C:\Users\fffff\AppData\Local\Temp\ccKQEgif.s:42     .bss.data_3_ramp:00000000 $d
+C:\Users\fffff\AppData\Local\Temp\ccKQEgif.s:52     .bss.data_4_ramp:00000000 data_4_ramp
+C:\Users\fffff\AppData\Local\Temp\ccKQEgif.s:49     .bss.data_4_ramp:00000000 $d
+C:\Users\fffff\AppData\Local\Temp\ccKQEgif.s:59     .bss.data_5_ramp:00000000 data_5_ramp
+C:\Users\fffff\AppData\Local\Temp\ccKQEgif.s:56     .bss.data_5_ramp:00000000 $d
+C:\Users\fffff\AppData\Local\Temp\ccKQEgif.s:66     .bss.data_6_ramp:00000000 data_6_ramp
+C:\Users\fffff\AppData\Local\Temp\ccKQEgif.s:63     .bss.data_6_ramp:00000000 $d
+C:\Users\fffff\AppData\Local\Temp\ccKQEgif.s:73     .bss.data_7_ramp:00000000 data_7_ramp
+C:\Users\fffff\AppData\Local\Temp\ccKQEgif.s:70     .bss.data_7_ramp:00000000 $d
+C:\Users\fffff\AppData\Local\Temp\ccKQEgif.s:76     .bss.static_filtered_data:00000000 $d
+C:\Users\fffff\AppData\Local\Temp\ccKQEgif.s:79     .bss.static_filtered_data:00000000 static_filtered_data
+C:\Users\fffff\AppData\Local\Temp\ccKQEgif.s:86     .bss.smoothed_data:00000000 smoothed_data
+C:\Users\fffff\AppData\Local\Temp\ccKQEgif.s:83     .bss.smoothed_data:00000000 $d
+C:\Users\fffff\AppData\Local\Temp\ccKQEgif.s:89     .text.limit_filter_init:00000000 $t
+C:\Users\fffff\AppData\Local\Temp\ccKQEgif.s:95     .text.limit_filter_init:00000000 limit_filter_init
+C:\Users\fffff\AppData\Local\Temp\ccKQEgif.s:178    .text.limit_filter_init:00000058 $d
+C:\Users\fffff\AppData\Local\Temp\ccKQEgif.s:183    .text.update_limit_filter:00000000 $t
+C:\Users\fffff\AppData\Local\Temp\ccKQEgif.s:189    .text.update_limit_filter:00000000 update_limit_filter
+C:\Users\fffff\AppData\Local\Temp\ccKQEgif.s:423    .text.update_limit_filter:00000184 $d
+C:\Users\fffff\AppData\Local\Temp\ccKQEgif.s:429    .text.init_smoothed_data_init:00000000 $t
+C:\Users\fffff\AppData\Local\Temp\ccKQEgif.s:435    .text.init_smoothed_data_init:00000000 init_smoothed_data_init
+C:\Users\fffff\AppData\Local\Temp\ccKQEgif.s:559    .text.init_smoothed_data_init:000000ec $d
+C:\Users\fffff\AppData\Local\Temp\ccKQEgif.s:575    .text.update_smoothed_data:00000000 $t
+C:\Users\fffff\AppData\Local\Temp\ccKQEgif.s:581    .text.update_smoothed_data:00000000 update_smoothed_data
+C:\Users\fffff\AppData\Local\Temp\ccKQEgif.s:771    .text.update_smoothed_data:00000164 $d
+
+UNDEFINED SYMBOLS
+RampGenerator_Init
+filtered_data
+RampGenerator_SetTarget
+RampGenerator_Update
+RampGenerator_GetCurrent

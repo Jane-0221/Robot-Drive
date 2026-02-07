@@ -1,0 +1,1373 @@
+ARM GAS  C:\Users\23671\AppData\Local\Temp\ccnzu6sQ.s 			page 1
+
+
+   1              		.cpu cortex-m7
+   2              		.arch armv7e-m
+   3              		.fpu fpv5-d16
+   4              		.eabi_attribute 28, 1
+   5              		.eabi_attribute 20, 1
+   6              		.eabi_attribute 21, 1
+   7              		.eabi_attribute 23, 3
+   8              		.eabi_attribute 24, 1
+   9              		.eabi_attribute 25, 1
+  10              		.eabi_attribute 26, 1
+  11              		.eabi_attribute 30, 6
+  12              		.eabi_attribute 34, 1
+  13              		.eabi_attribute 18, 4
+  14              		.file	"freertos.c"
+  15              		.text
+  16              	.Ltext0:
+  17              		.cfi_sections	.debug_frame
+  18              		.file 1 "Core/Src/freertos.c"
+  19              		.global	color
+  20              		.section	.bss.color,"aw",%nobits
+  21              		.align	2
+  24              	color:
+  25 0000 00000000 		.space	4
+  26              		.global	Remote_controlHandle
+  27              		.section	.bss.Remote_controlHandle,"aw",%nobits
+  28              		.align	2
+  31              	Remote_controlHandle:
+  32 0000 00000000 		.space	4
+  33              		.global	Remote_control_attributes
+  34              		.section	.rodata
+  35              		.align	2
+  36              	.LC0:
+  37 0000 52656D6F 		.ascii	"Remote_control\000"
+  37      74655F63 
+  37      6F6E7472 
+  37      6F6C00
+  38              		.section	.rodata.Remote_control_attributes,"a"
+  39              		.align	2
+  42              	Remote_control_attributes:
+  43 0000 00000000 		.word	.LC0
+  44 0004 00000000 		.space	16
+  44      00000000 
+  44      00000000 
+  44      00000000 
+  45 0014 00080000 		.word	2048
+  46 0018 19000000 		.word	25
+  47 001c 00000000 		.space	8
+  47      00000000 
+  48              		.global	Eng_armHandle
+  49              		.section	.bss.Eng_armHandle,"aw",%nobits
+  50              		.align	2
+  53              	Eng_armHandle:
+  54 0000 00000000 		.space	4
+  55              		.global	Eng_arm_attributes
+  56              		.section	.rodata
+  57 000f 00       		.align	2
+  58              	.LC1:
+ARM GAS  C:\Users\23671\AppData\Local\Temp\ccnzu6sQ.s 			page 2
+
+
+  59 0010 456E675F 		.ascii	"Eng_arm\000"
+  59      61726D00 
+  60              		.section	.rodata.Eng_arm_attributes,"a"
+  61              		.align	2
+  64              	Eng_arm_attributes:
+  65 0000 10000000 		.word	.LC1
+  66 0004 00000000 		.space	16
+  66      00000000 
+  66      00000000 
+  66      00000000 
+  67 0014 00080000 		.word	2048
+  68 0018 18000000 		.word	24
+  69 001c 00000000 		.space	8
+  69      00000000 
+  70              		.global	ChassisHandle
+  71              		.section	.bss.ChassisHandle,"aw",%nobits
+  72              		.align	2
+  75              	ChassisHandle:
+  76 0000 00000000 		.space	4
+  77              		.global	Chassis_attributes
+  78              		.section	.rodata
+  79              		.align	2
+  80              	.LC2:
+  81 0018 43686173 		.ascii	"Chassis\000"
+  81      73697300 
+  82              		.section	.rodata.Chassis_attributes,"a"
+  83              		.align	2
+  86              	Chassis_attributes:
+  87 0000 18000000 		.word	.LC2
+  88 0004 00000000 		.space	16
+  88      00000000 
+  88      00000000 
+  88      00000000 
+  89 0014 00080000 		.word	2048
+  90 0018 08000000 		.word	8
+  91 001c 00000000 		.space	8
+  91      00000000 
+  92              		.global	Motor_controlHandle
+  93              		.section	.bss.Motor_controlHandle,"aw",%nobits
+  94              		.align	2
+  97              	Motor_controlHandle:
+  98 0000 00000000 		.space	4
+  99              		.global	Motor_control_attributes
+ 100              		.section	.rodata
+ 101              		.align	2
+ 102              	.LC3:
+ 103 0020 4D6F746F 		.ascii	"Motor_control\000"
+ 103      725F636F 
+ 103      6E74726F 
+ 103      6C00
+ 104              		.section	.rodata.Motor_control_attributes,"a"
+ 105              		.align	2
+ 108              	Motor_control_attributes:
+ 109 0000 20000000 		.word	.LC3
+ 110 0004 00000000 		.space	16
+ 110      00000000 
+ 110      00000000 
+ARM GAS  C:\Users\23671\AppData\Local\Temp\ccnzu6sQ.s 			page 3
+
+
+ 110      00000000 
+ 111 0014 00040000 		.word	1024
+ 112 0018 08000000 		.word	8
+ 113 001c 00000000 		.space	8
+ 113      00000000 
+ 114              		.global	YawHandle
+ 115              		.section	.bss.YawHandle,"aw",%nobits
+ 116              		.align	2
+ 119              	YawHandle:
+ 120 0000 00000000 		.space	4
+ 121              		.global	Yaw_attributes
+ 122              		.section	.rodata
+ 123 002e 0000     		.align	2
+ 124              	.LC4:
+ 125 0030 59617700 		.ascii	"Yaw\000"
+ 126              		.section	.rodata.Yaw_attributes,"a"
+ 127              		.align	2
+ 130              	Yaw_attributes:
+ 131 0000 30000000 		.word	.LC4
+ 132 0004 00000000 		.space	16
+ 132      00000000 
+ 132      00000000 
+ 132      00000000 
+ 133 0014 00040000 		.word	1024
+ 134 0018 08000000 		.word	8
+ 135 001c 00000000 		.space	8
+ 135      00000000 
+ 136              		.global	RefereeHandle
+ 137              		.section	.bss.RefereeHandle,"aw",%nobits
+ 138              		.align	2
+ 141              	RefereeHandle:
+ 142 0000 00000000 		.space	4
+ 143              		.global	Referee_attributes
+ 144              		.section	.rodata
+ 145              		.align	2
+ 146              	.LC5:
+ 147 0034 52656665 		.ascii	"Referee\000"
+ 147      72656500 
+ 148              		.section	.rodata.Referee_attributes,"a"
+ 149              		.align	2
+ 152              	Referee_attributes:
+ 153 0000 34000000 		.word	.LC5
+ 154 0004 00000000 		.space	16
+ 154      00000000 
+ 154      00000000 
+ 154      00000000 
+ 155 0014 00080000 		.word	2048
+ 156 0018 08000000 		.word	8
+ 157 001c 00000000 		.space	8
+ 157      00000000 
+ 158              		.global	Log_and_debugHandle
+ 159              		.section	.bss.Log_and_debugHandle,"aw",%nobits
+ 160              		.align	2
+ 163              	Log_and_debugHandle:
+ 164 0000 00000000 		.space	4
+ 165              		.global	Log_and_debug_attributes
+ 166              		.section	.rodata
+ARM GAS  C:\Users\23671\AppData\Local\Temp\ccnzu6sQ.s 			page 4
+
+
+ 167              		.align	2
+ 168              	.LC6:
+ 169 003c 4C6F675F 		.ascii	"Log_and_debug\000"
+ 169      616E645F 
+ 169      64656275 
+ 169      6700
+ 170              		.section	.rodata.Log_and_debug_attributes,"a"
+ 171              		.align	2
+ 174              	Log_and_debug_attributes:
+ 175 0000 3C000000 		.word	.LC6
+ 176 0004 00000000 		.space	16
+ 176      00000000 
+ 176      00000000 
+ 176      00000000 
+ 177 0014 00040000 		.word	1024
+ 178 0018 08000000 		.word	8
+ 179 001c 00000000 		.space	8
+ 179      00000000 
+ 180              		.section	.text.vApplicationIdleHook,"ax",%progbits
+ 181              		.align	1
+ 182              		.global	vApplicationIdleHook
+ 183              		.syntax unified
+ 184              		.thumb
+ 185              		.thumb_func
+ 187              	vApplicationIdleHook:
+ 188              	.LFB151:
+   1:Core/Src/freertos.c **** /* USER CODE BEGIN Header */
+   2:Core/Src/freertos.c **** /**
+   3:Core/Src/freertos.c ****  ******************************************************************************
+   4:Core/Src/freertos.c ****  * File Name          : freertos.c
+   5:Core/Src/freertos.c ****  * Description        : Code for freertos applications
+   6:Core/Src/freertos.c ****  ******************************************************************************
+   7:Core/Src/freertos.c ****  * @attention
+   8:Core/Src/freertos.c ****  *
+   9:Core/Src/freertos.c ****  * Copyright (c) 2024 STMicroelectronics.
+  10:Core/Src/freertos.c ****  * All rights reserved.
+  11:Core/Src/freertos.c ****  *
+  12:Core/Src/freertos.c ****  * This software is licensed under terms that can be found in the LICENSE file
+  13:Core/Src/freertos.c ****  * in the root directory of this software component.
+  14:Core/Src/freertos.c ****  * If no LICENSE file comes with this software, it is provided AS-IS.
+  15:Core/Src/freertos.c ****  *
+  16:Core/Src/freertos.c ****  ******************************************************************************
+  17:Core/Src/freertos.c ****  */
+  18:Core/Src/freertos.c **** /* USER CODE END Header */
+  19:Core/Src/freertos.c **** 
+  20:Core/Src/freertos.c **** /* Includes ------------------------------------------------------------------*/
+  21:Core/Src/freertos.c **** #include "FreeRTOS.h"
+  22:Core/Src/freertos.c **** #include "task.h"
+  23:Core/Src/freertos.c **** #include "main.h"
+  24:Core/Src/freertos.c **** #include "cmsis_os.h"
+  25:Core/Src/freertos.c **** 
+  26:Core/Src/freertos.c **** /* Private includes ----------------------------------------------------------*/
+  27:Core/Src/freertos.c **** /* USER CODE BEGIN Includes */
+  28:Core/Src/freertos.c **** #include "remote_control.h"
+  29:Core/Src/freertos.c **** #include "Chassis.h"
+  30:Core/Src/freertos.c **** #include "Gimbal.h"
+  31:Core/Src/freertos.c **** #include "Global_status.h"
+ARM GAS  C:\Users\23671\AppData\Local\Temp\ccnzu6sQ.s 			page 5
+
+
+  32:Core/Src/freertos.c **** #include "VT13.h"
+  33:Core/Src/freertos.c **** #include "Auto_control.h"
+  34:Core/Src/freertos.c **** #include "shoot.h"
+  35:Core/Src/freertos.c **** #include "ui.h"
+  36:Core/Src/freertos.c **** #include "music.h"
+  37:Core/Src/freertos.c **** #include "stdio.h"
+  38:Core/Src/freertos.c **** #include "referee_system.h"
+  39:Core/Src/freertos.c **** #include "motor.h"
+  40:Core/Src/freertos.c **** #include "supercup.h"
+  41:Core/Src/freertos.c **** #include "LED.h"
+  42:Core/Src/freertos.c **** #include <cmsis_os2.h>
+  43:Core/Src/freertos.c **** #include "limit_filter.h"
+  44:Core/Src/freertos.c **** #include "dm_arm.h"
+  45:Core/Src/freertos.c **** #include "iwdg.h"
+  46:Core/Src/freertos.c **** #include "buzzer.h"
+  47:Core/Src/freertos.c **** #include "task.h"
+  48:Core/Src/freertos.c **** 
+  49:Core/Src/freertos.c **** /* USER CODE END Includes */
+  50:Core/Src/freertos.c **** 
+  51:Core/Src/freertos.c **** /* Private typedef -----------------------------------------------------------*/
+  52:Core/Src/freertos.c **** /* USER CODE BEGIN PTD */
+  53:Core/Src/freertos.c **** /* USER CODE END PTD */
+  54:Core/Src/freertos.c **** 
+  55:Core/Src/freertos.c **** /* Private define ------------------------------------------------------------*/
+  56:Core/Src/freertos.c **** /* USER CODE BEGIN PD */
+  57:Core/Src/freertos.c **** 
+  58:Core/Src/freertos.c **** /* USER CODE END PD */
+  59:Core/Src/freertos.c **** 
+  60:Core/Src/freertos.c **** /* Private macro -------------------------------------------------------------*/
+  61:Core/Src/freertos.c **** /* USER CODE BEGIN PM */
+  62:Core/Src/freertos.c **** 
+  63:Core/Src/freertos.c **** /* USER CODE END PM */
+  64:Core/Src/freertos.c **** 
+  65:Core/Src/freertos.c **** /* Private variables ---------------------------------------------------------*/
+  66:Core/Src/freertos.c **** /* USER CODE BEGIN Variables */
+  67:Core/Src/freertos.c **** uint32_t color = 0;
+  68:Core/Src/freertos.c **** /* USER CODE END Variables */
+  69:Core/Src/freertos.c **** /* Definitions for Remote_control */
+  70:Core/Src/freertos.c **** osThreadId_t Remote_controlHandle;
+  71:Core/Src/freertos.c **** const osThreadAttr_t Remote_control_attributes = {
+  72:Core/Src/freertos.c ****     .name = "Remote_control",
+  73:Core/Src/freertos.c ****     .stack_size = 512 * 4,
+  74:Core/Src/freertos.c ****     .priority = (osPriority_t)osPriorityNormal1,
+  75:Core/Src/freertos.c **** };
+  76:Core/Src/freertos.c **** /* Definitions for Eng_arm */
+  77:Core/Src/freertos.c **** osThreadId_t Eng_armHandle;
+  78:Core/Src/freertos.c **** const osThreadAttr_t Eng_arm_attributes = {
+  79:Core/Src/freertos.c ****     .name = "Eng_arm",
+  80:Core/Src/freertos.c ****     .stack_size = 512 * 4,
+  81:Core/Src/freertos.c ****     .priority = (osPriority_t)osPriorityNormal,
+  82:Core/Src/freertos.c **** };
+  83:Core/Src/freertos.c **** /* Definitions for Chassis */
+  84:Core/Src/freertos.c **** osThreadId_t ChassisHandle;
+  85:Core/Src/freertos.c **** const osThreadAttr_t Chassis_attributes = {
+  86:Core/Src/freertos.c ****     .name = "Chassis",
+  87:Core/Src/freertos.c ****     .stack_size = 512 * 4,
+  88:Core/Src/freertos.c ****     .priority = (osPriority_t)osPriorityLow,
+ARM GAS  C:\Users\23671\AppData\Local\Temp\ccnzu6sQ.s 			page 6
+
+
+  89:Core/Src/freertos.c **** };
+  90:Core/Src/freertos.c **** /* Definitions for Motor_control */
+  91:Core/Src/freertos.c **** osThreadId_t Motor_controlHandle;
+  92:Core/Src/freertos.c **** const osThreadAttr_t Motor_control_attributes = {
+  93:Core/Src/freertos.c ****     .name = "Motor_control",
+  94:Core/Src/freertos.c ****     .stack_size = 256 * 4,
+  95:Core/Src/freertos.c ****     .priority = (osPriority_t)osPriorityLow,
+  96:Core/Src/freertos.c **** };
+  97:Core/Src/freertos.c **** /* Definitions for Yaw */
+  98:Core/Src/freertos.c **** osThreadId_t YawHandle;
+  99:Core/Src/freertos.c **** const osThreadAttr_t Yaw_attributes = {
+ 100:Core/Src/freertos.c ****     .name = "Yaw",
+ 101:Core/Src/freertos.c ****     .stack_size = 256 * 4,
+ 102:Core/Src/freertos.c ****     .priority = (osPriority_t)osPriorityLow,
+ 103:Core/Src/freertos.c **** };
+ 104:Core/Src/freertos.c **** /* Definitions for Referee */
+ 105:Core/Src/freertos.c **** osThreadId_t RefereeHandle;
+ 106:Core/Src/freertos.c **** const osThreadAttr_t Referee_attributes = {
+ 107:Core/Src/freertos.c ****     .name = "Referee",
+ 108:Core/Src/freertos.c ****     .stack_size = 512 * 4,
+ 109:Core/Src/freertos.c ****     .priority = (osPriority_t)osPriorityLow,
+ 110:Core/Src/freertos.c **** };
+ 111:Core/Src/freertos.c **** /* Definitions for Log_and_debug */
+ 112:Core/Src/freertos.c **** osThreadId_t Log_and_debugHandle;
+ 113:Core/Src/freertos.c **** const osThreadAttr_t Log_and_debug_attributes = {
+ 114:Core/Src/freertos.c ****     .name = "Log_and_debug",
+ 115:Core/Src/freertos.c ****     .stack_size = 256 * 4,
+ 116:Core/Src/freertos.c ****     .priority = (osPriority_t)osPriorityLow,
+ 117:Core/Src/freertos.c **** };
+ 118:Core/Src/freertos.c **** 
+ 119:Core/Src/freertos.c **** /* Private function prototypes -----------------------------------------------*/
+ 120:Core/Src/freertos.c **** /* USER CODE BEGIN FunctionPrototypes */
+ 121:Core/Src/freertos.c **** 
+ 122:Core/Src/freertos.c **** /* USER CODE END FunctionPrototypes */
+ 123:Core/Src/freertos.c **** 
+ 124:Core/Src/freertos.c **** void Remote_control_Task(void *argument);
+ 125:Core/Src/freertos.c **** void Eng_arm_Task(void *argument);
+ 126:Core/Src/freertos.c **** void Chassis_Task(void *argument);
+ 127:Core/Src/freertos.c **** void Motor_control_Task(void *argument);
+ 128:Core/Src/freertos.c **** void Yaw_Task(void *argument);
+ 129:Core/Src/freertos.c **** void Referee_Task(void *argument);
+ 130:Core/Src/freertos.c **** void Log_and_debug_Task(void *argument);
+ 131:Core/Src/freertos.c **** 
+ 132:Core/Src/freertos.c **** extern void MX_USB_DEVICE_Init(void);
+ 133:Core/Src/freertos.c **** void MX_FREERTOS_Init(void); /* (MISRA C 2004 rule 8.1) */
+ 134:Core/Src/freertos.c **** 
+ 135:Core/Src/freertos.c **** /* Hook prototypes */
+ 136:Core/Src/freertos.c **** void vApplicationIdleHook(void);
+ 137:Core/Src/freertos.c **** 
+ 138:Core/Src/freertos.c **** /* USER CODE BEGIN 2 */
+ 139:Core/Src/freertos.c **** void vApplicationIdleHook(void)
+ 140:Core/Src/freertos.c **** {
+ 189              		.loc 1 140 1
+ 190              		.cfi_startproc
+ 191              		@ args = 0, pretend = 0, frame = 0
+ 192              		@ frame_needed = 1, uses_anonymous_args = 0
+ 193              		@ link register save eliminated.
+ARM GAS  C:\Users\23671\AppData\Local\Temp\ccnzu6sQ.s 			page 7
+
+
+ 194 0000 80B4     		push	{r7}
+ 195              	.LCFI0:
+ 196              		.cfi_def_cfa_offset 4
+ 197              		.cfi_offset 7, -4
+ 198 0002 00AF     		add	r7, sp, #0
+ 199              	.LCFI1:
+ 200              		.cfi_def_cfa_register 7
+ 141:Core/Src/freertos.c ****   /* vApplicationIdleHook() will only be called if configUSE_IDLE_HOOK is set
+ 142:Core/Src/freertos.c ****   to 1 in FreeRTOSConfig.h. It will be called on each iteration of the idle
+ 143:Core/Src/freertos.c ****   task. It is essential that code added to this hook function never attempts
+ 144:Core/Src/freertos.c ****   to block in any way (for example, call xQueueReceive() with a block time
+ 145:Core/Src/freertos.c ****   specified, or call vTaskDelay()). If the application makes use of the
+ 146:Core/Src/freertos.c ****   vTaskDelete() API function (as this demo application does) then it is also
+ 147:Core/Src/freertos.c ****   important that vApplicationIdleHook() is permitted to return to its calling
+ 148:Core/Src/freertos.c ****   function, because it is the responsibility of the idle task to clean up
+ 149:Core/Src/freertos.c ****   memory allocated by the kernel to any task that has since been deleted. */
+ 150:Core/Src/freertos.c **** }
+ 201              		.loc 1 150 1
+ 202 0004 00BF     		nop
+ 203 0006 BD46     		mov	sp, r7
+ 204              	.LCFI2:
+ 205              		.cfi_def_cfa_register 13
+ 206              		@ sp needed
+ 207 0008 5DF8047B 		ldr	r7, [sp], #4
+ 208              	.LCFI3:
+ 209              		.cfi_restore 7
+ 210              		.cfi_def_cfa_offset 0
+ 211 000c 7047     		bx	lr
+ 212              		.cfi_endproc
+ 213              	.LFE151:
+ 215              		.section	.text.MX_FREERTOS_Init,"ax",%progbits
+ 216              		.align	1
+ 217              		.global	MX_FREERTOS_Init
+ 218              		.syntax unified
+ 219              		.thumb
+ 220              		.thumb_func
+ 222              	MX_FREERTOS_Init:
+ 223              	.LFB152:
+ 151:Core/Src/freertos.c **** /* USER CODE END 2 */
+ 152:Core/Src/freertos.c **** 
+ 153:Core/Src/freertos.c **** /**
+ 154:Core/Src/freertos.c ****  * @brief  FreeRTOS initialization
+ 155:Core/Src/freertos.c ****  * @param  None
+ 156:Core/Src/freertos.c ****  * @retval None
+ 157:Core/Src/freertos.c ****  */
+ 158:Core/Src/freertos.c **** void MX_FREERTOS_Init(void)
+ 159:Core/Src/freertos.c **** {
+ 224              		.loc 1 159 1
+ 225              		.cfi_startproc
+ 226              		@ args = 0, pretend = 0, frame = 0
+ 227              		@ frame_needed = 1, uses_anonymous_args = 0
+ 228 0000 80B5     		push	{r7, lr}
+ 229              	.LCFI4:
+ 230              		.cfi_def_cfa_offset 8
+ 231              		.cfi_offset 7, -8
+ 232              		.cfi_offset 14, -4
+ 233 0002 00AF     		add	r7, sp, #0
+ARM GAS  C:\Users\23671\AppData\Local\Temp\ccnzu6sQ.s 			page 8
+
+
+ 234              	.LCFI5:
+ 235              		.cfi_def_cfa_register 7
+ 160:Core/Src/freertos.c ****   /* USER CODE BEGIN Init */
+ 161:Core/Src/freertos.c **** 
+ 162:Core/Src/freertos.c ****   /* USER CODE END Init */
+ 163:Core/Src/freertos.c **** 
+ 164:Core/Src/freertos.c ****   /* USER CODE BEGIN RTOS_MUTEX */
+ 165:Core/Src/freertos.c ****   /* add mutexes, ... */
+ 166:Core/Src/freertos.c ****   /* USER CODE END RTOS_MUTEX */
+ 167:Core/Src/freertos.c **** 
+ 168:Core/Src/freertos.c ****   /* USER CODE BEGIN RTOS_SEMAPHORES */
+ 169:Core/Src/freertos.c ****   /* add semaphores, ... */
+ 170:Core/Src/freertos.c ****   /* USER CODE END RTOS_SEMAPHORES */
+ 171:Core/Src/freertos.c **** 
+ 172:Core/Src/freertos.c ****   /* USER CODE BEGIN RTOS_TIMERS */
+ 173:Core/Src/freertos.c ****   /* start timers, add new ones, ... */
+ 174:Core/Src/freertos.c ****   /* USER CODE END RTOS_TIMERS */
+ 175:Core/Src/freertos.c **** 
+ 176:Core/Src/freertos.c ****   /* USER CODE BEGIN RTOS_QUEUES */
+ 177:Core/Src/freertos.c ****   /* add queues, ... */
+ 178:Core/Src/freertos.c ****   /* USER CODE END RTOS_QUEUES */
+ 179:Core/Src/freertos.c **** 
+ 180:Core/Src/freertos.c ****   /* Create the thread(s) */
+ 181:Core/Src/freertos.c ****   /* creation of Remote_control */
+ 182:Core/Src/freertos.c ****   Remote_controlHandle = osThreadNew(Remote_control_Task, NULL, &Remote_control_attributes);
+ 236              		.loc 1 182 26
+ 237 0004 1C4A     		ldr	r2, .L3
+ 238 0006 0021     		movs	r1, #0
+ 239 0008 1C48     		ldr	r0, .L3+4
+ 240 000a FFF7FEFF 		bl	osThreadNew
+ 241 000e 0346     		mov	r3, r0
+ 242              		.loc 1 182 24 discriminator 1
+ 243 0010 1B4A     		ldr	r2, .L3+8
+ 244 0012 1360     		str	r3, [r2]
+ 183:Core/Src/freertos.c **** 
+ 184:Core/Src/freertos.c ****   /* creation of Eng_arm */
+ 185:Core/Src/freertos.c ****   Eng_armHandle = osThreadNew(Eng_arm_Task, NULL, &Eng_arm_attributes);
+ 245              		.loc 1 185 19
+ 246 0014 1B4A     		ldr	r2, .L3+12
+ 247 0016 0021     		movs	r1, #0
+ 248 0018 1B48     		ldr	r0, .L3+16
+ 249 001a FFF7FEFF 		bl	osThreadNew
+ 250 001e 0346     		mov	r3, r0
+ 251              		.loc 1 185 17 discriminator 1
+ 252 0020 1A4A     		ldr	r2, .L3+20
+ 253 0022 1360     		str	r3, [r2]
+ 186:Core/Src/freertos.c **** 
+ 187:Core/Src/freertos.c ****   /* creation of Chassis */
+ 188:Core/Src/freertos.c ****   ChassisHandle = osThreadNew(Chassis_Task, NULL, &Chassis_attributes);
+ 254              		.loc 1 188 19
+ 255 0024 1A4A     		ldr	r2, .L3+24
+ 256 0026 0021     		movs	r1, #0
+ 257 0028 1A48     		ldr	r0, .L3+28
+ 258 002a FFF7FEFF 		bl	osThreadNew
+ 259 002e 0346     		mov	r3, r0
+ 260              		.loc 1 188 17 discriminator 1
+ 261 0030 194A     		ldr	r2, .L3+32
+ARM GAS  C:\Users\23671\AppData\Local\Temp\ccnzu6sQ.s 			page 9
+
+
+ 262 0032 1360     		str	r3, [r2]
+ 189:Core/Src/freertos.c **** 
+ 190:Core/Src/freertos.c ****   /* creation of Motor_control */
+ 191:Core/Src/freertos.c ****   Motor_controlHandle = osThreadNew(Motor_control_Task, NULL, &Motor_control_attributes);
+ 263              		.loc 1 191 25
+ 264 0034 194A     		ldr	r2, .L3+36
+ 265 0036 0021     		movs	r1, #0
+ 266 0038 1948     		ldr	r0, .L3+40
+ 267 003a FFF7FEFF 		bl	osThreadNew
+ 268 003e 0346     		mov	r3, r0
+ 269              		.loc 1 191 23 discriminator 1
+ 270 0040 184A     		ldr	r2, .L3+44
+ 271 0042 1360     		str	r3, [r2]
+ 192:Core/Src/freertos.c **** 
+ 193:Core/Src/freertos.c ****   /* creation of Yaw */
+ 194:Core/Src/freertos.c ****   YawHandle = osThreadNew(Yaw_Task, NULL, &Yaw_attributes);
+ 272              		.loc 1 194 15
+ 273 0044 184A     		ldr	r2, .L3+48
+ 274 0046 0021     		movs	r1, #0
+ 275 0048 1848     		ldr	r0, .L3+52
+ 276 004a FFF7FEFF 		bl	osThreadNew
+ 277 004e 0346     		mov	r3, r0
+ 278              		.loc 1 194 13 discriminator 1
+ 279 0050 174A     		ldr	r2, .L3+56
+ 280 0052 1360     		str	r3, [r2]
+ 195:Core/Src/freertos.c **** 
+ 196:Core/Src/freertos.c ****   /* creation of Referee */
+ 197:Core/Src/freertos.c ****   RefereeHandle = osThreadNew(Referee_Task, NULL, &Referee_attributes);
+ 281              		.loc 1 197 19
+ 282 0054 174A     		ldr	r2, .L3+60
+ 283 0056 0021     		movs	r1, #0
+ 284 0058 1748     		ldr	r0, .L3+64
+ 285 005a FFF7FEFF 		bl	osThreadNew
+ 286 005e 0346     		mov	r3, r0
+ 287              		.loc 1 197 17 discriminator 1
+ 288 0060 164A     		ldr	r2, .L3+68
+ 289 0062 1360     		str	r3, [r2]
+ 198:Core/Src/freertos.c **** 
+ 199:Core/Src/freertos.c ****   /* creation of Log_and_debug */
+ 200:Core/Src/freertos.c ****   Log_and_debugHandle = osThreadNew(Log_and_debug_Task, NULL, &Log_and_debug_attributes);
+ 290              		.loc 1 200 25
+ 291 0064 164A     		ldr	r2, .L3+72
+ 292 0066 0021     		movs	r1, #0
+ 293 0068 1648     		ldr	r0, .L3+76
+ 294 006a FFF7FEFF 		bl	osThreadNew
+ 295 006e 0346     		mov	r3, r0
+ 296              		.loc 1 200 23 discriminator 1
+ 297 0070 154A     		ldr	r2, .L3+80
+ 298 0072 1360     		str	r3, [r2]
+ 201:Core/Src/freertos.c **** 
+ 202:Core/Src/freertos.c ****   /* USER CODE BEGIN RTOS_THREADS */
+ 203:Core/Src/freertos.c ****   /* add threads, ... */
+ 204:Core/Src/freertos.c ****   /* USER CODE END RTOS_THREADS */
+ 205:Core/Src/freertos.c **** 
+ 206:Core/Src/freertos.c ****   /* USER CODE BEGIN RTOS_EVENTS */
+ 207:Core/Src/freertos.c ****   /* add events, ... */
+ 208:Core/Src/freertos.c ****   /* USER CODE END RTOS_EVENTS */
+ARM GAS  C:\Users\23671\AppData\Local\Temp\ccnzu6sQ.s 			page 10
+
+
+ 209:Core/Src/freertos.c **** }
+ 299              		.loc 1 209 1
+ 300 0074 00BF     		nop
+ 301 0076 80BD     		pop	{r7, pc}
+ 302              	.L4:
+ 303              		.align	2
+ 304              	.L3:
+ 305 0078 00000000 		.word	Remote_control_attributes
+ 306 007c 00000000 		.word	Remote_control_Task
+ 307 0080 00000000 		.word	Remote_controlHandle
+ 308 0084 00000000 		.word	Eng_arm_attributes
+ 309 0088 00000000 		.word	Eng_arm_Task
+ 310 008c 00000000 		.word	Eng_armHandle
+ 311 0090 00000000 		.word	Chassis_attributes
+ 312 0094 00000000 		.word	Chassis_Task
+ 313 0098 00000000 		.word	ChassisHandle
+ 314 009c 00000000 		.word	Motor_control_attributes
+ 315 00a0 00000000 		.word	Motor_control_Task
+ 316 00a4 00000000 		.word	Motor_controlHandle
+ 317 00a8 00000000 		.word	Yaw_attributes
+ 318 00ac 00000000 		.word	Yaw_Task
+ 319 00b0 00000000 		.word	YawHandle
+ 320 00b4 00000000 		.word	Referee_attributes
+ 321 00b8 00000000 		.word	Referee_Task
+ 322 00bc 00000000 		.word	RefereeHandle
+ 323 00c0 00000000 		.word	Log_and_debug_attributes
+ 324 00c4 00000000 		.word	Log_and_debug_Task
+ 325 00c8 00000000 		.word	Log_and_debugHandle
+ 326              		.cfi_endproc
+ 327              	.LFE152:
+ 329              		.section	.text.Remote_control_Task,"ax",%progbits
+ 330              		.align	1
+ 331              		.global	Remote_control_Task
+ 332              		.syntax unified
+ 333              		.thumb
+ 334              		.thumb_func
+ 336              	Remote_control_Task:
+ 337              	.LFB153:
+ 210:Core/Src/freertos.c **** 
+ 211:Core/Src/freertos.c **** /* USER CODE BEGIN Header_Remote_control_Task */
+ 212:Core/Src/freertos.c **** /**
+ 213:Core/Src/freertos.c ****  * @brief  Function implementing the Remote_control thread.
+ 214:Core/Src/freertos.c ****  * @param  argument: Not used
+ 215:Core/Src/freertos.c ****  * @retval None
+ 216:Core/Src/freertos.c ****  */
+ 217:Core/Src/freertos.c **** /* USER CODE END Header_Remote_control_Task */
+ 218:Core/Src/freertos.c **** void Remote_control_Task(void *argument)
+ 219:Core/Src/freertos.c **** {
+ 338              		.loc 1 219 1
+ 339              		.cfi_startproc
+ 340              		@ args = 0, pretend = 0, frame = 8
+ 341              		@ frame_needed = 1, uses_anonymous_args = 0
+ 342 0000 80B5     		push	{r7, lr}
+ 343              	.LCFI6:
+ 344              		.cfi_def_cfa_offset 8
+ 345              		.cfi_offset 7, -8
+ 346              		.cfi_offset 14, -4
+ARM GAS  C:\Users\23671\AppData\Local\Temp\ccnzu6sQ.s 			page 11
+
+
+ 347 0002 82B0     		sub	sp, sp, #8
+ 348              	.LCFI7:
+ 349              		.cfi_def_cfa_offset 16
+ 350 0004 00AF     		add	r7, sp, #0
+ 351              	.LCFI8:
+ 352              		.cfi_def_cfa_register 7
+ 353 0006 7860     		str	r0, [r7, #4]
+ 220:Core/Src/freertos.c ****   /* init code for USB_DEVICE */
+ 221:Core/Src/freertos.c ****   MX_USB_DEVICE_Init();
+ 354              		.loc 1 221 3
+ 355 0008 FFF7FEFF 		bl	MX_USB_DEVICE_Init
+ 356              	.L6:
+ 222:Core/Src/freertos.c ****   /* USER CODE BEGIN Remote_control_Task */
+ 223:Core/Src/freertos.c ****   /* Infinite loop */
+ 224:Core/Src/freertos.c ****   for (;;)
+ 225:Core/Src/freertos.c ****   {
+ 226:Core/Src/freertos.c ****     start();
+ 357              		.loc 1 226 5
+ 358 000c FFF7FEFF 		bl	start
+ 227:Core/Src/freertos.c ****     // ARM_CONNECT_STATUS_UPDATA();
+ 228:Core/Src/freertos.c ****     //  YAWFLOW_POS();
+ 229:Core/Src/freertos.c ****     //  VT13toRCdata();
+ 230:Core/Src/freertos.c ****     //  disable_all();
+ 231:Core/Src/freertos.c ****     //  switch_servos();
+ 232:Core/Src/freertos.c ****     osDelay(1);
+ 359              		.loc 1 232 5 discriminator 1
+ 360 0010 0120     		movs	r0, #1
+ 361 0012 FFF7FEFF 		bl	osDelay
+ 226:Core/Src/freertos.c ****     // ARM_CONNECT_STATUS_UPDATA();
+ 362              		.loc 1 226 5
+ 363 0016 00BF     		nop
+ 364 0018 F8E7     		b	.L6
+ 365              		.cfi_endproc
+ 366              	.LFE153:
+ 368              		.section	.text.Eng_arm_Task,"ax",%progbits
+ 369              		.align	1
+ 370              		.global	Eng_arm_Task
+ 371              		.syntax unified
+ 372              		.thumb
+ 373              		.thumb_func
+ 375              	Eng_arm_Task:
+ 376              	.LFB154:
+ 233:Core/Src/freertos.c ****   }
+ 234:Core/Src/freertos.c ****   /* USER CODE END Remote_control_Task */
+ 235:Core/Src/freertos.c **** }
+ 236:Core/Src/freertos.c **** 
+ 237:Core/Src/freertos.c **** /* USER CODE BEGIN Header_Eng_arm_Task */
+ 238:Core/Src/freertos.c **** /**
+ 239:Core/Src/freertos.c ****  * @brief Function implementing the Eng_arm thread.
+ 240:Core/Src/freertos.c ****  * @param argument: Not used
+ 241:Core/Src/freertos.c ****  * @retval None
+ 242:Core/Src/freertos.c ****  */
+ 243:Core/Src/freertos.c **** /* USER CODE END Header_Eng_arm_Task */
+ 244:Core/Src/freertos.c **** void Eng_arm_Task(void *argument)
+ 245:Core/Src/freertos.c **** {
+ 377              		.loc 1 245 1
+ 378              		.cfi_startproc
+ARM GAS  C:\Users\23671\AppData\Local\Temp\ccnzu6sQ.s 			page 12
+
+
+ 379              		@ args = 0, pretend = 0, frame = 8
+ 380              		@ frame_needed = 1, uses_anonymous_args = 0
+ 381 0000 80B5     		push	{r7, lr}
+ 382              	.LCFI9:
+ 383              		.cfi_def_cfa_offset 8
+ 384              		.cfi_offset 7, -8
+ 385              		.cfi_offset 14, -4
+ 386 0002 82B0     		sub	sp, sp, #8
+ 387              	.LCFI10:
+ 388              		.cfi_def_cfa_offset 16
+ 389 0004 00AF     		add	r7, sp, #0
+ 390              	.LCFI11:
+ 391              		.cfi_def_cfa_register 7
+ 392 0006 7860     		str	r0, [r7, #4]
+ 393              	.L12:
+ 246:Core/Src/freertos.c ****   /* USER CODE BEGIN Eng_arm_Task */
+ 247:Core/Src/freertos.c ****   /* Infinite loop */
+ 248:Core/Src/freertos.c ****   for (;;)
+ 249:Core/Src/freertos.c ****   {
+ 250:Core/Src/freertos.c ****     if (arm_connect_status == ARM_CONNECT_STATUS_CONNECTED && (sum_arm >= 200))
+ 394              		.loc 1 250 28
+ 395 0008 224B     		ldr	r3, .L13
+ 396 000a 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 397              		.loc 1 250 8
+ 398 000c 012B     		cmp	r3, #1
+ 399 000e 18D1     		bne	.L8
+ 400              		.loc 1 250 72 discriminator 1
+ 401 0010 214B     		ldr	r3, .L13+4
+ 402 0012 1B68     		ldr	r3, [r3]
+ 403              		.loc 1 250 60 discriminator 1
+ 404 0014 C72B     		cmp	r3, #199
+ 405 0016 14DD     		ble	.L8
+ 251:Core/Src/freertos.c ****     {
+ 252:Core/Src/freertos.c ****       Arm_motor2();
+ 406              		.loc 1 252 7
+ 407 0018 FFF7FEFF 		bl	Arm_motor2
+ 253:Core/Src/freertos.c ****       osDelay(1);
+ 408              		.loc 1 253 7
+ 409 001c 0120     		movs	r0, #1
+ 410 001e FFF7FEFF 		bl	osDelay
+ 254:Core/Src/freertos.c ****       Arm_motor3();
+ 411              		.loc 1 254 7
+ 412 0022 FFF7FEFF 		bl	Arm_motor3
+ 255:Core/Src/freertos.c ****       osDelay(1);
+ 413              		.loc 1 255 7
+ 414 0026 0120     		movs	r0, #1
+ 415 0028 FFF7FEFF 		bl	osDelay
+ 256:Core/Src/freertos.c ****       Arm_motor4();
+ 416              		.loc 1 256 7
+ 417 002c FFF7FEFF 		bl	Arm_motor4
+ 257:Core/Src/freertos.c ****       osDelay(1);
+ 418              		.loc 1 257 7
+ 419 0030 0120     		movs	r0, #1
+ 420 0032 FFF7FEFF 		bl	osDelay
+ 258:Core/Src/freertos.c ****       Arm_motor5();
+ 421              		.loc 1 258 7
+ 422 0036 FFF7FEFF 		bl	Arm_motor5
+ARM GAS  C:\Users\23671\AppData\Local\Temp\ccnzu6sQ.s 			page 13
+
+
+ 259:Core/Src/freertos.c ****       osDelay(1);
+ 423              		.loc 1 259 7
+ 424 003a 0120     		movs	r0, #1
+ 425 003c FFF7FEFF 		bl	osDelay
+ 426 0040 26E0     		b	.L9
+ 427              	.L8:
+ 260:Core/Src/freertos.c ****     }
+ 261:Core/Src/freertos.c ****     // else(arm_connect_status == ARM_CONNECT_STATUS_DISCONNECTED)
+ 262:Core/Src/freertos.c ****     else
+ 263:Core/Src/freertos.c ****     {
+ 264:Core/Src/freertos.c **** 
+ 265:Core/Src/freertos.c ****       Arm_motor2_DISCON();
+ 428              		.loc 1 265 7
+ 429 0042 FFF7FEFF 		bl	Arm_motor2_DISCON
+ 266:Core/Src/freertos.c ****       osDelay(1);
+ 430              		.loc 1 266 7
+ 431 0046 0120     		movs	r0, #1
+ 432 0048 FFF7FEFF 		bl	osDelay
+ 267:Core/Src/freertos.c ****       Arm_motor4_DISCON();
+ 433              		.loc 1 267 7
+ 434 004c FFF7FEFF 		bl	Arm_motor4_DISCON
+ 268:Core/Src/freertos.c ****       osDelay(1);
+ 435              		.loc 1 268 7
+ 436 0050 0120     		movs	r0, #1
+ 437 0052 FFF7FEFF 		bl	osDelay
+ 269:Core/Src/freertos.c ****       Arm_motor5_DISCON();
+ 438              		.loc 1 269 7
+ 439 0056 FFF7FEFF 		bl	Arm_motor5_DISCON
+ 270:Core/Src/freertos.c ****       osDelay(1);
+ 440              		.loc 1 270 7
+ 441 005a 0120     		movs	r0, #1
+ 442 005c FFF7FEFF 		bl	osDelay
+ 271:Core/Src/freertos.c ****       if (arm_connect_status == ARM_CONNECT_STATUS_CONNECTED)
+ 443              		.loc 1 271 30
+ 444 0060 0C4B     		ldr	r3, .L13
+ 445 0062 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 446              		.loc 1 271 10
+ 447 0064 012B     		cmp	r3, #1
+ 448 0066 02D1     		bne	.L10
+ 272:Core/Src/freertos.c ****       {
+ 273:Core/Src/freertos.c ****         Arm_motor3_DISCON_OUT();
+ 449              		.loc 1 273 9
+ 450 0068 FFF7FEFF 		bl	Arm_motor3_DISCON_OUT
+ 451 006c 05E0     		b	.L11
+ 452              	.L10:
+ 274:Core/Src/freertos.c ****       }
+ 275:Core/Src/freertos.c ****       else if (arm_connect_status == ARM_CONNECT_STATUS_DISCONNECTED)
+ 453              		.loc 1 275 35
+ 454 006e 094B     		ldr	r3, .L13
+ 455 0070 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 456              		.loc 1 275 15
+ 457 0072 002B     		cmp	r3, #0
+ 458 0074 01D1     		bne	.L11
+ 276:Core/Src/freertos.c ****       {
+ 277:Core/Src/freertos.c ****         Arm_motor3_DISCON();
+ 459              		.loc 1 277 9
+ 460 0076 FFF7FEFF 		bl	Arm_motor3_DISCON
+ARM GAS  C:\Users\23671\AppData\Local\Temp\ccnzu6sQ.s 			page 14
+
+
+ 461              	.L11:
+ 278:Core/Src/freertos.c ****       }
+ 279:Core/Src/freertos.c ****       osDelay(1);
+ 462              		.loc 1 279 7
+ 463 007a 0120     		movs	r0, #1
+ 464 007c FFF7FEFF 		bl	osDelay
+ 280:Core/Src/freertos.c ****       sum_arm++;
+ 465              		.loc 1 280 14
+ 466 0080 054B     		ldr	r3, .L13+4
+ 467 0082 1B68     		ldr	r3, [r3]
+ 468 0084 0133     		adds	r3, r3, #1
+ 469 0086 044A     		ldr	r2, .L13+4
+ 470 0088 1360     		str	r3, [r2]
+ 281:Core/Src/freertos.c ****       osDelay(1);
+ 471              		.loc 1 281 7
+ 472 008a 0120     		movs	r0, #1
+ 473 008c FFF7FEFF 		bl	osDelay
+ 474              	.L9:
+ 250:Core/Src/freertos.c ****     {
+ 475              		.loc 1 250 8
+ 476 0090 BAE7     		b	.L12
+ 477              	.L14:
+ 478 0092 00BF     		.align	2
+ 479              	.L13:
+ 480 0094 00000000 		.word	arm_connect_status
+ 481 0098 00000000 		.word	sum_arm
+ 482              		.cfi_endproc
+ 483              	.LFE154:
+ 485              		.section	.text.Chassis_Task,"ax",%progbits
+ 486              		.align	1
+ 487              		.global	Chassis_Task
+ 488              		.syntax unified
+ 489              		.thumb
+ 490              		.thumb_func
+ 492              	Chassis_Task:
+ 493              	.LFB155:
+ 282:Core/Src/freertos.c ****     }
+ 283:Core/Src/freertos.c **** 
+ 284:Core/Src/freertos.c ****     // if (arm_connect_status == ARM_CONNECT_STATUS_DISCONNECTED)
+ 285:Core/Src/freertos.c ****     // {
+ 286:Core/Src/freertos.c ****     //   Arm_motor2_DISCON();
+ 287:Core/Src/freertos.c ****     //   osDelay(1);
+ 288:Core/Src/freertos.c ****     //   Arm_motor3_DISCON();
+ 289:Core/Src/freertos.c ****     //   osDelay(1);
+ 290:Core/Src/freertos.c ****     //   Arm_motor4_DISCON();
+ 291:Core/Src/freertos.c ****     //   osDelay(1);
+ 292:Core/Src/freertos.c ****     //   Arm_motor5_DISCON();
+ 293:Core/Src/freertos.c ****     //   osDelay(1);
+ 294:Core/Src/freertos.c ****     // }
+ 295:Core/Src/freertos.c ****     // printf("%f\n", pos_motor.pos_rootpitch);
+ 296:Core/Src/freertos.c ****   }
+ 297:Core/Src/freertos.c ****   /* USER CODE END Eng_arm_Task */
+ 298:Core/Src/freertos.c **** }
+ 299:Core/Src/freertos.c **** 
+ 300:Core/Src/freertos.c **** /* USER CODE BEGIN Header_Chassis_Task */
+ 301:Core/Src/freertos.c **** /**
+ 302:Core/Src/freertos.c ****  * @brief Function implementing the Chassis thread.
+ARM GAS  C:\Users\23671\AppData\Local\Temp\ccnzu6sQ.s 			page 15
+
+
+ 303:Core/Src/freertos.c ****  * @param argument: Not used
+ 304:Core/Src/freertos.c ****  * @retval None
+ 305:Core/Src/freertos.c ****  */
+ 306:Core/Src/freertos.c **** /* USER CODE END Header_Chassis_Task */
+ 307:Core/Src/freertos.c **** void Chassis_Task(void *argument)
+ 308:Core/Src/freertos.c **** {
+ 494              		.loc 1 308 1
+ 495              		.cfi_startproc
+ 496              		@ args = 0, pretend = 0, frame = 8
+ 497              		@ frame_needed = 1, uses_anonymous_args = 0
+ 498 0000 80B5     		push	{r7, lr}
+ 499              	.LCFI12:
+ 500              		.cfi_def_cfa_offset 8
+ 501              		.cfi_offset 7, -8
+ 502              		.cfi_offset 14, -4
+ 503 0002 82B0     		sub	sp, sp, #8
+ 504              	.LCFI13:
+ 505              		.cfi_def_cfa_offset 16
+ 506 0004 00AF     		add	r7, sp, #0
+ 507              	.LCFI14:
+ 508              		.cfi_def_cfa_register 7
+ 509 0006 7860     		str	r0, [r7, #4]
+ 510              	.L16:
+ 309:Core/Src/freertos.c ****   /* USER CODE BEGIN Chassis_Task */
+ 310:Core/Src/freertos.c ****   /* Infinite loop */
+ 311:Core/Src/freertos.c ****   for (;;)
+ 312:Core/Src/freertos.c ****   {
+ 313:Core/Src/freertos.c ****     status();
+ 511              		.loc 1 313 5
+ 512 0008 FFF7FEFF 		bl	status
+ 314:Core/Src/freertos.c ****     Chassis_move();
+ 513              		.loc 1 314 5
+ 514 000c FFF7FEFF 		bl	Chassis_move
+ 315:Core/Src/freertos.c ****     HAL_IWDG_Refresh(&hiwdg1);
+ 515              		.loc 1 315 5
+ 516 0010 0348     		ldr	r0, .L17
+ 517 0012 FFF7FEFF 		bl	HAL_IWDG_Refresh
+ 316:Core/Src/freertos.c ****     osDelay(1);
+ 518              		.loc 1 316 5 discriminator 1
+ 519 0016 0120     		movs	r0, #1
+ 520 0018 FFF7FEFF 		bl	osDelay
+ 313:Core/Src/freertos.c ****     Chassis_move();
+ 521              		.loc 1 313 5
+ 522 001c 00BF     		nop
+ 523 001e F3E7     		b	.L16
+ 524              	.L18:
+ 525              		.align	2
+ 526              	.L17:
+ 527 0020 00000000 		.word	hiwdg1
+ 528              		.cfi_endproc
+ 529              	.LFE155:
+ 531              		.section	.text.Motor_control_Task,"ax",%progbits
+ 532              		.align	1
+ 533              		.global	Motor_control_Task
+ 534              		.syntax unified
+ 535              		.thumb
+ 536              		.thumb_func
+ARM GAS  C:\Users\23671\AppData\Local\Temp\ccnzu6sQ.s 			page 16
+
+
+ 538              	Motor_control_Task:
+ 539              	.LFB156:
+ 317:Core/Src/freertos.c ****   }
+ 318:Core/Src/freertos.c ****   /* USER CODE END Chassis_Task */
+ 319:Core/Src/freertos.c **** }
+ 320:Core/Src/freertos.c **** 
+ 321:Core/Src/freertos.c **** /* USER CODE BEGIN Header_Motor_control_Task */
+ 322:Core/Src/freertos.c **** /**
+ 323:Core/Src/freertos.c ****  * @brief Function implementing the Motor_control thread.
+ 324:Core/Src/freertos.c ****  * @param argument: Not used
+ 325:Core/Src/freertos.c ****  * @retval None
+ 326:Core/Src/freertos.c ****  */
+ 327:Core/Src/freertos.c **** /* USER CODE END Header_Motor_control_Task */
+ 328:Core/Src/freertos.c **** void Motor_control_Task(void *argument)
+ 329:Core/Src/freertos.c **** {
+ 540              		.loc 1 329 1
+ 541              		.cfi_startproc
+ 542              		@ args = 0, pretend = 0, frame = 8
+ 543              		@ frame_needed = 1, uses_anonymous_args = 0
+ 544 0000 80B5     		push	{r7, lr}
+ 545              	.LCFI15:
+ 546              		.cfi_def_cfa_offset 8
+ 547              		.cfi_offset 7, -8
+ 548              		.cfi_offset 14, -4
+ 549 0002 82B0     		sub	sp, sp, #8
+ 550              	.LCFI16:
+ 551              		.cfi_def_cfa_offset 16
+ 552 0004 00AF     		add	r7, sp, #0
+ 553              	.LCFI17:
+ 554              		.cfi_def_cfa_register 7
+ 555 0006 7860     		str	r0, [r7, #4]
+ 556              	.L22:
+ 330:Core/Src/freertos.c ****   /* USER CODE BEGIN Motor_control_Task */
+ 331:Core/Src/freertos.c ****   /* Infinite loop */
+ 332:Core/Src/freertos.c ****   for (;;)
+ 333:Core/Src/freertos.c ****   {
+ 334:Core/Src/freertos.c ****     Arm_DJImotor();
+ 557              		.loc 1 334 5
+ 558 0008 FFF7FEFF 		bl	Arm_DJImotor
+ 335:Core/Src/freertos.c ****     DJIMotor_send_current();
+ 559              		.loc 1 335 5
+ 560 000c FFF7FEFF 		bl	DJIMotor_send_current
+ 336:Core/Src/freertos.c ****     osDelay(1);
+ 561              		.loc 1 336 5
+ 562 0010 0120     		movs	r0, #1
+ 563 0012 FFF7FEFF 		bl	osDelay
+ 337:Core/Src/freertos.c ****     if (arm_connect_status == ARM_CONNECT_STATUS_CONNECTED && (sum_arm >= 200))
+ 564              		.loc 1 337 28
+ 565 0016 0A4B     		ldr	r3, .L23
+ 566 0018 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 567              		.loc 1 337 8
+ 568 001a 012B     		cmp	r3, #1
+ 569 001c 09D1     		bne	.L20
+ 570              		.loc 1 337 72 discriminator 1
+ 571 001e 094B     		ldr	r3, .L23+4
+ 572 0020 1B68     		ldr	r3, [r3]
+ 573              		.loc 1 337 60 discriminator 1
+ARM GAS  C:\Users\23671\AppData\Local\Temp\ccnzu6sQ.s 			page 17
+
+
+ 574 0022 C72B     		cmp	r3, #199
+ 575 0024 05DD     		ble	.L20
+ 338:Core/Src/freertos.c ****     {
+ 339:Core/Src/freertos.c ****       Arm_motor1();
+ 576              		.loc 1 339 7
+ 577 0026 FFF7FEFF 		bl	Arm_motor1
+ 340:Core/Src/freertos.c ****       osDelay(1);
+ 578              		.loc 1 340 7
+ 579 002a 0120     		movs	r0, #1
+ 580 002c FFF7FEFF 		bl	osDelay
+ 581 0030 04E0     		b	.L21
+ 582              	.L20:
+ 341:Core/Src/freertos.c ****     }
+ 342:Core/Src/freertos.c ****     else
+ 343:Core/Src/freertos.c ****     {
+ 344:Core/Src/freertos.c ****       Arm_motor1_DISCON();
+ 583              		.loc 1 344 7
+ 584 0032 FFF7FEFF 		bl	Arm_motor1_DISCON
+ 345:Core/Src/freertos.c ****       osDelay(1);
+ 585              		.loc 1 345 7
+ 586 0036 0120     		movs	r0, #1
+ 587 0038 FFF7FEFF 		bl	osDelay
+ 588              	.L21:
+ 334:Core/Src/freertos.c ****     DJIMotor_send_current();
+ 589              		.loc 1 334 5
+ 590 003c E4E7     		b	.L22
+ 591              	.L24:
+ 592 003e 00BF     		.align	2
+ 593              	.L23:
+ 594 0040 00000000 		.word	arm_connect_status
+ 595 0044 00000000 		.word	sum_arm
+ 596              		.cfi_endproc
+ 597              	.LFE156:
+ 599              		.section	.text.Yaw_Task,"ax",%progbits
+ 600              		.align	1
+ 601              		.global	Yaw_Task
+ 602              		.syntax unified
+ 603              		.thumb
+ 604              		.thumb_func
+ 606              	Yaw_Task:
+ 607              	.LFB157:
+ 346:Core/Src/freertos.c ****     }
+ 347:Core/Src/freertos.c ****   }
+ 348:Core/Src/freertos.c ****   /* USER CODE END Motor_control_Task */
+ 349:Core/Src/freertos.c **** }
+ 350:Core/Src/freertos.c **** 
+ 351:Core/Src/freertos.c **** /* USER CODE BEGIN Header_Yaw_Task */
+ 352:Core/Src/freertos.c **** /**
+ 353:Core/Src/freertos.c ****  * @brief Function implementing the Yaw thread.
+ 354:Core/Src/freertos.c ****  * @param argument: Not used
+ 355:Core/Src/freertos.c ****  * @retval None
+ 356:Core/Src/freertos.c ****  */
+ 357:Core/Src/freertos.c **** /* USER CODE END Header_Yaw_Task */
+ 358:Core/Src/freertos.c **** void Yaw_Task(void *argument)
+ 359:Core/Src/freertos.c **** {
+ 608              		.loc 1 359 1
+ 609              		.cfi_startproc
+ARM GAS  C:\Users\23671\AppData\Local\Temp\ccnzu6sQ.s 			page 18
+
+
+ 610              		@ args = 0, pretend = 0, frame = 8
+ 611              		@ frame_needed = 1, uses_anonymous_args = 0
+ 612 0000 80B5     		push	{r7, lr}
+ 613              	.LCFI18:
+ 614              		.cfi_def_cfa_offset 8
+ 615              		.cfi_offset 7, -8
+ 616              		.cfi_offset 14, -4
+ 617 0002 82B0     		sub	sp, sp, #8
+ 618              	.LCFI19:
+ 619              		.cfi_def_cfa_offset 16
+ 620 0004 00AF     		add	r7, sp, #0
+ 621              	.LCFI20:
+ 622              		.cfi_def_cfa_register 7
+ 623 0006 7860     		str	r0, [r7, #4]
+ 624              	.L26:
+ 360:Core/Src/freertos.c ****   /* USER CODE BEGIN Yaw_Task */
+ 361:Core/Src/freertos.c ****   /* Infinite loop */
+ 362:Core/Src/freertos.c ****   for (;;)
+ 363:Core/Src/freertos.c ****   {
+ 364:Core/Src/freertos.c **** 
+ 365:Core/Src/freertos.c ****     osDelay(1);
+ 625              		.loc 1 365 5 discriminator 1
+ 626 0008 0120     		movs	r0, #1
+ 627 000a FFF7FEFF 		bl	osDelay
+ 628 000e FBE7     		b	.L26
+ 629              		.cfi_endproc
+ 630              	.LFE157:
+ 632              		.section	.text.Referee_Task,"ax",%progbits
+ 633              		.align	1
+ 634              		.global	Referee_Task
+ 635              		.syntax unified
+ 636              		.thumb
+ 637              		.thumb_func
+ 639              	Referee_Task:
+ 640              	.LFB158:
+ 366:Core/Src/freertos.c ****   }
+ 367:Core/Src/freertos.c ****   /* USER CODE END Yaw_Task */
+ 368:Core/Src/freertos.c **** }
+ 369:Core/Src/freertos.c **** 
+ 370:Core/Src/freertos.c **** /* USER CODE BEGIN Header_Referee_Task */
+ 371:Core/Src/freertos.c **** /**
+ 372:Core/Src/freertos.c ****  * @brief Function implementing the Referee thread.
+ 373:Core/Src/freertos.c ****  * @param argument: Not used
+ 374:Core/Src/freertos.c ****  * @retval None
+ 375:Core/Src/freertos.c ****  */
+ 376:Core/Src/freertos.c **** /* USER CODE END Header_Referee_Task */
+ 377:Core/Src/freertos.c **** void Referee_Task(void *argument)
+ 378:Core/Src/freertos.c **** {
+ 641              		.loc 1 378 1
+ 642              		.cfi_startproc
+ 643              		@ args = 0, pretend = 0, frame = 16
+ 644              		@ frame_needed = 1, uses_anonymous_args = 0
+ 645 0000 80B5     		push	{r7, lr}
+ 646              	.LCFI21:
+ 647              		.cfi_def_cfa_offset 8
+ 648              		.cfi_offset 7, -8
+ 649              		.cfi_offset 14, -4
+ARM GAS  C:\Users\23671\AppData\Local\Temp\ccnzu6sQ.s 			page 19
+
+
+ 650 0002 84B0     		sub	sp, sp, #16
+ 651              	.LCFI22:
+ 652              		.cfi_def_cfa_offset 24
+ 653 0004 00AF     		add	r7, sp, #0
+ 654              	.LCFI23:
+ 655              		.cfi_def_cfa_register 7
+ 656 0006 7860     		str	r0, [r7, #4]
+ 379:Core/Src/freertos.c ****   /* USER CODE BEGIN Referee_Task */
+ 380:Core/Src/freertos.c ****   ui_init();
+ 657              		.loc 1 380 3
+ 658 0008 FFF7FEFF 		bl	ui_init
+ 659              	.L28:
+ 660              	.LBB2:
+ 381:Core/Src/freertos.c ****   /* Infinite loop */
+ 382:Core/Src/freertos.c ****   for (;;)
+ 383:Core/Src/freertos.c ****   {
+ 384:Core/Src/freertos.c **** 
+ 385:Core/Src/freertos.c ****     Referee_unpack_fifo_data(&referee_fifo, &referee_unpack_obj);             // 锟斤拷锟�?
+ 661              		.loc 1 385 5
+ 662 000c 0F49     		ldr	r1, .L29
+ 663 000e 1048     		ldr	r0, .L29+4
+ 664 0010 FFF7FEFF 		bl	Referee_unpack_fifo_data
+ 386:Core/Src/freertos.c ****     Referee_unpack_fifo_data(&referee_image_fifo, &referee_image_unpack_obj); // 图锟斤拷
+ 665              		.loc 1 386 5
+ 666 0014 0F49     		ldr	r1, .L29+8
+ 667 0016 1048     		ldr	r0, .L29+12
+ 668 0018 FFF7FEFF 		bl	Referee_unpack_fifo_data
+ 387:Core/Src/freertos.c ****     update_limit_filter(&custom_robot_data, &filtered_data);
+ 669              		.loc 1 387 5
+ 670 001c 0F49     		ldr	r1, .L29+16
+ 671 001e 1048     		ldr	r0, .L29+20
+ 672 0020 FFF7FEFF 		bl	update_limit_filter
+ 388:Core/Src/freertos.c ****     unsigned long current_time_ms = HAL_GetTick();
+ 673              		.loc 1 388 37
+ 674 0024 FFF7FEFF 		bl	HAL_GetTick
+ 675 0028 F860     		str	r0, [r7, #12]
+ 389:Core/Src/freertos.c ****     update_smoothed_data(current_time_ms); // 锟斤拷通锟剿诧拷锟斤拷锟斤拷锟叫憋�
+ 676              		.loc 1 389 5
+ 677 002a F868     		ldr	r0, [r7, #12]
+ 678 002c FFF7FEFF 		bl	update_smoothed_data
+ 390:Core/Src/freertos.c **** 
+ 391:Core/Src/freertos.c ****     ui_self_id = Referee_data.robot_id;
+ 679              		.loc 1 391 30
+ 680 0030 0C4B     		ldr	r3, .L29+24
+ 681 0032 1B79     		ldrb	r3, [r3, #4]	@ zero_extendqisi2
+ 682 0034 1A46     		mov	r2, r3
+ 683              		.loc 1 391 16
+ 684 0036 0C4B     		ldr	r3, .L29+28
+ 685 0038 1A60     		str	r2, [r3]
+ 392:Core/Src/freertos.c ****     BOOMui_change();
+ 686              		.loc 1 392 5
+ 687 003a FFF7FEFF 		bl	BOOMui_change
+ 393:Core/Src/freertos.c ****     ui_updata();
+ 688              		.loc 1 393 5
+ 689 003e FFF7FEFF 		bl	ui_updata
+ 394:Core/Src/freertos.c ****     osDelay(1);
+ 690              		.loc 1 394 5 discriminator 1
+ARM GAS  C:\Users\23671\AppData\Local\Temp\ccnzu6sQ.s 			page 20
+
+
+ 691 0042 0120     		movs	r0, #1
+ 692 0044 FFF7FEFF 		bl	osDelay
+ 693              	.LBE2:
+ 383:Core/Src/freertos.c **** 
+ 694              		.loc 1 383 3
+ 695 0048 00BF     		nop
+ 696 004a DFE7     		b	.L28
+ 697              	.L30:
+ 698              		.align	2
+ 699              	.L29:
+ 700 004c 00000000 		.word	referee_unpack_obj
+ 701 0050 00000000 		.word	referee_fifo
+ 702 0054 00000000 		.word	referee_image_unpack_obj
+ 703 0058 00000000 		.word	referee_image_fifo
+ 704 005c 00000000 		.word	filtered_data
+ 705 0060 00000000 		.word	custom_robot_data
+ 706 0064 00000000 		.word	Referee_data
+ 707 0068 00000000 		.word	ui_self_id
+ 708              		.cfi_endproc
+ 709              	.LFE158:
+ 711              		.section	.text.Log_and_debug_Task,"ax",%progbits
+ 712              		.align	1
+ 713              		.global	Log_and_debug_Task
+ 714              		.syntax unified
+ 715              		.thumb
+ 716              		.thumb_func
+ 718              	Log_and_debug_Task:
+ 719              	.LFB159:
+ 395:Core/Src/freertos.c ****   }
+ 396:Core/Src/freertos.c ****   /* USER CODE END Referee_Task */
+ 397:Core/Src/freertos.c **** }
+ 398:Core/Src/freertos.c **** 
+ 399:Core/Src/freertos.c **** /* USER CODE BEGIN Header_Log_and_debug_Task */
+ 400:Core/Src/freertos.c **** /**
+ 401:Core/Src/freertos.c ****  * @brief Function implementing the Log_and_debug thread.
+ 402:Core/Src/freertos.c ****  * @param argument: Not used
+ 403:Core/Src/freertos.c ****  * @retval None
+ 404:Core/Src/freertos.c ****  */
+ 405:Core/Src/freertos.c **** /* USER CODE END Header_Log_and_debug_Task */
+ 406:Core/Src/freertos.c **** void Log_and_debug_Task(void *argument)
+ 407:Core/Src/freertos.c **** {
+ 720              		.loc 1 407 1
+ 721              		.cfi_startproc
+ 722              		@ args = 0, pretend = 0, frame = 8
+ 723              		@ frame_needed = 1, uses_anonymous_args = 0
+ 724 0000 80B5     		push	{r7, lr}
+ 725              	.LCFI24:
+ 726              		.cfi_def_cfa_offset 8
+ 727              		.cfi_offset 7, -8
+ 728              		.cfi_offset 14, -4
+ 729 0002 82B0     		sub	sp, sp, #8
+ 730              	.LCFI25:
+ 731              		.cfi_def_cfa_offset 16
+ 732 0004 00AF     		add	r7, sp, #0
+ 733              	.LCFI26:
+ 734              		.cfi_def_cfa_register 7
+ 735 0006 7860     		str	r0, [r7, #4]
+ARM GAS  C:\Users\23671\AppData\Local\Temp\ccnzu6sQ.s 			page 21
+
+
+ 736              	.L32:
+ 408:Core/Src/freertos.c ****   /* USER CODE BEGIN Log_and_debug_Task */
+ 409:Core/Src/freertos.c **** 
+ 410:Core/Src/freertos.c ****   /* Infinite loop */
+ 411:Core/Src/freertos.c ****   for (;;)
+ 412:Core/Src/freertos.c ****   {
+ 413:Core/Src/freertos.c ****     LEDshowcolor(RED);
+ 737              		.loc 1 413 5
+ 738 0008 4FF47F00 		mov	r0, #16711680
+ 739 000c FFF7FEFF 		bl	LEDshowcolor
+ 414:Core/Src/freertos.c ****     osDelay(500);
+ 740              		.loc 1 414 5
+ 741 0010 4FF4FA70 		mov	r0, #500
+ 742 0014 FFF7FEFF 		bl	osDelay
+ 415:Core/Src/freertos.c ****     LEDshowcolor(BLUE);
+ 743              		.loc 1 415 5
+ 744 0018 FF20     		movs	r0, #255
+ 745 001a FFF7FEFF 		bl	LEDshowcolor
+ 416:Core/Src/freertos.c ****     osDelay(500);
+ 746              		.loc 1 416 5
+ 747 001e 4FF4FA70 		mov	r0, #500
+ 748 0022 FFF7FEFF 		bl	osDelay
+ 417:Core/Src/freertos.c ****     LEDshowcolor(GREEN);
+ 749              		.loc 1 417 5
+ 750 0026 4FF47F40 		mov	r0, #65280
+ 751 002a FFF7FEFF 		bl	LEDshowcolor
+ 418:Core/Src/freertos.c ****     osDelay(500);
+ 752              		.loc 1 418 5
+ 753 002e 4FF4FA70 		mov	r0, #500
+ 754 0032 FFF7FEFF 		bl	osDelay
+ 419:Core/Src/freertos.c ****     // Music_play(melody);
+ 420:Core/Src/freertos.c ****     //  printf("hello\n");
+ 421:Core/Src/freertos.c ****     osDelay(1);
+ 755              		.loc 1 421 5 discriminator 1
+ 756 0036 0120     		movs	r0, #1
+ 757 0038 FFF7FEFF 		bl	osDelay
+ 413:Core/Src/freertos.c ****     osDelay(500);
+ 758              		.loc 1 413 5
+ 759 003c 00BF     		nop
+ 760 003e E3E7     		b	.L32
+ 761              		.cfi_endproc
+ 762              	.LFE159:
+ 764              		.text
+ 765              	.Letext0:
+ 766              		.file 2 "D:/MSYS2/mingw64/arm-none-eabi/include/machine/_default_types.h"
+ 767              		.file 3 "D:/MSYS2/mingw64/arm-none-eabi/include/sys/_stdint.h"
+ 768              		.file 4 "Drivers/CMSIS/Device/ST/STM32H7xx/Include/stm32h723xx.h"
+ 769              		.file 5 "Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal_def.h"
+ 770              		.file 6 "Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal_iwdg.h"
+ 771              		.file 7 "Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2/cmsis_os2.h"
+ 772              		.file 8 "User/Software/remote_control.h"
+ 773              		.file 9 "Drivers/UI/ui_interface.h"
+ 774              		.file 10 "User/Hardware/referee_system_protocol.h"
+ 775              		.file 11 "Algorithm/fifo.h"
+ 776              		.file 12 "User/Hardware/referee_system.h"
+ 777              		.file 13 "User/Hardware/LED.h"
+ 778              		.file 14 "User/Hardware/dm4310_drv.h"
+ARM GAS  C:\Users\23671\AppData\Local\Temp\ccnzu6sQ.s 			page 22
+
+
+ 779              		.file 15 "Core/Inc/iwdg.h"
+ 780              		.file 16 "User/Software/ui.h"
+ 781              		.file 17 "User/Software/limit_filter.h"
+ 782              		.file 18 "User/Hardware/dm_arm.h"
+ 783              		.file 19 "User/Hardware/motor.h"
+ 784              		.file 20 "User/Software/Chassis.h"
+ 785              		.file 21 "Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal.h"
+ARM GAS  C:\Users\23671\AppData\Local\Temp\ccnzu6sQ.s 			page 23
+
+
+DEFINED SYMBOLS
+                            *ABS*:00000000 freertos.c
+C:\Users\23671\AppData\Local\Temp\ccnzu6sQ.s:24     .bss.color:00000000 color
+C:\Users\23671\AppData\Local\Temp\ccnzu6sQ.s:21     .bss.color:00000000 $d
+C:\Users\23671\AppData\Local\Temp\ccnzu6sQ.s:31     .bss.Remote_controlHandle:00000000 Remote_controlHandle
+C:\Users\23671\AppData\Local\Temp\ccnzu6sQ.s:28     .bss.Remote_controlHandle:00000000 $d
+C:\Users\23671\AppData\Local\Temp\ccnzu6sQ.s:42     .rodata.Remote_control_attributes:00000000 Remote_control_attributes
+C:\Users\23671\AppData\Local\Temp\ccnzu6sQ.s:35     .rodata:00000000 $d
+C:\Users\23671\AppData\Local\Temp\ccnzu6sQ.s:39     .rodata.Remote_control_attributes:00000000 $d
+C:\Users\23671\AppData\Local\Temp\ccnzu6sQ.s:53     .bss.Eng_armHandle:00000000 Eng_armHandle
+C:\Users\23671\AppData\Local\Temp\ccnzu6sQ.s:50     .bss.Eng_armHandle:00000000 $d
+C:\Users\23671\AppData\Local\Temp\ccnzu6sQ.s:64     .rodata.Eng_arm_attributes:00000000 Eng_arm_attributes
+C:\Users\23671\AppData\Local\Temp\ccnzu6sQ.s:61     .rodata.Eng_arm_attributes:00000000 $d
+C:\Users\23671\AppData\Local\Temp\ccnzu6sQ.s:75     .bss.ChassisHandle:00000000 ChassisHandle
+C:\Users\23671\AppData\Local\Temp\ccnzu6sQ.s:72     .bss.ChassisHandle:00000000 $d
+C:\Users\23671\AppData\Local\Temp\ccnzu6sQ.s:86     .rodata.Chassis_attributes:00000000 Chassis_attributes
+C:\Users\23671\AppData\Local\Temp\ccnzu6sQ.s:83     .rodata.Chassis_attributes:00000000 $d
+C:\Users\23671\AppData\Local\Temp\ccnzu6sQ.s:97     .bss.Motor_controlHandle:00000000 Motor_controlHandle
+C:\Users\23671\AppData\Local\Temp\ccnzu6sQ.s:94     .bss.Motor_controlHandle:00000000 $d
+C:\Users\23671\AppData\Local\Temp\ccnzu6sQ.s:108    .rodata.Motor_control_attributes:00000000 Motor_control_attributes
+C:\Users\23671\AppData\Local\Temp\ccnzu6sQ.s:105    .rodata.Motor_control_attributes:00000000 $d
+C:\Users\23671\AppData\Local\Temp\ccnzu6sQ.s:119    .bss.YawHandle:00000000 YawHandle
+C:\Users\23671\AppData\Local\Temp\ccnzu6sQ.s:116    .bss.YawHandle:00000000 $d
+C:\Users\23671\AppData\Local\Temp\ccnzu6sQ.s:130    .rodata.Yaw_attributes:00000000 Yaw_attributes
+C:\Users\23671\AppData\Local\Temp\ccnzu6sQ.s:127    .rodata.Yaw_attributes:00000000 $d
+C:\Users\23671\AppData\Local\Temp\ccnzu6sQ.s:141    .bss.RefereeHandle:00000000 RefereeHandle
+C:\Users\23671\AppData\Local\Temp\ccnzu6sQ.s:138    .bss.RefereeHandle:00000000 $d
+C:\Users\23671\AppData\Local\Temp\ccnzu6sQ.s:152    .rodata.Referee_attributes:00000000 Referee_attributes
+C:\Users\23671\AppData\Local\Temp\ccnzu6sQ.s:149    .rodata.Referee_attributes:00000000 $d
+C:\Users\23671\AppData\Local\Temp\ccnzu6sQ.s:163    .bss.Log_and_debugHandle:00000000 Log_and_debugHandle
+C:\Users\23671\AppData\Local\Temp\ccnzu6sQ.s:160    .bss.Log_and_debugHandle:00000000 $d
+C:\Users\23671\AppData\Local\Temp\ccnzu6sQ.s:174    .rodata.Log_and_debug_attributes:00000000 Log_and_debug_attributes
+C:\Users\23671\AppData\Local\Temp\ccnzu6sQ.s:171    .rodata.Log_and_debug_attributes:00000000 $d
+C:\Users\23671\AppData\Local\Temp\ccnzu6sQ.s:181    .text.vApplicationIdleHook:00000000 $t
+C:\Users\23671\AppData\Local\Temp\ccnzu6sQ.s:187    .text.vApplicationIdleHook:00000000 vApplicationIdleHook
+C:\Users\23671\AppData\Local\Temp\ccnzu6sQ.s:216    .text.MX_FREERTOS_Init:00000000 $t
+C:\Users\23671\AppData\Local\Temp\ccnzu6sQ.s:222    .text.MX_FREERTOS_Init:00000000 MX_FREERTOS_Init
+C:\Users\23671\AppData\Local\Temp\ccnzu6sQ.s:305    .text.MX_FREERTOS_Init:00000078 $d
+C:\Users\23671\AppData\Local\Temp\ccnzu6sQ.s:336    .text.Remote_control_Task:00000000 Remote_control_Task
+C:\Users\23671\AppData\Local\Temp\ccnzu6sQ.s:375    .text.Eng_arm_Task:00000000 Eng_arm_Task
+C:\Users\23671\AppData\Local\Temp\ccnzu6sQ.s:492    .text.Chassis_Task:00000000 Chassis_Task
+C:\Users\23671\AppData\Local\Temp\ccnzu6sQ.s:538    .text.Motor_control_Task:00000000 Motor_control_Task
+C:\Users\23671\AppData\Local\Temp\ccnzu6sQ.s:606    .text.Yaw_Task:00000000 Yaw_Task
+C:\Users\23671\AppData\Local\Temp\ccnzu6sQ.s:639    .text.Referee_Task:00000000 Referee_Task
+C:\Users\23671\AppData\Local\Temp\ccnzu6sQ.s:718    .text.Log_and_debug_Task:00000000 Log_and_debug_Task
+C:\Users\23671\AppData\Local\Temp\ccnzu6sQ.s:330    .text.Remote_control_Task:00000000 $t
+C:\Users\23671\AppData\Local\Temp\ccnzu6sQ.s:369    .text.Eng_arm_Task:00000000 $t
+C:\Users\23671\AppData\Local\Temp\ccnzu6sQ.s:480    .text.Eng_arm_Task:00000094 $d
+C:\Users\23671\AppData\Local\Temp\ccnzu6sQ.s:486    .text.Chassis_Task:00000000 $t
+C:\Users\23671\AppData\Local\Temp\ccnzu6sQ.s:527    .text.Chassis_Task:00000020 $d
+C:\Users\23671\AppData\Local\Temp\ccnzu6sQ.s:532    .text.Motor_control_Task:00000000 $t
+C:\Users\23671\AppData\Local\Temp\ccnzu6sQ.s:594    .text.Motor_control_Task:00000040 $d
+C:\Users\23671\AppData\Local\Temp\ccnzu6sQ.s:600    .text.Yaw_Task:00000000 $t
+C:\Users\23671\AppData\Local\Temp\ccnzu6sQ.s:633    .text.Referee_Task:00000000 $t
+C:\Users\23671\AppData\Local\Temp\ccnzu6sQ.s:700    .text.Referee_Task:0000004c $d
+C:\Users\23671\AppData\Local\Temp\ccnzu6sQ.s:712    .text.Log_and_debug_Task:00000000 $t
+
+ARM GAS  C:\Users\23671\AppData\Local\Temp\ccnzu6sQ.s 			page 24
+
+
+UNDEFINED SYMBOLS
+osThreadNew
+MX_USB_DEVICE_Init
+start
+osDelay
+Arm_motor2
+Arm_motor3
+Arm_motor4
+Arm_motor5
+Arm_motor2_DISCON
+Arm_motor4_DISCON
+Arm_motor5_DISCON
+Arm_motor3_DISCON_OUT
+Arm_motor3_DISCON
+arm_connect_status
+sum_arm
+status
+Chassis_move
+HAL_IWDG_Refresh
+hiwdg1
+Arm_DJImotor
+DJIMotor_send_current
+Arm_motor1
+Arm_motor1_DISCON
+ui_init
+Referee_unpack_fifo_data
+update_limit_filter
+HAL_GetTick
+update_smoothed_data
+BOOMui_change
+ui_updata
+referee_unpack_obj
+referee_fifo
+referee_image_unpack_obj
+referee_image_fifo
+filtered_data
+custom_robot_data
+Referee_data
+ui_self_id
+LEDshowcolor

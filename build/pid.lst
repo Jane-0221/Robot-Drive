@@ -1,0 +1,374 @@
+ARM GAS  C:\Users\fffff\AppData\Local\Temp\ccqBPTJ9.s 			page 1
+
+
+   1              		.cpu cortex-m7
+   2              		.arch armv7e-m
+   3              		.fpu fpv5-d16
+   4              		.eabi_attribute 28, 1
+   5              		.eabi_attribute 20, 1
+   6              		.eabi_attribute 21, 1
+   7              		.eabi_attribute 23, 3
+   8              		.eabi_attribute 24, 1
+   9              		.eabi_attribute 25, 1
+  10              		.eabi_attribute 26, 1
+  11              		.eabi_attribute 30, 6
+  12              		.eabi_attribute 34, 1
+  13              		.eabi_attribute 18, 4
+  14              		.file	"pid.c"
+  15              		.text
+  16              	.Ltext0:
+  17              		.cfi_sections	.debug_frame
+  18              		.file 1 "Algorithm/pid.c"
+  19              		.section	.text.pid_set,"ax",%progbits
+  20              		.align	1
+  21              		.global	pid_set
+  22              		.syntax unified
+  23              		.thumb
+  24              		.thumb_func
+  26              	pid_set:
+  27              	.LFB0:
+   1:Algorithm/pid.c **** #include "math.h"
+   2:Algorithm/pid.c **** #include "pid.h"
+   3:Algorithm/pid.c **** 
+   4:Algorithm/pid.c **** void pid_set(pid_t *PidSet,float p_set,float i_set,float d_set,float lim_out_set,float lim_i_outset
+   5:Algorithm/pid.c **** {
+  28              		.loc 1 5 1
+  29              		.cfi_startproc
+  30              		@ args = 0, pretend = 0, frame = 24
+  31              		@ frame_needed = 1, uses_anonymous_args = 0
+  32              		@ link register save eliminated.
+  33 0000 80B4     		push	{r7}
+  34              	.LCFI0:
+  35              		.cfi_def_cfa_offset 4
+  36              		.cfi_offset 7, -4
+  37 0002 87B0     		sub	sp, sp, #28
+  38              	.LCFI1:
+  39              		.cfi_def_cfa_offset 32
+  40 0004 00AF     		add	r7, sp, #0
+  41              	.LCFI2:
+  42              		.cfi_def_cfa_register 7
+  43 0006 7861     		str	r0, [r7, #20]
+  44 0008 87ED040A 		vstr.32	s0, [r7, #16]
+  45 000c C7ED030A 		vstr.32	s1, [r7, #12]
+  46 0010 87ED021A 		vstr.32	s2, [r7, #8]
+  47 0014 C7ED011A 		vstr.32	s3, [r7, #4]
+  48 0018 87ED002A 		vstr.32	s4, [r7]
+   6:Algorithm/pid.c ****   PidSet->p = p_set;   PidSet->i = i_set;   PidSet->d = d_set;
+  49              		.loc 1 6 13
+  50 001c 7B69     		ldr	r3, [r7, #20]
+  51 001e 3A69     		ldr	r2, [r7, #16]	@ float
+  52 0020 1A60     		str	r2, [r3]	@ float
+ARM GAS  C:\Users\fffff\AppData\Local\Temp\ccqBPTJ9.s 			page 2
+
+
+  53              		.loc 1 6 34
+  54 0022 7B69     		ldr	r3, [r7, #20]
+  55 0024 FA68     		ldr	r2, [r7, #12]	@ float
+  56 0026 5A60     		str	r2, [r3, #4]	@ float
+  57              		.loc 1 6 55
+  58 0028 7B69     		ldr	r3, [r7, #20]
+  59 002a BA68     		ldr	r2, [r7, #8]	@ float
+  60 002c 9A60     		str	r2, [r3, #8]	@ float
+   7:Algorithm/pid.c **** //	PidSet->p_out = 0.0f;
+   8:Algorithm/pid.c **** //	PidSet->i_out = 0.0f;
+   9:Algorithm/pid.c **** //	PidSet->d_out = 0.0f;
+  10:Algorithm/pid.c ****   //PidSet->total_out = 0.0f;
+  11:Algorithm/pid.c ****   //PidSet->set = 0.0f;
+  12:Algorithm/pid.c ****   PidSet->lim_out = lim_out_set;   PidSet->lim_i_out = lim_i_outset;//将设置赋值
+  61              		.loc 1 12 19
+  62 002e 7B69     		ldr	r3, [r7, #20]
+  63 0030 7A68     		ldr	r2, [r7, #4]	@ float
+  64 0032 1A63     		str	r2, [r3, #48]	@ float
+  65              		.loc 1 12 54
+  66 0034 7B69     		ldr	r3, [r7, #20]
+  67 0036 3A68     		ldr	r2, [r7]	@ float
+  68 0038 DA62     		str	r2, [r3, #44]	@ float
+  13:Algorithm/pid.c **** }
+  69              		.loc 1 13 1
+  70 003a 00BF     		nop
+  71 003c 1C37     		adds	r7, r7, #28
+  72              	.LCFI3:
+  73              		.cfi_def_cfa_offset 4
+  74 003e BD46     		mov	sp, r7
+  75              	.LCFI4:
+  76              		.cfi_def_cfa_register 13
+  77              		@ sp needed
+  78 0040 5DF8047B 		ldr	r7, [sp], #4
+  79              	.LCFI5:
+  80              		.cfi_restore 7
+  81              		.cfi_def_cfa_offset 0
+  82 0044 7047     		bx	lr
+  83              		.cfi_endproc
+  84              	.LFE0:
+  86              		.section	.text.pid_cal,"ax",%progbits
+  87              		.align	1
+  88              		.global	pid_cal
+  89              		.syntax unified
+  90              		.thumb
+  91              		.thumb_func
+  93              	pid_cal:
+  94              	.LFB1:
+  14:Algorithm/pid.c **** 
+  15:Algorithm/pid.c **** //PID计算
+  16:Algorithm/pid.c **** float pid_cal(pid_t *PidGoal,float Now,float Set)//PID??
+  17:Algorithm/pid.c **** {
+  95              		.loc 1 17 1
+  96              		.cfi_startproc
+  97              		@ args = 0, pretend = 0, frame = 16
+  98              		@ frame_needed = 1, uses_anonymous_args = 0
+  99              		@ link register save eliminated.
+ 100 0000 80B4     		push	{r7}
+ARM GAS  C:\Users\fffff\AppData\Local\Temp\ccqBPTJ9.s 			page 3
+
+
+ 101              	.LCFI6:
+ 102              		.cfi_def_cfa_offset 4
+ 103              		.cfi_offset 7, -4
+ 104 0002 85B0     		sub	sp, sp, #20
+ 105              	.LCFI7:
+ 106              		.cfi_def_cfa_offset 24
+ 107 0004 00AF     		add	r7, sp, #0
+ 108              	.LCFI8:
+ 109              		.cfi_def_cfa_register 7
+ 110 0006 F860     		str	r0, [r7, #12]
+ 111 0008 87ED020A 		vstr.32	s0, [r7, #8]
+ 112 000c C7ED010A 		vstr.32	s1, [r7, #4]
+  18:Algorithm/pid.c **** 	PidGoal->set = Set;
+ 113              		.loc 1 18 15
+ 114 0010 FB68     		ldr	r3, [r7, #12]
+ 115 0012 7A68     		ldr	r2, [r7, #4]	@ float
+ 116 0014 DA60     		str	r2, [r3, #12]	@ float
+  19:Algorithm/pid.c ****   PidGoal->err_last = PidGoal->err;
+ 117              		.loc 1 19 30
+ 118 0016 FB68     		ldr	r3, [r7, #12]
+ 119 0018 1A69     		ldr	r2, [r3, #16]	@ float
+ 120              		.loc 1 19 21
+ 121 001a FB68     		ldr	r3, [r7, #12]
+ 122 001c 5A61     		str	r2, [r3, #20]	@ float
+  20:Algorithm/pid.c ****   PidGoal->err = Set - Now;//计算误差
+ 123              		.loc 1 20 22
+ 124 001e 97ED017A 		vldr.32	s14, [r7, #4]
+ 125 0022 D7ED027A 		vldr.32	s15, [r7, #8]
+ 126 0026 77EE677A 		vsub.f32	s15, s14, s15
+ 127              		.loc 1 20 16
+ 128 002a FB68     		ldr	r3, [r7, #12]
+ 129 002c C3ED047A 		vstr.32	s15, [r3, #16]
+  21:Algorithm/pid.c ****   PidGoal->diff=PidGoal->err-PidGoal->err_last;
+ 130              		.loc 1 21 24
+ 131 0030 FB68     		ldr	r3, [r7, #12]
+ 132 0032 93ED047A 		vldr.32	s14, [r3, #16]
+ 133              		.loc 1 21 37
+ 134 0036 FB68     		ldr	r3, [r7, #12]
+ 135 0038 D3ED057A 		vldr.32	s15, [r3, #20]
+ 136              		.loc 1 21 29
+ 137 003c 77EE677A 		vsub.f32	s15, s14, s15
+ 138              		.loc 1 21 16
+ 139 0040 FB68     		ldr	r3, [r7, #12]
+ 140 0042 C3ED067A 		vstr.32	s15, [r3, #24]
+  22:Algorithm/pid.c ****    
+  23:Algorithm/pid.c ****   PidGoal->p_out = PidGoal->p * PidGoal->err;
+ 141              		.loc 1 23 27
+ 142 0046 FB68     		ldr	r3, [r7, #12]
+ 143 0048 93ED007A 		vldr.32	s14, [r3]
+ 144              		.loc 1 23 40
+ 145 004c FB68     		ldr	r3, [r7, #12]
+ 146 004e D3ED047A 		vldr.32	s15, [r3, #16]
+ 147              		.loc 1 23 31
+ 148 0052 67EE277A 		vmul.f32	s15, s14, s15
+ 149              		.loc 1 23 18
+ 150 0056 FB68     		ldr	r3, [r7, #12]
+ 151 0058 C3ED077A 		vstr.32	s15, [r3, #28]
+ARM GAS  C:\Users\fffff\AppData\Local\Temp\ccqBPTJ9.s 			page 4
+
+
+  24:Algorithm/pid.c **** 	if(PidGoal->i != 0)
+ 152              		.loc 1 24 12
+ 153 005c FB68     		ldr	r3, [r7, #12]
+ 154 005e D3ED017A 		vldr.32	s15, [r3, #4]
+ 155              		.loc 1 24 4
+ 156 0062 F5EE407A 		vcmp.f32	s15, #0
+ 157 0066 F1EE10FA 		vmrs	APSR_nzcv, FPSCR
+ 158 006a 0FD0     		beq	.L3
+  25:Algorithm/pid.c **** 		PidGoal->i_out += PidGoal->i * PidGoal->err;
+ 159              		.loc 1 25 10
+ 160 006c FB68     		ldr	r3, [r7, #12]
+ 161 006e 93ED087A 		vldr.32	s14, [r3, #32]
+ 162              		.loc 1 25 28
+ 163 0072 FB68     		ldr	r3, [r7, #12]
+ 164 0074 D3ED016A 		vldr.32	s13, [r3, #4]
+ 165              		.loc 1 25 41
+ 166 0078 FB68     		ldr	r3, [r7, #12]
+ 167 007a D3ED047A 		vldr.32	s15, [r3, #16]
+ 168              		.loc 1 25 32
+ 169 007e 66EEA77A 		vmul.f32	s15, s13, s15
+ 170              		.loc 1 25 18
+ 171 0082 77EE277A 		vadd.f32	s15, s14, s15
+ 172 0086 FB68     		ldr	r3, [r7, #12]
+ 173 0088 C3ED087A 		vstr.32	s15, [r3, #32]
+ 174              	.L3:
+  26:Algorithm/pid.c ****   PidGoal->d_out = PidGoal->d *PidGoal->diff ;//pid运算
+ 175              		.loc 1 26 27
+ 176 008c FB68     		ldr	r3, [r7, #12]
+ 177 008e 93ED027A 		vldr.32	s14, [r3, #8]
+ 178              		.loc 1 26 39
+ 179 0092 FB68     		ldr	r3, [r7, #12]
+ 180 0094 D3ED067A 		vldr.32	s15, [r3, #24]
+ 181              		.loc 1 26 31
+ 182 0098 67EE277A 		vmul.f32	s15, s14, s15
+ 183              		.loc 1 26 18
+ 184 009c FB68     		ldr	r3, [r7, #12]
+ 185 009e C3ED097A 		vstr.32	s15, [r3, #36]
+  27:Algorithm/pid.c ****   
+  28:Algorithm/pid.c ****   
+  29:Algorithm/pid.c ****   if(fabs(PidGoal->i_out) > PidGoal->lim_i_out)//防止积分过大
+ 186              		.loc 1 29 18
+ 187 00a2 FB68     		ldr	r3, [r7, #12]
+ 188 00a4 D3ED087A 		vldr.32	s15, [r3, #32]
+ 189              		.loc 1 29 6
+ 190 00a8 B0EEE77A 		vabs.f32	s14, s15
+ 191              		.loc 1 29 36
+ 192 00ac FB68     		ldr	r3, [r7, #12]
+ 193 00ae D3ED0B7A 		vldr.32	s15, [r3, #44]
+ 194              		.loc 1 29 5
+ 195 00b2 B4EEE77A 		vcmpe.f32	s14, s15
+ 196 00b6 F1EE10FA 		vmrs	APSR_nzcv, FPSCR
+ 197 00ba 14DD     		ble	.L4
+  30:Algorithm/pid.c ****   {
+  31:Algorithm/pid.c ****     if(PidGoal->i_out < 0)
+ 198              		.loc 1 31 15
+ 199 00bc FB68     		ldr	r3, [r7, #12]
+ 200 00be D3ED087A 		vldr.32	s15, [r3, #32]
+ARM GAS  C:\Users\fffff\AppData\Local\Temp\ccqBPTJ9.s 			page 5
+
+
+ 201              		.loc 1 31 7
+ 202 00c2 F5EEC07A 		vcmpe.f32	s15, #0
+ 203 00c6 F1EE10FA 		vmrs	APSR_nzcv, FPSCR
+ 204 00ca 08D5     		bpl	.L17
+  32:Algorithm/pid.c ****       PidGoal->i_out = -PidGoal->lim_i_out;
+ 205              		.loc 1 32 32
+ 206 00cc FB68     		ldr	r3, [r7, #12]
+ 207 00ce D3ED0B7A 		vldr.32	s15, [r3, #44]
+ 208              		.loc 1 32 24
+ 209 00d2 F1EE677A 		vneg.f32	s15, s15
+ 210              		.loc 1 32 22
+ 211 00d6 FB68     		ldr	r3, [r7, #12]
+ 212 00d8 C3ED087A 		vstr.32	s15, [r3, #32]
+ 213 00dc 03E0     		b	.L4
+ 214              	.L17:
+  33:Algorithm/pid.c ****     else
+  34:Algorithm/pid.c ****       PidGoal->i_out = PidGoal->lim_i_out;
+ 215              		.loc 1 34 31
+ 216 00de FB68     		ldr	r3, [r7, #12]
+ 217 00e0 DA6A     		ldr	r2, [r3, #44]	@ float
+ 218              		.loc 1 34 22
+ 219 00e2 FB68     		ldr	r3, [r7, #12]
+ 220 00e4 1A62     		str	r2, [r3, #32]	@ float
+ 221              	.L4:
+  35:Algorithm/pid.c ****   }
+  36:Algorithm/pid.c **** 	
+  37:Algorithm/pid.c ****   PidGoal->total_out = PidGoal->p_out + PidGoal->i_out + PidGoal->d_out;//计算总和输出  
+ 222              		.loc 1 37 31
+ 223 00e6 FB68     		ldr	r3, [r7, #12]
+ 224 00e8 93ED077A 		vldr.32	s14, [r3, #28]
+ 225              		.loc 1 37 48
+ 226 00ec FB68     		ldr	r3, [r7, #12]
+ 227 00ee D3ED087A 		vldr.32	s15, [r3, #32]
+ 228              		.loc 1 37 39
+ 229 00f2 37EE277A 		vadd.f32	s14, s14, s15
+ 230              		.loc 1 37 65
+ 231 00f6 FB68     		ldr	r3, [r7, #12]
+ 232 00f8 D3ED097A 		vldr.32	s15, [r3, #36]
+ 233              		.loc 1 37 56
+ 234 00fc 77EE277A 		vadd.f32	s15, s14, s15
+ 235              		.loc 1 37 22
+ 236 0100 FB68     		ldr	r3, [r7, #12]
+ 237 0102 C3ED0A7A 		vstr.32	s15, [r3, #40]
+  38:Algorithm/pid.c **** 
+  39:Algorithm/pid.c **** 	if(fabs(PidGoal->total_out) > PidGoal->lim_out)//防止总和过大
+ 238              		.loc 1 39 17
+ 239 0106 FB68     		ldr	r3, [r7, #12]
+ 240 0108 D3ED0A7A 		vldr.32	s15, [r3, #40]
+ 241              		.loc 1 39 5
+ 242 010c B0EEE77A 		vabs.f32	s14, s15
+ 243              		.loc 1 39 39
+ 244 0110 FB68     		ldr	r3, [r7, #12]
+ 245 0112 D3ED0C7A 		vldr.32	s15, [r3, #48]
+ 246              		.loc 1 39 4
+ 247 0116 B4EEE77A 		vcmpe.f32	s14, s15
+ 248 011a F1EE10FA 		vmrs	APSR_nzcv, FPSCR
+ 249 011e 14DD     		ble	.L8
+ARM GAS  C:\Users\fffff\AppData\Local\Temp\ccqBPTJ9.s 			page 6
+
+
+  40:Algorithm/pid.c ****   {
+  41:Algorithm/pid.c ****     if(PidGoal->total_out < 0)
+ 250              		.loc 1 41 15
+ 251 0120 FB68     		ldr	r3, [r7, #12]
+ 252 0122 D3ED0A7A 		vldr.32	s15, [r3, #40]
+ 253              		.loc 1 41 7
+ 254 0126 F5EEC07A 		vcmpe.f32	s15, #0
+ 255 012a F1EE10FA 		vmrs	APSR_nzcv, FPSCR
+ 256 012e 08D5     		bpl	.L18
+  42:Algorithm/pid.c ****       PidGoal->total_out = -PidGoal->lim_out;
+ 257              		.loc 1 42 36
+ 258 0130 FB68     		ldr	r3, [r7, #12]
+ 259 0132 D3ED0C7A 		vldr.32	s15, [r3, #48]
+ 260              		.loc 1 42 28
+ 261 0136 F1EE677A 		vneg.f32	s15, s15
+ 262              		.loc 1 42 26
+ 263 013a FB68     		ldr	r3, [r7, #12]
+ 264 013c C3ED0A7A 		vstr.32	s15, [r3, #40]
+ 265 0140 03E0     		b	.L8
+ 266              	.L18:
+  43:Algorithm/pid.c ****     else
+  44:Algorithm/pid.c ****       PidGoal->total_out = PidGoal->lim_out;
+ 267              		.loc 1 44 35
+ 268 0142 FB68     		ldr	r3, [r7, #12]
+ 269 0144 1A6B     		ldr	r2, [r3, #48]	@ float
+ 270              		.loc 1 44 26
+ 271 0146 FB68     		ldr	r3, [r7, #12]
+ 272 0148 9A62     		str	r2, [r3, #40]	@ float
+ 273              	.L8:
+  45:Algorithm/pid.c ****   }
+  46:Algorithm/pid.c **** 	
+  47:Algorithm/pid.c ****   return PidGoal->total_out;
+ 274              		.loc 1 47 17
+ 275 014a FB68     		ldr	r3, [r7, #12]
+ 276 014c 9B6A     		ldr	r3, [r3, #40]	@ float
+ 277              		.loc 1 47 17 is_stmt 0 discriminator 1
+ 278 014e 07EE903A 		vmov	s15, r3
+  48:Algorithm/pid.c **** }
+ 279              		.loc 1 48 1 is_stmt 1
+ 280 0152 B0EE670A 		vmov.f32	s0, s15
+ 281 0156 1437     		adds	r7, r7, #20
+ 282              	.LCFI9:
+ 283              		.cfi_def_cfa_offset 4
+ 284 0158 BD46     		mov	sp, r7
+ 285              	.LCFI10:
+ 286              		.cfi_def_cfa_register 13
+ 287              		@ sp needed
+ 288 015a 5DF8047B 		ldr	r7, [sp], #4
+ 289              	.LCFI11:
+ 290              		.cfi_restore 7
+ 291              		.cfi_def_cfa_offset 0
+ 292 015e 7047     		bx	lr
+ 293              		.cfi_endproc
+ 294              	.LFE1:
+ 296              		.text
+ 297              	.Letext0:
+ 298              		.file 2 "Algorithm/pid.h"
+ARM GAS  C:\Users\fffff\AppData\Local\Temp\ccqBPTJ9.s 			page 7
+
+
+ARM GAS  C:\Users\fffff\AppData\Local\Temp\ccqBPTJ9.s 			page 8
+
+
+DEFINED SYMBOLS
+                            *ABS*:00000000 pid.c
+C:\Users\fffff\AppData\Local\Temp\ccqBPTJ9.s:20     .text.pid_set:00000000 $t
+C:\Users\fffff\AppData\Local\Temp\ccqBPTJ9.s:26     .text.pid_set:00000000 pid_set
+C:\Users\fffff\AppData\Local\Temp\ccqBPTJ9.s:87     .text.pid_cal:00000000 $t
+C:\Users\fffff\AppData\Local\Temp\ccqBPTJ9.s:93     .text.pid_cal:00000000 pid_cal
+
+NO UNDEFINED SYMBOLS

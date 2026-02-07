@@ -1,0 +1,1448 @@
+ARM GAS  C:\Users\fffff\AppData\Local\Temp\cceXtYOR.s 			page 1
+
+
+   1              		.cpu cortex-m7
+   2              		.arch armv7e-m
+   3              		.fpu fpv5-d16
+   4              		.eabi_attribute 28, 1
+   5              		.eabi_attribute 20, 1
+   6              		.eabi_attribute 21, 1
+   7              		.eabi_attribute 23, 3
+   8              		.eabi_attribute 24, 1
+   9              		.eabi_attribute 25, 1
+  10              		.eabi_attribute 26, 1
+  11              		.eabi_attribute 30, 6
+  12              		.eabi_attribute 34, 1
+  13              		.eabi_attribute 18, 4
+  14              		.file	"CRC8_CRC16.c"
+  15              		.text
+  16              	.Ltext0:
+  17              		.cfi_sections	.debug_frame
+  18              		.file 1 "Algorithm/CRC8_CRC16.c"
+  19              		.global	CRC8_INIT
+  20              		.section	.rodata.CRC8_INIT,"a"
+  23              	CRC8_INIT:
+  24 0000 FF       		.byte	-1
+  25              		.global	CRC8_table
+  26              		.section	.rodata.CRC8_table,"a"
+  27              		.align	2
+  30              	CRC8_table:
+  31 0000 005EBCE2 		.ascii	"\000^\274\342a?\335\203\302\234~ \243\375\037A\235\303"
+  31      613FDD83 
+  31      C29C7E20 
+  31      A3FD1F41 
+  31      9DC3
+  32 0012 217FFCA2 		.ascii	"!\177\374\242@\036_\001\343\275>`\202\334#}\237\301"
+  32      401E5F01 
+  32      E3BD3E60 
+  32      82DC237D 
+  32      9FC1
+  33 0024 421CFEA0 		.ascii	"B\034\376\240\341\277]\003\200\336<b\276\340\002\\\337"
+  33      E1BF5D03 
+  33      80DE3C62 
+  33      BEE0025C 
+  33      DF
+  34 0035 81633D7C 		.ascii	"\201c=|\"\300\236\035C\241\377F\030\372\244'y\233\305"
+  34      22C09E1D 
+  34      43A1FF46 
+  34      18FAA427 
+  34      799BC5
+  35 0048 84DA3866 		.ascii	"\204\3328f\345\273Y\007\333\205g9\272\344\006X\031G"
+  35      E5BB5907 
+  35      DB856739 
+  35      BAE40658 
+  35      1947
+  36 005a A5FB7826 		.ascii	"\245\373x&\304\232e;\331\207\004Z\270\346\247\371\033"
+  36      C49A653B 
+  36      D987045A 
+  36      B8E6A7F9 
+  36      1B
+  37 006b 45C6987A 		.ascii	"E\306\230z$\370\246D\032\231\307%{:d\206\330[\005\347"
+ARM GAS  C:\Users\fffff\AppData\Local\Temp\cceXtYOR.s 			page 2
+
+
+  37      24F8A644 
+  37      1A99C725 
+  37      7B3A6486 
+  37      D85B05E7 
+  38 007f B98CD230 		.ascii	"\271\214\3220n\355\263Q\017N\020\362\254/q\223\315\021"
+  38      6EEDB351 
+  38      0F4E10F2 
+  38      AC2F7193 
+  38      CD11
+  39 0091 4FADF370 		.ascii	"O\255\363p.\314\222\323\215o1\262\354\016P\257\361\023"
+  39      2ECC92D3 
+  39      8D6F31B2 
+  39      EC0E50AF 
+  39      F113
+  40 00a3 4DCE9072 		.ascii	"M\316\220r,m3\321\217\014R\260\3562l\216\320S\015\357"
+  40      2C6D33D1 
+  40      8F0C52B0 
+  40      EE326C8E 
+  40      D0530DEF 
+  41 00b7 B1F0AE4C 		.ascii	"\261\360\256L\022\221\317-s\312\224v(\253\365\027I\010"
+  41      1291CF2D 
+  41      73CA9476 
+  41      28ABF517 
+  41      4908
+  42 00c9 56B4EA69 		.ascii	"V\264\352i7\325\213W\011\353\2656h\212\324\225\313)"
+  42      37D58B57 
+  42      09EBB536 
+  42      688AD495 
+  42      CB29
+  43 00db 77F4AA48 		.ascii	"w\364\252H\026\351\267U\013\210\3264j+u\227\311J\024"
+  43      16E9B755 
+  43      0B88D634 
+  43      6A2B7597 
+  43      C94A14
+  44 00ee F6A8742A 		.ascii	"\366\250t*\310\226\025K\251\367\266\350\012T\327\211"
+  44      C896154B 
+  44      A9F7B6E8 
+  44      0A54D789 
+  45 00fe 6B35     		.ascii	"k5"
+  46              		.global	CRC16_INIT
+  47              		.section	.data.CRC16_INIT,"aw"
+  48              		.align	1
+  51              	CRC16_INIT:
+  52 0000 FFFF     		.short	-1
+  53              		.global	wCRC_table
+  54              		.section	.rodata.wCRC_table,"a"
+  55              		.align	2
+  58              	wCRC_table:
+  59 0000 0000     		.short	0
+  60 0002 8911     		.short	4489
+  61 0004 1223     		.short	8978
+  62 0006 9B32     		.short	12955
+  63 0008 2446     		.short	17956
+  64 000a AD57     		.short	22445
+  65 000c 3665     		.short	25910
+  66 000e BF74     		.short	29887
+  67 0010 488C     		.short	-29624
+ARM GAS  C:\Users\fffff\AppData\Local\Temp\cceXtYOR.s 			page 3
+
+
+  68 0012 C19D     		.short	-25151
+  69 0014 5AAF     		.short	-20646
+  70 0016 D3BE     		.short	-16685
+  71 0018 6CCA     		.short	-13716
+  72 001a E5DB     		.short	-9243
+  73 001c 7EE9     		.short	-5762
+  74 001e F7F8     		.short	-1801
+  75 0020 8110     		.short	4225
+  76 0022 0801     		.short	264
+  77 0024 9333     		.short	13203
+  78 0026 1A22     		.short	8730
+  79 0028 A556     		.short	22181
+  80 002a 2C47     		.short	18220
+  81 002c B775     		.short	30135
+  82 002e 3E64     		.short	25662
+  83 0030 C99C     		.short	-25399
+  84 0032 408D     		.short	-29376
+  85 0034 DBBF     		.short	-16421
+  86 0036 52AE     		.short	-20910
+  87 0038 EDDA     		.short	-9491
+  88 003a 64CB     		.short	-13468
+  89 003c FFF9     		.short	-1537
+  90 003e 76E8     		.short	-6026
+  91 0040 0221     		.short	8450
+  92 0042 8B30     		.short	12427
+  93 0044 1002     		.short	528
+  94 0046 9913     		.short	5017
+  95 0048 2667     		.short	26406
+  96 004a AF76     		.short	30383
+  97 004c 3444     		.short	17460
+  98 004e BD55     		.short	21949
+  99 0050 4AAD     		.short	-21174
+ 100 0052 C3BC     		.short	-17213
+ 101 0054 588E     		.short	-29096
+ 102 0056 D19F     		.short	-24623
+ 103 0058 6EEB     		.short	-5266
+ 104 005a E7FA     		.short	-1305
+ 105 005c 7CC8     		.short	-14212
+ 106 005e F5D9     		.short	-9739
+ 107 0060 8331     		.short	12675
+ 108 0062 0A20     		.short	8202
+ 109 0064 9112     		.short	4753
+ 110 0066 1803     		.short	792
+ 111 0068 A777     		.short	30631
+ 112 006a 2E66     		.short	26158
+ 113 006c B554     		.short	21685
+ 114 006e 3C45     		.short	17724
+ 115 0070 CBBD     		.short	-16949
+ 116 0072 42AC     		.short	-21438
+ 117 0074 D99E     		.short	-24871
+ 118 0076 508F     		.short	-28848
+ 119 0078 EFFB     		.short	-1041
+ 120 007a 66EA     		.short	-5530
+ 121 007c FDD8     		.short	-9987
+ 122 007e 74C9     		.short	-13964
+ 123 0080 0442     		.short	16900
+ 124 0082 8D53     		.short	21389
+ARM GAS  C:\Users\fffff\AppData\Local\Temp\cceXtYOR.s 			page 4
+
+
+ 125 0084 1661     		.short	24854
+ 126 0086 9F70     		.short	28831
+ 127 0088 2004     		.short	1056
+ 128 008a A915     		.short	5545
+ 129 008c 3227     		.short	10034
+ 130 008e BB36     		.short	14011
+ 131 0090 4CCE     		.short	-12724
+ 132 0092 C5DF     		.short	-8251
+ 133 0094 5EED     		.short	-4770
+ 134 0096 D7FC     		.short	-809
+ 135 0098 6888     		.short	-30616
+ 136 009a E199     		.short	-26143
+ 137 009c 7AAB     		.short	-21638
+ 138 009e F3BA     		.short	-17677
+ 139 00a0 8552     		.short	21125
+ 140 00a2 0C43     		.short	17164
+ 141 00a4 9771     		.short	29079
+ 142 00a6 1E60     		.short	24606
+ 143 00a8 A114     		.short	5281
+ 144 00aa 2805     		.short	1320
+ 145 00ac B337     		.short	14259
+ 146 00ae 3A26     		.short	9786
+ 147 00b0 CDDE     		.short	-8499
+ 148 00b2 44CF     		.short	-12476
+ 149 00b4 DFFD     		.short	-545
+ 150 00b6 56EC     		.short	-5034
+ 151 00b8 E998     		.short	-26391
+ 152 00ba 6089     		.short	-30368
+ 153 00bc FBBB     		.short	-17413
+ 154 00be 72AA     		.short	-21902
+ 155 00c0 0663     		.short	25350
+ 156 00c2 8F72     		.short	29327
+ 157 00c4 1440     		.short	16404
+ 158 00c6 9D51     		.short	20893
+ 159 00c8 2225     		.short	9506
+ 160 00ca AB34     		.short	13483
+ 161 00cc 3006     		.short	1584
+ 162 00ce B917     		.short	6073
+ 163 00d0 4EEF     		.short	-4274
+ 164 00d2 C7FE     		.short	-313
+ 165 00d4 5CCC     		.short	-13220
+ 166 00d6 D5DD     		.short	-8747
+ 167 00d8 6AA9     		.short	-22166
+ 168 00da E3B8     		.short	-18205
+ 169 00dc 788A     		.short	-30088
+ 170 00de F19B     		.short	-25615
+ 171 00e0 8773     		.short	29575
+ 172 00e2 0E62     		.short	25102
+ 173 00e4 9550     		.short	20629
+ 174 00e6 1C41     		.short	16668
+ 175 00e8 A335     		.short	13731
+ 176 00ea 2A24     		.short	9258
+ 177 00ec B116     		.short	5809
+ 178 00ee 3807     		.short	1848
+ 179 00f0 CFFF     		.short	-49
+ 180 00f2 46EE     		.short	-4538
+ 181 00f4 DDDC     		.short	-8995
+ARM GAS  C:\Users\fffff\AppData\Local\Temp\cceXtYOR.s 			page 5
+
+
+ 182 00f6 54CD     		.short	-12972
+ 183 00f8 EBB9     		.short	-17941
+ 184 00fa 62A8     		.short	-22430
+ 185 00fc F99A     		.short	-25863
+ 186 00fe 708B     		.short	-29840
+ 187 0100 0884     		.short	-31736
+ 188 0102 8195     		.short	-27263
+ 189 0104 1AA7     		.short	-22758
+ 190 0106 93B6     		.short	-18797
+ 191 0108 2CC2     		.short	-15828
+ 192 010a A5D3     		.short	-11355
+ 193 010c 3EE1     		.short	-7874
+ 194 010e B7F0     		.short	-3913
+ 195 0110 4008     		.short	2112
+ 196 0112 C919     		.short	6601
+ 197 0114 522B     		.short	11090
+ 198 0116 DB3A     		.short	15067
+ 199 0118 644E     		.short	20068
+ 200 011a ED5F     		.short	24557
+ 201 011c 766D     		.short	28022
+ 202 011e FF7C     		.short	31999
+ 203 0120 8994     		.short	-27511
+ 204 0122 0085     		.short	-31488
+ 205 0124 9BB7     		.short	-18533
+ 206 0126 12A6     		.short	-23022
+ 207 0128 ADD2     		.short	-11603
+ 208 012a 24C3     		.short	-15580
+ 209 012c BFF1     		.short	-3649
+ 210 012e 36E0     		.short	-8138
+ 211 0130 C118     		.short	6337
+ 212 0132 4809     		.short	2376
+ 213 0134 D33B     		.short	15315
+ 214 0136 5A2A     		.short	10842
+ 215 0138 E55E     		.short	24293
+ 216 013a 6C4F     		.short	20332
+ 217 013c F77D     		.short	32247
+ 218 013e 7E6C     		.short	27774
+ 219 0140 0AA5     		.short	-23286
+ 220 0142 83B4     		.short	-19325
+ 221 0144 1886     		.short	-31208
+ 222 0146 9197     		.short	-26735
+ 223 0148 2EE3     		.short	-7378
+ 224 014a A7F2     		.short	-3417
+ 225 014c 3CC0     		.short	-16324
+ 226 014e B5D1     		.short	-11851
+ 227 0150 4229     		.short	10562
+ 228 0152 CB38     		.short	14539
+ 229 0154 500A     		.short	2640
+ 230 0156 D91B     		.short	7129
+ 231 0158 666F     		.short	28518
+ 232 015a EF7E     		.short	32495
+ 233 015c 744C     		.short	19572
+ 234 015e FD5D     		.short	24061
+ 235 0160 8BB5     		.short	-19061
+ 236 0162 02A4     		.short	-23550
+ 237 0164 9996     		.short	-26983
+ 238 0166 1087     		.short	-30960
+ARM GAS  C:\Users\fffff\AppData\Local\Temp\cceXtYOR.s 			page 6
+
+
+ 239 0168 AFF3     		.short	-3153
+ 240 016a 26E2     		.short	-7642
+ 241 016c BDD0     		.short	-12099
+ 242 016e 34C1     		.short	-16076
+ 243 0170 C339     		.short	14787
+ 244 0172 4A28     		.short	10314
+ 245 0174 D11A     		.short	6865
+ 246 0176 580B     		.short	2904
+ 247 0178 E77F     		.short	32743
+ 248 017a 6E6E     		.short	28270
+ 249 017c F55C     		.short	23797
+ 250 017e 7C4D     		.short	19836
+ 251 0180 0CC6     		.short	-14836
+ 252 0182 85D7     		.short	-10363
+ 253 0184 1EE5     		.short	-6882
+ 254 0186 97F4     		.short	-2921
+ 255 0188 2880     		.short	-32728
+ 256 018a A191     		.short	-28255
+ 257 018c 3AA3     		.short	-23750
+ 258 018e B3B2     		.short	-19789
+ 259 0190 444A     		.short	19012
+ 260 0192 CD5B     		.short	23501
+ 261 0194 5669     		.short	26966
+ 262 0196 DF78     		.short	30943
+ 263 0198 600C     		.short	3168
+ 264 019a E91D     		.short	7657
+ 265 019c 722F     		.short	12146
+ 266 019e FB3E     		.short	16123
+ 267 01a0 8DD6     		.short	-10611
+ 268 01a2 04C7     		.short	-14588
+ 269 01a4 9FF5     		.short	-2657
+ 270 01a6 16E4     		.short	-7146
+ 271 01a8 A990     		.short	-28503
+ 272 01aa 2081     		.short	-32480
+ 273 01ac BBB3     		.short	-19525
+ 274 01ae 32A2     		.short	-24014
+ 275 01b0 C55A     		.short	23237
+ 276 01b2 4C4B     		.short	19276
+ 277 01b4 D779     		.short	31191
+ 278 01b6 5E68     		.short	26718
+ 279 01b8 E11C     		.short	7393
+ 280 01ba 680D     		.short	3432
+ 281 01bc F33F     		.short	16371
+ 282 01be 7A2E     		.short	11898
+ 283 01c0 0EE7     		.short	-6386
+ 284 01c2 87F6     		.short	-2425
+ 285 01c4 1CC4     		.short	-15332
+ 286 01c6 95D5     		.short	-10859
+ 287 01c8 2AA1     		.short	-24278
+ 288 01ca A3B0     		.short	-20317
+ 289 01cc 3882     		.short	-32200
+ 290 01ce B193     		.short	-27727
+ 291 01d0 466B     		.short	27462
+ 292 01d2 CF7A     		.short	31439
+ 293 01d4 5448     		.short	18516
+ 294 01d6 DD59     		.short	23005
+ 295 01d8 622D     		.short	11618
+ARM GAS  C:\Users\fffff\AppData\Local\Temp\cceXtYOR.s 			page 7
+
+
+ 296 01da EB3C     		.short	15595
+ 297 01dc 700E     		.short	3696
+ 298 01de F91F     		.short	8185
+ 299 01e0 8FF7     		.short	-2161
+ 300 01e2 06E6     		.short	-6650
+ 301 01e4 9DD4     		.short	-11107
+ 302 01e6 14C5     		.short	-15084
+ 303 01e8 ABB1     		.short	-20053
+ 304 01ea 22A0     		.short	-24542
+ 305 01ec B992     		.short	-27975
+ 306 01ee 3083     		.short	-31952
+ 307 01f0 C77B     		.short	31687
+ 308 01f2 4E6A     		.short	27214
+ 309 01f4 D558     		.short	22741
+ 310 01f6 5C49     		.short	18780
+ 311 01f8 E33D     		.short	15843
+ 312 01fa 6A2C     		.short	11370
+ 313 01fc F11E     		.short	7921
+ 314 01fe 780F     		.short	3960
+ 315              		.section	.text.get_CRC8_check_sum,"ax",%progbits
+ 316              		.align	1
+ 317              		.global	get_CRC8_check_sum
+ 318              		.syntax unified
+ 319              		.thumb
+ 320              		.thumb_func
+ 322              	get_CRC8_check_sum:
+ 323              	.LFB144:
+   1:Algorithm/CRC8_CRC16.c **** /**
+   2:Algorithm/CRC8_CRC16.c ****   ****************************(C) COPYRIGHT 2019 DJI****************************
+   3:Algorithm/CRC8_CRC16.c ****   * @file       crc8_crc16.c/h
+   4:Algorithm/CRC8_CRC16.c ****   * @brief      crc8 and crc16 calculate function, verify function, append function.
+   5:Algorithm/CRC8_CRC16.c ****   *             crc8和crc16计算函数,校验函数,添加函数
+   6:Algorithm/CRC8_CRC16.c ****   * @note       
+   7:Algorithm/CRC8_CRC16.c ****   * @history
+   8:Algorithm/CRC8_CRC16.c ****   *  Version    Date            Author          Modification
+   9:Algorithm/CRC8_CRC16.c ****   *  V1.0.0     Nov-11-2019     RM              1. done
+  10:Algorithm/CRC8_CRC16.c ****   *
+  11:Algorithm/CRC8_CRC16.c ****   @verbatim
+  12:Algorithm/CRC8_CRC16.c ****   ==============================================================================
+  13:Algorithm/CRC8_CRC16.c **** 
+  14:Algorithm/CRC8_CRC16.c ****   ==============================================================================
+  15:Algorithm/CRC8_CRC16.c ****   @endverbatim
+  16:Algorithm/CRC8_CRC16.c ****   ****************************(C) COPYRIGHT 2019 DJI****************************
+  17:Algorithm/CRC8_CRC16.c ****   */
+  18:Algorithm/CRC8_CRC16.c **** #include "crc8_crc16.h"
+  19:Algorithm/CRC8_CRC16.c **** //include "NUC_communication.h"
+  20:Algorithm/CRC8_CRC16.c **** //crc8 generator polynomial:G(x)=x8+x5+x4+1
+  21:Algorithm/CRC8_CRC16.c **** const uint8_t CRC8_INIT = 0xff;
+  22:Algorithm/CRC8_CRC16.c **** const uint8_t CRC8_table[256] =
+  23:Algorithm/CRC8_CRC16.c **** {
+  24:Algorithm/CRC8_CRC16.c ****     0x00, 0x5e, 0xbc, 0xe2, 0x61, 0x3f, 0xdd, 0x83, 0xc2, 0x9c, 0x7e, 0x20, 0xa3, 0xfd, 0x1f, 0x41,
+  25:Algorithm/CRC8_CRC16.c ****     0x9d, 0xc3, 0x21, 0x7f, 0xfc, 0xa2, 0x40, 0x1e, 0x5f, 0x01, 0xe3, 0xbd, 0x3e, 0x60, 0x82, 0xdc,
+  26:Algorithm/CRC8_CRC16.c ****     0x23, 0x7d, 0x9f, 0xc1, 0x42, 0x1c, 0xfe, 0xa0, 0xe1, 0xbf, 0x5d, 0x03, 0x80, 0xde, 0x3c, 0x62,
+  27:Algorithm/CRC8_CRC16.c ****     0xbe, 0xe0, 0x02, 0x5c, 0xdf, 0x81, 0x63, 0x3d, 0x7c, 0x22, 0xc0, 0x9e, 0x1d, 0x43, 0xa1, 0xff,
+  28:Algorithm/CRC8_CRC16.c ****     0x46, 0x18, 0xfa, 0xa4, 0x27, 0x79, 0x9b, 0xc5, 0x84, 0xda, 0x38, 0x66, 0xe5, 0xbb, 0x59, 0x07,
+  29:Algorithm/CRC8_CRC16.c ****     0xdb, 0x85, 0x67, 0x39, 0xba, 0xe4, 0x06, 0x58, 0x19, 0x47, 0xa5, 0xfb, 0x78, 0x26, 0xc4, 0x9a,
+  30:Algorithm/CRC8_CRC16.c ****     0x65, 0x3b, 0xd9, 0x87, 0x04, 0x5a, 0xb8, 0xe6, 0xa7, 0xf9, 0x1b, 0x45, 0xc6, 0x98, 0x7a, 0x24,
+ARM GAS  C:\Users\fffff\AppData\Local\Temp\cceXtYOR.s 			page 8
+
+
+  31:Algorithm/CRC8_CRC16.c ****     0xf8, 0xa6, 0x44, 0x1a, 0x99, 0xc7, 0x25, 0x7b, 0x3a, 0x64, 0x86, 0xd8, 0x5b, 0x05, 0xe7, 0xb9,
+  32:Algorithm/CRC8_CRC16.c ****     0x8c, 0xd2, 0x30, 0x6e, 0xed, 0xb3, 0x51, 0x0f, 0x4e, 0x10, 0xf2, 0xac, 0x2f, 0x71, 0x93, 0xcd,
+  33:Algorithm/CRC8_CRC16.c ****     0x11, 0x4f, 0xad, 0xf3, 0x70, 0x2e, 0xcc, 0x92, 0xd3, 0x8d, 0x6f, 0x31, 0xb2, 0xec, 0x0e, 0x50,
+  34:Algorithm/CRC8_CRC16.c ****     0xaf, 0xf1, 0x13, 0x4d, 0xce, 0x90, 0x72, 0x2c, 0x6d, 0x33, 0xd1, 0x8f, 0x0c, 0x52, 0xb0, 0xee,
+  35:Algorithm/CRC8_CRC16.c ****     0x32, 0x6c, 0x8e, 0xd0, 0x53, 0x0d, 0xef, 0xb1, 0xf0, 0xae, 0x4c, 0x12, 0x91, 0xcf, 0x2d, 0x73,
+  36:Algorithm/CRC8_CRC16.c ****     0xca, 0x94, 0x76, 0x28, 0xab, 0xf5, 0x17, 0x49, 0x08, 0x56, 0xb4, 0xea, 0x69, 0x37, 0xd5, 0x8b,
+  37:Algorithm/CRC8_CRC16.c ****     0x57, 0x09, 0xeb, 0xb5, 0x36, 0x68, 0x8a, 0xd4, 0x95, 0xcb, 0x29, 0x77, 0xf4, 0xaa, 0x48, 0x16,
+  38:Algorithm/CRC8_CRC16.c ****     0xe9, 0xb7, 0x55, 0x0b, 0x88, 0xd6, 0x34, 0x6a, 0x2b, 0x75, 0x97, 0xc9, 0x4a, 0x14, 0xf6, 0xa8,
+  39:Algorithm/CRC8_CRC16.c ****     0x74, 0x2a, 0xc8, 0x96, 0x15, 0x4b, 0xa9, 0xf7, 0xb6, 0xe8, 0x0a, 0x54, 0xd7, 0x89, 0x6b, 0x35,
+  40:Algorithm/CRC8_CRC16.c **** };
+  41:Algorithm/CRC8_CRC16.c **** uint16_t CRC16_INIT = 0xffff;
+  42:Algorithm/CRC8_CRC16.c **** const uint16_t wCRC_table[256] =
+  43:Algorithm/CRC8_CRC16.c **** {
+  44:Algorithm/CRC8_CRC16.c **** 0x0000, 0x1189, 0x2312, 0x329b, 0x4624, 0x57ad, 0x6536, 0x74bf,
+  45:Algorithm/CRC8_CRC16.c **** 0x8c48, 0x9dc1, 0xaf5a, 0xbed3, 0xca6c, 0xdbe5, 0xe97e, 0xf8f7,
+  46:Algorithm/CRC8_CRC16.c **** 0x1081, 0x0108, 0x3393, 0x221a, 0x56a5, 0x472c, 0x75b7, 0x643e,
+  47:Algorithm/CRC8_CRC16.c **** 0x9cc9, 0x8d40, 0xbfdb, 0xae52, 0xdaed, 0xcb64, 0xf9ff, 0xe876,
+  48:Algorithm/CRC8_CRC16.c **** 0x2102, 0x308b, 0x0210, 0x1399, 0x6726, 0x76af, 0x4434, 0x55bd,
+  49:Algorithm/CRC8_CRC16.c **** 0xad4a, 0xbcc3, 0x8e58, 0x9fd1, 0xeb6e, 0xfae7, 0xc87c, 0xd9f5,
+  50:Algorithm/CRC8_CRC16.c **** 0x3183, 0x200a, 0x1291, 0x0318, 0x77a7, 0x662e, 0x54b5, 0x453c,
+  51:Algorithm/CRC8_CRC16.c **** 0xbdcb, 0xac42, 0x9ed9, 0x8f50, 0xfbef, 0xea66, 0xd8fd, 0xc974,
+  52:Algorithm/CRC8_CRC16.c **** 0x4204, 0x538d, 0x6116, 0x709f, 0x0420, 0x15a9, 0x2732, 0x36bb,
+  53:Algorithm/CRC8_CRC16.c **** 0xce4c, 0xdfc5, 0xed5e, 0xfcd7, 0x8868, 0x99e1, 0xab7a, 0xbaf3,
+  54:Algorithm/CRC8_CRC16.c **** 0x5285, 0x430c, 0x7197, 0x601e, 0x14a1, 0x0528, 0x37b3, 0x263a,
+  55:Algorithm/CRC8_CRC16.c **** 0xdecd, 0xcf44, 0xfddf, 0xec56, 0x98e9, 0x8960, 0xbbfb, 0xaa72,
+  56:Algorithm/CRC8_CRC16.c **** 0x6306, 0x728f, 0x4014, 0x519d, 0x2522, 0x34ab, 0x0630, 0x17b9,
+  57:Algorithm/CRC8_CRC16.c **** 0xef4e, 0xfec7, 0xcc5c, 0xddd5, 0xa96a, 0xb8e3, 0x8a78, 0x9bf1,
+  58:Algorithm/CRC8_CRC16.c **** 0x7387, 0x620e, 0x5095, 0x411c, 0x35a3, 0x242a, 0x16b1, 0x0738,
+  59:Algorithm/CRC8_CRC16.c **** 0xffcf, 0xee46, 0xdcdd, 0xcd54, 0xb9eb, 0xa862, 0x9af9, 0x8b70,
+  60:Algorithm/CRC8_CRC16.c **** 0x8408, 0x9581, 0xa71a, 0xb693, 0xc22c, 0xd3a5, 0xe13e, 0xf0b7,
+  61:Algorithm/CRC8_CRC16.c **** 0x0840, 0x19c9, 0x2b52, 0x3adb, 0x4e64, 0x5fed, 0x6d76, 0x7cff,
+  62:Algorithm/CRC8_CRC16.c **** 0x9489, 0x8500, 0xb79b, 0xa612, 0xd2ad, 0xc324, 0xf1bf, 0xe036,
+  63:Algorithm/CRC8_CRC16.c **** 0x18c1, 0x0948, 0x3bd3, 0x2a5a, 0x5ee5, 0x4f6c, 0x7df7, 0x6c7e,
+  64:Algorithm/CRC8_CRC16.c **** 0xa50a, 0xb483, 0x8618, 0x9791, 0xe32e, 0xf2a7, 0xc03c, 0xd1b5,
+  65:Algorithm/CRC8_CRC16.c **** 0x2942, 0x38cb, 0x0a50, 0x1bd9, 0x6f66, 0x7eef, 0x4c74, 0x5dfd,
+  66:Algorithm/CRC8_CRC16.c **** 0xb58b, 0xa402, 0x9699, 0x8710, 0xf3af, 0xe226, 0xd0bd, 0xc134,
+  67:Algorithm/CRC8_CRC16.c **** 0x39c3, 0x284a, 0x1ad1, 0x0b58, 0x7fe7, 0x6e6e, 0x5cf5, 0x4d7c,
+  68:Algorithm/CRC8_CRC16.c **** 0xc60c, 0xd785, 0xe51e, 0xf497, 0x8028, 0x91a1, 0xa33a, 0xb2b3,
+  69:Algorithm/CRC8_CRC16.c **** 0x4a44, 0x5bcd, 0x6956, 0x78df, 0x0c60, 0x1de9, 0x2f72, 0x3efb,
+  70:Algorithm/CRC8_CRC16.c **** 0xd68d, 0xc704, 0xf59f, 0xe416, 0x90a9, 0x8120, 0xb3bb, 0xa232,
+  71:Algorithm/CRC8_CRC16.c **** 0x5ac5, 0x4b4c, 0x79d7, 0x685e, 0x1ce1, 0x0d68, 0x3ff3, 0x2e7a,
+  72:Algorithm/CRC8_CRC16.c **** 0xe70e, 0xf687, 0xc41c, 0xd595, 0xa12a, 0xb0a3, 0x8238, 0x93b1,
+  73:Algorithm/CRC8_CRC16.c **** 0x6b46, 0x7acf, 0x4854, 0x59dd, 0x2d62, 0x3ceb, 0x0e70, 0x1ff9,
+  74:Algorithm/CRC8_CRC16.c **** 0xf78f, 0xe606, 0xd49d, 0xc514, 0xb1ab, 0xa022, 0x92b9, 0x8330,
+  75:Algorithm/CRC8_CRC16.c **** 0x7bc7, 0x6a4e, 0x58d5, 0x495c, 0x3de3, 0x2c6a, 0x1ef1, 0x0f78
+  76:Algorithm/CRC8_CRC16.c **** };
+  77:Algorithm/CRC8_CRC16.c **** 
+  78:Algorithm/CRC8_CRC16.c **** 
+  79:Algorithm/CRC8_CRC16.c ****  /**
+  80:Algorithm/CRC8_CRC16.c ****    * @brief          calculate the crc8  
+  81:Algorithm/CRC8_CRC16.c ****    * @param[in]      pch_message: data
+  82:Algorithm/CRC8_CRC16.c ****    * @param[in]      dw_length: stream length = data + checksum
+  83:Algorithm/CRC8_CRC16.c ****    * @param[in]      ucCRC8: init CRC8
+  84:Algorithm/CRC8_CRC16.c ****    * @retval         calculated crc8
+  85:Algorithm/CRC8_CRC16.c ****    */
+  86:Algorithm/CRC8_CRC16.c ****  /**
+  87:Algorithm/CRC8_CRC16.c ****    * @brief          计算CRC8
+ARM GAS  C:\Users\fffff\AppData\Local\Temp\cceXtYOR.s 			page 9
+
+
+  88:Algorithm/CRC8_CRC16.c ****    * @param[in]      pch_message: 数据
+  89:Algorithm/CRC8_CRC16.c ****    * @param[in]      dw_length: 数据和校验的长度
+  90:Algorithm/CRC8_CRC16.c ****    * @param[in]      ucCRC8:初始CRC8
+  91:Algorithm/CRC8_CRC16.c ****    * @retval         计算完的CRC8
+  92:Algorithm/CRC8_CRC16.c ****    */
+  93:Algorithm/CRC8_CRC16.c ****  uint8_t get_CRC8_check_sum(unsigned char *pch_message,unsigned int dw_length,unsigned char ucCRC8)
+  94:Algorithm/CRC8_CRC16.c ****  {
+ 324              		.loc 1 94 2
+ 325              		.cfi_startproc
+ 326              		@ args = 0, pretend = 0, frame = 24
+ 327              		@ frame_needed = 1, uses_anonymous_args = 0
+ 328              		@ link register save eliminated.
+ 329 0000 80B4     		push	{r7}
+ 330              	.LCFI0:
+ 331              		.cfi_def_cfa_offset 4
+ 332              		.cfi_offset 7, -4
+ 333 0002 87B0     		sub	sp, sp, #28
+ 334              	.LCFI1:
+ 335              		.cfi_def_cfa_offset 32
+ 336 0004 00AF     		add	r7, sp, #0
+ 337              	.LCFI2:
+ 338              		.cfi_def_cfa_register 7
+ 339 0006 F860     		str	r0, [r7, #12]
+ 340 0008 B960     		str	r1, [r7, #8]
+ 341 000a 1346     		mov	r3, r2
+ 342 000c FB71     		strb	r3, [r7, #7]
+  95:Algorithm/CRC8_CRC16.c ****      unsigned char uc_index;
+  96:Algorithm/CRC8_CRC16.c ****      while (dw_length--)
+ 343              		.loc 1 96 12
+ 344 000e 0AE0     		b	.L2
+ 345              	.L3:
+  97:Algorithm/CRC8_CRC16.c ****      {
+  98:Algorithm/CRC8_CRC16.c ****          uc_index = ucCRC8^(*pch_message++);
+ 346              		.loc 1 98 41
+ 347 0010 FB68     		ldr	r3, [r7, #12]
+ 348 0012 5A1C     		adds	r2, r3, #1
+ 349 0014 FA60     		str	r2, [r7, #12]
+ 350              		.loc 1 98 29
+ 351 0016 1A78     		ldrb	r2, [r3]	@ zero_extendqisi2
+ 352              		.loc 1 98 19
+ 353 0018 FB79     		ldrb	r3, [r7, #7]
+ 354 001a 5340     		eors	r3, r3, r2
+ 355 001c FB75     		strb	r3, [r7, #23]
+  99:Algorithm/CRC8_CRC16.c ****          ucCRC8 = CRC8_table[uc_index];
+ 356              		.loc 1 99 29
+ 357 001e FB7D     		ldrb	r3, [r7, #23]	@ zero_extendqisi2
+ 358              		.loc 1 99 17
+ 359 0020 074A     		ldr	r2, .L5
+ 360 0022 D35C     		ldrb	r3, [r2, r3]
+ 361 0024 FB71     		strb	r3, [r7, #7]
+ 362              	.L2:
+  96:Algorithm/CRC8_CRC16.c ****      {
+ 363              		.loc 1 96 22
+ 364 0026 BB68     		ldr	r3, [r7, #8]
+ 365 0028 5A1E     		subs	r2, r3, #1
+ 366 002a BA60     		str	r2, [r7, #8]
+  96:Algorithm/CRC8_CRC16.c ****      {
+ARM GAS  C:\Users\fffff\AppData\Local\Temp\cceXtYOR.s 			page 10
+
+
+ 367              		.loc 1 96 13
+ 368 002c 002B     		cmp	r3, #0
+ 369 002e EFD1     		bne	.L3
+ 100:Algorithm/CRC8_CRC16.c ****      }
+ 101:Algorithm/CRC8_CRC16.c ****      return(ucCRC8);
+ 370              		.loc 1 101 12
+ 371 0030 FB79     		ldrb	r3, [r7, #7]	@ zero_extendqisi2
+ 102:Algorithm/CRC8_CRC16.c ****  }
+ 372              		.loc 1 102 2
+ 373 0032 1846     		mov	r0, r3
+ 374 0034 1C37     		adds	r7, r7, #28
+ 375              	.LCFI3:
+ 376              		.cfi_def_cfa_offset 4
+ 377 0036 BD46     		mov	sp, r7
+ 378              	.LCFI4:
+ 379              		.cfi_def_cfa_register 13
+ 380              		@ sp needed
+ 381 0038 5DF8047B 		ldr	r7, [sp], #4
+ 382              	.LCFI5:
+ 383              		.cfi_restore 7
+ 384              		.cfi_def_cfa_offset 0
+ 385 003c 7047     		bx	lr
+ 386              	.L6:
+ 387 003e 00BF     		.align	2
+ 388              	.L5:
+ 389 0040 00000000 		.word	CRC8_table
+ 390              		.cfi_endproc
+ 391              	.LFE144:
+ 393              		.section	.text.verify_CRC8_check_sum,"ax",%progbits
+ 394              		.align	1
+ 395              		.global	verify_CRC8_check_sum
+ 396              		.syntax unified
+ 397              		.thumb
+ 398              		.thumb_func
+ 400              	verify_CRC8_check_sum:
+ 401              	.LFB145:
+ 103:Algorithm/CRC8_CRC16.c **** 
+ 104:Algorithm/CRC8_CRC16.c **** 
+ 105:Algorithm/CRC8_CRC16.c ****  /**
+ 106:Algorithm/CRC8_CRC16.c ****    * @brief          CRC8 verify function  
+ 107:Algorithm/CRC8_CRC16.c ****    * @param[in]      pch_message: data
+ 108:Algorithm/CRC8_CRC16.c ****    * @param[in]      dw_length:stream length = data + checksum
+ 109:Algorithm/CRC8_CRC16.c ****    * @retval         true of false
+ 110:Algorithm/CRC8_CRC16.c ****    */
+ 111:Algorithm/CRC8_CRC16.c ****  /**
+ 112:Algorithm/CRC8_CRC16.c ****    * @brief          CRC8校验函数
+ 113:Algorithm/CRC8_CRC16.c ****    * @param[in]      pch_message: 数据
+ 114:Algorithm/CRC8_CRC16.c ****    * @param[in]      dw_length: 数据和校验的长度
+ 115:Algorithm/CRC8_CRC16.c ****    * @retval         真或者假
+ 116:Algorithm/CRC8_CRC16.c ****    */
+ 117:Algorithm/CRC8_CRC16.c ****  uint32_t verify_CRC8_check_sum(unsigned char *pch_message, unsigned int dw_length)
+ 118:Algorithm/CRC8_CRC16.c ****  {
+ 402              		.loc 1 118 2
+ 403              		.cfi_startproc
+ 404              		@ args = 0, pretend = 0, frame = 16
+ 405              		@ frame_needed = 1, uses_anonymous_args = 0
+ 406 0000 80B5     		push	{r7, lr}
+ARM GAS  C:\Users\fffff\AppData\Local\Temp\cceXtYOR.s 			page 11
+
+
+ 407              	.LCFI6:
+ 408              		.cfi_def_cfa_offset 8
+ 409              		.cfi_offset 7, -8
+ 410              		.cfi_offset 14, -4
+ 411 0002 84B0     		sub	sp, sp, #16
+ 412              	.LCFI7:
+ 413              		.cfi_def_cfa_offset 24
+ 414 0004 00AF     		add	r7, sp, #0
+ 415              	.LCFI8:
+ 416              		.cfi_def_cfa_register 7
+ 417 0006 7860     		str	r0, [r7, #4]
+ 418 0008 3960     		str	r1, [r7]
+ 119:Algorithm/CRC8_CRC16.c ****      unsigned char ucExpected = 0;
+ 419              		.loc 1 119 20
+ 420 000a 0023     		movs	r3, #0
+ 421 000c FB73     		strb	r3, [r7, #15]
+ 120:Algorithm/CRC8_CRC16.c ****      if ((pch_message == 0) || (dw_length <= 2))
+ 422              		.loc 1 120 9
+ 423 000e 7B68     		ldr	r3, [r7, #4]
+ 424 0010 002B     		cmp	r3, #0
+ 425 0012 02D0     		beq	.L8
+ 426              		.loc 1 120 29 discriminator 1
+ 427 0014 3B68     		ldr	r3, [r7]
+ 428 0016 022B     		cmp	r3, #2
+ 429 0018 01D8     		bhi	.L9
+ 430              	.L8:
+ 121:Algorithm/CRC8_CRC16.c ****      {
+ 122:Algorithm/CRC8_CRC16.c ****          return 0;
+ 431              		.loc 1 122 17
+ 432 001a 0023     		movs	r3, #0
+ 433 001c 13E0     		b	.L10
+ 434              	.L9:
+ 123:Algorithm/CRC8_CRC16.c ****      }
+ 124:Algorithm/CRC8_CRC16.c ****      ucExpected = get_CRC8_check_sum (pch_message, dw_length - 1, CRC8_INIT);
+ 435              		.loc 1 124 19
+ 436 001e 3B68     		ldr	r3, [r7]
+ 437 0020 013B     		subs	r3, r3, #1
+ 438 0022 FF22     		movs	r2, #255
+ 439 0024 1946     		mov	r1, r3
+ 440 0026 7868     		ldr	r0, [r7, #4]
+ 441 0028 FFF7FEFF 		bl	get_CRC8_check_sum
+ 442 002c 0346     		mov	r3, r0
+ 443 002e FB73     		strb	r3, [r7, #15]
+ 125:Algorithm/CRC8_CRC16.c ****      return ( ucExpected == pch_message[dw_length - 1] );
+ 444              		.loc 1 125 40
+ 445 0030 3B68     		ldr	r3, [r7]
+ 446 0032 013B     		subs	r3, r3, #1
+ 447 0034 7A68     		ldr	r2, [r7, #4]
+ 448 0036 1344     		add	r3, r3, r2
+ 449 0038 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 450              		.loc 1 125 26
+ 451 003a FA7B     		ldrb	r2, [r7, #15]	@ zero_extendqisi2
+ 452 003c 9A42     		cmp	r2, r3
+ 453 003e 0CBF     		ite	eq
+ 454 0040 0123     		moveq	r3, #1
+ 455 0042 0023     		movne	r3, #0
+ 456 0044 DBB2     		uxtb	r3, r3
+ARM GAS  C:\Users\fffff\AppData\Local\Temp\cceXtYOR.s 			page 12
+
+
+ 457              	.L10:
+ 126:Algorithm/CRC8_CRC16.c ****  }
+ 458              		.loc 1 126 2
+ 459 0046 1846     		mov	r0, r3
+ 460 0048 1037     		adds	r7, r7, #16
+ 461              	.LCFI9:
+ 462              		.cfi_def_cfa_offset 8
+ 463 004a BD46     		mov	sp, r7
+ 464              	.LCFI10:
+ 465              		.cfi_def_cfa_register 13
+ 466              		@ sp needed
+ 467 004c 80BD     		pop	{r7, pc}
+ 468              		.cfi_endproc
+ 469              	.LFE145:
+ 471              		.section	.text.append_CRC8_check_sum,"ax",%progbits
+ 472              		.align	1
+ 473              		.global	append_CRC8_check_sum
+ 474              		.syntax unified
+ 475              		.thumb
+ 476              		.thumb_func
+ 478              	append_CRC8_check_sum:
+ 479              	.LFB146:
+ 127:Algorithm/CRC8_CRC16.c **** 
+ 128:Algorithm/CRC8_CRC16.c **** 
+ 129:Algorithm/CRC8_CRC16.c ****  /**
+ 130:Algorithm/CRC8_CRC16.c ****    * @brief          append CRC8 to the end of data
+ 131:Algorithm/CRC8_CRC16.c ****    * @param[in]      pch_message: data
+ 132:Algorithm/CRC8_CRC16.c ****    * @param[in]      dw_length:stream length = data + checksum
+ 133:Algorithm/CRC8_CRC16.c ****    * @retval         none
+ 134:Algorithm/CRC8_CRC16.c ****    */
+ 135:Algorithm/CRC8_CRC16.c ****  /**
+ 136:Algorithm/CRC8_CRC16.c ****    * @brief          添加CRC8到数据的结尾
+ 137:Algorithm/CRC8_CRC16.c ****    * @param[in]      pch_message: 数据
+ 138:Algorithm/CRC8_CRC16.c ****    * @param[in]      dw_length: 数据和校验的长度
+ 139:Algorithm/CRC8_CRC16.c ****    * @retval         none
+ 140:Algorithm/CRC8_CRC16.c ****    */
+ 141:Algorithm/CRC8_CRC16.c ****  void append_CRC8_check_sum(unsigned char *pch_message, unsigned int dw_length)
+ 142:Algorithm/CRC8_CRC16.c ****  {
+ 480              		.loc 1 142 2
+ 481              		.cfi_startproc
+ 482              		@ args = 0, pretend = 0, frame = 16
+ 483              		@ frame_needed = 1, uses_anonymous_args = 0
+ 484 0000 80B5     		push	{r7, lr}
+ 485              	.LCFI11:
+ 486              		.cfi_def_cfa_offset 8
+ 487              		.cfi_offset 7, -8
+ 488              		.cfi_offset 14, -4
+ 489 0002 84B0     		sub	sp, sp, #16
+ 490              	.LCFI12:
+ 491              		.cfi_def_cfa_offset 24
+ 492 0004 00AF     		add	r7, sp, #0
+ 493              	.LCFI13:
+ 494              		.cfi_def_cfa_register 7
+ 495 0006 7860     		str	r0, [r7, #4]
+ 496 0008 3960     		str	r1, [r7]
+ 143:Algorithm/CRC8_CRC16.c ****      unsigned char ucCRC = 0;
+ 497              		.loc 1 143 20
+ARM GAS  C:\Users\fffff\AppData\Local\Temp\cceXtYOR.s 			page 13
+
+
+ 498 000a 0023     		movs	r3, #0
+ 499 000c FB73     		strb	r3, [r7, #15]
+ 144:Algorithm/CRC8_CRC16.c ****      if ((pch_message == 0) || (dw_length <= 2))
+ 500              		.loc 1 144 9
+ 501 000e 7B68     		ldr	r3, [r7, #4]
+ 502 0010 002B     		cmp	r3, #0
+ 503 0012 12D0     		beq	.L15
+ 504              		.loc 1 144 29 discriminator 1
+ 505 0014 3B68     		ldr	r3, [r7]
+ 506 0016 022B     		cmp	r3, #2
+ 507 0018 0FD9     		bls	.L15
+ 145:Algorithm/CRC8_CRC16.c ****      {
+ 146:Algorithm/CRC8_CRC16.c ****          return;
+ 147:Algorithm/CRC8_CRC16.c ****      }
+ 148:Algorithm/CRC8_CRC16.c ****      ucCRC = get_CRC8_check_sum((unsigned char *)pch_message, dw_length - 1, CRC8_INIT);
+ 508              		.loc 1 148 14
+ 509 001a 3B68     		ldr	r3, [r7]
+ 510 001c 013B     		subs	r3, r3, #1
+ 511 001e FF22     		movs	r2, #255
+ 512 0020 1946     		mov	r1, r3
+ 513 0022 7868     		ldr	r0, [r7, #4]
+ 514 0024 FFF7FEFF 		bl	get_CRC8_check_sum
+ 515 0028 0346     		mov	r3, r0
+ 516 002a FB73     		strb	r3, [r7, #15]
+ 149:Algorithm/CRC8_CRC16.c ****      pch_message[dw_length - 1] = ucCRC;
+ 517              		.loc 1 149 17
+ 518 002c 3B68     		ldr	r3, [r7]
+ 519 002e 013B     		subs	r3, r3, #1
+ 520 0030 7A68     		ldr	r2, [r7, #4]
+ 521 0032 1344     		add	r3, r3, r2
+ 522              		.loc 1 149 33
+ 523 0034 FA7B     		ldrb	r2, [r7, #15]
+ 524 0036 1A70     		strb	r2, [r3]
+ 525 0038 00E0     		b	.L11
+ 526              	.L15:
+ 146:Algorithm/CRC8_CRC16.c ****      }
+ 527              		.loc 1 146 10
+ 528 003a 00BF     		nop
+ 529              	.L11:
+ 150:Algorithm/CRC8_CRC16.c ****  }
+ 530              		.loc 1 150 2
+ 531 003c 1037     		adds	r7, r7, #16
+ 532              	.LCFI14:
+ 533              		.cfi_def_cfa_offset 8
+ 534 003e BD46     		mov	sp, r7
+ 535              	.LCFI15:
+ 536              		.cfi_def_cfa_register 13
+ 537              		@ sp needed
+ 538 0040 80BD     		pop	{r7, pc}
+ 539              		.cfi_endproc
+ 540              	.LFE146:
+ 542              		.section	.text.get_CRC16_check_sum,"ax",%progbits
+ 543              		.align	1
+ 544              		.global	get_CRC16_check_sum
+ 545              		.syntax unified
+ 546              		.thumb
+ 547              		.thumb_func
+ARM GAS  C:\Users\fffff\AppData\Local\Temp\cceXtYOR.s 			page 14
+
+
+ 549              	get_CRC16_check_sum:
+ 550              	.LFB147:
+ 151:Algorithm/CRC8_CRC16.c **** 
+ 152:Algorithm/CRC8_CRC16.c **** 
+ 153:Algorithm/CRC8_CRC16.c ****  /**
+ 154:Algorithm/CRC8_CRC16.c ****    * @brief          calculate the crc16  
+ 155:Algorithm/CRC8_CRC16.c ****    * @param[in]      pch_message: data
+ 156:Algorithm/CRC8_CRC16.c ****    * @param[in]      dw_length: stream length = data + checksum
+ 157:Algorithm/CRC8_CRC16.c ****    * @param[in]      wCRC: init CRC16
+ 158:Algorithm/CRC8_CRC16.c ****    * @retval         calculated crc16
+ 159:Algorithm/CRC8_CRC16.c ****    */
+ 160:Algorithm/CRC8_CRC16.c ****  /**
+ 161:Algorithm/CRC8_CRC16.c ****    * @brief          计算CRC16
+ 162:Algorithm/CRC8_CRC16.c ****    * @param[in]      pch_message: 数据
+ 163:Algorithm/CRC8_CRC16.c ****    * @param[in]      dw_length: 数据和校验的长度
+ 164:Algorithm/CRC8_CRC16.c ****    * @param[in]      wCRC:初始CRC16
+ 165:Algorithm/CRC8_CRC16.c ****    * @retval         计算完的CRC16
+ 166:Algorithm/CRC8_CRC16.c ****    */
+ 167:Algorithm/CRC8_CRC16.c ****  uint16_t get_CRC16_check_sum(uint8_t *pch_message,uint32_t dw_length,uint16_t wCRC)
+ 168:Algorithm/CRC8_CRC16.c ****  {
+ 551              		.loc 1 168 2
+ 552              		.cfi_startproc
+ 553              		@ args = 0, pretend = 0, frame = 24
+ 554              		@ frame_needed = 1, uses_anonymous_args = 0
+ 555              		@ link register save eliminated.
+ 556 0000 80B4     		push	{r7}
+ 557              	.LCFI16:
+ 558              		.cfi_def_cfa_offset 4
+ 559              		.cfi_offset 7, -4
+ 560 0002 87B0     		sub	sp, sp, #28
+ 561              	.LCFI17:
+ 562              		.cfi_def_cfa_offset 32
+ 563 0004 00AF     		add	r7, sp, #0
+ 564              	.LCFI18:
+ 565              		.cfi_def_cfa_register 7
+ 566 0006 F860     		str	r0, [r7, #12]
+ 567 0008 B960     		str	r1, [r7, #8]
+ 568 000a 1346     		mov	r3, r2
+ 569 000c FB80     		strh	r3, [r7, #6]	@ movhi
+ 169:Algorithm/CRC8_CRC16.c ****      uint8_t chData;
+ 170:Algorithm/CRC8_CRC16.c ****      if (pch_message == NULL)
+ 570              		.loc 1 170 9
+ 571 000e FB68     		ldr	r3, [r7, #12]
+ 572 0010 002B     		cmp	r3, #0
+ 573 0012 13D1     		bne	.L19
+ 171:Algorithm/CRC8_CRC16.c ****      {
+ 172:Algorithm/CRC8_CRC16.c ****          return 0xFFFF;
+ 574              		.loc 1 172 17
+ 575 0014 4FF6FF73 		movw	r3, #65535
+ 576 0018 16E0     		b	.L18
+ 577              	.L20:
+ 173:Algorithm/CRC8_CRC16.c ****      }
+ 174:Algorithm/CRC8_CRC16.c ****      while(dw_length--)
+ 175:Algorithm/CRC8_CRC16.c ****      {
+ 176:Algorithm/CRC8_CRC16.c ****          chData = *pch_message++;
+ 578              		.loc 1 176 31
+ 579 001a FB68     		ldr	r3, [r7, #12]
+ARM GAS  C:\Users\fffff\AppData\Local\Temp\cceXtYOR.s 			page 15
+
+
+ 580 001c 5A1C     		adds	r2, r3, #1
+ 581 001e FA60     		str	r2, [r7, #12]
+ 582              		.loc 1 176 17
+ 583 0020 1B78     		ldrb	r3, [r3]
+ 584 0022 FB75     		strb	r3, [r7, #23]
+ 177:Algorithm/CRC8_CRC16.c ****          (wCRC) = ((uint16_t)(wCRC) >> 8) ^ wCRC_table[((uint16_t)(wCRC) ^ (uint16_t)(chData)) & 0x
+ 585              		.loc 1 177 17
+ 586 0024 FB88     		ldrh	r3, [r7, #6]
+ 587 0026 1B0A     		lsrs	r3, r3, #8
+ 588 0028 9AB2     		uxth	r2, r3
+ 589              		.loc 1 177 57
+ 590 002a F988     		ldrh	r1, [r7, #6]
+ 591              		.loc 1 177 76
+ 592 002c FB7D     		ldrb	r3, [r7, #23]	@ zero_extendqisi2
+ 593              		.loc 1 177 74
+ 594 002e 4B40     		eors	r3, r3, r1
+ 595              		.loc 1 177 96
+ 596 0030 DBB2     		uxtb	r3, r3
+ 597              		.loc 1 177 55
+ 598 0032 0849     		ldr	r1, .L21
+ 599 0034 31F81330 		ldrh	r3, [r1, r3, lsl #1]
+ 600              		.loc 1 177 17
+ 601 0038 5340     		eors	r3, r3, r2
+ 602 003a FB80     		strh	r3, [r7, #6]	@ movhi
+ 603              	.L19:
+ 174:Algorithm/CRC8_CRC16.c ****      {
+ 604              		.loc 1 174 21
+ 605 003c BB68     		ldr	r3, [r7, #8]
+ 606 003e 5A1E     		subs	r2, r3, #1
+ 607 0040 BA60     		str	r2, [r7, #8]
+ 174:Algorithm/CRC8_CRC16.c ****      {
+ 608              		.loc 1 174 12
+ 609 0042 002B     		cmp	r3, #0
+ 610 0044 E9D1     		bne	.L20
+ 178:Algorithm/CRC8_CRC16.c ****      }
+ 179:Algorithm/CRC8_CRC16.c ****      return wCRC;
+ 611              		.loc 1 179 13
+ 612 0046 FB88     		ldrh	r3, [r7, #6]
+ 613              	.L18:
+ 180:Algorithm/CRC8_CRC16.c ****  }
+ 614              		.loc 1 180 2
+ 615 0048 1846     		mov	r0, r3
+ 616 004a 1C37     		adds	r7, r7, #28
+ 617              	.LCFI19:
+ 618              		.cfi_def_cfa_offset 4
+ 619 004c BD46     		mov	sp, r7
+ 620              	.LCFI20:
+ 621              		.cfi_def_cfa_register 13
+ 622              		@ sp needed
+ 623 004e 5DF8047B 		ldr	r7, [sp], #4
+ 624              	.LCFI21:
+ 625              		.cfi_restore 7
+ 626              		.cfi_def_cfa_offset 0
+ 627 0052 7047     		bx	lr
+ 628              	.L22:
+ 629              		.align	2
+ 630              	.L21:
+ARM GAS  C:\Users\fffff\AppData\Local\Temp\cceXtYOR.s 			page 16
+
+
+ 631 0054 00000000 		.word	wCRC_table
+ 632              		.cfi_endproc
+ 633              	.LFE147:
+ 635              		.section	.text.verify_CRC16_check_sum,"ax",%progbits
+ 636              		.align	1
+ 637              		.global	verify_CRC16_check_sum
+ 638              		.syntax unified
+ 639              		.thumb
+ 640              		.thumb_func
+ 642              	verify_CRC16_check_sum:
+ 643              	.LFB148:
+ 181:Algorithm/CRC8_CRC16.c **** 
+ 182:Algorithm/CRC8_CRC16.c **** 
+ 183:Algorithm/CRC8_CRC16.c ****  /**
+ 184:Algorithm/CRC8_CRC16.c ****    * @brief          CRC16 verify function  
+ 185:Algorithm/CRC8_CRC16.c ****    * @param[in]      pch_message: data
+ 186:Algorithm/CRC8_CRC16.c ****    * @param[in]      dw_length:stream length = data + checksum
+ 187:Algorithm/CRC8_CRC16.c ****    * @retval         true of false
+ 188:Algorithm/CRC8_CRC16.c ****    */
+ 189:Algorithm/CRC8_CRC16.c ****  /**
+ 190:Algorithm/CRC8_CRC16.c ****    * @brief          CRC16校验函数
+ 191:Algorithm/CRC8_CRC16.c ****    * @param[in]      pch_message: 数据
+ 192:Algorithm/CRC8_CRC16.c ****    * @param[in]      dw_length: 数据和校验的长度
+ 193:Algorithm/CRC8_CRC16.c ****    * @retval         真或者假
+ 194:Algorithm/CRC8_CRC16.c ****    */
+ 195:Algorithm/CRC8_CRC16.c ****  uint32_t verify_CRC16_check_sum(uint8_t *pchMessage, uint32_t dwLength)
+ 196:Algorithm/CRC8_CRC16.c ****  {
+ 644              		.loc 1 196 2
+ 645              		.cfi_startproc
+ 646              		@ args = 0, pretend = 0, frame = 16
+ 647              		@ frame_needed = 1, uses_anonymous_args = 0
+ 648 0000 80B5     		push	{r7, lr}
+ 649              	.LCFI22:
+ 650              		.cfi_def_cfa_offset 8
+ 651              		.cfi_offset 7, -8
+ 652              		.cfi_offset 14, -4
+ 653 0002 84B0     		sub	sp, sp, #16
+ 654              	.LCFI23:
+ 655              		.cfi_def_cfa_offset 24
+ 656 0004 00AF     		add	r7, sp, #0
+ 657              	.LCFI24:
+ 658              		.cfi_def_cfa_register 7
+ 659 0006 7860     		str	r0, [r7, #4]
+ 660 0008 3960     		str	r1, [r7]
+ 197:Algorithm/CRC8_CRC16.c ****      uint16_t wExpected = 0;
+ 661              		.loc 1 197 15
+ 662 000a 0023     		movs	r3, #0
+ 663 000c FB81     		strh	r3, [r7, #14]	@ movhi
+ 198:Algorithm/CRC8_CRC16.c ****      if ((pchMessage == NULL) || (dwLength <= 2))
+ 664              		.loc 1 198 9
+ 665 000e 7B68     		ldr	r3, [r7, #4]
+ 666 0010 002B     		cmp	r3, #0
+ 667 0012 02D0     		beq	.L24
+ 668              		.loc 1 198 31 discriminator 1
+ 669 0014 3B68     		ldr	r3, [r7]
+ 670 0016 022B     		cmp	r3, #2
+ 671 0018 01D8     		bhi	.L25
+ARM GAS  C:\Users\fffff\AppData\Local\Temp\cceXtYOR.s 			page 17
+
+
+ 672              	.L24:
+ 199:Algorithm/CRC8_CRC16.c ****      {
+ 200:Algorithm/CRC8_CRC16.c ****          return 0;
+ 673              		.loc 1 200 17
+ 674 001a 0023     		movs	r3, #0
+ 675 001c 20E0     		b	.L26
+ 676              	.L25:
+ 201:Algorithm/CRC8_CRC16.c ****      }
+ 202:Algorithm/CRC8_CRC16.c ****      wExpected = get_CRC16_check_sum(pchMessage, dwLength - 2, CRC16_INIT);
+ 677              		.loc 1 202 18
+ 678 001e 3B68     		ldr	r3, [r7]
+ 679 0020 023B     		subs	r3, r3, #2
+ 680 0022 114A     		ldr	r2, .L29
+ 681 0024 1288     		ldrh	r2, [r2]
+ 682 0026 1946     		mov	r1, r3
+ 683 0028 7868     		ldr	r0, [r7, #4]
+ 684 002a FFF7FEFF 		bl	get_CRC16_check_sum
+ 685 002e 0346     		mov	r3, r0
+ 686 0030 FB81     		strh	r3, [r7, #14]	@ movhi
+ 203:Algorithm/CRC8_CRC16.c ****      return ((wExpected & 0xff) == pchMessage[dwLength - 2] && ((wExpected >> 8) & 0xff) == pchMess
+ 687              		.loc 1 203 25
+ 688 0032 FB89     		ldrh	r3, [r7, #14]
+ 689 0034 DBB2     		uxtb	r3, r3
+ 690              		.loc 1 203 46
+ 691 0036 3A68     		ldr	r2, [r7]
+ 692 0038 023A     		subs	r2, r2, #2
+ 693 003a 7968     		ldr	r1, [r7, #4]
+ 694 003c 0A44     		add	r2, r2, r1
+ 695 003e 1278     		ldrb	r2, [r2]	@ zero_extendqisi2
+ 696              		.loc 1 203 61
+ 697 0040 9342     		cmp	r3, r2
+ 698 0042 0CD1     		bne	.L27
+ 699              		.loc 1 203 82 discriminator 1
+ 700 0044 FB89     		ldrh	r3, [r7, #14]
+ 701 0046 1B0A     		lsrs	r3, r3, #8
+ 702 0048 9BB2     		uxth	r3, r3
+ 703 004a DBB2     		uxtb	r3, r3
+ 704              		.loc 1 203 103 discriminator 1
+ 705 004c 3A68     		ldr	r2, [r7]
+ 706 004e 013A     		subs	r2, r2, #1
+ 707 0050 7968     		ldr	r1, [r7, #4]
+ 708 0052 0A44     		add	r2, r2, r1
+ 709 0054 1278     		ldrb	r2, [r2]	@ zero_extendqisi2
+ 710              		.loc 1 203 61 discriminator 1
+ 711 0056 9342     		cmp	r3, r2
+ 712 0058 01D1     		bne	.L27
+ 713              		.loc 1 203 61 is_stmt 0 discriminator 3
+ 714 005a 0123     		movs	r3, #1
+ 715              		.loc 1 203 61
+ 716 005c 00E0     		b	.L26
+ 717              	.L27:
+ 718              		.loc 1 203 61 discriminator 4
+ 719 005e 0023     		movs	r3, #0
+ 720              	.L26:
+ 204:Algorithm/CRC8_CRC16.c ****  }
+ 721              		.loc 1 204 2 is_stmt 1
+ 722 0060 1846     		mov	r0, r3
+ARM GAS  C:\Users\fffff\AppData\Local\Temp\cceXtYOR.s 			page 18
+
+
+ 723 0062 1037     		adds	r7, r7, #16
+ 724              	.LCFI25:
+ 725              		.cfi_def_cfa_offset 8
+ 726 0064 BD46     		mov	sp, r7
+ 727              	.LCFI26:
+ 728              		.cfi_def_cfa_register 13
+ 729              		@ sp needed
+ 730 0066 80BD     		pop	{r7, pc}
+ 731              	.L30:
+ 732              		.align	2
+ 733              	.L29:
+ 734 0068 00000000 		.word	CRC16_INIT
+ 735              		.cfi_endproc
+ 736              	.LFE148:
+ 738              		.section	.text.append_CRC16_check_sum,"ax",%progbits
+ 739              		.align	1
+ 740              		.global	append_CRC16_check_sum
+ 741              		.syntax unified
+ 742              		.thumb
+ 743              		.thumb_func
+ 745              	append_CRC16_check_sum:
+ 746              	.LFB149:
+ 205:Algorithm/CRC8_CRC16.c **** 
+ 206:Algorithm/CRC8_CRC16.c **** 
+ 207:Algorithm/CRC8_CRC16.c ****  /**
+ 208:Algorithm/CRC8_CRC16.c ****    * @brief          append CRC16 to the end of data
+ 209:Algorithm/CRC8_CRC16.c ****    * @param[in]      pch_message: data
+ 210:Algorithm/CRC8_CRC16.c ****    * @param[in]      dw_length:stream length = data + checksum
+ 211:Algorithm/CRC8_CRC16.c ****    * @retval         none
+ 212:Algorithm/CRC8_CRC16.c ****    */
+ 213:Algorithm/CRC8_CRC16.c ****  /**
+ 214:Algorithm/CRC8_CRC16.c ****    * @brief          添加CRC16到数据的结尾
+ 215:Algorithm/CRC8_CRC16.c ****    * @param[in]      pch_message: 数据
+ 216:Algorithm/CRC8_CRC16.c ****    * @param[in]      dw_length: 数据和校验的长度
+ 217:Algorithm/CRC8_CRC16.c ****    * @retval         none
+ 218:Algorithm/CRC8_CRC16.c ****    */
+ 219:Algorithm/CRC8_CRC16.c ****  void append_CRC16_check_sum(uint8_t * pchMessage,uint32_t dwLength)
+ 220:Algorithm/CRC8_CRC16.c ****  {
+ 747              		.loc 1 220 2
+ 748              		.cfi_startproc
+ 749              		@ args = 0, pretend = 0, frame = 16
+ 750              		@ frame_needed = 1, uses_anonymous_args = 0
+ 751 0000 80B5     		push	{r7, lr}
+ 752              	.LCFI27:
+ 753              		.cfi_def_cfa_offset 8
+ 754              		.cfi_offset 7, -8
+ 755              		.cfi_offset 14, -4
+ 756 0002 84B0     		sub	sp, sp, #16
+ 757              	.LCFI28:
+ 758              		.cfi_def_cfa_offset 24
+ 759 0004 00AF     		add	r7, sp, #0
+ 760              	.LCFI29:
+ 761              		.cfi_def_cfa_register 7
+ 762 0006 7860     		str	r0, [r7, #4]
+ 763 0008 3960     		str	r1, [r7]
+ 221:Algorithm/CRC8_CRC16.c ****      uint16_t wCRC = 0;
+ 764              		.loc 1 221 15
+ARM GAS  C:\Users\fffff\AppData\Local\Temp\cceXtYOR.s 			page 19
+
+
+ 765 000a 0023     		movs	r3, #0
+ 766 000c FB81     		strh	r3, [r7, #14]	@ movhi
+ 222:Algorithm/CRC8_CRC16.c ****      if ((pchMessage == NULL) || (dwLength <= 2))
+ 767              		.loc 1 222 9
+ 768 000e 7B68     		ldr	r3, [r7, #4]
+ 769 0010 002B     		cmp	r3, #0
+ 770 0012 1DD0     		beq	.L35
+ 771              		.loc 1 222 31 discriminator 1
+ 772 0014 3B68     		ldr	r3, [r7]
+ 773 0016 022B     		cmp	r3, #2
+ 774 0018 1AD9     		bls	.L35
+ 223:Algorithm/CRC8_CRC16.c ****      {
+ 224:Algorithm/CRC8_CRC16.c ****          return;
+ 225:Algorithm/CRC8_CRC16.c ****      }
+ 226:Algorithm/CRC8_CRC16.c ****      wCRC = get_CRC16_check_sum ( (uint8_t *)pchMessage, dwLength-2, CRC16_INIT );
+ 775              		.loc 1 226 13
+ 776 001a 3B68     		ldr	r3, [r7]
+ 777 001c 023B     		subs	r3, r3, #2
+ 778 001e 0E4A     		ldr	r2, .L36
+ 779 0020 1288     		ldrh	r2, [r2]
+ 780 0022 1946     		mov	r1, r3
+ 781 0024 7868     		ldr	r0, [r7, #4]
+ 782 0026 FFF7FEFF 		bl	get_CRC16_check_sum
+ 783 002a 0346     		mov	r3, r0
+ 784 002c FB81     		strh	r3, [r7, #14]	@ movhi
+ 227:Algorithm/CRC8_CRC16.c ****      pchMessage[dwLength-2] = (uint8_t)(wCRC & 0x00ff);
+ 785              		.loc 1 227 16
+ 786 002e 3B68     		ldr	r3, [r7]
+ 787 0030 023B     		subs	r3, r3, #2
+ 788 0032 7A68     		ldr	r2, [r7, #4]
+ 789 0034 1344     		add	r3, r3, r2
+ 790              		.loc 1 227 31
+ 791 0036 FA89     		ldrh	r2, [r7, #14]	@ movhi
+ 792 0038 D2B2     		uxtb	r2, r2
+ 793              		.loc 1 227 29
+ 794 003a 1A70     		strb	r2, [r3]
+ 228:Algorithm/CRC8_CRC16.c ****      pchMessage[dwLength-1] = (uint8_t)((wCRC >> 8)& 0x00ff);
+ 795              		.loc 1 228 31
+ 796 003c FB89     		ldrh	r3, [r7, #14]
+ 797 003e 1B0A     		lsrs	r3, r3, #8
+ 798 0040 99B2     		uxth	r1, r3
+ 799              		.loc 1 228 16
+ 800 0042 3B68     		ldr	r3, [r7]
+ 801 0044 013B     		subs	r3, r3, #1
+ 802 0046 7A68     		ldr	r2, [r7, #4]
+ 803 0048 1344     		add	r3, r3, r2
+ 804              		.loc 1 228 31
+ 805 004a CAB2     		uxtb	r2, r1
+ 806              		.loc 1 228 29
+ 807 004c 1A70     		strb	r2, [r3]
+ 808 004e 00E0     		b	.L31
+ 809              	.L35:
+ 224:Algorithm/CRC8_CRC16.c ****      }
+ 810              		.loc 1 224 10
+ 811 0050 00BF     		nop
+ 812              	.L31:
+ 229:Algorithm/CRC8_CRC16.c ****  }
+ARM GAS  C:\Users\fffff\AppData\Local\Temp\cceXtYOR.s 			page 20
+
+
+ 813              		.loc 1 229 2
+ 814 0052 1037     		adds	r7, r7, #16
+ 815              	.LCFI30:
+ 816              		.cfi_def_cfa_offset 8
+ 817 0054 BD46     		mov	sp, r7
+ 818              	.LCFI31:
+ 819              		.cfi_def_cfa_register 13
+ 820              		@ sp needed
+ 821 0056 80BD     		pop	{r7, pc}
+ 822              	.L37:
+ 823              		.align	2
+ 824              	.L36:
+ 825 0058 00000000 		.word	CRC16_INIT
+ 826              		.cfi_endproc
+ 827              	.LFE149:
+ 829              		.section	.text.Get_CRC16_Check_Sum,"ax",%progbits
+ 830              		.align	1
+ 831              		.global	Get_CRC16_Check_Sum
+ 832              		.syntax unified
+ 833              		.thumb
+ 834              		.thumb_func
+ 836              	Get_CRC16_Check_Sum:
+ 837              	.LFB150:
+ 230:Algorithm/CRC8_CRC16.c **** 
+ 231:Algorithm/CRC8_CRC16.c **** 
+ 232:Algorithm/CRC8_CRC16.c **** /**
+ 233:Algorithm/CRC8_CRC16.c ****  * @brief CRC16 Caculation function
+ 234:Algorithm/CRC8_CRC16.c ****  * @param[in] pchMessage : Data to Verify,
+ 235:Algorithm/CRC8_CRC16.c ****  * @param[in] dwLength : Stream length = Data + checksum
+ 236:Algorithm/CRC8_CRC16.c ****  * @param[in] wCRC : CRC16 init value(default : 0xFFFF)
+ 237:Algorithm/CRC8_CRC16.c ****  * @return : CRC16 checksum
+ 238:Algorithm/CRC8_CRC16.c ****  */
+ 239:Algorithm/CRC8_CRC16.c **** uint16_t Get_CRC16_Check_Sum(const uint8_t *pchMessage, uint32_t dwLength, uint16_t wCRC)
+ 240:Algorithm/CRC8_CRC16.c **** {
+ 838              		.loc 1 240 1
+ 839              		.cfi_startproc
+ 840              		@ args = 0, pretend = 0, frame = 24
+ 841              		@ frame_needed = 1, uses_anonymous_args = 0
+ 842              		@ link register save eliminated.
+ 843 0000 80B4     		push	{r7}
+ 844              	.LCFI32:
+ 845              		.cfi_def_cfa_offset 4
+ 846              		.cfi_offset 7, -4
+ 847 0002 87B0     		sub	sp, sp, #28
+ 848              	.LCFI33:
+ 849              		.cfi_def_cfa_offset 32
+ 850 0004 00AF     		add	r7, sp, #0
+ 851              	.LCFI34:
+ 852              		.cfi_def_cfa_register 7
+ 853 0006 F860     		str	r0, [r7, #12]
+ 854 0008 B960     		str	r1, [r7, #8]
+ 855 000a 1346     		mov	r3, r2
+ 856 000c FB80     		strh	r3, [r7, #6]	@ movhi
+ 241:Algorithm/CRC8_CRC16.c ****     uint8_t ch_data;
+ 242:Algorithm/CRC8_CRC16.c ****     if (pchMessage == NULL)
+ 857              		.loc 1 242 8
+ 858 000e FB68     		ldr	r3, [r7, #12]
+ARM GAS  C:\Users\fffff\AppData\Local\Temp\cceXtYOR.s 			page 21
+
+
+ 859 0010 002B     		cmp	r3, #0
+ 860 0012 13D1     		bne	.L41
+ 243:Algorithm/CRC8_CRC16.c ****         return 0xFFFF;
+ 861              		.loc 1 243 16
+ 862 0014 4FF6FF73 		movw	r3, #65535
+ 863 0018 16E0     		b	.L40
+ 864              	.L42:
+ 244:Algorithm/CRC8_CRC16.c ****     while (dwLength--)
+ 245:Algorithm/CRC8_CRC16.c ****     {
+ 246:Algorithm/CRC8_CRC16.c ****         ch_data = *pchMessage++;
+ 865              		.loc 1 246 30
+ 866 001a FB68     		ldr	r3, [r7, #12]
+ 867 001c 5A1C     		adds	r2, r3, #1
+ 868 001e FA60     		str	r2, [r7, #12]
+ 869              		.loc 1 246 17
+ 870 0020 1B78     		ldrb	r3, [r3]
+ 871 0022 FB75     		strb	r3, [r7, #23]
+ 247:Algorithm/CRC8_CRC16.c ****         (wCRC) =
+ 872              		.loc 1 247 16
+ 873 0024 FB88     		ldrh	r3, [r7, #6]
+ 874 0026 1B0A     		lsrs	r3, r3, #8
+ 875 0028 9AB2     		uxth	r2, r3
+ 248:Algorithm/CRC8_CRC16.c ****             ((uint16_t)(wCRC) >> 8) ^ wCRC_table[((uint16_t)(wCRC) ^ (uint16_t)(ch_data)) & 0x00ff]
+ 876              		.loc 1 248 51
+ 877 002a F988     		ldrh	r1, [r7, #6]
+ 878              		.loc 1 248 70
+ 879 002c FB7D     		ldrb	r3, [r7, #23]	@ zero_extendqisi2
+ 880              		.loc 1 248 68
+ 881 002e 4B40     		eors	r3, r3, r1
+ 882              		.loc 1 248 91
+ 883 0030 DBB2     		uxtb	r3, r3
+ 884              		.loc 1 248 49
+ 885 0032 0849     		ldr	r1, .L43
+ 886 0034 31F81330 		ldrh	r3, [r1, r3, lsl #1]
+ 247:Algorithm/CRC8_CRC16.c ****         (wCRC) =
+ 887              		.loc 1 247 16
+ 888 0038 5340     		eors	r3, r3, r2
+ 889 003a FB80     		strh	r3, [r7, #6]	@ movhi
+ 890              	.L41:
+ 244:Algorithm/CRC8_CRC16.c ****     while (dwLength--)
+ 891              		.loc 1 244 20
+ 892 003c BB68     		ldr	r3, [r7, #8]
+ 893 003e 5A1E     		subs	r2, r3, #1
+ 894 0040 BA60     		str	r2, [r7, #8]
+ 244:Algorithm/CRC8_CRC16.c ****     while (dwLength--)
+ 895              		.loc 1 244 12
+ 896 0042 002B     		cmp	r3, #0
+ 897 0044 E9D1     		bne	.L42
+ 249:Algorithm/CRC8_CRC16.c ****     }
+ 250:Algorithm/CRC8_CRC16.c ****     return wCRC;
+ 898              		.loc 1 250 12
+ 899 0046 FB88     		ldrh	r3, [r7, #6]
+ 900              	.L40:
+ 251:Algorithm/CRC8_CRC16.c **** }
+ 901              		.loc 1 251 1
+ 902 0048 1846     		mov	r0, r3
+ 903 004a 1C37     		adds	r7, r7, #28
+ARM GAS  C:\Users\fffff\AppData\Local\Temp\cceXtYOR.s 			page 22
+
+
+ 904              	.LCFI35:
+ 905              		.cfi_def_cfa_offset 4
+ 906 004c BD46     		mov	sp, r7
+ 907              	.LCFI36:
+ 908              		.cfi_def_cfa_register 13
+ 909              		@ sp needed
+ 910 004e 5DF8047B 		ldr	r7, [sp], #4
+ 911              	.LCFI37:
+ 912              		.cfi_restore 7
+ 913              		.cfi_def_cfa_offset 0
+ 914 0052 7047     		bx	lr
+ 915              	.L44:
+ 916              		.align	2
+ 917              	.L43:
+ 918 0054 00000000 		.word	wCRC_table
+ 919              		.cfi_endproc
+ 920              	.LFE150:
+ 922              		.section	.text.Verify_CRC16_Check_Sum,"ax",%progbits
+ 923              		.align	1
+ 924              		.global	Verify_CRC16_Check_Sum
+ 925              		.syntax unified
+ 926              		.thumb
+ 927              		.thumb_func
+ 929              	Verify_CRC16_Check_Sum:
+ 930              	.LFB151:
+ 252:Algorithm/CRC8_CRC16.c **** 
+ 253:Algorithm/CRC8_CRC16.c **** /**
+ 254:Algorithm/CRC8_CRC16.c ****  * @brief CRC16 Verify function
+ 255:Algorithm/CRC8_CRC16.c ****  * @param[in] pchMessage : Data to Verify,
+ 256:Algorithm/CRC8_CRC16.c ****  * @param[in] dwLength : Stream length = Data + checksum
+ 257:Algorithm/CRC8_CRC16.c ****  * @return : True or False (CRC Verify Result)
+ 258:Algorithm/CRC8_CRC16.c ****  */
+ 259:Algorithm/CRC8_CRC16.c **** uint32_t Verify_CRC16_Check_Sum(const uint8_t *pchMessage, uint32_t dwLength)
+ 260:Algorithm/CRC8_CRC16.c **** {
+ 931              		.loc 1 260 1
+ 932              		.cfi_startproc
+ 933              		@ args = 0, pretend = 0, frame = 16
+ 934              		@ frame_needed = 1, uses_anonymous_args = 0
+ 935 0000 80B5     		push	{r7, lr}
+ 936              	.LCFI38:
+ 937              		.cfi_def_cfa_offset 8
+ 938              		.cfi_offset 7, -8
+ 939              		.cfi_offset 14, -4
+ 940 0002 84B0     		sub	sp, sp, #16
+ 941              	.LCFI39:
+ 942              		.cfi_def_cfa_offset 24
+ 943 0004 00AF     		add	r7, sp, #0
+ 944              	.LCFI40:
+ 945              		.cfi_def_cfa_register 7
+ 946 0006 7860     		str	r0, [r7, #4]
+ 947 0008 3960     		str	r1, [r7]
+ 261:Algorithm/CRC8_CRC16.c ****     uint16_t w_expected = 0;
+ 948              		.loc 1 261 14
+ 949 000a 0023     		movs	r3, #0
+ 950 000c FB81     		strh	r3, [r7, #14]	@ movhi
+ 262:Algorithm/CRC8_CRC16.c ****     if ((pchMessage == NULL) || (dwLength <= 2))
+ 951              		.loc 1 262 8
+ARM GAS  C:\Users\fffff\AppData\Local\Temp\cceXtYOR.s 			page 23
+
+
+ 952 000e 7B68     		ldr	r3, [r7, #4]
+ 953 0010 002B     		cmp	r3, #0
+ 954 0012 02D0     		beq	.L46
+ 955              		.loc 1 262 30 discriminator 1
+ 956 0014 3B68     		ldr	r3, [r7]
+ 957 0016 022B     		cmp	r3, #2
+ 958 0018 01D8     		bhi	.L47
+ 959              	.L46:
+ 263:Algorithm/CRC8_CRC16.c ****         return 0;
+ 960              		.loc 1 263 16
+ 961 001a 0023     		movs	r3, #0
+ 962 001c 20E0     		b	.L48
+ 963              	.L47:
+ 264:Algorithm/CRC8_CRC16.c ****     w_expected = Get_CRC16_Check_Sum(pchMessage, dwLength - 2, CRC16_INIT); // dwLength - 2 ->dwLen
+ 964              		.loc 1 264 18
+ 965 001e 3B68     		ldr	r3, [r7]
+ 966 0020 023B     		subs	r3, r3, #2
+ 967 0022 114A     		ldr	r2, .L51
+ 968 0024 1288     		ldrh	r2, [r2]
+ 969 0026 1946     		mov	r1, r3
+ 970 0028 7868     		ldr	r0, [r7, #4]
+ 971 002a FFF7FEFF 		bl	Get_CRC16_Check_Sum
+ 972 002e 0346     		mov	r3, r0
+ 973 0030 FB81     		strh	r3, [r7, #14]	@ movhi
+ 265:Algorithm/CRC8_CRC16.c ****     return (
+ 266:Algorithm/CRC8_CRC16.c ****         (w_expected & 0xff) == pchMessage[dwLength - 2] &&
+ 974              		.loc 1 266 21
+ 975 0032 FB89     		ldrh	r3, [r7, #14]
+ 976 0034 DBB2     		uxtb	r3, r3
+ 977              		.loc 1 266 42
+ 978 0036 3A68     		ldr	r2, [r7]
+ 979 0038 023A     		subs	r2, r2, #2
+ 980 003a 7968     		ldr	r1, [r7, #4]
+ 981 003c 0A44     		add	r2, r2, r1
+ 982 003e 1278     		ldrb	r2, [r2]	@ zero_extendqisi2
+ 983              		.loc 1 266 57
+ 984 0040 9342     		cmp	r3, r2
+ 985 0042 0CD1     		bne	.L49
+ 267:Algorithm/CRC8_CRC16.c ****         ((w_expected >> 8) & 0xff) == pchMessage[dwLength - 1]);
+ 986              		.loc 1 267 28
+ 987 0044 FB89     		ldrh	r3, [r7, #14]
+ 988 0046 1B0A     		lsrs	r3, r3, #8
+ 989 0048 9BB2     		uxth	r3, r3
+ 990 004a DBB2     		uxtb	r3, r3
+ 991              		.loc 1 267 49
+ 992 004c 3A68     		ldr	r2, [r7]
+ 993 004e 013A     		subs	r2, r2, #1
+ 994 0050 7968     		ldr	r1, [r7, #4]
+ 995 0052 0A44     		add	r2, r2, r1
+ 996 0054 1278     		ldrb	r2, [r2]	@ zero_extendqisi2
+ 266:Algorithm/CRC8_CRC16.c ****         ((w_expected >> 8) & 0xff) == pchMessage[dwLength - 1]);
+ 997              		.loc 1 266 57 discriminator 1
+ 998 0056 9342     		cmp	r3, r2
+ 999 0058 01D1     		bne	.L49
+ 266:Algorithm/CRC8_CRC16.c ****         ((w_expected >> 8) & 0xff) == pchMessage[dwLength - 1]);
+ 1000              		.loc 1 266 57 is_stmt 0 discriminator 3
+ 1001 005a 0123     		movs	r3, #1
+ARM GAS  C:\Users\fffff\AppData\Local\Temp\cceXtYOR.s 			page 24
+
+
+ 266:Algorithm/CRC8_CRC16.c ****         ((w_expected >> 8) & 0xff) == pchMessage[dwLength - 1]);
+ 1002              		.loc 1 266 57
+ 1003 005c 00E0     		b	.L48
+ 1004              	.L49:
+ 266:Algorithm/CRC8_CRC16.c ****         ((w_expected >> 8) & 0xff) == pchMessage[dwLength - 1]);
+ 1005              		.loc 1 266 57 discriminator 4
+ 1006 005e 0023     		movs	r3, #0
+ 1007              	.L48:
+ 268:Algorithm/CRC8_CRC16.c **** }
+ 1008              		.loc 1 268 1 is_stmt 1
+ 1009 0060 1846     		mov	r0, r3
+ 1010 0062 1037     		adds	r7, r7, #16
+ 1011              	.LCFI41:
+ 1012              		.cfi_def_cfa_offset 8
+ 1013 0064 BD46     		mov	sp, r7
+ 1014              	.LCFI42:
+ 1015              		.cfi_def_cfa_register 13
+ 1016              		@ sp needed
+ 1017 0066 80BD     		pop	{r7, pc}
+ 1018              	.L52:
+ 1019              		.align	2
+ 1020              	.L51:
+ 1021 0068 00000000 		.word	CRC16_INIT
+ 1022              		.cfi_endproc
+ 1023              	.LFE151:
+ 1025              		.text
+ 1026              	.Letext0:
+ 1027              		.file 2 "C:/msys64/mingw64/arm-none-eabi/include/machine/_default_types.h"
+ 1028              		.file 3 "C:/msys64/mingw64/arm-none-eabi/include/sys/_stdint.h"
+ARM GAS  C:\Users\fffff\AppData\Local\Temp\cceXtYOR.s 			page 25
+
+
+DEFINED SYMBOLS
+                            *ABS*:00000000 CRC8_CRC16.c
+C:\Users\fffff\AppData\Local\Temp\cceXtYOR.s:23     .rodata.CRC8_INIT:00000000 CRC8_INIT
+C:\Users\fffff\AppData\Local\Temp\cceXtYOR.s:30     .rodata.CRC8_table:00000000 CRC8_table
+C:\Users\fffff\AppData\Local\Temp\cceXtYOR.s:27     .rodata.CRC8_table:00000000 $d
+C:\Users\fffff\AppData\Local\Temp\cceXtYOR.s:51     .data.CRC16_INIT:00000000 CRC16_INIT
+C:\Users\fffff\AppData\Local\Temp\cceXtYOR.s:48     .data.CRC16_INIT:00000000 $d
+C:\Users\fffff\AppData\Local\Temp\cceXtYOR.s:58     .rodata.wCRC_table:00000000 wCRC_table
+C:\Users\fffff\AppData\Local\Temp\cceXtYOR.s:55     .rodata.wCRC_table:00000000 $d
+C:\Users\fffff\AppData\Local\Temp\cceXtYOR.s:316    .text.get_CRC8_check_sum:00000000 $t
+C:\Users\fffff\AppData\Local\Temp\cceXtYOR.s:322    .text.get_CRC8_check_sum:00000000 get_CRC8_check_sum
+C:\Users\fffff\AppData\Local\Temp\cceXtYOR.s:389    .text.get_CRC8_check_sum:00000040 $d
+C:\Users\fffff\AppData\Local\Temp\cceXtYOR.s:394    .text.verify_CRC8_check_sum:00000000 $t
+C:\Users\fffff\AppData\Local\Temp\cceXtYOR.s:400    .text.verify_CRC8_check_sum:00000000 verify_CRC8_check_sum
+C:\Users\fffff\AppData\Local\Temp\cceXtYOR.s:472    .text.append_CRC8_check_sum:00000000 $t
+C:\Users\fffff\AppData\Local\Temp\cceXtYOR.s:478    .text.append_CRC8_check_sum:00000000 append_CRC8_check_sum
+C:\Users\fffff\AppData\Local\Temp\cceXtYOR.s:543    .text.get_CRC16_check_sum:00000000 $t
+C:\Users\fffff\AppData\Local\Temp\cceXtYOR.s:549    .text.get_CRC16_check_sum:00000000 get_CRC16_check_sum
+C:\Users\fffff\AppData\Local\Temp\cceXtYOR.s:631    .text.get_CRC16_check_sum:00000054 $d
+C:\Users\fffff\AppData\Local\Temp\cceXtYOR.s:636    .text.verify_CRC16_check_sum:00000000 $t
+C:\Users\fffff\AppData\Local\Temp\cceXtYOR.s:642    .text.verify_CRC16_check_sum:00000000 verify_CRC16_check_sum
+C:\Users\fffff\AppData\Local\Temp\cceXtYOR.s:734    .text.verify_CRC16_check_sum:00000068 $d
+C:\Users\fffff\AppData\Local\Temp\cceXtYOR.s:739    .text.append_CRC16_check_sum:00000000 $t
+C:\Users\fffff\AppData\Local\Temp\cceXtYOR.s:745    .text.append_CRC16_check_sum:00000000 append_CRC16_check_sum
+C:\Users\fffff\AppData\Local\Temp\cceXtYOR.s:825    .text.append_CRC16_check_sum:00000058 $d
+C:\Users\fffff\AppData\Local\Temp\cceXtYOR.s:830    .text.Get_CRC16_Check_Sum:00000000 $t
+C:\Users\fffff\AppData\Local\Temp\cceXtYOR.s:836    .text.Get_CRC16_Check_Sum:00000000 Get_CRC16_Check_Sum
+C:\Users\fffff\AppData\Local\Temp\cceXtYOR.s:918    .text.Get_CRC16_Check_Sum:00000054 $d
+C:\Users\fffff\AppData\Local\Temp\cceXtYOR.s:923    .text.Verify_CRC16_Check_Sum:00000000 $t
+C:\Users\fffff\AppData\Local\Temp\cceXtYOR.s:929    .text.Verify_CRC16_Check_Sum:00000000 Verify_CRC16_Check_Sum
+C:\Users\fffff\AppData\Local\Temp\cceXtYOR.s:1021   .text.Verify_CRC16_Check_Sum:00000068 $d
+
+NO UNDEFINED SYMBOLS

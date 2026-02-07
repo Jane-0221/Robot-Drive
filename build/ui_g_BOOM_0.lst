@@ -1,0 +1,340 @@
+ARM GAS  C:\Users\fffff\AppData\Local\Temp\ccic9ztV.s 			page 1
+
+
+   1              		.cpu cortex-m7
+   2              		.arch armv7e-m
+   3              		.fpu fpv5-d16
+   4              		.eabi_attribute 28, 1
+   5              		.eabi_attribute 20, 1
+   6              		.eabi_attribute 21, 1
+   7              		.eabi_attribute 23, 3
+   8              		.eabi_attribute 24, 1
+   9              		.eabi_attribute 25, 1
+  10              		.eabi_attribute 26, 1
+  11              		.eabi_attribute 30, 6
+  12              		.eabi_attribute 34, 1
+  13              		.eabi_attribute 18, 4
+  14              		.file	"ui_g_BOOM_0.c"
+  15              		.text
+  16              	.Ltext0:
+  17              		.cfi_sections	.debug_frame
+  18              		.file 1 "Drivers/UI/ui_g_BOOM_0.c"
+  19              		.global	ui_g_BOOM_0
+  20              		.section	.bss.ui_g_BOOM_0,"aw",%nobits
+  21              		.align	2
+  24              	ui_g_BOOM_0:
+  25 0000 00000000 		.space	60
+  25      00000000 
+  25      00000000 
+  25      00000000 
+  25      00000000 
+  26              		.global	ui_g_BOOM_BOOM
+  27              		.section	.data.ui_g_BOOM_BOOM,"aw"
+  28              		.align	2
+  31              	ui_g_BOOM_BOOM:
+  32 0000 0D000000 		.word	ui_g_BOOM_0+13
+  33              		.section	.rodata
+  34              		.align	2
+  35              	.LC0:
+  36 0000 41524D00 		.ascii	"ARM\000"
+  37              		.section	.text._ui_init_g_BOOM_0,"ax",%progbits
+  38              		.align	1
+  39              		.global	_ui_init_g_BOOM_0
+  40              		.syntax unified
+  41              		.thumb
+  42              		.thumb_func
+  44              	_ui_init_g_BOOM_0:
+  45              	.LFB147:
+   1:Drivers/UI/ui_g_BOOM_0.c **** //
+   2:Drivers/UI/ui_g_BOOM_0.c **** // Created by RM UI Designer
+   3:Drivers/UI/ui_g_BOOM_0.c **** //
+   4:Drivers/UI/ui_g_BOOM_0.c **** 
+   5:Drivers/UI/ui_g_BOOM_0.c **** #include "ui_g_BOOM_0.h"
+   6:Drivers/UI/ui_g_BOOM_0.c **** #include "string.h"
+   7:Drivers/UI/ui_g_BOOM_0.c **** 
+   8:Drivers/UI/ui_g_BOOM_0.c **** #define FRAME_ID 0
+   9:Drivers/UI/ui_g_BOOM_0.c **** #define GROUP_ID 0
+  10:Drivers/UI/ui_g_BOOM_0.c **** #define START_ID 0
+  11:Drivers/UI/ui_g_BOOM_0.c **** 
+  12:Drivers/UI/ui_g_BOOM_0.c **** ui_string_frame_t ui_g_BOOM_0;
+  13:Drivers/UI/ui_g_BOOM_0.c **** 
+ARM GAS  C:\Users\fffff\AppData\Local\Temp\ccic9ztV.s 			page 2
+
+
+  14:Drivers/UI/ui_g_BOOM_0.c **** ui_interface_string_t* ui_g_BOOM_BOOM = &ui_g_BOOM_0.option;
+  15:Drivers/UI/ui_g_BOOM_0.c **** 
+  16:Drivers/UI/ui_g_BOOM_0.c **** void _ui_init_g_BOOM_0() {
+  46              		.loc 1 16 26
+  47              		.cfi_startproc
+  48              		@ args = 0, pretend = 0, frame = 0
+  49              		@ frame_needed = 1, uses_anonymous_args = 0
+  50 0000 80B5     		push	{r7, lr}
+  51              	.LCFI0:
+  52              		.cfi_def_cfa_offset 8
+  53              		.cfi_offset 7, -8
+  54              		.cfi_offset 14, -4
+  55 0002 00AF     		add	r7, sp, #0
+  56              	.LCFI1:
+  57              		.cfi_def_cfa_register 7
+  17:Drivers/UI/ui_g_BOOM_0.c ****     ui_g_BOOM_0.option.figure_name[0] = FRAME_ID;
+  58              		.loc 1 17 39
+  59 0004 274B     		ldr	r3, .L2
+  60 0006 0022     		movs	r2, #0
+  61 0008 5A73     		strb	r2, [r3, #13]
+  18:Drivers/UI/ui_g_BOOM_0.c ****     ui_g_BOOM_0.option.figure_name[1] = GROUP_ID;
+  62              		.loc 1 18 39
+  63 000a 264B     		ldr	r3, .L2
+  64 000c 0022     		movs	r2, #0
+  65 000e 9A73     		strb	r2, [r3, #14]
+  19:Drivers/UI/ui_g_BOOM_0.c ****     ui_g_BOOM_0.option.figure_name[2] = START_ID;
+  66              		.loc 1 19 39
+  67 0010 244B     		ldr	r3, .L2
+  68 0012 0022     		movs	r2, #0
+  69 0014 DA73     		strb	r2, [r3, #15]
+  20:Drivers/UI/ui_g_BOOM_0.c ****     ui_g_BOOM_0.option.operate_tpyel = 1;
+  70              		.loc 1 20 38
+  71 0016 234A     		ldr	r2, .L2
+  72 0018 137C     		ldrb	r3, [r2, #16]
+  73 001a 0121     		movs	r1, #1
+  74 001c 61F30203 		bfi	r3, r1, #0, #3
+  75 0020 1374     		strb	r3, [r2, #16]
+  21:Drivers/UI/ui_g_BOOM_0.c ****     ui_g_BOOM_0.option.figure_tpye = 7;
+  76              		.loc 1 21 36
+  77 0022 204A     		ldr	r2, .L2
+  78 0024 137C     		ldrb	r3, [r2, #16]
+  79 0026 43F03803 		orr	r3, r3, #56
+  80 002a 1374     		strb	r3, [r2, #16]
+  22:Drivers/UI/ui_g_BOOM_0.c ****     ui_g_BOOM_0.option.layer = 0;
+  81              		.loc 1 22 30
+  82 002c 1D4A     		ldr	r2, .L2
+  83 002e 138A     		ldrh	r3, [r2, #16]	@ movhi
+  84 0030 23F47073 		bic	r3, r3, #960
+  85 0034 1382     		strh	r3, [r2, #16]	@ movhi
+  23:Drivers/UI/ui_g_BOOM_0.c ****     ui_g_BOOM_0.option.font_size = 15;
+  86              		.loc 1 23 34
+  87 0036 1B4A     		ldr	r2, .L2
+  88 0038 1369     		ldr	r3, [r2, #16]
+  89 003a 0F21     		movs	r1, #15
+  90 003c 61F39633 		bfi	r3, r1, #14, #9
+  91 0040 1361     		str	r3, [r2, #16]
+  24:Drivers/UI/ui_g_BOOM_0.c ****     ui_g_BOOM_0.option.start_x = 80;
+ARM GAS  C:\Users\fffff\AppData\Local\Temp\ccic9ztV.s 			page 3
+
+
+  92              		.loc 1 24 32
+  93 0042 184A     		ldr	r2, .L2
+  94 0044 5369     		ldr	r3, [r2, #20]
+  95 0046 5021     		movs	r1, #80
+  96 0048 61F39423 		bfi	r3, r1, #10, #11
+  97 004c 5361     		str	r3, [r2, #20]
+  25:Drivers/UI/ui_g_BOOM_0.c ****     ui_g_BOOM_0.option.start_y = 380;
+  98              		.loc 1 25 32
+  99 004e 154A     		ldr	r2, .L2
+ 100 0050 D38A     		ldrh	r3, [r2, #22]	@ movhi
+ 101 0052 4FF4BE71 		mov	r1, #380
+ 102 0056 61F34F13 		bfi	r3, r1, #5, #11
+ 103 005a D382     		strh	r3, [r2, #22]	@ movhi
+  26:Drivers/UI/ui_g_BOOM_0.c ****     ui_g_BOOM_0.option.color = 6;
+ 104              		.loc 1 26 30
+ 105 005c 114A     		ldr	r2, .L2
+ 106 005e 537C     		ldrb	r3, [r2, #17]
+ 107 0060 0621     		movs	r1, #6
+ 108 0062 61F38503 		bfi	r3, r1, #2, #4
+ 109 0066 5374     		strb	r3, [r2, #17]
+  27:Drivers/UI/ui_g_BOOM_0.c ****     ui_g_BOOM_0.option.str_length = 3;
+ 110              		.loc 1 27 35
+ 111 0068 0E4A     		ldr	r2, .L2
+ 112 006a 538A     		ldrh	r3, [r2, #18]	@ movhi
+ 113 006c 0321     		movs	r1, #3
+ 114 006e 61F3CF13 		bfi	r3, r1, #7, #9
+ 115 0072 5382     		strh	r3, [r2, #18]	@ movhi
+  28:Drivers/UI/ui_g_BOOM_0.c ****     ui_g_BOOM_0.option.width = 2;
+ 116              		.loc 1 28 30
+ 117 0074 0B4A     		ldr	r2, .L2
+ 118 0076 938A     		ldrh	r3, [r2, #20]	@ movhi
+ 119 0078 0221     		movs	r1, #2
+ 120 007a 61F30903 		bfi	r3, r1, #0, #10
+ 121 007e 9382     		strh	r3, [r2, #20]	@ movhi
+  29:Drivers/UI/ui_g_BOOM_0.c ****     strcpy(ui_g_BOOM_BOOM->string, "ARM");
+ 122              		.loc 1 29 26
+ 123 0080 094B     		ldr	r3, .L2+4
+ 124 0082 1B68     		ldr	r3, [r3]
+ 125 0084 0F33     		adds	r3, r3, #15
+ 126              		.loc 1 29 5
+ 127 0086 094A     		ldr	r2, .L2+8
+ 128 0088 1068     		ldr	r0, [r2]
+ 129 008a 1860     		str	r0, [r3]	@ unaligned
+  30:Drivers/UI/ui_g_BOOM_0.c **** 
+  31:Drivers/UI/ui_g_BOOM_0.c ****     ui_proc_string_frame(&ui_g_BOOM_0);
+ 130              		.loc 1 31 5
+ 131 008c 0548     		ldr	r0, .L2
+ 132 008e FFF7FEFF 		bl	ui_proc_string_frame
+  32:Drivers/UI/ui_g_BOOM_0.c ****     SEND_MESSAGE((uint8_t *) &ui_g_BOOM_0, sizeof(ui_g_BOOM_0));
+ 133              		.loc 1 32 5
+ 134 0092 6423     		movs	r3, #100
+ 135 0094 3C22     		movs	r2, #60
+ 136 0096 0349     		ldr	r1, .L2
+ 137 0098 0548     		ldr	r0, .L2+12
+ 138 009a FFF7FEFF 		bl	HAL_UART_Transmit
+  33:Drivers/UI/ui_g_BOOM_0.c **** }
+ 139              		.loc 1 33 1
+ARM GAS  C:\Users\fffff\AppData\Local\Temp\ccic9ztV.s 			page 4
+
+
+ 140 009e 00BF     		nop
+ 141 00a0 80BD     		pop	{r7, pc}
+ 142              	.L3:
+ 143 00a2 00BF     		.align	2
+ 144              	.L2:
+ 145 00a4 00000000 		.word	ui_g_BOOM_0
+ 146 00a8 00000000 		.word	ui_g_BOOM_BOOM
+ 147 00ac 00000000 		.word	.LC0
+ 148 00b0 00000000 		.word	huart7
+ 149              		.cfi_endproc
+ 150              	.LFE147:
+ 152              		.section	.text._ui_update_g_BOOM_0,"ax",%progbits
+ 153              		.align	1
+ 154              		.global	_ui_update_g_BOOM_0
+ 155              		.syntax unified
+ 156              		.thumb
+ 157              		.thumb_func
+ 159              	_ui_update_g_BOOM_0:
+ 160              	.LFB148:
+  34:Drivers/UI/ui_g_BOOM_0.c **** 
+  35:Drivers/UI/ui_g_BOOM_0.c **** void _ui_update_g_BOOM_0() {
+ 161              		.loc 1 35 28
+ 162              		.cfi_startproc
+ 163              		@ args = 0, pretend = 0, frame = 0
+ 164              		@ frame_needed = 1, uses_anonymous_args = 0
+ 165 0000 80B5     		push	{r7, lr}
+ 166              	.LCFI2:
+ 167              		.cfi_def_cfa_offset 8
+ 168              		.cfi_offset 7, -8
+ 169              		.cfi_offset 14, -4
+ 170 0002 00AF     		add	r7, sp, #0
+ 171              	.LCFI3:
+ 172              		.cfi_def_cfa_register 7
+  36:Drivers/UI/ui_g_BOOM_0.c ****     ui_g_BOOM_0.option.operate_tpyel = 2;
+ 173              		.loc 1 36 38
+ 174 0004 084A     		ldr	r2, .L5
+ 175 0006 137C     		ldrb	r3, [r2, #16]
+ 176 0008 0221     		movs	r1, #2
+ 177 000a 61F30203 		bfi	r3, r1, #0, #3
+ 178 000e 1374     		strb	r3, [r2, #16]
+  37:Drivers/UI/ui_g_BOOM_0.c **** 
+  38:Drivers/UI/ui_g_BOOM_0.c ****     ui_proc_string_frame(&ui_g_BOOM_0);
+ 179              		.loc 1 38 5
+ 180 0010 0548     		ldr	r0, .L5
+ 181 0012 FFF7FEFF 		bl	ui_proc_string_frame
+  39:Drivers/UI/ui_g_BOOM_0.c ****     SEND_MESSAGE((uint8_t *) &ui_g_BOOM_0, sizeof(ui_g_BOOM_0));
+ 182              		.loc 1 39 5
+ 183 0016 6423     		movs	r3, #100
+ 184 0018 3C22     		movs	r2, #60
+ 185 001a 0349     		ldr	r1, .L5
+ 186 001c 0348     		ldr	r0, .L5+4
+ 187 001e FFF7FEFF 		bl	HAL_UART_Transmit
+  40:Drivers/UI/ui_g_BOOM_0.c **** }
+ 188              		.loc 1 40 1
+ 189 0022 00BF     		nop
+ 190 0024 80BD     		pop	{r7, pc}
+ 191              	.L6:
+ARM GAS  C:\Users\fffff\AppData\Local\Temp\ccic9ztV.s 			page 5
+
+
+ 192 0026 00BF     		.align	2
+ 193              	.L5:
+ 194 0028 00000000 		.word	ui_g_BOOM_0
+ 195 002c 00000000 		.word	huart7
+ 196              		.cfi_endproc
+ 197              	.LFE148:
+ 199              		.section	.text._ui_remove_g_BOOM_0,"ax",%progbits
+ 200              		.align	1
+ 201              		.global	_ui_remove_g_BOOM_0
+ 202              		.syntax unified
+ 203              		.thumb
+ 204              		.thumb_func
+ 206              	_ui_remove_g_BOOM_0:
+ 207              	.LFB149:
+  41:Drivers/UI/ui_g_BOOM_0.c **** 
+  42:Drivers/UI/ui_g_BOOM_0.c **** void _ui_remove_g_BOOM_0() {
+ 208              		.loc 1 42 28
+ 209              		.cfi_startproc
+ 210              		@ args = 0, pretend = 0, frame = 0
+ 211              		@ frame_needed = 1, uses_anonymous_args = 0
+ 212 0000 80B5     		push	{r7, lr}
+ 213              	.LCFI4:
+ 214              		.cfi_def_cfa_offset 8
+ 215              		.cfi_offset 7, -8
+ 216              		.cfi_offset 14, -4
+ 217 0002 00AF     		add	r7, sp, #0
+ 218              	.LCFI5:
+ 219              		.cfi_def_cfa_register 7
+  43:Drivers/UI/ui_g_BOOM_0.c ****     ui_g_BOOM_0.option.operate_tpyel = 3;
+ 220              		.loc 1 43 38
+ 221 0004 084A     		ldr	r2, .L8
+ 222 0006 137C     		ldrb	r3, [r2, #16]
+ 223 0008 0321     		movs	r1, #3
+ 224 000a 61F30203 		bfi	r3, r1, #0, #3
+ 225 000e 1374     		strb	r3, [r2, #16]
+  44:Drivers/UI/ui_g_BOOM_0.c **** 
+  45:Drivers/UI/ui_g_BOOM_0.c ****     ui_proc_string_frame(&ui_g_BOOM_0);
+ 226              		.loc 1 45 5
+ 227 0010 0548     		ldr	r0, .L8
+ 228 0012 FFF7FEFF 		bl	ui_proc_string_frame
+  46:Drivers/UI/ui_g_BOOM_0.c ****     SEND_MESSAGE((uint8_t *) &ui_g_BOOM_0, sizeof(ui_g_BOOM_0));
+ 229              		.loc 1 46 5
+ 230 0016 6423     		movs	r3, #100
+ 231 0018 3C22     		movs	r2, #60
+ 232 001a 0349     		ldr	r1, .L8
+ 233 001c 0348     		ldr	r0, .L8+4
+ 234 001e FFF7FEFF 		bl	HAL_UART_Transmit
+  47:Drivers/UI/ui_g_BOOM_0.c **** }...
+ 235              		.loc 1 47 1
+ 236 0022 00BF     		nop
+ 237 0024 80BD     		pop	{r7, pc}
+ 238              	.L9:
+ 239 0026 00BF     		.align	2
+ 240              	.L8:
+ 241 0028 00000000 		.word	ui_g_BOOM_0
+ 242 002c 00000000 		.word	huart7
+ 243              		.cfi_endproc
+ARM GAS  C:\Users\fffff\AppData\Local\Temp\ccic9ztV.s 			page 6
+
+
+ 244              	.LFE149:
+ 246              		.text
+ 247              	.Letext0:
+ 248              		.file 2 "C:/msys64/mingw64/arm-none-eabi/include/machine/_default_types.h"
+ 249              		.file 3 "C:/msys64/mingw64/arm-none-eabi/include/sys/_stdint.h"
+ 250              		.file 4 "Drivers/CMSIS/Device/ST/STM32H7xx/Include/stm32h723xx.h"
+ 251              		.file 5 "Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal_def.h"
+ 252              		.file 6 "Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal_dma.h"
+ 253              		.file 7 "Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal_uart.h"
+ 254              		.file 8 "Drivers/UI/ui_types.h"
+ 255              		.file 9 "Core/Inc/usart.h"
+ 256              		.file 10 "Drivers/UI/ui_g_BOOM_0.h"
+ 257              		.file 11 "Drivers/UI/ui_interface.h"
+ARM GAS  C:\Users\fffff\AppData\Local\Temp\ccic9ztV.s 			page 7
+
+
+DEFINED SYMBOLS
+                            *ABS*:00000000 ui_g_BOOM_0.c
+C:\Users\fffff\AppData\Local\Temp\ccic9ztV.s:24     .bss.ui_g_BOOM_0:00000000 ui_g_BOOM_0
+C:\Users\fffff\AppData\Local\Temp\ccic9ztV.s:21     .bss.ui_g_BOOM_0:00000000 $d
+C:\Users\fffff\AppData\Local\Temp\ccic9ztV.s:31     .data.ui_g_BOOM_BOOM:00000000 ui_g_BOOM_BOOM
+C:\Users\fffff\AppData\Local\Temp\ccic9ztV.s:28     .data.ui_g_BOOM_BOOM:00000000 $d
+C:\Users\fffff\AppData\Local\Temp\ccic9ztV.s:34     .rodata:00000000 $d
+C:\Users\fffff\AppData\Local\Temp\ccic9ztV.s:38     .text._ui_init_g_BOOM_0:00000000 $t
+C:\Users\fffff\AppData\Local\Temp\ccic9ztV.s:44     .text._ui_init_g_BOOM_0:00000000 _ui_init_g_BOOM_0
+C:\Users\fffff\AppData\Local\Temp\ccic9ztV.s:145    .text._ui_init_g_BOOM_0:000000a4 $d
+C:\Users\fffff\AppData\Local\Temp\ccic9ztV.s:153    .text._ui_update_g_BOOM_0:00000000 $t
+C:\Users\fffff\AppData\Local\Temp\ccic9ztV.s:159    .text._ui_update_g_BOOM_0:00000000 _ui_update_g_BOOM_0
+C:\Users\fffff\AppData\Local\Temp\ccic9ztV.s:194    .text._ui_update_g_BOOM_0:00000028 $d
+C:\Users\fffff\AppData\Local\Temp\ccic9ztV.s:200    .text._ui_remove_g_BOOM_0:00000000 $t
+C:\Users\fffff\AppData\Local\Temp\ccic9ztV.s:206    .text._ui_remove_g_BOOM_0:00000000 _ui_remove_g_BOOM_0
+C:\Users\fffff\AppData\Local\Temp\ccic9ztV.s:241    .text._ui_remove_g_BOOM_0:00000028 $d
+
+UNDEFINED SYMBOLS
+ui_proc_string_frame
+HAL_UART_Transmit
+huart7

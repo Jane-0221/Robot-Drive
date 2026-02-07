@@ -1,0 +1,345 @@
+ARM GAS  C:\Users\fffff\AppData\Local\Temp\ccKgoSWw.s 			page 1
+
+
+   1              		.cpu cortex-m7
+   2              		.arch armv7e-m
+   3              		.fpu fpv5-d16
+   4              		.eabi_attribute 28, 1
+   5              		.eabi_attribute 20, 1
+   6              		.eabi_attribute 21, 1
+   7              		.eabi_attribute 23, 3
+   8              		.eabi_attribute 24, 1
+   9              		.eabi_attribute 25, 1
+  10              		.eabi_attribute 26, 1
+  11              		.eabi_attribute 30, 6
+  12              		.eabi_attribute 34, 1
+  13              		.eabi_attribute 18, 4
+  14              		.file	"music.c"
+  15              		.text
+  16              	.Ltext0:
+  17              		.cfi_sections	.debug_frame
+  18              		.file 1 "User/Software/music.c"
+  19              		.global	melody
+  20              		.section	.data.melody,"aw"
+  21              		.align	2
+  24              	melody:
+  25 0000 A4D08243 		.word	1132646564
+  26 0004 F401     		.short	500
+  27 0006 0000     		.space	2
+  28 0008 7BD49243 		.word	1133696123
+  29 000c F401     		.short	500
+  30 000e 0000     		.space	2
+  31 0010 A4D0A443 		.word	1134874788
+  32 0014 F401     		.short	500
+  33 0016 0000     		.space	2
+  34 0018 A4D08243 		.word	1132646564
+  35 001c F401     		.short	500
+  36 001e 0000     		.space	2
+  37 0020 A4D08243 		.word	1132646564
+  38 0024 F401     		.short	500
+  39 0026 0000     		.space	2
+  40 0028 7BD49243 		.word	1133696123
+  41 002c F401     		.short	500
+  42 002e 0000     		.space	2
+  43 0030 A4D0A443 		.word	1134874788
+  44 0034 F401     		.short	500
+  45 0036 0000     		.space	2
+  46 0038 A4D08243 		.word	1132646564
+  47 003c F401     		.short	500
+  48 003e 0000     		.space	2
+  49 0040 A4D0A443 		.word	1134874788
+  50 0044 F401     		.short	500
+  51 0046 0000     		.space	2
+  52 0048 719DAE43 		.word	1135517041
+  53 004c F401     		.short	500
+  54 004e 0000     		.space	2
+  55 0050 0000C443 		.word	1136918528
+  56 0054 E803     		.short	1000
+  57 0056 0000     		.space	2
+  58 0058 A4D0A443 		.word	1134874788
+  59 005c F401     		.short	500
+ARM GAS  C:\Users\fffff\AppData\Local\Temp\ccKgoSWw.s 			page 2
+
+
+  60 005e 0000     		.space	2
+  61 0060 719DAE43 		.word	1135517041
+  62 0064 F401     		.short	500
+  63 0066 0000     		.space	2
+  64 0068 0000C443 		.word	1136918528
+  65 006c E803     		.short	1000
+  66 006e 0000     		.space	2
+  67 0070 0000C443 		.word	1136918528
+  68 0074 FA00     		.short	250
+  69 0076 0000     		.space	2
+  70 0078 0000DC43 		.word	1138491392
+  71 007c FA00     		.short	250
+  72 007e 0000     		.space	2
+  73 0080 0000C443 		.word	1136918528
+  74 0084 FA00     		.short	250
+  75 0086 0000     		.space	2
+  76 0088 719DAE43 		.word	1135517041
+  77 008c FA00     		.short	250
+  78 008e 0000     		.space	2
+  79 0090 A4D0A443 		.word	1134874788
+  80 0094 F401     		.short	500
+  81 0096 0000     		.space	2
+  82 0098 A4D08243 		.word	1132646564
+  83 009c F401     		.short	500
+  84 009e 0000     		.space	2
+  85 00a0 0000C443 		.word	1136918528
+  86 00a4 FA00     		.short	250
+  87 00a6 0000     		.space	2
+  88 00a8 0000DC43 		.word	1138491392
+  89 00ac FA00     		.short	250
+  90 00ae 0000     		.space	2
+  91 00b0 0000C443 		.word	1136918528
+  92 00b4 FA00     		.short	250
+  93 00b6 0000     		.space	2
+  94 00b8 719DAE43 		.word	1135517041
+  95 00bc FA00     		.short	250
+  96 00be 0000     		.space	2
+  97 00c0 A4D0A443 		.word	1134874788
+  98 00c4 F401     		.short	500
+  99 00c6 0000     		.space	2
+ 100 00c8 A4D08243 		.word	1132646564
+ 101 00cc F401     		.short	500
+ 102 00ce 0000     		.space	2
+ 103 00d0 A4D08243 		.word	1132646564
+ 104 00d4 F401     		.short	500
+ 105 00d6 0000     		.space	2
+ 106 00d8 5CFF4344 		.word	1145306972
+ 107 00dc F401     		.short	500
+ 108 00de 0000     		.space	2
+ 109 00e0 A4D08243 		.word	1132646564
+ 110 00e4 E803     		.short	1000
+ 111 00e6 0000     		.space	2
+ 112 00e8 A4D08243 		.word	1132646564
+ 113 00ec F401     		.short	500
+ 114 00ee 0000     		.space	2
+ 115 00f0 5CFF4344 		.word	1145306972
+ 116 00f4 F401     		.short	500
+ARM GAS  C:\Users\fffff\AppData\Local\Temp\ccKgoSWw.s 			page 3
+
+
+ 117 00f6 0000     		.space	2
+ 118 00f8 A4D08243 		.word	1132646564
+ 119 00fc E803     		.short	1000
+ 120 00fe 0000     		.space	2
+ 121 0100 00000000 		.word	0
+ 122 0104 F401     		.short	500
+ 123 0106 0000     		.space	2
+ 124              		.section	.text.Music_init,"ax",%progbits
+ 125              		.align	1
+ 126              		.global	Music_init
+ 127              		.syntax unified
+ 128              		.thumb
+ 129              		.thumb_func
+ 131              	Music_init:
+ 132              	.LFB144:
+   1:User/Software/music.c **** /**
+   2:User/Software/music.c ****  * @file music.c
+   3:User/Software/music.c ****  * @author Siri (lixirui2017@outlook.com)
+   4:User/Software/music.c ****  * @brief 音乐播放模块
+   5:User/Software/music.c ****  * @version 0.1
+   6:User/Software/music.c ****  * @date 2025-04-07
+   7:User/Software/music.c ****  *
+   8:User/Software/music.c ****  * @copyright Copyright (c) 2025
+   9:User/Software/music.c ****  *
+  10:User/Software/music.c ****  */
+  11:User/Software/music.c **** 
+  12:User/Software/music.c **** #include "music.h"
+  13:User/Software/music.c **** 
+  14:User/Software/music.c **** // ===== 《两只老虎》旋律数组 =====
+  15:User/Software/music.c **** Note melody[] = {
+  16:User/Software/music.c ****     // 第一段（中音区）
+  17:User/Software/music.c ****     {MID_DO, 500},
+  18:User/Software/music.c ****     {MID_RE, 500},
+  19:User/Software/music.c ****     {MID_MI, 500},
+  20:User/Software/music.c ****     {MID_DO, 500}, // 1 2 3 1
+  21:User/Software/music.c ****     {MID_DO, 500},
+  22:User/Software/music.c ****     {MID_RE, 500},
+  23:User/Software/music.c ****     {MID_MI, 500},
+  24:User/Software/music.c ****     {MID_DO, 500}, // 1 2 3 1
+  25:User/Software/music.c ****     {MID_MI, 500},
+  26:User/Software/music.c ****     {MID_FA, 500},
+  27:User/Software/music.c ****     {MID_SOL, 1000}, // 3 4 5 -
+  28:User/Software/music.c ****     {MID_MI, 500},
+  29:User/Software/music.c ****     {MID_FA, 500},
+  30:User/Software/music.c ****     {MID_SOL, 1000}, // 3 4 5 -
+  31:User/Software/music.c **** 
+  32:User/Software/music.c ****     // 第二段（中音区 + 高音区）
+  33:User/Software/music.c ****     {MID_SOL, 250},
+  34:User/Software/music.c ****     {MID_LA, 250},
+  35:User/Software/music.c ****     {MID_SOL, 250},
+  36:User/Software/music.c ****     {MID_FA, 250},
+  37:User/Software/music.c ****     {MID_MI, 500},
+  38:User/Software/music.c ****     {MID_DO, 500}, // 5 6 5 4 3 1
+  39:User/Software/music.c ****     {MID_SOL, 250},
+  40:User/Software/music.c ****     {MID_LA, 250},
+  41:User/Software/music.c ****     {MID_SOL, 250},
+  42:User/Software/music.c ****     {MID_FA, 250},
+ARM GAS  C:\Users\fffff\AppData\Local\Temp\ccKgoSWw.s 			page 4
+
+
+  43:User/Software/music.c ****     {MID_MI, 500},
+  44:User/Software/music.c ****     {MID_DO, 500}, // 5 6 5 4 3 1
+  45:User/Software/music.c **** 
+  46:User/Software/music.c ****     // 结尾部分（中音Do + 高音Sol）
+  47:User/Software/music.c ****     {MID_DO, 500},
+  48:User/Software/music.c ****     {HIGH_SOL, 500},
+  49:User/Software/music.c ****     {MID_DO, 1000}, // 1 5 1 -
+  50:User/Software/music.c ****     {MID_DO, 500},
+  51:User/Software/music.c ****     {HIGH_SOL, 500},
+  52:User/Software/music.c ****     {MID_DO, 1000}, // 1 5 1 -
+  53:User/Software/music.c ****     {MUSIC_FINISH,500},
+  54:User/Software/music.c **** };
+  55:User/Software/music.c **** 
+  56:User/Software/music.c **** void Music_init()
+  57:User/Software/music.c **** {
+ 133              		.loc 1 57 1
+ 134              		.cfi_startproc
+ 135              		@ args = 0, pretend = 0, frame = 0
+ 136              		@ frame_needed = 1, uses_anonymous_args = 0
+ 137 0000 80B5     		push	{r7, lr}
+ 138              	.LCFI0:
+ 139              		.cfi_def_cfa_offset 8
+ 140              		.cfi_offset 7, -8
+ 141              		.cfi_offset 14, -4
+ 142 0002 00AF     		add	r7, sp, #0
+ 143              	.LCFI1:
+ 144              		.cfi_def_cfa_register 7
+  58:User/Software/music.c ****     Buzzer_init();
+ 145              		.loc 1 58 5
+ 146 0004 FFF7FEFF 		bl	Buzzer_init
+  59:User/Software/music.c **** }
+ 147              		.loc 1 59 1
+ 148 0008 00BF     		nop
+ 149 000a 80BD     		pop	{r7, pc}
+ 150              		.cfi_endproc
+ 151              	.LFE144:
+ 153              		.section	.text.Music_play,"ax",%progbits
+ 154              		.align	1
+ 155              		.global	Music_play
+ 156              		.syntax unified
+ 157              		.thumb
+ 158              		.thumb_func
+ 160              	Music_play:
+ 161              	.LFB145:
+  60:User/Software/music.c **** 
+  61:User/Software/music.c **** void Music_play(Note *note)
+  62:User/Software/music.c **** {
+ 162              		.loc 1 62 1
+ 163              		.cfi_startproc
+ 164              		@ args = 0, pretend = 0, frame = 16
+ 165              		@ frame_needed = 1, uses_anonymous_args = 0
+ 166 0000 80B5     		push	{r7, lr}
+ 167              	.LCFI2:
+ 168              		.cfi_def_cfa_offset 8
+ 169              		.cfi_offset 7, -8
+ 170              		.cfi_offset 14, -4
+ 171 0002 84B0     		sub	sp, sp, #16
+ARM GAS  C:\Users\fffff\AppData\Local\Temp\ccKgoSWw.s 			page 5
+
+
+ 172              	.LCFI3:
+ 173              		.cfi_def_cfa_offset 24
+ 174 0004 00AF     		add	r7, sp, #0
+ 175              	.LCFI4:
+ 176              		.cfi_def_cfa_register 7
+ 177 0006 7860     		str	r0, [r7, #4]
+ 178              	.LBB2:
+  63:User/Software/music.c ****     for (int i = 0; note[i].fre!=MUSIC_FINISH; i++)
+ 179              		.loc 1 63 14
+ 180 0008 0023     		movs	r3, #0
+ 181 000a FB60     		str	r3, [r7, #12]
+ 182              		.loc 1 63 5
+ 183 000c 16E0     		b	.L3
+ 184              	.L4:
+  64:User/Software/music.c ****     {
+  65:User/Software/music.c ****         MUSIC_SET_FREQUENCY(note[i].fre);
+ 185              		.loc 1 65 9
+ 186 000e FB68     		ldr	r3, [r7, #12]
+ 187 0010 DB00     		lsls	r3, r3, #3
+ 188 0012 7A68     		ldr	r2, [r7, #4]
+ 189 0014 1344     		add	r3, r3, r2
+ 190 0016 D3ED007A 		vldr.32	s15, [r3]
+ 191 001a B0EE670A 		vmov.f32	s0, s15
+ 192 001e FFF7FEFF 		bl	Buzzer_set_frequency
+  66:User/Software/music.c ****         MUSIC_ON();
+ 193              		.loc 1 66 9
+ 194 0022 FFF7FEFF 		bl	Buzzer_on
+  67:User/Software/music.c ****         MUSIC_DELAY(note[i].time);
+ 195              		.loc 1 67 9
+ 196 0026 FB68     		ldr	r3, [r7, #12]
+ 197 0028 DB00     		lsls	r3, r3, #3
+ 198 002a 7A68     		ldr	r2, [r7, #4]
+ 199 002c 1344     		add	r3, r3, r2
+ 200 002e 9B88     		ldrh	r3, [r3, #4]
+ 201 0030 1846     		mov	r0, r3
+ 202 0032 FFF7FEFF 		bl	osDelay
+  63:User/Software/music.c ****     {
+ 203              		.loc 1 63 49 discriminator 3
+ 204 0036 FB68     		ldr	r3, [r7, #12]
+ 205 0038 0133     		adds	r3, r3, #1
+ 206 003a FB60     		str	r3, [r7, #12]
+ 207              	.L3:
+  63:User/Software/music.c ****     {
+ 208              		.loc 1 63 25 discriminator 1
+ 209 003c FB68     		ldr	r3, [r7, #12]
+ 210 003e DB00     		lsls	r3, r3, #3
+ 211 0040 7A68     		ldr	r2, [r7, #4]
+ 212 0042 1344     		add	r3, r3, r2
+  63:User/Software/music.c ****     {
+ 213              		.loc 1 63 28 discriminator 1
+ 214 0044 D3ED007A 		vldr.32	s15, [r3]
+  63:User/Software/music.c ****     {
+ 215              		.loc 1 63 32 discriminator 1
+ 216 0048 F5EE407A 		vcmp.f32	s15, #0
+ 217 004c F1EE10FA 		vmrs	APSR_nzcv, FPSCR
+ 218 0050 DDD1     		bne	.L4
+ 219              	.LBE2:
+ARM GAS  C:\Users\fffff\AppData\Local\Temp\ccKgoSWw.s 			page 6
+
+
+  68:User/Software/music.c ****     }
+  69:User/Software/music.c ****     MUSIC_OFF();
+ 220              		.loc 1 69 5
+ 221 0052 FFF7FEFF 		bl	Buzzer_off
+  70:User/Software/music.c **** }
+ 222              		.loc 1 70 1
+ 223 0056 00BF     		nop
+ 224 0058 1037     		adds	r7, r7, #16
+ 225              	.LCFI5:
+ 226              		.cfi_def_cfa_offset 8
+ 227 005a BD46     		mov	sp, r7
+ 228              	.LCFI6:
+ 229              		.cfi_def_cfa_register 13
+ 230              		@ sp needed
+ 231 005c 80BD     		pop	{r7, pc}
+ 232              		.cfi_endproc
+ 233              	.LFE145:
+ 235              		.text
+ 236              	.Letext0:
+ 237              		.file 2 "C:/msys64/mingw64/arm-none-eabi/include/machine/_default_types.h"
+ 238              		.file 3 "C:/msys64/mingw64/arm-none-eabi/include/sys/_stdint.h"
+ 239              		.file 4 "Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2/cmsis_os2.h"
+ 240              		.file 5 "User/Software/music.h"
+ 241              		.file 6 "User/Hardware/buzzer.h"
+ARM GAS  C:\Users\fffff\AppData\Local\Temp\ccKgoSWw.s 			page 7
+
+
+DEFINED SYMBOLS
+                            *ABS*:00000000 music.c
+C:\Users\fffff\AppData\Local\Temp\ccKgoSWw.s:24     .data.melody:00000000 melody
+C:\Users\fffff\AppData\Local\Temp\ccKgoSWw.s:21     .data.melody:00000000 $d
+C:\Users\fffff\AppData\Local\Temp\ccKgoSWw.s:125    .text.Music_init:00000000 $t
+C:\Users\fffff\AppData\Local\Temp\ccKgoSWw.s:131    .text.Music_init:00000000 Music_init
+C:\Users\fffff\AppData\Local\Temp\ccKgoSWw.s:154    .text.Music_play:00000000 $t
+C:\Users\fffff\AppData\Local\Temp\ccKgoSWw.s:160    .text.Music_play:00000000 Music_play
+
+UNDEFINED SYMBOLS
+Buzzer_init
+Buzzer_set_frequency
+Buzzer_on
+osDelay
+Buzzer_off

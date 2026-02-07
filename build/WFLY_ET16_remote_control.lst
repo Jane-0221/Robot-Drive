@@ -1,0 +1,108 @@
+ARM GAS  C:\Users\23671\AppData\Local\Temp\ccExDBkL.s 			page 1
+
+
+   1              		.cpu cortex-m7
+   2              		.arch armv7e-m
+   3              		.fpu fpv5-d16
+   4              		.eabi_attribute 28, 1
+   5              		.eabi_attribute 20, 1
+   6              		.eabi_attribute 21, 1
+   7              		.eabi_attribute 23, 3
+   8              		.eabi_attribute 24, 1
+   9              		.eabi_attribute 25, 1
+  10              		.eabi_attribute 26, 1
+  11              		.eabi_attribute 30, 6
+  12              		.eabi_attribute 34, 1
+  13              		.eabi_attribute 18, 4
+  14              		.file	"WFLY_ET16_remote_control.c"
+  15              		.text
+  16              	.Ltext0:
+  17              		.cfi_sections	.debug_frame
+  18              		.file 1 "User/Software/WFLY_ET16_remote_control.c"
+  19              		.section	.text.arm_remoto_control,"ax",%progbits
+  20              		.align	1
+  21              		.global	arm_remoto_control
+  22              		.syntax unified
+  23              		.thumb
+  24              		.thumb_func
+  26              	arm_remoto_control:
+  27              	.LFB0:
+   1:User/Software/WFLY_ET16_remote_control.c **** #include "WFLY_ET16_remote_control.h"
+   2:User/Software/WFLY_ET16_remote_control.c **** //#include"dm_arm.h"
+   3:User/Software/WFLY_ET16_remote_control.c **** #include "DT7.h"
+   4:User/Software/WFLY_ET16_remote_control.c **** void arm_remoto_control()
+   5:User/Software/WFLY_ET16_remote_control.c **** {
+  28              		.loc 1 5 1
+  29              		.cfi_startproc
+  30              		@ args = 0, pretend = 0, frame = 0
+  31              		@ frame_needed = 1, uses_anonymous_args = 0
+  32              		@ link register save eliminated.
+  33 0000 80B4     		push	{r7}
+  34              	.LCFI0:
+  35              		.cfi_def_cfa_offset 4
+  36              		.cfi_offset 7, -4
+  37 0002 00AF     		add	r7, sp, #0
+  38              	.LCFI1:
+  39              		.cfi_def_cfa_register 7
+   6:User/Software/WFLY_ET16_remote_control.c **** if(SBUS_CH.CH5==353&&SBUS_CH.CH6==353)
+  40              		.loc 1 6 11
+  41 0004 044B     		ldr	r3, .L3
+  42 0006 1B89     		ldrh	r3, [r3, #8]
+  43              		.loc 1 6 3
+  44 0008 40F26112 		movw	r2, #353
+  45 000c 9342     		cmp	r3, r2
+   7:User/Software/WFLY_ET16_remote_control.c **** {
+   8:User/Software/WFLY_ET16_remote_control.c **** 
+   9:User/Software/WFLY_ET16_remote_control.c **** 		
+  10:User/Software/WFLY_ET16_remote_control.c ****     // if(SBUS_CH.CH4>1050&&SBUS_CH.CH4<=1695)
+  11:User/Software/WFLY_ET16_remote_control.c ****     // {
+  12:User/Software/WFLY_ET16_remote_control.c ****     //     pos_motor.pos_middlerow += 0.0005;
+  13:User/Software/WFLY_ET16_remote_control.c ****     // }
+ARM GAS  C:\Users\23671\AppData\Local\Temp\ccExDBkL.s 			page 2
+
+
+  14:User/Software/WFLY_ET16_remote_control.c ****     // else if( SBUS_CH.CH4>=353&&SBUS_CH.CH4<1000)
+  15:User/Software/WFLY_ET16_remote_control.c ****     // {
+  16:User/Software/WFLY_ET16_remote_control.c ****     //     pos_motor.pos_middlerow -= 0.0005;
+  17:User/Software/WFLY_ET16_remote_control.c ****     // }
+  18:User/Software/WFLY_ET16_remote_control.c ****     // else if(SBUS_CH.CH4>1000&&SBUS_CH.CH4<1050)
+  19:User/Software/WFLY_ET16_remote_control.c ****     // {	
+  20:User/Software/WFLY_ET16_remote_control.c ****     //     pos_motor.pos_middlerow += 0;
+  21:User/Software/WFLY_ET16_remote_control.c ****     // }	
+  22:User/Software/WFLY_ET16_remote_control.c **** 
+  23:User/Software/WFLY_ET16_remote_control.c **** 
+  24:User/Software/WFLY_ET16_remote_control.c **** }
+  25:User/Software/WFLY_ET16_remote_control.c **** }
+  46              		.loc 1 25 1
+  47 000e 00BF     		nop
+  48 0010 BD46     		mov	sp, r7
+  49              	.LCFI2:
+  50              		.cfi_def_cfa_register 13
+  51              		@ sp needed
+  52 0012 5DF8047B 		ldr	r7, [sp], #4
+  53              	.LCFI3:
+  54              		.cfi_restore 7
+  55              		.cfi_def_cfa_offset 0
+  56 0016 7047     		bx	lr
+  57              	.L4:
+  58              		.align	2
+  59              	.L3:
+  60 0018 00000000 		.word	SBUS_CH
+  61              		.cfi_endproc
+  62              	.LFE0:
+  64              		.text
+  65              	.Letext0:
+  66              		.file 2 "D:/MSYS2/mingw64/arm-none-eabi/include/machine/_default_types.h"
+  67              		.file 3 "D:/MSYS2/mingw64/arm-none-eabi/include/sys/_stdint.h"
+  68              		.file 4 "User/Hardware/DT7.h"
+ARM GAS  C:\Users\23671\AppData\Local\Temp\ccExDBkL.s 			page 3
+
+
+DEFINED SYMBOLS
+                            *ABS*:00000000 WFLY_ET16_remote_control.c
+C:\Users\23671\AppData\Local\Temp\ccExDBkL.s:20     .text.arm_remoto_control:00000000 $t
+C:\Users\23671\AppData\Local\Temp\ccExDBkL.s:26     .text.arm_remoto_control:00000000 arm_remoto_control
+C:\Users\23671\AppData\Local\Temp\ccExDBkL.s:60     .text.arm_remoto_control:00000018 $d
+
+UNDEFINED SYMBOLS
+SBUS_CH

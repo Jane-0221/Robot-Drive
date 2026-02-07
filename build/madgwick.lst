@@ -1,0 +1,758 @@
+ARM GAS  C:\Users\fffff\AppData\Local\Temp\cc6wLKc3.s 			page 1
+
+
+   1              		.cpu cortex-m7
+   2              		.arch armv7e-m
+   3              		.fpu fpv5-d16
+   4              		.eabi_attribute 28, 1
+   5              		.eabi_attribute 20, 1
+   6              		.eabi_attribute 21, 1
+   7              		.eabi_attribute 23, 3
+   8              		.eabi_attribute 24, 1
+   9              		.eabi_attribute 25, 1
+  10              		.eabi_attribute 26, 1
+  11              		.eabi_attribute 30, 6
+  12              		.eabi_attribute 34, 1
+  13              		.eabi_attribute 18, 4
+  14              		.file	"madgwick.c"
+  15              		.text
+  16              	.Ltext0:
+  17              		.cfi_sections	.debug_frame
+  18              		.file 1 "Algorithm/madgwick.c"
+  19              		.global	a_x
+  20              		.section	.bss.a_x,"aw",%nobits
+  21              		.align	2
+  24              	a_x:
+  25 0000 00000000 		.space	4
+  26              		.global	a_y
+  27              		.section	.bss.a_y,"aw",%nobits
+  28              		.align	2
+  31              	a_y:
+  32 0000 00000000 		.space	4
+  33              		.global	a_z
+  34              		.section	.bss.a_z,"aw",%nobits
+  35              		.align	2
+  38              	a_z:
+  39 0000 00000000 		.space	4
+  40              		.global	w_x
+  41              		.section	.bss.w_x,"aw",%nobits
+  42              		.align	2
+  45              	w_x:
+  46 0000 00000000 		.space	4
+  47              		.global	w_y
+  48              		.section	.bss.w_y,"aw",%nobits
+  49              		.align	2
+  52              	w_y:
+  53 0000 00000000 		.space	4
+  54              		.global	w_z
+  55              		.section	.bss.w_z,"aw",%nobits
+  56              		.align	2
+  59              	w_z:
+  60 0000 00000000 		.space	4
+  61              		.global	SEq_1
+  62              		.section	.data.SEq_1,"aw"
+  63              		.align	2
+  66              	SEq_1:
+  67 0000 0000803F 		.word	1065353216
+  68              		.global	SEq_2
+  69              		.section	.bss.SEq_2,"aw",%nobits
+  70              		.align	2
+  73              	SEq_2:
+ARM GAS  C:\Users\fffff\AppData\Local\Temp\cc6wLKc3.s 			page 2
+
+
+  74 0000 00000000 		.space	4
+  75              		.global	SEq_3
+  76              		.section	.bss.SEq_3,"aw",%nobits
+  77              		.align	2
+  80              	SEq_3:
+  81 0000 00000000 		.space	4
+  82              		.global	SEq_4
+  83              		.section	.bss.SEq_4,"aw",%nobits
+  84              		.align	2
+  87              	SEq_4:
+  88 0000 00000000 		.space	4
+  89              		.section	.text.madgwickUpdate,"ax",%progbits
+  90              		.align	1
+  91              		.global	madgwickUpdate
+  92              		.syntax unified
+  93              		.thumb
+  94              		.thumb_func
+  96              	madgwickUpdate:
+  97              	.LFB0:
+   1:Algorithm/madgwick.c **** #include "madgwick.h"
+   2:Algorithm/madgwick.c **** #include "math.h"
+   3:Algorithm/madgwick.c **** 
+   4:Algorithm/madgwick.c **** // System constants
+   5:Algorithm/madgwick.c **** #define deltat 0.001f // sampling period in seconds (shown as 1 ms)
+   6:Algorithm/madgwick.c **** #define gyroMeasError 3.14159265358979f * (5.0f / 180.0f) // gyroscope measurement error in rad/s (
+   7:Algorithm/madgwick.c **** #define beta sqrt(3.0f / 4.0f) * gyroMeasError // compute beta
+   8:Algorithm/madgwick.c **** // Global system variables
+   9:Algorithm/madgwick.c **** float a_x, a_y, a_z; // accelerometer measurements
+  10:Algorithm/madgwick.c **** float w_x, w_y, w_z; // gyroscope measurements in rad/s
+  11:Algorithm/madgwick.c **** float SEq_1 = 1.0f, SEq_2 = 0.0f, SEq_3 = 0.0f, SEq_4 = 0.0f; // estimated orientation quaternion e
+  12:Algorithm/madgwick.c **** 
+  13:Algorithm/madgwick.c **** void madgwickUpdate(float w_x, float w_y, float w_z, float a_x, float a_y, float a_z)
+  14:Algorithm/madgwick.c **** {
+  98              		.loc 1 14 1
+  99              		.cfi_startproc
+ 100              		@ args = 0, pretend = 0, frame = 128
+ 101              		@ frame_needed = 1, uses_anonymous_args = 0
+ 102 0000 80B5     		push	{r7, lr}
+ 103              	.LCFI0:
+ 104              		.cfi_def_cfa_offset 8
+ 105              		.cfi_offset 7, -8
+ 106              		.cfi_offset 14, -4
+ 107 0002 A0B0     		sub	sp, sp, #128
+ 108              	.LCFI1:
+ 109              		.cfi_def_cfa_offset 136
+ 110 0004 00AF     		add	r7, sp, #0
+ 111              	.LCFI2:
+ 112              		.cfi_def_cfa_register 7
+ 113 0006 87ED050A 		vstr.32	s0, [r7, #20]
+ 114 000a C7ED040A 		vstr.32	s1, [r7, #16]
+ 115 000e 87ED031A 		vstr.32	s2, [r7, #12]
+ 116 0012 C7ED021A 		vstr.32	s3, [r7, #8]
+ 117 0016 87ED012A 		vstr.32	s4, [r7, #4]
+ 118 001a C7ED002A 		vstr.32	s5, [r7]
+  15:Algorithm/madgwick.c **** // Local system variables
+  16:Algorithm/madgwick.c **** float norm; // vector norm
+  17:Algorithm/madgwick.c **** float SEqDot_omega_1, SEqDot_omega_2, SEqDot_omega_3, SEqDot_omega_4; // quaternion derrivative fro
+ARM GAS  C:\Users\fffff\AppData\Local\Temp\cc6wLKc3.s 			page 3
+
+
+  18:Algorithm/madgwick.c **** float f_1, f_2, f_3; // objective function elements
+  19:Algorithm/madgwick.c **** float J_11or24, J_12or23, J_13or22, J_14or21, J_32, J_33; // objective function Jacobian elements
+  20:Algorithm/madgwick.c **** float SEqHatDot_1, SEqHatDot_2, SEqHatDot_3, SEqHatDot_4; // estimated direction of the gyroscope e
+  21:Algorithm/madgwick.c **** // Axulirary variables to avoid reapeated calcualtions
+  22:Algorithm/madgwick.c **** float halfSEq_1 = 0.5f * SEq_1;
+ 119              		.loc 1 22 24
+ 120 001e F24B     		ldr	r3, .L2+16
+ 121 0020 D3ED007A 		vldr.32	s15, [r3]
+ 122              		.loc 1 22 7
+ 123 0024 B6EE007A 		vmov.f32	s14, #5.0e-1
+ 124 0028 67EE877A 		vmul.f32	s15, s15, s14
+ 125 002c C7ED1F7A 		vstr.32	s15, [r7, #124]
+  23:Algorithm/madgwick.c **** float halfSEq_2 = 0.5f * SEq_2;
+ 126              		.loc 1 23 24
+ 127 0030 EE4B     		ldr	r3, .L2+20
+ 128 0032 D3ED007A 		vldr.32	s15, [r3]
+ 129              		.loc 1 23 7
+ 130 0036 B6EE007A 		vmov.f32	s14, #5.0e-1
+ 131 003a 67EE877A 		vmul.f32	s15, s15, s14
+ 132 003e C7ED1E7A 		vstr.32	s15, [r7, #120]
+  24:Algorithm/madgwick.c **** float halfSEq_3 = 0.5f * SEq_3;
+ 133              		.loc 1 24 24
+ 134 0042 EB4B     		ldr	r3, .L2+24
+ 135 0044 D3ED007A 		vldr.32	s15, [r3]
+ 136              		.loc 1 24 7
+ 137 0048 B6EE007A 		vmov.f32	s14, #5.0e-1
+ 138 004c 67EE877A 		vmul.f32	s15, s15, s14
+ 139 0050 C7ED1D7A 		vstr.32	s15, [r7, #116]
+  25:Algorithm/madgwick.c **** float halfSEq_4 = 0.5f * SEq_4;
+ 140              		.loc 1 25 24
+ 141 0054 E74B     		ldr	r3, .L2+28
+ 142 0056 D3ED007A 		vldr.32	s15, [r3]
+ 143              		.loc 1 25 7
+ 144 005a B6EE007A 		vmov.f32	s14, #5.0e-1
+ 145 005e 67EE877A 		vmul.f32	s15, s15, s14
+ 146 0062 C7ED1C7A 		vstr.32	s15, [r7, #112]
+  26:Algorithm/madgwick.c **** float twoSEq_1 = 2.0f * SEq_1;
+ 147              		.loc 1 26 23
+ 148 0066 E04B     		ldr	r3, .L2+16
+ 149 0068 D3ED007A 		vldr.32	s15, [r3]
+ 150              		.loc 1 26 7
+ 151 006c 77EEA77A 		vadd.f32	s15, s15, s15
+ 152 0070 C7ED1B7A 		vstr.32	s15, [r7, #108]
+  27:Algorithm/madgwick.c **** float twoSEq_2 = 2.0f * SEq_2;
+ 153              		.loc 1 27 23
+ 154 0074 DD4B     		ldr	r3, .L2+20
+ 155 0076 D3ED007A 		vldr.32	s15, [r3]
+ 156              		.loc 1 27 7
+ 157 007a 77EEA77A 		vadd.f32	s15, s15, s15
+ 158 007e C7ED1A7A 		vstr.32	s15, [r7, #104]
+  28:Algorithm/madgwick.c **** float twoSEq_3 = 2.0f * SEq_3;
+ 159              		.loc 1 28 23
+ 160 0082 DB4B     		ldr	r3, .L2+24
+ 161 0084 D3ED007A 		vldr.32	s15, [r3]
+ 162              		.loc 1 28 7
+ 163 0088 77EEA77A 		vadd.f32	s15, s15, s15
+ 164 008c C7ED197A 		vstr.32	s15, [r7, #100]
+ARM GAS  C:\Users\fffff\AppData\Local\Temp\cc6wLKc3.s 			page 4
+
+
+  29:Algorithm/madgwick.c **** 
+  30:Algorithm/madgwick.c **** // Normalise the accelerometer measurement
+  31:Algorithm/madgwick.c **** norm = sqrt(a_x * a_x + a_y * a_y + a_z * a_z);
+ 165              		.loc 1 31 17
+ 166 0090 D7ED027A 		vldr.32	s15, [r7, #8]
+ 167 0094 27EEA77A 		vmul.f32	s14, s15, s15
+ 168              		.loc 1 31 29
+ 169 0098 D7ED017A 		vldr.32	s15, [r7, #4]
+ 170 009c 67EEA77A 		vmul.f32	s15, s15, s15
+ 171              		.loc 1 31 23
+ 172 00a0 37EE277A 		vadd.f32	s14, s14, s15
+ 173              		.loc 1 31 41
+ 174 00a4 D7ED007A 		vldr.32	s15, [r7]
+ 175 00a8 67EEA77A 		vmul.f32	s15, s15, s15
+ 176              		.loc 1 31 35
+ 177 00ac 77EE277A 		vadd.f32	s15, s14, s15
+ 178              		.loc 1 31 8
+ 179 00b0 B7EEE77A 		vcvt.f64.f32	d7, s15
+ 180 00b4 B0EE470B 		vmov.f64	d0, d7
+ 181 00b8 FFF7FEFF 		bl	sqrt
+ 182 00bc B0EE407B 		vmov.f64	d7, d0
+ 183              		.loc 1 31 6 discriminator 1
+ 184 00c0 F7EEC77B 		vcvt.f32.f64	s15, d7
+ 185 00c4 C7ED187A 		vstr.32	s15, [r7, #96]
+  32:Algorithm/madgwick.c **** a_x /= norm;
+ 186              		.loc 1 32 5
+ 187 00c8 D7ED026A 		vldr.32	s13, [r7, #8]
+ 188 00cc 97ED187A 		vldr.32	s14, [r7, #96]
+ 189 00d0 C6EE877A 		vdiv.f32	s15, s13, s14
+ 190 00d4 C7ED027A 		vstr.32	s15, [r7, #8]
+  33:Algorithm/madgwick.c **** a_y /= norm;
+ 191              		.loc 1 33 5
+ 192 00d8 D7ED016A 		vldr.32	s13, [r7, #4]
+ 193 00dc 97ED187A 		vldr.32	s14, [r7, #96]
+ 194 00e0 C6EE877A 		vdiv.f32	s15, s13, s14
+ 195 00e4 C7ED017A 		vstr.32	s15, [r7, #4]
+  34:Algorithm/madgwick.c **** a_z /= norm;
+ 196              		.loc 1 34 5
+ 197 00e8 D7ED006A 		vldr.32	s13, [r7]
+ 198 00ec 97ED187A 		vldr.32	s14, [r7, #96]
+ 199 00f0 C6EE877A 		vdiv.f32	s15, s13, s14
+ 200 00f4 C7ED007A 		vstr.32	s15, [r7]
+  35:Algorithm/madgwick.c **** // Compute the objective function and Jacobian
+  36:Algorithm/madgwick.c **** f_1 = twoSEq_2 * SEq_4 - twoSEq_1 * SEq_3 - a_x;
+ 201              		.loc 1 36 16
+ 202 00f8 BE4B     		ldr	r3, .L2+28
+ 203 00fa 93ED007A 		vldr.32	s14, [r3]
+ 204 00fe D7ED1A7A 		vldr.32	s15, [r7, #104]
+ 205 0102 27EE277A 		vmul.f32	s14, s14, s15
+ 206              		.loc 1 36 35
+ 207 0106 BA4B     		ldr	r3, .L2+24
+ 208 0108 D3ED006A 		vldr.32	s13, [r3]
+ 209 010c D7ED1B7A 		vldr.32	s15, [r7, #108]
+ 210 0110 66EEA77A 		vmul.f32	s15, s13, s15
+ 211              		.loc 1 36 24
+ 212 0114 37EE677A 		vsub.f32	s14, s14, s15
+ 213              		.loc 1 36 5
+ARM GAS  C:\Users\fffff\AppData\Local\Temp\cc6wLKc3.s 			page 5
+
+
+ 214 0118 D7ED027A 		vldr.32	s15, [r7, #8]
+ 215 011c 77EE677A 		vsub.f32	s15, s14, s15
+ 216 0120 C7ED177A 		vstr.32	s15, [r7, #92]
+  37:Algorithm/madgwick.c **** f_2 = twoSEq_1 * SEq_2 + twoSEq_3 * SEq_4 - a_y;
+ 217              		.loc 1 37 16
+ 218 0124 B14B     		ldr	r3, .L2+20
+ 219 0126 93ED007A 		vldr.32	s14, [r3]
+ 220 012a D7ED1B7A 		vldr.32	s15, [r7, #108]
+ 221 012e 27EE277A 		vmul.f32	s14, s14, s15
+ 222              		.loc 1 37 35
+ 223 0132 B04B     		ldr	r3, .L2+28
+ 224 0134 D3ED006A 		vldr.32	s13, [r3]
+ 225 0138 D7ED197A 		vldr.32	s15, [r7, #100]
+ 226 013c 66EEA77A 		vmul.f32	s15, s13, s15
+ 227              		.loc 1 37 24
+ 228 0140 37EE277A 		vadd.f32	s14, s14, s15
+ 229              		.loc 1 37 5
+ 230 0144 D7ED017A 		vldr.32	s15, [r7, #4]
+ 231 0148 77EE677A 		vsub.f32	s15, s14, s15
+ 232 014c C7ED167A 		vstr.32	s15, [r7, #88]
+  38:Algorithm/madgwick.c **** f_3 = 1.0f - twoSEq_2 * SEq_2 - twoSEq_3 * SEq_3 - a_z;
+ 233              		.loc 1 38 23
+ 234 0150 A64B     		ldr	r3, .L2+20
+ 235 0152 93ED007A 		vldr.32	s14, [r3]
+ 236 0156 D7ED1A7A 		vldr.32	s15, [r7, #104]
+ 237 015a 67EE277A 		vmul.f32	s15, s14, s15
+ 238              		.loc 1 38 12
+ 239 015e B7EE007A 		vmov.f32	s14, #1.0e+0
+ 240 0162 37EE677A 		vsub.f32	s14, s14, s15
+ 241              		.loc 1 38 42
+ 242 0166 A24B     		ldr	r3, .L2+24
+ 243 0168 D3ED006A 		vldr.32	s13, [r3]
+ 244 016c D7ED197A 		vldr.32	s15, [r7, #100]
+ 245 0170 66EEA77A 		vmul.f32	s15, s13, s15
+ 246              		.loc 1 38 31
+ 247 0174 37EE677A 		vsub.f32	s14, s14, s15
+ 248              		.loc 1 38 5
+ 249 0178 D7ED007A 		vldr.32	s15, [r7]
+ 250 017c 77EE677A 		vsub.f32	s15, s14, s15
+ 251 0180 C7ED157A 		vstr.32	s15, [r7, #84]
+  39:Algorithm/madgwick.c **** J_11or24 = twoSEq_3; // J_11 negated in matrix multiplication
+ 252              		.loc 1 39 10
+ 253 0184 7B6E     		ldr	r3, [r7, #100]	@ float
+ 254 0186 3B65     		str	r3, [r7, #80]	@ float
+  40:Algorithm/madgwick.c **** J_12or23 = 2.0f * SEq_4;
+ 255              		.loc 1 40 17
+ 256 0188 9A4B     		ldr	r3, .L2+28
+ 257 018a D3ED007A 		vldr.32	s15, [r3]
+ 258              		.loc 1 40 10
+ 259 018e 77EEA77A 		vadd.f32	s15, s15, s15
+ 260 0192 C7ED137A 		vstr.32	s15, [r7, #76]
+  41:Algorithm/madgwick.c **** J_13or22 = twoSEq_1; // J_12 negated in matrix multiplication
+ 261              		.loc 1 41 10
+ 262 0196 FB6E     		ldr	r3, [r7, #108]	@ float
+ 263 0198 BB64     		str	r3, [r7, #72]	@ float
+  42:Algorithm/madgwick.c **** J_14or21 = twoSEq_2;
+ 264              		.loc 1 42 10
+ARM GAS  C:\Users\fffff\AppData\Local\Temp\cc6wLKc3.s 			page 6
+
+
+ 265 019a BB6E     		ldr	r3, [r7, #104]	@ float
+ 266 019c 7B64     		str	r3, [r7, #68]	@ float
+  43:Algorithm/madgwick.c **** J_32 = 2.0f * J_14or21; // negated in matrix multiplication
+ 267              		.loc 1 43 6
+ 268 019e D7ED117A 		vldr.32	s15, [r7, #68]
+ 269 01a2 77EEA77A 		vadd.f32	s15, s15, s15
+ 270 01a6 C7ED107A 		vstr.32	s15, [r7, #64]
+  44:Algorithm/madgwick.c **** J_33 = 2.0f * J_11or24; // negated in matrix multiplication
+ 271              		.loc 1 44 6
+ 272 01aa D7ED147A 		vldr.32	s15, [r7, #80]
+ 273 01ae 77EEA77A 		vadd.f32	s15, s15, s15
+ 274 01b2 C7ED0F7A 		vstr.32	s15, [r7, #60]
+  45:Algorithm/madgwick.c **** // Compute the gradient (matrix multiplication)
+  46:Algorithm/madgwick.c **** SEqHatDot_1 = J_14or21 * f_2 - J_11or24 * f_1;
+ 275              		.loc 1 46 24
+ 276 01b6 97ED117A 		vldr.32	s14, [r7, #68]
+ 277 01ba D7ED167A 		vldr.32	s15, [r7, #88]
+ 278 01be 27EE277A 		vmul.f32	s14, s14, s15
+ 279              		.loc 1 46 41
+ 280 01c2 D7ED146A 		vldr.32	s13, [r7, #80]
+ 281 01c6 D7ED177A 		vldr.32	s15, [r7, #92]
+ 282 01ca 66EEA77A 		vmul.f32	s15, s13, s15
+ 283              		.loc 1 46 13
+ 284 01ce 77EE677A 		vsub.f32	s15, s14, s15
+ 285 01d2 C7ED0E7A 		vstr.32	s15, [r7, #56]
+  47:Algorithm/madgwick.c **** SEqHatDot_2 = J_12or23 * f_1 + J_13or22 * f_2 - J_32 * f_3;
+ 286              		.loc 1 47 24
+ 287 01d6 97ED137A 		vldr.32	s14, [r7, #76]
+ 288 01da D7ED177A 		vldr.32	s15, [r7, #92]
+ 289 01de 27EE277A 		vmul.f32	s14, s14, s15
+ 290              		.loc 1 47 41
+ 291 01e2 D7ED126A 		vldr.32	s13, [r7, #72]
+ 292 01e6 D7ED167A 		vldr.32	s15, [r7, #88]
+ 293 01ea 66EEA77A 		vmul.f32	s15, s13, s15
+ 294              		.loc 1 47 30
+ 295 01ee 37EE277A 		vadd.f32	s14, s14, s15
+ 296              		.loc 1 47 54
+ 297 01f2 D7ED106A 		vldr.32	s13, [r7, #64]
+ 298 01f6 D7ED157A 		vldr.32	s15, [r7, #84]
+ 299 01fa 66EEA77A 		vmul.f32	s15, s13, s15
+ 300              		.loc 1 47 13
+ 301 01fe 77EE677A 		vsub.f32	s15, s14, s15
+ 302 0202 C7ED0D7A 		vstr.32	s15, [r7, #52]
+  48:Algorithm/madgwick.c **** SEqHatDot_3 = J_12or23 * f_2 - J_33 * f_3 - J_13or22 * f_1;
+ 303              		.loc 1 48 24
+ 304 0206 97ED137A 		vldr.32	s14, [r7, #76]
+ 305 020a D7ED167A 		vldr.32	s15, [r7, #88]
+ 306 020e 27EE277A 		vmul.f32	s14, s14, s15
+ 307              		.loc 1 48 37
+ 308 0212 D7ED0F6A 		vldr.32	s13, [r7, #60]
+ 309 0216 D7ED157A 		vldr.32	s15, [r7, #84]
+ 310 021a 66EEA77A 		vmul.f32	s15, s13, s15
+ 311              		.loc 1 48 30
+ 312 021e 37EE677A 		vsub.f32	s14, s14, s15
+ 313              		.loc 1 48 54
+ 314 0222 D7ED126A 		vldr.32	s13, [r7, #72]
+ 315 0226 D7ED177A 		vldr.32	s15, [r7, #92]
+ARM GAS  C:\Users\fffff\AppData\Local\Temp\cc6wLKc3.s 			page 7
+
+
+ 316 022a 66EEA77A 		vmul.f32	s15, s13, s15
+ 317              		.loc 1 48 13
+ 318 022e 77EE677A 		vsub.f32	s15, s14, s15
+ 319 0232 C7ED0C7A 		vstr.32	s15, [r7, #48]
+  49:Algorithm/madgwick.c **** SEqHatDot_4 = J_14or21 * f_1 + J_11or24 * f_2;
+ 320              		.loc 1 49 24
+ 321 0236 97ED117A 		vldr.32	s14, [r7, #68]
+ 322 023a D7ED177A 		vldr.32	s15, [r7, #92]
+ 323 023e 27EE277A 		vmul.f32	s14, s14, s15
+ 324              		.loc 1 49 41
+ 325 0242 D7ED146A 		vldr.32	s13, [r7, #80]
+ 326 0246 D7ED167A 		vldr.32	s15, [r7, #88]
+ 327 024a 66EEA77A 		vmul.f32	s15, s13, s15
+ 328              		.loc 1 49 13
+ 329 024e 77EE277A 		vadd.f32	s15, s14, s15
+ 330 0252 C7ED0B7A 		vstr.32	s15, [r7, #44]
+  50:Algorithm/madgwick.c **** // Normalise the gradient
+  51:Algorithm/madgwick.c **** norm = sqrt(SEqHatDot_1 * SEqHatDot_1 + SEqHatDot_2 * SEqHatDot_2 + SEqHatDot_3 * SEqHatDot_3 + SEq
+ 331              		.loc 1 51 25
+ 332 0256 D7ED0E7A 		vldr.32	s15, [r7, #56]
+ 333 025a 27EEA77A 		vmul.f32	s14, s15, s15
+ 334              		.loc 1 51 53
+ 335 025e D7ED0D7A 		vldr.32	s15, [r7, #52]
+ 336 0262 67EEA77A 		vmul.f32	s15, s15, s15
+ 337              		.loc 1 51 39
+ 338 0266 37EE277A 		vadd.f32	s14, s14, s15
+ 339              		.loc 1 51 81
+ 340 026a D7ED0C7A 		vldr.32	s15, [r7, #48]
+ 341 026e 67EEA77A 		vmul.f32	s15, s15, s15
+ 342              		.loc 1 51 67
+ 343 0272 37EE277A 		vadd.f32	s14, s14, s15
+ 344              		.loc 1 51 109
+ 345 0276 D7ED0B7A 		vldr.32	s15, [r7, #44]
+ 346 027a 67EEA77A 		vmul.f32	s15, s15, s15
+ 347              		.loc 1 51 95
+ 348 027e 77EE277A 		vadd.f32	s15, s14, s15
+ 349              		.loc 1 51 8
+ 350 0282 B7EEE77A 		vcvt.f64.f32	d7, s15
+ 351 0286 B0EE470B 		vmov.f64	d0, d7
+ 352 028a FFF7FEFF 		bl	sqrt
+ 353 028e B0EE407B 		vmov.f64	d7, d0
+ 354              		.loc 1 51 6 discriminator 1
+ 355 0292 F7EEC77B 		vcvt.f32.f64	s15, d7
+ 356 0296 C7ED187A 		vstr.32	s15, [r7, #96]
+  52:Algorithm/madgwick.c **** SEqHatDot_1 /= norm;
+ 357              		.loc 1 52 13
+ 358 029a D7ED0E6A 		vldr.32	s13, [r7, #56]
+ 359 029e 97ED187A 		vldr.32	s14, [r7, #96]
+ 360 02a2 C6EE877A 		vdiv.f32	s15, s13, s14
+ 361 02a6 C7ED0E7A 		vstr.32	s15, [r7, #56]
+  53:Algorithm/madgwick.c **** SEqHatDot_2 /= norm;
+ 362              		.loc 1 53 13
+ 363 02aa D7ED0D6A 		vldr.32	s13, [r7, #52]
+ 364 02ae 97ED187A 		vldr.32	s14, [r7, #96]
+ 365 02b2 C6EE877A 		vdiv.f32	s15, s13, s14
+ 366 02b6 C7ED0D7A 		vstr.32	s15, [r7, #52]
+  54:Algorithm/madgwick.c **** SEqHatDot_3 /= norm;
+ARM GAS  C:\Users\fffff\AppData\Local\Temp\cc6wLKc3.s 			page 8
+
+
+ 367              		.loc 1 54 13
+ 368 02ba D7ED0C6A 		vldr.32	s13, [r7, #48]
+ 369 02be 97ED187A 		vldr.32	s14, [r7, #96]
+ 370 02c2 C6EE877A 		vdiv.f32	s15, s13, s14
+ 371 02c6 C7ED0C7A 		vstr.32	s15, [r7, #48]
+  55:Algorithm/madgwick.c **** SEqHatDot_4 /= norm;
+ 372              		.loc 1 55 13
+ 373 02ca D7ED0B6A 		vldr.32	s13, [r7, #44]
+ 374 02ce 97ED187A 		vldr.32	s14, [r7, #96]
+ 375 02d2 C6EE877A 		vdiv.f32	s15, s13, s14
+ 376 02d6 C7ED0B7A 		vstr.32	s15, [r7, #44]
+  56:Algorithm/madgwick.c **** // Compute the quaternion derrivative measured by gyroscopes
+  57:Algorithm/madgwick.c **** SEqDot_omega_1 = -halfSEq_2 * w_x - halfSEq_3 * w_y - halfSEq_4 * w_z;
+ 377              		.loc 1 57 18
+ 378 02da D7ED1E7A 		vldr.32	s15, [r7, #120]
+ 379 02de B1EE677A 		vneg.f32	s14, s15
+ 380              		.loc 1 57 29
+ 381 02e2 D7ED057A 		vldr.32	s15, [r7, #20]
+ 382 02e6 27EE277A 		vmul.f32	s14, s14, s15
+ 383              		.loc 1 57 47
+ 384 02ea D7ED1D6A 		vldr.32	s13, [r7, #116]
+ 385 02ee D7ED047A 		vldr.32	s15, [r7, #16]
+ 386 02f2 66EEA77A 		vmul.f32	s15, s13, s15
+ 387              		.loc 1 57 35
+ 388 02f6 37EE677A 		vsub.f32	s14, s14, s15
+ 389              		.loc 1 57 65
+ 390 02fa D7ED1C6A 		vldr.32	s13, [r7, #112]
+ 391 02fe D7ED037A 		vldr.32	s15, [r7, #12]
+ 392 0302 66EEA77A 		vmul.f32	s15, s13, s15
+ 393              		.loc 1 57 16
+ 394 0306 77EE677A 		vsub.f32	s15, s14, s15
+ 395 030a C7ED0A7A 		vstr.32	s15, [r7, #40]
+  58:Algorithm/madgwick.c **** SEqDot_omega_2 = halfSEq_1 * w_x + halfSEq_3 * w_z - halfSEq_4 * w_y;
+ 396              		.loc 1 58 28
+ 397 030e 97ED1F7A 		vldr.32	s14, [r7, #124]
+ 398 0312 D7ED057A 		vldr.32	s15, [r7, #20]
+ 399 0316 27EE277A 		vmul.f32	s14, s14, s15
+ 400              		.loc 1 58 46
+ 401 031a D7ED1D6A 		vldr.32	s13, [r7, #116]
+ 402 031e D7ED037A 		vldr.32	s15, [r7, #12]
+ 403 0322 66EEA77A 		vmul.f32	s15, s13, s15
+ 404              		.loc 1 58 34
+ 405 0326 37EE277A 		vadd.f32	s14, s14, s15
+ 406              		.loc 1 58 64
+ 407 032a D7ED1C6A 		vldr.32	s13, [r7, #112]
+ 408 032e D7ED047A 		vldr.32	s15, [r7, #16]
+ 409 0332 66EEA77A 		vmul.f32	s15, s13, s15
+ 410              		.loc 1 58 16
+ 411 0336 77EE677A 		vsub.f32	s15, s14, s15
+ 412 033a C7ED097A 		vstr.32	s15, [r7, #36]
+  59:Algorithm/madgwick.c **** SEqDot_omega_3 = halfSEq_1 * w_y - halfSEq_2 * w_z + halfSEq_4 * w_x;
+ 413              		.loc 1 59 28
+ 414 033e 97ED1F7A 		vldr.32	s14, [r7, #124]
+ 415 0342 D7ED047A 		vldr.32	s15, [r7, #16]
+ 416 0346 27EE277A 		vmul.f32	s14, s14, s15
+ 417              		.loc 1 59 46
+ 418 034a D7ED1E6A 		vldr.32	s13, [r7, #120]
+ARM GAS  C:\Users\fffff\AppData\Local\Temp\cc6wLKc3.s 			page 9
+
+
+ 419 034e D7ED037A 		vldr.32	s15, [r7, #12]
+ 420 0352 66EEA77A 		vmul.f32	s15, s13, s15
+ 421              		.loc 1 59 34
+ 422 0356 37EE677A 		vsub.f32	s14, s14, s15
+ 423              		.loc 1 59 64
+ 424 035a D7ED1C6A 		vldr.32	s13, [r7, #112]
+ 425 035e D7ED057A 		vldr.32	s15, [r7, #20]
+ 426 0362 66EEA77A 		vmul.f32	s15, s13, s15
+ 427              		.loc 1 59 16
+ 428 0366 77EE277A 		vadd.f32	s15, s14, s15
+ 429 036a C7ED087A 		vstr.32	s15, [r7, #32]
+  60:Algorithm/madgwick.c **** SEqDot_omega_4 = halfSEq_1 * w_z + halfSEq_2 * w_y - halfSEq_3 * w_x;
+ 430              		.loc 1 60 28
+ 431 036e 97ED1F7A 		vldr.32	s14, [r7, #124]
+ 432 0372 D7ED037A 		vldr.32	s15, [r7, #12]
+ 433 0376 27EE277A 		vmul.f32	s14, s14, s15
+ 434              		.loc 1 60 46
+ 435 037a D7ED1E6A 		vldr.32	s13, [r7, #120]
+ 436 037e D7ED047A 		vldr.32	s15, [r7, #16]
+ 437 0382 66EEA77A 		vmul.f32	s15, s13, s15
+ 438              		.loc 1 60 34
+ 439 0386 37EE277A 		vadd.f32	s14, s14, s15
+ 440              		.loc 1 60 64
+ 441 038a D7ED1D6A 		vldr.32	s13, [r7, #116]
+ 442 038e D7ED057A 		vldr.32	s15, [r7, #20]
+ 443 0392 66EEA77A 		vmul.f32	s15, s13, s15
+ 444              		.loc 1 60 16
+ 445 0396 77EE677A 		vsub.f32	s15, s14, s15
+ 446 039a C7ED077A 		vstr.32	s15, [r7, #28]
+  61:Algorithm/madgwick.c **** // Compute then integrate the estimated quaternion derrivative
+  62:Algorithm/madgwick.c **** SEq_1 += (SEqDot_omega_1 - (beta * SEqHatDot_1)) * deltat;
+ 447              		.loc 1 62 26
+ 448 039e D7ED0A7A 		vldr.32	s15, [r7, #40]
+ 449 03a2 B7EEE76A 		vcvt.f64.f32	d6, s15
+ 450              		.loc 1 62 34
+ 451 03a6 D7ED0E7A 		vldr.32	s15, [r7, #56]
+ 452 03aa B7EEE77A 		vcvt.f64.f32	d7, s15
+ 453 03ae 9FED0A5B 		vldr.64	d5, .L2
+ 454 03b2 27EE057B 		vmul.f64	d7, d7, d5
+ 455              		.loc 1 62 26
+ 456 03b6 36EE477B 		vsub.f64	d7, d6, d7
+ 457              		.loc 1 62 50
+ 458 03ba 9FED096B 		vldr.64	d6, .L2+8
+ 459 03be 27EE066B 		vmul.f64	d6, d7, d6
+ 460              		.loc 1 62 7
+ 461 03c2 094B     		ldr	r3, .L2+16
+ 462 03c4 D3ED007A 		vldr.32	s15, [r3]
+ 463 03c8 B7EEE77A 		vcvt.f64.f32	d7, s15
+ 464 03cc 36EE077B 		vadd.f64	d7, d6, d7
+ 465 03d0 F7EEC77B 		vcvt.f32.f64	s15, d7
+ 466 03d4 10E0     		b	.L3
+ 467              	.L4:
+ 468 03d6 00BF     		.align	3
+ 469              	.L2:
+ 470 03d8 544C12B3 		.word	-1290646444
+ 471 03dc E158B33F 		.word	1068718305
+ 472 03e0 000000E0 		.word	-536870912
+ARM GAS  C:\Users\fffff\AppData\Local\Temp\cc6wLKc3.s 			page 10
+
+
+ 473 03e4 4D62503F 		.word	1062232653
+ 474 03e8 00000000 		.word	SEq_1
+ 475 03ec 00000000 		.word	SEq_2
+ 476 03f0 00000000 		.word	SEq_3
+ 477 03f4 00000000 		.word	SEq_4
+ 478              	.L3:
+ 479 03f8 614B     		ldr	r3, .L5+16
+ 480 03fa C3ED007A 		vstr.32	s15, [r3]
+  63:Algorithm/madgwick.c **** SEq_2 += (SEqDot_omega_2 - (beta * SEqHatDot_2)) * deltat;
+ 481              		.loc 1 63 26
+ 482 03fe D7ED097A 		vldr.32	s15, [r7, #36]
+ 483 0402 B7EEE76A 		vcvt.f64.f32	d6, s15
+ 484              		.loc 1 63 34
+ 485 0406 D7ED0D7A 		vldr.32	s15, [r7, #52]
+ 486 040a B7EEE77A 		vcvt.f64.f32	d7, s15
+ 487 040e 9FED585B 		vldr.64	d5, .L5
+ 488 0412 27EE057B 		vmul.f64	d7, d7, d5
+ 489              		.loc 1 63 26
+ 490 0416 36EE477B 		vsub.f64	d7, d6, d7
+ 491              		.loc 1 63 50
+ 492 041a 9FED576B 		vldr.64	d6, .L5+8
+ 493 041e 27EE066B 		vmul.f64	d6, d7, d6
+ 494              		.loc 1 63 7
+ 495 0422 584B     		ldr	r3, .L5+20
+ 496 0424 D3ED007A 		vldr.32	s15, [r3]
+ 497 0428 B7EEE77A 		vcvt.f64.f32	d7, s15
+ 498 042c 36EE077B 		vadd.f64	d7, d6, d7
+ 499 0430 F7EEC77B 		vcvt.f32.f64	s15, d7
+ 500 0434 534B     		ldr	r3, .L5+20
+ 501 0436 C3ED007A 		vstr.32	s15, [r3]
+  64:Algorithm/madgwick.c **** SEq_3 += (SEqDot_omega_3 - (beta * SEqHatDot_3)) * deltat;
+ 502              		.loc 1 64 26
+ 503 043a D7ED087A 		vldr.32	s15, [r7, #32]
+ 504 043e B7EEE76A 		vcvt.f64.f32	d6, s15
+ 505              		.loc 1 64 34
+ 506 0442 D7ED0C7A 		vldr.32	s15, [r7, #48]
+ 507 0446 B7EEE77A 		vcvt.f64.f32	d7, s15
+ 508 044a 9FED495B 		vldr.64	d5, .L5
+ 509 044e 27EE057B 		vmul.f64	d7, d7, d5
+ 510              		.loc 1 64 26
+ 511 0452 36EE477B 		vsub.f64	d7, d6, d7
+ 512              		.loc 1 64 50
+ 513 0456 9FED486B 		vldr.64	d6, .L5+8
+ 514 045a 27EE066B 		vmul.f64	d6, d7, d6
+ 515              		.loc 1 64 7
+ 516 045e 4A4B     		ldr	r3, .L5+24
+ 517 0460 D3ED007A 		vldr.32	s15, [r3]
+ 518 0464 B7EEE77A 		vcvt.f64.f32	d7, s15
+ 519 0468 36EE077B 		vadd.f64	d7, d6, d7
+ 520 046c F7EEC77B 		vcvt.f32.f64	s15, d7
+ 521 0470 454B     		ldr	r3, .L5+24
+ 522 0472 C3ED007A 		vstr.32	s15, [r3]
+  65:Algorithm/madgwick.c **** SEq_4 += (SEqDot_omega_4 - (beta * SEqHatDot_4)) * deltat;
+ 523              		.loc 1 65 26
+ 524 0476 D7ED077A 		vldr.32	s15, [r7, #28]
+ 525 047a B7EEE76A 		vcvt.f64.f32	d6, s15
+ 526              		.loc 1 65 34
+ARM GAS  C:\Users\fffff\AppData\Local\Temp\cc6wLKc3.s 			page 11
+
+
+ 527 047e D7ED0B7A 		vldr.32	s15, [r7, #44]
+ 528 0482 B7EEE77A 		vcvt.f64.f32	d7, s15
+ 529 0486 9FED3A5B 		vldr.64	d5, .L5
+ 530 048a 27EE057B 		vmul.f64	d7, d7, d5
+ 531              		.loc 1 65 26
+ 532 048e 36EE477B 		vsub.f64	d7, d6, d7
+ 533              		.loc 1 65 50
+ 534 0492 9FED396B 		vldr.64	d6, .L5+8
+ 535 0496 27EE066B 		vmul.f64	d6, d7, d6
+ 536              		.loc 1 65 7
+ 537 049a 3C4B     		ldr	r3, .L5+28
+ 538 049c D3ED007A 		vldr.32	s15, [r3]
+ 539 04a0 B7EEE77A 		vcvt.f64.f32	d7, s15
+ 540 04a4 36EE077B 		vadd.f64	d7, d6, d7
+ 541 04a8 F7EEC77B 		vcvt.f32.f64	s15, d7
+ 542 04ac 374B     		ldr	r3, .L5+28
+ 543 04ae C3ED007A 		vstr.32	s15, [r3]
+  66:Algorithm/madgwick.c **** // Normalise quaternion
+  67:Algorithm/madgwick.c **** norm = sqrt(SEq_1 * SEq_1 + SEq_2 * SEq_2 + SEq_3 * SEq_3 + SEq_4 * SEq_4);
+ 544              		.loc 1 67 19
+ 545 04b2 334B     		ldr	r3, .L5+16
+ 546 04b4 93ED007A 		vldr.32	s14, [r3]
+ 547 04b8 314B     		ldr	r3, .L5+16
+ 548 04ba D3ED007A 		vldr.32	s15, [r3]
+ 549 04be 27EE277A 		vmul.f32	s14, s14, s15
+ 550              		.loc 1 67 35
+ 551 04c2 304B     		ldr	r3, .L5+20
+ 552 04c4 D3ED006A 		vldr.32	s13, [r3]
+ 553 04c8 2E4B     		ldr	r3, .L5+20
+ 554 04ca D3ED007A 		vldr.32	s15, [r3]
+ 555 04ce 66EEA77A 		vmul.f32	s15, s13, s15
+ 556              		.loc 1 67 27
+ 557 04d2 37EE277A 		vadd.f32	s14, s14, s15
+ 558              		.loc 1 67 51
+ 559 04d6 2C4B     		ldr	r3, .L5+24
+ 560 04d8 D3ED006A 		vldr.32	s13, [r3]
+ 561 04dc 2A4B     		ldr	r3, .L5+24
+ 562 04de D3ED007A 		vldr.32	s15, [r3]
+ 563 04e2 66EEA77A 		vmul.f32	s15, s13, s15
+ 564              		.loc 1 67 43
+ 565 04e6 37EE277A 		vadd.f32	s14, s14, s15
+ 566              		.loc 1 67 67
+ 567 04ea 284B     		ldr	r3, .L5+28
+ 568 04ec D3ED006A 		vldr.32	s13, [r3]
+ 569 04f0 264B     		ldr	r3, .L5+28
+ 570 04f2 D3ED007A 		vldr.32	s15, [r3]
+ 571 04f6 66EEA77A 		vmul.f32	s15, s13, s15
+ 572              		.loc 1 67 59
+ 573 04fa 77EE277A 		vadd.f32	s15, s14, s15
+ 574              		.loc 1 67 8
+ 575 04fe B7EEE77A 		vcvt.f64.f32	d7, s15
+ 576 0502 B0EE470B 		vmov.f64	d0, d7
+ 577 0506 FFF7FEFF 		bl	sqrt
+ 578 050a B0EE407B 		vmov.f64	d7, d0
+ 579              		.loc 1 67 6 discriminator 1
+ 580 050e F7EEC77B 		vcvt.f32.f64	s15, d7
+ 581 0512 C7ED187A 		vstr.32	s15, [r7, #96]
+ARM GAS  C:\Users\fffff\AppData\Local\Temp\cc6wLKc3.s 			page 12
+
+
+  68:Algorithm/madgwick.c **** SEq_1 /= norm;
+ 582              		.loc 1 68 7
+ 583 0516 1A4B     		ldr	r3, .L5+16
+ 584 0518 D3ED006A 		vldr.32	s13, [r3]
+ 585 051c 97ED187A 		vldr.32	s14, [r7, #96]
+ 586 0520 C6EE877A 		vdiv.f32	s15, s13, s14
+ 587 0524 164B     		ldr	r3, .L5+16
+ 588 0526 C3ED007A 		vstr.32	s15, [r3]
+  69:Algorithm/madgwick.c **** SEq_2 /= norm;
+ 589              		.loc 1 69 7
+ 590 052a 164B     		ldr	r3, .L5+20
+ 591 052c D3ED006A 		vldr.32	s13, [r3]
+ 592 0530 97ED187A 		vldr.32	s14, [r7, #96]
+ 593 0534 C6EE877A 		vdiv.f32	s15, s13, s14
+ 594 0538 124B     		ldr	r3, .L5+20
+ 595 053a C3ED007A 		vstr.32	s15, [r3]
+  70:Algorithm/madgwick.c **** SEq_3 /= norm;
+ 596              		.loc 1 70 7
+ 597 053e 124B     		ldr	r3, .L5+24
+ 598 0540 D3ED006A 		vldr.32	s13, [r3]
+ 599 0544 97ED187A 		vldr.32	s14, [r7, #96]
+ 600 0548 C6EE877A 		vdiv.f32	s15, s13, s14
+ 601 054c 0E4B     		ldr	r3, .L5+24
+ 602 054e C3ED007A 		vstr.32	s15, [r3]
+  71:Algorithm/madgwick.c **** SEq_4 /= norm;
+ 603              		.loc 1 71 7
+ 604 0552 0E4B     		ldr	r3, .L5+28
+ 605 0554 D3ED006A 		vldr.32	s13, [r3]
+ 606 0558 97ED187A 		vldr.32	s14, [r7, #96]
+ 607 055c C6EE877A 		vdiv.f32	s15, s13, s14
+ 608 0560 0A4B     		ldr	r3, .L5+28
+ 609 0562 C3ED007A 		vstr.32	s15, [r3]
+  72:Algorithm/madgwick.c **** }
+ 610              		.loc 1 72 1
+ 611 0566 00BF     		nop
+ 612 0568 8037     		adds	r7, r7, #128
+ 613              	.LCFI3:
+ 614              		.cfi_def_cfa_offset 8
+ 615 056a BD46     		mov	sp, r7
+ 616              	.LCFI4:
+ 617              		.cfi_def_cfa_register 13
+ 618              		@ sp needed
+ 619 056c 80BD     		pop	{r7, pc}
+ 620              	.L6:
+ 621 056e 00BF     		.align	3
+ 622              	.L5:
+ 623 0570 544C12B3 		.word	-1290646444
+ 624 0574 E158B33F 		.word	1068718305
+ 625 0578 000000E0 		.word	-536870912
+ 626 057c 4D62503F 		.word	1062232653
+ 627 0580 00000000 		.word	SEq_1
+ 628 0584 00000000 		.word	SEq_2
+ 629 0588 00000000 		.word	SEq_3
+ 630 058c 00000000 		.word	SEq_4
+ 631              		.cfi_endproc
+ 632              	.LFE0:
+ 634              		.text
+ARM GAS  C:\Users\fffff\AppData\Local\Temp\cc6wLKc3.s 			page 13
+
+
+ 635              	.Letext0:
+ 636              		.file 2 "C:/msys64/mingw64/arm-none-eabi/include/math.h"
+ARM GAS  C:\Users\fffff\AppData\Local\Temp\cc6wLKc3.s 			page 14
+
+
+DEFINED SYMBOLS
+                            *ABS*:00000000 madgwick.c
+C:\Users\fffff\AppData\Local\Temp\cc6wLKc3.s:24     .bss.a_x:00000000 a_x
+C:\Users\fffff\AppData\Local\Temp\cc6wLKc3.s:21     .bss.a_x:00000000 $d
+C:\Users\fffff\AppData\Local\Temp\cc6wLKc3.s:31     .bss.a_y:00000000 a_y
+C:\Users\fffff\AppData\Local\Temp\cc6wLKc3.s:28     .bss.a_y:00000000 $d
+C:\Users\fffff\AppData\Local\Temp\cc6wLKc3.s:38     .bss.a_z:00000000 a_z
+C:\Users\fffff\AppData\Local\Temp\cc6wLKc3.s:35     .bss.a_z:00000000 $d
+C:\Users\fffff\AppData\Local\Temp\cc6wLKc3.s:45     .bss.w_x:00000000 w_x
+C:\Users\fffff\AppData\Local\Temp\cc6wLKc3.s:42     .bss.w_x:00000000 $d
+C:\Users\fffff\AppData\Local\Temp\cc6wLKc3.s:52     .bss.w_y:00000000 w_y
+C:\Users\fffff\AppData\Local\Temp\cc6wLKc3.s:49     .bss.w_y:00000000 $d
+C:\Users\fffff\AppData\Local\Temp\cc6wLKc3.s:59     .bss.w_z:00000000 w_z
+C:\Users\fffff\AppData\Local\Temp\cc6wLKc3.s:56     .bss.w_z:00000000 $d
+C:\Users\fffff\AppData\Local\Temp\cc6wLKc3.s:66     .data.SEq_1:00000000 SEq_1
+C:\Users\fffff\AppData\Local\Temp\cc6wLKc3.s:63     .data.SEq_1:00000000 $d
+C:\Users\fffff\AppData\Local\Temp\cc6wLKc3.s:73     .bss.SEq_2:00000000 SEq_2
+C:\Users\fffff\AppData\Local\Temp\cc6wLKc3.s:70     .bss.SEq_2:00000000 $d
+C:\Users\fffff\AppData\Local\Temp\cc6wLKc3.s:80     .bss.SEq_3:00000000 SEq_3
+C:\Users\fffff\AppData\Local\Temp\cc6wLKc3.s:77     .bss.SEq_3:00000000 $d
+C:\Users\fffff\AppData\Local\Temp\cc6wLKc3.s:87     .bss.SEq_4:00000000 SEq_4
+C:\Users\fffff\AppData\Local\Temp\cc6wLKc3.s:84     .bss.SEq_4:00000000 $d
+C:\Users\fffff\AppData\Local\Temp\cc6wLKc3.s:90     .text.madgwickUpdate:00000000 $t
+C:\Users\fffff\AppData\Local\Temp\cc6wLKc3.s:96     .text.madgwickUpdate:00000000 madgwickUpdate
+C:\Users\fffff\AppData\Local\Temp\cc6wLKc3.s:470    .text.madgwickUpdate:000003d8 $d
+C:\Users\fffff\AppData\Local\Temp\cc6wLKc3.s:479    .text.madgwickUpdate:000003f8 $t
+C:\Users\fffff\AppData\Local\Temp\cc6wLKc3.s:623    .text.madgwickUpdate:00000570 $d
+
+UNDEFINED SYMBOLS
+sqrt

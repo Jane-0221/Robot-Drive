@@ -1,0 +1,1488 @@
+ARM GAS  C:\Users\fffff\AppData\Local\Temp\ccwcu9eo.s 			page 1
+
+
+   1              		.cpu cortex-m7
+   2              		.arch armv7e-m
+   3              		.fpu fpv5-d16
+   4              		.eabi_attribute 28, 1
+   5              		.eabi_attribute 20, 1
+   6              		.eabi_attribute 21, 1
+   7              		.eabi_attribute 23, 3
+   8              		.eabi_attribute 24, 1
+   9              		.eabi_attribute 25, 1
+  10              		.eabi_attribute 26, 1
+  11              		.eabi_attribute 30, 6
+  12              		.eabi_attribute 34, 1
+  13              		.eabi_attribute 18, 4
+  14              		.file	"BMI088driver.c"
+  15              		.text
+  16              	.Ltext0:
+  17              		.cfi_sections	.debug_frame
+  18              		.file 1 "Drivers/Chip/bmi088/BMI088driver.c"
+  19              		.global	BMI088_ACCEL_SEN
+  20              		.section	.data.BMI088_ACCEL_SEN,"aw"
+  21              		.align	2
+  24              	BMI088_ACCEL_SEN:
+  25 0000 E7416B3A 		.word	980107751
+  26              		.global	BMI088_GYRO_SEN
+  27              		.section	.data.BMI088_GYRO_SEN,"aw"
+  28              		.align	2
+  31              	BMI088_GYRO_SEN:
+  32 0000 58A08B3A 		.word	982229080
+  33              		.section	.data.write_BMI088_accel_reg_data_error,"aw"
+  34              		.align	2
+  37              	write_BMI088_accel_reg_data_error:
+  38 0000 7D0401   		.ascii	"}\004\001"
+  39 0003 7C0002   		.ascii	"|\000\002"
+  40 0006 40AB03   		.ascii	"@\253\003"
+  41 0009 410005   		.ascii	"A\000\005"
+  42 000c 530806   		.ascii	"S\010\006"
+  43 000f 580407   		.ascii	"X\004\007"
+  44              		.section	.data.write_BMI088_gyro_reg_data_error,"aw"
+  45              		.align	2
+  48              	write_BMI088_gyro_reg_data_error:
+  49 0000 0F0008   		.ascii	"\017\000\010"
+  50 0003 108209   		.ascii	"\020\202\011"
+  51 0006 11000A   		.ascii	"\021\000\012"
+  52 0009 15800B   		.ascii	"\025\200\013"
+  53 000c 16000C   		.ascii	"\026\000\014"
+  54 000f 18010D   		.ascii	"\030\001\015"
+  55              		.section	.text.BMI088_init,"ax",%progbits
+  56              		.align	1
+  57              		.global	BMI088_init
+  58              		.syntax unified
+  59              		.thumb
+  60              		.thumb_func
+  62              	BMI088_init:
+  63              	.LFB144:
+   1:Drivers/Chip/bmi088/BMI088driver.c **** #include "BMI088driver.h"
+   2:Drivers/Chip/bmi088/BMI088driver.c **** #include "BMI088reg.h"
+   3:Drivers/Chip/bmi088/BMI088driver.c **** #include "BMI088Middleware.h"
+ARM GAS  C:\Users\fffff\AppData\Local\Temp\ccwcu9eo.s 			page 2
+
+
+   4:Drivers/Chip/bmi088/BMI088driver.c **** 
+   5:Drivers/Chip/bmi088/BMI088driver.c **** 
+   6:Drivers/Chip/bmi088/BMI088driver.c **** float BMI088_ACCEL_SEN = BMI088_ACCEL_3G_SEN;
+   7:Drivers/Chip/bmi088/BMI088driver.c **** float BMI088_GYRO_SEN = BMI088_GYRO_2000_SEN;
+   8:Drivers/Chip/bmi088/BMI088driver.c **** 
+   9:Drivers/Chip/bmi088/BMI088driver.c **** 
+  10:Drivers/Chip/bmi088/BMI088driver.c **** 
+  11:Drivers/Chip/bmi088/BMI088driver.c **** #if defined(BMI088_USE_SPI)
+  12:Drivers/Chip/bmi088/BMI088driver.c **** /**
+  13:Drivers/Chip/bmi088/BMI088driver.c **** ************************************************************************
+  14:Drivers/Chip/bmi088/BMI088driver.c **** * @brief:      	BMI088_accel_write_single_reg(reg, data)
+  15:Drivers/Chip/bmi088/BMI088driver.c **** * @param:       reg - 寄存器地址
+  16:Drivers/Chip/bmi088/BMI088driver.c **** *               data - 写入的数据
+  17:Drivers/Chip/bmi088/BMI088driver.c **** * @retval:     	void
+  18:Drivers/Chip/bmi088/BMI088driver.c **** * @details:    	通过BMI088加速度计的SPI总线写入单个寄存器的宏定义
+  19:Drivers/Chip/bmi088/BMI088driver.c **** ************************************************************************
+  20:Drivers/Chip/bmi088/BMI088driver.c **** **/
+  21:Drivers/Chip/bmi088/BMI088driver.c **** #define BMI088_accel_write_single_reg(reg, data) \
+  22:Drivers/Chip/bmi088/BMI088driver.c ****     {                                            \
+  23:Drivers/Chip/bmi088/BMI088driver.c ****         BMI088_ACCEL_NS_L();                     \
+  24:Drivers/Chip/bmi088/BMI088driver.c ****         BMI088_write_single_reg((reg), (data));  \
+  25:Drivers/Chip/bmi088/BMI088driver.c ****         BMI088_ACCEL_NS_H();                     \
+  26:Drivers/Chip/bmi088/BMI088driver.c ****     }
+  27:Drivers/Chip/bmi088/BMI088driver.c **** /**
+  28:Drivers/Chip/bmi088/BMI088driver.c **** ************************************************************************
+  29:Drivers/Chip/bmi088/BMI088driver.c **** * @brief:      	BMI088_accel_read_single_reg(reg, data)
+  30:Drivers/Chip/bmi088/BMI088driver.c **** * @param:       reg - 寄存器地址
+  31:Drivers/Chip/bmi088/BMI088driver.c **** *               data - 读取的寄存器数据
+  32:Drivers/Chip/bmi088/BMI088driver.c **** * @retval:     	void
+  33:Drivers/Chip/bmi088/BMI088driver.c **** * @details:    	通过BMI088加速度计的SPI总线读取单个寄存器的宏定义
+  34:Drivers/Chip/bmi088/BMI088driver.c **** ************************************************************************
+  35:Drivers/Chip/bmi088/BMI088driver.c **** **/
+  36:Drivers/Chip/bmi088/BMI088driver.c **** #define BMI088_accel_read_single_reg(reg, data) \
+  37:Drivers/Chip/bmi088/BMI088driver.c ****     {                                           \
+  38:Drivers/Chip/bmi088/BMI088driver.c ****         BMI088_ACCEL_NS_L();                    \
+  39:Drivers/Chip/bmi088/BMI088driver.c ****         BMI088_read_write_byte((reg) | 0x80);   \
+  40:Drivers/Chip/bmi088/BMI088driver.c ****         BMI088_read_write_byte(0x55);           \
+  41:Drivers/Chip/bmi088/BMI088driver.c ****         (data) = BMI088_read_write_byte(0x55);  \
+  42:Drivers/Chip/bmi088/BMI088driver.c ****         BMI088_ACCEL_NS_H();                    \
+  43:Drivers/Chip/bmi088/BMI088driver.c ****     }
+  44:Drivers/Chip/bmi088/BMI088driver.c **** /**
+  45:Drivers/Chip/bmi088/BMI088driver.c **** ************************************************************************
+  46:Drivers/Chip/bmi088/BMI088driver.c **** * @brief:      	BMI088_accel_read_muli_reg(reg, data, len)
+  47:Drivers/Chip/bmi088/BMI088driver.c **** * @param:       reg - 起始寄存器地址
+  48:Drivers/Chip/bmi088/BMI088driver.c **** *               data - 存储读取数据的缓冲区
+  49:Drivers/Chip/bmi088/BMI088driver.c **** *               len - 要读取的字节数
+  50:Drivers/Chip/bmi088/BMI088driver.c **** * @retval:     	void
+  51:Drivers/Chip/bmi088/BMI088driver.c **** * @details:    	通过BMI088加速度计的SPI总线连续读取多个寄存器的宏定义
+  52:Drivers/Chip/bmi088/BMI088driver.c **** ************************************************************************
+  53:Drivers/Chip/bmi088/BMI088driver.c **** **/
+  54:Drivers/Chip/bmi088/BMI088driver.c **** #define BMI088_accel_read_muli_reg(reg, data, len) \
+  55:Drivers/Chip/bmi088/BMI088driver.c ****     {                                              \
+  56:Drivers/Chip/bmi088/BMI088driver.c ****         BMI088_ACCEL_NS_L();                       \
+  57:Drivers/Chip/bmi088/BMI088driver.c ****         BMI088_read_write_byte((reg) | 0x80);      \
+  58:Drivers/Chip/bmi088/BMI088driver.c ****         BMI088_read_muli_reg(reg, data, len);      \
+  59:Drivers/Chip/bmi088/BMI088driver.c ****         BMI088_ACCEL_NS_H();                       \
+  60:Drivers/Chip/bmi088/BMI088driver.c ****     }
+ARM GAS  C:\Users\fffff\AppData\Local\Temp\ccwcu9eo.s 			page 3
+
+
+  61:Drivers/Chip/bmi088/BMI088driver.c **** /**
+  62:Drivers/Chip/bmi088/BMI088driver.c **** ************************************************************************
+  63:Drivers/Chip/bmi088/BMI088driver.c **** * @brief:      	BMI088_gyro_write_single_reg(reg, data)
+  64:Drivers/Chip/bmi088/BMI088driver.c **** * @param:       reg - 寄存器地址
+  65:Drivers/Chip/bmi088/BMI088driver.c **** *               data - 写入的数据
+  66:Drivers/Chip/bmi088/BMI088driver.c **** * @retval:     	void
+  67:Drivers/Chip/bmi088/BMI088driver.c **** * @details:    	通过BMI088陀螺仪的SPI总线写入单个寄存器的宏定义
+  68:Drivers/Chip/bmi088/BMI088driver.c **** ************************************************************************
+  69:Drivers/Chip/bmi088/BMI088driver.c **** **/
+  70:Drivers/Chip/bmi088/BMI088driver.c **** #define BMI088_gyro_write_single_reg(reg, data) \
+  71:Drivers/Chip/bmi088/BMI088driver.c ****     {                                           \
+  72:Drivers/Chip/bmi088/BMI088driver.c ****         BMI088_GYRO_NS_L();                     \
+  73:Drivers/Chip/bmi088/BMI088driver.c ****         BMI088_write_single_reg((reg), (data)); \
+  74:Drivers/Chip/bmi088/BMI088driver.c ****         BMI088_GYRO_NS_H();                     \
+  75:Drivers/Chip/bmi088/BMI088driver.c ****     }
+  76:Drivers/Chip/bmi088/BMI088driver.c **** /**
+  77:Drivers/Chip/bmi088/BMI088driver.c **** ************************************************************************
+  78:Drivers/Chip/bmi088/BMI088driver.c **** * @brief:      	BMI088_gyro_read_single_reg(reg, data)
+  79:Drivers/Chip/bmi088/BMI088driver.c **** * @param:       reg - 寄存器地址
+  80:Drivers/Chip/bmi088/BMI088driver.c **** *               data - 读取的寄存器数据
+  81:Drivers/Chip/bmi088/BMI088driver.c **** * @retval:     	void
+  82:Drivers/Chip/bmi088/BMI088driver.c **** * @details:    	通过BMI088陀螺仪的SPI总线读取单个寄存器的宏定义
+  83:Drivers/Chip/bmi088/BMI088driver.c **** ************************************************************************
+  84:Drivers/Chip/bmi088/BMI088driver.c **** **/
+  85:Drivers/Chip/bmi088/BMI088driver.c **** #define BMI088_gyro_read_single_reg(reg, data)  \
+  86:Drivers/Chip/bmi088/BMI088driver.c ****     {                                           \
+  87:Drivers/Chip/bmi088/BMI088driver.c ****         BMI088_GYRO_NS_L();                     \
+  88:Drivers/Chip/bmi088/BMI088driver.c ****         BMI088_read_single_reg((reg), &(data)); \
+  89:Drivers/Chip/bmi088/BMI088driver.c ****         BMI088_GYRO_NS_H();                     \
+  90:Drivers/Chip/bmi088/BMI088driver.c ****     }
+  91:Drivers/Chip/bmi088/BMI088driver.c **** /**
+  92:Drivers/Chip/bmi088/BMI088driver.c **** ************************************************************************
+  93:Drivers/Chip/bmi088/BMI088driver.c **** * @brief:      	BMI088_gyro_read_muli_reg(reg, data, len)
+  94:Drivers/Chip/bmi088/BMI088driver.c **** * @param:       reg - 起始寄存器地址
+  95:Drivers/Chip/bmi088/BMI088driver.c **** *               data - 存储读取数据的缓冲区
+  96:Drivers/Chip/bmi088/BMI088driver.c **** *               len - 要读取的字节数
+  97:Drivers/Chip/bmi088/BMI088driver.c **** * @retval:     	void
+  98:Drivers/Chip/bmi088/BMI088driver.c **** * @details:    	通过BMI088陀螺仪的SPI总线连续读取多个寄存器的宏定义
+  99:Drivers/Chip/bmi088/BMI088driver.c **** ************************************************************************
+ 100:Drivers/Chip/bmi088/BMI088driver.c **** **/
+ 101:Drivers/Chip/bmi088/BMI088driver.c **** #define BMI088_gyro_read_muli_reg(reg, data, len)   \
+ 102:Drivers/Chip/bmi088/BMI088driver.c ****     {                                               \
+ 103:Drivers/Chip/bmi088/BMI088driver.c ****         BMI088_GYRO_NS_L();                         \
+ 104:Drivers/Chip/bmi088/BMI088driver.c ****         BMI088_read_muli_reg((reg), (data), (len)); \
+ 105:Drivers/Chip/bmi088/BMI088driver.c ****         BMI088_GYRO_NS_H();                         \
+ 106:Drivers/Chip/bmi088/BMI088driver.c ****     }
+ 107:Drivers/Chip/bmi088/BMI088driver.c **** 
+ 108:Drivers/Chip/bmi088/BMI088driver.c **** static void BMI088_write_single_reg(uint8_t reg, uint8_t data);
+ 109:Drivers/Chip/bmi088/BMI088driver.c **** static void BMI088_read_single_reg(uint8_t reg, uint8_t *return_data);
+ 110:Drivers/Chip/bmi088/BMI088driver.c **** //static void BMI088_write_muli_reg(uint8_t reg, uint8_t* buf, uint8_t len );
+ 111:Drivers/Chip/bmi088/BMI088driver.c **** static void BMI088_read_muli_reg(uint8_t reg, uint8_t *buf, uint8_t len);
+ 112:Drivers/Chip/bmi088/BMI088driver.c **** 
+ 113:Drivers/Chip/bmi088/BMI088driver.c **** #elif defined(BMI088_USE_IIC)
+ 114:Drivers/Chip/bmi088/BMI088driver.c **** 
+ 115:Drivers/Chip/bmi088/BMI088driver.c **** 
+ 116:Drivers/Chip/bmi088/BMI088driver.c **** #endif
+ 117:Drivers/Chip/bmi088/BMI088driver.c **** /**
+ARM GAS  C:\Users\fffff\AppData\Local\Temp\ccwcu9eo.s 			page 4
+
+
+ 118:Drivers/Chip/bmi088/BMI088driver.c **** ************************************************************************
+ 119:Drivers/Chip/bmi088/BMI088driver.c **** * @brief:      	write_BMI088_accel_reg_data_error_init(void)
+ 120:Drivers/Chip/bmi088/BMI088driver.c **** * @param:       void
+ 121:Drivers/Chip/bmi088/BMI088driver.c **** * @retval:     	void
+ 122:Drivers/Chip/bmi088/BMI088driver.c **** * @details:    	BMI088加速度传感器寄存器数据写入错误处理初始化
+ 123:Drivers/Chip/bmi088/BMI088driver.c **** ************************************************************************
+ 124:Drivers/Chip/bmi088/BMI088driver.c **** **/
+ 125:Drivers/Chip/bmi088/BMI088driver.c **** static uint8_t write_BMI088_accel_reg_data_error[BMI088_WRITE_ACCEL_REG_NUM][3] =
+ 126:Drivers/Chip/bmi088/BMI088driver.c ****     {
+ 127:Drivers/Chip/bmi088/BMI088driver.c ****         {BMI088_ACC_PWR_CTRL, BMI088_ACC_ENABLE_ACC_ON, BMI088_ACC_PWR_CTRL_ERROR},
+ 128:Drivers/Chip/bmi088/BMI088driver.c ****         {BMI088_ACC_PWR_CONF, BMI088_ACC_PWR_ACTIVE_MODE, BMI088_ACC_PWR_CONF_ERROR},
+ 129:Drivers/Chip/bmi088/BMI088driver.c ****         {BMI088_ACC_CONF,  BMI088_ACC_NORMAL| BMI088_ACC_800_HZ | BMI088_ACC_CONF_MUST_Set, BMI088_
+ 130:Drivers/Chip/bmi088/BMI088driver.c ****         {BMI088_ACC_RANGE, BMI088_ACC_RANGE_3G, BMI088_ACC_RANGE_ERROR},
+ 131:Drivers/Chip/bmi088/BMI088driver.c ****         {BMI088_INT1_IO_CTRL, BMI088_ACC_INT1_IO_ENABLE | BMI088_ACC_INT1_GPIO_PP | BMI088_ACC_INT1
+ 132:Drivers/Chip/bmi088/BMI088driver.c ****         {BMI088_INT_MAP_DATA, BMI088_ACC_INT1_DRDY_INTERRUPT, BMI088_INT_MAP_DATA_ERROR}
+ 133:Drivers/Chip/bmi088/BMI088driver.c **** 
+ 134:Drivers/Chip/bmi088/BMI088driver.c **** };
+ 135:Drivers/Chip/bmi088/BMI088driver.c **** /**
+ 136:Drivers/Chip/bmi088/BMI088driver.c **** ************************************************************************
+ 137:Drivers/Chip/bmi088/BMI088driver.c **** * @brief:      	write_BMI088_gyro_reg_data_error_init(void)
+ 138:Drivers/Chip/bmi088/BMI088driver.c **** * @param:       void
+ 139:Drivers/Chip/bmi088/BMI088driver.c **** * @retval:     	void
+ 140:Drivers/Chip/bmi088/BMI088driver.c **** * @details:    	BMI088陀螺仪传感器寄存器数据写入错误处理初始化
+ 141:Drivers/Chip/bmi088/BMI088driver.c **** ************************************************************************
+ 142:Drivers/Chip/bmi088/BMI088driver.c **** **/
+ 143:Drivers/Chip/bmi088/BMI088driver.c **** static uint8_t write_BMI088_gyro_reg_data_error[BMI088_WRITE_GYRO_REG_NUM][3] =
+ 144:Drivers/Chip/bmi088/BMI088driver.c ****     {
+ 145:Drivers/Chip/bmi088/BMI088driver.c ****         {BMI088_GYRO_RANGE, BMI088_GYRO_2000, BMI088_GYRO_RANGE_ERROR},
+ 146:Drivers/Chip/bmi088/BMI088driver.c ****         {BMI088_GYRO_BANDWIDTH, BMI088_GYRO_1000_116_HZ | BMI088_GYRO_BANDWIDTH_MUST_Set, BMI088_GY
+ 147:Drivers/Chip/bmi088/BMI088driver.c ****         {BMI088_GYRO_LPM1, BMI088_GYRO_NORMAL_MODE, BMI088_GYRO_LPM1_ERROR},
+ 148:Drivers/Chip/bmi088/BMI088driver.c ****         {BMI088_GYRO_CTRL, BMI088_DRDY_ON, BMI088_GYRO_CTRL_ERROR},
+ 149:Drivers/Chip/bmi088/BMI088driver.c ****         {BMI088_GYRO_INT3_INT4_IO_CONF, BMI088_GYRO_INT3_GPIO_PP | BMI088_GYRO_INT3_GPIO_LOW, BMI08
+ 150:Drivers/Chip/bmi088/BMI088driver.c ****         {BMI088_GYRO_INT3_INT4_IO_MAP, BMI088_GYRO_DRDY_IO_INT3, BMI088_GYRO_INT3_INT4_IO_MAP_ERROR
+ 151:Drivers/Chip/bmi088/BMI088driver.c **** 
+ 152:Drivers/Chip/bmi088/BMI088driver.c **** };
+ 153:Drivers/Chip/bmi088/BMI088driver.c **** /**
+ 154:Drivers/Chip/bmi088/BMI088driver.c **** ************************************************************************
+ 155:Drivers/Chip/bmi088/BMI088driver.c **** * @brief:      	BMI088_init(void)
+ 156:Drivers/Chip/bmi088/BMI088driver.c **** * @param:       void
+ 157:Drivers/Chip/bmi088/BMI088driver.c **** * @retval:     	uint8_t - 错误代码
+ 158:Drivers/Chip/bmi088/BMI088driver.c **** * @details:    	BMI088传感器初始化函数，包括GPIO和SPI初始化，以及加速度和陀螺仪的初始化
+ 159:Drivers/Chip/bmi088/BMI088driver.c **** ************************************************************************
+ 160:Drivers/Chip/bmi088/BMI088driver.c **** **/
+ 161:Drivers/Chip/bmi088/BMI088driver.c **** uint8_t BMI088_init(void)
+ 162:Drivers/Chip/bmi088/BMI088driver.c **** {
+  64              		.loc 1 162 1
+  65              		.cfi_startproc
+  66              		@ args = 0, pretend = 0, frame = 8
+  67              		@ frame_needed = 1, uses_anonymous_args = 0
+  68 0000 80B5     		push	{r7, lr}
+  69              	.LCFI0:
+  70              		.cfi_def_cfa_offset 8
+  71              		.cfi_offset 7, -8
+  72              		.cfi_offset 14, -4
+  73 0002 82B0     		sub	sp, sp, #8
+  74              	.LCFI1:
+  75              		.cfi_def_cfa_offset 16
+ARM GAS  C:\Users\fffff\AppData\Local\Temp\ccwcu9eo.s 			page 5
+
+
+  76 0004 00AF     		add	r7, sp, #0
+  77              	.LCFI2:
+  78              		.cfi_def_cfa_register 7
+ 163:Drivers/Chip/bmi088/BMI088driver.c ****     uint8_t error = BMI088_NO_ERROR;
+  79              		.loc 1 163 13
+  80 0006 0023     		movs	r3, #0
+  81 0008 FB71     		strb	r3, [r7, #7]
+ 164:Drivers/Chip/bmi088/BMI088driver.c ****     // GPIO and SPI  Init .
+ 165:Drivers/Chip/bmi088/BMI088driver.c ****     BMI088_GPIO_init();
+  82              		.loc 1 165 5
+  83 000a FFF7FEFF 		bl	BMI088_GPIO_init
+ 166:Drivers/Chip/bmi088/BMI088driver.c ****     BMI088_com_init();
+  84              		.loc 1 166 5
+  85 000e FFF7FEFF 		bl	BMI088_com_init
+ 167:Drivers/Chip/bmi088/BMI088driver.c **** 
+ 168:Drivers/Chip/bmi088/BMI088driver.c ****     error |= bmi088_accel_init();
+  86              		.loc 1 168 14
+  87 0012 FFF7FEFF 		bl	bmi088_accel_init
+  88 0016 0346     		mov	r3, r0
+  89 0018 1A46     		mov	r2, r3
+  90              		.loc 1 168 11 discriminator 1
+  91 001a FB79     		ldrb	r3, [r7, #7]
+  92 001c 1343     		orrs	r3, r3, r2
+  93 001e FB71     		strb	r3, [r7, #7]
+ 169:Drivers/Chip/bmi088/BMI088driver.c ****     error |= bmi088_gyro_init();
+  94              		.loc 1 169 14
+  95 0020 FFF7FEFF 		bl	bmi088_gyro_init
+  96 0024 0346     		mov	r3, r0
+  97 0026 1A46     		mov	r2, r3
+  98              		.loc 1 169 11 discriminator 1
+  99 0028 FB79     		ldrb	r3, [r7, #7]
+ 100 002a 1343     		orrs	r3, r3, r2
+ 101 002c FB71     		strb	r3, [r7, #7]
+ 170:Drivers/Chip/bmi088/BMI088driver.c **** 
+ 171:Drivers/Chip/bmi088/BMI088driver.c ****     return error;
+ 102              		.loc 1 171 12
+ 103 002e FB79     		ldrb	r3, [r7, #7]	@ zero_extendqisi2
+ 172:Drivers/Chip/bmi088/BMI088driver.c **** }
+ 104              		.loc 1 172 1
+ 105 0030 1846     		mov	r0, r3
+ 106 0032 0837     		adds	r7, r7, #8
+ 107              	.LCFI3:
+ 108              		.cfi_def_cfa_offset 8
+ 109 0034 BD46     		mov	sp, r7
+ 110              	.LCFI4:
+ 111              		.cfi_def_cfa_register 13
+ 112              		@ sp needed
+ 113 0036 80BD     		pop	{r7, pc}
+ 114              		.cfi_endproc
+ 115              	.LFE144:
+ 117              		.section	.text.bmi088_accel_init,"ax",%progbits
+ 118              		.align	1
+ 119              		.global	bmi088_accel_init
+ 120              		.syntax unified
+ 121              		.thumb
+ 122              		.thumb_func
+ 124              	bmi088_accel_init:
+ARM GAS  C:\Users\fffff\AppData\Local\Temp\ccwcu9eo.s 			page 6
+
+
+ 125              	.LFB145:
+ 173:Drivers/Chip/bmi088/BMI088driver.c **** /**
+ 174:Drivers/Chip/bmi088/BMI088driver.c **** ************************************************************************
+ 175:Drivers/Chip/bmi088/BMI088driver.c **** * @brief:      	bmi088_accel_init(void)
+ 176:Drivers/Chip/bmi088/BMI088driver.c **** * @param:       void
+ 177:Drivers/Chip/bmi088/BMI088driver.c **** * @retval:     	uint8_t - 错误代码
+ 178:Drivers/Chip/bmi088/BMI088driver.c **** * @details:    	BMI088加速度传感器初始化函数，包括通信检查、软件复位、配置寄存器写入及检查
+ 179:Drivers/Chip/bmi088/BMI088driver.c **** ************************************************************************
+ 180:Drivers/Chip/bmi088/BMI088driver.c **** **/
+ 181:Drivers/Chip/bmi088/BMI088driver.c **** uint8_t bmi088_accel_init(void)
+ 182:Drivers/Chip/bmi088/BMI088driver.c **** {
+ 126              		.loc 1 182 1
+ 127              		.cfi_startproc
+ 128              		@ args = 0, pretend = 0, frame = 8
+ 129              		@ frame_needed = 1, uses_anonymous_args = 0
+ 130 0000 80B5     		push	{r7, lr}
+ 131              	.LCFI5:
+ 132              		.cfi_def_cfa_offset 8
+ 133              		.cfi_offset 7, -8
+ 134              		.cfi_offset 14, -4
+ 135 0002 82B0     		sub	sp, sp, #8
+ 136              	.LCFI6:
+ 137              		.cfi_def_cfa_offset 16
+ 138 0004 00AF     		add	r7, sp, #0
+ 139              	.LCFI7:
+ 140              		.cfi_def_cfa_register 7
+ 183:Drivers/Chip/bmi088/BMI088driver.c ****     uint8_t res = 0;
+ 141              		.loc 1 183 13
+ 142 0006 0023     		movs	r3, #0
+ 143 0008 BB71     		strb	r3, [r7, #6]
+ 184:Drivers/Chip/bmi088/BMI088driver.c ****     uint8_t write_reg_num = 0;
+ 144              		.loc 1 184 13
+ 145 000a 0023     		movs	r3, #0
+ 146 000c FB71     		strb	r3, [r7, #7]
+ 185:Drivers/Chip/bmi088/BMI088driver.c **** 
+ 186:Drivers/Chip/bmi088/BMI088driver.c ****     //check commiunication
+ 187:Drivers/Chip/bmi088/BMI088driver.c ****     BMI088_accel_read_single_reg(BMI088_ACC_CHIP_ID, res);
+ 147              		.loc 1 187 5
+ 148 000e FFF7FEFF 		bl	BMI088_ACCEL_NS_L
+ 149              		.loc 1 187 5 is_stmt 0 discriminator 1
+ 150 0012 8020     		movs	r0, #128
+ 151 0014 FFF7FEFF 		bl	BMI088_read_write_byte
+ 152              		.loc 1 187 5 discriminator 2
+ 153 0018 5520     		movs	r0, #85
+ 154 001a FFF7FEFF 		bl	BMI088_read_write_byte
+ 155              		.loc 1 187 5 discriminator 3
+ 156 001e 5520     		movs	r0, #85
+ 157 0020 FFF7FEFF 		bl	BMI088_read_write_byte
+ 158 0024 0346     		mov	r3, r0
+ 159 0026 BB71     		strb	r3, [r7, #6]
+ 160              		.loc 1 187 5 discriminator 4
+ 161 0028 FFF7FEFF 		bl	BMI088_ACCEL_NS_H
+ 188:Drivers/Chip/bmi088/BMI088driver.c ****     BMI088_delay_us(BMI088_COM_WAIT_SENSOR_TIME);
+ 162              		.loc 1 188 5 is_stmt 1
+ 163 002c 9620     		movs	r0, #150
+ 164 002e FFF7FEFF 		bl	BMI088_delay_us
+ 189:Drivers/Chip/bmi088/BMI088driver.c ****     BMI088_accel_read_single_reg(BMI088_ACC_CHIP_ID, res);
+ARM GAS  C:\Users\fffff\AppData\Local\Temp\ccwcu9eo.s 			page 7
+
+
+ 165              		.loc 1 189 5
+ 166 0032 FFF7FEFF 		bl	BMI088_ACCEL_NS_L
+ 167              		.loc 1 189 5 is_stmt 0 discriminator 1
+ 168 0036 8020     		movs	r0, #128
+ 169 0038 FFF7FEFF 		bl	BMI088_read_write_byte
+ 170              		.loc 1 189 5 discriminator 2
+ 171 003c 5520     		movs	r0, #85
+ 172 003e FFF7FEFF 		bl	BMI088_read_write_byte
+ 173              		.loc 1 189 5 discriminator 3
+ 174 0042 5520     		movs	r0, #85
+ 175 0044 FFF7FEFF 		bl	BMI088_read_write_byte
+ 176 0048 0346     		mov	r3, r0
+ 177 004a BB71     		strb	r3, [r7, #6]
+ 178              		.loc 1 189 5 discriminator 4
+ 179 004c FFF7FEFF 		bl	BMI088_ACCEL_NS_H
+ 190:Drivers/Chip/bmi088/BMI088driver.c ****     BMI088_delay_us(BMI088_COM_WAIT_SENSOR_TIME);
+ 180              		.loc 1 190 5 is_stmt 1
+ 181 0050 9620     		movs	r0, #150
+ 182 0052 FFF7FEFF 		bl	BMI088_delay_us
+ 191:Drivers/Chip/bmi088/BMI088driver.c **** 
+ 192:Drivers/Chip/bmi088/BMI088driver.c ****     //accel software reset
+ 193:Drivers/Chip/bmi088/BMI088driver.c ****     BMI088_accel_write_single_reg(BMI088_ACC_SOFTRESET, BMI088_ACC_SOFTRESET_VALUE);
+ 183              		.loc 1 193 5
+ 184 0056 FFF7FEFF 		bl	BMI088_ACCEL_NS_L
+ 185              		.loc 1 193 5 is_stmt 0 discriminator 1
+ 186 005a B621     		movs	r1, #182
+ 187 005c 7E20     		movs	r0, #126
+ 188 005e FFF7FEFF 		bl	BMI088_write_single_reg
+ 189              		.loc 1 193 5 discriminator 2
+ 190 0062 FFF7FEFF 		bl	BMI088_ACCEL_NS_H
+ 194:Drivers/Chip/bmi088/BMI088driver.c ****     BMI088_delay_ms(BMI088_LONG_DELAY_TIME);
+ 191              		.loc 1 194 5 is_stmt 1
+ 192 0066 0120     		movs	r0, #1
+ 193 0068 FFF7FEFF 		bl	BMI088_delay_ms
+ 195:Drivers/Chip/bmi088/BMI088driver.c **** 
+ 196:Drivers/Chip/bmi088/BMI088driver.c ****     //check commiunication is normal after reset
+ 197:Drivers/Chip/bmi088/BMI088driver.c ****     BMI088_accel_read_single_reg(BMI088_ACC_CHIP_ID, res);
+ 194              		.loc 1 197 5
+ 195 006c FFF7FEFF 		bl	BMI088_ACCEL_NS_L
+ 196              		.loc 1 197 5 is_stmt 0 discriminator 1
+ 197 0070 8020     		movs	r0, #128
+ 198 0072 FFF7FEFF 		bl	BMI088_read_write_byte
+ 199              		.loc 1 197 5 discriminator 2
+ 200 0076 5520     		movs	r0, #85
+ 201 0078 FFF7FEFF 		bl	BMI088_read_write_byte
+ 202              		.loc 1 197 5 discriminator 3
+ 203 007c 5520     		movs	r0, #85
+ 204 007e FFF7FEFF 		bl	BMI088_read_write_byte
+ 205 0082 0346     		mov	r3, r0
+ 206 0084 BB71     		strb	r3, [r7, #6]
+ 207              		.loc 1 197 5 discriminator 4
+ 208 0086 FFF7FEFF 		bl	BMI088_ACCEL_NS_H
+ 198:Drivers/Chip/bmi088/BMI088driver.c ****     BMI088_delay_us(BMI088_COM_WAIT_SENSOR_TIME);
+ 209              		.loc 1 198 5 is_stmt 1
+ 210 008a 9620     		movs	r0, #150
+ 211 008c FFF7FEFF 		bl	BMI088_delay_us
+ 199:Drivers/Chip/bmi088/BMI088driver.c ****     BMI088_accel_read_single_reg(BMI088_ACC_CHIP_ID, res);
+ARM GAS  C:\Users\fffff\AppData\Local\Temp\ccwcu9eo.s 			page 8
+
+
+ 212              		.loc 1 199 5
+ 213 0090 FFF7FEFF 		bl	BMI088_ACCEL_NS_L
+ 214              		.loc 1 199 5 is_stmt 0 discriminator 1
+ 215 0094 8020     		movs	r0, #128
+ 216 0096 FFF7FEFF 		bl	BMI088_read_write_byte
+ 217              		.loc 1 199 5 discriminator 2
+ 218 009a 5520     		movs	r0, #85
+ 219 009c FFF7FEFF 		bl	BMI088_read_write_byte
+ 220              		.loc 1 199 5 discriminator 3
+ 221 00a0 5520     		movs	r0, #85
+ 222 00a2 FFF7FEFF 		bl	BMI088_read_write_byte
+ 223 00a6 0346     		mov	r3, r0
+ 224 00a8 BB71     		strb	r3, [r7, #6]
+ 225              		.loc 1 199 5 discriminator 4
+ 226 00aa FFF7FEFF 		bl	BMI088_ACCEL_NS_H
+ 200:Drivers/Chip/bmi088/BMI088driver.c ****     BMI088_delay_us(BMI088_COM_WAIT_SENSOR_TIME);
+ 227              		.loc 1 200 5 is_stmt 1
+ 228 00ae 9620     		movs	r0, #150
+ 229 00b0 FFF7FEFF 		bl	BMI088_delay_us
+ 201:Drivers/Chip/bmi088/BMI088driver.c **** 
+ 202:Drivers/Chip/bmi088/BMI088driver.c ****     // check the "who am I"
+ 203:Drivers/Chip/bmi088/BMI088driver.c ****     if (res != BMI088_ACC_CHIP_ID_VALUE)
+ 230              		.loc 1 203 8
+ 231 00b4 BB79     		ldrb	r3, [r7, #6]	@ zero_extendqisi2
+ 232 00b6 1E2B     		cmp	r3, #30
+ 233 00b8 01D0     		beq	.L4
+ 204:Drivers/Chip/bmi088/BMI088driver.c ****     {
+ 205:Drivers/Chip/bmi088/BMI088driver.c ****         return BMI088_NO_SENSOR;
+ 234              		.loc 1 205 16
+ 235 00ba FF23     		movs	r3, #255
+ 236 00bc 52E0     		b	.L5
+ 237              	.L4:
+ 206:Drivers/Chip/bmi088/BMI088driver.c ****     }
+ 207:Drivers/Chip/bmi088/BMI088driver.c **** 
+ 208:Drivers/Chip/bmi088/BMI088driver.c ****     //set accel sonsor config and check
+ 209:Drivers/Chip/bmi088/BMI088driver.c ****     for (write_reg_num = 0; write_reg_num < BMI088_WRITE_ACCEL_REG_NUM; write_reg_num++)
+ 238              		.loc 1 209 24
+ 239 00be 0023     		movs	r3, #0
+ 240 00c0 FB71     		strb	r3, [r7, #7]
+ 241              		.loc 1 209 5
+ 242 00c2 4BE0     		b	.L6
+ 243              	.L8:
+ 210:Drivers/Chip/bmi088/BMI088driver.c ****     {
+ 211:Drivers/Chip/bmi088/BMI088driver.c **** 
+ 212:Drivers/Chip/bmi088/BMI088driver.c ****         BMI088_accel_write_single_reg(write_BMI088_accel_reg_data_error[write_reg_num][0], write_BM
+ 244              		.loc 1 212 9
+ 245 00c4 FFF7FEFF 		bl	BMI088_ACCEL_NS_L
+ 246              		.loc 1 212 9 is_stmt 0 discriminator 1
+ 247 00c8 FA79     		ldrb	r2, [r7, #7]	@ zero_extendqisi2
+ 248 00ca 2849     		ldr	r1, .L9
+ 249 00cc 1346     		mov	r3, r2
+ 250 00ce 5B00     		lsls	r3, r3, #1
+ 251 00d0 1344     		add	r3, r3, r2
+ 252 00d2 0B44     		add	r3, r3, r1
+ 253 00d4 1878     		ldrb	r0, [r3]	@ zero_extendqisi2
+ 254 00d6 FA79     		ldrb	r2, [r7, #7]	@ zero_extendqisi2
+ 255 00d8 2449     		ldr	r1, .L9
+ARM GAS  C:\Users\fffff\AppData\Local\Temp\ccwcu9eo.s 			page 9
+
+
+ 256 00da 1346     		mov	r3, r2
+ 257 00dc 5B00     		lsls	r3, r3, #1
+ 258 00de 1344     		add	r3, r3, r2
+ 259 00e0 0B44     		add	r3, r3, r1
+ 260 00e2 0133     		adds	r3, r3, #1
+ 261 00e4 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 262 00e6 1946     		mov	r1, r3
+ 263 00e8 FFF7FEFF 		bl	BMI088_write_single_reg
+ 264              		.loc 1 212 9 discriminator 2
+ 265 00ec FFF7FEFF 		bl	BMI088_ACCEL_NS_H
+ 213:Drivers/Chip/bmi088/BMI088driver.c ****         BMI088_delay_us(BMI088_COM_WAIT_SENSOR_TIME);
+ 266              		.loc 1 213 9 is_stmt 1
+ 267 00f0 9620     		movs	r0, #150
+ 268 00f2 FFF7FEFF 		bl	BMI088_delay_us
+ 214:Drivers/Chip/bmi088/BMI088driver.c **** 
+ 215:Drivers/Chip/bmi088/BMI088driver.c ****         BMI088_accel_read_single_reg(write_BMI088_accel_reg_data_error[write_reg_num][0], res);
+ 269              		.loc 1 215 9
+ 270 00f6 FFF7FEFF 		bl	BMI088_ACCEL_NS_L
+ 271              		.loc 1 215 9 is_stmt 0 discriminator 1
+ 272 00fa FA79     		ldrb	r2, [r7, #7]	@ zero_extendqisi2
+ 273 00fc 1B49     		ldr	r1, .L9
+ 274 00fe 1346     		mov	r3, r2
+ 275 0100 5B00     		lsls	r3, r3, #1
+ 276 0102 1344     		add	r3, r3, r2
+ 277 0104 0B44     		add	r3, r3, r1
+ 278 0106 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 279 0108 63F07F03 		orn	r3, r3, #127
+ 280 010c DBB2     		uxtb	r3, r3
+ 281 010e 1846     		mov	r0, r3
+ 282 0110 FFF7FEFF 		bl	BMI088_read_write_byte
+ 283              		.loc 1 215 9 discriminator 2
+ 284 0114 5520     		movs	r0, #85
+ 285 0116 FFF7FEFF 		bl	BMI088_read_write_byte
+ 286              		.loc 1 215 9 discriminator 3
+ 287 011a 5520     		movs	r0, #85
+ 288 011c FFF7FEFF 		bl	BMI088_read_write_byte
+ 289 0120 0346     		mov	r3, r0
+ 290 0122 BB71     		strb	r3, [r7, #6]
+ 291              		.loc 1 215 9 discriminator 4
+ 292 0124 FFF7FEFF 		bl	BMI088_ACCEL_NS_H
+ 216:Drivers/Chip/bmi088/BMI088driver.c ****         BMI088_delay_us(BMI088_COM_WAIT_SENSOR_TIME);
+ 293              		.loc 1 216 9 is_stmt 1
+ 294 0128 9620     		movs	r0, #150
+ 295 012a FFF7FEFF 		bl	BMI088_delay_us
+ 217:Drivers/Chip/bmi088/BMI088driver.c **** 
+ 218:Drivers/Chip/bmi088/BMI088driver.c ****         if (res != write_BMI088_accel_reg_data_error[write_reg_num][1])
+ 296              		.loc 1 218 68
+ 297 012e FA79     		ldrb	r2, [r7, #7]	@ zero_extendqisi2
+ 298 0130 0E49     		ldr	r1, .L9
+ 299 0132 1346     		mov	r3, r2
+ 300 0134 5B00     		lsls	r3, r3, #1
+ 301 0136 1344     		add	r3, r3, r2
+ 302 0138 0B44     		add	r3, r3, r1
+ 303 013a 0133     		adds	r3, r3, #1
+ 304 013c 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 305              		.loc 1 218 12
+ 306 013e BA79     		ldrb	r2, [r7, #6]	@ zero_extendqisi2
+ARM GAS  C:\Users\fffff\AppData\Local\Temp\ccwcu9eo.s 			page 10
+
+
+ 307 0140 9A42     		cmp	r2, r3
+ 308 0142 08D0     		beq	.L7
+ 219:Drivers/Chip/bmi088/BMI088driver.c ****         {
+ 220:Drivers/Chip/bmi088/BMI088driver.c ****             return write_BMI088_accel_reg_data_error[write_reg_num][2];
+ 309              		.loc 1 220 68
+ 310 0144 FA79     		ldrb	r2, [r7, #7]	@ zero_extendqisi2
+ 311 0146 0949     		ldr	r1, .L9
+ 312 0148 1346     		mov	r3, r2
+ 313 014a 5B00     		lsls	r3, r3, #1
+ 314 014c 1344     		add	r3, r3, r2
+ 315 014e 0B44     		add	r3, r3, r1
+ 316 0150 0233     		adds	r3, r3, #2
+ 317 0152 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 318 0154 06E0     		b	.L5
+ 319              	.L7:
+ 209:Drivers/Chip/bmi088/BMI088driver.c ****     {
+ 320              		.loc 1 209 86 discriminator 2
+ 321 0156 FB79     		ldrb	r3, [r7, #7]	@ zero_extendqisi2
+ 322 0158 0133     		adds	r3, r3, #1
+ 323 015a FB71     		strb	r3, [r7, #7]
+ 324              	.L6:
+ 209:Drivers/Chip/bmi088/BMI088driver.c ****     {
+ 325              		.loc 1 209 43 discriminator 1
+ 326 015c FB79     		ldrb	r3, [r7, #7]	@ zero_extendqisi2
+ 327 015e 052B     		cmp	r3, #5
+ 328 0160 B0D9     		bls	.L8
+ 221:Drivers/Chip/bmi088/BMI088driver.c ****         }
+ 222:Drivers/Chip/bmi088/BMI088driver.c ****     }
+ 223:Drivers/Chip/bmi088/BMI088driver.c ****     return BMI088_NO_ERROR;
+ 329              		.loc 1 223 12
+ 330 0162 0023     		movs	r3, #0
+ 331              	.L5:
+ 224:Drivers/Chip/bmi088/BMI088driver.c **** }
+ 332              		.loc 1 224 1
+ 333 0164 1846     		mov	r0, r3
+ 334 0166 0837     		adds	r7, r7, #8
+ 335              	.LCFI8:
+ 336              		.cfi_def_cfa_offset 8
+ 337 0168 BD46     		mov	sp, r7
+ 338              	.LCFI9:
+ 339              		.cfi_def_cfa_register 13
+ 340              		@ sp needed
+ 341 016a 80BD     		pop	{r7, pc}
+ 342              	.L10:
+ 343              		.align	2
+ 344              	.L9:
+ 345 016c 00000000 		.word	write_BMI088_accel_reg_data_error
+ 346              		.cfi_endproc
+ 347              	.LFE145:
+ 349              		.section	.text.bmi088_gyro_init,"ax",%progbits
+ 350              		.align	1
+ 351              		.global	bmi088_gyro_init
+ 352              		.syntax unified
+ 353              		.thumb
+ 354              		.thumb_func
+ 356              	bmi088_gyro_init:
+ 357              	.LFB146:
+ARM GAS  C:\Users\fffff\AppData\Local\Temp\ccwcu9eo.s 			page 11
+
+
+ 225:Drivers/Chip/bmi088/BMI088driver.c **** /**
+ 226:Drivers/Chip/bmi088/BMI088driver.c **** ************************************************************************
+ 227:Drivers/Chip/bmi088/BMI088driver.c **** * @brief:      	bmi088_gyro_init(void)
+ 228:Drivers/Chip/bmi088/BMI088driver.c **** * @param:       void
+ 229:Drivers/Chip/bmi088/BMI088driver.c **** * @retval:     	uint8_t - 错误代码
+ 230:Drivers/Chip/bmi088/BMI088driver.c **** * @details:    	BMI088陀螺仪传感器初始化函数，包括通信检查、软件复位、配置寄存器写入及检查
+ 231:Drivers/Chip/bmi088/BMI088driver.c **** ************************************************************************
+ 232:Drivers/Chip/bmi088/BMI088driver.c **** **/
+ 233:Drivers/Chip/bmi088/BMI088driver.c **** uint8_t bmi088_gyro_init(void)
+ 234:Drivers/Chip/bmi088/BMI088driver.c **** {
+ 358              		.loc 1 234 1
+ 359              		.cfi_startproc
+ 360              		@ args = 0, pretend = 0, frame = 8
+ 361              		@ frame_needed = 1, uses_anonymous_args = 0
+ 362 0000 80B5     		push	{r7, lr}
+ 363              	.LCFI10:
+ 364              		.cfi_def_cfa_offset 8
+ 365              		.cfi_offset 7, -8
+ 366              		.cfi_offset 14, -4
+ 367 0002 82B0     		sub	sp, sp, #8
+ 368              	.LCFI11:
+ 369              		.cfi_def_cfa_offset 16
+ 370 0004 00AF     		add	r7, sp, #0
+ 371              	.LCFI12:
+ 372              		.cfi_def_cfa_register 7
+ 235:Drivers/Chip/bmi088/BMI088driver.c ****     uint8_t write_reg_num = 0;
+ 373              		.loc 1 235 13
+ 374 0006 0023     		movs	r3, #0
+ 375 0008 FB71     		strb	r3, [r7, #7]
+ 236:Drivers/Chip/bmi088/BMI088driver.c ****     uint8_t res = 0;
+ 376              		.loc 1 236 13
+ 377 000a 0023     		movs	r3, #0
+ 378 000c BB71     		strb	r3, [r7, #6]
+ 237:Drivers/Chip/bmi088/BMI088driver.c **** 
+ 238:Drivers/Chip/bmi088/BMI088driver.c ****     //check commiunication
+ 239:Drivers/Chip/bmi088/BMI088driver.c ****     BMI088_gyro_read_single_reg(BMI088_GYRO_CHIP_ID, res);
+ 379              		.loc 1 239 5
+ 380 000e FFF7FEFF 		bl	BMI088_GYRO_NS_L
+ 381              		.loc 1 239 5 is_stmt 0 discriminator 1
+ 382 0012 BB1D     		adds	r3, r7, #6
+ 383 0014 1946     		mov	r1, r3
+ 384 0016 0020     		movs	r0, #0
+ 385 0018 FFF7FEFF 		bl	BMI088_read_single_reg
+ 386              		.loc 1 239 5 discriminator 2
+ 387 001c FFF7FEFF 		bl	BMI088_GYRO_NS_H
+ 240:Drivers/Chip/bmi088/BMI088driver.c ****     BMI088_delay_us(BMI088_COM_WAIT_SENSOR_TIME);
+ 388              		.loc 1 240 5 is_stmt 1
+ 389 0020 9620     		movs	r0, #150
+ 390 0022 FFF7FEFF 		bl	BMI088_delay_us
+ 241:Drivers/Chip/bmi088/BMI088driver.c ****     BMI088_gyro_read_single_reg(BMI088_GYRO_CHIP_ID, res);
+ 391              		.loc 1 241 5
+ 392 0026 FFF7FEFF 		bl	BMI088_GYRO_NS_L
+ 393              		.loc 1 241 5 is_stmt 0 discriminator 1
+ 394 002a BB1D     		adds	r3, r7, #6
+ 395 002c 1946     		mov	r1, r3
+ 396 002e 0020     		movs	r0, #0
+ 397 0030 FFF7FEFF 		bl	BMI088_read_single_reg
+ARM GAS  C:\Users\fffff\AppData\Local\Temp\ccwcu9eo.s 			page 12
+
+
+ 398              		.loc 1 241 5 discriminator 2
+ 399 0034 FFF7FEFF 		bl	BMI088_GYRO_NS_H
+ 242:Drivers/Chip/bmi088/BMI088driver.c ****     BMI088_delay_us(BMI088_COM_WAIT_SENSOR_TIME);
+ 400              		.loc 1 242 5 is_stmt 1
+ 401 0038 9620     		movs	r0, #150
+ 402 003a FFF7FEFF 		bl	BMI088_delay_us
+ 243:Drivers/Chip/bmi088/BMI088driver.c **** 
+ 244:Drivers/Chip/bmi088/BMI088driver.c ****     //reset the gyro sensor
+ 245:Drivers/Chip/bmi088/BMI088driver.c ****     BMI088_gyro_write_single_reg(BMI088_GYRO_SOFTRESET, BMI088_GYRO_SOFTRESET_VALUE);
+ 403              		.loc 1 245 5
+ 404 003e FFF7FEFF 		bl	BMI088_GYRO_NS_L
+ 405              		.loc 1 245 5 is_stmt 0 discriminator 1
+ 406 0042 B621     		movs	r1, #182
+ 407 0044 1420     		movs	r0, #20
+ 408 0046 FFF7FEFF 		bl	BMI088_write_single_reg
+ 409              		.loc 1 245 5 discriminator 2
+ 410 004a FFF7FEFF 		bl	BMI088_GYRO_NS_H
+ 246:Drivers/Chip/bmi088/BMI088driver.c ****     BMI088_delay_ms(BMI088_LONG_DELAY_TIME);
+ 411              		.loc 1 246 5 is_stmt 1
+ 412 004e 0120     		movs	r0, #1
+ 413 0050 FFF7FEFF 		bl	BMI088_delay_ms
+ 247:Drivers/Chip/bmi088/BMI088driver.c ****     //check commiunication is normal after reset
+ 248:Drivers/Chip/bmi088/BMI088driver.c ****     BMI088_gyro_read_single_reg(BMI088_GYRO_CHIP_ID, res);
+ 414              		.loc 1 248 5
+ 415 0054 FFF7FEFF 		bl	BMI088_GYRO_NS_L
+ 416              		.loc 1 248 5 is_stmt 0 discriminator 1
+ 417 0058 BB1D     		adds	r3, r7, #6
+ 418 005a 1946     		mov	r1, r3
+ 419 005c 0020     		movs	r0, #0
+ 420 005e FFF7FEFF 		bl	BMI088_read_single_reg
+ 421              		.loc 1 248 5 discriminator 2
+ 422 0062 FFF7FEFF 		bl	BMI088_GYRO_NS_H
+ 249:Drivers/Chip/bmi088/BMI088driver.c ****     BMI088_delay_us(BMI088_COM_WAIT_SENSOR_TIME);
+ 423              		.loc 1 249 5 is_stmt 1
+ 424 0066 9620     		movs	r0, #150
+ 425 0068 FFF7FEFF 		bl	BMI088_delay_us
+ 250:Drivers/Chip/bmi088/BMI088driver.c ****     BMI088_gyro_read_single_reg(BMI088_GYRO_CHIP_ID, res);
+ 426              		.loc 1 250 5
+ 427 006c FFF7FEFF 		bl	BMI088_GYRO_NS_L
+ 428              		.loc 1 250 5 is_stmt 0 discriminator 1
+ 429 0070 BB1D     		adds	r3, r7, #6
+ 430 0072 1946     		mov	r1, r3
+ 431 0074 0020     		movs	r0, #0
+ 432 0076 FFF7FEFF 		bl	BMI088_read_single_reg
+ 433              		.loc 1 250 5 discriminator 2
+ 434 007a FFF7FEFF 		bl	BMI088_GYRO_NS_H
+ 251:Drivers/Chip/bmi088/BMI088driver.c ****     BMI088_delay_us(BMI088_COM_WAIT_SENSOR_TIME);
+ 435              		.loc 1 251 5 is_stmt 1
+ 436 007e 9620     		movs	r0, #150
+ 437 0080 FFF7FEFF 		bl	BMI088_delay_us
+ 252:Drivers/Chip/bmi088/BMI088driver.c **** 
+ 253:Drivers/Chip/bmi088/BMI088driver.c ****     // check the "who am I"
+ 254:Drivers/Chip/bmi088/BMI088driver.c ****     if (res != BMI088_GYRO_CHIP_ID_VALUE)
+ 438              		.loc 1 254 13
+ 439 0084 BB79     		ldrb	r3, [r7, #6]	@ zero_extendqisi2
+ 440              		.loc 1 254 8
+ 441 0086 0F2B     		cmp	r3, #15
+ARM GAS  C:\Users\fffff\AppData\Local\Temp\ccwcu9eo.s 			page 13
+
+
+ 442 0088 01D0     		beq	.L12
+ 255:Drivers/Chip/bmi088/BMI088driver.c ****     {
+ 256:Drivers/Chip/bmi088/BMI088driver.c ****         return BMI088_NO_SENSOR;
+ 443              		.loc 1 256 16
+ 444 008a FF23     		movs	r3, #255
+ 445 008c 49E0     		b	.L17
+ 446              	.L12:
+ 257:Drivers/Chip/bmi088/BMI088driver.c ****     }
+ 258:Drivers/Chip/bmi088/BMI088driver.c **** 
+ 259:Drivers/Chip/bmi088/BMI088driver.c ****     //set gyro sonsor config and check
+ 260:Drivers/Chip/bmi088/BMI088driver.c ****     for (write_reg_num = 0; write_reg_num < BMI088_WRITE_GYRO_REG_NUM; write_reg_num++)
+ 447              		.loc 1 260 24
+ 448 008e 0023     		movs	r3, #0
+ 449 0090 FB71     		strb	r3, [r7, #7]
+ 450              		.loc 1 260 5
+ 451 0092 42E0     		b	.L14
+ 452              	.L16:
+ 261:Drivers/Chip/bmi088/BMI088driver.c ****     {
+ 262:Drivers/Chip/bmi088/BMI088driver.c **** 
+ 263:Drivers/Chip/bmi088/BMI088driver.c ****         BMI088_gyro_write_single_reg(write_BMI088_gyro_reg_data_error[write_reg_num][0], write_BMI0
+ 453              		.loc 1 263 9
+ 454 0094 FFF7FEFF 		bl	BMI088_GYRO_NS_L
+ 455              		.loc 1 263 9 is_stmt 0 discriminator 1
+ 456 0098 FA79     		ldrb	r2, [r7, #7]	@ zero_extendqisi2
+ 457 009a 2449     		ldr	r1, .L18
+ 458 009c 1346     		mov	r3, r2
+ 459 009e 5B00     		lsls	r3, r3, #1
+ 460 00a0 1344     		add	r3, r3, r2
+ 461 00a2 0B44     		add	r3, r3, r1
+ 462 00a4 1878     		ldrb	r0, [r3]	@ zero_extendqisi2
+ 463 00a6 FA79     		ldrb	r2, [r7, #7]	@ zero_extendqisi2
+ 464 00a8 2049     		ldr	r1, .L18
+ 465 00aa 1346     		mov	r3, r2
+ 466 00ac 5B00     		lsls	r3, r3, #1
+ 467 00ae 1344     		add	r3, r3, r2
+ 468 00b0 0B44     		add	r3, r3, r1
+ 469 00b2 0133     		adds	r3, r3, #1
+ 470 00b4 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 471 00b6 1946     		mov	r1, r3
+ 472 00b8 FFF7FEFF 		bl	BMI088_write_single_reg
+ 473              		.loc 1 263 9 discriminator 2
+ 474 00bc FFF7FEFF 		bl	BMI088_GYRO_NS_H
+ 264:Drivers/Chip/bmi088/BMI088driver.c ****         BMI088_delay_us(BMI088_COM_WAIT_SENSOR_TIME);
+ 475              		.loc 1 264 9 is_stmt 1
+ 476 00c0 9620     		movs	r0, #150
+ 477 00c2 FFF7FEFF 		bl	BMI088_delay_us
+ 265:Drivers/Chip/bmi088/BMI088driver.c **** 
+ 266:Drivers/Chip/bmi088/BMI088driver.c ****         BMI088_gyro_read_single_reg(write_BMI088_gyro_reg_data_error[write_reg_num][0], res);
+ 478              		.loc 1 266 9
+ 479 00c6 FFF7FEFF 		bl	BMI088_GYRO_NS_L
+ 480              		.loc 1 266 9 is_stmt 0 discriminator 1
+ 481 00ca FA79     		ldrb	r2, [r7, #7]	@ zero_extendqisi2
+ 482 00cc 1749     		ldr	r1, .L18
+ 483 00ce 1346     		mov	r3, r2
+ 484 00d0 5B00     		lsls	r3, r3, #1
+ 485 00d2 1344     		add	r3, r3, r2
+ 486 00d4 0B44     		add	r3, r3, r1
+ARM GAS  C:\Users\fffff\AppData\Local\Temp\ccwcu9eo.s 			page 14
+
+
+ 487 00d6 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 488 00d8 BA1D     		adds	r2, r7, #6
+ 489 00da 1146     		mov	r1, r2
+ 490 00dc 1846     		mov	r0, r3
+ 491 00de FFF7FEFF 		bl	BMI088_read_single_reg
+ 492              		.loc 1 266 9 discriminator 2
+ 493 00e2 FFF7FEFF 		bl	BMI088_GYRO_NS_H
+ 267:Drivers/Chip/bmi088/BMI088driver.c ****         BMI088_delay_us(BMI088_COM_WAIT_SENSOR_TIME);
+ 494              		.loc 1 267 9 is_stmt 1
+ 495 00e6 9620     		movs	r0, #150
+ 496 00e8 FFF7FEFF 		bl	BMI088_delay_us
+ 268:Drivers/Chip/bmi088/BMI088driver.c **** 
+ 269:Drivers/Chip/bmi088/BMI088driver.c ****         if (res != write_BMI088_gyro_reg_data_error[write_reg_num][1])
+ 497              		.loc 1 269 67
+ 498 00ec FA79     		ldrb	r2, [r7, #7]	@ zero_extendqisi2
+ 499 00ee 0F49     		ldr	r1, .L18
+ 500 00f0 1346     		mov	r3, r2
+ 501 00f2 5B00     		lsls	r3, r3, #1
+ 502 00f4 1344     		add	r3, r3, r2
+ 503 00f6 0B44     		add	r3, r3, r1
+ 504 00f8 0133     		adds	r3, r3, #1
+ 505 00fa 1A78     		ldrb	r2, [r3]	@ zero_extendqisi2
+ 506              		.loc 1 269 17
+ 507 00fc BB79     		ldrb	r3, [r7, #6]	@ zero_extendqisi2
+ 508              		.loc 1 269 12
+ 509 00fe 9A42     		cmp	r2, r3
+ 510 0100 08D0     		beq	.L15
+ 270:Drivers/Chip/bmi088/BMI088driver.c ****         {
+ 271:Drivers/Chip/bmi088/BMI088driver.c ****             return write_BMI088_gyro_reg_data_error[write_reg_num][2];
+ 511              		.loc 1 271 67
+ 512 0102 FA79     		ldrb	r2, [r7, #7]	@ zero_extendqisi2
+ 513 0104 0949     		ldr	r1, .L18
+ 514 0106 1346     		mov	r3, r2
+ 515 0108 5B00     		lsls	r3, r3, #1
+ 516 010a 1344     		add	r3, r3, r2
+ 517 010c 0B44     		add	r3, r3, r1
+ 518 010e 0233     		adds	r3, r3, #2
+ 519 0110 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 520 0112 06E0     		b	.L17
+ 521              	.L15:
+ 260:Drivers/Chip/bmi088/BMI088driver.c ****     {
+ 522              		.loc 1 260 85 discriminator 2
+ 523 0114 FB79     		ldrb	r3, [r7, #7]	@ zero_extendqisi2
+ 524 0116 0133     		adds	r3, r3, #1
+ 525 0118 FB71     		strb	r3, [r7, #7]
+ 526              	.L14:
+ 260:Drivers/Chip/bmi088/BMI088driver.c ****     {
+ 527              		.loc 1 260 43 discriminator 1
+ 528 011a FB79     		ldrb	r3, [r7, #7]	@ zero_extendqisi2
+ 529 011c 052B     		cmp	r3, #5
+ 530 011e B9D9     		bls	.L16
+ 272:Drivers/Chip/bmi088/BMI088driver.c ****         }
+ 273:Drivers/Chip/bmi088/BMI088driver.c ****     }
+ 274:Drivers/Chip/bmi088/BMI088driver.c **** 
+ 275:Drivers/Chip/bmi088/BMI088driver.c ****     return BMI088_NO_ERROR;
+ 531              		.loc 1 275 12
+ 532 0120 0023     		movs	r3, #0
+ARM GAS  C:\Users\fffff\AppData\Local\Temp\ccwcu9eo.s 			page 15
+
+
+ 533              	.L17:
+ 276:Drivers/Chip/bmi088/BMI088driver.c **** }
+ 534              		.loc 1 276 1
+ 535 0122 1846     		mov	r0, r3
+ 536 0124 0837     		adds	r7, r7, #8
+ 537              	.LCFI13:
+ 538              		.cfi_def_cfa_offset 8
+ 539 0126 BD46     		mov	sp, r7
+ 540              	.LCFI14:
+ 541              		.cfi_def_cfa_register 13
+ 542              		@ sp needed
+ 543 0128 80BD     		pop	{r7, pc}
+ 544              	.L19:
+ 545 012a 00BF     		.align	2
+ 546              	.L18:
+ 547 012c 00000000 		.word	write_BMI088_gyro_reg_data_error
+ 548              		.cfi_endproc
+ 549              	.LFE146:
+ 551              		.section	.text.BMI088_read,"ax",%progbits
+ 552              		.align	1
+ 553              		.global	BMI088_read
+ 554              		.syntax unified
+ 555              		.thumb
+ 556              		.thumb_func
+ 558              	BMI088_read:
+ 559              	.LFB147:
+ 277:Drivers/Chip/bmi088/BMI088driver.c **** /**
+ 278:Drivers/Chip/bmi088/BMI088driver.c **** ************************************************************************
+ 279:Drivers/Chip/bmi088/BMI088driver.c **** * @brief:      	BMI088_read(float gyro[3], float accel[3], float *temperate)
+ 280:Drivers/Chip/bmi088/BMI088driver.c **** * @param:       gyro - 陀螺仪数据数组 (x, y, z)
+ 281:Drivers/Chip/bmi088/BMI088driver.c **** * @param:       accel - 加速度计数据数组 (x, y, z)
+ 282:Drivers/Chip/bmi088/BMI088driver.c **** * @param:       temperate - 温度数据指针
+ 283:Drivers/Chip/bmi088/BMI088driver.c **** * @retval:     	void
+ 284:Drivers/Chip/bmi088/BMI088driver.c **** * @details:    	读取BMI088传感器数据，包括加速度、陀螺仪和温度
+ 285:Drivers/Chip/bmi088/BMI088driver.c **** ************************************************************************
+ 286:Drivers/Chip/bmi088/BMI088driver.c **** **/
+ 287:Drivers/Chip/bmi088/BMI088driver.c **** void BMI088_read(float gyro[3], float accel[3], float *temperate)
+ 288:Drivers/Chip/bmi088/BMI088driver.c **** {
+ 560              		.loc 1 288 1
+ 561              		.cfi_startproc
+ 562              		@ args = 0, pretend = 0, frame = 32
+ 563              		@ frame_needed = 1, uses_anonymous_args = 0
+ 564 0000 80B5     		push	{r7, lr}
+ 565              	.LCFI15:
+ 566              		.cfi_def_cfa_offset 8
+ 567              		.cfi_offset 7, -8
+ 568              		.cfi_offset 14, -4
+ 569 0002 88B0     		sub	sp, sp, #32
+ 570              	.LCFI16:
+ 571              		.cfi_def_cfa_offset 40
+ 572 0004 00AF     		add	r7, sp, #0
+ 573              	.LCFI17:
+ 574              		.cfi_def_cfa_register 7
+ 575 0006 F860     		str	r0, [r7, #12]
+ 576 0008 B960     		str	r1, [r7, #8]
+ 577 000a 7A60     		str	r2, [r7, #4]
+ 289:Drivers/Chip/bmi088/BMI088driver.c ****     uint8_t buf[8] = {0, 0, 0, 0, 0, 0};
+ARM GAS  C:\Users\fffff\AppData\Local\Temp\ccwcu9eo.s 			page 16
+
+
+ 578              		.loc 1 289 13
+ 579 000c 07F11403 		add	r3, r7, #20
+ 580 0010 0022     		movs	r2, #0
+ 581 0012 1A60     		str	r2, [r3]
+ 582 0014 5A60     		str	r2, [r3, #4]
+ 290:Drivers/Chip/bmi088/BMI088driver.c ****     int16_t bmi088_raw_temp;
+ 291:Drivers/Chip/bmi088/BMI088driver.c **** 
+ 292:Drivers/Chip/bmi088/BMI088driver.c ****     BMI088_accel_read_muli_reg(BMI088_ACCEL_XOUT_L, buf, 6);
+ 583              		.loc 1 292 5
+ 584 0016 FFF7FEFF 		bl	BMI088_ACCEL_NS_L
+ 585              		.loc 1 292 5 is_stmt 0 discriminator 1
+ 586 001a 9220     		movs	r0, #146
+ 587 001c FFF7FEFF 		bl	BMI088_read_write_byte
+ 588              		.loc 1 292 5 discriminator 2
+ 589 0020 07F11403 		add	r3, r7, #20
+ 590 0024 0622     		movs	r2, #6
+ 591 0026 1946     		mov	r1, r3
+ 592 0028 1220     		movs	r0, #18
+ 593 002a FFF7FEFF 		bl	BMI088_read_muli_reg
+ 594              		.loc 1 292 5 discriminator 3
+ 595 002e FFF7FEFF 		bl	BMI088_ACCEL_NS_H
+ 293:Drivers/Chip/bmi088/BMI088driver.c **** 
+ 294:Drivers/Chip/bmi088/BMI088driver.c ****     bmi088_raw_temp = (int16_t)((buf[1]) << 8) | buf[0];
+ 596              		.loc 1 294 37 is_stmt 1
+ 597 0032 7B7D     		ldrb	r3, [r7, #21]	@ zero_extendqisi2
+ 598              		.loc 1 294 23
+ 599 0034 1BB2     		sxth	r3, r3
+ 600 0036 1B02     		lsls	r3, r3, #8
+ 601 0038 1AB2     		sxth	r2, r3
+ 602              		.loc 1 294 53
+ 603 003a 3B7D     		ldrb	r3, [r7, #20]	@ zero_extendqisi2
+ 604 003c 1BB2     		sxth	r3, r3
+ 605              		.loc 1 294 21
+ 606 003e 1343     		orrs	r3, r3, r2
+ 607 0040 FB83     		strh	r3, [r7, #30]	@ movhi
+ 295:Drivers/Chip/bmi088/BMI088driver.c ****     accel[0] = bmi088_raw_temp * BMI088_ACCEL_SEN;
+ 608              		.loc 1 295 32
+ 609 0042 B7F91E30 		ldrsh	r3, [r7, #30]
+ 610 0046 07EE903A 		vmov	s15, r3	@ int
+ 611 004a B8EEE77A 		vcvt.f32.s32	s14, s15
+ 612 004e 5F4B     		ldr	r3, .L23
+ 613 0050 D3ED007A 		vldr.32	s15, [r3]
+ 614 0054 67EE277A 		vmul.f32	s15, s14, s15
+ 615              		.loc 1 295 14
+ 616 0058 BB68     		ldr	r3, [r7, #8]
+ 617 005a C3ED007A 		vstr.32	s15, [r3]
+ 296:Drivers/Chip/bmi088/BMI088driver.c ****     bmi088_raw_temp = (int16_t)((buf[3]) << 8) | buf[2];
+ 618              		.loc 1 296 37
+ 619 005e FB7D     		ldrb	r3, [r7, #23]	@ zero_extendqisi2
+ 620              		.loc 1 296 23
+ 621 0060 1BB2     		sxth	r3, r3
+ 622 0062 1B02     		lsls	r3, r3, #8
+ 623 0064 1AB2     		sxth	r2, r3
+ 624              		.loc 1 296 53
+ 625 0066 BB7D     		ldrb	r3, [r7, #22]	@ zero_extendqisi2
+ 626 0068 1BB2     		sxth	r3, r3
+ 627              		.loc 1 296 21
+ARM GAS  C:\Users\fffff\AppData\Local\Temp\ccwcu9eo.s 			page 17
+
+
+ 628 006a 1343     		orrs	r3, r3, r2
+ 629 006c FB83     		strh	r3, [r7, #30]	@ movhi
+ 297:Drivers/Chip/bmi088/BMI088driver.c ****     accel[1] = bmi088_raw_temp * BMI088_ACCEL_SEN;
+ 630              		.loc 1 297 32
+ 631 006e B7F91E30 		ldrsh	r3, [r7, #30]
+ 632 0072 07EE903A 		vmov	s15, r3	@ int
+ 633 0076 B8EEE77A 		vcvt.f32.s32	s14, s15
+ 634 007a 544B     		ldr	r3, .L23
+ 635 007c D3ED007A 		vldr.32	s15, [r3]
+ 636              		.loc 1 297 10
+ 637 0080 BB68     		ldr	r3, [r7, #8]
+ 638 0082 0433     		adds	r3, r3, #4
+ 639              		.loc 1 297 32
+ 640 0084 67EE277A 		vmul.f32	s15, s14, s15
+ 641              		.loc 1 297 14
+ 642 0088 C3ED007A 		vstr.32	s15, [r3]
+ 298:Drivers/Chip/bmi088/BMI088driver.c ****     bmi088_raw_temp = (int16_t)((buf[5]) << 8) | buf[4];
+ 643              		.loc 1 298 37
+ 644 008c 7B7E     		ldrb	r3, [r7, #25]	@ zero_extendqisi2
+ 645              		.loc 1 298 23
+ 646 008e 1BB2     		sxth	r3, r3
+ 647 0090 1B02     		lsls	r3, r3, #8
+ 648 0092 1AB2     		sxth	r2, r3
+ 649              		.loc 1 298 53
+ 650 0094 3B7E     		ldrb	r3, [r7, #24]	@ zero_extendqisi2
+ 651 0096 1BB2     		sxth	r3, r3
+ 652              		.loc 1 298 21
+ 653 0098 1343     		orrs	r3, r3, r2
+ 654 009a FB83     		strh	r3, [r7, #30]	@ movhi
+ 299:Drivers/Chip/bmi088/BMI088driver.c ****     accel[2] = bmi088_raw_temp * BMI088_ACCEL_SEN;
+ 655              		.loc 1 299 32
+ 656 009c B7F91E30 		ldrsh	r3, [r7, #30]
+ 657 00a0 07EE903A 		vmov	s15, r3	@ int
+ 658 00a4 B8EEE77A 		vcvt.f32.s32	s14, s15
+ 659 00a8 484B     		ldr	r3, .L23
+ 660 00aa D3ED007A 		vldr.32	s15, [r3]
+ 661              		.loc 1 299 10
+ 662 00ae BB68     		ldr	r3, [r7, #8]
+ 663 00b0 0833     		adds	r3, r3, #8
+ 664              		.loc 1 299 32
+ 665 00b2 67EE277A 		vmul.f32	s15, s14, s15
+ 666              		.loc 1 299 14
+ 667 00b6 C3ED007A 		vstr.32	s15, [r3]
+ 300:Drivers/Chip/bmi088/BMI088driver.c **** 
+ 301:Drivers/Chip/bmi088/BMI088driver.c ****     BMI088_gyro_read_muli_reg(BMI088_GYRO_CHIP_ID, buf, 8);
+ 668              		.loc 1 301 5
+ 669 00ba FFF7FEFF 		bl	BMI088_GYRO_NS_L
+ 670              		.loc 1 301 5 is_stmt 0 discriminator 1
+ 671 00be 07F11403 		add	r3, r7, #20
+ 672 00c2 0822     		movs	r2, #8
+ 673 00c4 1946     		mov	r1, r3
+ 674 00c6 0020     		movs	r0, #0
+ 675 00c8 FFF7FEFF 		bl	BMI088_read_muli_reg
+ 676              		.loc 1 301 5 discriminator 2
+ 677 00cc FFF7FEFF 		bl	BMI088_GYRO_NS_H
+ 302:Drivers/Chip/bmi088/BMI088driver.c ****     if(buf[0] == BMI088_GYRO_CHIP_ID_VALUE)
+ 678              		.loc 1 302 11 is_stmt 1
+ARM GAS  C:\Users\fffff\AppData\Local\Temp\ccwcu9eo.s 			page 18
+
+
+ 679 00d0 3B7D     		ldrb	r3, [r7, #20]	@ zero_extendqisi2
+ 680              		.loc 1 302 7
+ 681 00d2 0F2B     		cmp	r3, #15
+ 682 00d4 43D1     		bne	.L21
+ 303:Drivers/Chip/bmi088/BMI088driver.c ****     {
+ 304:Drivers/Chip/bmi088/BMI088driver.c ****         bmi088_raw_temp = (int16_t)((buf[3]) << 8) | buf[2];
+ 683              		.loc 1 304 41
+ 684 00d6 FB7D     		ldrb	r3, [r7, #23]	@ zero_extendqisi2
+ 685              		.loc 1 304 27
+ 686 00d8 1BB2     		sxth	r3, r3
+ 687 00da 1B02     		lsls	r3, r3, #8
+ 688 00dc 1AB2     		sxth	r2, r3
+ 689              		.loc 1 304 57
+ 690 00de BB7D     		ldrb	r3, [r7, #22]	@ zero_extendqisi2
+ 691 00e0 1BB2     		sxth	r3, r3
+ 692              		.loc 1 304 25
+ 693 00e2 1343     		orrs	r3, r3, r2
+ 694 00e4 FB83     		strh	r3, [r7, #30]	@ movhi
+ 305:Drivers/Chip/bmi088/BMI088driver.c ****         gyro[0] = bmi088_raw_temp * BMI088_GYRO_SEN;
+ 695              		.loc 1 305 35
+ 696 00e6 B7F91E30 		ldrsh	r3, [r7, #30]
+ 697 00ea 07EE903A 		vmov	s15, r3	@ int
+ 698 00ee B8EEE77A 		vcvt.f32.s32	s14, s15
+ 699 00f2 374B     		ldr	r3, .L23+4
+ 700 00f4 D3ED007A 		vldr.32	s15, [r3]
+ 701 00f8 67EE277A 		vmul.f32	s15, s14, s15
+ 702              		.loc 1 305 17
+ 703 00fc FB68     		ldr	r3, [r7, #12]
+ 704 00fe C3ED007A 		vstr.32	s15, [r3]
+ 306:Drivers/Chip/bmi088/BMI088driver.c ****         bmi088_raw_temp = (int16_t)((buf[5]) << 8) | buf[4];
+ 705              		.loc 1 306 41
+ 706 0102 7B7E     		ldrb	r3, [r7, #25]	@ zero_extendqisi2
+ 707              		.loc 1 306 27
+ 708 0104 1BB2     		sxth	r3, r3
+ 709 0106 1B02     		lsls	r3, r3, #8
+ 710 0108 1AB2     		sxth	r2, r3
+ 711              		.loc 1 306 57
+ 712 010a 3B7E     		ldrb	r3, [r7, #24]	@ zero_extendqisi2
+ 713 010c 1BB2     		sxth	r3, r3
+ 714              		.loc 1 306 25
+ 715 010e 1343     		orrs	r3, r3, r2
+ 716 0110 FB83     		strh	r3, [r7, #30]	@ movhi
+ 307:Drivers/Chip/bmi088/BMI088driver.c ****         gyro[1] = bmi088_raw_temp * BMI088_GYRO_SEN;
+ 717              		.loc 1 307 35
+ 718 0112 B7F91E30 		ldrsh	r3, [r7, #30]
+ 719 0116 07EE903A 		vmov	s15, r3	@ int
+ 720 011a B8EEE77A 		vcvt.f32.s32	s14, s15
+ 721 011e 2C4B     		ldr	r3, .L23+4
+ 722 0120 D3ED007A 		vldr.32	s15, [r3]
+ 723              		.loc 1 307 13
+ 724 0124 FB68     		ldr	r3, [r7, #12]
+ 725 0126 0433     		adds	r3, r3, #4
+ 726              		.loc 1 307 35
+ 727 0128 67EE277A 		vmul.f32	s15, s14, s15
+ 728              		.loc 1 307 17
+ 729 012c C3ED007A 		vstr.32	s15, [r3]
+ 308:Drivers/Chip/bmi088/BMI088driver.c ****         bmi088_raw_temp = (int16_t)((buf[7]) << 8) | buf[6];
+ARM GAS  C:\Users\fffff\AppData\Local\Temp\ccwcu9eo.s 			page 19
+
+
+ 730              		.loc 1 308 41
+ 731 0130 FB7E     		ldrb	r3, [r7, #27]	@ zero_extendqisi2
+ 732              		.loc 1 308 27
+ 733 0132 1BB2     		sxth	r3, r3
+ 734 0134 1B02     		lsls	r3, r3, #8
+ 735 0136 1AB2     		sxth	r2, r3
+ 736              		.loc 1 308 57
+ 737 0138 BB7E     		ldrb	r3, [r7, #26]	@ zero_extendqisi2
+ 738 013a 1BB2     		sxth	r3, r3
+ 739              		.loc 1 308 25
+ 740 013c 1343     		orrs	r3, r3, r2
+ 741 013e FB83     		strh	r3, [r7, #30]	@ movhi
+ 309:Drivers/Chip/bmi088/BMI088driver.c ****         gyro[2] = bmi088_raw_temp * BMI088_GYRO_SEN;
+ 742              		.loc 1 309 35
+ 743 0140 B7F91E30 		ldrsh	r3, [r7, #30]
+ 744 0144 07EE903A 		vmov	s15, r3	@ int
+ 745 0148 B8EEE77A 		vcvt.f32.s32	s14, s15
+ 746 014c 204B     		ldr	r3, .L23+4
+ 747 014e D3ED007A 		vldr.32	s15, [r3]
+ 748              		.loc 1 309 13
+ 749 0152 FB68     		ldr	r3, [r7, #12]
+ 750 0154 0833     		adds	r3, r3, #8
+ 751              		.loc 1 309 35
+ 752 0156 67EE277A 		vmul.f32	s15, s14, s15
+ 753              		.loc 1 309 17
+ 754 015a C3ED007A 		vstr.32	s15, [r3]
+ 755              	.L21:
+ 310:Drivers/Chip/bmi088/BMI088driver.c ****     }
+ 311:Drivers/Chip/bmi088/BMI088driver.c ****     BMI088_accel_read_muli_reg(BMI088_TEMP_M, buf, 2);
+ 756              		.loc 1 311 5
+ 757 015e FFF7FEFF 		bl	BMI088_ACCEL_NS_L
+ 758              		.loc 1 311 5 is_stmt 0 discriminator 1
+ 759 0162 A220     		movs	r0, #162
+ 760 0164 FFF7FEFF 		bl	BMI088_read_write_byte
+ 761              		.loc 1 311 5 discriminator 2
+ 762 0168 07F11403 		add	r3, r7, #20
+ 763 016c 0222     		movs	r2, #2
+ 764 016e 1946     		mov	r1, r3
+ 765 0170 2220     		movs	r0, #34
+ 766 0172 FFF7FEFF 		bl	BMI088_read_muli_reg
+ 767              		.loc 1 311 5 discriminator 3
+ 768 0176 FFF7FEFF 		bl	BMI088_ACCEL_NS_H
+ 312:Drivers/Chip/bmi088/BMI088driver.c **** 
+ 313:Drivers/Chip/bmi088/BMI088driver.c ****     bmi088_raw_temp = (int16_t)((buf[0] << 3) | (buf[1] >> 5));
+ 769              		.loc 1 313 37 is_stmt 1
+ 770 017a 3B7D     		ldrb	r3, [r7, #20]	@ zero_extendqisi2
+ 771              		.loc 1 313 23
+ 772 017c 1BB2     		sxth	r3, r3
+ 773 017e DB00     		lsls	r3, r3, #3
+ 774 0180 1AB2     		sxth	r2, r3
+ 775              		.loc 1 313 53
+ 776 0182 7B7D     		ldrb	r3, [r7, #21]	@ zero_extendqisi2
+ 777              		.loc 1 313 23
+ 778 0184 5B09     		lsrs	r3, r3, #5
+ 779 0186 DBB2     		uxtb	r3, r3
+ 780 0188 1BB2     		sxth	r3, r3
+ 781              		.loc 1 313 21
+ARM GAS  C:\Users\fffff\AppData\Local\Temp\ccwcu9eo.s 			page 20
+
+
+ 782 018a 1343     		orrs	r3, r3, r2
+ 783 018c FB83     		strh	r3, [r7, #30]	@ movhi
+ 314:Drivers/Chip/bmi088/BMI088driver.c **** 
+ 315:Drivers/Chip/bmi088/BMI088driver.c ****     if (bmi088_raw_temp > 1023)
+ 784              		.loc 1 315 8
+ 785 018e B7F91E30 		ldrsh	r3, [r7, #30]
+ 786 0192 B3F5806F 		cmp	r3, #1024
+ 787 0196 04DB     		blt	.L22
+ 316:Drivers/Chip/bmi088/BMI088driver.c ****     {
+ 317:Drivers/Chip/bmi088/BMI088driver.c ****         bmi088_raw_temp -= 2048;
+ 788              		.loc 1 317 25
+ 789 0198 FB8B     		ldrh	r3, [r7, #30]
+ 790 019a A3F50063 		sub	r3, r3, #2048
+ 791 019e 9BB2     		uxth	r3, r3
+ 792 01a0 FB83     		strh	r3, [r7, #30]	@ movhi
+ 793              	.L22:
+ 318:Drivers/Chip/bmi088/BMI088driver.c ****     }
+ 319:Drivers/Chip/bmi088/BMI088driver.c **** 
+ 320:Drivers/Chip/bmi088/BMI088driver.c ****     *temperate = bmi088_raw_temp * BMI088_TEMP_FACTOR + BMI088_TEMP_OFFSET;
+ 794              		.loc 1 320 34
+ 795 01a2 B7F91E30 		ldrsh	r3, [r7, #30]
+ 796 01a6 07EE903A 		vmov	s15, r3	@ int
+ 797 01aa F8EEE77A 		vcvt.f32.s32	s15, s15
+ 798 01ae B4EE007A 		vmov.f32	s14, #1.25e-1
+ 799 01b2 67EE877A 		vmul.f32	s15, s15, s14
+ 800              		.loc 1 320 55
+ 801 01b6 B3EE077A 		vmov.f32	s14, #2.3e+1
+ 802 01ba 77EE877A 		vadd.f32	s15, s15, s14
+ 803              		.loc 1 320 16
+ 804 01be 7B68     		ldr	r3, [r7, #4]
+ 805 01c0 C3ED007A 		vstr.32	s15, [r3]
+ 321:Drivers/Chip/bmi088/BMI088driver.c **** }
+ 806              		.loc 1 321 1
+ 807 01c4 00BF     		nop
+ 808 01c6 2037     		adds	r7, r7, #32
+ 809              	.LCFI18:
+ 810              		.cfi_def_cfa_offset 8
+ 811 01c8 BD46     		mov	sp, r7
+ 812              	.LCFI19:
+ 813              		.cfi_def_cfa_register 13
+ 814              		@ sp needed
+ 815 01ca 80BD     		pop	{r7, pc}
+ 816              	.L24:
+ 817              		.align	2
+ 818              	.L23:
+ 819 01cc 00000000 		.word	BMI088_ACCEL_SEN
+ 820 01d0 00000000 		.word	BMI088_GYRO_SEN
+ 821              		.cfi_endproc
+ 822              	.LFE147:
+ 824              		.section	.text.BMI088_write_single_reg,"ax",%progbits
+ 825              		.align	1
+ 826              		.syntax unified
+ 827              		.thumb
+ 828              		.thumb_func
+ 830              	BMI088_write_single_reg:
+ 831              	.LFB148:
+ 322:Drivers/Chip/bmi088/BMI088driver.c **** 
+ARM GAS  C:\Users\fffff\AppData\Local\Temp\ccwcu9eo.s 			page 21
+
+
+ 323:Drivers/Chip/bmi088/BMI088driver.c **** #if defined(BMI088_USE_SPI)
+ 324:Drivers/Chip/bmi088/BMI088driver.c **** /**
+ 325:Drivers/Chip/bmi088/BMI088driver.c **** ************************************************************************
+ 326:Drivers/Chip/bmi088/BMI088driver.c **** * @brief:      	BMI088_write_single_reg(uint8_t reg, uint8_t data)
+ 327:Drivers/Chip/bmi088/BMI088driver.c **** * @param:       reg - 寄存器地址
+ 328:Drivers/Chip/bmi088/BMI088driver.c **** * @param:       data - 写入的数据
+ 329:Drivers/Chip/bmi088/BMI088driver.c **** * @retval:     	void
+ 330:Drivers/Chip/bmi088/BMI088driver.c **** * @details:    	向BMI088传感器写入单个寄存器的数据
+ 331:Drivers/Chip/bmi088/BMI088driver.c **** ************************************************************************
+ 332:Drivers/Chip/bmi088/BMI088driver.c **** **/
+ 333:Drivers/Chip/bmi088/BMI088driver.c **** static void BMI088_write_single_reg(uint8_t reg, uint8_t data)
+ 334:Drivers/Chip/bmi088/BMI088driver.c **** {
+ 832              		.loc 1 334 1
+ 833              		.cfi_startproc
+ 834              		@ args = 0, pretend = 0, frame = 8
+ 835              		@ frame_needed = 1, uses_anonymous_args = 0
+ 836 0000 80B5     		push	{r7, lr}
+ 837              	.LCFI20:
+ 838              		.cfi_def_cfa_offset 8
+ 839              		.cfi_offset 7, -8
+ 840              		.cfi_offset 14, -4
+ 841 0002 82B0     		sub	sp, sp, #8
+ 842              	.LCFI21:
+ 843              		.cfi_def_cfa_offset 16
+ 844 0004 00AF     		add	r7, sp, #0
+ 845              	.LCFI22:
+ 846              		.cfi_def_cfa_register 7
+ 847 0006 0346     		mov	r3, r0
+ 848 0008 0A46     		mov	r2, r1
+ 849 000a FB71     		strb	r3, [r7, #7]
+ 850 000c 1346     		mov	r3, r2
+ 851 000e BB71     		strb	r3, [r7, #6]
+ 335:Drivers/Chip/bmi088/BMI088driver.c ****     BMI088_read_write_byte(reg);
+ 852              		.loc 1 335 5
+ 853 0010 FB79     		ldrb	r3, [r7, #7]	@ zero_extendqisi2
+ 854 0012 1846     		mov	r0, r3
+ 855 0014 FFF7FEFF 		bl	BMI088_read_write_byte
+ 336:Drivers/Chip/bmi088/BMI088driver.c ****     BMI088_read_write_byte(data);
+ 856              		.loc 1 336 5
+ 857 0018 BB79     		ldrb	r3, [r7, #6]	@ zero_extendqisi2
+ 858 001a 1846     		mov	r0, r3
+ 859 001c FFF7FEFF 		bl	BMI088_read_write_byte
+ 337:Drivers/Chip/bmi088/BMI088driver.c **** }
+ 860              		.loc 1 337 1
+ 861 0020 00BF     		nop
+ 862 0022 0837     		adds	r7, r7, #8
+ 863              	.LCFI23:
+ 864              		.cfi_def_cfa_offset 8
+ 865 0024 BD46     		mov	sp, r7
+ 866              	.LCFI24:
+ 867              		.cfi_def_cfa_register 13
+ 868              		@ sp needed
+ 869 0026 80BD     		pop	{r7, pc}
+ 870              		.cfi_endproc
+ 871              	.LFE148:
+ 873              		.section	.text.BMI088_read_single_reg,"ax",%progbits
+ 874              		.align	1
+ARM GAS  C:\Users\fffff\AppData\Local\Temp\ccwcu9eo.s 			page 22
+
+
+ 875              		.syntax unified
+ 876              		.thumb
+ 877              		.thumb_func
+ 879              	BMI088_read_single_reg:
+ 880              	.LFB149:
+ 338:Drivers/Chip/bmi088/BMI088driver.c **** /**
+ 339:Drivers/Chip/bmi088/BMI088driver.c **** ************************************************************************
+ 340:Drivers/Chip/bmi088/BMI088driver.c **** * @brief:      	BMI088_read_single_reg(uint8_t reg, uint8_t *return_data)
+ 341:Drivers/Chip/bmi088/BMI088driver.c **** * @param:       reg - 寄存器地址
+ 342:Drivers/Chip/bmi088/BMI088driver.c **** * @param:       return_data - 读取的寄存器数据
+ 343:Drivers/Chip/bmi088/BMI088driver.c **** * @retval:     	void
+ 344:Drivers/Chip/bmi088/BMI088driver.c **** * @details:    	从BMI088传感器读取单个寄存器的数据
+ 345:Drivers/Chip/bmi088/BMI088driver.c **** ************************************************************************
+ 346:Drivers/Chip/bmi088/BMI088driver.c **** **/
+ 347:Drivers/Chip/bmi088/BMI088driver.c **** static void BMI088_read_single_reg(uint8_t reg, uint8_t *return_data)
+ 348:Drivers/Chip/bmi088/BMI088driver.c **** {
+ 881              		.loc 1 348 1
+ 882              		.cfi_startproc
+ 883              		@ args = 0, pretend = 0, frame = 8
+ 884              		@ frame_needed = 1, uses_anonymous_args = 0
+ 885 0000 80B5     		push	{r7, lr}
+ 886              	.LCFI25:
+ 887              		.cfi_def_cfa_offset 8
+ 888              		.cfi_offset 7, -8
+ 889              		.cfi_offset 14, -4
+ 890 0002 82B0     		sub	sp, sp, #8
+ 891              	.LCFI26:
+ 892              		.cfi_def_cfa_offset 16
+ 893 0004 00AF     		add	r7, sp, #0
+ 894              	.LCFI27:
+ 895              		.cfi_def_cfa_register 7
+ 896 0006 0346     		mov	r3, r0
+ 897 0008 3960     		str	r1, [r7]
+ 898 000a FB71     		strb	r3, [r7, #7]
+ 349:Drivers/Chip/bmi088/BMI088driver.c ****     BMI088_read_write_byte(reg | 0x80);
+ 899              		.loc 1 349 5
+ 900 000c FB79     		ldrb	r3, [r7, #7]
+ 901 000e 63F07F03 		orn	r3, r3, #127
+ 902 0012 DBB2     		uxtb	r3, r3
+ 903 0014 1846     		mov	r0, r3
+ 904 0016 FFF7FEFF 		bl	BMI088_read_write_byte
+ 350:Drivers/Chip/bmi088/BMI088driver.c ****     *return_data = BMI088_read_write_byte(0x55);
+ 905              		.loc 1 350 20
+ 906 001a 5520     		movs	r0, #85
+ 907 001c FFF7FEFF 		bl	BMI088_read_write_byte
+ 908 0020 0346     		mov	r3, r0
+ 909 0022 1A46     		mov	r2, r3
+ 910              		.loc 1 350 18 discriminator 1
+ 911 0024 3B68     		ldr	r3, [r7]
+ 912 0026 1A70     		strb	r2, [r3]
+ 351:Drivers/Chip/bmi088/BMI088driver.c **** }
+ 913              		.loc 1 351 1
+ 914 0028 00BF     		nop
+ 915 002a 0837     		adds	r7, r7, #8
+ 916              	.LCFI28:
+ 917              		.cfi_def_cfa_offset 8
+ 918 002c BD46     		mov	sp, r7
+ARM GAS  C:\Users\fffff\AppData\Local\Temp\ccwcu9eo.s 			page 23
+
+
+ 919              	.LCFI29:
+ 920              		.cfi_def_cfa_register 13
+ 921              		@ sp needed
+ 922 002e 80BD     		pop	{r7, pc}
+ 923              		.cfi_endproc
+ 924              	.LFE149:
+ 926              		.section	.text.BMI088_read_muli_reg,"ax",%progbits
+ 927              		.align	1
+ 928              		.syntax unified
+ 929              		.thumb
+ 930              		.thumb_func
+ 932              	BMI088_read_muli_reg:
+ 933              	.LFB150:
+ 352:Drivers/Chip/bmi088/BMI088driver.c **** 
+ 353:Drivers/Chip/bmi088/BMI088driver.c **** //static void BMI088_write_muli_reg(uint8_t reg, uint8_t* buf, uint8_t len )
+ 354:Drivers/Chip/bmi088/BMI088driver.c **** //{
+ 355:Drivers/Chip/bmi088/BMI088driver.c **** //    BMI088_read_write_byte( reg );
+ 356:Drivers/Chip/bmi088/BMI088driver.c **** //    while( len != 0 )
+ 357:Drivers/Chip/bmi088/BMI088driver.c **** //    {
+ 358:Drivers/Chip/bmi088/BMI088driver.c **** 
+ 359:Drivers/Chip/bmi088/BMI088driver.c **** //        BMI088_read_write_byte( *buf );
+ 360:Drivers/Chip/bmi088/BMI088driver.c **** //        buf ++;
+ 361:Drivers/Chip/bmi088/BMI088driver.c **** //        len --;
+ 362:Drivers/Chip/bmi088/BMI088driver.c **** //    }
+ 363:Drivers/Chip/bmi088/BMI088driver.c **** 
+ 364:Drivers/Chip/bmi088/BMI088driver.c **** //}
+ 365:Drivers/Chip/bmi088/BMI088driver.c **** /**
+ 366:Drivers/Chip/bmi088/BMI088driver.c **** ************************************************************************
+ 367:Drivers/Chip/bmi088/BMI088driver.c **** * @brief:      	BMI088_read_muli_reg(uint8_t reg, uint8_t *buf, uint8_t len)
+ 368:Drivers/Chip/bmi088/BMI088driver.c **** * @param:       reg - 起始寄存器地址
+ 369:Drivers/Chip/bmi088/BMI088driver.c **** *               buf - 存储读取数据的缓冲区
+ 370:Drivers/Chip/bmi088/BMI088driver.c **** *               len - 要读取的字节数
+ 371:Drivers/Chip/bmi088/BMI088driver.c **** * @retval:     	void
+ 372:Drivers/Chip/bmi088/BMI088driver.c **** * @details:    	从BMI088传感器连续读取多个寄存器的数据
+ 373:Drivers/Chip/bmi088/BMI088driver.c **** ************************************************************************
+ 374:Drivers/Chip/bmi088/BMI088driver.c **** **/
+ 375:Drivers/Chip/bmi088/BMI088driver.c **** static void BMI088_read_muli_reg(uint8_t reg, uint8_t *buf, uint8_t len)
+ 376:Drivers/Chip/bmi088/BMI088driver.c **** {
+ 934              		.loc 1 376 1
+ 935              		.cfi_startproc
+ 936              		@ args = 0, pretend = 0, frame = 8
+ 937              		@ frame_needed = 1, uses_anonymous_args = 0
+ 938 0000 80B5     		push	{r7, lr}
+ 939              	.LCFI30:
+ 940              		.cfi_def_cfa_offset 8
+ 941              		.cfi_offset 7, -8
+ 942              		.cfi_offset 14, -4
+ 943 0002 82B0     		sub	sp, sp, #8
+ 944              	.LCFI31:
+ 945              		.cfi_def_cfa_offset 16
+ 946 0004 00AF     		add	r7, sp, #0
+ 947              	.LCFI32:
+ 948              		.cfi_def_cfa_register 7
+ 949 0006 0346     		mov	r3, r0
+ 950 0008 3960     		str	r1, [r7]
+ 951 000a FB71     		strb	r3, [r7, #7]
+ 952 000c 1346     		mov	r3, r2
+ARM GAS  C:\Users\fffff\AppData\Local\Temp\ccwcu9eo.s 			page 24
+
+
+ 953 000e BB71     		strb	r3, [r7, #6]
+ 377:Drivers/Chip/bmi088/BMI088driver.c ****     BMI088_read_write_byte(reg | 0x80);
+ 954              		.loc 1 377 5
+ 955 0010 FB79     		ldrb	r3, [r7, #7]
+ 956 0012 63F07F03 		orn	r3, r3, #127
+ 957 0016 DBB2     		uxtb	r3, r3
+ 958 0018 1846     		mov	r0, r3
+ 959 001a FFF7FEFF 		bl	BMI088_read_write_byte
+ 378:Drivers/Chip/bmi088/BMI088driver.c **** 
+ 379:Drivers/Chip/bmi088/BMI088driver.c ****     while (len != 0)
+ 960              		.loc 1 379 11
+ 961 001e 0CE0     		b	.L28
+ 962              	.L29:
+ 380:Drivers/Chip/bmi088/BMI088driver.c ****     {
+ 381:Drivers/Chip/bmi088/BMI088driver.c **** 
+ 382:Drivers/Chip/bmi088/BMI088driver.c ****         *buf = BMI088_read_write_byte(0x55);
+ 963              		.loc 1 382 16
+ 964 0020 5520     		movs	r0, #85
+ 965 0022 FFF7FEFF 		bl	BMI088_read_write_byte
+ 966 0026 0346     		mov	r3, r0
+ 967 0028 1A46     		mov	r2, r3
+ 968              		.loc 1 382 14 discriminator 1
+ 969 002a 3B68     		ldr	r3, [r7]
+ 970 002c 1A70     		strb	r2, [r3]
+ 383:Drivers/Chip/bmi088/BMI088driver.c ****         buf++;
+ 971              		.loc 1 383 12
+ 972 002e 3B68     		ldr	r3, [r7]
+ 973 0030 0133     		adds	r3, r3, #1
+ 974 0032 3B60     		str	r3, [r7]
+ 384:Drivers/Chip/bmi088/BMI088driver.c ****         len--;
+ 975              		.loc 1 384 12
+ 976 0034 BB79     		ldrb	r3, [r7, #6]	@ zero_extendqisi2
+ 977 0036 013B     		subs	r3, r3, #1
+ 978 0038 BB71     		strb	r3, [r7, #6]
+ 979              	.L28:
+ 379:Drivers/Chip/bmi088/BMI088driver.c ****     {
+ 980              		.loc 1 379 16
+ 981 003a BB79     		ldrb	r3, [r7, #6]	@ zero_extendqisi2
+ 982 003c 002B     		cmp	r3, #0
+ 983 003e EFD1     		bne	.L29
+ 385:Drivers/Chip/bmi088/BMI088driver.c ****     }
+ 386:Drivers/Chip/bmi088/BMI088driver.c **** }
+ 984              		.loc 1 386 1
+ 985 0040 00BF     		nop
+ 986 0042 00BF     		nop
+ 987 0044 0837     		adds	r7, r7, #8
+ 988              	.LCFI33:
+ 989              		.cfi_def_cfa_offset 8
+ 990 0046 BD46     		mov	sp, r7
+ 991              	.LCFI34:
+ 992              		.cfi_def_cfa_register 13
+ 993              		@ sp needed
+ 994 0048 80BD     		pop	{r7, pc}
+ 995              		.cfi_endproc
+ 996              	.LFE150:
+ 998              		.text
+ 999              	.Letext0:
+ARM GAS  C:\Users\fffff\AppData\Local\Temp\ccwcu9eo.s 			page 25
+
+
+ 1000              		.file 2 "C:/msys64/mingw64/arm-none-eabi/include/machine/_default_types.h"
+ 1001              		.file 3 "C:/msys64/mingw64/arm-none-eabi/include/sys/_stdint.h"
+ 1002              		.file 4 "Drivers/Chip/bmi088/BMI088Middleware.h"
+ 1003              		.file 5 "Drivers/Chip/bmi088/BMI088driver.h"
+ARM GAS  C:\Users\fffff\AppData\Local\Temp\ccwcu9eo.s 			page 26
+
+
+DEFINED SYMBOLS
+                            *ABS*:00000000 BMI088driver.c
+C:\Users\fffff\AppData\Local\Temp\ccwcu9eo.s:24     .data.BMI088_ACCEL_SEN:00000000 BMI088_ACCEL_SEN
+C:\Users\fffff\AppData\Local\Temp\ccwcu9eo.s:21     .data.BMI088_ACCEL_SEN:00000000 $d
+C:\Users\fffff\AppData\Local\Temp\ccwcu9eo.s:31     .data.BMI088_GYRO_SEN:00000000 BMI088_GYRO_SEN
+C:\Users\fffff\AppData\Local\Temp\ccwcu9eo.s:28     .data.BMI088_GYRO_SEN:00000000 $d
+C:\Users\fffff\AppData\Local\Temp\ccwcu9eo.s:34     .data.write_BMI088_accel_reg_data_error:00000000 $d
+C:\Users\fffff\AppData\Local\Temp\ccwcu9eo.s:37     .data.write_BMI088_accel_reg_data_error:00000000 write_BMI088_accel_reg_data_error
+C:\Users\fffff\AppData\Local\Temp\ccwcu9eo.s:45     .data.write_BMI088_gyro_reg_data_error:00000000 $d
+C:\Users\fffff\AppData\Local\Temp\ccwcu9eo.s:48     .data.write_BMI088_gyro_reg_data_error:00000000 write_BMI088_gyro_reg_data_error
+C:\Users\fffff\AppData\Local\Temp\ccwcu9eo.s:56     .text.BMI088_init:00000000 $t
+C:\Users\fffff\AppData\Local\Temp\ccwcu9eo.s:62     .text.BMI088_init:00000000 BMI088_init
+C:\Users\fffff\AppData\Local\Temp\ccwcu9eo.s:124    .text.bmi088_accel_init:00000000 bmi088_accel_init
+C:\Users\fffff\AppData\Local\Temp\ccwcu9eo.s:356    .text.bmi088_gyro_init:00000000 bmi088_gyro_init
+C:\Users\fffff\AppData\Local\Temp\ccwcu9eo.s:118    .text.bmi088_accel_init:00000000 $t
+C:\Users\fffff\AppData\Local\Temp\ccwcu9eo.s:830    .text.BMI088_write_single_reg:00000000 BMI088_write_single_reg
+C:\Users\fffff\AppData\Local\Temp\ccwcu9eo.s:345    .text.bmi088_accel_init:0000016c $d
+C:\Users\fffff\AppData\Local\Temp\ccwcu9eo.s:350    .text.bmi088_gyro_init:00000000 $t
+C:\Users\fffff\AppData\Local\Temp\ccwcu9eo.s:879    .text.BMI088_read_single_reg:00000000 BMI088_read_single_reg
+C:\Users\fffff\AppData\Local\Temp\ccwcu9eo.s:547    .text.bmi088_gyro_init:0000012c $d
+C:\Users\fffff\AppData\Local\Temp\ccwcu9eo.s:552    .text.BMI088_read:00000000 $t
+C:\Users\fffff\AppData\Local\Temp\ccwcu9eo.s:558    .text.BMI088_read:00000000 BMI088_read
+C:\Users\fffff\AppData\Local\Temp\ccwcu9eo.s:932    .text.BMI088_read_muli_reg:00000000 BMI088_read_muli_reg
+C:\Users\fffff\AppData\Local\Temp\ccwcu9eo.s:819    .text.BMI088_read:000001cc $d
+C:\Users\fffff\AppData\Local\Temp\ccwcu9eo.s:825    .text.BMI088_write_single_reg:00000000 $t
+C:\Users\fffff\AppData\Local\Temp\ccwcu9eo.s:874    .text.BMI088_read_single_reg:00000000 $t
+C:\Users\fffff\AppData\Local\Temp\ccwcu9eo.s:927    .text.BMI088_read_muli_reg:00000000 $t
+
+UNDEFINED SYMBOLS
+BMI088_GPIO_init
+BMI088_com_init
+BMI088_ACCEL_NS_L
+BMI088_read_write_byte
+BMI088_ACCEL_NS_H
+BMI088_delay_us
+BMI088_delay_ms
+BMI088_GYRO_NS_L
+BMI088_GYRO_NS_H

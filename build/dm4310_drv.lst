@@ -1,0 +1,2885 @@
+ARM GAS  C:\Users\fffff\AppData\Local\Temp\cc15dscs.s 			page 1
+
+
+   1              		.cpu cortex-m7
+   2              		.arch armv7e-m
+   3              		.fpu fpv5-d16
+   4              		.eabi_attribute 28, 1
+   5              		.eabi_attribute 20, 1
+   6              		.eabi_attribute 21, 1
+   7              		.eabi_attribute 23, 3
+   8              		.eabi_attribute 24, 1
+   9              		.eabi_attribute 25, 1
+  10              		.eabi_attribute 26, 1
+  11              		.eabi_attribute 30, 6
+  12              		.eabi_attribute 34, 1
+  13              		.eabi_attribute 18, 4
+  14              		.file	"dm4310_drv.c"
+  15              		.text
+  16              	.Ltext0:
+  17              		.cfi_sections	.debug_frame
+  18              		.file 1 "User/Hardware/dm4310_drv.c"
+  19              		.global	arm_motor
+  20              		.section	.bss.arm_motor,"aw",%nobits
+  21              		.align	2
+  24              	arm_motor:
+  25 0000 00000000 		.space	2720
+  25      00000000 
+  25      00000000 
+  25      00000000 
+  25      00000000 
+  26              		.global	pos_motor
+  27              		.section	.bss.pos_motor,"aw",%nobits
+  28              		.align	2
+  31              	pos_motor:
+  32 0000 00000000 		.space	32
+  32      00000000 
+  32      00000000 
+  32      00000000 
+  32      00000000 
+  33              		.global	vel_motor
+  34              		.section	.bss.vel_motor,"aw",%nobits
+  35              		.align	2
+  38              	vel_motor:
+  39 0000 00000000 		.space	24
+  39      00000000 
+  39      00000000 
+  39      00000000 
+  39      00000000 
+  40              		.global	tor_motor
+  41              		.section	.bss.tor_motor,"aw",%nobits
+  42              		.align	2
+  45              	tor_motor:
+  46 0000 00000000 		.space	24
+  46      00000000 
+  46      00000000 
+  46      00000000 
+  46      00000000 
+  47              		.section	.text.Hex_To_Float,"ax",%progbits
+  48              		.align	1
+  49              		.global	Hex_To_Float
+ARM GAS  C:\Users\fffff\AppData\Local\Temp\cc15dscs.s 			page 2
+
+
+  50              		.syntax unified
+  51              		.thumb
+  52              		.thumb_func
+  54              	Hex_To_Float:
+  55              	.LFB177:
+   1:User/Hardware/dm4310_drv.c **** //#define  __FPU_PRESENT  1U
+   2:User/Hardware/dm4310_drv.c **** //#include "arm_math.h"
+   3:User/Hardware/dm4310_drv.c **** 
+   4:User/Hardware/dm4310_drv.c **** #include "fdcan.h"
+   5:User/Hardware/dm4310_drv.c **** #include "dm4310_drv.h"
+   6:User/Hardware/dm4310_drv.c **** 
+   7:User/Hardware/dm4310_drv.c **** #include "arm_math.h"
+   8:User/Hardware/dm4310_drv.c **** 
+   9:User/Hardware/dm4310_drv.c **** Arm_Motor_t arm_motor[num];
+  10:User/Hardware/dm4310_drv.c **** POS_Motor pos_motor;
+  11:User/Hardware/dm4310_drv.c **** VEL_Motor vel_motor;
+  12:User/Hardware/dm4310_drv.c **** TOR_Motor tor_motor;
+  13:User/Hardware/dm4310_drv.c **** /**********************************************数据类型转换****************************************
+  14:User/Hardware/dm4310_drv.c **** float Hex_To_Float(uint32_t *Byte,int num)//十六进制到浮点数
+  15:User/Hardware/dm4310_drv.c **** {
+  56              		.loc 1 15 1
+  57              		.cfi_startproc
+  58              		@ args = 0, pretend = 0, frame = 8
+  59              		@ frame_needed = 1, uses_anonymous_args = 0
+  60              		@ link register save eliminated.
+  61 0000 80B4     		push	{r7}
+  62              	.LCFI0:
+  63              		.cfi_def_cfa_offset 4
+  64              		.cfi_offset 7, -4
+  65 0002 83B0     		sub	sp, sp, #12
+  66              	.LCFI1:
+  67              		.cfi_def_cfa_offset 16
+  68 0004 00AF     		add	r7, sp, #0
+  69              	.LCFI2:
+  70              		.cfi_def_cfa_register 7
+  71 0006 7860     		str	r0, [r7, #4]
+  72 0008 3960     		str	r1, [r7]
+  16:User/Hardware/dm4310_drv.c **** 	return *((float*)Byte);
+  73              		.loc 1 16 9
+  74 000a 7B68     		ldr	r3, [r7, #4]
+  75 000c 1B68     		ldr	r3, [r3]	@ float
+  76              		.loc 1 16 9 is_stmt 0 discriminator 1
+  77 000e 07EE903A 		vmov	s15, r3
+  17:User/Hardware/dm4310_drv.c **** }
+  78              		.loc 1 17 1 is_stmt 1
+  79 0012 B0EE670A 		vmov.f32	s0, s15
+  80 0016 0C37     		adds	r7, r7, #12
+  81              	.LCFI3:
+  82              		.cfi_def_cfa_offset 4
+  83 0018 BD46     		mov	sp, r7
+  84              	.LCFI4:
+  85              		.cfi_def_cfa_register 13
+  86              		@ sp needed
+  87 001a 5DF8047B 		ldr	r7, [sp], #4
+  88              	.LCFI5:
+  89              		.cfi_restore 7
+  90              		.cfi_def_cfa_offset 0
+ARM GAS  C:\Users\fffff\AppData\Local\Temp\cc15dscs.s 			page 3
+
+
+  91 001e 7047     		bx	lr
+  92              		.cfi_endproc
+  93              	.LFE177:
+  95              		.section	.text.FloatTohex,"ax",%progbits
+  96              		.align	1
+  97              		.global	FloatTohex
+  98              		.syntax unified
+  99              		.thumb
+ 100              		.thumb_func
+ 102              	FloatTohex:
+ 103              	.LFB178:
+  18:User/Hardware/dm4310_drv.c **** 
+  19:User/Hardware/dm4310_drv.c **** uint32_t FloatTohex(float HEX)//浮点数到十六进制转换
+  20:User/Hardware/dm4310_drv.c **** {
+ 104              		.loc 1 20 1
+ 105              		.cfi_startproc
+ 106              		@ args = 0, pretend = 0, frame = 8
+ 107              		@ frame_needed = 1, uses_anonymous_args = 0
+ 108              		@ link register save eliminated.
+ 109 0000 80B4     		push	{r7}
+ 110              	.LCFI6:
+ 111              		.cfi_def_cfa_offset 4
+ 112              		.cfi_offset 7, -4
+ 113 0002 83B0     		sub	sp, sp, #12
+ 114              	.LCFI7:
+ 115              		.cfi_def_cfa_offset 16
+ 116 0004 00AF     		add	r7, sp, #0
+ 117              	.LCFI8:
+ 118              		.cfi_def_cfa_register 7
+ 119 0006 87ED010A 		vstr.32	s0, [r7, #4]
+  21:User/Hardware/dm4310_drv.c **** 	return *( uint32_t *)&HEX;
+ 120              		.loc 1 21 23
+ 121 000a 3B1D     		adds	r3, r7, #4
+ 122              		.loc 1 21 9
+ 123 000c 1B68     		ldr	r3, [r3]
+  22:User/Hardware/dm4310_drv.c **** }
+ 124              		.loc 1 22 1
+ 125 000e 1846     		mov	r0, r3
+ 126 0010 0C37     		adds	r7, r7, #12
+ 127              	.LCFI9:
+ 128              		.cfi_def_cfa_offset 4
+ 129 0012 BD46     		mov	sp, r7
+ 130              	.LCFI10:
+ 131              		.cfi_def_cfa_register 13
+ 132              		@ sp needed
+ 133 0014 5DF8047B 		ldr	r7, [sp], #4
+ 134              	.LCFI11:
+ 135              		.cfi_restore 7
+ 136              		.cfi_def_cfa_offset 0
+ 137 0018 7047     		bx	lr
+ 138              		.cfi_endproc
+ 139              	.LFE178:
+ 141              		.section	.text.float_to_uint,"ax",%progbits
+ 142              		.align	1
+ 143              		.global	float_to_uint
+ 144              		.syntax unified
+ 145              		.thumb
+ARM GAS  C:\Users\fffff\AppData\Local\Temp\cc15dscs.s 			page 4
+
+
+ 146              		.thumb_func
+ 148              	float_to_uint:
+ 149              	.LFB179:
+  23:User/Hardware/dm4310_drv.c **** 
+  24:User/Hardware/dm4310_drv.c **** /**
+  25:User/Hardware/dm4310_drv.c **** ************************************************************************
+  26:User/Hardware/dm4310_drv.c **** * @brief:      	float_to_uint: 浮点数转换为无符号整数函数
+  27:User/Hardware/dm4310_drv.c **** * @param[in]:   x_float:	待转换的浮点数
+  28:User/Hardware/dm4310_drv.c **** * @param[in]:   x_min:		范围最小值
+  29:User/Hardware/dm4310_drv.c **** * @param[in]:   x_max:		范围最大值
+  30:User/Hardware/dm4310_drv.c **** * @param[in]:   bits: 		目标无符号整数的位数
+  31:User/Hardware/dm4310_drv.c **** * @retval:     	无符号整数结果
+  32:User/Hardware/dm4310_drv.c **** * @details:    	将给定的浮点数 x 在指定范围 [x_min, x_max] 内进行线性映射，映射结果为一个指定位数的
+  33:User/Hardware/dm4310_drv.c **** ************************************************************************
+  34:User/Hardware/dm4310_drv.c **** **/
+  35:User/Hardware/dm4310_drv.c **** int float_to_uint(float x_float, float x_min, float x_max, int bits)
+  36:User/Hardware/dm4310_drv.c **** {
+ 150              		.loc 1 36 1
+ 151              		.cfi_startproc
+ 152              		@ args = 0, pretend = 0, frame = 24
+ 153              		@ frame_needed = 1, uses_anonymous_args = 0
+ 154              		@ link register save eliminated.
+ 155 0000 80B4     		push	{r7}
+ 156              	.LCFI12:
+ 157              		.cfi_def_cfa_offset 4
+ 158              		.cfi_offset 7, -4
+ 159 0002 87B0     		sub	sp, sp, #28
+ 160              	.LCFI13:
+ 161              		.cfi_def_cfa_offset 32
+ 162 0004 00AF     		add	r7, sp, #0
+ 163              	.LCFI14:
+ 164              		.cfi_def_cfa_register 7
+ 165 0006 87ED030A 		vstr.32	s0, [r7, #12]
+ 166 000a C7ED020A 		vstr.32	s1, [r7, #8]
+ 167 000e 87ED011A 		vstr.32	s2, [r7, #4]
+ 168 0012 3860     		str	r0, [r7]
+  37:User/Hardware/dm4310_drv.c **** 	/* Converts a float to an unsigned int, given range and number of bits */
+  38:User/Hardware/dm4310_drv.c **** 	float span = x_max - x_min;
+ 169              		.loc 1 38 8
+ 170 0014 97ED017A 		vldr.32	s14, [r7, #4]
+ 171 0018 D7ED027A 		vldr.32	s15, [r7, #8]
+ 172 001c 77EE677A 		vsub.f32	s15, s14, s15
+ 173 0020 C7ED057A 		vstr.32	s15, [r7, #20]
+  39:User/Hardware/dm4310_drv.c **** 	float offset = x_min;
+ 174              		.loc 1 39 8
+ 175 0024 BB68     		ldr	r3, [r7, #8]	@ float
+ 176 0026 3B61     		str	r3, [r7, #16]	@ float
+  40:User/Hardware/dm4310_drv.c **** 	return (int) ((x_float-offset)*((float)((1<<bits)-1))/span);
+ 177              		.loc 1 40 24
+ 178 0028 97ED037A 		vldr.32	s14, [r7, #12]
+ 179 002c D7ED047A 		vldr.32	s15, [r7, #16]
+ 180 0030 37EE677A 		vsub.f32	s14, s14, s15
+ 181              		.loc 1 40 44
+ 182 0034 0122     		movs	r2, #1
+ 183 0036 3B68     		ldr	r3, [r7]
+ 184 0038 02FA03F3 		lsl	r3, r2, r3
+ 185              		.loc 1 40 51
+ARM GAS  C:\Users\fffff\AppData\Local\Temp\cc15dscs.s 			page 5
+
+
+ 186 003c 013B     		subs	r3, r3, #1
+ 187              		.loc 1 40 34
+ 188 003e 07EE903A 		vmov	s15, r3	@ int
+ 189 0042 F8EEE77A 		vcvt.f32.s32	s15, s15
+ 190              		.loc 1 40 32
+ 191 0046 67EE276A 		vmul.f32	s13, s14, s15
+ 192              		.loc 1 40 55
+ 193 004a 97ED057A 		vldr.32	s14, [r7, #20]
+ 194 004e C6EE877A 		vdiv.f32	s15, s13, s14
+ 195              		.loc 1 40 9
+ 196 0052 FDEEE77A 		vcvt.s32.f32	s15, s15
+ 197              		.loc 1 40 9 is_stmt 0 discriminator 1
+ 198 0056 17EE903A 		vmov	r3, s15	@ int
+  41:User/Hardware/dm4310_drv.c **** }
+ 199              		.loc 1 41 1 is_stmt 1
+ 200 005a 1846     		mov	r0, r3
+ 201 005c 1C37     		adds	r7, r7, #28
+ 202              	.LCFI15:
+ 203              		.cfi_def_cfa_offset 4
+ 204 005e BD46     		mov	sp, r7
+ 205              	.LCFI16:
+ 206              		.cfi_def_cfa_register 13
+ 207              		@ sp needed
+ 208 0060 5DF8047B 		ldr	r7, [sp], #4
+ 209              	.LCFI17:
+ 210              		.cfi_restore 7
+ 211              		.cfi_def_cfa_offset 0
+ 212 0064 7047     		bx	lr
+ 213              		.cfi_endproc
+ 214              	.LFE179:
+ 216              		.section	.text.uint_to_float,"ax",%progbits
+ 217              		.align	1
+ 218              		.global	uint_to_float
+ 219              		.syntax unified
+ 220              		.thumb
+ 221              		.thumb_func
+ 223              	uint_to_float:
+ 224              	.LFB180:
+  42:User/Hardware/dm4310_drv.c **** /**
+  43:User/Hardware/dm4310_drv.c **** ************************************************************************
+  44:User/Hardware/dm4310_drv.c **** * @brief:      	uint_to_float: 无符号整数转换为浮点数函数
+  45:User/Hardware/dm4310_drv.c **** * @param[in]:   x_int: 待转换的无符号整数
+  46:User/Hardware/dm4310_drv.c **** * @param[in]:   x_min: 范围最小值
+  47:User/Hardware/dm4310_drv.c **** * @param[in]:   x_max: 范围最大值
+  48:User/Hardware/dm4310_drv.c **** * @param[in]:   bits:  无符号整数的位数
+  49:User/Hardware/dm4310_drv.c **** * @retval:     	浮点数结果
+  50:User/Hardware/dm4310_drv.c **** * @details:    	将给定的无符号整数 x_int 在指定范围 [x_min, x_max] 内进行线性映射，映射结果为一个浮
+  51:User/Hardware/dm4310_drv.c **** ************************************************************************
+  52:User/Hardware/dm4310_drv.c **** **/
+  53:User/Hardware/dm4310_drv.c **** float uint_to_float(int x_int, float x_min, float x_max, int bits)
+  54:User/Hardware/dm4310_drv.c **** {
+ 225              		.loc 1 54 1
+ 226              		.cfi_startproc
+ 227              		@ args = 0, pretend = 0, frame = 24
+ 228              		@ frame_needed = 1, uses_anonymous_args = 0
+ 229              		@ link register save eliminated.
+ 230 0000 80B4     		push	{r7}
+ARM GAS  C:\Users\fffff\AppData\Local\Temp\cc15dscs.s 			page 6
+
+
+ 231              	.LCFI18:
+ 232              		.cfi_def_cfa_offset 4
+ 233              		.cfi_offset 7, -4
+ 234 0002 87B0     		sub	sp, sp, #28
+ 235              	.LCFI19:
+ 236              		.cfi_def_cfa_offset 32
+ 237 0004 00AF     		add	r7, sp, #0
+ 238              	.LCFI20:
+ 239              		.cfi_def_cfa_register 7
+ 240 0006 F860     		str	r0, [r7, #12]
+ 241 0008 87ED020A 		vstr.32	s0, [r7, #8]
+ 242 000c C7ED010A 		vstr.32	s1, [r7, #4]
+ 243 0010 3960     		str	r1, [r7]
+  55:User/Hardware/dm4310_drv.c **** 	/* converts unsigned int to float, given range and number of bits */
+  56:User/Hardware/dm4310_drv.c **** 	float span = x_max - x_min;
+ 244              		.loc 1 56 8
+ 245 0012 97ED017A 		vldr.32	s14, [r7, #4]
+ 246 0016 D7ED027A 		vldr.32	s15, [r7, #8]
+ 247 001a 77EE677A 		vsub.f32	s15, s14, s15
+ 248 001e C7ED057A 		vstr.32	s15, [r7, #20]
+  57:User/Hardware/dm4310_drv.c **** 	float offset = x_min;
+ 249              		.loc 1 57 8
+ 250 0022 BB68     		ldr	r3, [r7, #8]	@ float
+ 251 0024 3B61     		str	r3, [r7, #16]	@ float
+  58:User/Hardware/dm4310_drv.c **** 	return ((float)x_int)*span/((float)((1<<bits)-1)) + offset;
+ 252              		.loc 1 58 10
+ 253 0026 FB68     		ldr	r3, [r7, #12]
+ 254 0028 07EE903A 		vmov	s15, r3	@ int
+ 255 002c B8EEE77A 		vcvt.f32.s32	s14, s15
+ 256              		.loc 1 58 23
+ 257 0030 D7ED057A 		vldr.32	s15, [r7, #20]
+ 258 0034 67EE276A 		vmul.f32	s13, s14, s15
+ 259              		.loc 1 58 40
+ 260 0038 0122     		movs	r2, #1
+ 261 003a 3B68     		ldr	r3, [r7]
+ 262 003c 02FA03F3 		lsl	r3, r2, r3
+ 263              		.loc 1 58 47
+ 264 0040 013B     		subs	r3, r3, #1
+ 265              		.loc 1 58 30
+ 266 0042 07EE903A 		vmov	s15, r3	@ int
+ 267 0046 F8EEE77A 		vcvt.f32.s32	s15, s15
+ 268              		.loc 1 58 28
+ 269 004a 86EEA77A 		vdiv.f32	s14, s13, s15
+ 270              		.loc 1 58 52
+ 271 004e D7ED047A 		vldr.32	s15, [r7, #16]
+ 272 0052 77EE277A 		vadd.f32	s15, s14, s15
+  59:User/Hardware/dm4310_drv.c **** }
+ 273              		.loc 1 59 1
+ 274 0056 B0EE670A 		vmov.f32	s0, s15
+ 275 005a 1C37     		adds	r7, r7, #28
+ 276              	.LCFI21:
+ 277              		.cfi_def_cfa_offset 4
+ 278 005c BD46     		mov	sp, r7
+ 279              	.LCFI22:
+ 280              		.cfi_def_cfa_register 13
+ 281              		@ sp needed
+ 282 005e 5DF8047B 		ldr	r7, [sp], #4
+ARM GAS  C:\Users\fffff\AppData\Local\Temp\cc15dscs.s 			page 7
+
+
+ 283              	.LCFI23:
+ 284              		.cfi_restore 7
+ 285              		.cfi_def_cfa_offset 0
+ 286 0062 7047     		bx	lr
+ 287              		.cfi_endproc
+ 288              	.LFE180:
+ 290              		.section	.text.arm_motor_init,"ax",%progbits
+ 291              		.align	1
+ 292              		.global	arm_motor_init
+ 293              		.syntax unified
+ 294              		.thumb
+ 295              		.thumb_func
+ 297              	arm_motor_init:
+ 298              	.LFB181:
+  60:User/Hardware/dm4310_drv.c **** 
+  61:User/Hardware/dm4310_drv.c **** /**************************************************电机使能失能初始化******************************
+  62:User/Hardware/dm4310_drv.c **** void arm_motor_init(Arm_Motor_t *motor,uint16_t id,uint16_t mode)
+  63:User/Hardware/dm4310_drv.c **** {
+ 299              		.loc 1 63 1
+ 300              		.cfi_startproc
+ 301              		@ args = 0, pretend = 0, frame = 8
+ 302              		@ frame_needed = 1, uses_anonymous_args = 0
+ 303              		@ link register save eliminated.
+ 304 0000 80B4     		push	{r7}
+ 305              	.LCFI24:
+ 306              		.cfi_def_cfa_offset 4
+ 307              		.cfi_offset 7, -4
+ 308 0002 83B0     		sub	sp, sp, #12
+ 309              	.LCFI25:
+ 310              		.cfi_def_cfa_offset 16
+ 311 0004 00AF     		add	r7, sp, #0
+ 312              	.LCFI26:
+ 313              		.cfi_def_cfa_register 7
+ 314 0006 7860     		str	r0, [r7, #4]
+ 315 0008 0B46     		mov	r3, r1
+ 316 000a 7B80     		strh	r3, [r7, #2]	@ movhi
+ 317 000c 1346     		mov	r3, r2	@ movhi
+ 318 000e 3B80     		strh	r3, [r7]	@ movhi
+  64:User/Hardware/dm4310_drv.c ****   motor->mode=mode;
+ 319              		.loc 1 64 14
+ 320 0010 7B68     		ldr	r3, [r7, #4]
+ 321 0012 3A88     		ldrh	r2, [r7]	@ movhi
+ 322 0014 1A80     		strh	r2, [r3]	@ movhi
+  65:User/Hardware/dm4310_drv.c ****   motor->para.id=id;
+ 323              		.loc 1 65 17
+ 324 0016 7B68     		ldr	r3, [r7, #4]
+ 325 0018 7A88     		ldrh	r2, [r7, #2]	@ movhi
+ 326 001a 9A80     		strh	r2, [r3, #4]	@ movhi
+  66:User/Hardware/dm4310_drv.c **** }
+ 327              		.loc 1 66 1
+ 328 001c 00BF     		nop
+ 329 001e 0C37     		adds	r7, r7, #12
+ 330              	.LCFI27:
+ 331              		.cfi_def_cfa_offset 4
+ 332 0020 BD46     		mov	sp, r7
+ 333              	.LCFI28:
+ 334              		.cfi_def_cfa_register 13
+ARM GAS  C:\Users\fffff\AppData\Local\Temp\cc15dscs.s 			page 8
+
+
+ 335              		@ sp needed
+ 336 0022 5DF8047B 		ldr	r7, [sp], #4
+ 337              	.LCFI29:
+ 338              		.cfi_restore 7
+ 339              		.cfi_def_cfa_offset 0
+ 340 0026 7047     		bx	lr
+ 341              		.cfi_endproc
+ 342              	.LFE181:
+ 344              		.section	.text.enable_motor_mode,"ax",%progbits
+ 345              		.align	1
+ 346              		.global	enable_motor_mode
+ 347              		.syntax unified
+ 348              		.thumb
+ 349              		.thumb_func
+ 351              	enable_motor_mode:
+ 352              	.LFB182:
+  67:User/Hardware/dm4310_drv.c **** /**
+  68:User/Hardware/dm4310_drv.c **** ************************************************************************
+  69:User/Hardware/dm4310_drv.c **** * @brief:      	enable_motor_mode: 禁用电机模式函数
+  70:User/Hardware/dm4310_drv.c **** * @param[in]:   hcan:     指向CAN_HandleTypeDef结构的指针
+  71:User/Hardware/dm4310_drv.c **** * @param[in]:   motor_id: 电机ID，指定目标电机
+  72:User/Hardware/dm4310_drv.c **** * @param[in]:   mode_id:  模式ID，指定要禁用的模式
+  73:User/Hardware/dm4310_drv.c **** * @retval:     	void
+  74:User/Hardware/dm4310_drv.c **** * @details:    	通过CAN总线向特定电机发送禁用特定模式的命令
+  75:User/Hardware/dm4310_drv.c **** ************************************************************************
+  76:User/Hardware/dm4310_drv.c **** **/
+  77:User/Hardware/dm4310_drv.c **** void enable_motor_mode(hcan_t* hcan, uint16_t motor_id, uint16_t mode_id)
+  78:User/Hardware/dm4310_drv.c **** {
+ 353              		.loc 1 78 1
+ 354              		.cfi_startproc
+ 355              		@ args = 0, pretend = 0, frame = 24
+ 356              		@ frame_needed = 1, uses_anonymous_args = 0
+ 357 0000 80B5     		push	{r7, lr}
+ 358              	.LCFI30:
+ 359              		.cfi_def_cfa_offset 8
+ 360              		.cfi_offset 7, -8
+ 361              		.cfi_offset 14, -4
+ 362 0002 86B0     		sub	sp, sp, #24
+ 363              	.LCFI31:
+ 364              		.cfi_def_cfa_offset 32
+ 365 0004 00AF     		add	r7, sp, #0
+ 366              	.LCFI32:
+ 367              		.cfi_def_cfa_register 7
+ 368 0006 7860     		str	r0, [r7, #4]
+ 369 0008 0B46     		mov	r3, r1
+ 370 000a 7B80     		strh	r3, [r7, #2]	@ movhi
+ 371 000c 1346     		mov	r3, r2	@ movhi
+ 372 000e 3B80     		strh	r3, [r7]	@ movhi
+  79:User/Hardware/dm4310_drv.c **** 	
+  80:User/Hardware/dm4310_drv.c **** 	uint8_t data[8] = {0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00};
+ 373              		.loc 1 80 10
+ 374 0010 07F10C03 		add	r3, r7, #12
+ 375 0014 0022     		movs	r2, #0
+ 376 0016 1A60     		str	r2, [r3]
+ 377 0018 5A60     		str	r2, [r3, #4]
+  81:User/Hardware/dm4310_drv.c **** 	uint16_t id = motor_id + mode_id;
+ 378              		.loc 1 81 11
+ARM GAS  C:\Users\fffff\AppData\Local\Temp\cc15dscs.s 			page 9
+
+
+ 379 001a 7A88     		ldrh	r2, [r7, #2]	@ movhi
+ 380 001c 3B88     		ldrh	r3, [r7]	@ movhi
+ 381 001e 1344     		add	r3, r3, r2
+ 382 0020 FB82     		strh	r3, [r7, #22]	@ movhi
+  82:User/Hardware/dm4310_drv.c **** 	
+  83:User/Hardware/dm4310_drv.c **** 	data[0] = 0xFF;
+ 383              		.loc 1 83 10
+ 384 0022 FF23     		movs	r3, #255
+ 385 0024 3B73     		strb	r3, [r7, #12]
+  84:User/Hardware/dm4310_drv.c **** 	data[1] = 0xFF;
+ 386              		.loc 1 84 10
+ 387 0026 FF23     		movs	r3, #255
+ 388 0028 7B73     		strb	r3, [r7, #13]
+  85:User/Hardware/dm4310_drv.c **** 	data[2] = 0xFF;
+ 389              		.loc 1 85 10
+ 390 002a FF23     		movs	r3, #255
+ 391 002c BB73     		strb	r3, [r7, #14]
+  86:User/Hardware/dm4310_drv.c **** 	data[3] = 0xFF;
+ 392              		.loc 1 86 10
+ 393 002e FF23     		movs	r3, #255
+ 394 0030 FB73     		strb	r3, [r7, #15]
+  87:User/Hardware/dm4310_drv.c **** 	data[4] = 0xFF;
+ 395              		.loc 1 87 10
+ 396 0032 FF23     		movs	r3, #255
+ 397 0034 3B74     		strb	r3, [r7, #16]
+  88:User/Hardware/dm4310_drv.c **** 	data[5] = 0xFF;
+ 398              		.loc 1 88 10
+ 399 0036 FF23     		movs	r3, #255
+ 400 0038 7B74     		strb	r3, [r7, #17]
+  89:User/Hardware/dm4310_drv.c **** 	data[6] = 0xFF;
+ 401              		.loc 1 89 10
+ 402 003a FF23     		movs	r3, #255
+ 403 003c BB74     		strb	r3, [r7, #18]
+  90:User/Hardware/dm4310_drv.c **** 	data[7] = 0xFC;
+ 404              		.loc 1 90 10
+ 405 003e FC23     		movs	r3, #252
+ 406 0040 FB74     		strb	r3, [r7, #19]
+  91:User/Hardware/dm4310_drv.c **** 	
+  92:User/Hardware/dm4310_drv.c **** 	canx_send_data(hcan, id, data, 8);
+ 407              		.loc 1 92 2
+ 408 0042 07F10C02 		add	r2, r7, #12
+ 409 0046 F98A     		ldrh	r1, [r7, #22]
+ 410 0048 0823     		movs	r3, #8
+ 411 004a 7868     		ldr	r0, [r7, #4]
+ 412 004c FFF7FEFF 		bl	canx_send_data
+  93:User/Hardware/dm4310_drv.c **** }
+ 413              		.loc 1 93 1
+ 414 0050 00BF     		nop
+ 415 0052 1837     		adds	r7, r7, #24
+ 416              	.LCFI33:
+ 417              		.cfi_def_cfa_offset 8
+ 418 0054 BD46     		mov	sp, r7
+ 419              	.LCFI34:
+ 420              		.cfi_def_cfa_register 13
+ 421              		@ sp needed
+ 422 0056 80BD     		pop	{r7, pc}
+ 423              		.cfi_endproc
+ARM GAS  C:\Users\fffff\AppData\Local\Temp\cc15dscs.s 			page 10
+
+
+ 424              	.LFE182:
+ 426              		.section	.text.disable_motor_mode,"ax",%progbits
+ 427              		.align	1
+ 428              		.global	disable_motor_mode
+ 429              		.syntax unified
+ 430              		.thumb
+ 431              		.thumb_func
+ 433              	disable_motor_mode:
+ 434              	.LFB183:
+  94:User/Hardware/dm4310_drv.c **** /**
+  95:User/Hardware/dm4310_drv.c **** ************************************************************************
+  96:User/Hardware/dm4310_drv.c **** * @brief:      	disable_motor_mode: 禁用电机模式函数
+  97:User/Hardware/dm4310_drv.c **** * @param[in]:   hcan:     指向CAN_HandleTypeDef结构的指针
+  98:User/Hardware/dm4310_drv.c **** * @param[in]:   motor_id: 电机ID，指定目标电机
+  99:User/Hardware/dm4310_drv.c **** * @param[in]:   mode_id:  模式ID，指定要禁用的模式
+ 100:User/Hardware/dm4310_drv.c **** * @retval:     	void
+ 101:User/Hardware/dm4310_drv.c **** * @details:    	通过CAN总线向特定电机发送禁用特定模式的命令
+ 102:User/Hardware/dm4310_drv.c **** ************************************************************************
+ 103:User/Hardware/dm4310_drv.c **** **/
+ 104:User/Hardware/dm4310_drv.c **** void disable_motor_mode(hcan_t* hcan, uint16_t motor_id, uint16_t mode_id)
+ 105:User/Hardware/dm4310_drv.c **** {
+ 435              		.loc 1 105 1
+ 436              		.cfi_startproc
+ 437              		@ args = 0, pretend = 0, frame = 24
+ 438              		@ frame_needed = 1, uses_anonymous_args = 0
+ 439 0000 80B5     		push	{r7, lr}
+ 440              	.LCFI35:
+ 441              		.cfi_def_cfa_offset 8
+ 442              		.cfi_offset 7, -8
+ 443              		.cfi_offset 14, -4
+ 444 0002 86B0     		sub	sp, sp, #24
+ 445              	.LCFI36:
+ 446              		.cfi_def_cfa_offset 32
+ 447 0004 00AF     		add	r7, sp, #0
+ 448              	.LCFI37:
+ 449              		.cfi_def_cfa_register 7
+ 450 0006 7860     		str	r0, [r7, #4]
+ 451 0008 0B46     		mov	r3, r1
+ 452 000a 7B80     		strh	r3, [r7, #2]	@ movhi
+ 453 000c 1346     		mov	r3, r2	@ movhi
+ 454 000e 3B80     		strh	r3, [r7]	@ movhi
+ 106:User/Hardware/dm4310_drv.c **** 	uint8_t data[8];
+ 107:User/Hardware/dm4310_drv.c **** 	uint16_t id = motor_id + mode_id;
+ 455              		.loc 1 107 11
+ 456 0010 7A88     		ldrh	r2, [r7, #2]	@ movhi
+ 457 0012 3B88     		ldrh	r3, [r7]	@ movhi
+ 458 0014 1344     		add	r3, r3, r2
+ 459 0016 FB82     		strh	r3, [r7, #22]	@ movhi
+ 108:User/Hardware/dm4310_drv.c **** 	
+ 109:User/Hardware/dm4310_drv.c **** 	data[0] = 0xFF;
+ 460              		.loc 1 109 10
+ 461 0018 FF23     		movs	r3, #255
+ 462 001a 3B73     		strb	r3, [r7, #12]
+ 110:User/Hardware/dm4310_drv.c **** 	data[1] = 0xFF;
+ 463              		.loc 1 110 10
+ 464 001c FF23     		movs	r3, #255
+ 465 001e 7B73     		strb	r3, [r7, #13]
+ARM GAS  C:\Users\fffff\AppData\Local\Temp\cc15dscs.s 			page 11
+
+
+ 111:User/Hardware/dm4310_drv.c **** 	data[2] = 0xFF;
+ 466              		.loc 1 111 10
+ 467 0020 FF23     		movs	r3, #255
+ 468 0022 BB73     		strb	r3, [r7, #14]
+ 112:User/Hardware/dm4310_drv.c **** 	data[3] = 0xFF;
+ 469              		.loc 1 112 10
+ 470 0024 FF23     		movs	r3, #255
+ 471 0026 FB73     		strb	r3, [r7, #15]
+ 113:User/Hardware/dm4310_drv.c **** 	data[4] = 0xFF;
+ 472              		.loc 1 113 10
+ 473 0028 FF23     		movs	r3, #255
+ 474 002a 3B74     		strb	r3, [r7, #16]
+ 114:User/Hardware/dm4310_drv.c **** 	data[5] = 0xFF;
+ 475              		.loc 1 114 10
+ 476 002c FF23     		movs	r3, #255
+ 477 002e 7B74     		strb	r3, [r7, #17]
+ 115:User/Hardware/dm4310_drv.c **** 	data[6] = 0xFF;
+ 478              		.loc 1 115 10
+ 479 0030 FF23     		movs	r3, #255
+ 480 0032 BB74     		strb	r3, [r7, #18]
+ 116:User/Hardware/dm4310_drv.c **** 	data[7] = 0xFD;
+ 481              		.loc 1 116 10
+ 482 0034 FD23     		movs	r3, #253
+ 483 0036 FB74     		strb	r3, [r7, #19]
+ 117:User/Hardware/dm4310_drv.c **** 	
+ 118:User/Hardware/dm4310_drv.c **** 	canx_send_data(hcan, id, data, 8);
+ 484              		.loc 1 118 2
+ 485 0038 07F10C02 		add	r2, r7, #12
+ 486 003c F98A     		ldrh	r1, [r7, #22]
+ 487 003e 0823     		movs	r3, #8
+ 488 0040 7868     		ldr	r0, [r7, #4]
+ 489 0042 FFF7FEFF 		bl	canx_send_data
+ 119:User/Hardware/dm4310_drv.c **** }
+ 490              		.loc 1 119 1
+ 491 0046 00BF     		nop
+ 492 0048 1837     		adds	r7, r7, #24
+ 493              	.LCFI38:
+ 494              		.cfi_def_cfa_offset 8
+ 495 004a BD46     		mov	sp, r7
+ 496              	.LCFI39:
+ 497              		.cfi_def_cfa_register 13
+ 498              		@ sp needed
+ 499 004c 80BD     		pop	{r7, pc}
+ 500              		.cfi_endproc
+ 501              	.LFE183:
+ 503              		.section	.text.damiao_fbdata,"ax",%progbits
+ 504              		.align	1
+ 505              		.global	damiao_fbdata
+ 506              		.syntax unified
+ 507              		.thumb
+ 508              		.thumb_func
+ 510              	damiao_fbdata:
+ 511              	.LFB184:
+ 120:User/Hardware/dm4310_drv.c **** 
+ 121:User/Hardware/dm4310_drv.c **** void damiao_fbdata(Arm_Motor_t *motor, uint8_t *rx_data)
+ 122:User/Hardware/dm4310_drv.c **** { 
+ 512              		.loc 1 122 1
+ARM GAS  C:\Users\fffff\AppData\Local\Temp\cc15dscs.s 			page 12
+
+
+ 513              		.cfi_startproc
+ 514              		@ args = 0, pretend = 0, frame = 8
+ 515              		@ frame_needed = 1, uses_anonymous_args = 0
+ 516 0000 80B5     		push	{r7, lr}
+ 517              	.LCFI40:
+ 518              		.cfi_def_cfa_offset 8
+ 519              		.cfi_offset 7, -8
+ 520              		.cfi_offset 14, -4
+ 521 0002 82B0     		sub	sp, sp, #8
+ 522              	.LCFI41:
+ 523              		.cfi_def_cfa_offset 16
+ 524 0004 00AF     		add	r7, sp, #0
+ 525              	.LCFI42:
+ 526              		.cfi_def_cfa_register 7
+ 527 0006 7860     		str	r0, [r7, #4]
+ 528 0008 3960     		str	r1, [r7]
+ 123:User/Hardware/dm4310_drv.c **** 
+ 124:User/Hardware/dm4310_drv.c **** 	
+ 125:User/Hardware/dm4310_drv.c **** 	  motor->para.id = (rx_data[0])&0x0F;
+ 529              		.loc 1 125 29
+ 530 000a 3B68     		ldr	r3, [r7]
+ 531 000c 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 532              		.loc 1 125 33
+ 533 000e 03F00F03 		and	r3, r3, #15
+ 534 0012 9AB2     		uxth	r2, r3
+ 535              		.loc 1 125 19
+ 536 0014 7B68     		ldr	r3, [r7, #4]
+ 537 0016 9A80     		strh	r2, [r3, #4]	@ movhi
+ 126:User/Hardware/dm4310_drv.c **** 	  motor->para.state = (rx_data[0])>>4;
+ 538              		.loc 1 126 32
+ 539 0018 3B68     		ldr	r3, [r7]
+ 540 001a 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 541              		.loc 1 126 22
+ 542 001c 1B09     		lsrs	r3, r3, #4
+ 543 001e DBB2     		uxtb	r3, r3
+ 544 0020 1A46     		mov	r2, r3
+ 545 0022 7B68     		ldr	r3, [r7, #4]
+ 546 0024 DA80     		strh	r2, [r3, #6]	@ movhi
+ 127:User/Hardware/dm4310_drv.c **** 	  motor->para.p_int=(rx_data[1]<<8)|rx_data[2];
+ 547              		.loc 1 127 30
+ 548 0026 3B68     		ldr	r3, [r7]
+ 549 0028 0133     		adds	r3, r3, #1
+ 550 002a 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 551              		.loc 1 127 33
+ 552 002c 1B02     		lsls	r3, r3, #8
+ 553              		.loc 1 127 45
+ 554 002e 3A68     		ldr	r2, [r7]
+ 555 0030 0232     		adds	r2, r2, #2
+ 556 0032 1278     		ldrb	r2, [r2]	@ zero_extendqisi2
+ 557              		.loc 1 127 37
+ 558 0034 1A43     		orrs	r2, r2, r3
+ 559              		.loc 1 127 21
+ 560 0036 7B68     		ldr	r3, [r7, #4]
+ 561 0038 9A60     		str	r2, [r3, #8]
+ 128:User/Hardware/dm4310_drv.c **** 	  motor->para.v_int=(rx_data[3]<<4)|(rx_data[4]>>4);
+ 562              		.loc 1 128 30
+ 563 003a 3B68     		ldr	r3, [r7]
+ARM GAS  C:\Users\fffff\AppData\Local\Temp\cc15dscs.s 			page 13
+
+
+ 564 003c 0333     		adds	r3, r3, #3
+ 565 003e 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 566              		.loc 1 128 33
+ 567 0040 1B01     		lsls	r3, r3, #4
+ 568              		.loc 1 128 46
+ 569 0042 3A68     		ldr	r2, [r7]
+ 570 0044 0432     		adds	r2, r2, #4
+ 571 0046 1278     		ldrb	r2, [r2]	@ zero_extendqisi2
+ 572              		.loc 1 128 49
+ 573 0048 1209     		lsrs	r2, r2, #4
+ 574 004a D2B2     		uxtb	r2, r2
+ 575              		.loc 1 128 37
+ 576 004c 1A43     		orrs	r2, r2, r3
+ 577              		.loc 1 128 21
+ 578 004e 7B68     		ldr	r3, [r7, #4]
+ 579 0050 DA60     		str	r2, [r3, #12]
+ 129:User/Hardware/dm4310_drv.c **** 	  motor->para.t_int=((rx_data[4]&0xF)<<8)|rx_data[5];
+ 580              		.loc 1 129 31
+ 581 0052 3B68     		ldr	r3, [r7]
+ 582 0054 0433     		adds	r3, r3, #4
+ 583 0056 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 584              		.loc 1 129 39
+ 585 0058 1B02     		lsls	r3, r3, #8
+ 586 005a 03F47063 		and	r3, r3, #3840
+ 587              		.loc 1 129 51
+ 588 005e 3A68     		ldr	r2, [r7]
+ 589 0060 0532     		adds	r2, r2, #5
+ 590 0062 1278     		ldrb	r2, [r2]	@ zero_extendqisi2
+ 591              		.loc 1 129 43
+ 592 0064 1A43     		orrs	r2, r2, r3
+ 593              		.loc 1 129 21
+ 594 0066 7B68     		ldr	r3, [r7, #4]
+ 595 0068 1A61     		str	r2, [r3, #16]
+ 130:User/Hardware/dm4310_drv.c **** 	  motor->para.pos = uint_to_float(motor->para.p_int, P_MIN, P_MAX, 16); // (-12.5,12.5)
+ 596              		.loc 1 130 22
+ 597 006a 7B68     		ldr	r3, [r7, #4]
+ 598 006c 9B68     		ldr	r3, [r3, #8]
+ 599 006e 1021     		movs	r1, #16
+ 600 0070 F2EE090A 		vmov.f32	s1, #1.25e+1
+ 601 0074 BAEE090A 		vmov.f32	s0, #-1.25e+1
+ 602 0078 1846     		mov	r0, r3
+ 603 007a FFF7FEFF 		bl	uint_to_float
+ 604 007e F0EE407A 		vmov.f32	s15, s0
+ 605              		.loc 1 130 20 discriminator 1
+ 606 0082 7B68     		ldr	r3, [r7, #4]
+ 607 0084 C3ED077A 		vstr.32	s15, [r3, #28]
+ 131:User/Hardware/dm4310_drv.c **** 	  motor->para.vel = uint_to_float(motor->para.v_int, V_MIN, V_MAX, 12); // (-30.0,30.0)
+ 608              		.loc 1 131 22
+ 609 0088 7B68     		ldr	r3, [r7, #4]
+ 610 008a DB68     		ldr	r3, [r3, #12]
+ 611 008c 0C21     		movs	r1, #12
+ 612 008e F3EE0E0A 		vmov.f32	s1, #3.0e+1
+ 613 0092 BBEE0E0A 		vmov.f32	s0, #-3.0e+1
+ 614 0096 1846     		mov	r0, r3
+ 615 0098 FFF7FEFF 		bl	uint_to_float
+ 616 009c F0EE407A 		vmov.f32	s15, s0
+ 617              		.loc 1 131 20 discriminator 1
+ARM GAS  C:\Users\fffff\AppData\Local\Temp\cc15dscs.s 			page 14
+
+
+ 618 00a0 7B68     		ldr	r3, [r7, #4]
+ 619 00a2 C3ED087A 		vstr.32	s15, [r3, #32]
+ 132:User/Hardware/dm4310_drv.c **** 	  motor->para.tor = uint_to_float(motor->para.t_int, T_MIN, T_MAX, 12);  // (-10.0,10.0)
+ 620              		.loc 1 132 22
+ 621 00a6 7B68     		ldr	r3, [r7, #4]
+ 622 00a8 1B69     		ldr	r3, [r3, #16]
+ 623 00aa 0C21     		movs	r1, #12
+ 624 00ac F2EE040A 		vmov.f32	s1, #1.0e+1
+ 625 00b0 BAEE040A 		vmov.f32	s0, #-1.0e+1
+ 626 00b4 1846     		mov	r0, r3
+ 627 00b6 FFF7FEFF 		bl	uint_to_float
+ 628 00ba F0EE407A 		vmov.f32	s15, s0
+ 629              		.loc 1 132 20 discriminator 1
+ 630 00be 7B68     		ldr	r3, [r7, #4]
+ 631 00c0 C3ED097A 		vstr.32	s15, [r3, #36]
+ 133:User/Hardware/dm4310_drv.c **** 	  motor->para.Tmos = (float)(rx_data[6]);
+ 632              		.loc 1 133 38
+ 633 00c4 3B68     		ldr	r3, [r7]
+ 634 00c6 0633     		adds	r3, r3, #6
+ 635 00c8 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 636              		.loc 1 133 23
+ 637 00ca 07EE903A 		vmov	s15, r3	@ int
+ 638 00ce F8EE677A 		vcvt.f32.u32	s15, s15
+ 639              		.loc 1 133 21
+ 640 00d2 7B68     		ldr	r3, [r7, #4]
+ 641 00d4 C3ED0C7A 		vstr.32	s15, [r3, #48]
+ 134:User/Hardware/dm4310_drv.c **** 	  motor->para.Tcoil = (float)(rx_data[7]);
+ 642              		.loc 1 134 39
+ 643 00d8 3B68     		ldr	r3, [r7]
+ 644 00da 0733     		adds	r3, r3, #7
+ 645 00dc 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 646              		.loc 1 134 24
+ 647 00de 07EE903A 		vmov	s15, r3	@ int
+ 648 00e2 F8EE677A 		vcvt.f32.u32	s15, s15
+ 649              		.loc 1 134 22
+ 650 00e6 7B68     		ldr	r3, [r7, #4]
+ 651 00e8 C3ED0D7A 		vstr.32	s15, [r3, #52]
+ 135:User/Hardware/dm4310_drv.c **** 
+ 136:User/Hardware/dm4310_drv.c **** }
+ 652              		.loc 1 136 1
+ 653 00ec 00BF     		nop
+ 654 00ee 0837     		adds	r7, r7, #8
+ 655              	.LCFI43:
+ 656              		.cfi_def_cfa_offset 8
+ 657 00f0 BD46     		mov	sp, r7
+ 658              	.LCFI44:
+ 659              		.cfi_def_cfa_register 13
+ 660              		@ sp needed
+ 661 00f2 80BD     		pop	{r7, pc}
+ 662              		.cfi_endproc
+ 663              	.LFE184:
+ 665              		.section	.text.dm4310_fbdata,"ax",%progbits
+ 666              		.align	1
+ 667              		.global	dm4310_fbdata
+ 668              		.syntax unified
+ 669              		.thumb
+ 670              		.thumb_func
+ARM GAS  C:\Users\fffff\AppData\Local\Temp\cc15dscs.s 			page 15
+
+
+ 672              	dm4310_fbdata:
+ 673              	.LFB185:
+ 137:User/Hardware/dm4310_drv.c **** /*******************************************不同型号达妙电机接收数据*******************************
+ 138:User/Hardware/dm4310_drv.c **** /**
+ 139:User/Hardware/dm4310_drv.c **** ************************************************************************
+ 140:User/Hardware/dm4310_drv.c **** * @brief:      	dm4310_fbdata: 获取DM4310电机反馈数据函数
+ 141:User/Hardware/dm4310_drv.c **** * @param[in]:   motor:    指向motor_t结构的指针，包含电机相关信息和反馈数据
+ 142:User/Hardware/dm4310_drv.c **** * @param[in]:   rx_data:  指向包含反馈数据的数组指针
+ 143:User/Hardware/dm4310_drv.c **** * @param[in]:   data_len: 数据长度
+ 144:User/Hardware/dm4310_drv.c **** * @retval:     	void
+ 145:User/Hardware/dm4310_drv.c **** * @details:    	从接收到的数据中提取DM4310电机的反馈信息，包括电机ID、
+ 146:User/Hardware/dm4310_drv.c **** *               状态、位置、速度、扭矩相关温度参数、寄存器数据等
+ 147:User/Hardware/dm4310_drv.c **** ************************************************************************
+ 148:User/Hardware/dm4310_drv.c **** **/
+ 149:User/Hardware/dm4310_drv.c **** void dm4310_fbdata(Arm_Motor_t *motor, uint8_t *rx_data,uint32_t data_len)
+ 150:User/Hardware/dm4310_drv.c **** { 
+ 674              		.loc 1 150 1
+ 675              		.cfi_startproc
+ 676              		@ args = 0, pretend = 0, frame = 16
+ 677              		@ frame_needed = 1, uses_anonymous_args = 0
+ 678 0000 80B5     		push	{r7, lr}
+ 679              	.LCFI45:
+ 680              		.cfi_def_cfa_offset 8
+ 681              		.cfi_offset 7, -8
+ 682              		.cfi_offset 14, -4
+ 683 0002 84B0     		sub	sp, sp, #16
+ 684              	.LCFI46:
+ 685              		.cfi_def_cfa_offset 24
+ 686 0004 00AF     		add	r7, sp, #0
+ 687              	.LCFI47:
+ 688              		.cfi_def_cfa_register 7
+ 689 0006 F860     		str	r0, [r7, #12]
+ 690 0008 B960     		str	r1, [r7, #8]
+ 691 000a 7A60     		str	r2, [r7, #4]
+ 151:User/Hardware/dm4310_drv.c **** 	if(data_len==FDCAN_DLC_BYTES_8)
+ 692              		.loc 1 151 4
+ 693 000c 7B68     		ldr	r3, [r7, #4]
+ 694 000e 082B     		cmp	r3, #8
+ 695 0010 70D1     		bne	.L15
+ 152:User/Hardware/dm4310_drv.c **** 	{//返回的数据有8个字节
+ 153:User/Hardware/dm4310_drv.c **** 	  motor->para.id = (rx_data[0])&0x0F;
+ 696              		.loc 1 153 29
+ 697 0012 BB68     		ldr	r3, [r7, #8]
+ 698 0014 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 699              		.loc 1 153 33
+ 700 0016 03F00F03 		and	r3, r3, #15
+ 701 001a 9AB2     		uxth	r2, r3
+ 702              		.loc 1 153 19
+ 703 001c FB68     		ldr	r3, [r7, #12]
+ 704 001e 9A80     		strh	r2, [r3, #4]	@ movhi
+ 154:User/Hardware/dm4310_drv.c **** 	  motor->para.state = (rx_data[0])>>4;
+ 705              		.loc 1 154 32
+ 706 0020 BB68     		ldr	r3, [r7, #8]
+ 707 0022 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 708              		.loc 1 154 22
+ 709 0024 1B09     		lsrs	r3, r3, #4
+ 710 0026 DBB2     		uxtb	r3, r3
+ARM GAS  C:\Users\fffff\AppData\Local\Temp\cc15dscs.s 			page 16
+
+
+ 711 0028 1A46     		mov	r2, r3
+ 712 002a FB68     		ldr	r3, [r7, #12]
+ 713 002c DA80     		strh	r2, [r3, #6]	@ movhi
+ 155:User/Hardware/dm4310_drv.c **** 	  motor->para.p_int=(rx_data[1]<<8)|rx_data[2];
+ 714              		.loc 1 155 30
+ 715 002e BB68     		ldr	r3, [r7, #8]
+ 716 0030 0133     		adds	r3, r3, #1
+ 717 0032 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 718              		.loc 1 155 33
+ 719 0034 1B02     		lsls	r3, r3, #8
+ 720              		.loc 1 155 45
+ 721 0036 BA68     		ldr	r2, [r7, #8]
+ 722 0038 0232     		adds	r2, r2, #2
+ 723 003a 1278     		ldrb	r2, [r2]	@ zero_extendqisi2
+ 724              		.loc 1 155 37
+ 725 003c 1A43     		orrs	r2, r2, r3
+ 726              		.loc 1 155 21
+ 727 003e FB68     		ldr	r3, [r7, #12]
+ 728 0040 9A60     		str	r2, [r3, #8]
+ 156:User/Hardware/dm4310_drv.c **** 	  motor->para.v_int=(rx_data[3]<<4)|(rx_data[4]>>4);
+ 729              		.loc 1 156 30
+ 730 0042 BB68     		ldr	r3, [r7, #8]
+ 731 0044 0333     		adds	r3, r3, #3
+ 732 0046 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 733              		.loc 1 156 33
+ 734 0048 1B01     		lsls	r3, r3, #4
+ 735              		.loc 1 156 46
+ 736 004a BA68     		ldr	r2, [r7, #8]
+ 737 004c 0432     		adds	r2, r2, #4
+ 738 004e 1278     		ldrb	r2, [r2]	@ zero_extendqisi2
+ 739              		.loc 1 156 49
+ 740 0050 1209     		lsrs	r2, r2, #4
+ 741 0052 D2B2     		uxtb	r2, r2
+ 742              		.loc 1 156 37
+ 743 0054 1A43     		orrs	r2, r2, r3
+ 744              		.loc 1 156 21
+ 745 0056 FB68     		ldr	r3, [r7, #12]
+ 746 0058 DA60     		str	r2, [r3, #12]
+ 157:User/Hardware/dm4310_drv.c **** 	  motor->para.t_int=((rx_data[4]&0xF)<<8)|rx_data[5];
+ 747              		.loc 1 157 31
+ 748 005a BB68     		ldr	r3, [r7, #8]
+ 749 005c 0433     		adds	r3, r3, #4
+ 750 005e 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 751              		.loc 1 157 39
+ 752 0060 1B02     		lsls	r3, r3, #8
+ 753 0062 03F47063 		and	r3, r3, #3840
+ 754              		.loc 1 157 51
+ 755 0066 BA68     		ldr	r2, [r7, #8]
+ 756 0068 0532     		adds	r2, r2, #5
+ 757 006a 1278     		ldrb	r2, [r2]	@ zero_extendqisi2
+ 758              		.loc 1 157 43
+ 759 006c 1A43     		orrs	r2, r2, r3
+ 760              		.loc 1 157 21
+ 761 006e FB68     		ldr	r3, [r7, #12]
+ 762 0070 1A61     		str	r2, [r3, #16]
+ 158:User/Hardware/dm4310_drv.c **** 	  motor->para.pos = uint_to_float(motor->para.p_int, P_MIN, P_MAX, 16); // (-12.5,12.5)
+ 763              		.loc 1 158 22
+ARM GAS  C:\Users\fffff\AppData\Local\Temp\cc15dscs.s 			page 17
+
+
+ 764 0072 FB68     		ldr	r3, [r7, #12]
+ 765 0074 9B68     		ldr	r3, [r3, #8]
+ 766 0076 1021     		movs	r1, #16
+ 767 0078 F2EE090A 		vmov.f32	s1, #1.25e+1
+ 768 007c BAEE090A 		vmov.f32	s0, #-1.25e+1
+ 769 0080 1846     		mov	r0, r3
+ 770 0082 FFF7FEFF 		bl	uint_to_float
+ 771 0086 F0EE407A 		vmov.f32	s15, s0
+ 772              		.loc 1 158 20 discriminator 1
+ 773 008a FB68     		ldr	r3, [r7, #12]
+ 774 008c C3ED077A 		vstr.32	s15, [r3, #28]
+ 159:User/Hardware/dm4310_drv.c **** 	  motor->para.vel = uint_to_float(motor->para.v_int, V_MIN, V_MAX, 12); // (-30.0,30.0)
+ 775              		.loc 1 159 22
+ 776 0090 FB68     		ldr	r3, [r7, #12]
+ 777 0092 DB68     		ldr	r3, [r3, #12]
+ 778 0094 0C21     		movs	r1, #12
+ 779 0096 F3EE0E0A 		vmov.f32	s1, #3.0e+1
+ 780 009a BBEE0E0A 		vmov.f32	s0, #-3.0e+1
+ 781 009e 1846     		mov	r0, r3
+ 782 00a0 FFF7FEFF 		bl	uint_to_float
+ 783 00a4 F0EE407A 		vmov.f32	s15, s0
+ 784              		.loc 1 159 20 discriminator 1
+ 785 00a8 FB68     		ldr	r3, [r7, #12]
+ 786 00aa C3ED087A 		vstr.32	s15, [r3, #32]
+ 160:User/Hardware/dm4310_drv.c **** 	  motor->para.tor = uint_to_float(motor->para.t_int, T_MIN, T_MAX, 12);  // (-10.0,10.0)
+ 787              		.loc 1 160 22
+ 788 00ae FB68     		ldr	r3, [r7, #12]
+ 789 00b0 1B69     		ldr	r3, [r3, #16]
+ 790 00b2 0C21     		movs	r1, #12
+ 791 00b4 F2EE040A 		vmov.f32	s1, #1.0e+1
+ 792 00b8 BAEE040A 		vmov.f32	s0, #-1.0e+1
+ 793 00bc 1846     		mov	r0, r3
+ 794 00be FFF7FEFF 		bl	uint_to_float
+ 795 00c2 F0EE407A 		vmov.f32	s15, s0
+ 796              		.loc 1 160 20 discriminator 1
+ 797 00c6 FB68     		ldr	r3, [r7, #12]
+ 798 00c8 C3ED097A 		vstr.32	s15, [r3, #36]
+ 161:User/Hardware/dm4310_drv.c **** 	  motor->para.Tmos = (float)(rx_data[6]);
+ 799              		.loc 1 161 38
+ 800 00cc BB68     		ldr	r3, [r7, #8]
+ 801 00ce 0633     		adds	r3, r3, #6
+ 802 00d0 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 803              		.loc 1 161 23
+ 804 00d2 07EE903A 		vmov	s15, r3	@ int
+ 805 00d6 F8EE677A 		vcvt.f32.u32	s15, s15
+ 806              		.loc 1 161 21
+ 807 00da FB68     		ldr	r3, [r7, #12]
+ 808 00dc C3ED0C7A 		vstr.32	s15, [r3, #48]
+ 162:User/Hardware/dm4310_drv.c **** 	  motor->para.Tcoil = (float)(rx_data[7]);
+ 809              		.loc 1 162 39
+ 810 00e0 BB68     		ldr	r3, [r7, #8]
+ 811 00e2 0733     		adds	r3, r3, #7
+ 812 00e4 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 813              		.loc 1 162 24
+ 814 00e6 07EE903A 		vmov	s15, r3	@ int
+ 815 00ea F8EE677A 		vcvt.f32.u32	s15, s15
+ 816              		.loc 1 162 22
+ARM GAS  C:\Users\fffff\AppData\Local\Temp\cc15dscs.s 			page 18
+
+
+ 817 00ee FB68     		ldr	r3, [r7, #12]
+ 818 00f0 C3ED0D7A 		vstr.32	s15, [r3, #52]
+ 819              	.L15:
+ 163:User/Hardware/dm4310_drv.c **** 	}
+ 164:User/Hardware/dm4310_drv.c **** }
+ 820              		.loc 1 164 1
+ 821 00f4 00BF     		nop
+ 822 00f6 1037     		adds	r7, r7, #16
+ 823              	.LCFI48:
+ 824              		.cfi_def_cfa_offset 8
+ 825 00f8 BD46     		mov	sp, r7
+ 826              	.LCFI49:
+ 827              		.cfi_def_cfa_register 13
+ 828              		@ sp needed
+ 829 00fa 80BD     		pop	{r7, pc}
+ 830              		.cfi_endproc
+ 831              	.LFE185:
+ 833              		.section	.text.dm8009_fbdata,"ax",%progbits
+ 834              		.align	1
+ 835              		.global	dm8009_fbdata
+ 836              		.syntax unified
+ 837              		.thumb
+ 838              		.thumb_func
+ 840              	dm8009_fbdata:
+ 841              	.LFB186:
+ 165:User/Hardware/dm4310_drv.c **** 
+ 166:User/Hardware/dm4310_drv.c **** void dm8009_fbdata(Arm_Motor_t *motor, uint8_t *rx_data,uint32_t data_len)
+ 167:User/Hardware/dm4310_drv.c **** { 
+ 842              		.loc 1 167 1
+ 843              		.cfi_startproc
+ 844              		@ args = 0, pretend = 0, frame = 16
+ 845              		@ frame_needed = 1, uses_anonymous_args = 0
+ 846 0000 80B5     		push	{r7, lr}
+ 847              	.LCFI50:
+ 848              		.cfi_def_cfa_offset 8
+ 849              		.cfi_offset 7, -8
+ 850              		.cfi_offset 14, -4
+ 851 0002 84B0     		sub	sp, sp, #16
+ 852              	.LCFI51:
+ 853              		.cfi_def_cfa_offset 24
+ 854 0004 00AF     		add	r7, sp, #0
+ 855              	.LCFI52:
+ 856              		.cfi_def_cfa_register 7
+ 857 0006 F860     		str	r0, [r7, #12]
+ 858 0008 B960     		str	r1, [r7, #8]
+ 859 000a 7A60     		str	r2, [r7, #4]
+ 168:User/Hardware/dm4310_drv.c **** 	if(data_len==FDCAN_DLC_BYTES_8)
+ 860              		.loc 1 168 4
+ 861 000c 7B68     		ldr	r3, [r7, #4]
+ 862 000e 082B     		cmp	r3, #8
+ 863 0010 70D1     		bne	.L18
+ 169:User/Hardware/dm4310_drv.c **** 	{//返回的数据有8个字节
+ 170:User/Hardware/dm4310_drv.c **** 	  motor->para.id = (rx_data[0])&0x0F;
+ 864              		.loc 1 170 29
+ 865 0012 BB68     		ldr	r3, [r7, #8]
+ 866 0014 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 867              		.loc 1 170 33
+ARM GAS  C:\Users\fffff\AppData\Local\Temp\cc15dscs.s 			page 19
+
+
+ 868 0016 03F00F03 		and	r3, r3, #15
+ 869 001a 9AB2     		uxth	r2, r3
+ 870              		.loc 1 170 19
+ 871 001c FB68     		ldr	r3, [r7, #12]
+ 872 001e 9A80     		strh	r2, [r3, #4]	@ movhi
+ 171:User/Hardware/dm4310_drv.c **** 	  motor->para.state = (rx_data[0])>>4;
+ 873              		.loc 1 171 32
+ 874 0020 BB68     		ldr	r3, [r7, #8]
+ 875 0022 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 876              		.loc 1 171 22
+ 877 0024 1B09     		lsrs	r3, r3, #4
+ 878 0026 DBB2     		uxtb	r3, r3
+ 879 0028 1A46     		mov	r2, r3
+ 880 002a FB68     		ldr	r3, [r7, #12]
+ 881 002c DA80     		strh	r2, [r3, #6]	@ movhi
+ 172:User/Hardware/dm4310_drv.c **** 	  motor->para.p_int=(rx_data[1]<<8)|rx_data[2];
+ 882              		.loc 1 172 30
+ 883 002e BB68     		ldr	r3, [r7, #8]
+ 884 0030 0133     		adds	r3, r3, #1
+ 885 0032 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 886              		.loc 1 172 33
+ 887 0034 1B02     		lsls	r3, r3, #8
+ 888              		.loc 1 172 45
+ 889 0036 BA68     		ldr	r2, [r7, #8]
+ 890 0038 0232     		adds	r2, r2, #2
+ 891 003a 1278     		ldrb	r2, [r2]	@ zero_extendqisi2
+ 892              		.loc 1 172 37
+ 893 003c 1A43     		orrs	r2, r2, r3
+ 894              		.loc 1 172 21
+ 895 003e FB68     		ldr	r3, [r7, #12]
+ 896 0040 9A60     		str	r2, [r3, #8]
+ 173:User/Hardware/dm4310_drv.c **** 	  motor->para.v_int=(rx_data[3]<<4)|(rx_data[4]>>4);
+ 897              		.loc 1 173 30
+ 898 0042 BB68     		ldr	r3, [r7, #8]
+ 899 0044 0333     		adds	r3, r3, #3
+ 900 0046 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 901              		.loc 1 173 33
+ 902 0048 1B01     		lsls	r3, r3, #4
+ 903              		.loc 1 173 46
+ 904 004a BA68     		ldr	r2, [r7, #8]
+ 905 004c 0432     		adds	r2, r2, #4
+ 906 004e 1278     		ldrb	r2, [r2]	@ zero_extendqisi2
+ 907              		.loc 1 173 49
+ 908 0050 1209     		lsrs	r2, r2, #4
+ 909 0052 D2B2     		uxtb	r2, r2
+ 910              		.loc 1 173 37
+ 911 0054 1A43     		orrs	r2, r2, r3
+ 912              		.loc 1 173 21
+ 913 0056 FB68     		ldr	r3, [r7, #12]
+ 914 0058 DA60     		str	r2, [r3, #12]
+ 174:User/Hardware/dm4310_drv.c **** 	  motor->para.t_int=((rx_data[4]&0xF)<<8)|rx_data[5];
+ 915              		.loc 1 174 31
+ 916 005a BB68     		ldr	r3, [r7, #8]
+ 917 005c 0433     		adds	r3, r3, #4
+ 918 005e 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 919              		.loc 1 174 39
+ 920 0060 1B02     		lsls	r3, r3, #8
+ARM GAS  C:\Users\fffff\AppData\Local\Temp\cc15dscs.s 			page 20
+
+
+ 921 0062 03F47063 		and	r3, r3, #3840
+ 922              		.loc 1 174 51
+ 923 0066 BA68     		ldr	r2, [r7, #8]
+ 924 0068 0532     		adds	r2, r2, #5
+ 925 006a 1278     		ldrb	r2, [r2]	@ zero_extendqisi2
+ 926              		.loc 1 174 43
+ 927 006c 1A43     		orrs	r2, r2, r3
+ 928              		.loc 1 174 21
+ 929 006e FB68     		ldr	r3, [r7, #12]
+ 930 0070 1A61     		str	r2, [r3, #16]
+ 175:User/Hardware/dm4310_drv.c **** 	  motor->para.pos = uint_to_float(motor->para.p_int, P_MIN2, P_MAX2, 16); // (-12.5,12.5)
+ 931              		.loc 1 175 22
+ 932 0072 FB68     		ldr	r3, [r7, #12]
+ 933 0074 9B68     		ldr	r3, [r3, #8]
+ 934 0076 1021     		movs	r1, #16
+ 935 0078 F2EE090A 		vmov.f32	s1, #1.25e+1
+ 936 007c BAEE090A 		vmov.f32	s0, #-1.25e+1
+ 937 0080 1846     		mov	r0, r3
+ 938 0082 FFF7FEFF 		bl	uint_to_float
+ 939 0086 F0EE407A 		vmov.f32	s15, s0
+ 940              		.loc 1 175 20 discriminator 1
+ 941 008a FB68     		ldr	r3, [r7, #12]
+ 942 008c C3ED077A 		vstr.32	s15, [r3, #28]
+ 176:User/Hardware/dm4310_drv.c **** 	  motor->para.vel = uint_to_float(motor->para.v_int, V_MIN2, V_MAX2, 12); // (-30.0,30.0)
+ 943              		.loc 1 176 22
+ 944 0090 FB68     		ldr	r3, [r7, #12]
+ 945 0092 DB68     		ldr	r3, [r3, #12]
+ 946 0094 0C21     		movs	r1, #12
+ 947 0096 DFED190A 		vldr.32	s1, .L19
+ 948 009a 9FED190A 		vldr.32	s0, .L19+4
+ 949 009e 1846     		mov	r0, r3
+ 950 00a0 FFF7FEFF 		bl	uint_to_float
+ 951 00a4 F0EE407A 		vmov.f32	s15, s0
+ 952              		.loc 1 176 20 discriminator 1
+ 953 00a8 FB68     		ldr	r3, [r7, #12]
+ 954 00aa C3ED087A 		vstr.32	s15, [r3, #32]
+ 177:User/Hardware/dm4310_drv.c **** 	  motor->para.tor = uint_to_float(motor->para.t_int, T_MIN2, T_MAX2, 12);  // (-10.0,10.0)
+ 955              		.loc 1 177 22
+ 956 00ae FB68     		ldr	r3, [r7, #12]
+ 957 00b0 1B69     		ldr	r3, [r3, #16]
+ 958 00b2 0C21     		movs	r1, #12
+ 959 00b4 DFED130A 		vldr.32	s1, .L19+8
+ 960 00b8 9FED130A 		vldr.32	s0, .L19+12
+ 961 00bc 1846     		mov	r0, r3
+ 962 00be FFF7FEFF 		bl	uint_to_float
+ 963 00c2 F0EE407A 		vmov.f32	s15, s0
+ 964              		.loc 1 177 20 discriminator 1
+ 965 00c6 FB68     		ldr	r3, [r7, #12]
+ 966 00c8 C3ED097A 		vstr.32	s15, [r3, #36]
+ 178:User/Hardware/dm4310_drv.c **** 	  motor->para.Tmos = (float)(rx_data[6]);
+ 967              		.loc 1 178 38
+ 968 00cc BB68     		ldr	r3, [r7, #8]
+ 969 00ce 0633     		adds	r3, r3, #6
+ 970 00d0 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 971              		.loc 1 178 23
+ 972 00d2 07EE903A 		vmov	s15, r3	@ int
+ 973 00d6 F8EE677A 		vcvt.f32.u32	s15, s15
+ARM GAS  C:\Users\fffff\AppData\Local\Temp\cc15dscs.s 			page 21
+
+
+ 974              		.loc 1 178 21
+ 975 00da FB68     		ldr	r3, [r7, #12]
+ 976 00dc C3ED0C7A 		vstr.32	s15, [r3, #48]
+ 179:User/Hardware/dm4310_drv.c **** 	  motor->para.Tcoil = (float)(rx_data[7]);
+ 977              		.loc 1 179 39
+ 978 00e0 BB68     		ldr	r3, [r7, #8]
+ 979 00e2 0733     		adds	r3, r3, #7
+ 980 00e4 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 981              		.loc 1 179 24
+ 982 00e6 07EE903A 		vmov	s15, r3	@ int
+ 983 00ea F8EE677A 		vcvt.f32.u32	s15, s15
+ 984              		.loc 1 179 22
+ 985 00ee FB68     		ldr	r3, [r7, #12]
+ 986 00f0 C3ED0D7A 		vstr.32	s15, [r3, #52]
+ 987              	.L18:
+ 180:User/Hardware/dm4310_drv.c **** 	}
+ 181:User/Hardware/dm4310_drv.c **** }
+ 988              		.loc 1 181 1
+ 989 00f4 00BF     		nop
+ 990 00f6 1037     		adds	r7, r7, #16
+ 991              	.LCFI53:
+ 992              		.cfi_def_cfa_offset 8
+ 993 00f8 BD46     		mov	sp, r7
+ 994              	.LCFI54:
+ 995              		.cfi_def_cfa_register 13
+ 996              		@ sp needed
+ 997 00fa 80BD     		pop	{r7, pc}
+ 998              	.L20:
+ 999              		.align	2
+ 1000              	.L19:
+ 1001 00fc 00003442 		.word	1110704128
+ 1002 0100 000034C2 		.word	-1036779520
+ 1003 0104 00005842 		.word	1113063424
+ 1004 0108 000058C2 		.word	-1034420224
+ 1005              		.cfi_endproc
+ 1006              	.LFE186:
+ 1008              		.section	.text.dm10010l_fbdata,"ax",%progbits
+ 1009              		.align	1
+ 1010              		.global	dm10010l_fbdata
+ 1011              		.syntax unified
+ 1012              		.thumb
+ 1013              		.thumb_func
+ 1015              	dm10010l_fbdata:
+ 1016              	.LFB187:
+ 182:User/Hardware/dm4310_drv.c **** 
+ 183:User/Hardware/dm4310_drv.c **** void dm10010l_fbdata(Arm_Motor_t *motor, uint8_t *rx_data,uint32_t data_len)
+ 184:User/Hardware/dm4310_drv.c **** { 
+ 1017              		.loc 1 184 1
+ 1018              		.cfi_startproc
+ 1019              		@ args = 0, pretend = 0, frame = 16
+ 1020              		@ frame_needed = 1, uses_anonymous_args = 0
+ 1021 0000 80B5     		push	{r7, lr}
+ 1022              	.LCFI55:
+ 1023              		.cfi_def_cfa_offset 8
+ 1024              		.cfi_offset 7, -8
+ 1025              		.cfi_offset 14, -4
+ 1026 0002 84B0     		sub	sp, sp, #16
+ARM GAS  C:\Users\fffff\AppData\Local\Temp\cc15dscs.s 			page 22
+
+
+ 1027              	.LCFI56:
+ 1028              		.cfi_def_cfa_offset 24
+ 1029 0004 00AF     		add	r7, sp, #0
+ 1030              	.LCFI57:
+ 1031              		.cfi_def_cfa_register 7
+ 1032 0006 F860     		str	r0, [r7, #12]
+ 1033 0008 B960     		str	r1, [r7, #8]
+ 1034 000a 7A60     		str	r2, [r7, #4]
+ 185:User/Hardware/dm4310_drv.c **** 	if(data_len==FDCAN_DLC_BYTES_8)
+ 1035              		.loc 1 185 4
+ 1036 000c 7B68     		ldr	r3, [r7, #4]
+ 1037 000e 082B     		cmp	r3, #8
+ 1038 0010 70D1     		bne	.L23
+ 186:User/Hardware/dm4310_drv.c **** 	{//返回的数据有8个字节
+ 187:User/Hardware/dm4310_drv.c **** 	  motor->para.id = (rx_data[0])&0x0F;
+ 1039              		.loc 1 187 29
+ 1040 0012 BB68     		ldr	r3, [r7, #8]
+ 1041 0014 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 1042              		.loc 1 187 33
+ 1043 0016 03F00F03 		and	r3, r3, #15
+ 1044 001a 9AB2     		uxth	r2, r3
+ 1045              		.loc 1 187 19
+ 1046 001c FB68     		ldr	r3, [r7, #12]
+ 1047 001e 9A80     		strh	r2, [r3, #4]	@ movhi
+ 188:User/Hardware/dm4310_drv.c **** 	  motor->para.state = (rx_data[0])>>4;
+ 1048              		.loc 1 188 32
+ 1049 0020 BB68     		ldr	r3, [r7, #8]
+ 1050 0022 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 1051              		.loc 1 188 22
+ 1052 0024 1B09     		lsrs	r3, r3, #4
+ 1053 0026 DBB2     		uxtb	r3, r3
+ 1054 0028 1A46     		mov	r2, r3
+ 1055 002a FB68     		ldr	r3, [r7, #12]
+ 1056 002c DA80     		strh	r2, [r3, #6]	@ movhi
+ 189:User/Hardware/dm4310_drv.c **** 	  motor->para.p_int=(rx_data[1]<<8)|rx_data[2];
+ 1057              		.loc 1 189 30
+ 1058 002e BB68     		ldr	r3, [r7, #8]
+ 1059 0030 0133     		adds	r3, r3, #1
+ 1060 0032 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 1061              		.loc 1 189 33
+ 1062 0034 1B02     		lsls	r3, r3, #8
+ 1063              		.loc 1 189 45
+ 1064 0036 BA68     		ldr	r2, [r7, #8]
+ 1065 0038 0232     		adds	r2, r2, #2
+ 1066 003a 1278     		ldrb	r2, [r2]	@ zero_extendqisi2
+ 1067              		.loc 1 189 37
+ 1068 003c 1A43     		orrs	r2, r2, r3
+ 1069              		.loc 1 189 21
+ 1070 003e FB68     		ldr	r3, [r7, #12]
+ 1071 0040 9A60     		str	r2, [r3, #8]
+ 190:User/Hardware/dm4310_drv.c **** 	  motor->para.v_int=(rx_data[3]<<4)|(rx_data[4]>>4);
+ 1072              		.loc 1 190 30
+ 1073 0042 BB68     		ldr	r3, [r7, #8]
+ 1074 0044 0333     		adds	r3, r3, #3
+ 1075 0046 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 1076              		.loc 1 190 33
+ 1077 0048 1B01     		lsls	r3, r3, #4
+ARM GAS  C:\Users\fffff\AppData\Local\Temp\cc15dscs.s 			page 23
+
+
+ 1078              		.loc 1 190 46
+ 1079 004a BA68     		ldr	r2, [r7, #8]
+ 1080 004c 0432     		adds	r2, r2, #4
+ 1081 004e 1278     		ldrb	r2, [r2]	@ zero_extendqisi2
+ 1082              		.loc 1 190 49
+ 1083 0050 1209     		lsrs	r2, r2, #4
+ 1084 0052 D2B2     		uxtb	r2, r2
+ 1085              		.loc 1 190 37
+ 1086 0054 1A43     		orrs	r2, r2, r3
+ 1087              		.loc 1 190 21
+ 1088 0056 FB68     		ldr	r3, [r7, #12]
+ 1089 0058 DA60     		str	r2, [r3, #12]
+ 191:User/Hardware/dm4310_drv.c **** 	  motor->para.t_int=((rx_data[4]&0xF)<<8)|rx_data[5];
+ 1090              		.loc 1 191 31
+ 1091 005a BB68     		ldr	r3, [r7, #8]
+ 1092 005c 0433     		adds	r3, r3, #4
+ 1093 005e 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 1094              		.loc 1 191 39
+ 1095 0060 1B02     		lsls	r3, r3, #8
+ 1096 0062 03F47063 		and	r3, r3, #3840
+ 1097              		.loc 1 191 51
+ 1098 0066 BA68     		ldr	r2, [r7, #8]
+ 1099 0068 0532     		adds	r2, r2, #5
+ 1100 006a 1278     		ldrb	r2, [r2]	@ zero_extendqisi2
+ 1101              		.loc 1 191 43
+ 1102 006c 1A43     		orrs	r2, r2, r3
+ 1103              		.loc 1 191 21
+ 1104 006e FB68     		ldr	r3, [r7, #12]
+ 1105 0070 1A61     		str	r2, [r3, #16]
+ 192:User/Hardware/dm4310_drv.c **** 	  motor->para.pos = uint_to_float(motor->para.p_int, P_MIN3, P_MAX3, 16); // (-12.5,12.5)
+ 1106              		.loc 1 192 22
+ 1107 0072 FB68     		ldr	r3, [r7, #12]
+ 1108 0074 9B68     		ldr	r3, [r3, #8]
+ 1109 0076 1021     		movs	r1, #16
+ 1110 0078 F2EE090A 		vmov.f32	s1, #1.25e+1
+ 1111 007c BAEE090A 		vmov.f32	s0, #-1.25e+1
+ 1112 0080 1846     		mov	r0, r3
+ 1113 0082 FFF7FEFF 		bl	uint_to_float
+ 1114 0086 F0EE407A 		vmov.f32	s15, s0
+ 1115              		.loc 1 192 20 discriminator 1
+ 1116 008a FB68     		ldr	r3, [r7, #12]
+ 1117 008c C3ED077A 		vstr.32	s15, [r3, #28]
+ 193:User/Hardware/dm4310_drv.c **** 	  motor->para.vel = uint_to_float(motor->para.v_int, V_MIN3, V_MAX3, 12); // (-30.0,30.0)
+ 1118              		.loc 1 193 22
+ 1119 0090 FB68     		ldr	r3, [r7, #12]
+ 1120 0092 DB68     		ldr	r3, [r3, #12]
+ 1121 0094 0C21     		movs	r1, #12
+ 1122 0096 F3EE090A 		vmov.f32	s1, #2.5e+1
+ 1123 009a BBEE090A 		vmov.f32	s0, #-2.5e+1
+ 1124 009e 1846     		mov	r0, r3
+ 1125 00a0 FFF7FEFF 		bl	uint_to_float
+ 1126 00a4 F0EE407A 		vmov.f32	s15, s0
+ 1127              		.loc 1 193 20 discriminator 1
+ 1128 00a8 FB68     		ldr	r3, [r7, #12]
+ 1129 00aa C3ED087A 		vstr.32	s15, [r3, #32]
+ 194:User/Hardware/dm4310_drv.c **** 	  motor->para.tor = uint_to_float(motor->para.t_int, T_MIN3, T_MAX3, 12);  // (-10.0,10.0)
+ 1130              		.loc 1 194 22
+ARM GAS  C:\Users\fffff\AppData\Local\Temp\cc15dscs.s 			page 24
+
+
+ 1131 00ae FB68     		ldr	r3, [r7, #12]
+ 1132 00b0 1B69     		ldr	r3, [r3, #16]
+ 1133 00b2 0C21     		movs	r1, #12
+ 1134 00b4 DFED110A 		vldr.32	s1, .L24
+ 1135 00b8 9FED110A 		vldr.32	s0, .L24+4
+ 1136 00bc 1846     		mov	r0, r3
+ 1137 00be FFF7FEFF 		bl	uint_to_float
+ 1138 00c2 F0EE407A 		vmov.f32	s15, s0
+ 1139              		.loc 1 194 20 discriminator 1
+ 1140 00c6 FB68     		ldr	r3, [r7, #12]
+ 1141 00c8 C3ED097A 		vstr.32	s15, [r3, #36]
+ 195:User/Hardware/dm4310_drv.c **** 	  motor->para.Tmos = (float)(rx_data[6]);
+ 1142              		.loc 1 195 38
+ 1143 00cc BB68     		ldr	r3, [r7, #8]
+ 1144 00ce 0633     		adds	r3, r3, #6
+ 1145 00d0 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 1146              		.loc 1 195 23
+ 1147 00d2 07EE903A 		vmov	s15, r3	@ int
+ 1148 00d6 F8EE677A 		vcvt.f32.u32	s15, s15
+ 1149              		.loc 1 195 21
+ 1150 00da FB68     		ldr	r3, [r7, #12]
+ 1151 00dc C3ED0C7A 		vstr.32	s15, [r3, #48]
+ 196:User/Hardware/dm4310_drv.c **** 	  motor->para.Tcoil = (float)(rx_data[7]);
+ 1152              		.loc 1 196 39
+ 1153 00e0 BB68     		ldr	r3, [r7, #8]
+ 1154 00e2 0733     		adds	r3, r3, #7
+ 1155 00e4 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 1156              		.loc 1 196 24
+ 1157 00e6 07EE903A 		vmov	s15, r3	@ int
+ 1158 00ea F8EE677A 		vcvt.f32.u32	s15, s15
+ 1159              		.loc 1 196 22
+ 1160 00ee FB68     		ldr	r3, [r7, #12]
+ 1161 00f0 C3ED0D7A 		vstr.32	s15, [r3, #52]
+ 1162              	.L23:
+ 197:User/Hardware/dm4310_drv.c **** 	}
+ 198:User/Hardware/dm4310_drv.c **** }
+ 1163              		.loc 1 198 1
+ 1164 00f4 00BF     		nop
+ 1165 00f6 1037     		adds	r7, r7, #16
+ 1166              	.LCFI58:
+ 1167              		.cfi_def_cfa_offset 8
+ 1168 00f8 BD46     		mov	sp, r7
+ 1169              	.LCFI59:
+ 1170              		.cfi_def_cfa_register 13
+ 1171              		@ sp needed
+ 1172 00fa 80BD     		pop	{r7, pc}
+ 1173              	.L25:
+ 1174              		.align	2
+ 1175              	.L24:
+ 1176 00fc 00004843 		.word	1128792064
+ 1177 0100 000048C3 		.word	-1018691584
+ 1178              		.cfi_endproc
+ 1179              	.LFE187:
+ 1181              		.section	.text.set_DM_pos_vel,"ax",%progbits
+ 1182              		.align	1
+ 1183              		.global	set_DM_pos_vel
+ 1184              		.syntax unified
+ARM GAS  C:\Users\fffff\AppData\Local\Temp\cc15dscs.s 			page 25
+
+
+ 1185              		.thumb
+ 1186              		.thumb_func
+ 1188              	set_DM_pos_vel:
+ 1189              	.LFB188:
+ 199:User/Hardware/dm4310_drv.c **** /************************************控制达妙电机参数**********************************************
+ 200:User/Hardware/dm4310_drv.c **** //POS模式传入参数
+ 201:User/Hardware/dm4310_drv.c **** void set_DM_pos_vel(float pos, float vel,uint16_t motor_id)
+ 202:User/Hardware/dm4310_drv.c **** {
+ 1190              		.loc 1 202 1
+ 1191              		.cfi_startproc
+ 1192              		@ args = 0, pretend = 0, frame = 16
+ 1193              		@ frame_needed = 1, uses_anonymous_args = 0
+ 1194              		@ link register save eliminated.
+ 1195 0000 80B4     		push	{r7}
+ 1196              	.LCFI60:
+ 1197              		.cfi_def_cfa_offset 4
+ 1198              		.cfi_offset 7, -4
+ 1199 0002 85B0     		sub	sp, sp, #20
+ 1200              	.LCFI61:
+ 1201              		.cfi_def_cfa_offset 24
+ 1202 0004 00AF     		add	r7, sp, #0
+ 1203              	.LCFI62:
+ 1204              		.cfi_def_cfa_register 7
+ 1205 0006 87ED030A 		vstr.32	s0, [r7, #12]
+ 1206 000a C7ED020A 		vstr.32	s1, [r7, #8]
+ 1207 000e 0346     		mov	r3, r0
+ 1208 0010 FB80     		strh	r3, [r7, #6]	@ movhi
+ 203:User/Hardware/dm4310_drv.c **** 	arm_motor[motor_id].ctrl.pos_set = pos;
+ 1209              		.loc 1 203 26
+ 1210 0012 FA88     		ldrh	r2, [r7, #6]
+ 1211              		.loc 1 203 35
+ 1212 0014 0C49     		ldr	r1, .L27
+ 1213 0016 1346     		mov	r3, r2
+ 1214 0018 1B01     		lsls	r3, r3, #4
+ 1215 001a 1344     		add	r3, r3, r2
+ 1216 001c 1B01     		lsls	r3, r3, #4
+ 1217 001e 0B44     		add	r3, r3, r1
+ 1218 0020 3C33     		adds	r3, r3, #60
+ 1219 0022 FA68     		ldr	r2, [r7, #12]	@ float
+ 1220 0024 1A60     		str	r2, [r3]	@ float
+ 204:User/Hardware/dm4310_drv.c **** 	arm_motor[motor_id].ctrl.vel_set = vel;
+ 1221              		.loc 1 204 26
+ 1222 0026 FA88     		ldrh	r2, [r7, #6]
+ 1223              		.loc 1 204 35
+ 1224 0028 0749     		ldr	r1, .L27
+ 1225 002a 1346     		mov	r3, r2
+ 1226 002c 1B01     		lsls	r3, r3, #4
+ 1227 002e 1344     		add	r3, r3, r2
+ 1228 0030 1B01     		lsls	r3, r3, #4
+ 1229 0032 0B44     		add	r3, r3, r1
+ 1230 0034 4033     		adds	r3, r3, #64
+ 1231 0036 BA68     		ldr	r2, [r7, #8]	@ float
+ 1232 0038 1A60     		str	r2, [r3]	@ float
+ 205:User/Hardware/dm4310_drv.c **** }
+ 1233              		.loc 1 205 1
+ 1234 003a 00BF     		nop
+ 1235 003c 1437     		adds	r7, r7, #20
+ARM GAS  C:\Users\fffff\AppData\Local\Temp\cc15dscs.s 			page 26
+
+
+ 1236              	.LCFI63:
+ 1237              		.cfi_def_cfa_offset 4
+ 1238 003e BD46     		mov	sp, r7
+ 1239              	.LCFI64:
+ 1240              		.cfi_def_cfa_register 13
+ 1241              		@ sp needed
+ 1242 0040 5DF8047B 		ldr	r7, [sp], #4
+ 1243              	.LCFI65:
+ 1244              		.cfi_restore 7
+ 1245              		.cfi_def_cfa_offset 0
+ 1246 0044 7047     		bx	lr
+ 1247              	.L28:
+ 1248 0046 00BF     		.align	2
+ 1249              	.L27:
+ 1250 0048 00000000 		.word	arm_motor
+ 1251              		.cfi_endproc
+ 1252              	.LFE188:
+ 1254              		.section	.text.set_DM_vel,"ax",%progbits
+ 1255              		.align	1
+ 1256              		.global	set_DM_vel
+ 1257              		.syntax unified
+ 1258              		.thumb
+ 1259              		.thumb_func
+ 1261              	set_DM_vel:
+ 1262              	.LFB189:
+ 206:User/Hardware/dm4310_drv.c **** //VEL模式传入参数
+ 207:User/Hardware/dm4310_drv.c **** void set_DM_vel(float vel,uint16_t motor_id)
+ 208:User/Hardware/dm4310_drv.c **** {
+ 1263              		.loc 1 208 1
+ 1264              		.cfi_startproc
+ 1265              		@ args = 0, pretend = 0, frame = 8
+ 1266              		@ frame_needed = 1, uses_anonymous_args = 0
+ 1267              		@ link register save eliminated.
+ 1268 0000 80B4     		push	{r7}
+ 1269              	.LCFI66:
+ 1270              		.cfi_def_cfa_offset 4
+ 1271              		.cfi_offset 7, -4
+ 1272 0002 83B0     		sub	sp, sp, #12
+ 1273              	.LCFI67:
+ 1274              		.cfi_def_cfa_offset 16
+ 1275 0004 00AF     		add	r7, sp, #0
+ 1276              	.LCFI68:
+ 1277              		.cfi_def_cfa_register 7
+ 1278 0006 87ED010A 		vstr.32	s0, [r7, #4]
+ 1279 000a 0346     		mov	r3, r0
+ 1280 000c 7B80     		strh	r3, [r7, #2]	@ movhi
+ 209:User/Hardware/dm4310_drv.c **** 	arm_motor[motor_id].ctrl.vel_set = vel;
+ 1281              		.loc 1 209 26
+ 1282 000e 7A88     		ldrh	r2, [r7, #2]
+ 1283              		.loc 1 209 35
+ 1284 0010 0749     		ldr	r1, .L30
+ 1285 0012 1346     		mov	r3, r2
+ 1286 0014 1B01     		lsls	r3, r3, #4
+ 1287 0016 1344     		add	r3, r3, r2
+ 1288 0018 1B01     		lsls	r3, r3, #4
+ 1289 001a 0B44     		add	r3, r3, r1
+ 1290 001c 4033     		adds	r3, r3, #64
+ARM GAS  C:\Users\fffff\AppData\Local\Temp\cc15dscs.s 			page 27
+
+
+ 1291 001e 7A68     		ldr	r2, [r7, #4]	@ float
+ 1292 0020 1A60     		str	r2, [r3]	@ float
+ 210:User/Hardware/dm4310_drv.c **** }
+ 1293              		.loc 1 210 1
+ 1294 0022 00BF     		nop
+ 1295 0024 0C37     		adds	r7, r7, #12
+ 1296              	.LCFI69:
+ 1297              		.cfi_def_cfa_offset 4
+ 1298 0026 BD46     		mov	sp, r7
+ 1299              	.LCFI70:
+ 1300              		.cfi_def_cfa_register 13
+ 1301              		@ sp needed
+ 1302 0028 5DF8047B 		ldr	r7, [sp], #4
+ 1303              	.LCFI71:
+ 1304              		.cfi_restore 7
+ 1305              		.cfi_def_cfa_offset 0
+ 1306 002c 7047     		bx	lr
+ 1307              	.L31:
+ 1308 002e 00BF     		.align	2
+ 1309              	.L30:
+ 1310 0030 00000000 		.word	arm_motor
+ 1311              		.cfi_endproc
+ 1312              	.LFE189:
+ 1314              		.section	.text.set_DM_mit,"ax",%progbits
+ 1315              		.align	1
+ 1316              		.global	set_DM_mit
+ 1317              		.syntax unified
+ 1318              		.thumb
+ 1319              		.thumb_func
+ 1321              	set_DM_mit:
+ 1322              	.LFB190:
+ 211:User/Hardware/dm4310_drv.c **** //MIT模式传入参数
+ 212:User/Hardware/dm4310_drv.c **** void set_DM_mit(float pos, float vel, float torq,float kp, float kd,uint16_t motor_id)
+ 213:User/Hardware/dm4310_drv.c **** {
+ 1323              		.loc 1 213 1
+ 1324              		.cfi_startproc
+ 1325              		@ args = 0, pretend = 0, frame = 24
+ 1326              		@ frame_needed = 1, uses_anonymous_args = 0
+ 1327              		@ link register save eliminated.
+ 1328 0000 80B4     		push	{r7}
+ 1329              	.LCFI72:
+ 1330              		.cfi_def_cfa_offset 4
+ 1331              		.cfi_offset 7, -4
+ 1332 0002 87B0     		sub	sp, sp, #28
+ 1333              	.LCFI73:
+ 1334              		.cfi_def_cfa_offset 32
+ 1335 0004 00AF     		add	r7, sp, #0
+ 1336              	.LCFI74:
+ 1337              		.cfi_def_cfa_register 7
+ 1338 0006 87ED050A 		vstr.32	s0, [r7, #20]
+ 1339 000a C7ED040A 		vstr.32	s1, [r7, #16]
+ 1340 000e 87ED031A 		vstr.32	s2, [r7, #12]
+ 1341 0012 C7ED021A 		vstr.32	s3, [r7, #8]
+ 1342 0016 87ED012A 		vstr.32	s4, [r7, #4]
+ 1343 001a 0346     		mov	r3, r0
+ 1344 001c 7B80     		strh	r3, [r7, #2]	@ movhi
+ 214:User/Hardware/dm4310_drv.c **** 	arm_motor[motor_id].ctrl.pos_set = pos;
+ARM GAS  C:\Users\fffff\AppData\Local\Temp\cc15dscs.s 			page 28
+
+
+ 1345              		.loc 1 214 26
+ 1346 001e 7A88     		ldrh	r2, [r7, #2]
+ 1347              		.loc 1 214 35
+ 1348 0020 1B49     		ldr	r1, .L33
+ 1349 0022 1346     		mov	r3, r2
+ 1350 0024 1B01     		lsls	r3, r3, #4
+ 1351 0026 1344     		add	r3, r3, r2
+ 1352 0028 1B01     		lsls	r3, r3, #4
+ 1353 002a 0B44     		add	r3, r3, r1
+ 1354 002c 3C33     		adds	r3, r3, #60
+ 1355 002e 7A69     		ldr	r2, [r7, #20]	@ float
+ 1356 0030 1A60     		str	r2, [r3]	@ float
+ 215:User/Hardware/dm4310_drv.c **** 	arm_motor[motor_id].ctrl.vel_set = vel;
+ 1357              		.loc 1 215 26
+ 1358 0032 7A88     		ldrh	r2, [r7, #2]
+ 1359              		.loc 1 215 35
+ 1360 0034 1649     		ldr	r1, .L33
+ 1361 0036 1346     		mov	r3, r2
+ 1362 0038 1B01     		lsls	r3, r3, #4
+ 1363 003a 1344     		add	r3, r3, r2
+ 1364 003c 1B01     		lsls	r3, r3, #4
+ 1365 003e 0B44     		add	r3, r3, r1
+ 1366 0040 4033     		adds	r3, r3, #64
+ 1367 0042 3A69     		ldr	r2, [r7, #16]	@ float
+ 1368 0044 1A60     		str	r2, [r3]	@ float
+ 216:User/Hardware/dm4310_drv.c **** 	arm_motor[motor_id].ctrl.tor_set = torq;
+ 1369              		.loc 1 216 26
+ 1370 0046 7A88     		ldrh	r2, [r7, #2]
+ 1371              		.loc 1 216 35
+ 1372 0048 1149     		ldr	r1, .L33
+ 1373 004a 1346     		mov	r3, r2
+ 1374 004c 1B01     		lsls	r3, r3, #4
+ 1375 004e 1344     		add	r3, r3, r2
+ 1376 0050 1B01     		lsls	r3, r3, #4
+ 1377 0052 0B44     		add	r3, r3, r1
+ 1378 0054 4433     		adds	r3, r3, #68
+ 1379 0056 FA68     		ldr	r2, [r7, #12]	@ float
+ 1380 0058 1A60     		str	r2, [r3]	@ float
+ 217:User/Hardware/dm4310_drv.c **** 	arm_motor[motor_id].ctrl.kp_set = kp;
+ 1381              		.loc 1 217 26
+ 1382 005a 7A88     		ldrh	r2, [r7, #2]
+ 1383              		.loc 1 217 34
+ 1384 005c 0C49     		ldr	r1, .L33
+ 1385 005e 1346     		mov	r3, r2
+ 1386 0060 1B01     		lsls	r3, r3, #4
+ 1387 0062 1344     		add	r3, r3, r2
+ 1388 0064 1B01     		lsls	r3, r3, #4
+ 1389 0066 0B44     		add	r3, r3, r1
+ 1390 0068 4C33     		adds	r3, r3, #76
+ 1391 006a BA68     		ldr	r2, [r7, #8]	@ float
+ 1392 006c 1A60     		str	r2, [r3]	@ float
+ 218:User/Hardware/dm4310_drv.c **** 	arm_motor[motor_id].ctrl.kd_set = kd;
+ 1393              		.loc 1 218 26
+ 1394 006e 7A88     		ldrh	r2, [r7, #2]
+ 1395              		.loc 1 218 34
+ 1396 0070 0749     		ldr	r1, .L33
+ 1397 0072 1346     		mov	r3, r2
+ARM GAS  C:\Users\fffff\AppData\Local\Temp\cc15dscs.s 			page 29
+
+
+ 1398 0074 1B01     		lsls	r3, r3, #4
+ 1399 0076 1344     		add	r3, r3, r2
+ 1400 0078 1B01     		lsls	r3, r3, #4
+ 1401 007a 0B44     		add	r3, r3, r1
+ 1402 007c 5033     		adds	r3, r3, #80
+ 1403 007e 7A68     		ldr	r2, [r7, #4]	@ float
+ 1404 0080 1A60     		str	r2, [r3]	@ float
+ 219:User/Hardware/dm4310_drv.c **** }
+ 1405              		.loc 1 219 1
+ 1406 0082 00BF     		nop
+ 1407 0084 1C37     		adds	r7, r7, #28
+ 1408              	.LCFI75:
+ 1409              		.cfi_def_cfa_offset 4
+ 1410 0086 BD46     		mov	sp, r7
+ 1411              	.LCFI76:
+ 1412              		.cfi_def_cfa_register 13
+ 1413              		@ sp needed
+ 1414 0088 5DF8047B 		ldr	r7, [sp], #4
+ 1415              	.LCFI77:
+ 1416              		.cfi_restore 7
+ 1417              		.cfi_def_cfa_offset 0
+ 1418 008c 7047     		bx	lr
+ 1419              	.L34:
+ 1420 008e 00BF     		.align	2
+ 1421              	.L33:
+ 1422 0090 00000000 		.word	arm_motor
+ 1423              		.cfi_endproc
+ 1424              	.LFE190:
+ 1426              		.section	.text.set_DM_mode,"ax",%progbits
+ 1427              		.align	1
+ 1428              		.global	set_DM_mode
+ 1429              		.syntax unified
+ 1430              		.thumb
+ 1431              		.thumb_func
+ 1433              	set_DM_mode:
+ 1434              	.LFB191:
+ 220:User/Hardware/dm4310_drv.c **** //达妙迪机控制模式写入 （只是存入数组方便我们看，真正的模式设置在上位机里）
+ 221:User/Hardware/dm4310_drv.c **** void set_DM_mode(uint16_t motor_id, uint16_t mode_id)
+ 222:User/Hardware/dm4310_drv.c **** {
+ 1435              		.loc 1 222 1
+ 1436              		.cfi_startproc
+ 1437              		@ args = 0, pretend = 0, frame = 8
+ 1438              		@ frame_needed = 1, uses_anonymous_args = 0
+ 1439              		@ link register save eliminated.
+ 1440 0000 80B4     		push	{r7}
+ 1441              	.LCFI78:
+ 1442              		.cfi_def_cfa_offset 4
+ 1443              		.cfi_offset 7, -4
+ 1444 0002 83B0     		sub	sp, sp, #12
+ 1445              	.LCFI79:
+ 1446              		.cfi_def_cfa_offset 16
+ 1447 0004 00AF     		add	r7, sp, #0
+ 1448              	.LCFI80:
+ 1449              		.cfi_def_cfa_register 7
+ 1450 0006 0346     		mov	r3, r0
+ 1451 0008 0A46     		mov	r2, r1
+ 1452 000a FB80     		strh	r3, [r7, #6]	@ movhi
+ARM GAS  C:\Users\fffff\AppData\Local\Temp\cc15dscs.s 			page 30
+
+
+ 1453 000c 1346     		mov	r3, r2	@ movhi
+ 1454 000e BB80     		strh	r3, [r7, #4]	@ movhi
+ 223:User/Hardware/dm4310_drv.c **** 	arm_motor[motor_id].ctrl.set_mode = mode_id;
+ 1455              		.loc 1 223 26
+ 1456 0010 FA88     		ldrh	r2, [r7, #6]
+ 1457              		.loc 1 223 36
+ 1458 0012 0749     		ldr	r1, .L36
+ 1459 0014 1346     		mov	r3, r2
+ 1460 0016 1B01     		lsls	r3, r3, #4
+ 1461 0018 1344     		add	r3, r3, r2
+ 1462 001a 1B01     		lsls	r3, r3, #4
+ 1463 001c 0B44     		add	r3, r3, r1
+ 1464 001e 3833     		adds	r3, r3, #56
+ 1465 0020 BA88     		ldrh	r2, [r7, #4]	@ movhi
+ 1466 0022 1A80     		strh	r2, [r3]	@ movhi
+ 224:User/Hardware/dm4310_drv.c **** }
+ 1467              		.loc 1 224 1
+ 1468 0024 00BF     		nop
+ 1469 0026 0C37     		adds	r7, r7, #12
+ 1470              	.LCFI81:
+ 1471              		.cfi_def_cfa_offset 4
+ 1472 0028 BD46     		mov	sp, r7
+ 1473              	.LCFI82:
+ 1474              		.cfi_def_cfa_register 13
+ 1475              		@ sp needed
+ 1476 002a 5DF8047B 		ldr	r7, [sp], #4
+ 1477              	.LCFI83:
+ 1478              		.cfi_restore 7
+ 1479              		.cfi_def_cfa_offset 0
+ 1480 002e 7047     		bx	lr
+ 1481              	.L37:
+ 1482              		.align	2
+ 1483              	.L36:
+ 1484 0030 00000000 		.word	arm_motor
+ 1485              		.cfi_endproc
+ 1486              	.LFE191:
+ 1488              		.section	.text.mit_ctrl,"ax",%progbits
+ 1489              		.align	1
+ 1490              		.global	mit_ctrl
+ 1491              		.syntax unified
+ 1492              		.thumb
+ 1493              		.thumb_func
+ 1495              	mit_ctrl:
+ 1496              	.LFB192:
+ 225:User/Hardware/dm4310_drv.c **** 
+ 226:User/Hardware/dm4310_drv.c **** /***********************************************达秒电机的不同模式*********************************
+ 227:User/Hardware/dm4310_drv.c **** /**
+ 228:User/Hardware/dm4310_drv.c **** ************************************************************************
+ 229:User/Hardware/dm4310_drv.c **** * @brief:      	mit_ctrl: MIT模式下的电机控制函数
+ 230:User/Hardware/dm4310_drv.c **** * @param[in]:   hcan:			指向CAN_HandleTypeDef结构的指针，用于指定CAN总线
+ 231:User/Hardware/dm4310_drv.c **** * @param[in]:   motor_id:	电机ID，指定目标电机
+ 232:User/Hardware/dm4310_drv.c **** * @param[in]:   pos:			位置给定值
+ 233:User/Hardware/dm4310_drv.c **** * @param[in]:   vel:			速度给定值
+ 234:User/Hardware/dm4310_drv.c **** * @param[in]:   kp:				位置比例系数
+ 235:User/Hardware/dm4310_drv.c **** * @param[in]:   kd:				位置微分系数
+ 236:User/Hardware/dm4310_drv.c **** * @param[in]:   torq:			转矩给定值
+ 237:User/Hardware/dm4310_drv.c **** * @retval:     	void
+ARM GAS  C:\Users\fffff\AppData\Local\Temp\cc15dscs.s 			page 31
+
+
+ 238:User/Hardware/dm4310_drv.c **** * @details:    	通过CAN总线向电机发送MIT模式下的控制帧。
+ 239:User/Hardware/dm4310_drv.c **** ************************************************************************
+ 240:User/Hardware/dm4310_drv.c **** **/
+ 241:User/Hardware/dm4310_drv.c **** void mit_ctrl(hcan_t* hcan, uint16_t motor_id, float pos, float vel,float kp, float kd, float torq)
+ 242:User/Hardware/dm4310_drv.c **** {
+ 1497              		.loc 1 242 1
+ 1498              		.cfi_startproc
+ 1499              		@ args = 0, pretend = 0, frame = 56
+ 1500              		@ frame_needed = 1, uses_anonymous_args = 0
+ 1501 0000 80B5     		push	{r7, lr}
+ 1502              	.LCFI84:
+ 1503              		.cfi_def_cfa_offset 8
+ 1504              		.cfi_offset 7, -8
+ 1505              		.cfi_offset 14, -4
+ 1506 0002 8EB0     		sub	sp, sp, #56
+ 1507              	.LCFI85:
+ 1508              		.cfi_def_cfa_offset 64
+ 1509 0004 00AF     		add	r7, sp, #0
+ 1510              	.LCFI86:
+ 1511              		.cfi_def_cfa_register 7
+ 1512 0006 F861     		str	r0, [r7, #28]
+ 1513 0008 0B46     		mov	r3, r1
+ 1514 000a 87ED050A 		vstr.32	s0, [r7, #20]
+ 1515 000e C7ED040A 		vstr.32	s1, [r7, #16]
+ 1516 0012 87ED031A 		vstr.32	s2, [r7, #12]
+ 1517 0016 C7ED021A 		vstr.32	s3, [r7, #8]
+ 1518 001a 87ED012A 		vstr.32	s4, [r7, #4]
+ 1519 001e 7B83     		strh	r3, [r7, #26]	@ movhi
+ 243:User/Hardware/dm4310_drv.c **** 	uint8_t data[8];
+ 244:User/Hardware/dm4310_drv.c **** 	uint16_t pos_tmp,vel_tmp,kp_tmp,kd_tmp,tor_tmp;
+ 245:User/Hardware/dm4310_drv.c **** 	uint16_t id = motor_id + MIT_MODE;
+ 1520              		.loc 1 245 11
+ 1521 0020 7B8B     		ldrh	r3, [r7, #26]	@ movhi
+ 1522 0022 FB86     		strh	r3, [r7, #54]	@ movhi
+ 246:User/Hardware/dm4310_drv.c **** 
+ 247:User/Hardware/dm4310_drv.c **** 	pos_tmp = float_to_uint(pos,  P_MIN,  P_MAX,  16);
+ 1523              		.loc 1 247 12
+ 1524 0024 1020     		movs	r0, #16
+ 1525 0026 B2EE091A 		vmov.f32	s2, #1.25e+1
+ 1526 002a FAEE090A 		vmov.f32	s1, #-1.25e+1
+ 1527 002e 97ED050A 		vldr.32	s0, [r7, #20]
+ 1528 0032 FFF7FEFF 		bl	float_to_uint
+ 1529 0036 0346     		mov	r3, r0
+ 1530              		.loc 1 247 10 discriminator 1
+ 1531 0038 BB86     		strh	r3, [r7, #52]	@ movhi
+ 248:User/Hardware/dm4310_drv.c **** 	vel_tmp = float_to_uint(vel,  V_MIN,  V_MAX,  12);
+ 1532              		.loc 1 248 12
+ 1533 003a 0C20     		movs	r0, #12
+ 1534 003c B3EE0E1A 		vmov.f32	s2, #3.0e+1
+ 1535 0040 FBEE0E0A 		vmov.f32	s1, #-3.0e+1
+ 1536 0044 97ED040A 		vldr.32	s0, [r7, #16]
+ 1537 0048 FFF7FEFF 		bl	float_to_uint
+ 1538 004c 0346     		mov	r3, r0
+ 1539              		.loc 1 248 10 discriminator 1
+ 1540 004e 7B86     		strh	r3, [r7, #50]	@ movhi
+ 249:User/Hardware/dm4310_drv.c **** 	kp_tmp  = float_to_uint(kp,   KP_MIN, KP_MAX, 12);
+ 1541              		.loc 1 249 12
+ARM GAS  C:\Users\fffff\AppData\Local\Temp\cc15dscs.s 			page 32
+
+
+ 1542 0050 0C20     		movs	r0, #12
+ 1543 0052 9FED311A 		vldr.32	s2, .L39
+ 1544 0056 DFED310A 		vldr.32	s1, .L39+4
+ 1545 005a 97ED030A 		vldr.32	s0, [r7, #12]
+ 1546 005e FFF7FEFF 		bl	float_to_uint
+ 1547 0062 0346     		mov	r3, r0
+ 1548              		.loc 1 249 10 discriminator 1
+ 1549 0064 3B86     		strh	r3, [r7, #48]	@ movhi
+ 250:User/Hardware/dm4310_drv.c **** 	kd_tmp  = float_to_uint(kd,   KD_MIN, KD_MAX, 12);
+ 1550              		.loc 1 250 12
+ 1551 0066 0C20     		movs	r0, #12
+ 1552 0068 B1EE041A 		vmov.f32	s2, #5.0e+0
+ 1553 006c DFED2B0A 		vldr.32	s1, .L39+4
+ 1554 0070 97ED020A 		vldr.32	s0, [r7, #8]
+ 1555 0074 FFF7FEFF 		bl	float_to_uint
+ 1556 0078 0346     		mov	r3, r0
+ 1557              		.loc 1 250 10 discriminator 1
+ 1558 007a FB85     		strh	r3, [r7, #46]	@ movhi
+ 251:User/Hardware/dm4310_drv.c **** 	tor_tmp = float_to_uint(torq, T_MIN,  T_MAX,  12);
+ 1559              		.loc 1 251 12
+ 1560 007c 0C20     		movs	r0, #12
+ 1561 007e B2EE041A 		vmov.f32	s2, #1.0e+1
+ 1562 0082 FAEE040A 		vmov.f32	s1, #-1.0e+1
+ 1563 0086 97ED010A 		vldr.32	s0, [r7, #4]
+ 1564 008a FFF7FEFF 		bl	float_to_uint
+ 1565 008e 0346     		mov	r3, r0
+ 1566              		.loc 1 251 10 discriminator 1
+ 1567 0090 BB85     		strh	r3, [r7, #44]	@ movhi
+ 252:User/Hardware/dm4310_drv.c **** 
+ 253:User/Hardware/dm4310_drv.c **** 	data[0] = (pos_tmp >> 8);
+ 1568              		.loc 1 253 10
+ 1569 0092 BB8E     		ldrh	r3, [r7, #52]
+ 1570 0094 1B0A     		lsrs	r3, r3, #8
+ 1571 0096 9BB2     		uxth	r3, r3
+ 1572 0098 DBB2     		uxtb	r3, r3
+ 1573 009a 87F82430 		strb	r3, [r7, #36]
+ 254:User/Hardware/dm4310_drv.c **** 	data[1] = pos_tmp;
+ 1574              		.loc 1 254 10
+ 1575 009e BB8E     		ldrh	r3, [r7, #52]	@ movhi
+ 1576 00a0 DBB2     		uxtb	r3, r3
+ 1577 00a2 87F82530 		strb	r3, [r7, #37]
+ 255:User/Hardware/dm4310_drv.c **** 	data[2] = (vel_tmp >> 4);
+ 1578              		.loc 1 255 10
+ 1579 00a6 7B8E     		ldrh	r3, [r7, #50]
+ 1580 00a8 1B09     		lsrs	r3, r3, #4
+ 1581 00aa 9BB2     		uxth	r3, r3
+ 1582 00ac DBB2     		uxtb	r3, r3
+ 1583 00ae 87F82630 		strb	r3, [r7, #38]
+ 256:User/Hardware/dm4310_drv.c **** 	data[3] = ((vel_tmp&0xF)<<4)|(kp_tmp>>8);
+ 1584              		.loc 1 256 30
+ 1585 00b2 7B8E     		ldrh	r3, [r7, #50]	@ movhi
+ 1586 00b4 5BB2     		sxtb	r3, r3
+ 1587 00b6 1B01     		lsls	r3, r3, #4
+ 1588 00b8 5AB2     		sxtb	r2, r3
+ 1589 00ba 3B8E     		ldrh	r3, [r7, #48]
+ 1590 00bc 1B0A     		lsrs	r3, r3, #8
+ 1591 00be 9BB2     		uxth	r3, r3
+ARM GAS  C:\Users\fffff\AppData\Local\Temp\cc15dscs.s 			page 33
+
+
+ 1592 00c0 5BB2     		sxtb	r3, r3
+ 1593 00c2 1343     		orrs	r3, r3, r2
+ 1594 00c4 5BB2     		sxtb	r3, r3
+ 1595 00c6 DBB2     		uxtb	r3, r3
+ 1596              		.loc 1 256 10
+ 1597 00c8 87F82730 		strb	r3, [r7, #39]
+ 257:User/Hardware/dm4310_drv.c **** 	data[4] = kp_tmp;
+ 1598              		.loc 1 257 10
+ 1599 00cc 3B8E     		ldrh	r3, [r7, #48]	@ movhi
+ 1600 00ce DBB2     		uxtb	r3, r3
+ 1601 00d0 87F82830 		strb	r3, [r7, #40]
+ 258:User/Hardware/dm4310_drv.c **** 	data[5] = (kd_tmp >> 4);
+ 1602              		.loc 1 258 10
+ 1603 00d4 FB8D     		ldrh	r3, [r7, #46]
+ 1604 00d6 1B09     		lsrs	r3, r3, #4
+ 1605 00d8 9BB2     		uxth	r3, r3
+ 1606 00da DBB2     		uxtb	r3, r3
+ 1607 00dc 87F82930 		strb	r3, [r7, #41]
+ 259:User/Hardware/dm4310_drv.c **** 	data[6] = ((kd_tmp&0xF)<<4)|(tor_tmp>>8);
+ 1608              		.loc 1 259 29
+ 1609 00e0 FB8D     		ldrh	r3, [r7, #46]	@ movhi
+ 1610 00e2 5BB2     		sxtb	r3, r3
+ 1611 00e4 1B01     		lsls	r3, r3, #4
+ 1612 00e6 5AB2     		sxtb	r2, r3
+ 1613 00e8 BB8D     		ldrh	r3, [r7, #44]
+ 1614 00ea 1B0A     		lsrs	r3, r3, #8
+ 1615 00ec 9BB2     		uxth	r3, r3
+ 1616 00ee 5BB2     		sxtb	r3, r3
+ 1617 00f0 1343     		orrs	r3, r3, r2
+ 1618 00f2 5BB2     		sxtb	r3, r3
+ 1619 00f4 DBB2     		uxtb	r3, r3
+ 1620              		.loc 1 259 10
+ 1621 00f6 87F82A30 		strb	r3, [r7, #42]
+ 260:User/Hardware/dm4310_drv.c **** 	data[7] = tor_tmp;
+ 1622              		.loc 1 260 10
+ 1623 00fa BB8D     		ldrh	r3, [r7, #44]	@ movhi
+ 1624 00fc DBB2     		uxtb	r3, r3
+ 1625 00fe 87F82B30 		strb	r3, [r7, #43]
+ 261:User/Hardware/dm4310_drv.c **** 	
+ 262:User/Hardware/dm4310_drv.c **** 	canx_send_data(hcan, id, data, 8);
+ 1626              		.loc 1 262 2
+ 1627 0102 07F12402 		add	r2, r7, #36
+ 1628 0106 F98E     		ldrh	r1, [r7, #54]
+ 1629 0108 0823     		movs	r3, #8
+ 1630 010a F869     		ldr	r0, [r7, #28]
+ 1631 010c FFF7FEFF 		bl	canx_send_data
+ 263:User/Hardware/dm4310_drv.c **** }
+ 1632              		.loc 1 263 1
+ 1633 0110 00BF     		nop
+ 1634 0112 3837     		adds	r7, r7, #56
+ 1635              	.LCFI87:
+ 1636              		.cfi_def_cfa_offset 8
+ 1637 0114 BD46     		mov	sp, r7
+ 1638              	.LCFI88:
+ 1639              		.cfi_def_cfa_register 13
+ 1640              		@ sp needed
+ 1641 0116 80BD     		pop	{r7, pc}
+ARM GAS  C:\Users\fffff\AppData\Local\Temp\cc15dscs.s 			page 34
+
+
+ 1642              	.L40:
+ 1643              		.align	2
+ 1644              	.L39:
+ 1645 0118 0000FA43 		.word	1140457472
+ 1646 011c 00000000 		.word	0
+ 1647              		.cfi_endproc
+ 1648              	.LFE192:
+ 1650              		.section	.text.pos_speed_ctrl,"ax",%progbits
+ 1651              		.align	1
+ 1652              		.global	pos_speed_ctrl
+ 1653              		.syntax unified
+ 1654              		.thumb
+ 1655              		.thumb_func
+ 1657              	pos_speed_ctrl:
+ 1658              	.LFB193:
+ 264:User/Hardware/dm4310_drv.c **** /**
+ 265:User/Hardware/dm4310_drv.c **** ************************************************************************
+ 266:User/Hardware/dm4310_drv.c **** * @brief:      	pos_speed_ctrl: 位置速度控制函数
+ 267:User/Hardware/dm4310_drv.c **** * @param[in]:   hcan:			指向CAN_HandleTypeDef结构的指针，用于指定CAN总线
+ 268:User/Hardware/dm4310_drv.c **** * @param[in]:   motor_id:	电机ID，指定目标电机
+ 269:User/Hardware/dm4310_drv.c **** * @param[in]:   vel:			速度给定值
+ 270:User/Hardware/dm4310_drv.c **** * @retval:     	void
+ 271:User/Hardware/dm4310_drv.c **** * @details:    	通过CAN总线向电机发送位置速度控制命令
+ 272:User/Hardware/dm4310_drv.c **** ************************************************************************
+ 273:User/Hardware/dm4310_drv.c **** **/
+ 274:User/Hardware/dm4310_drv.c **** void pos_speed_ctrl(hcan_t* hcan,uint16_t motor_id, float pos, float vel)
+ 275:User/Hardware/dm4310_drv.c **** {
+ 1659              		.loc 1 275 1
+ 1660              		.cfi_startproc
+ 1661              		@ args = 0, pretend = 0, frame = 40
+ 1662              		@ frame_needed = 1, uses_anonymous_args = 0
+ 1663 0000 80B5     		push	{r7, lr}
+ 1664              	.LCFI89:
+ 1665              		.cfi_def_cfa_offset 8
+ 1666              		.cfi_offset 7, -8
+ 1667              		.cfi_offset 14, -4
+ 1668 0002 8AB0     		sub	sp, sp, #40
+ 1669              	.LCFI90:
+ 1670              		.cfi_def_cfa_offset 48
+ 1671 0004 00AF     		add	r7, sp, #0
+ 1672              	.LCFI91:
+ 1673              		.cfi_def_cfa_register 7
+ 1674 0006 F860     		str	r0, [r7, #12]
+ 1675 0008 0B46     		mov	r3, r1
+ 1676 000a 87ED010A 		vstr.32	s0, [r7, #4]
+ 1677 000e C7ED000A 		vstr.32	s1, [r7]
+ 1678 0012 7B81     		strh	r3, [r7, #10]	@ movhi
+ 276:User/Hardware/dm4310_drv.c **** 	uint16_t id;
+ 277:User/Hardware/dm4310_drv.c **** 	uint8_t *pbuf, *vbuf;
+ 278:User/Hardware/dm4310_drv.c **** 	uint8_t data[8];
+ 279:User/Hardware/dm4310_drv.c **** 	
+ 280:User/Hardware/dm4310_drv.c **** 	id = motor_id + POS_MODE;
+ 1679              		.loc 1 280 5
+ 1680 0014 7B89     		ldrh	r3, [r7, #10]	@ movhi
+ 1681 0016 03F58073 		add	r3, r3, #256
+ 1682 001a FB84     		strh	r3, [r7, #38]	@ movhi
+ 281:User/Hardware/dm4310_drv.c **** 	pbuf=(uint8_t*)&pos;
+ARM GAS  C:\Users\fffff\AppData\Local\Temp\cc15dscs.s 			page 35
+
+
+ 1683              		.loc 1 281 6
+ 1684 001c 3B1D     		adds	r3, r7, #4
+ 1685 001e 3B62     		str	r3, [r7, #32]
+ 282:User/Hardware/dm4310_drv.c **** 	vbuf=(uint8_t*)&vel;
+ 1686              		.loc 1 282 6
+ 1687 0020 3B46     		mov	r3, r7
+ 1688 0022 FB61     		str	r3, [r7, #28]
+ 283:User/Hardware/dm4310_drv.c **** 	
+ 284:User/Hardware/dm4310_drv.c **** 	data[0] = *pbuf;
+ 1689              		.loc 1 284 12
+ 1690 0024 3B6A     		ldr	r3, [r7, #32]
+ 1691 0026 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 1692              		.loc 1 284 10
+ 1693 0028 3B75     		strb	r3, [r7, #20]
+ 285:User/Hardware/dm4310_drv.c **** 	data[1] = *(pbuf+1);
+ 1694              		.loc 1 285 10
+ 1695 002a 3B6A     		ldr	r3, [r7, #32]
+ 1696 002c 5B78     		ldrb	r3, [r3, #1]	@ zero_extendqisi2
+ 1697 002e 7B75     		strb	r3, [r7, #21]
+ 286:User/Hardware/dm4310_drv.c **** 	data[2] = *(pbuf+2);
+ 1698              		.loc 1 286 10
+ 1699 0030 3B6A     		ldr	r3, [r7, #32]
+ 1700 0032 9B78     		ldrb	r3, [r3, #2]	@ zero_extendqisi2
+ 1701 0034 BB75     		strb	r3, [r7, #22]
+ 287:User/Hardware/dm4310_drv.c **** 	data[3] = *(pbuf+3);
+ 1702              		.loc 1 287 10
+ 1703 0036 3B6A     		ldr	r3, [r7, #32]
+ 1704 0038 DB78     		ldrb	r3, [r3, #3]	@ zero_extendqisi2
+ 1705 003a FB75     		strb	r3, [r7, #23]
+ 288:User/Hardware/dm4310_drv.c **** 
+ 289:User/Hardware/dm4310_drv.c **** 	data[4] = *vbuf;
+ 1706              		.loc 1 289 12
+ 1707 003c FB69     		ldr	r3, [r7, #28]
+ 1708 003e 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 1709              		.loc 1 289 10
+ 1710 0040 3B76     		strb	r3, [r7, #24]
+ 290:User/Hardware/dm4310_drv.c **** 	data[5] = *(vbuf+1);
+ 1711              		.loc 1 290 10
+ 1712 0042 FB69     		ldr	r3, [r7, #28]
+ 1713 0044 5B78     		ldrb	r3, [r3, #1]	@ zero_extendqisi2
+ 1714 0046 7B76     		strb	r3, [r7, #25]
+ 291:User/Hardware/dm4310_drv.c **** 	data[6] = *(vbuf+2);
+ 1715              		.loc 1 291 10
+ 1716 0048 FB69     		ldr	r3, [r7, #28]
+ 1717 004a 9B78     		ldrb	r3, [r3, #2]	@ zero_extendqisi2
+ 1718 004c BB76     		strb	r3, [r7, #26]
+ 292:User/Hardware/dm4310_drv.c **** 	data[7] = *(vbuf+3);
+ 1719              		.loc 1 292 10
+ 1720 004e FB69     		ldr	r3, [r7, #28]
+ 1721 0050 DB78     		ldrb	r3, [r3, #3]	@ zero_extendqisi2
+ 1722 0052 FB76     		strb	r3, [r7, #27]
+ 293:User/Hardware/dm4310_drv.c **** 	
+ 294:User/Hardware/dm4310_drv.c **** 	canx_send_data(hcan, id, data, 8);
+ 1723              		.loc 1 294 2
+ 1724 0054 07F11402 		add	r2, r7, #20
+ 1725 0058 F98C     		ldrh	r1, [r7, #38]
+ 1726 005a 0823     		movs	r3, #8
+ARM GAS  C:\Users\fffff\AppData\Local\Temp\cc15dscs.s 			page 36
+
+
+ 1727 005c F868     		ldr	r0, [r7, #12]
+ 1728 005e FFF7FEFF 		bl	canx_send_data
+ 295:User/Hardware/dm4310_drv.c **** }
+ 1729              		.loc 1 295 1
+ 1730 0062 00BF     		nop
+ 1731 0064 2837     		adds	r7, r7, #40
+ 1732              	.LCFI92:
+ 1733              		.cfi_def_cfa_offset 8
+ 1734 0066 BD46     		mov	sp, r7
+ 1735              	.LCFI93:
+ 1736              		.cfi_def_cfa_register 13
+ 1737              		@ sp needed
+ 1738 0068 80BD     		pop	{r7, pc}
+ 1739              		.cfi_endproc
+ 1740              	.LFE193:
+ 1742              		.section	.rodata
+ 1743              		.align	2
+ 1744              	.LC0:
+ 1745 0000 FFFFFFFF 		.ascii	"\377\377\377\377\377\377\377\374"
+ 1745      FFFFFFFC 
+ 1746              		.section	.text.CAN_Send_Enter,"ax",%progbits
+ 1747              		.align	1
+ 1748              		.global	CAN_Send_Enter
+ 1749              		.syntax unified
+ 1750              		.thumb
+ 1751              		.thumb_func
+ 1753              	CAN_Send_Enter:
+ 1754              	.LFB194:
+ 296:User/Hardware/dm4310_drv.c **** 
+ 297:User/Hardware/dm4310_drv.c **** //电机使能
+ 298:User/Hardware/dm4310_drv.c **** void CAN_Send_Enter(hcan_t* hcan,uint16_t motor_id)
+ 299:User/Hardware/dm4310_drv.c **** {
+ 1755              		.loc 1 299 1
+ 1756              		.cfi_startproc
+ 1757              		@ args = 0, pretend = 0, frame = 56
+ 1758              		@ frame_needed = 1, uses_anonymous_args = 0
+ 1759 0000 80B5     		push	{r7, lr}
+ 1760              	.LCFI94:
+ 1761              		.cfi_def_cfa_offset 8
+ 1762              		.cfi_offset 7, -8
+ 1763              		.cfi_offset 14, -4
+ 1764 0002 8EB0     		sub	sp, sp, #56
+ 1765              	.LCFI95:
+ 1766              		.cfi_def_cfa_offset 64
+ 1767 0004 00AF     		add	r7, sp, #0
+ 1768              	.LCFI96:
+ 1769              		.cfi_def_cfa_register 7
+ 1770 0006 7860     		str	r0, [r7, #4]
+ 1771 0008 0B46     		mov	r3, r1
+ 1772 000a 7B80     		strh	r3, [r7, #2]	@ movhi
+ 300:User/Hardware/dm4310_drv.c **** 	FDCAN_TxHeaderTypeDef TxHeader;
+ 301:User/Hardware/dm4310_drv.c **** 
+ 302:User/Hardware/dm4310_drv.c **** 	TxHeader.Identifier = motor_id;                 // CAN ID
+ 1773              		.loc 1 302 22
+ 1774 000c 7B88     		ldrh	r3, [r7, #2]
+ 1775 000e 7B61     		str	r3, [r7, #20]
+ 303:User/Hardware/dm4310_drv.c ****   TxHeader.IdType =  FDCAN_STANDARD_ID ;        
+ARM GAS  C:\Users\fffff\AppData\Local\Temp\cc15dscs.s 			page 37
+
+
+ 1776              		.loc 1 303 19
+ 1777 0010 0023     		movs	r3, #0
+ 1778 0012 BB61     		str	r3, [r7, #24]
+ 304:User/Hardware/dm4310_drv.c ****   TxHeader.TxFrameType = FDCAN_DATA_FRAME; 
+ 1779              		.loc 1 304 24
+ 1780 0014 0023     		movs	r3, #0
+ 1781 0016 FB61     		str	r3, [r7, #28]
+ 305:User/Hardware/dm4310_drv.c **** 	TxHeader.DataLength =FDCAN_DLC_BYTES_8;     // 发送长度：8byte
+ 1782              		.loc 1 305 22
+ 1783 0018 0823     		movs	r3, #8
+ 1784 001a 3B62     		str	r3, [r7, #32]
+ 306:User/Hardware/dm4310_drv.c **** 
+ 307:User/Hardware/dm4310_drv.c **** 		TxHeader.ErrorStateIndicator =  FDCAN_ESI_ACTIVE;
+ 1785              		.loc 1 307 32
+ 1786 001c 0023     		movs	r3, #0
+ 1787 001e 7B62     		str	r3, [r7, #36]
+ 308:User/Hardware/dm4310_drv.c ****   TxHeader.BitRateSwitch = FDCAN_BRS_OFF;//比特率切换关闭，不适用于经典CAN
+ 1788              		.loc 1 308 26
+ 1789 0020 0023     		movs	r3, #0
+ 1790 0022 BB62     		str	r3, [r7, #40]
+ 309:User/Hardware/dm4310_drv.c ****   TxHeader.FDFormat =  FDCAN_CLASSIC_CAN;            // CANFD
+ 1791              		.loc 1 309 21
+ 1792 0024 0023     		movs	r3, #0
+ 1793 0026 FB62     		str	r3, [r7, #44]
+ 310:User/Hardware/dm4310_drv.c ****   TxHeader.TxEventFifoControl =  FDCAN_NO_TX_EVENTS;  
+ 1794              		.loc 1 310 31
+ 1795 0028 0023     		movs	r3, #0
+ 1796 002a 3B63     		str	r3, [r7, #48]
+ 311:User/Hardware/dm4310_drv.c ****   TxHeader.MessageMarker = 0x00;//消息标记
+ 1797              		.loc 1 311 26
+ 1798 002c 0023     		movs	r3, #0
+ 1799 002e 7B63     		str	r3, [r7, #52]
+ 312:User/Hardware/dm4310_drv.c **** 	
+ 313:User/Hardware/dm4310_drv.c **** 	
+ 314:User/Hardware/dm4310_drv.c **** 	
+ 315:User/Hardware/dm4310_drv.c **** 	uint8_t enable_data[8]={0xff,
+ 1800              		.loc 1 315 10
+ 1801 0030 0F4A     		ldr	r2, .L45
+ 1802 0032 07F10C03 		add	r3, r7, #12
+ 1803 0036 92E80300 		ldm	r2, {r0, r1}
+ 1804 003a 83E80300 		stm	r3, {r0, r1}
+ 316:User/Hardware/dm4310_drv.c ****                                          0xff,
+ 317:User/Hardware/dm4310_drv.c ****                                          0xff,
+ 318:User/Hardware/dm4310_drv.c ****                                          0xff,
+ 319:User/Hardware/dm4310_drv.c ****                                          0xff,
+ 320:User/Hardware/dm4310_drv.c ****                                          0xff,
+ 321:User/Hardware/dm4310_drv.c ****                                          0xff,
+ 322:User/Hardware/dm4310_drv.c ****                                          0xfc};
+ 323:User/Hardware/dm4310_drv.c **** 
+ 324:User/Hardware/dm4310_drv.c **** HAL_FDCAN_AddMessageToTxFifoQ(hcan, &TxHeader, enable_data);
+ 1805              		.loc 1 324 1
+ 1806 003e 07F10C02 		add	r2, r7, #12
+ 1807 0042 07F11403 		add	r3, r7, #20
+ 1808 0046 1946     		mov	r1, r3
+ 1809 0048 7868     		ldr	r0, [r7, #4]
+ 1810 004a FFF7FEFF 		bl	HAL_FDCAN_AddMessageToTxFifoQ
+ 325:User/Hardware/dm4310_drv.c **** 																				 
+ARM GAS  C:\Users\fffff\AppData\Local\Temp\cc15dscs.s 			page 38
+
+
+ 326:User/Hardware/dm4310_drv.c **** 		   // 发送CAN指令
+ 327:User/Hardware/dm4310_drv.c ****   if(HAL_FDCAN_AddMessageToTxFifoQ(hcan, &TxHeader, enable_data)
+ 1811              		.loc 1 327 6
+ 1812 004e 07F10C02 		add	r2, r7, #12
+ 1813 0052 07F11403 		add	r3, r7, #20
+ 1814 0056 1946     		mov	r1, r3
+ 1815 0058 7868     		ldr	r0, [r7, #4]
+ 1816 005a FFF7FEFF 		bl	HAL_FDCAN_AddMessageToTxFifoQ
+ 1817 005e 0346     		mov	r3, r0
+ 1818              		.loc 1 327 5 discriminator 1
+ 1819 0060 002B     		cmp	r3, #0
+ 1820 0062 01D0     		beq	.L44
+ 328:User/Hardware/dm4310_drv.c ****  != HAL_OK)
+ 329:User/Hardware/dm4310_drv.c ****   {
+ 330:User/Hardware/dm4310_drv.c ****         // 发送失败处理
+ 331:User/Hardware/dm4310_drv.c ****        Error_Handler();      
+ 1821              		.loc 1 331 8
+ 1822 0064 FFF7FEFF 		bl	Error_Handler
+ 1823              	.L44:
+ 332:User/Hardware/dm4310_drv.c ****   }																		 
+ 333:User/Hardware/dm4310_drv.c **** 																				 
+ 334:User/Hardware/dm4310_drv.c **** 																				 
+ 335:User/Hardware/dm4310_drv.c **** }
+ 1824              		.loc 1 335 1
+ 1825 0068 00BF     		nop
+ 1826 006a 3837     		adds	r7, r7, #56
+ 1827              	.LCFI97:
+ 1828              		.cfi_def_cfa_offset 8
+ 1829 006c BD46     		mov	sp, r7
+ 1830              	.LCFI98:
+ 1831              		.cfi_def_cfa_register 13
+ 1832              		@ sp needed
+ 1833 006e 80BD     		pop	{r7, pc}
+ 1834              	.L46:
+ 1835              		.align	2
+ 1836              	.L45:
+ 1837 0070 00000000 		.word	.LC0
+ 1838              		.cfi_endproc
+ 1839              	.LFE194:
+ 1841              		.section	.rodata
+ 1842              		.align	2
+ 1843              	.LC1:
+ 1844 0008 FFFFFFFF 		.ascii	"\377\377\377\377\377\377\377\375"
+ 1844      FFFFFFFD 
+ 1845              		.section	.text.CAN_Send_Exit,"ax",%progbits
+ 1846              		.align	1
+ 1847              		.global	CAN_Send_Exit
+ 1848              		.syntax unified
+ 1849              		.thumb
+ 1850              		.thumb_func
+ 1852              	CAN_Send_Exit:
+ 1853              	.LFB195:
+ 336:User/Hardware/dm4310_drv.c **** 
+ 337:User/Hardware/dm4310_drv.c **** //电机失能
+ 338:User/Hardware/dm4310_drv.c **** 
+ 339:User/Hardware/dm4310_drv.c **** void CAN_Send_Exit(hcan_t* hcan,uint16_t motor_id)
+ 340:User/Hardware/dm4310_drv.c **** {
+ARM GAS  C:\Users\fffff\AppData\Local\Temp\cc15dscs.s 			page 39
+
+
+ 1854              		.loc 1 340 1
+ 1855              		.cfi_startproc
+ 1856              		@ args = 0, pretend = 0, frame = 56
+ 1857              		@ frame_needed = 1, uses_anonymous_args = 0
+ 1858 0000 80B5     		push	{r7, lr}
+ 1859              	.LCFI99:
+ 1860              		.cfi_def_cfa_offset 8
+ 1861              		.cfi_offset 7, -8
+ 1862              		.cfi_offset 14, -4
+ 1863 0002 8EB0     		sub	sp, sp, #56
+ 1864              	.LCFI100:
+ 1865              		.cfi_def_cfa_offset 64
+ 1866 0004 00AF     		add	r7, sp, #0
+ 1867              	.LCFI101:
+ 1868              		.cfi_def_cfa_register 7
+ 1869 0006 7860     		str	r0, [r7, #4]
+ 1870 0008 0B46     		mov	r3, r1
+ 1871 000a 7B80     		strh	r3, [r7, #2]	@ movhi
+ 341:User/Hardware/dm4310_drv.c **** 	FDCAN_TxHeaderTypeDef TxHeader;
+ 342:User/Hardware/dm4310_drv.c **** 
+ 343:User/Hardware/dm4310_drv.c **** 	TxHeader.Identifier = motor_id;                 // CAN ID
+ 1872              		.loc 1 343 22
+ 1873 000c 7B88     		ldrh	r3, [r7, #2]
+ 1874 000e 7B61     		str	r3, [r7, #20]
+ 344:User/Hardware/dm4310_drv.c ****   TxHeader.IdType =  FDCAN_STANDARD_ID ;        
+ 1875              		.loc 1 344 19
+ 1876 0010 0023     		movs	r3, #0
+ 1877 0012 BB61     		str	r3, [r7, #24]
+ 345:User/Hardware/dm4310_drv.c ****   TxHeader.TxFrameType = FDCAN_DATA_FRAME; 
+ 1878              		.loc 1 345 24
+ 1879 0014 0023     		movs	r3, #0
+ 1880 0016 FB61     		str	r3, [r7, #28]
+ 346:User/Hardware/dm4310_drv.c **** 	TxHeader.DataLength =FDCAN_DLC_BYTES_8;     // 发送长度：8byte
+ 1881              		.loc 1 346 22
+ 1882 0018 0823     		movs	r3, #8
+ 1883 001a 3B62     		str	r3, [r7, #32]
+ 347:User/Hardware/dm4310_drv.c **** 
+ 348:User/Hardware/dm4310_drv.c **** 		TxHeader.ErrorStateIndicator =  FDCAN_ESI_ACTIVE;
+ 1884              		.loc 1 348 32
+ 1885 001c 0023     		movs	r3, #0
+ 1886 001e 7B62     		str	r3, [r7, #36]
+ 349:User/Hardware/dm4310_drv.c ****   TxHeader.BitRateSwitch = FDCAN_BRS_OFF;//比特率切换关闭，不适用于经典CAN
+ 1887              		.loc 1 349 26
+ 1888 0020 0023     		movs	r3, #0
+ 1889 0022 BB62     		str	r3, [r7, #40]
+ 350:User/Hardware/dm4310_drv.c ****   TxHeader.FDFormat =  FDCAN_CLASSIC_CAN;            // CANFD
+ 1890              		.loc 1 350 21
+ 1891 0024 0023     		movs	r3, #0
+ 1892 0026 FB62     		str	r3, [r7, #44]
+ 351:User/Hardware/dm4310_drv.c ****   TxHeader.TxEventFifoControl =  FDCAN_NO_TX_EVENTS;  
+ 1893              		.loc 1 351 31
+ 1894 0028 0023     		movs	r3, #0
+ 1895 002a 3B63     		str	r3, [r7, #48]
+ 352:User/Hardware/dm4310_drv.c ****   TxHeader.MessageMarker = 0x00;//消息标记
+ 1896              		.loc 1 352 26
+ 1897 002c 0023     		movs	r3, #0
+ 1898 002e 7B63     		str	r3, [r7, #52]
+ARM GAS  C:\Users\fffff\AppData\Local\Temp\cc15dscs.s 			page 40
+
+
+ 353:User/Hardware/dm4310_drv.c **** 	
+ 354:User/Hardware/dm4310_drv.c **** 	
+ 355:User/Hardware/dm4310_drv.c **** 	
+ 356:User/Hardware/dm4310_drv.c **** 	uint8_t exit_data[8]={0xff,
+ 1899              		.loc 1 356 10
+ 1900 0030 0F4A     		ldr	r2, .L50
+ 1901 0032 07F10C03 		add	r3, r7, #12
+ 1902 0036 92E80300 		ldm	r2, {r0, r1}
+ 1903 003a 83E80300 		stm	r3, {r0, r1}
+ 357:User/Hardware/dm4310_drv.c ****                                          0xff,
+ 358:User/Hardware/dm4310_drv.c ****                                          0xff,
+ 359:User/Hardware/dm4310_drv.c ****                                          0xff,
+ 360:User/Hardware/dm4310_drv.c ****                                          0xff,
+ 361:User/Hardware/dm4310_drv.c ****                                          0xff,
+ 362:User/Hardware/dm4310_drv.c ****                                          0xff,
+ 363:User/Hardware/dm4310_drv.c ****                                          0xfd};
+ 364:User/Hardware/dm4310_drv.c **** 
+ 365:User/Hardware/dm4310_drv.c **** HAL_FDCAN_AddMessageToTxFifoQ(hcan, &TxHeader, exit_data);
+ 1904              		.loc 1 365 1
+ 1905 003e 07F10C02 		add	r2, r7, #12
+ 1906 0042 07F11403 		add	r3, r7, #20
+ 1907 0046 1946     		mov	r1, r3
+ 1908 0048 7868     		ldr	r0, [r7, #4]
+ 1909 004a FFF7FEFF 		bl	HAL_FDCAN_AddMessageToTxFifoQ
+ 366:User/Hardware/dm4310_drv.c **** 																				 
+ 367:User/Hardware/dm4310_drv.c **** 		   // 发送CAN指令
+ 368:User/Hardware/dm4310_drv.c ****   if(HAL_FDCAN_AddMessageToTxFifoQ(hcan, &TxHeader, exit_data)
+ 1910              		.loc 1 368 6
+ 1911 004e 07F10C02 		add	r2, r7, #12
+ 1912 0052 07F11403 		add	r3, r7, #20
+ 1913 0056 1946     		mov	r1, r3
+ 1914 0058 7868     		ldr	r0, [r7, #4]
+ 1915 005a FFF7FEFF 		bl	HAL_FDCAN_AddMessageToTxFifoQ
+ 1916 005e 0346     		mov	r3, r0
+ 1917              		.loc 1 368 5 discriminator 1
+ 1918 0060 002B     		cmp	r3, #0
+ 1919 0062 01D0     		beq	.L49
+ 369:User/Hardware/dm4310_drv.c ****  != HAL_OK)
+ 370:User/Hardware/dm4310_drv.c ****   {
+ 371:User/Hardware/dm4310_drv.c ****         // 发送失败处理
+ 372:User/Hardware/dm4310_drv.c ****        Error_Handler();      
+ 1920              		.loc 1 372 8
+ 1921 0064 FFF7FEFF 		bl	Error_Handler
+ 1922              	.L49:
+ 373:User/Hardware/dm4310_drv.c ****   }																		 
+ 374:User/Hardware/dm4310_drv.c **** 																				 
+ 375:User/Hardware/dm4310_drv.c **** 																				 
+ 376:User/Hardware/dm4310_drv.c **** }
+ 1923              		.loc 1 376 1
+ 1924 0068 00BF     		nop
+ 1925 006a 3837     		adds	r7, r7, #56
+ 1926              	.LCFI102:
+ 1927              		.cfi_def_cfa_offset 8
+ 1928 006c BD46     		mov	sp, r7
+ 1929              	.LCFI103:
+ 1930              		.cfi_def_cfa_register 13
+ 1931              		@ sp needed
+ARM GAS  C:\Users\fffff\AppData\Local\Temp\cc15dscs.s 			page 41
+
+
+ 1932 006e 80BD     		pop	{r7, pc}
+ 1933              	.L51:
+ 1934              		.align	2
+ 1935              	.L50:
+ 1936 0070 08000000 		.word	.LC1
+ 1937              		.cfi_endproc
+ 1938              	.LFE195:
+ 1940              		.section	.rodata
+ 1941              		.align	2
+ 1942              	.LC2:
+ 1943 0010 FFFFFFFF 		.ascii	"\377\377\377\377\377\377\377\373"
+ 1943      FFFFFFFB 
+ 1944              		.section	.text.CAN_Send_Clear_Error,"ax",%progbits
+ 1945              		.align	1
+ 1946              		.global	CAN_Send_Clear_Error
+ 1947              		.syntax unified
+ 1948              		.thumb
+ 1949              		.thumb_func
+ 1951              	CAN_Send_Clear_Error:
+ 1952              	.LFB196:
+ 377:User/Hardware/dm4310_drv.c **** //清除错误帧
+ 378:User/Hardware/dm4310_drv.c **** void CAN_Send_Clear_Error(hcan_t* hcan,uint16_t motor_id)
+ 379:User/Hardware/dm4310_drv.c **** {
+ 1953              		.loc 1 379 1
+ 1954              		.cfi_startproc
+ 1955              		@ args = 0, pretend = 0, frame = 56
+ 1956              		@ frame_needed = 1, uses_anonymous_args = 0
+ 1957 0000 80B5     		push	{r7, lr}
+ 1958              	.LCFI104:
+ 1959              		.cfi_def_cfa_offset 8
+ 1960              		.cfi_offset 7, -8
+ 1961              		.cfi_offset 14, -4
+ 1962 0002 8EB0     		sub	sp, sp, #56
+ 1963              	.LCFI105:
+ 1964              		.cfi_def_cfa_offset 64
+ 1965 0004 00AF     		add	r7, sp, #0
+ 1966              	.LCFI106:
+ 1967              		.cfi_def_cfa_register 7
+ 1968 0006 7860     		str	r0, [r7, #4]
+ 1969 0008 0B46     		mov	r3, r1
+ 1970 000a 7B80     		strh	r3, [r7, #2]	@ movhi
+ 380:User/Hardware/dm4310_drv.c **** 	FDCAN_TxHeaderTypeDef TxHeader;
+ 381:User/Hardware/dm4310_drv.c **** 
+ 382:User/Hardware/dm4310_drv.c **** 	TxHeader.Identifier = motor_id;                 // CAN ID
+ 1971              		.loc 1 382 22
+ 1972 000c 7B88     		ldrh	r3, [r7, #2]
+ 1973 000e 7B61     		str	r3, [r7, #20]
+ 383:User/Hardware/dm4310_drv.c ****   TxHeader.IdType =  FDCAN_STANDARD_ID ;        
+ 1974              		.loc 1 383 19
+ 1975 0010 0023     		movs	r3, #0
+ 1976 0012 BB61     		str	r3, [r7, #24]
+ 384:User/Hardware/dm4310_drv.c ****   TxHeader.TxFrameType = FDCAN_DATA_FRAME; 
+ 1977              		.loc 1 384 24
+ 1978 0014 0023     		movs	r3, #0
+ 1979 0016 FB61     		str	r3, [r7, #28]
+ 385:User/Hardware/dm4310_drv.c **** 	TxHeader.DataLength =FDCAN_DLC_BYTES_8;     // 发送长度：8byte
+ 1980              		.loc 1 385 22
+ARM GAS  C:\Users\fffff\AppData\Local\Temp\cc15dscs.s 			page 42
+
+
+ 1981 0018 0823     		movs	r3, #8
+ 1982 001a 3B62     		str	r3, [r7, #32]
+ 386:User/Hardware/dm4310_drv.c **** 
+ 387:User/Hardware/dm4310_drv.c **** 		TxHeader.ErrorStateIndicator =  FDCAN_ESI_ACTIVE;
+ 1983              		.loc 1 387 32
+ 1984 001c 0023     		movs	r3, #0
+ 1985 001e 7B62     		str	r3, [r7, #36]
+ 388:User/Hardware/dm4310_drv.c ****   TxHeader.BitRateSwitch = FDCAN_BRS_OFF;//比特率切换关闭，不适用于经典CAN
+ 1986              		.loc 1 388 26
+ 1987 0020 0023     		movs	r3, #0
+ 1988 0022 BB62     		str	r3, [r7, #40]
+ 389:User/Hardware/dm4310_drv.c ****   TxHeader.FDFormat =  FDCAN_CLASSIC_CAN;            // CANFD
+ 1989              		.loc 1 389 21
+ 1990 0024 0023     		movs	r3, #0
+ 1991 0026 FB62     		str	r3, [r7, #44]
+ 390:User/Hardware/dm4310_drv.c ****   TxHeader.TxEventFifoControl =  FDCAN_NO_TX_EVENTS;  
+ 1992              		.loc 1 390 31
+ 1993 0028 0023     		movs	r3, #0
+ 1994 002a 3B63     		str	r3, [r7, #48]
+ 391:User/Hardware/dm4310_drv.c ****   TxHeader.MessageMarker = 0x00;//消息标记
+ 1995              		.loc 1 391 26
+ 1996 002c 0023     		movs	r3, #0
+ 1997 002e 7B63     		str	r3, [r7, #52]
+ 392:User/Hardware/dm4310_drv.c **** 	
+ 393:User/Hardware/dm4310_drv.c **** 	
+ 394:User/Hardware/dm4310_drv.c **** 	
+ 395:User/Hardware/dm4310_drv.c **** 	uint8_t clear_data[8]={0xff,
+ 1998              		.loc 1 395 10
+ 1999 0030 0F4A     		ldr	r2, .L55
+ 2000 0032 07F10C03 		add	r3, r7, #12
+ 2001 0036 92E80300 		ldm	r2, {r0, r1}
+ 2002 003a 83E80300 		stm	r3, {r0, r1}
+ 396:User/Hardware/dm4310_drv.c ****                                          0xff,
+ 397:User/Hardware/dm4310_drv.c ****                                          0xff,
+ 398:User/Hardware/dm4310_drv.c ****                                          0xff,
+ 399:User/Hardware/dm4310_drv.c ****                                          0xff,
+ 400:User/Hardware/dm4310_drv.c ****                                          0xff,
+ 401:User/Hardware/dm4310_drv.c ****                                          0xff,
+ 402:User/Hardware/dm4310_drv.c ****                                          0xfb};
+ 403:User/Hardware/dm4310_drv.c **** 
+ 404:User/Hardware/dm4310_drv.c **** HAL_FDCAN_AddMessageToTxFifoQ(hcan, &TxHeader, clear_data);
+ 2003              		.loc 1 404 1
+ 2004 003e 07F10C02 		add	r2, r7, #12
+ 2005 0042 07F11403 		add	r3, r7, #20
+ 2006 0046 1946     		mov	r1, r3
+ 2007 0048 7868     		ldr	r0, [r7, #4]
+ 2008 004a FFF7FEFF 		bl	HAL_FDCAN_AddMessageToTxFifoQ
+ 405:User/Hardware/dm4310_drv.c **** 																				 
+ 406:User/Hardware/dm4310_drv.c **** 		   // 发送CAN指令
+ 407:User/Hardware/dm4310_drv.c ****   if(HAL_FDCAN_AddMessageToTxFifoQ(hcan, &TxHeader, clear_data)
+ 2009              		.loc 1 407 6
+ 2010 004e 07F10C02 		add	r2, r7, #12
+ 2011 0052 07F11403 		add	r3, r7, #20
+ 2012 0056 1946     		mov	r1, r3
+ 2013 0058 7868     		ldr	r0, [r7, #4]
+ 2014 005a FFF7FEFF 		bl	HAL_FDCAN_AddMessageToTxFifoQ
+ 2015 005e 0346     		mov	r3, r0
+ARM GAS  C:\Users\fffff\AppData\Local\Temp\cc15dscs.s 			page 43
+
+
+ 2016              		.loc 1 407 5 discriminator 1
+ 2017 0060 002B     		cmp	r3, #0
+ 2018 0062 01D0     		beq	.L54
+ 408:User/Hardware/dm4310_drv.c ****  != HAL_OK)
+ 409:User/Hardware/dm4310_drv.c ****   {
+ 410:User/Hardware/dm4310_drv.c ****         // 发送失败处理
+ 411:User/Hardware/dm4310_drv.c ****        Error_Handler();      
+ 2019              		.loc 1 411 8
+ 2020 0064 FFF7FEFF 		bl	Error_Handler
+ 2021              	.L54:
+ 412:User/Hardware/dm4310_drv.c ****   }																		 
+ 413:User/Hardware/dm4310_drv.c **** 																				 
+ 414:User/Hardware/dm4310_drv.c **** 																				 
+ 415:User/Hardware/dm4310_drv.c **** }
+ 2022              		.loc 1 415 1
+ 2023 0068 00BF     		nop
+ 2024 006a 3837     		adds	r7, r7, #56
+ 2025              	.LCFI107:
+ 2026              		.cfi_def_cfa_offset 8
+ 2027 006c BD46     		mov	sp, r7
+ 2028              	.LCFI108:
+ 2029              		.cfi_def_cfa_register 13
+ 2030              		@ sp needed
+ 2031 006e 80BD     		pop	{r7, pc}
+ 2032              	.L56:
+ 2033              		.align	2
+ 2034              	.L55:
+ 2035 0070 10000000 		.word	.LC2
+ 2036              		.cfi_endproc
+ 2037              	.LFE196:
+ 2039              		.section	.rodata
+ 2040              		.align	2
+ 2041              	.LC3:
+ 2042 0018 FFFFFFFF 		.ascii	"\377\377\377\377\377\377\377\376"
+ 2042      FFFFFFFE 
+ 2043              		.section	.text.CAN_Send_Save_Zero,"ax",%progbits
+ 2044              		.align	1
+ 2045              		.global	CAN_Send_Save_Zero
+ 2046              		.syntax unified
+ 2047              		.thumb
+ 2048              		.thumb_func
+ 2050              	CAN_Send_Save_Zero:
+ 2051              	.LFB197:
+ 416:User/Hardware/dm4310_drv.c **** //保存零点
+ 417:User/Hardware/dm4310_drv.c **** void CAN_Send_Save_Zero(hcan_t* hcan,uint16_t motor_id)
+ 418:User/Hardware/dm4310_drv.c **** {
+ 2052              		.loc 1 418 1
+ 2053              		.cfi_startproc
+ 2054              		@ args = 0, pretend = 0, frame = 56
+ 2055              		@ frame_needed = 1, uses_anonymous_args = 0
+ 2056 0000 80B5     		push	{r7, lr}
+ 2057              	.LCFI109:
+ 2058              		.cfi_def_cfa_offset 8
+ 2059              		.cfi_offset 7, -8
+ 2060              		.cfi_offset 14, -4
+ 2061 0002 8EB0     		sub	sp, sp, #56
+ 2062              	.LCFI110:
+ARM GAS  C:\Users\fffff\AppData\Local\Temp\cc15dscs.s 			page 44
+
+
+ 2063              		.cfi_def_cfa_offset 64
+ 2064 0004 00AF     		add	r7, sp, #0
+ 2065              	.LCFI111:
+ 2066              		.cfi_def_cfa_register 7
+ 2067 0006 7860     		str	r0, [r7, #4]
+ 2068 0008 0B46     		mov	r3, r1
+ 2069 000a 7B80     		strh	r3, [r7, #2]	@ movhi
+ 419:User/Hardware/dm4310_drv.c **** 	FDCAN_TxHeaderTypeDef TxHeader;
+ 420:User/Hardware/dm4310_drv.c **** 
+ 421:User/Hardware/dm4310_drv.c **** 	TxHeader.Identifier = motor_id;                 // CAN ID
+ 2070              		.loc 1 421 22
+ 2071 000c 7B88     		ldrh	r3, [r7, #2]
+ 2072 000e 7B61     		str	r3, [r7, #20]
+ 422:User/Hardware/dm4310_drv.c ****   TxHeader.IdType =  FDCAN_STANDARD_ID ;        
+ 2073              		.loc 1 422 19
+ 2074 0010 0023     		movs	r3, #0
+ 2075 0012 BB61     		str	r3, [r7, #24]
+ 423:User/Hardware/dm4310_drv.c ****   TxHeader.TxFrameType = FDCAN_DATA_FRAME; 
+ 2076              		.loc 1 423 24
+ 2077 0014 0023     		movs	r3, #0
+ 2078 0016 FB61     		str	r3, [r7, #28]
+ 424:User/Hardware/dm4310_drv.c **** 	TxHeader.DataLength =FDCAN_DLC_BYTES_8;     // 发送长度：8byte
+ 2079              		.loc 1 424 22
+ 2080 0018 0823     		movs	r3, #8
+ 2081 001a 3B62     		str	r3, [r7, #32]
+ 425:User/Hardware/dm4310_drv.c **** 
+ 426:User/Hardware/dm4310_drv.c **** 		TxHeader.ErrorStateIndicator =  FDCAN_ESI_ACTIVE;
+ 2082              		.loc 1 426 32
+ 2083 001c 0023     		movs	r3, #0
+ 2084 001e 7B62     		str	r3, [r7, #36]
+ 427:User/Hardware/dm4310_drv.c ****   TxHeader.BitRateSwitch = FDCAN_BRS_OFF;//比特率切换关闭，不适用于经典CAN
+ 2085              		.loc 1 427 26
+ 2086 0020 0023     		movs	r3, #0
+ 2087 0022 BB62     		str	r3, [r7, #40]
+ 428:User/Hardware/dm4310_drv.c ****   TxHeader.FDFormat =  FDCAN_CLASSIC_CAN;            // CANFD
+ 2088              		.loc 1 428 21
+ 2089 0024 0023     		movs	r3, #0
+ 2090 0026 FB62     		str	r3, [r7, #44]
+ 429:User/Hardware/dm4310_drv.c ****   TxHeader.TxEventFifoControl =  FDCAN_NO_TX_EVENTS;  
+ 2091              		.loc 1 429 31
+ 2092 0028 0023     		movs	r3, #0
+ 2093 002a 3B63     		str	r3, [r7, #48]
+ 430:User/Hardware/dm4310_drv.c ****   TxHeader.MessageMarker = 0x00;//消息标记
+ 2094              		.loc 1 430 26
+ 2095 002c 0023     		movs	r3, #0
+ 2096 002e 7B63     		str	r3, [r7, #52]
+ 431:User/Hardware/dm4310_drv.c **** 	
+ 432:User/Hardware/dm4310_drv.c **** 	
+ 433:User/Hardware/dm4310_drv.c **** 	
+ 434:User/Hardware/dm4310_drv.c **** 	uint8_t Save_Zero[8]={0xff,
+ 2097              		.loc 1 434 10
+ 2098 0030 0F4A     		ldr	r2, .L60
+ 2099 0032 07F10C03 		add	r3, r7, #12
+ 2100 0036 92E80300 		ldm	r2, {r0, r1}
+ 2101 003a 83E80300 		stm	r3, {r0, r1}
+ 435:User/Hardware/dm4310_drv.c ****                                          0xff,
+ 436:User/Hardware/dm4310_drv.c ****                                          0xff,
+ARM GAS  C:\Users\fffff\AppData\Local\Temp\cc15dscs.s 			page 45
+
+
+ 437:User/Hardware/dm4310_drv.c ****                                          0xff,
+ 438:User/Hardware/dm4310_drv.c ****                                          0xff,
+ 439:User/Hardware/dm4310_drv.c ****                                          0xff,
+ 440:User/Hardware/dm4310_drv.c ****                                          0xff,
+ 441:User/Hardware/dm4310_drv.c ****                                          0xfe};
+ 442:User/Hardware/dm4310_drv.c **** 
+ 443:User/Hardware/dm4310_drv.c **** HAL_FDCAN_AddMessageToTxFifoQ(hcan, &TxHeader, Save_Zero);
+ 2102              		.loc 1 443 1
+ 2103 003e 07F10C02 		add	r2, r7, #12
+ 2104 0042 07F11403 		add	r3, r7, #20
+ 2105 0046 1946     		mov	r1, r3
+ 2106 0048 7868     		ldr	r0, [r7, #4]
+ 2107 004a FFF7FEFF 		bl	HAL_FDCAN_AddMessageToTxFifoQ
+ 444:User/Hardware/dm4310_drv.c **** 																				 
+ 445:User/Hardware/dm4310_drv.c **** 		   // 发送CAN指令
+ 446:User/Hardware/dm4310_drv.c ****   if(HAL_FDCAN_AddMessageToTxFifoQ(hcan, &TxHeader, Save_Zero)
+ 2108              		.loc 1 446 6
+ 2109 004e 07F10C02 		add	r2, r7, #12
+ 2110 0052 07F11403 		add	r3, r7, #20
+ 2111 0056 1946     		mov	r1, r3
+ 2112 0058 7868     		ldr	r0, [r7, #4]
+ 2113 005a FFF7FEFF 		bl	HAL_FDCAN_AddMessageToTxFifoQ
+ 2114 005e 0346     		mov	r3, r0
+ 2115              		.loc 1 446 5 discriminator 1
+ 2116 0060 002B     		cmp	r3, #0
+ 2117 0062 01D0     		beq	.L59
+ 447:User/Hardware/dm4310_drv.c ****  != HAL_OK)
+ 448:User/Hardware/dm4310_drv.c ****   {
+ 449:User/Hardware/dm4310_drv.c ****         // 发送失败处理
+ 450:User/Hardware/dm4310_drv.c ****        Error_Handler();      
+ 2118              		.loc 1 450 8
+ 2119 0064 FFF7FEFF 		bl	Error_Handler
+ 2120              	.L59:
+ 451:User/Hardware/dm4310_drv.c ****   }																		 
+ 452:User/Hardware/dm4310_drv.c **** 																				 
+ 453:User/Hardware/dm4310_drv.c **** 																				 
+ 454:User/Hardware/dm4310_drv.c **** }
+ 2121              		.loc 1 454 1
+ 2122 0068 00BF     		nop
+ 2123 006a 3837     		adds	r7, r7, #56
+ 2124              	.LCFI112:
+ 2125              		.cfi_def_cfa_offset 8
+ 2126 006c BD46     		mov	sp, r7
+ 2127              	.LCFI113:
+ 2128              		.cfi_def_cfa_register 13
+ 2129              		@ sp needed
+ 2130 006e 80BD     		pop	{r7, pc}
+ 2131              	.L61:
+ 2132              		.align	2
+ 2133              	.L60:
+ 2134 0070 18000000 		.word	.LC3
+ 2135              		.cfi_endproc
+ 2136              	.LFE197:
+ 2138              		.section	.text.speed_ctrl,"ax",%progbits
+ 2139              		.align	1
+ 2140              		.global	speed_ctrl
+ 2141              		.syntax unified
+ARM GAS  C:\Users\fffff\AppData\Local\Temp\cc15dscs.s 			page 46
+
+
+ 2142              		.thumb
+ 2143              		.thumb_func
+ 2145              	speed_ctrl:
+ 2146              	.LFB198:
+ 455:User/Hardware/dm4310_drv.c **** /**
+ 456:User/Hardware/dm4310_drv.c **** ************************************************************************
+ 457:User/Hardware/dm4310_drv.c **** * @brief:      	speed_ctrl: 速度控制函数
+ 458:User/Hardware/dm4310_drv.c **** * @param[in]:   hcan: 		指向CAN_HandleTypeDef结构的指针，用于指定CAN总线
+ 459:User/Hardware/dm4310_drv.c **** * @param[in]:   motor_id: 电机ID，指定目标电机
+ 460:User/Hardware/dm4310_drv.c **** * @param[in]:   vel: 			速度给定值
+ 461:User/Hardware/dm4310_drv.c **** * @retval:     	void
+ 462:User/Hardware/dm4310_drv.c **** * @details:    	通过CAN总线向电机发送速度控制命令
+ 463:User/Hardware/dm4310_drv.c **** ************************************************************************
+ 464:User/Hardware/dm4310_drv.c **** **/
+ 465:User/Hardware/dm4310_drv.c **** void speed_ctrl(hcan_t* hcan,uint16_t motor_id, float vel)
+ 466:User/Hardware/dm4310_drv.c **** {
+ 2147              		.loc 1 466 1
+ 2148              		.cfi_startproc
+ 2149              		@ args = 0, pretend = 0, frame = 32
+ 2150              		@ frame_needed = 1, uses_anonymous_args = 0
+ 2151 0000 80B5     		push	{r7, lr}
+ 2152              	.LCFI114:
+ 2153              		.cfi_def_cfa_offset 8
+ 2154              		.cfi_offset 7, -8
+ 2155              		.cfi_offset 14, -4
+ 2156 0002 88B0     		sub	sp, sp, #32
+ 2157              	.LCFI115:
+ 2158              		.cfi_def_cfa_offset 40
+ 2159 0004 00AF     		add	r7, sp, #0
+ 2160              	.LCFI116:
+ 2161              		.cfi_def_cfa_register 7
+ 2162 0006 F860     		str	r0, [r7, #12]
+ 2163 0008 0B46     		mov	r3, r1
+ 2164 000a 87ED010A 		vstr.32	s0, [r7, #4]
+ 2165 000e 7B81     		strh	r3, [r7, #10]	@ movhi
+ 467:User/Hardware/dm4310_drv.c **** 	uint16_t id;
+ 468:User/Hardware/dm4310_drv.c **** 	uint8_t *vbuf;
+ 469:User/Hardware/dm4310_drv.c **** 	uint8_t data[4];
+ 470:User/Hardware/dm4310_drv.c **** 	
+ 471:User/Hardware/dm4310_drv.c **** 	id = motor_id + SPEED_MODE;
+ 2166              		.loc 1 471 5
+ 2167 0010 7B89     		ldrh	r3, [r7, #10]	@ movhi
+ 2168 0012 03F50073 		add	r3, r3, #512
+ 2169 0016 FB83     		strh	r3, [r7, #30]	@ movhi
+ 472:User/Hardware/dm4310_drv.c **** 	vbuf=(uint8_t*)&vel;
+ 2170              		.loc 1 472 6
+ 2171 0018 3B1D     		adds	r3, r7, #4
+ 2172 001a BB61     		str	r3, [r7, #24]
+ 473:User/Hardware/dm4310_drv.c **** 	
+ 474:User/Hardware/dm4310_drv.c **** 	data[0] = *vbuf;
+ 2173              		.loc 1 474 12
+ 2174 001c BB69     		ldr	r3, [r7, #24]
+ 2175 001e 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 2176              		.loc 1 474 10
+ 2177 0020 3B75     		strb	r3, [r7, #20]
+ 475:User/Hardware/dm4310_drv.c **** 	data[1] = *(vbuf+1);
+ 2178              		.loc 1 475 10
+ARM GAS  C:\Users\fffff\AppData\Local\Temp\cc15dscs.s 			page 47
+
+
+ 2179 0022 BB69     		ldr	r3, [r7, #24]
+ 2180 0024 5B78     		ldrb	r3, [r3, #1]	@ zero_extendqisi2
+ 2181 0026 7B75     		strb	r3, [r7, #21]
+ 476:User/Hardware/dm4310_drv.c **** 	data[2] = *(vbuf+2);
+ 2182              		.loc 1 476 10
+ 2183 0028 BB69     		ldr	r3, [r7, #24]
+ 2184 002a 9B78     		ldrb	r3, [r3, #2]	@ zero_extendqisi2
+ 2185 002c BB75     		strb	r3, [r7, #22]
+ 477:User/Hardware/dm4310_drv.c **** 	data[3] = *(vbuf+3);
+ 2186              		.loc 1 477 10
+ 2187 002e BB69     		ldr	r3, [r7, #24]
+ 2188 0030 DB78     		ldrb	r3, [r3, #3]	@ zero_extendqisi2
+ 2189 0032 FB75     		strb	r3, [r7, #23]
+ 478:User/Hardware/dm4310_drv.c **** 	
+ 479:User/Hardware/dm4310_drv.c **** 	canx_send_data(hcan, id, data, 4);
+ 2190              		.loc 1 479 2
+ 2191 0034 07F11402 		add	r2, r7, #20
+ 2192 0038 F98B     		ldrh	r1, [r7, #30]
+ 2193 003a 0423     		movs	r3, #4
+ 2194 003c F868     		ldr	r0, [r7, #12]
+ 2195 003e FFF7FEFF 		bl	canx_send_data
+ 480:User/Hardware/dm4310_drv.c **** }
+ 2196              		.loc 1 480 1
+ 2197 0042 00BF     		nop
+ 2198 0044 2037     		adds	r7, r7, #32
+ 2199              	.LCFI117:
+ 2200              		.cfi_def_cfa_offset 8
+ 2201 0046 BD46     		mov	sp, r7
+ 2202              	.LCFI118:
+ 2203              		.cfi_def_cfa_register 13
+ 2204              		@ sp needed
+ 2205 0048 80BD     		pop	{r7, pc}
+ 2206              		.cfi_endproc
+ 2207              	.LFE198:
+ 2209              		.text
+ 2210              	.Letext0:
+ 2211              		.file 2 "C:/msys64/mingw64/arm-none-eabi/include/machine/_default_types.h"
+ 2212              		.file 3 "C:/msys64/mingw64/arm-none-eabi/include/sys/_stdint.h"
+ 2213              		.file 4 "Drivers/CMSIS/Device/ST/STM32H7xx/Include/stm32h723xx.h"
+ 2214              		.file 5 "Drivers/CMSIS/Device/ST/STM32H7xx/Include/stm32h7xx.h"
+ 2215              		.file 6 "Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal_def.h"
+ 2216              		.file 7 "Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal_fdcan.h"
+ 2217              		.file 8 "User/BSP/can_receive_send.h"
+ 2218              		.file 9 "User/Hardware/dm4310_drv.h"
+ 2219              		.file 10 "Core/Inc/main.h"
+ARM GAS  C:\Users\fffff\AppData\Local\Temp\cc15dscs.s 			page 48
+
+
+DEFINED SYMBOLS
+                            *ABS*:00000000 dm4310_drv.c
+C:\Users\fffff\AppData\Local\Temp\cc15dscs.s:24     .bss.arm_motor:00000000 arm_motor
+C:\Users\fffff\AppData\Local\Temp\cc15dscs.s:21     .bss.arm_motor:00000000 $d
+C:\Users\fffff\AppData\Local\Temp\cc15dscs.s:31     .bss.pos_motor:00000000 pos_motor
+C:\Users\fffff\AppData\Local\Temp\cc15dscs.s:28     .bss.pos_motor:00000000 $d
+C:\Users\fffff\AppData\Local\Temp\cc15dscs.s:38     .bss.vel_motor:00000000 vel_motor
+C:\Users\fffff\AppData\Local\Temp\cc15dscs.s:35     .bss.vel_motor:00000000 $d
+C:\Users\fffff\AppData\Local\Temp\cc15dscs.s:45     .bss.tor_motor:00000000 tor_motor
+C:\Users\fffff\AppData\Local\Temp\cc15dscs.s:42     .bss.tor_motor:00000000 $d
+C:\Users\fffff\AppData\Local\Temp\cc15dscs.s:48     .text.Hex_To_Float:00000000 $t
+C:\Users\fffff\AppData\Local\Temp\cc15dscs.s:54     .text.Hex_To_Float:00000000 Hex_To_Float
+C:\Users\fffff\AppData\Local\Temp\cc15dscs.s:96     .text.FloatTohex:00000000 $t
+C:\Users\fffff\AppData\Local\Temp\cc15dscs.s:102    .text.FloatTohex:00000000 FloatTohex
+C:\Users\fffff\AppData\Local\Temp\cc15dscs.s:142    .text.float_to_uint:00000000 $t
+C:\Users\fffff\AppData\Local\Temp\cc15dscs.s:148    .text.float_to_uint:00000000 float_to_uint
+C:\Users\fffff\AppData\Local\Temp\cc15dscs.s:217    .text.uint_to_float:00000000 $t
+C:\Users\fffff\AppData\Local\Temp\cc15dscs.s:223    .text.uint_to_float:00000000 uint_to_float
+C:\Users\fffff\AppData\Local\Temp\cc15dscs.s:291    .text.arm_motor_init:00000000 $t
+C:\Users\fffff\AppData\Local\Temp\cc15dscs.s:297    .text.arm_motor_init:00000000 arm_motor_init
+C:\Users\fffff\AppData\Local\Temp\cc15dscs.s:345    .text.enable_motor_mode:00000000 $t
+C:\Users\fffff\AppData\Local\Temp\cc15dscs.s:351    .text.enable_motor_mode:00000000 enable_motor_mode
+C:\Users\fffff\AppData\Local\Temp\cc15dscs.s:427    .text.disable_motor_mode:00000000 $t
+C:\Users\fffff\AppData\Local\Temp\cc15dscs.s:433    .text.disable_motor_mode:00000000 disable_motor_mode
+C:\Users\fffff\AppData\Local\Temp\cc15dscs.s:504    .text.damiao_fbdata:00000000 $t
+C:\Users\fffff\AppData\Local\Temp\cc15dscs.s:510    .text.damiao_fbdata:00000000 damiao_fbdata
+C:\Users\fffff\AppData\Local\Temp\cc15dscs.s:666    .text.dm4310_fbdata:00000000 $t
+C:\Users\fffff\AppData\Local\Temp\cc15dscs.s:672    .text.dm4310_fbdata:00000000 dm4310_fbdata
+C:\Users\fffff\AppData\Local\Temp\cc15dscs.s:834    .text.dm8009_fbdata:00000000 $t
+C:\Users\fffff\AppData\Local\Temp\cc15dscs.s:840    .text.dm8009_fbdata:00000000 dm8009_fbdata
+C:\Users\fffff\AppData\Local\Temp\cc15dscs.s:1001   .text.dm8009_fbdata:000000fc $d
+C:\Users\fffff\AppData\Local\Temp\cc15dscs.s:1009   .text.dm10010l_fbdata:00000000 $t
+C:\Users\fffff\AppData\Local\Temp\cc15dscs.s:1015   .text.dm10010l_fbdata:00000000 dm10010l_fbdata
+C:\Users\fffff\AppData\Local\Temp\cc15dscs.s:1176   .text.dm10010l_fbdata:000000fc $d
+C:\Users\fffff\AppData\Local\Temp\cc15dscs.s:1182   .text.set_DM_pos_vel:00000000 $t
+C:\Users\fffff\AppData\Local\Temp\cc15dscs.s:1188   .text.set_DM_pos_vel:00000000 set_DM_pos_vel
+C:\Users\fffff\AppData\Local\Temp\cc15dscs.s:1250   .text.set_DM_pos_vel:00000048 $d
+C:\Users\fffff\AppData\Local\Temp\cc15dscs.s:1255   .text.set_DM_vel:00000000 $t
+C:\Users\fffff\AppData\Local\Temp\cc15dscs.s:1261   .text.set_DM_vel:00000000 set_DM_vel
+C:\Users\fffff\AppData\Local\Temp\cc15dscs.s:1310   .text.set_DM_vel:00000030 $d
+C:\Users\fffff\AppData\Local\Temp\cc15dscs.s:1315   .text.set_DM_mit:00000000 $t
+C:\Users\fffff\AppData\Local\Temp\cc15dscs.s:1321   .text.set_DM_mit:00000000 set_DM_mit
+C:\Users\fffff\AppData\Local\Temp\cc15dscs.s:1422   .text.set_DM_mit:00000090 $d
+C:\Users\fffff\AppData\Local\Temp\cc15dscs.s:1427   .text.set_DM_mode:00000000 $t
+C:\Users\fffff\AppData\Local\Temp\cc15dscs.s:1433   .text.set_DM_mode:00000000 set_DM_mode
+C:\Users\fffff\AppData\Local\Temp\cc15dscs.s:1484   .text.set_DM_mode:00000030 $d
+C:\Users\fffff\AppData\Local\Temp\cc15dscs.s:1489   .text.mit_ctrl:00000000 $t
+C:\Users\fffff\AppData\Local\Temp\cc15dscs.s:1495   .text.mit_ctrl:00000000 mit_ctrl
+C:\Users\fffff\AppData\Local\Temp\cc15dscs.s:1645   .text.mit_ctrl:00000118 $d
+C:\Users\fffff\AppData\Local\Temp\cc15dscs.s:1651   .text.pos_speed_ctrl:00000000 $t
+C:\Users\fffff\AppData\Local\Temp\cc15dscs.s:1657   .text.pos_speed_ctrl:00000000 pos_speed_ctrl
+C:\Users\fffff\AppData\Local\Temp\cc15dscs.s:1743   .rodata:00000000 $d
+C:\Users\fffff\AppData\Local\Temp\cc15dscs.s:1747   .text.CAN_Send_Enter:00000000 $t
+C:\Users\fffff\AppData\Local\Temp\cc15dscs.s:1753   .text.CAN_Send_Enter:00000000 CAN_Send_Enter
+C:\Users\fffff\AppData\Local\Temp\cc15dscs.s:1837   .text.CAN_Send_Enter:00000070 $d
+C:\Users\fffff\AppData\Local\Temp\cc15dscs.s:1846   .text.CAN_Send_Exit:00000000 $t
+C:\Users\fffff\AppData\Local\Temp\cc15dscs.s:1852   .text.CAN_Send_Exit:00000000 CAN_Send_Exit
+ARM GAS  C:\Users\fffff\AppData\Local\Temp\cc15dscs.s 			page 49
+
+
+C:\Users\fffff\AppData\Local\Temp\cc15dscs.s:1936   .text.CAN_Send_Exit:00000070 $d
+C:\Users\fffff\AppData\Local\Temp\cc15dscs.s:1945   .text.CAN_Send_Clear_Error:00000000 $t
+C:\Users\fffff\AppData\Local\Temp\cc15dscs.s:1951   .text.CAN_Send_Clear_Error:00000000 CAN_Send_Clear_Error
+C:\Users\fffff\AppData\Local\Temp\cc15dscs.s:2035   .text.CAN_Send_Clear_Error:00000070 $d
+C:\Users\fffff\AppData\Local\Temp\cc15dscs.s:2044   .text.CAN_Send_Save_Zero:00000000 $t
+C:\Users\fffff\AppData\Local\Temp\cc15dscs.s:2050   .text.CAN_Send_Save_Zero:00000000 CAN_Send_Save_Zero
+C:\Users\fffff\AppData\Local\Temp\cc15dscs.s:2134   .text.CAN_Send_Save_Zero:00000070 $d
+C:\Users\fffff\AppData\Local\Temp\cc15dscs.s:2139   .text.speed_ctrl:00000000 $t
+C:\Users\fffff\AppData\Local\Temp\cc15dscs.s:2145   .text.speed_ctrl:00000000 speed_ctrl
+
+UNDEFINED SYMBOLS
+canx_send_data
+HAL_FDCAN_AddMessageToTxFifoQ
+Error_Handler

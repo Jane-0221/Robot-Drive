@@ -1,0 +1,976 @@
+ARM GAS  C:\Users\23671\AppData\Local\Temp\ccatixGY.s 			page 1
+
+
+   1              		.cpu cortex-m7
+   2              		.arch armv7e-m
+   3              		.fpu fpv5-d16
+   4              		.eabi_attribute 28, 1
+   5              		.eabi_attribute 20, 1
+   6              		.eabi_attribute 21, 1
+   7              		.eabi_attribute 23, 3
+   8              		.eabi_attribute 24, 1
+   9              		.eabi_attribute 25, 1
+  10              		.eabi_attribute 26, 1
+  11              		.eabi_attribute 30, 6
+  12              		.eabi_attribute 34, 1
+  13              		.eabi_attribute 18, 4
+  14              		.file	"ui_Omni_Chassis_high_0.c"
+  15              		.text
+  16              	.Ltext0:
+  17              		.cfi_sections	.debug_frame
+  18              		.file 1 "Drivers/UI/ui_Omni_Chassis_high_0.c"
+  19              		.global	ui_Omni_Chassis_high_0
+  20              		.section	.bss.ui_Omni_Chassis_high_0,"aw",%nobits
+  21              		.align	2
+  24              	ui_Omni_Chassis_high_0:
+  25 0000 00000000 		.space	90
+  25      00000000 
+  25      00000000 
+  25      00000000 
+  25      00000000 
+  26              		.global	ui_Omni_Chassis_high_Chassis_arc
+  27              		.section	.data.ui_Omni_Chassis_high_Chassis_arc,"aw"
+  28              		.align	2
+  31              	ui_Omni_Chassis_high_Chassis_arc:
+  32 0000 0D000000 		.word	ui_Omni_Chassis_high_0+13
+  33              		.global	ui_Omni_Chassis_high_Supercap_rect
+  34              		.section	.data.ui_Omni_Chassis_high_Supercap_rect,"aw"
+  35              		.align	2
+  38              	ui_Omni_Chassis_high_Supercap_rect:
+  39 0000 1C000000 		.word	ui_Omni_Chassis_high_0+28
+  40              		.global	ui_Omni_Chassis_high_Supercap_Line
+  41              		.section	.data.ui_Omni_Chassis_high_Supercap_Line,"aw"
+  42              		.align	2
+  45              	ui_Omni_Chassis_high_Supercap_Line:
+  46 0000 2B000000 		.word	ui_Omni_Chassis_high_0+43
+  47              		.global	ui_Omni_Chassis_high_NewRound
+  48              		.section	.data.ui_Omni_Chassis_high_NewRound,"aw"
+  49              		.align	2
+  52              	ui_Omni_Chassis_high_NewRound:
+  53 0000 3A000000 		.word	ui_Omni_Chassis_high_0+58
+  54              		.global	ui_Omni_Chassis_high_NewEllipse
+  55              		.section	.data.ui_Omni_Chassis_high_NewEllipse,"aw"
+  56              		.align	2
+  59              	ui_Omni_Chassis_high_NewEllipse:
+  60 0000 49000000 		.word	ui_Omni_Chassis_high_0+73
+  61              		.section	.text._ui_init_Omni_Chassis_high_0,"ax",%progbits
+  62              		.align	1
+  63              		.global	_ui_init_Omni_Chassis_high_0
+  64              		.syntax unified
+  65              		.thumb
+ARM GAS  C:\Users\23671\AppData\Local\Temp\ccatixGY.s 			page 2
+
+
+  66              		.thumb_func
+  68              	_ui_init_Omni_Chassis_high_0:
+  69              	.LFB147:
+   1:Drivers/UI/ui_Omni_Chassis_high_0.c **** //
+   2:Drivers/UI/ui_Omni_Chassis_high_0.c **** // Created by RM UI Designer
+   3:Drivers/UI/ui_Omni_Chassis_high_0.c **** //
+   4:Drivers/UI/ui_Omni_Chassis_high_0.c **** 
+   5:Drivers/UI/ui_Omni_Chassis_high_0.c **** #include "ui_Omni_Chassis_high_0.h"
+   6:Drivers/UI/ui_Omni_Chassis_high_0.c **** 
+   7:Drivers/UI/ui_Omni_Chassis_high_0.c **** #define FRAME_ID 1
+   8:Drivers/UI/ui_Omni_Chassis_high_0.c **** #define GROUP_ID 1
+   9:Drivers/UI/ui_Omni_Chassis_high_0.c **** #define START_ID 0
+  10:Drivers/UI/ui_Omni_Chassis_high_0.c **** #define OBJ_NUM 5
+  11:Drivers/UI/ui_Omni_Chassis_high_0.c **** #define FRAME_OBJ_NUM 5
+  12:Drivers/UI/ui_Omni_Chassis_high_0.c **** 
+  13:Drivers/UI/ui_Omni_Chassis_high_0.c **** CAT(ui_, CAT(FRAME_OBJ_NUM, _frame_t)) ui_Omni_Chassis_high_0;
+  14:Drivers/UI/ui_Omni_Chassis_high_0.c **** ui_interface_arc_t *ui_Omni_Chassis_high_Chassis_arc = (ui_interface_arc_t *)&(ui_Omni_Chassis_high
+  15:Drivers/UI/ui_Omni_Chassis_high_0.c **** ui_interface_rect_t *ui_Omni_Chassis_high_Supercap_rect = (ui_interface_rect_t *)&(ui_Omni_Chassis_
+  16:Drivers/UI/ui_Omni_Chassis_high_0.c **** ui_interface_line_t *ui_Omni_Chassis_high_Supercap_Line = (ui_interface_line_t *)&(ui_Omni_Chassis_
+  17:Drivers/UI/ui_Omni_Chassis_high_0.c **** ui_interface_round_t *ui_Omni_Chassis_high_NewRound = (ui_interface_round_t *)&(ui_Omni_Chassis_hig
+  18:Drivers/UI/ui_Omni_Chassis_high_0.c **** ui_interface_ellipse_t *ui_Omni_Chassis_high_NewEllipse = (ui_interface_ellipse_t *)&(ui_Omni_Chass
+  19:Drivers/UI/ui_Omni_Chassis_high_0.c **** 
+  20:Drivers/UI/ui_Omni_Chassis_high_0.c **** void _ui_init_Omni_Chassis_high_0() {
+  70              		.loc 1 20 37
+  71              		.cfi_startproc
+  72              		@ args = 0, pretend = 0, frame = 8
+  73              		@ frame_needed = 1, uses_anonymous_args = 0
+  74 0000 80B5     		push	{r7, lr}
+  75              	.LCFI0:
+  76              		.cfi_def_cfa_offset 8
+  77              		.cfi_offset 7, -8
+  78              		.cfi_offset 14, -4
+  79 0002 82B0     		sub	sp, sp, #8
+  80              	.LCFI1:
+  81              		.cfi_def_cfa_offset 16
+  82 0004 00AF     		add	r7, sp, #0
+  83              	.LCFI2:
+  84              		.cfi_def_cfa_register 7
+  85              	.LBB2:
+  21:Drivers/UI/ui_Omni_Chassis_high_0.c ****     for (int i = 0; i < OBJ_NUM; i++) {
+  86              		.loc 1 21 14
+  87 0006 0023     		movs	r3, #0
+  88 0008 7B60     		str	r3, [r7, #4]
+  89              		.loc 1 21 5
+  90 000a 2CE0     		b	.L2
+  91              	.L3:
+  22:Drivers/UI/ui_Omni_Chassis_high_0.c ****         ui_Omni_Chassis_high_0.data[i].figure_name[0] = FRAME_ID;
+  92              		.loc 1 22 55
+  93 000c 1949     		ldr	r1, .L6
+  94 000e 7A68     		ldr	r2, [r7, #4]
+  95 0010 1346     		mov	r3, r2
+  96 0012 1B01     		lsls	r3, r3, #4
+  97 0014 9B1A     		subs	r3, r3, r2
+  98 0016 0B44     		add	r3, r3, r1
+  99 0018 0D33     		adds	r3, r3, #13
+ 100 001a 0122     		movs	r2, #1
+ 101 001c 1A70     		strb	r2, [r3]
+ARM GAS  C:\Users\23671\AppData\Local\Temp\ccatixGY.s 			page 3
+
+
+  23:Drivers/UI/ui_Omni_Chassis_high_0.c ****         ui_Omni_Chassis_high_0.data[i].figure_name[1] = GROUP_ID;
+ 102              		.loc 1 23 55
+ 103 001e 1549     		ldr	r1, .L6
+ 104 0020 7A68     		ldr	r2, [r7, #4]
+ 105 0022 1346     		mov	r3, r2
+ 106 0024 1B01     		lsls	r3, r3, #4
+ 107 0026 9B1A     		subs	r3, r3, r2
+ 108 0028 0B44     		add	r3, r3, r1
+ 109 002a 0E33     		adds	r3, r3, #14
+ 110 002c 0122     		movs	r2, #1
+ 111 002e 1A70     		strb	r2, [r3]
+  24:Drivers/UI/ui_Omni_Chassis_high_0.c ****         ui_Omni_Chassis_high_0.data[i].figure_name[2] = i + START_ID;
+ 112              		.loc 1 24 55
+ 113 0030 7B68     		ldr	r3, [r7, #4]
+ 114 0032 D8B2     		uxtb	r0, r3
+ 115 0034 0F49     		ldr	r1, .L6
+ 116 0036 7A68     		ldr	r2, [r7, #4]
+ 117 0038 1346     		mov	r3, r2
+ 118 003a 1B01     		lsls	r3, r3, #4
+ 119 003c 9B1A     		subs	r3, r3, r2
+ 120 003e 0B44     		add	r3, r3, r1
+ 121 0040 0F33     		adds	r3, r3, #15
+ 122 0042 0246     		mov	r2, r0
+ 123 0044 1A70     		strb	r2, [r3]
+  25:Drivers/UI/ui_Omni_Chassis_high_0.c ****         ui_Omni_Chassis_high_0.data[i].operate_tpyel = 1;
+ 124              		.loc 1 25 54
+ 125 0046 0B49     		ldr	r1, .L6
+ 126 0048 7A68     		ldr	r2, [r7, #4]
+ 127 004a 1346     		mov	r3, r2
+ 128 004c 1B01     		lsls	r3, r3, #4
+ 129 004e 9B1A     		subs	r3, r3, r2
+ 130 0050 0B44     		add	r3, r3, r1
+ 131 0052 03F10802 		add	r2, r3, #8
+ 132 0056 137A     		ldrb	r3, [r2, #8]
+ 133 0058 0121     		movs	r1, #1
+ 134 005a 61F30203 		bfi	r3, r1, #0, #3
+ 135 005e 1372     		strb	r3, [r2, #8]
+  21:Drivers/UI/ui_Omni_Chassis_high_0.c ****         ui_Omni_Chassis_high_0.data[i].figure_name[0] = FRAME_ID;
+ 136              		.loc 1 21 35 discriminator 3
+ 137 0060 7B68     		ldr	r3, [r7, #4]
+ 138 0062 0133     		adds	r3, r3, #1
+ 139 0064 7B60     		str	r3, [r7, #4]
+ 140              	.L2:
+  21:Drivers/UI/ui_Omni_Chassis_high_0.c ****         ui_Omni_Chassis_high_0.data[i].figure_name[0] = FRAME_ID;
+ 141              		.loc 1 21 23 discriminator 1
+ 142 0066 7B68     		ldr	r3, [r7, #4]
+ 143 0068 042B     		cmp	r3, #4
+ 144 006a CFDD     		ble	.L3
+ 145              	.LBE2:
+ 146              	.LBB3:
+  26:Drivers/UI/ui_Omni_Chassis_high_0.c ****     }
+  27:Drivers/UI/ui_Omni_Chassis_high_0.c ****     for (int i = OBJ_NUM; i < FRAME_OBJ_NUM; i++) {
+ 147              		.loc 1 27 14
+ 148 006c 0523     		movs	r3, #5
+ 149 006e 3B60     		str	r3, [r7]
+ 150              		.loc 1 27 5
+ 151 0070 11E0     		b	.L4
+ARM GAS  C:\Users\23671\AppData\Local\Temp\ccatixGY.s 			page 4
+
+
+ 152              	.L7:
+ 153 0072 00BF     		.align	2
+ 154              	.L6:
+ 155 0074 00000000 		.word	ui_Omni_Chassis_high_0
+ 156              	.L5:
+  28:Drivers/UI/ui_Omni_Chassis_high_0.c ****         ui_Omni_Chassis_high_0.data[i].operate_tpyel = 0;
+ 157              		.loc 1 28 54
+ 158 0078 D349     		ldr	r1, .L8
+ 159 007a 3A68     		ldr	r2, [r7]
+ 160 007c 1346     		mov	r3, r2
+ 161 007e 1B01     		lsls	r3, r3, #4
+ 162 0080 9B1A     		subs	r3, r3, r2
+ 163 0082 0B44     		add	r3, r3, r1
+ 164 0084 03F10802 		add	r2, r3, #8
+ 165 0088 137A     		ldrb	r3, [r2, #8]
+ 166 008a 23F00703 		bic	r3, r3, #7
+ 167 008e 1372     		strb	r3, [r2, #8]
+  27:Drivers/UI/ui_Omni_Chassis_high_0.c ****         ui_Omni_Chassis_high_0.data[i].operate_tpyel = 0;
+ 168              		.loc 1 27 47 discriminator 3
+ 169 0090 3B68     		ldr	r3, [r7]
+ 170 0092 0133     		adds	r3, r3, #1
+ 171 0094 3B60     		str	r3, [r7]
+ 172              	.L4:
+  27:Drivers/UI/ui_Omni_Chassis_high_0.c ****         ui_Omni_Chassis_high_0.data[i].operate_tpyel = 0;
+ 173              		.loc 1 27 29 discriminator 1
+ 174 0096 3B68     		ldr	r3, [r7]
+ 175 0098 042B     		cmp	r3, #4
+ 176 009a EDDD     		ble	.L5
+ 177              	.LBE3:
+  29:Drivers/UI/ui_Omni_Chassis_high_0.c ****     }
+  30:Drivers/UI/ui_Omni_Chassis_high_0.c **** 
+  31:Drivers/UI/ui_Omni_Chassis_high_0.c ****     ui_Omni_Chassis_high_Chassis_arc->figure_tpye = 4;
+ 178              		.loc 1 31 37
+ 179 009c CB4B     		ldr	r3, .L8+4
+ 180 009e 1A68     		ldr	r2, [r3]
+ 181              		.loc 1 31 51
+ 182 00a0 D378     		ldrb	r3, [r2, #3]
+ 183 00a2 0421     		movs	r1, #4
+ 184 00a4 61F3C503 		bfi	r3, r1, #3, #3
+ 185 00a8 D370     		strb	r3, [r2, #3]
+  32:Drivers/UI/ui_Omni_Chassis_high_0.c ****     ui_Omni_Chassis_high_Chassis_arc->layer = 0;
+ 186              		.loc 1 32 37
+ 187 00aa C84B     		ldr	r3, .L8+4
+ 188 00ac 1B68     		ldr	r3, [r3]
+ 189              		.loc 1 32 45
+ 190 00ae DA78     		ldrb	r2, [r3, #3]
+ 191 00b0 02F03F02 		and	r2, r2, #63
+ 192 00b4 DA70     		strb	r2, [r3, #3]
+ 193 00b6 1A79     		ldrb	r2, [r3, #4]
+ 194 00b8 22F00302 		bic	r2, r2, #3
+ 195 00bc 1A71     		strb	r2, [r3, #4]
+  33:Drivers/UI/ui_Omni_Chassis_high_0.c ****     ui_Omni_Chassis_high_Chassis_arc->rx = 330;
+ 196              		.loc 1 33 37
+ 197 00be C34B     		ldr	r3, .L8+4
+ 198 00c0 1B68     		ldr	r3, [r3]
+ 199              		.loc 1 33 42
+ 200 00c2 1A7B     		ldrb	r2, [r3, #12]
+ARM GAS  C:\Users\23671\AppData\Local\Temp\ccatixGY.s 			page 5
+
+
+ 201 00c4 02F00302 		and	r2, r2, #3
+ 202 00c8 42F02802 		orr	r2, r2, #40
+ 203 00cc 1A73     		strb	r2, [r3, #12]
+ 204 00ce 5A7B     		ldrb	r2, [r3, #13]
+ 205 00d0 22F01F02 		bic	r2, r2, #31
+ 206 00d4 42F00502 		orr	r2, r2, #5
+ 207 00d8 5A73     		strb	r2, [r3, #13]
+  34:Drivers/UI/ui_Omni_Chassis_high_0.c ****     ui_Omni_Chassis_high_Chassis_arc->ry = 330;
+ 208              		.loc 1 34 37
+ 209 00da BC4B     		ldr	r3, .L8+4
+ 210 00dc 1B68     		ldr	r3, [r3]
+ 211              		.loc 1 34 42
+ 212 00de 5A7B     		ldrb	r2, [r3, #13]
+ 213 00e0 02F01F02 		and	r2, r2, #31
+ 214 00e4 42F04002 		orr	r2, r2, #64
+ 215 00e8 5A73     		strb	r2, [r3, #13]
+ 216 00ea 0022     		movs	r2, #0
+ 217 00ec 42F02902 		orr	r2, r2, #41
+ 218 00f0 9A73     		strb	r2, [r3, #14]
+  35:Drivers/UI/ui_Omni_Chassis_high_0.c ****     ui_Omni_Chassis_high_Chassis_arc->start_x = 960;
+ 219              		.loc 1 35 37
+ 220 00f2 B64B     		ldr	r3, .L8+4
+ 221 00f4 1B68     		ldr	r3, [r3]
+ 222              		.loc 1 35 47
+ 223 00f6 1A7A     		ldrb	r2, [r3, #8]
+ 224 00f8 02F00302 		and	r2, r2, #3
+ 225 00fc 1A72     		strb	r2, [r3, #8]
+ 226 00fe 5A7A     		ldrb	r2, [r3, #9]
+ 227 0100 22F01F02 		bic	r2, r2, #31
+ 228 0104 42F00F02 		orr	r2, r2, #15
+ 229 0108 5A72     		strb	r2, [r3, #9]
+  36:Drivers/UI/ui_Omni_Chassis_high_0.c ****     ui_Omni_Chassis_high_Chassis_arc->start_y = 540;
+ 230              		.loc 1 36 37
+ 231 010a B04B     		ldr	r3, .L8+4
+ 232 010c 1B68     		ldr	r3, [r3]
+ 233              		.loc 1 36 47
+ 234 010e 5A7A     		ldrb	r2, [r3, #9]
+ 235 0110 02F01F02 		and	r2, r2, #31
+ 236 0114 62F07F02 		orn	r2, r2, #127
+ 237 0118 5A72     		strb	r2, [r3, #9]
+ 238 011a 0022     		movs	r2, #0
+ 239 011c 42F04302 		orr	r2, r2, #67
+ 240 0120 9A72     		strb	r2, [r3, #10]
+  37:Drivers/UI/ui_Omni_Chassis_high_0.c ****     ui_Omni_Chassis_high_Chassis_arc->color = 1;
+ 241              		.loc 1 37 37
+ 242 0122 AA4B     		ldr	r3, .L8+4
+ 243 0124 1A68     		ldr	r2, [r3]
+ 244              		.loc 1 37 45
+ 245 0126 1379     		ldrb	r3, [r2, #4]
+ 246 0128 0121     		movs	r1, #1
+ 247 012a 61F38503 		bfi	r3, r1, #2, #4
+ 248 012e 1371     		strb	r3, [r2, #4]
+  38:Drivers/UI/ui_Omni_Chassis_high_0.c ****     ui_Omni_Chassis_high_Chassis_arc->width = 5;
+ 249              		.loc 1 38 37
+ 250 0130 A64B     		ldr	r3, .L8+4
+ 251 0132 1B68     		ldr	r3, [r3]
+ 252              		.loc 1 38 45
+ARM GAS  C:\Users\23671\AppData\Local\Temp\ccatixGY.s 			page 6
+
+
+ 253 0134 0022     		movs	r2, #0
+ 254 0136 42F00502 		orr	r2, r2, #5
+ 255 013a DA71     		strb	r2, [r3, #7]
+ 256 013c 1A7A     		ldrb	r2, [r3, #8]
+ 257 013e 22F00302 		bic	r2, r2, #3
+ 258 0142 1A72     		strb	r2, [r3, #8]
+  39:Drivers/UI/ui_Omni_Chassis_high_0.c ****     ui_Omni_Chassis_high_Chassis_arc->start_angle = 150;
+ 259              		.loc 1 39 37
+ 260 0144 A14B     		ldr	r3, .L8+4
+ 261 0146 1B68     		ldr	r3, [r3]
+ 262              		.loc 1 39 51
+ 263 0148 1A79     		ldrb	r2, [r3, #4]
+ 264 014a 02F03F02 		and	r2, r2, #63
+ 265 014e 62F07F02 		orn	r2, r2, #127
+ 266 0152 1A71     		strb	r2, [r3, #4]
+ 267 0154 5A79     		ldrb	r2, [r3, #5]
+ 268 0156 22F07F02 		bic	r2, r2, #127
+ 269 015a 42F02502 		orr	r2, r2, #37
+ 270 015e 5A71     		strb	r2, [r3, #5]
+  40:Drivers/UI/ui_Omni_Chassis_high_0.c ****     ui_Omni_Chassis_high_Chassis_arc->end_angle = 210;
+ 271              		.loc 1 40 37
+ 272 0160 9A4B     		ldr	r3, .L8+4
+ 273 0162 1B68     		ldr	r3, [r3]
+ 274              		.loc 1 40 49
+ 275 0164 5A79     		ldrb	r2, [r3, #5]
+ 276 0166 02F07F02 		and	r2, r2, #127
+ 277 016a 5A71     		strb	r2, [r3, #5]
+ 278 016c 0022     		movs	r2, #0
+ 279 016e 42F06902 		orr	r2, r2, #105
+ 280 0172 9A71     		strb	r2, [r3, #6]
+  41:Drivers/UI/ui_Omni_Chassis_high_0.c **** 
+  42:Drivers/UI/ui_Omni_Chassis_high_0.c ****     ui_Omni_Chassis_high_Supercap_rect->figure_tpye = 1;
+ 281              		.loc 1 42 39
+ 282 0174 964B     		ldr	r3, .L8+8
+ 283 0176 1A68     		ldr	r2, [r3]
+ 284              		.loc 1 42 53
+ 285 0178 D378     		ldrb	r3, [r2, #3]
+ 286 017a 0121     		movs	r1, #1
+ 287 017c 61F3C503 		bfi	r3, r1, #3, #3
+ 288 0180 D370     		strb	r3, [r2, #3]
+  43:Drivers/UI/ui_Omni_Chassis_high_0.c ****     ui_Omni_Chassis_high_Supercap_rect->layer = 0;
+ 289              		.loc 1 43 39
+ 290 0182 934B     		ldr	r3, .L8+8
+ 291 0184 1B68     		ldr	r3, [r3]
+ 292              		.loc 1 43 47
+ 293 0186 DA78     		ldrb	r2, [r3, #3]
+ 294 0188 02F03F02 		and	r2, r2, #63
+ 295 018c DA70     		strb	r2, [r3, #3]
+ 296 018e 1A79     		ldrb	r2, [r3, #4]
+ 297 0190 22F00302 		bic	r2, r2, #3
+ 298 0194 1A71     		strb	r2, [r3, #4]
+  44:Drivers/UI/ui_Omni_Chassis_high_0.c ****     ui_Omni_Chassis_high_Supercap_rect->start_x = 445;
+ 299              		.loc 1 44 39
+ 300 0196 8E4B     		ldr	r3, .L8+8
+ 301 0198 1B68     		ldr	r3, [r3]
+ 302              		.loc 1 44 49
+ 303 019a 1A7A     		ldrb	r2, [r3, #8]
+ARM GAS  C:\Users\23671\AppData\Local\Temp\ccatixGY.s 			page 7
+
+
+ 304 019c 02F00302 		and	r2, r2, #3
+ 305 01a0 62F00B02 		orn	r2, r2, #11
+ 306 01a4 1A72     		strb	r2, [r3, #8]
+ 307 01a6 5A7A     		ldrb	r2, [r3, #9]
+ 308 01a8 22F01F02 		bic	r2, r2, #31
+ 309 01ac 42F00602 		orr	r2, r2, #6
+ 310 01b0 5A72     		strb	r2, [r3, #9]
+  45:Drivers/UI/ui_Omni_Chassis_high_0.c ****     ui_Omni_Chassis_high_Supercap_rect->start_y = 159;
+ 311              		.loc 1 45 39
+ 312 01b2 874B     		ldr	r3, .L8+8
+ 313 01b4 1B68     		ldr	r3, [r3]
+ 314              		.loc 1 45 49
+ 315 01b6 5A7A     		ldrb	r2, [r3, #9]
+ 316 01b8 62F01F02 		orn	r2, r2, #31
+ 317 01bc 5A72     		strb	r2, [r3, #9]
+ 318 01be 0022     		movs	r2, #0
+ 319 01c0 42F01302 		orr	r2, r2, #19
+ 320 01c4 9A72     		strb	r2, [r3, #10]
+  46:Drivers/UI/ui_Omni_Chassis_high_0.c ****     ui_Omni_Chassis_high_Supercap_rect->color = 6;
+ 321              		.loc 1 46 39
+ 322 01c6 824B     		ldr	r3, .L8+8
+ 323 01c8 1A68     		ldr	r2, [r3]
+ 324              		.loc 1 46 47
+ 325 01ca 1379     		ldrb	r3, [r2, #4]
+ 326 01cc 0621     		movs	r1, #6
+ 327 01ce 61F38503 		bfi	r3, r1, #2, #4
+ 328 01d2 1371     		strb	r3, [r2, #4]
+  47:Drivers/UI/ui_Omni_Chassis_high_0.c ****     ui_Omni_Chassis_high_Supercap_rect->width = 3;
+ 329              		.loc 1 47 39
+ 330 01d4 7E4B     		ldr	r3, .L8+8
+ 331 01d6 1B68     		ldr	r3, [r3]
+ 332              		.loc 1 47 47
+ 333 01d8 0022     		movs	r2, #0
+ 334 01da 42F00302 		orr	r2, r2, #3
+ 335 01de DA71     		strb	r2, [r3, #7]
+ 336 01e0 1A7A     		ldrb	r2, [r3, #8]
+ 337 01e2 22F00302 		bic	r2, r2, #3
+ 338 01e6 1A72     		strb	r2, [r3, #8]
+  48:Drivers/UI/ui_Omni_Chassis_high_0.c ****     ui_Omni_Chassis_high_Supercap_rect->end_x = 1436;
+ 339              		.loc 1 48 39
+ 340 01e8 794B     		ldr	r3, .L8+8
+ 341 01ea 1B68     		ldr	r3, [r3]
+ 342              		.loc 1 48 47
+ 343 01ec 1A7B     		ldrb	r2, [r3, #12]
+ 344 01ee 02F00302 		and	r2, r2, #3
+ 345 01f2 42F07002 		orr	r2, r2, #112
+ 346 01f6 1A73     		strb	r2, [r3, #12]
+ 347 01f8 5A7B     		ldrb	r2, [r3, #13]
+ 348 01fa 22F01F02 		bic	r2, r2, #31
+ 349 01fe 42F01602 		orr	r2, r2, #22
+ 350 0202 5A73     		strb	r2, [r3, #13]
+  49:Drivers/UI/ui_Omni_Chassis_high_0.c ****     ui_Omni_Chassis_high_Supercap_rect->end_y = 201;
+ 351              		.loc 1 49 39
+ 352 0204 724B     		ldr	r3, .L8+8
+ 353 0206 1B68     		ldr	r3, [r3]
+ 354              		.loc 1 49 47
+ 355 0208 5A7B     		ldrb	r2, [r3, #13]
+ARM GAS  C:\Users\23671\AppData\Local\Temp\ccatixGY.s 			page 8
+
+
+ 356 020a 02F01F02 		and	r2, r2, #31
+ 357 020e 42F02002 		orr	r2, r2, #32
+ 358 0212 5A73     		strb	r2, [r3, #13]
+ 359 0214 0022     		movs	r2, #0
+ 360 0216 42F01902 		orr	r2, r2, #25
+ 361 021a 9A73     		strb	r2, [r3, #14]
+  50:Drivers/UI/ui_Omni_Chassis_high_0.c **** 
+  51:Drivers/UI/ui_Omni_Chassis_high_0.c ****     ui_Omni_Chassis_high_Supercap_Line->figure_tpye = 0;
+ 362              		.loc 1 51 39
+ 363 021c 6D4B     		ldr	r3, .L8+12
+ 364 021e 1A68     		ldr	r2, [r3]
+ 365              		.loc 1 51 53
+ 366 0220 D378     		ldrb	r3, [r2, #3]
+ 367 0222 23F03803 		bic	r3, r3, #56
+ 368 0226 D370     		strb	r3, [r2, #3]
+  52:Drivers/UI/ui_Omni_Chassis_high_0.c ****     ui_Omni_Chassis_high_Supercap_Line->layer = 0;
+ 369              		.loc 1 52 39
+ 370 0228 6A4B     		ldr	r3, .L8+12
+ 371 022a 1B68     		ldr	r3, [r3]
+ 372              		.loc 1 52 47
+ 373 022c DA78     		ldrb	r2, [r3, #3]
+ 374 022e 02F03F02 		and	r2, r2, #63
+ 375 0232 DA70     		strb	r2, [r3, #3]
+ 376 0234 1A79     		ldrb	r2, [r3, #4]
+ 377 0236 22F00302 		bic	r2, r2, #3
+ 378 023a 1A71     		strb	r2, [r3, #4]
+  53:Drivers/UI/ui_Omni_Chassis_high_0.c ****     ui_Omni_Chassis_high_Supercap_Line->start_x = 450;
+ 379              		.loc 1 53 39
+ 380 023c 654B     		ldr	r3, .L8+12
+ 381 023e 1B68     		ldr	r3, [r3]
+ 382              		.loc 1 53 49
+ 383 0240 1A7A     		ldrb	r2, [r3, #8]
+ 384 0242 02F00302 		and	r2, r2, #3
+ 385 0246 42F00802 		orr	r2, r2, #8
+ 386 024a 1A72     		strb	r2, [r3, #8]
+ 387 024c 5A7A     		ldrb	r2, [r3, #9]
+ 388 024e 22F01F02 		bic	r2, r2, #31
+ 389 0252 42F00702 		orr	r2, r2, #7
+ 390 0256 5A72     		strb	r2, [r3, #9]
+  54:Drivers/UI/ui_Omni_Chassis_high_0.c ****     ui_Omni_Chassis_high_Supercap_Line->start_y = 166;
+ 391              		.loc 1 54 39
+ 392 0258 5E4B     		ldr	r3, .L8+12
+ 393 025a 1B68     		ldr	r3, [r3]
+ 394              		.loc 1 54 49
+ 395 025c 5A7A     		ldrb	r2, [r3, #9]
+ 396 025e 02F01F02 		and	r2, r2, #31
+ 397 0262 62F03F02 		orn	r2, r2, #63
+ 398 0266 5A72     		strb	r2, [r3, #9]
+ 399 0268 0022     		movs	r2, #0
+ 400 026a 42F01402 		orr	r2, r2, #20
+ 401 026e 9A72     		strb	r2, [r3, #10]
+  55:Drivers/UI/ui_Omni_Chassis_high_0.c ****     ui_Omni_Chassis_high_Supercap_Line->end_x = 1431;
+ 402              		.loc 1 55 39
+ 403 0270 584B     		ldr	r3, .L8+12
+ 404 0272 1B68     		ldr	r3, [r3]
+ 405              		.loc 1 55 47
+ 406 0274 1A7B     		ldrb	r2, [r3, #12]
+ARM GAS  C:\Users\23671\AppData\Local\Temp\ccatixGY.s 			page 9
+
+
+ 407 0276 02F00302 		and	r2, r2, #3
+ 408 027a 42F05C02 		orr	r2, r2, #92
+ 409 027e 1A73     		strb	r2, [r3, #12]
+ 410 0280 5A7B     		ldrb	r2, [r3, #13]
+ 411 0282 22F01F02 		bic	r2, r2, #31
+ 412 0286 42F01602 		orr	r2, r2, #22
+ 413 028a 5A73     		strb	r2, [r3, #13]
+  56:Drivers/UI/ui_Omni_Chassis_high_0.c ****     ui_Omni_Chassis_high_Supercap_Line->end_y = 166;
+ 414              		.loc 1 56 39
+ 415 028c 514B     		ldr	r3, .L8+12
+ 416 028e 1B68     		ldr	r3, [r3]
+ 417              		.loc 1 56 47
+ 418 0290 5A7B     		ldrb	r2, [r3, #13]
+ 419 0292 02F01F02 		and	r2, r2, #31
+ 420 0296 62F03F02 		orn	r2, r2, #63
+ 421 029a 5A73     		strb	r2, [r3, #13]
+ 422 029c 0022     		movs	r2, #0
+ 423 029e 42F01402 		orr	r2, r2, #20
+ 424 02a2 9A73     		strb	r2, [r3, #14]
+  57:Drivers/UI/ui_Omni_Chassis_high_0.c ****     ui_Omni_Chassis_high_Supercap_Line->color = 2;
+ 425              		.loc 1 57 39
+ 426 02a4 4B4B     		ldr	r3, .L8+12
+ 427 02a6 1A68     		ldr	r2, [r3]
+ 428              		.loc 1 57 47
+ 429 02a8 1379     		ldrb	r3, [r2, #4]
+ 430 02aa 0221     		movs	r1, #2
+ 431 02ac 61F38503 		bfi	r3, r1, #2, #4
+ 432 02b0 1371     		strb	r3, [r2, #4]
+  58:Drivers/UI/ui_Omni_Chassis_high_0.c ****     ui_Omni_Chassis_high_Supercap_Line->width = 30;
+ 433              		.loc 1 58 39
+ 434 02b2 484B     		ldr	r3, .L8+12
+ 435 02b4 1B68     		ldr	r3, [r3]
+ 436              		.loc 1 58 47
+ 437 02b6 0022     		movs	r2, #0
+ 438 02b8 42F01E02 		orr	r2, r2, #30
+ 439 02bc DA71     		strb	r2, [r3, #7]
+ 440 02be 1A7A     		ldrb	r2, [r3, #8]
+ 441 02c0 22F00302 		bic	r2, r2, #3
+ 442 02c4 1A72     		strb	r2, [r3, #8]
+  59:Drivers/UI/ui_Omni_Chassis_high_0.c **** 
+  60:Drivers/UI/ui_Omni_Chassis_high_0.c ****     ui_Omni_Chassis_high_NewRound->figure_tpye = 2;
+ 443              		.loc 1 60 34
+ 444 02c6 444B     		ldr	r3, .L8+16
+ 445 02c8 1A68     		ldr	r2, [r3]
+ 446              		.loc 1 60 48
+ 447 02ca D378     		ldrb	r3, [r2, #3]
+ 448 02cc 0221     		movs	r1, #2
+ 449 02ce 61F3C503 		bfi	r3, r1, #3, #3
+ 450 02d2 D370     		strb	r3, [r2, #3]
+  61:Drivers/UI/ui_Omni_Chassis_high_0.c ****     ui_Omni_Chassis_high_NewRound->layer = 0;
+ 451              		.loc 1 61 34
+ 452 02d4 404B     		ldr	r3, .L8+16
+ 453 02d6 1B68     		ldr	r3, [r3]
+ 454              		.loc 1 61 42
+ 455 02d8 DA78     		ldrb	r2, [r3, #3]
+ 456 02da 02F03F02 		and	r2, r2, #63
+ 457 02de DA70     		strb	r2, [r3, #3]
+ARM GAS  C:\Users\23671\AppData\Local\Temp\ccatixGY.s 			page 10
+
+
+ 458 02e0 1A79     		ldrb	r2, [r3, #4]
+ 459 02e2 22F00302 		bic	r2, r2, #3
+ 460 02e6 1A71     		strb	r2, [r3, #4]
+  62:Drivers/UI/ui_Omni_Chassis_high_0.c ****     ui_Omni_Chassis_high_NewRound->r = 76;
+ 461              		.loc 1 62 34
+ 462 02e8 3B4B     		ldr	r3, .L8+16
+ 463 02ea 1B68     		ldr	r3, [r3]
+ 464              		.loc 1 62 38
+ 465 02ec 0022     		movs	r2, #0
+ 466 02ee 42F04C02 		orr	r2, r2, #76
+ 467 02f2 DA72     		strb	r2, [r3, #11]
+ 468 02f4 1A7B     		ldrb	r2, [r3, #12]
+ 469 02f6 22F00302 		bic	r2, r2, #3
+ 470 02fa 1A73     		strb	r2, [r3, #12]
+  63:Drivers/UI/ui_Omni_Chassis_high_0.c ****     ui_Omni_Chassis_high_NewRound->start_x = 126;
+ 471              		.loc 1 63 34
+ 472 02fc 364B     		ldr	r3, .L8+16
+ 473 02fe 1B68     		ldr	r3, [r3]
+ 474              		.loc 1 63 44
+ 475 0300 1A7A     		ldrb	r2, [r3, #8]
+ 476 0302 02F00302 		and	r2, r2, #3
+ 477 0306 62F00702 		orn	r2, r2, #7
+ 478 030a 1A72     		strb	r2, [r3, #8]
+ 479 030c 5A7A     		ldrb	r2, [r3, #9]
+ 480 030e 22F01F02 		bic	r2, r2, #31
+ 481 0312 42F00102 		orr	r2, r2, #1
+ 482 0316 5A72     		strb	r2, [r3, #9]
+  64:Drivers/UI/ui_Omni_Chassis_high_0.c ****     ui_Omni_Chassis_high_NewRound->start_y = 126;
+ 483              		.loc 1 64 34
+ 484 0318 2F4B     		ldr	r3, .L8+16
+ 485 031a 1B68     		ldr	r3, [r3]
+ 486              		.loc 1 64 44
+ 487 031c 5A7A     		ldrb	r2, [r3, #9]
+ 488 031e 02F01F02 		and	r2, r2, #31
+ 489 0322 62F03F02 		orn	r2, r2, #63
+ 490 0326 5A72     		strb	r2, [r3, #9]
+ 491 0328 0022     		movs	r2, #0
+ 492 032a 42F00F02 		orr	r2, r2, #15
+ 493 032e 9A72     		strb	r2, [r3, #10]
+  65:Drivers/UI/ui_Omni_Chassis_high_0.c ****     ui_Omni_Chassis_high_NewRound->color = 0;
+ 494              		.loc 1 65 34
+ 495 0330 294B     		ldr	r3, .L8+16
+ 496 0332 1A68     		ldr	r2, [r3]
+ 497              		.loc 1 65 42
+ 498 0334 1379     		ldrb	r3, [r2, #4]
+ 499 0336 23F03C03 		bic	r3, r3, #60
+ 500 033a 1371     		strb	r3, [r2, #4]
+  66:Drivers/UI/ui_Omni_Chassis_high_0.c ****     ui_Omni_Chassis_high_NewRound->width = 1;
+ 501              		.loc 1 66 34
+ 502 033c 264B     		ldr	r3, .L8+16
+ 503 033e 1B68     		ldr	r3, [r3]
+ 504              		.loc 1 66 42
+ 505 0340 0022     		movs	r2, #0
+ 506 0342 42F00102 		orr	r2, r2, #1
+ 507 0346 DA71     		strb	r2, [r3, #7]
+ 508 0348 1A7A     		ldrb	r2, [r3, #8]
+ 509 034a 22F00302 		bic	r2, r2, #3
+ARM GAS  C:\Users\23671\AppData\Local\Temp\ccatixGY.s 			page 11
+
+
+ 510 034e 1A72     		strb	r2, [r3, #8]
+  67:Drivers/UI/ui_Omni_Chassis_high_0.c **** 
+  68:Drivers/UI/ui_Omni_Chassis_high_0.c ****     ui_Omni_Chassis_high_NewEllipse->figure_tpye = 3;
+ 511              		.loc 1 68 36
+ 512 0350 224B     		ldr	r3, .L8+20
+ 513 0352 1A68     		ldr	r2, [r3]
+ 514              		.loc 1 68 50
+ 515 0354 D378     		ldrb	r3, [r2, #3]
+ 516 0356 0321     		movs	r1, #3
+ 517 0358 61F3C503 		bfi	r3, r1, #3, #3
+ 518 035c D370     		strb	r3, [r2, #3]
+  69:Drivers/UI/ui_Omni_Chassis_high_0.c ****     ui_Omni_Chassis_high_NewEllipse->layer = 0;
+ 519              		.loc 1 69 36
+ 520 035e 1F4B     		ldr	r3, .L8+20
+ 521 0360 1B68     		ldr	r3, [r3]
+ 522              		.loc 1 69 44
+ 523 0362 DA78     		ldrb	r2, [r3, #3]
+ 524 0364 02F03F02 		and	r2, r2, #63
+ 525 0368 DA70     		strb	r2, [r3, #3]
+ 526 036a 1A79     		ldrb	r2, [r3, #4]
+ 527 036c 22F00302 		bic	r2, r2, #3
+ 528 0370 1A71     		strb	r2, [r3, #4]
+  70:Drivers/UI/ui_Omni_Chassis_high_0.c ****     ui_Omni_Chassis_high_NewEllipse->rx = 50;
+ 529              		.loc 1 70 36
+ 530 0372 1A4B     		ldr	r3, .L8+20
+ 531 0374 1B68     		ldr	r3, [r3]
+ 532              		.loc 1 70 41
+ 533 0376 1A7B     		ldrb	r2, [r3, #12]
+ 534 0378 02F00302 		and	r2, r2, #3
+ 535 037c 62F03702 		orn	r2, r2, #55
+ 536 0380 1A73     		strb	r2, [r3, #12]
+ 537 0382 5A7B     		ldrb	r2, [r3, #13]
+ 538 0384 22F01F02 		bic	r2, r2, #31
+ 539 0388 5A73     		strb	r2, [r3, #13]
+  71:Drivers/UI/ui_Omni_Chassis_high_0.c ****     ui_Omni_Chassis_high_NewEllipse->ry = 50;
+ 540              		.loc 1 71 36
+ 541 038a 144B     		ldr	r3, .L8+20
+ 542 038c 1B68     		ldr	r3, [r3]
+ 543              		.loc 1 71 41
+ 544 038e 5A7B     		ldrb	r2, [r3, #13]
+ 545 0390 02F01F02 		and	r2, r2, #31
+ 546 0394 42F04002 		orr	r2, r2, #64
+ 547 0398 5A73     		strb	r2, [r3, #13]
+ 548 039a 0022     		movs	r2, #0
+ 549 039c 42F00602 		orr	r2, r2, #6
+ 550 03a0 9A73     		strb	r2, [r3, #14]
+  72:Drivers/UI/ui_Omni_Chassis_high_0.c ****     ui_Omni_Chassis_high_NewEllipse->start_x = 100;
+ 551              		.loc 1 72 36
+ 552 03a2 0E4B     		ldr	r3, .L8+20
+ 553 03a4 1B68     		ldr	r3, [r3]
+ 554              		.loc 1 72 46
+ 555 03a6 1A7A     		ldrb	r2, [r3, #8]
+ 556 03a8 02F00302 		and	r2, r2, #3
+ 557 03ac 62F06F02 		orn	r2, r2, #111
+ 558 03b0 1A72     		strb	r2, [r3, #8]
+ 559 03b2 5A7A     		ldrb	r2, [r3, #9]
+ 560 03b4 22F01F02 		bic	r2, r2, #31
+ARM GAS  C:\Users\23671\AppData\Local\Temp\ccatixGY.s 			page 12
+
+
+ 561 03b8 42F00102 		orr	r2, r2, #1
+ 562 03bc 5A72     		strb	r2, [r3, #9]
+  73:Drivers/UI/ui_Omni_Chassis_high_0.c ****     ui_Omni_Chassis_high_NewEllipse->start_y = 100;
+ 563              		.loc 1 73 36
+ 564 03be 074B     		ldr	r3, .L8+20
+ 565 03c0 1B68     		ldr	r3, [r3]
+ 566              		.loc 1 73 46
+ 567 03c2 5A7A     		ldrb	r2, [r3, #9]
+ 568 03c4 0CE0     		b	.L9
+ 569              	.L10:
+ 570 03c6 00BF     		.align	2
+ 571              	.L8:
+ 572 03c8 00000000 		.word	ui_Omni_Chassis_high_0
+ 573 03cc 00000000 		.word	ui_Omni_Chassis_high_Chassis_arc
+ 574 03d0 00000000 		.word	ui_Omni_Chassis_high_Supercap_rect
+ 575 03d4 00000000 		.word	ui_Omni_Chassis_high_Supercap_Line
+ 576 03d8 00000000 		.word	ui_Omni_Chassis_high_NewRound
+ 577 03dc 00000000 		.word	ui_Omni_Chassis_high_NewEllipse
+ 578              	.L9:
+ 579 03e0 02F01F02 		and	r2, r2, #31
+ 580 03e4 62F07F02 		orn	r2, r2, #127
+ 581 03e8 5A72     		strb	r2, [r3, #9]
+ 582 03ea 0022     		movs	r2, #0
+ 583 03ec 42F00C02 		orr	r2, r2, #12
+ 584 03f0 9A72     		strb	r2, [r3, #10]
+  74:Drivers/UI/ui_Omni_Chassis_high_0.c ****     ui_Omni_Chassis_high_NewEllipse->color = 0;
+ 585              		.loc 1 74 36
+ 586 03f2 0E4B     		ldr	r3, .L11
+ 587 03f4 1A68     		ldr	r2, [r3]
+ 588              		.loc 1 74 44
+ 589 03f6 1379     		ldrb	r3, [r2, #4]
+ 590 03f8 23F03C03 		bic	r3, r3, #60
+ 591 03fc 1371     		strb	r3, [r2, #4]
+  75:Drivers/UI/ui_Omni_Chassis_high_0.c ****     ui_Omni_Chassis_high_NewEllipse->width = 1;
+ 592              		.loc 1 75 36
+ 593 03fe 0B4B     		ldr	r3, .L11
+ 594 0400 1B68     		ldr	r3, [r3]
+ 595              		.loc 1 75 44
+ 596 0402 0022     		movs	r2, #0
+ 597 0404 42F00102 		orr	r2, r2, #1
+ 598 0408 DA71     		strb	r2, [r3, #7]
+ 599 040a 1A7A     		ldrb	r2, [r3, #8]
+ 600 040c 22F00302 		bic	r2, r2, #3
+ 601 0410 1A72     		strb	r2, [r3, #8]
+  76:Drivers/UI/ui_Omni_Chassis_high_0.c **** 
+  77:Drivers/UI/ui_Omni_Chassis_high_0.c **** 
+  78:Drivers/UI/ui_Omni_Chassis_high_0.c ****     CAT(ui_proc_, CAT(FRAME_OBJ_NUM, _frame))(&ui_Omni_Chassis_high_0);
+ 602              		.loc 1 78 5
+ 603 0412 0748     		ldr	r0, .L11+4
+ 604 0414 FFF7FEFF 		bl	ui_proc_5_frame
+  79:Drivers/UI/ui_Omni_Chassis_high_0.c ****     SEND_MESSAGE((uint8_t *) &ui_Omni_Chassis_high_0, sizeof(ui_Omni_Chassis_high_0));
+ 605              		.loc 1 79 5
+ 606 0418 6423     		movs	r3, #100
+ 607 041a 5A22     		movs	r2, #90
+ 608 041c 0449     		ldr	r1, .L11+4
+ 609 041e 0548     		ldr	r0, .L11+8
+ 610 0420 FFF7FEFF 		bl	HAL_UART_Transmit
+ARM GAS  C:\Users\23671\AppData\Local\Temp\ccatixGY.s 			page 13
+
+
+  80:Drivers/UI/ui_Omni_Chassis_high_0.c **** }
+ 611              		.loc 1 80 1
+ 612 0424 00BF     		nop
+ 613 0426 0837     		adds	r7, r7, #8
+ 614              	.LCFI3:
+ 615              		.cfi_def_cfa_offset 8
+ 616 0428 BD46     		mov	sp, r7
+ 617              	.LCFI4:
+ 618              		.cfi_def_cfa_register 13
+ 619              		@ sp needed
+ 620 042a 80BD     		pop	{r7, pc}
+ 621              	.L12:
+ 622              		.align	2
+ 623              	.L11:
+ 624 042c 00000000 		.word	ui_Omni_Chassis_high_NewEllipse
+ 625 0430 00000000 		.word	ui_Omni_Chassis_high_0
+ 626 0434 00000000 		.word	huart7
+ 627              		.cfi_endproc
+ 628              	.LFE147:
+ 630              		.section	.text._ui_update_Omni_Chassis_high_0,"ax",%progbits
+ 631              		.align	1
+ 632              		.global	_ui_update_Omni_Chassis_high_0
+ 633              		.syntax unified
+ 634              		.thumb
+ 635              		.thumb_func
+ 637              	_ui_update_Omni_Chassis_high_0:
+ 638              	.LFB148:
+  81:Drivers/UI/ui_Omni_Chassis_high_0.c **** 
+  82:Drivers/UI/ui_Omni_Chassis_high_0.c **** void _ui_update_Omni_Chassis_high_0() {
+ 639              		.loc 1 82 39
+ 640              		.cfi_startproc
+ 641              		@ args = 0, pretend = 0, frame = 8
+ 642              		@ frame_needed = 1, uses_anonymous_args = 0
+ 643 0000 80B5     		push	{r7, lr}
+ 644              	.LCFI5:
+ 645              		.cfi_def_cfa_offset 8
+ 646              		.cfi_offset 7, -8
+ 647              		.cfi_offset 14, -4
+ 648 0002 82B0     		sub	sp, sp, #8
+ 649              	.LCFI6:
+ 650              		.cfi_def_cfa_offset 16
+ 651 0004 00AF     		add	r7, sp, #0
+ 652              	.LCFI7:
+ 653              		.cfi_def_cfa_register 7
+ 654              	.LBB4:
+  83:Drivers/UI/ui_Omni_Chassis_high_0.c ****     for (int i = 0; i < OBJ_NUM; i++) {
+ 655              		.loc 1 83 14
+ 656 0006 0023     		movs	r3, #0
+ 657 0008 7B60     		str	r3, [r7, #4]
+ 658              		.loc 1 83 5
+ 659 000a 0FE0     		b	.L14
+ 660              	.L15:
+  84:Drivers/UI/ui_Omni_Chassis_high_0.c ****         ui_Omni_Chassis_high_0.data[i].operate_tpyel = 2;
+ 661              		.loc 1 84 54
+ 662 000c 0F49     		ldr	r1, .L16
+ 663 000e 7A68     		ldr	r2, [r7, #4]
+ 664 0010 1346     		mov	r3, r2
+ARM GAS  C:\Users\23671\AppData\Local\Temp\ccatixGY.s 			page 14
+
+
+ 665 0012 1B01     		lsls	r3, r3, #4
+ 666 0014 9B1A     		subs	r3, r3, r2
+ 667 0016 0B44     		add	r3, r3, r1
+ 668 0018 03F10802 		add	r2, r3, #8
+ 669 001c 137A     		ldrb	r3, [r2, #8]
+ 670 001e 0221     		movs	r1, #2
+ 671 0020 61F30203 		bfi	r3, r1, #0, #3
+ 672 0024 1372     		strb	r3, [r2, #8]
+  83:Drivers/UI/ui_Omni_Chassis_high_0.c ****     for (int i = 0; i < OBJ_NUM; i++) {
+ 673              		.loc 1 83 35 discriminator 3
+ 674 0026 7B68     		ldr	r3, [r7, #4]
+ 675 0028 0133     		adds	r3, r3, #1
+ 676 002a 7B60     		str	r3, [r7, #4]
+ 677              	.L14:
+  83:Drivers/UI/ui_Omni_Chassis_high_0.c ****     for (int i = 0; i < OBJ_NUM; i++) {
+ 678              		.loc 1 83 23 discriminator 1
+ 679 002c 7B68     		ldr	r3, [r7, #4]
+ 680 002e 042B     		cmp	r3, #4
+ 681 0030 ECDD     		ble	.L15
+ 682              	.LBE4:
+  85:Drivers/UI/ui_Omni_Chassis_high_0.c ****     }
+  86:Drivers/UI/ui_Omni_Chassis_high_0.c **** 
+  87:Drivers/UI/ui_Omni_Chassis_high_0.c ****     CAT(ui_proc_, CAT(FRAME_OBJ_NUM, _frame))(&ui_Omni_Chassis_high_0);
+ 683              		.loc 1 87 5
+ 684 0032 0648     		ldr	r0, .L16
+ 685 0034 FFF7FEFF 		bl	ui_proc_5_frame
+  88:Drivers/UI/ui_Omni_Chassis_high_0.c ****     SEND_MESSAGE((uint8_t *) &ui_Omni_Chassis_high_0, sizeof(ui_Omni_Chassis_high_0));
+ 686              		.loc 1 88 5
+ 687 0038 6423     		movs	r3, #100
+ 688 003a 5A22     		movs	r2, #90
+ 689 003c 0349     		ldr	r1, .L16
+ 690 003e 0448     		ldr	r0, .L16+4
+ 691 0040 FFF7FEFF 		bl	HAL_UART_Transmit
+  89:Drivers/UI/ui_Omni_Chassis_high_0.c **** }
+ 692              		.loc 1 89 1
+ 693 0044 00BF     		nop
+ 694 0046 0837     		adds	r7, r7, #8
+ 695              	.LCFI8:
+ 696              		.cfi_def_cfa_offset 8
+ 697 0048 BD46     		mov	sp, r7
+ 698              	.LCFI9:
+ 699              		.cfi_def_cfa_register 13
+ 700              		@ sp needed
+ 701 004a 80BD     		pop	{r7, pc}
+ 702              	.L17:
+ 703              		.align	2
+ 704              	.L16:
+ 705 004c 00000000 		.word	ui_Omni_Chassis_high_0
+ 706 0050 00000000 		.word	huart7
+ 707              		.cfi_endproc
+ 708              	.LFE148:
+ 710              		.section	.text._ui_remove_Omni_Chassis_high_0,"ax",%progbits
+ 711              		.align	1
+ 712              		.global	_ui_remove_Omni_Chassis_high_0
+ 713              		.syntax unified
+ 714              		.thumb
+ 715              		.thumb_func
+ARM GAS  C:\Users\23671\AppData\Local\Temp\ccatixGY.s 			page 15
+
+
+ 717              	_ui_remove_Omni_Chassis_high_0:
+ 718              	.LFB149:
+  90:Drivers/UI/ui_Omni_Chassis_high_0.c **** 
+  91:Drivers/UI/ui_Omni_Chassis_high_0.c **** void _ui_remove_Omni_Chassis_high_0() {
+ 719              		.loc 1 91 39
+ 720              		.cfi_startproc
+ 721              		@ args = 0, pretend = 0, frame = 8
+ 722              		@ frame_needed = 1, uses_anonymous_args = 0
+ 723 0000 80B5     		push	{r7, lr}
+ 724              	.LCFI10:
+ 725              		.cfi_def_cfa_offset 8
+ 726              		.cfi_offset 7, -8
+ 727              		.cfi_offset 14, -4
+ 728 0002 82B0     		sub	sp, sp, #8
+ 729              	.LCFI11:
+ 730              		.cfi_def_cfa_offset 16
+ 731 0004 00AF     		add	r7, sp, #0
+ 732              	.LCFI12:
+ 733              		.cfi_def_cfa_register 7
+ 734              	.LBB5:
+  92:Drivers/UI/ui_Omni_Chassis_high_0.c ****     for (int i = 0; i < OBJ_NUM; i++) {
+ 735              		.loc 1 92 14
+ 736 0006 0023     		movs	r3, #0
+ 737 0008 7B60     		str	r3, [r7, #4]
+ 738              		.loc 1 92 5
+ 739 000a 0FE0     		b	.L19
+ 740              	.L20:
+  93:Drivers/UI/ui_Omni_Chassis_high_0.c ****         ui_Omni_Chassis_high_0.data[i].operate_tpyel = 3;
+ 741              		.loc 1 93 54
+ 742 000c 0F49     		ldr	r1, .L21
+ 743 000e 7A68     		ldr	r2, [r7, #4]
+ 744 0010 1346     		mov	r3, r2
+ 745 0012 1B01     		lsls	r3, r3, #4
+ 746 0014 9B1A     		subs	r3, r3, r2
+ 747 0016 0B44     		add	r3, r3, r1
+ 748 0018 03F10802 		add	r2, r3, #8
+ 749 001c 137A     		ldrb	r3, [r2, #8]
+ 750 001e 0321     		movs	r1, #3
+ 751 0020 61F30203 		bfi	r3, r1, #0, #3
+ 752 0024 1372     		strb	r3, [r2, #8]
+  92:Drivers/UI/ui_Omni_Chassis_high_0.c ****     for (int i = 0; i < OBJ_NUM; i++) {
+ 753              		.loc 1 92 35 discriminator 3
+ 754 0026 7B68     		ldr	r3, [r7, #4]
+ 755 0028 0133     		adds	r3, r3, #1
+ 756 002a 7B60     		str	r3, [r7, #4]
+ 757              	.L19:
+  92:Drivers/UI/ui_Omni_Chassis_high_0.c ****     for (int i = 0; i < OBJ_NUM; i++) {
+ 758              		.loc 1 92 23 discriminator 1
+ 759 002c 7B68     		ldr	r3, [r7, #4]
+ 760 002e 042B     		cmp	r3, #4
+ 761 0030 ECDD     		ble	.L20
+ 762              	.LBE5:
+  94:Drivers/UI/ui_Omni_Chassis_high_0.c ****     }
+  95:Drivers/UI/ui_Omni_Chassis_high_0.c **** 
+  96:Drivers/UI/ui_Omni_Chassis_high_0.c ****     CAT(ui_proc_, CAT(FRAME_OBJ_NUM, _frame))(&ui_Omni_Chassis_high_0);
+ 763              		.loc 1 96 5
+ 764 0032 0648     		ldr	r0, .L21
+ARM GAS  C:\Users\23671\AppData\Local\Temp\ccatixGY.s 			page 16
+
+
+ 765 0034 FFF7FEFF 		bl	ui_proc_5_frame
+  97:Drivers/UI/ui_Omni_Chassis_high_0.c ****     SEND_MESSAGE((uint8_t *) &ui_Omni_Chassis_high_0, sizeof(ui_Omni_Chassis_high_0));
+ 766              		.loc 1 97 5
+ 767 0038 6423     		movs	r3, #100
+ 768 003a 5A22     		movs	r2, #90
+ 769 003c 0349     		ldr	r1, .L21
+ 770 003e 0448     		ldr	r0, .L21+4
+ 771 0040 FFF7FEFF 		bl	HAL_UART_Transmit
+  98:Drivers/UI/ui_Omni_Chassis_high_0.c **** }
+ 772              		.loc 1 98 1
+ 773 0044 00BF     		nop
+ 774 0046 0837     		adds	r7, r7, #8
+ 775              	.LCFI13:
+ 776              		.cfi_def_cfa_offset 8
+ 777 0048 BD46     		mov	sp, r7
+ 778              	.LCFI14:
+ 779              		.cfi_def_cfa_register 13
+ 780              		@ sp needed
+ 781 004a 80BD     		pop	{r7, pc}
+ 782              	.L22:
+ 783              		.align	2
+ 784              	.L21:
+ 785 004c 00000000 		.word	ui_Omni_Chassis_high_0
+ 786 0050 00000000 		.word	huart7
+ 787              		.cfi_endproc
+ 788              	.LFE149:
+ 790              		.text
+ 791              	.Letext0:
+ 792              		.file 2 "D:/MSYS2/mingw64/arm-none-eabi/include/machine/_default_types.h"
+ 793              		.file 3 "D:/MSYS2/mingw64/arm-none-eabi/include/sys/_stdint.h"
+ 794              		.file 4 "Drivers/UI/ui_types.h"
+ 795              		.file 5 "Drivers/CMSIS/Device/ST/STM32H7xx/Include/stm32h723xx.h"
+ 796              		.file 6 "Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal_def.h"
+ 797              		.file 7 "Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal_dma.h"
+ 798              		.file 8 "Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal_uart.h"
+ 799              		.file 9 "Core/Inc/usart.h"
+ 800              		.file 10 "Drivers/UI/ui_Omni_Chassis_high_0.h"
+ 801              		.file 11 "Drivers/UI/ui_interface.h"
+ARM GAS  C:\Users\23671\AppData\Local\Temp\ccatixGY.s 			page 17
+
+
+DEFINED SYMBOLS
+                            *ABS*:00000000 ui_Omni_Chassis_high_0.c
+C:\Users\23671\AppData\Local\Temp\ccatixGY.s:24     .bss.ui_Omni_Chassis_high_0:00000000 ui_Omni_Chassis_high_0
+C:\Users\23671\AppData\Local\Temp\ccatixGY.s:21     .bss.ui_Omni_Chassis_high_0:00000000 $d
+C:\Users\23671\AppData\Local\Temp\ccatixGY.s:31     .data.ui_Omni_Chassis_high_Chassis_arc:00000000 ui_Omni_Chassis_high_Chassis_arc
+C:\Users\23671\AppData\Local\Temp\ccatixGY.s:28     .data.ui_Omni_Chassis_high_Chassis_arc:00000000 $d
+C:\Users\23671\AppData\Local\Temp\ccatixGY.s:38     .data.ui_Omni_Chassis_high_Supercap_rect:00000000 ui_Omni_Chassis_high_Supercap_rect
+C:\Users\23671\AppData\Local\Temp\ccatixGY.s:35     .data.ui_Omni_Chassis_high_Supercap_rect:00000000 $d
+C:\Users\23671\AppData\Local\Temp\ccatixGY.s:45     .data.ui_Omni_Chassis_high_Supercap_Line:00000000 ui_Omni_Chassis_high_Supercap_Line
+C:\Users\23671\AppData\Local\Temp\ccatixGY.s:42     .data.ui_Omni_Chassis_high_Supercap_Line:00000000 $d
+C:\Users\23671\AppData\Local\Temp\ccatixGY.s:52     .data.ui_Omni_Chassis_high_NewRound:00000000 ui_Omni_Chassis_high_NewRound
+C:\Users\23671\AppData\Local\Temp\ccatixGY.s:49     .data.ui_Omni_Chassis_high_NewRound:00000000 $d
+C:\Users\23671\AppData\Local\Temp\ccatixGY.s:59     .data.ui_Omni_Chassis_high_NewEllipse:00000000 ui_Omni_Chassis_high_NewEllipse
+C:\Users\23671\AppData\Local\Temp\ccatixGY.s:56     .data.ui_Omni_Chassis_high_NewEllipse:00000000 $d
+C:\Users\23671\AppData\Local\Temp\ccatixGY.s:62     .text._ui_init_Omni_Chassis_high_0:00000000 $t
+C:\Users\23671\AppData\Local\Temp\ccatixGY.s:68     .text._ui_init_Omni_Chassis_high_0:00000000 _ui_init_Omni_Chassis_high_0
+C:\Users\23671\AppData\Local\Temp\ccatixGY.s:155    .text._ui_init_Omni_Chassis_high_0:00000074 $d
+C:\Users\23671\AppData\Local\Temp\ccatixGY.s:158    .text._ui_init_Omni_Chassis_high_0:00000078 $t
+C:\Users\23671\AppData\Local\Temp\ccatixGY.s:572    .text._ui_init_Omni_Chassis_high_0:000003c8 $d
+C:\Users\23671\AppData\Local\Temp\ccatixGY.s:579    .text._ui_init_Omni_Chassis_high_0:000003e0 $t
+C:\Users\23671\AppData\Local\Temp\ccatixGY.s:624    .text._ui_init_Omni_Chassis_high_0:0000042c $d
+C:\Users\23671\AppData\Local\Temp\ccatixGY.s:631    .text._ui_update_Omni_Chassis_high_0:00000000 $t
+C:\Users\23671\AppData\Local\Temp\ccatixGY.s:637    .text._ui_update_Omni_Chassis_high_0:00000000 _ui_update_Omni_Chassis_high_0
+C:\Users\23671\AppData\Local\Temp\ccatixGY.s:705    .text._ui_update_Omni_Chassis_high_0:0000004c $d
+C:\Users\23671\AppData\Local\Temp\ccatixGY.s:711    .text._ui_remove_Omni_Chassis_high_0:00000000 $t
+C:\Users\23671\AppData\Local\Temp\ccatixGY.s:717    .text._ui_remove_Omni_Chassis_high_0:00000000 _ui_remove_Omni_Chassis_high_0
+C:\Users\23671\AppData\Local\Temp\ccatixGY.s:785    .text._ui_remove_Omni_Chassis_high_0:0000004c $d
+
+UNDEFINED SYMBOLS
+ui_proc_5_frame
+HAL_UART_Transmit
+huart7

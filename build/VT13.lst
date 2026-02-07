@@ -1,0 +1,601 @@
+ARM GAS  C:\Users\fffff\AppData\Local\Temp\ccZySjKN.s 			page 1
+
+
+   1              		.cpu cortex-m7
+   2              		.arch armv7e-m
+   3              		.fpu fpv5-d16
+   4              		.eabi_attribute 28, 1
+   5              		.eabi_attribute 20, 1
+   6              		.eabi_attribute 21, 1
+   7              		.eabi_attribute 23, 3
+   8              		.eabi_attribute 24, 1
+   9              		.eabi_attribute 25, 1
+  10              		.eabi_attribute 26, 1
+  11              		.eabi_attribute 30, 6
+  12              		.eabi_attribute 34, 1
+  13              		.eabi_attribute 18, 4
+  14              		.file	"VT13.c"
+  15              		.text
+  16              	.Ltext0:
+  17              		.cfi_sections	.debug_frame
+  18              		.file 1 "User/Hardware/VT13.c"
+  19              		.global	VT13_data
+  20              		.section	.bss.VT13_data,"aw",%nobits
+  21              		.align	2
+  24              	VT13_data:
+  25 0000 00000000 		.space	32
+  25      00000000 
+  25      00000000 
+  25      00000000 
+  25      00000000 
+  26              		.section	.text.VT13_data_solve,"ax",%progbits
+  27              		.align	1
+  28              		.global	VT13_data_solve
+  29              		.syntax unified
+  30              		.thumb
+  31              		.thumb_func
+  33              	VT13_data_solve:
+  34              	.LFB144:
+   1:User/Hardware/VT13.c **** #include "VT13.h"
+   2:User/Hardware/VT13.c **** 
+   3:User/Hardware/VT13.c **** VT13_data_t VT13_data;
+   4:User/Hardware/VT13.c **** 
+   5:User/Hardware/VT13.c **** /**
+   6:User/Hardware/VT13.c ****  * @brief          遥控器协议解析
+   7:User/Hardware/VT13.c ****  * @param[in]      VT13_buf: 原生数据指针
+   8:User/Hardware/VT13.c ****  * @param[out]     rc_ctrl: 遥控器数据指
+   9:User/Hardware/VT13.c ****  * @retval         none
+  10:User/Hardware/VT13.c ****  */
+  11:User/Hardware/VT13.c **** void VT13_data_solve(volatile const uint8_t *VT13_buf, VT13_data_t *rc_ctrl)
+  12:User/Hardware/VT13.c **** {
+  35              		.loc 1 12 1
+  36              		.cfi_startproc
+  37              		@ args = 0, pretend = 0, frame = 8
+  38              		@ frame_needed = 1, uses_anonymous_args = 0
+  39              		@ link register save eliminated.
+  40 0000 80B4     		push	{r7}
+  41              	.LCFI0:
+  42              		.cfi_def_cfa_offset 4
+  43              		.cfi_offset 7, -4
+  44 0002 83B0     		sub	sp, sp, #12
+ARM GAS  C:\Users\fffff\AppData\Local\Temp\ccZySjKN.s 			page 2
+
+
+  45              	.LCFI1:
+  46              		.cfi_def_cfa_offset 16
+  47 0004 00AF     		add	r7, sp, #0
+  48              	.LCFI2:
+  49              		.cfi_def_cfa_register 7
+  50 0006 7860     		str	r0, [r7, #4]
+  51 0008 3960     		str	r1, [r7]
+  13:User/Hardware/VT13.c ****     if (VT13_buf == NULL || rc_ctrl == NULL)
+  52              		.loc 1 13 8
+  53 000a 7B68     		ldr	r3, [r7, #4]
+  54 000c 002B     		cmp	r3, #0
+  55 000e 00F06D81 		beq	.L5
+  56              		.loc 1 13 26 discriminator 1
+  57 0012 3B68     		ldr	r3, [r7]
+  58 0014 002B     		cmp	r3, #0
+  59 0016 00F06981 		beq	.L5
+  14:User/Hardware/VT13.c ****     {
+  15:User/Hardware/VT13.c ****         return;
+  16:User/Hardware/VT13.c ****     }
+  17:User/Hardware/VT13.c **** 		if(VT13_buf[0] == 0xa9 && VT13_buf[1] == 0x53) 
+  60              		.loc 1 17 14
+  61 001a 7B68     		ldr	r3, [r7, #4]
+  62 001c 1B78     		ldrb	r3, [r3]
+  63 001e DBB2     		uxtb	r3, r3
+  64              		.loc 1 17 5
+  65 0020 A92B     		cmp	r3, #169
+  66 0022 40F06481 		bne	.L1
+  67              		.loc 1 17 37 discriminator 1
+  68 0026 7B68     		ldr	r3, [r7, #4]
+  69 0028 0133     		adds	r3, r3, #1
+  70 002a 1B78     		ldrb	r3, [r3]
+  71 002c DBB2     		uxtb	r3, r3
+  72              		.loc 1 17 26 discriminator 1
+  73 002e 532B     		cmp	r3, #83
+  74 0030 40F05D81 		bne	.L1
+  18:User/Hardware/VT13.c **** 		{			
+  19:User/Hardware/VT13.c **** 			rc_ctrl->rc.ch[0] = (VT13_buf[2] | (VT13_buf[3] << 8)) & 0x07ff;        //!< Channel 0
+  75              		.loc 1 19 33
+  76 0034 7B68     		ldr	r3, [r7, #4]
+  77 0036 0233     		adds	r3, r3, #2
+  78 0038 1B78     		ldrb	r3, [r3]
+  79 003a DBB2     		uxtb	r3, r3
+  80 003c 1AB2     		sxth	r2, r3
+  81              		.loc 1 19 48
+  82 003e 7B68     		ldr	r3, [r7, #4]
+  83 0040 0333     		adds	r3, r3, #3
+  84 0042 1B78     		ldrb	r3, [r3]
+  85 0044 DBB2     		uxtb	r3, r3
+  86              		.loc 1 19 37
+  87 0046 1BB2     		sxth	r3, r3
+  88 0048 1B02     		lsls	r3, r3, #8
+  89 004a 1BB2     		sxth	r3, r3
+  90 004c 1343     		orrs	r3, r3, r2
+  91 004e 1BB2     		sxth	r3, r3
+  92              		.loc 1 19 59
+  93 0050 C3F30A03 		ubfx	r3, r3, #0, #11
+  94 0054 1AB2     		sxth	r2, r3
+ARM GAS  C:\Users\fffff\AppData\Local\Temp\ccZySjKN.s 			page 3
+
+
+  95              		.loc 1 19 22
+  96 0056 3B68     		ldr	r3, [r7]
+  97 0058 1A80     		strh	r2, [r3]	@ unaligned
+  20:User/Hardware/VT13.c **** 			rc_ctrl->rc.ch[1] = ((VT13_buf[3] >> 3) | (VT13_buf[4] << 5)) & 0x07ff; //!< Channel 1
+  98              		.loc 1 20 34
+  99 005a 7B68     		ldr	r3, [r7, #4]
+ 100 005c 0333     		adds	r3, r3, #3
+ 101 005e 1B78     		ldrb	r3, [r3]
+ 102 0060 DBB2     		uxtb	r3, r3
+ 103              		.loc 1 20 44
+ 104 0062 DB08     		lsrs	r3, r3, #3
+ 105 0064 DBB2     		uxtb	r3, r3
+ 106 0066 1AB2     		sxth	r2, r3
+ 107              		.loc 1 20 55
+ 108 0068 7B68     		ldr	r3, [r7, #4]
+ 109 006a 0433     		adds	r3, r3, #4
+ 110 006c 1B78     		ldrb	r3, [r3]
+ 111 006e DBB2     		uxtb	r3, r3
+ 112              		.loc 1 20 44
+ 113 0070 1BB2     		sxth	r3, r3
+ 114 0072 5B01     		lsls	r3, r3, #5
+ 115 0074 1BB2     		sxth	r3, r3
+ 116 0076 1343     		orrs	r3, r3, r2
+ 117 0078 1BB2     		sxth	r3, r3
+ 118              		.loc 1 20 66
+ 119 007a C3F30A03 		ubfx	r3, r3, #0, #11
+ 120 007e 1AB2     		sxth	r2, r3
+ 121              		.loc 1 20 22
+ 122 0080 3B68     		ldr	r3, [r7]
+ 123 0082 5A80     		strh	r2, [r3, #2]	@ unaligned
+  21:User/Hardware/VT13.c **** 			rc_ctrl->rc.ch[2] = ((VT13_buf[4] >> 6) | (VT13_buf[5] << 2) |          //!< Channel 2
+ 124              		.loc 1 21 34
+ 125 0084 7B68     		ldr	r3, [r7, #4]
+ 126 0086 0433     		adds	r3, r3, #4
+ 127 0088 1B78     		ldrb	r3, [r3]
+ 128 008a DBB2     		uxtb	r3, r3
+ 129              		.loc 1 21 44
+ 130 008c 9B09     		lsrs	r3, r3, #6
+ 131 008e DBB2     		uxtb	r3, r3
+ 132 0090 1AB2     		sxth	r2, r3
+ 133              		.loc 1 21 55
+ 134 0092 7B68     		ldr	r3, [r7, #4]
+ 135 0094 0533     		adds	r3, r3, #5
+ 136 0096 1B78     		ldrb	r3, [r3]
+ 137 0098 DBB2     		uxtb	r3, r3
+ 138              		.loc 1 21 44
+ 139 009a 1BB2     		sxth	r3, r3
+ 140 009c 9B00     		lsls	r3, r3, #2
+ 141 009e 1BB2     		sxth	r3, r3
+ 142 00a0 1343     		orrs	r3, r3, r2
+ 143 00a2 1AB2     		sxth	r2, r3
+  22:User/Hardware/VT13.c **** 													 (VT13_buf[6] << 10)) & 0x07ff;
+ 144              		.loc 1 22 24
+ 145 00a4 7B68     		ldr	r3, [r7, #4]
+ 146 00a6 0633     		adds	r3, r3, #6
+ 147 00a8 1B78     		ldrb	r3, [r3]
+ 148 00aa DBB2     		uxtb	r3, r3
+ARM GAS  C:\Users\fffff\AppData\Local\Temp\ccZySjKN.s 			page 4
+
+
+  21:User/Hardware/VT13.c **** 			rc_ctrl->rc.ch[2] = ((VT13_buf[4] >> 6) | (VT13_buf[5] << 2) |          //!< Channel 2
+ 149              		.loc 1 21 65
+ 150 00ac 1BB2     		sxth	r3, r3
+ 151 00ae 9B02     		lsls	r3, r3, #10
+ 152 00b0 1BB2     		sxth	r3, r3
+ 153 00b2 1343     		orrs	r3, r3, r2
+ 154 00b4 1BB2     		sxth	r3, r3
+ 155              		.loc 1 22 36
+ 156 00b6 C3F30A03 		ubfx	r3, r3, #0, #11
+ 157 00ba 1AB2     		sxth	r2, r3
+  21:User/Hardware/VT13.c **** 			rc_ctrl->rc.ch[2] = ((VT13_buf[4] >> 6) | (VT13_buf[5] << 2) |          //!< Channel 2
+ 158              		.loc 1 21 22
+ 159 00bc 3B68     		ldr	r3, [r7]
+ 160 00be 9A80     		strh	r2, [r3, #4]	@ unaligned
+  23:User/Hardware/VT13.c **** 			rc_ctrl->rc.ch[3] = ((VT13_buf[6] >> 1) | (VT13_buf[7] << 7)) & 0x07ff; //!< Channel 3
+ 161              		.loc 1 23 34
+ 162 00c0 7B68     		ldr	r3, [r7, #4]
+ 163 00c2 0633     		adds	r3, r3, #6
+ 164 00c4 1B78     		ldrb	r3, [r3]
+ 165 00c6 DBB2     		uxtb	r3, r3
+ 166              		.loc 1 23 44
+ 167 00c8 5B08     		lsrs	r3, r3, #1
+ 168 00ca DBB2     		uxtb	r3, r3
+ 169 00cc 1AB2     		sxth	r2, r3
+ 170              		.loc 1 23 55
+ 171 00ce 7B68     		ldr	r3, [r7, #4]
+ 172 00d0 0733     		adds	r3, r3, #7
+ 173 00d2 1B78     		ldrb	r3, [r3]
+ 174 00d4 DBB2     		uxtb	r3, r3
+ 175              		.loc 1 23 44
+ 176 00d6 1BB2     		sxth	r3, r3
+ 177 00d8 DB01     		lsls	r3, r3, #7
+ 178 00da 1BB2     		sxth	r3, r3
+ 179 00dc 1343     		orrs	r3, r3, r2
+ 180 00de 1BB2     		sxth	r3, r3
+ 181              		.loc 1 23 66
+ 182 00e0 C3F30A03 		ubfx	r3, r3, #0, #11
+ 183 00e4 1AB2     		sxth	r2, r3
+ 184              		.loc 1 23 22
+ 185 00e6 3B68     		ldr	r3, [r7]
+ 186 00e8 DA80     		strh	r2, [r3, #6]	@ unaligned
+  24:User/Hardware/VT13.c **** 			rc_ctrl->rc.mode_sw = ((VT13_buf[7] >> 4) & 0x0003); 
+ 187              		.loc 1 24 36
+ 188 00ea 7B68     		ldr	r3, [r7, #4]
+ 189 00ec 0733     		adds	r3, r3, #7
+ 190 00ee 1B78     		ldrb	r3, [r3]
+ 191 00f0 DBB2     		uxtb	r3, r3
+ 192              		.loc 1 24 46
+ 193 00f2 1B09     		lsrs	r3, r3, #4
+ 194 00f4 DBB2     		uxtb	r3, r3
+ 195 00f6 03F00303 		and	r3, r3, #3
+ 196 00fa DAB2     		uxtb	r2, r3
+ 197              		.loc 1 24 24
+ 198 00fc 3B68     		ldr	r3, [r7]
+ 199 00fe 1A72     		strb	r2, [r3, #8]
+  25:User/Hardware/VT13.c **** 			rc_ctrl->rc.stop = ((VT13_buf[7] >> 6) & 0x01);
+ 200              		.loc 1 25 33
+ARM GAS  C:\Users\fffff\AppData\Local\Temp\ccZySjKN.s 			page 5
+
+
+ 201 0100 7B68     		ldr	r3, [r7, #4]
+ 202 0102 0733     		adds	r3, r3, #7
+ 203 0104 1B78     		ldrb	r3, [r3]
+ 204 0106 DBB2     		uxtb	r3, r3
+ 205              		.loc 1 25 43
+ 206 0108 9B09     		lsrs	r3, r3, #6
+ 207 010a DBB2     		uxtb	r3, r3
+ 208 010c 03F00103 		and	r3, r3, #1
+ 209 0110 DAB2     		uxtb	r2, r3
+ 210              		.loc 1 25 21
+ 211 0112 3B68     		ldr	r3, [r7]
+ 212 0114 5A72     		strb	r2, [r3, #9]
+  26:User/Hardware/VT13.c **** 			rc_ctrl->rc.left_button = ((VT13_buf[7] >> 7) & 0x01);//fn
+ 213              		.loc 1 26 40
+ 214 0116 7B68     		ldr	r3, [r7, #4]
+ 215 0118 0733     		adds	r3, r3, #7
+ 216 011a 1B78     		ldrb	r3, [r3]
+ 217 011c DBB2     		uxtb	r3, r3
+ 218              		.loc 1 26 50
+ 219 011e DB09     		lsrs	r3, r3, #7
+ 220 0120 DBB2     		uxtb	r3, r3
+ 221 0122 03F00103 		and	r3, r3, #1
+ 222 0126 DAB2     		uxtb	r2, r3
+ 223              		.loc 1 26 28
+ 224 0128 3B68     		ldr	r3, [r7]
+ 225 012a 9A72     		strb	r2, [r3, #10]
+  27:User/Hardware/VT13.c **** 			rc_ctrl->rc.right_button = ((VT13_buf[8] >> 0) & 0x01);
+ 226              		.loc 1 27 41
+ 227 012c 7B68     		ldr	r3, [r7, #4]
+ 228 012e 0833     		adds	r3, r3, #8
+ 229              		.loc 1 27 51
+ 230 0130 1B78     		ldrb	r3, [r3]
+ 231 0132 DBB2     		uxtb	r3, r3
+ 232 0134 03F00103 		and	r3, r3, #1
+ 233 0138 DAB2     		uxtb	r2, r3
+ 234              		.loc 1 27 29
+ 235 013a 3B68     		ldr	r3, [r7]
+ 236 013c DA72     		strb	r2, [r3, #11]
+  28:User/Hardware/VT13.c **** 			rc_ctrl->rc.wheel = ((VT13_buf[8] >> 1) | (VT13_buf[9] << 7)) & 0x07FF;
+ 237              		.loc 1 28 34
+ 238 013e 7B68     		ldr	r3, [r7, #4]
+ 239 0140 0833     		adds	r3, r3, #8
+ 240 0142 1B78     		ldrb	r3, [r3]
+ 241 0144 DBB2     		uxtb	r3, r3
+ 242              		.loc 1 28 44
+ 243 0146 5B08     		lsrs	r3, r3, #1
+ 244 0148 DBB2     		uxtb	r3, r3
+ 245 014a 1AB2     		sxth	r2, r3
+ 246              		.loc 1 28 55
+ 247 014c 7B68     		ldr	r3, [r7, #4]
+ 248 014e 0933     		adds	r3, r3, #9
+ 249 0150 1B78     		ldrb	r3, [r3]
+ 250 0152 DBB2     		uxtb	r3, r3
+ 251              		.loc 1 28 44
+ 252 0154 1BB2     		sxth	r3, r3
+ 253 0156 DB01     		lsls	r3, r3, #7
+ 254 0158 1BB2     		sxth	r3, r3
+ARM GAS  C:\Users\fffff\AppData\Local\Temp\ccZySjKN.s 			page 6
+
+
+ 255 015a 1343     		orrs	r3, r3, r2
+ 256 015c 1BB2     		sxth	r3, r3
+ 257              		.loc 1 28 66
+ 258 015e C3F30A03 		ubfx	r3, r3, #0, #11
+ 259 0162 1AB2     		sxth	r2, r3
+ 260              		.loc 1 28 22
+ 261 0164 3B68     		ldr	r3, [r7]
+ 262 0166 9A81     		strh	r2, [r3, #12]	@ unaligned
+  29:User/Hardware/VT13.c **** 			rc_ctrl->rc.shutter = (VT13_buf[9] >> 4) & 0x01;//扳机
+ 263              		.loc 1 29 35
+ 264 0168 7B68     		ldr	r3, [r7, #4]
+ 265 016a 0933     		adds	r3, r3, #9
+ 266 016c 1B78     		ldrb	r3, [r3]
+ 267 016e DBB2     		uxtb	r3, r3
+ 268              		.loc 1 29 45
+ 269 0170 1B09     		lsrs	r3, r3, #4
+ 270 0172 DBB2     		uxtb	r3, r3
+ 271 0174 03F00103 		and	r3, r3, #1
+ 272 0178 DAB2     		uxtb	r2, r3
+ 273              		.loc 1 29 24
+ 274 017a 3B68     		ldr	r3, [r7]
+ 275 017c 9A73     		strb	r2, [r3, #14]
+  30:User/Hardware/VT13.c **** 			
+  31:User/Hardware/VT13.c **** 			rc_ctrl->mouse.x = (VT13_buf[10] | (VT13_buf[11] << 8));
+ 276              		.loc 1 31 32
+ 277 017e 7B68     		ldr	r3, [r7, #4]
+ 278 0180 0A33     		adds	r3, r3, #10
+ 279 0182 1B78     		ldrb	r3, [r3]
+ 280 0184 DBB2     		uxtb	r3, r3
+ 281 0186 1AB2     		sxth	r2, r3
+ 282              		.loc 1 31 48
+ 283 0188 7B68     		ldr	r3, [r7, #4]
+ 284 018a 0B33     		adds	r3, r3, #11
+ 285 018c 1B78     		ldrb	r3, [r3]
+ 286 018e DBB2     		uxtb	r3, r3
+ 287              		.loc 1 31 37
+ 288 0190 1BB2     		sxth	r3, r3
+ 289 0192 1B02     		lsls	r3, r3, #8
+ 290 0194 1BB2     		sxth	r3, r3
+ 291 0196 1343     		orrs	r3, r3, r2
+ 292 0198 1AB2     		sxth	r2, r3
+ 293              		.loc 1 31 21
+ 294 019a 3B68     		ldr	r3, [r7]
+ 295 019c A3F80F20 		strh	r2, [r3, #15]	@ unaligned
+  32:User/Hardware/VT13.c **** 			rc_ctrl->mouse.y = (VT13_buf[12] | (VT13_buf[13] << 8));
+ 296              		.loc 1 32 32
+ 297 01a0 7B68     		ldr	r3, [r7, #4]
+ 298 01a2 0C33     		adds	r3, r3, #12
+ 299 01a4 1B78     		ldrb	r3, [r3]
+ 300 01a6 DBB2     		uxtb	r3, r3
+ 301 01a8 1AB2     		sxth	r2, r3
+ 302              		.loc 1 32 48
+ 303 01aa 7B68     		ldr	r3, [r7, #4]
+ 304 01ac 0D33     		adds	r3, r3, #13
+ 305 01ae 1B78     		ldrb	r3, [r3]
+ 306 01b0 DBB2     		uxtb	r3, r3
+ 307              		.loc 1 32 37
+ARM GAS  C:\Users\fffff\AppData\Local\Temp\ccZySjKN.s 			page 7
+
+
+ 308 01b2 1BB2     		sxth	r3, r3
+ 309 01b4 1B02     		lsls	r3, r3, #8
+ 310 01b6 1BB2     		sxth	r3, r3
+ 311 01b8 1343     		orrs	r3, r3, r2
+ 312 01ba 1AB2     		sxth	r2, r3
+ 313              		.loc 1 32 21
+ 314 01bc 3B68     		ldr	r3, [r7]
+ 315 01be A3F81120 		strh	r2, [r3, #17]	@ unaligned
+  33:User/Hardware/VT13.c **** 			rc_ctrl->mouse.z = (VT13_buf[14] | (VT13_buf[15] << 8));
+ 316              		.loc 1 33 32
+ 317 01c2 7B68     		ldr	r3, [r7, #4]
+ 318 01c4 0E33     		adds	r3, r3, #14
+ 319 01c6 1B78     		ldrb	r3, [r3]
+ 320 01c8 DBB2     		uxtb	r3, r3
+ 321 01ca 1AB2     		sxth	r2, r3
+ 322              		.loc 1 33 48
+ 323 01cc 7B68     		ldr	r3, [r7, #4]
+ 324 01ce 0F33     		adds	r3, r3, #15
+ 325 01d0 1B78     		ldrb	r3, [r3]
+ 326 01d2 DBB2     		uxtb	r3, r3
+ 327              		.loc 1 33 37
+ 328 01d4 1BB2     		sxth	r3, r3
+ 329 01d6 1B02     		lsls	r3, r3, #8
+ 330 01d8 1BB2     		sxth	r3, r3
+ 331 01da 1343     		orrs	r3, r3, r2
+ 332 01dc 1AB2     		sxth	r2, r3
+ 333              		.loc 1 33 21
+ 334 01de 3B68     		ldr	r3, [r7]
+ 335 01e0 A3F81320 		strh	r2, [r3, #19]	@ unaligned
+  34:User/Hardware/VT13.c **** 			
+  35:User/Hardware/VT13.c **** 			rc_ctrl->mouse.press_l = (VT13_buf[16] >> 0) & 0x03;
+ 336              		.loc 1 35 38
+ 337 01e4 7B68     		ldr	r3, [r7, #4]
+ 338 01e6 1033     		adds	r3, r3, #16
+ 339              		.loc 1 35 49
+ 340 01e8 1B78     		ldrb	r3, [r3]
+ 341 01ea DBB2     		uxtb	r3, r3
+ 342 01ec 03F00303 		and	r3, r3, #3
+ 343 01f0 DAB2     		uxtb	r2, r3
+ 344              		.loc 1 35 27
+ 345 01f2 3B68     		ldr	r3, [r7]
+ 346 01f4 5A75     		strb	r2, [r3, #21]
+  36:User/Hardware/VT13.c **** 			rc_ctrl->mouse.press_r = (VT13_buf[16] >> 2) & 0x03;
+ 347              		.loc 1 36 38
+ 348 01f6 7B68     		ldr	r3, [r7, #4]
+ 349 01f8 1033     		adds	r3, r3, #16
+ 350 01fa 1B78     		ldrb	r3, [r3]
+ 351 01fc DBB2     		uxtb	r3, r3
+ 352              		.loc 1 36 49
+ 353 01fe 9B08     		lsrs	r3, r3, #2
+ 354 0200 DBB2     		uxtb	r3, r3
+ 355 0202 03F00303 		and	r3, r3, #3
+ 356 0206 DAB2     		uxtb	r2, r3
+ 357              		.loc 1 36 27
+ 358 0208 3B68     		ldr	r3, [r7]
+ 359 020a 9A75     		strb	r2, [r3, #22]
+  37:User/Hardware/VT13.c **** 			rc_ctrl->mouse.middle = (VT13_buf[16] >> 4) & 0x03;
+ARM GAS  C:\Users\fffff\AppData\Local\Temp\ccZySjKN.s 			page 8
+
+
+ 360              		.loc 1 37 37
+ 361 020c 7B68     		ldr	r3, [r7, #4]
+ 362 020e 1033     		adds	r3, r3, #16
+ 363 0210 1B78     		ldrb	r3, [r3]
+ 364 0212 DBB2     		uxtb	r3, r3
+ 365              		.loc 1 37 48
+ 366 0214 1B09     		lsrs	r3, r3, #4
+ 367 0216 DBB2     		uxtb	r3, r3
+ 368 0218 03F00303 		and	r3, r3, #3
+ 369 021c DAB2     		uxtb	r2, r3
+ 370              		.loc 1 37 26
+ 371 021e 3B68     		ldr	r3, [r7]
+ 372 0220 DA75     		strb	r2, [r3, #23]
+  38:User/Hardware/VT13.c **** 			
+  39:User/Hardware/VT13.c **** 			rc_ctrl->key.v = (VT13_buf[17] | (VT13_buf[18] << 8));
+ 373              		.loc 1 39 30
+ 374 0222 7B68     		ldr	r3, [r7, #4]
+ 375 0224 1133     		adds	r3, r3, #17
+ 376 0226 1B78     		ldrb	r3, [r3]
+ 377 0228 DBB2     		uxtb	r3, r3
+ 378 022a 1AB2     		sxth	r2, r3
+ 379              		.loc 1 39 46
+ 380 022c 7B68     		ldr	r3, [r7, #4]
+ 381 022e 1233     		adds	r3, r3, #18
+ 382 0230 1B78     		ldrb	r3, [r3]
+ 383 0232 DBB2     		uxtb	r3, r3
+ 384              		.loc 1 39 35
+ 385 0234 1BB2     		sxth	r3, r3
+ 386 0236 1B02     		lsls	r3, r3, #8
+ 387 0238 1BB2     		sxth	r3, r3
+ 388 023a 1343     		orrs	r3, r3, r2
+ 389 023c 1BB2     		sxth	r3, r3
+ 390 023e 9AB2     		uxth	r2, r3
+ 391              		.loc 1 39 19
+ 392 0240 3B68     		ldr	r3, [r7]
+ 393 0242 1A83     		strh	r2, [r3, #24]	@ unaligned
+  40:User/Hardware/VT13.c **** 			
+  41:User/Hardware/VT13.c **** 			rc_ctrl->crc16 = (VT13_buf[19] | (VT13_buf[20] << 8));
+ 394              		.loc 1 41 30
+ 395 0244 7B68     		ldr	r3, [r7, #4]
+ 396 0246 1333     		adds	r3, r3, #19
+ 397 0248 1B78     		ldrb	r3, [r3]
+ 398 024a DBB2     		uxtb	r3, r3
+ 399 024c 1AB2     		sxth	r2, r3
+ 400              		.loc 1 41 46
+ 401 024e 7B68     		ldr	r3, [r7, #4]
+ 402 0250 1433     		adds	r3, r3, #20
+ 403 0252 1B78     		ldrb	r3, [r3]
+ 404 0254 DBB2     		uxtb	r3, r3
+ 405              		.loc 1 41 35
+ 406 0256 1BB2     		sxth	r3, r3
+ 407 0258 1B02     		lsls	r3, r3, #8
+ 408 025a 1BB2     		sxth	r3, r3
+ 409 025c 1343     		orrs	r3, r3, r2
+ 410 025e 1BB2     		sxth	r3, r3
+ 411 0260 9AB2     		uxth	r2, r3
+ 412              		.loc 1 41 19
+ARM GAS  C:\Users\fffff\AppData\Local\Temp\ccZySjKN.s 			page 9
+
+
+ 413 0262 3B68     		ldr	r3, [r7]
+ 414 0264 5A83     		strh	r2, [r3, #26]	@ unaligned
+  42:User/Hardware/VT13.c **** 			
+  43:User/Hardware/VT13.c **** 			rc_ctrl->rc.ch[0] -= RC_CH_VALUE_OFFSET;
+ 415              		.loc 1 43 18
+ 416 0266 3B68     		ldr	r3, [r7]
+ 417 0268 B3F90030 		ldrsh	r3, [r3]	@ unaligned
+ 418 026c 1BB2     		sxth	r3, r3
+ 419 026e 9BB2     		uxth	r3, r3
+ 420              		.loc 1 43 22
+ 421 0270 A3F58063 		sub	r3, r3, #1024
+ 422 0274 9BB2     		uxth	r3, r3
+ 423 0276 1AB2     		sxth	r2, r3
+ 424 0278 3B68     		ldr	r3, [r7]
+ 425 027a 1A80     		strh	r2, [r3]	@ unaligned
+  44:User/Hardware/VT13.c **** 			rc_ctrl->rc.ch[1] -= RC_CH_VALUE_OFFSET;
+ 426              		.loc 1 44 18
+ 427 027c 3B68     		ldr	r3, [r7]
+ 428 027e B3F90230 		ldrsh	r3, [r3, #2]	@ unaligned
+ 429 0282 1BB2     		sxth	r3, r3
+ 430 0284 9BB2     		uxth	r3, r3
+ 431              		.loc 1 44 22
+ 432 0286 A3F58063 		sub	r3, r3, #1024
+ 433 028a 9BB2     		uxth	r3, r3
+ 434 028c 1AB2     		sxth	r2, r3
+ 435 028e 3B68     		ldr	r3, [r7]
+ 436 0290 5A80     		strh	r2, [r3, #2]	@ unaligned
+  45:User/Hardware/VT13.c **** 			rc_ctrl->rc.ch[2] -= RC_CH_VALUE_OFFSET;
+ 437              		.loc 1 45 18
+ 438 0292 3B68     		ldr	r3, [r7]
+ 439 0294 B3F90430 		ldrsh	r3, [r3, #4]	@ unaligned
+ 440 0298 1BB2     		sxth	r3, r3
+ 441 029a 9BB2     		uxth	r3, r3
+ 442              		.loc 1 45 22
+ 443 029c A3F58063 		sub	r3, r3, #1024
+ 444 02a0 9BB2     		uxth	r3, r3
+ 445 02a2 1AB2     		sxth	r2, r3
+ 446 02a4 3B68     		ldr	r3, [r7]
+ 447 02a6 9A80     		strh	r2, [r3, #4]	@ unaligned
+  46:User/Hardware/VT13.c **** 			rc_ctrl->rc.ch[3] -= RC_CH_VALUE_OFFSET;
+ 448              		.loc 1 46 18
+ 449 02a8 3B68     		ldr	r3, [r7]
+ 450 02aa B3F90630 		ldrsh	r3, [r3, #6]	@ unaligned
+ 451 02ae 1BB2     		sxth	r3, r3
+ 452 02b0 9BB2     		uxth	r3, r3
+ 453              		.loc 1 46 22
+ 454 02b2 A3F58063 		sub	r3, r3, #1024
+ 455 02b6 9BB2     		uxth	r3, r3
+ 456 02b8 1AB2     		sxth	r2, r3
+ 457 02ba 3B68     		ldr	r3, [r7]
+ 458 02bc DA80     		strh	r2, [r3, #6]	@ unaligned
+  47:User/Hardware/VT13.c **** 			rc_ctrl->rc.wheel -= RC_CH_VALUE_OFFSET;
+ 459              		.loc 1 47 15
+ 460 02be 3B68     		ldr	r3, [r7]
+ 461 02c0 B3F90C30 		ldrsh	r3, [r3, #12]	@ unaligned
+ 462 02c4 1BB2     		sxth	r3, r3
+ 463 02c6 9BB2     		uxth	r3, r3
+ARM GAS  C:\Users\fffff\AppData\Local\Temp\ccZySjKN.s 			page 10
+
+
+ 464              		.loc 1 47 22
+ 465 02c8 A3F58063 		sub	r3, r3, #1024
+ 466 02cc 9BB2     		uxth	r3, r3
+ 467 02ce 1AB2     		sxth	r2, r3
+ 468 02d0 3B68     		ldr	r3, [r7]
+ 469 02d2 9A81     		strh	r2, [r3, #12]	@ unaligned
+  48:User/Hardware/VT13.c ****             rc_ctrl->online = 100;
+ 470              		.loc 1 48 29
+ 471 02d4 3B68     		ldr	r3, [r7]
+ 472 02d6 0022     		movs	r2, #0
+ 473 02d8 42F06402 		orr	r2, r2, #100
+ 474 02dc 1A77     		strb	r2, [r3, #28]
+ 475 02de 0022     		movs	r2, #0
+ 476 02e0 5A77     		strb	r2, [r3, #29]
+ 477 02e2 0022     		movs	r2, #0
+ 478 02e4 9A77     		strb	r2, [r3, #30]
+ 479 02e6 0022     		movs	r2, #0
+ 480 02e8 DA77     		strb	r2, [r3, #31]
+ 481 02ea 00E0     		b	.L1
+ 482              	.L5:
+  15:User/Hardware/VT13.c ****     }
+ 483              		.loc 1 15 9
+ 484 02ec 00BF     		nop
+ 485              	.L1:
+  49:User/Hardware/VT13.c **** 		}
+  50:User/Hardware/VT13.c ****    
+  51:User/Hardware/VT13.c **** }
+ 486              		.loc 1 51 1
+ 487 02ee 0C37     		adds	r7, r7, #12
+ 488              	.LCFI3:
+ 489              		.cfi_def_cfa_offset 4
+ 490 02f0 BD46     		mov	sp, r7
+ 491              	.LCFI4:
+ 492              		.cfi_def_cfa_register 13
+ 493              		@ sp needed
+ 494 02f2 5DF8047B 		ldr	r7, [sp], #4
+ 495              	.LCFI5:
+ 496              		.cfi_restore 7
+ 497              		.cfi_def_cfa_offset 0
+ 498 02f6 7047     		bx	lr
+ 499              		.cfi_endproc
+ 500              	.LFE144:
+ 502              		.text
+ 503              	.Letext0:
+ 504              		.file 2 "C:/msys64/mingw64/arm-none-eabi/include/machine/_default_types.h"
+ 505              		.file 3 "C:/msys64/mingw64/arm-none-eabi/include/sys/_stdint.h"
+ 506              		.file 4 "User/Hardware/VT13.h"
+ARM GAS  C:\Users\fffff\AppData\Local\Temp\ccZySjKN.s 			page 11
+
+
+DEFINED SYMBOLS
+                            *ABS*:00000000 VT13.c
+C:\Users\fffff\AppData\Local\Temp\ccZySjKN.s:24     .bss.VT13_data:00000000 VT13_data
+C:\Users\fffff\AppData\Local\Temp\ccZySjKN.s:21     .bss.VT13_data:00000000 $d
+C:\Users\fffff\AppData\Local\Temp\ccZySjKN.s:27     .text.VT13_data_solve:00000000 $t
+C:\Users\fffff\AppData\Local\Temp\ccZySjKN.s:33     .text.VT13_data_solve:00000000 VT13_data_solve
+
+NO UNDEFINED SYMBOLS

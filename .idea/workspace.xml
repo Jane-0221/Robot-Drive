@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="BackendCodeEditorMiscSettings">
+    <option name="/Default/RiderDebugger/RiderRestoreDecompile/RestoreDecompileSetting/@EntryValue" value="false" type="bool" />
+    <option name="/Default/Housekeeping/GlobalSettingsUpgraded/IsUpgraded/@EntryValue" value="true" type="bool" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="1e30f089-2286-4bc4-a99f-73b9f6f38d44" name="更改" comment="">
+      <change beforePath="$PROJECT_DIR$/Core/Inc/main.h" beforeDir="false" afterPath="$PROJECT_DIR$/Core/Inc/main.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Drivers/Chip/bmi088/BMI088driver.h" beforeDir="false" afterPath="$PROJECT_DIR$/Drivers/Chip/bmi088/BMI088driver.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/User/BSP/UART_data_txrx.h" beforeDir="false" afterPath="$PROJECT_DIR$/User/BSP/UART_data_txrx.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/AHRS_middleware.lst" beforeDir="false" afterPath="$PROJECT_DIR$/build/AHRS_middleware.lst" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/Auto_control.lst" beforeDir="false" afterPath="$PROJECT_DIR$/build/Auto_control.lst" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/BMI088Middleware.lst" beforeDir="false" afterPath="$PROJECT_DIR$/build/BMI088Middleware.lst" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/BMI088driver.lst" beforeDir="false" afterPath="$PROJECT_DIR$/build/BMI088driver.lst" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/BMI088driver.o" beforeDir="false" afterPath="$PROJECT_DIR$/build/BMI088driver.o" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/CAN_receive_send.lst" beforeDir="false" afterPath="$PROJECT_DIR$/build/CAN_receive_send.lst" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/CRC8_CRC16.lst" beforeDir="false" afterPath="$PROJECT_DIR$/build/CRC8_CRC16.lst" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/Chassis.lst" beforeDir="false" afterPath="$PROJECT_DIR$/build/Chassis.lst" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/Gimbal.lst" beforeDir="false" afterPath="$PROJECT_DIR$/build/Gimbal.lst" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/IMU_updata.lst" beforeDir="false" afterPath="$PROJECT_DIR$/build/IMU_updata.lst" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/Kalman_Filter_c.lst" beforeDir="false" afterPath="$PROJECT_DIR$/build/Kalman_Filter_c.lst" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/LED.lst" beforeDir="false" afterPath="$PROJECT_DIR$/build/LED.lst" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/Omni_damiao.elf" beforeDir="false" afterPath="$PROJECT_DIR$/build/Omni_damiao.elf" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/Omni_damiao.map" beforeDir="false" afterPath="$PROJECT_DIR$/build/Omni_damiao.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/Power_switch.lst" beforeDir="false" afterPath="$PROJECT_DIR$/build/Power_switch.lst" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/Shoot.lst" beforeDir="false" afterPath="$PROJECT_DIR$/build/Shoot.lst" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/UART_data_txrx.d" beforeDir="false" afterPath="$PROJECT_DIR$/build/UART_data_txrx.d" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/UART_data_txrx.lst" beforeDir="false" afterPath="$PROJECT_DIR$/build/UART_data_txrx.lst" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/UART_data_txrx.o" beforeDir="false" afterPath="$PROJECT_DIR$/build/UART_data_txrx.o" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/USB_VirCom.lst" beforeDir="false" afterPath="$PROJECT_DIR$/build/USB_VirCom.lst" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/dma.lst" beforeDir="false" afterPath="$PROJECT_DIR$/build/dma.lst" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/fdcan.lst" beforeDir="false" afterPath="$PROJECT_DIR$/build/fdcan.lst" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/freertos.lst" beforeDir="false" afterPath="$PROJECT_DIR$/build/freertos.lst" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/gpio.lst" beforeDir="false" afterPath="$PROJECT_DIR$/build/gpio.lst" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/main.lst" beforeDir="false" afterPath="$PROJECT_DIR$/build/main.lst" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/memorymap.lst" beforeDir="false" afterPath="$PROJECT_DIR$/build/memorymap.lst" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/motor.lst" beforeDir="false" afterPath="$PROJECT_DIR$/build/motor.lst" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/octospi.lst" beforeDir="false" afterPath="$PROJECT_DIR$/build/octospi.lst" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/remote_control.lst" beforeDir="false" afterPath="$PROJECT_DIR$/build/remote_control.lst" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/spi.lst" beforeDir="false" afterPath="$PROJECT_DIR$/build/spi.lst" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/stm32h7xx_hal_msp.lst" beforeDir="false" afterPath="$PROJECT_DIR$/build/stm32h7xx_hal_msp.lst" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/stm32h7xx_it.lst" beforeDir="false" afterPath="$PROJECT_DIR$/build/stm32h7xx_it.lst" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/supercup.lst" beforeDir="false" afterPath="$PROJECT_DIR$/build/supercup.lst" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/tim.lst" beforeDir="false" afterPath="$PROJECT_DIR$/build/tim.lst" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/usart.lst" beforeDir="false" afterPath="$PROJECT_DIR$/build/usart.lst" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/usb_device.lst" beforeDir="false" afterPath="$PROJECT_DIR$/build/usb_device.lst" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/usbd_cdc.lst" beforeDir="false" afterPath="$PROJECT_DIR$/build/usbd_cdc.lst" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/usbd_cdc_if.lst" beforeDir="false" afterPath="$PROJECT_DIR$/build/usbd_cdc_if.lst" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/usbd_conf.lst" beforeDir="false" afterPath="$PROJECT_DIR$/build/usbd_conf.lst" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/usbd_core.lst" beforeDir="false" afterPath="$PROJECT_DIR$/build/usbd_core.lst" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/usbd_ctlreq.lst" beforeDir="false" afterPath="$PROJECT_DIR$/build/usbd_ctlreq.lst" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/usbd_desc.lst" beforeDir="false" afterPath="$PROJECT_DIR$/build/usbd_desc.lst" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/usbd_ioreq.lst" beforeDir="false" afterPath="$PROJECT_DIR$/build/usbd_ioreq.lst" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/w25q64.lst" beforeDir="false" afterPath="$PROJECT_DIR$/build/w25q64.lst" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/ws2812.lst" beforeDir="false" afterPath="$PROJECT_DIR$/build/ws2812.lst" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="ClangdSettings">
+    <option name="formatViaClangd" value="false" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="MakefileLocalSettings">
+    <option name="projectSyncType">
+      <map>
+        <entry key="$PROJECT_DIR$" value="RE_IMPORT" />
+      </map>
+    </option>
+  </component>
+  <component name="ProjectApplicationVersion">
+    <option name="ide" value="CLion" />
+    <option name="majorVersion" value="2024" />
+    <option name="minorVersion" value="3.2" />
+    <option name="productBranch" value="Classic" />
+  </component>
+  <component name="ProjectColorInfo"><![CDATA[{
+  "customColor": "",
+  "associatedIndex": 0
+}]]></component>
+  <component name="ProjectId" id="2tksdZNUry1idPjFioWsYxBxAp1" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.RadMigrateCodeStyle": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.cidr.known.project.marker": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "RunOnceActivity.readMode.enableVisualFormatting": "true",
+    "cf.first.check.clang-format": "false",
+    "cidr.known.project.marker": "true",
+    "git-widget-placeholder": "omni__damiao",
+    "nodejs_package_manager_path": "npm",
+    "vue.rearranger.settings.migration": "true"
+  }
+}]]></component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="应用程序级" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="默认任务">
+      <changelist id="1e30f089-2286-4bc4-a99f-73b9f6f38d44" name="更改" comment="" />
+      <created>1740907501493</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1740907501493</updated>
+      <workItem from="1740907503377" duration="341000" />
+    </task>
+    <servers />
+  </component>
+</project>

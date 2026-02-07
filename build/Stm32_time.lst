@@ -1,0 +1,241 @@
+ARM GAS  C:\Users\fffff\AppData\Local\Temp\ccfRNJhh.s 			page 1
+
+
+   1              		.cpu cortex-m7
+   2              		.arch armv7e-m
+   3              		.fpu fpv5-d16
+   4              		.eabi_attribute 28, 1
+   5              		.eabi_attribute 20, 1
+   6              		.eabi_attribute 21, 1
+   7              		.eabi_attribute 23, 3
+   8              		.eabi_attribute 24, 1
+   9              		.eabi_attribute 25, 1
+  10              		.eabi_attribute 26, 1
+  11              		.eabi_attribute 30, 6
+  12              		.eabi_attribute 34, 1
+  13              		.eabi_attribute 18, 4
+  14              		.file	"Stm32_time.c"
+  15              		.text
+  16              	.Ltext0:
+  17              		.cfi_sections	.debug_frame
+  18              		.file 1 "User/BSP/Stm32_time.c"
+  19              		.section	.text.Get_sys_time_ms,"ax",%progbits
+  20              		.align	1
+  21              		.global	Get_sys_time_ms
+  22              		.syntax unified
+  23              		.thumb
+  24              		.thumb_func
+  26              	Get_sys_time_ms:
+  27              	.LFB144:
+   1:User/BSP/Stm32_time.c **** /**
+   2:User/BSP/Stm32_time.c ****  * @file time.c
+   3:User/BSP/Stm32_time.c ****  * @author sethome
+   4:User/BSP/Stm32_time.c ****  * @brief STM32F4的开机时间计算
+   5:User/BSP/Stm32_time.c ****  * @version 0.1
+   6:User/BSP/Stm32_time.c ****  * @date 2022-11-20
+   7:User/BSP/Stm32_time.c ****  * 
+   8:User/BSP/Stm32_time.c ****  * @copyright Copyright (c) 2022
+   9:User/BSP/Stm32_time.c ****  * 
+  10:User/BSP/Stm32_time.c ****  */
+  11:User/BSP/Stm32_time.c **** #include "Stm32_time.h"
+  12:User/BSP/Stm32_time.c **** #include "stm32h7xx_hal.h"
+  13:User/BSP/Stm32_time.c **** 
+  14:User/BSP/Stm32_time.c **** uint32_t Get_sys_time_ms(void)
+  15:User/BSP/Stm32_time.c **** {
+  28              		.loc 1 15 1
+  29              		.cfi_startproc
+  30              		@ args = 0, pretend = 0, frame = 0
+  31              		@ frame_needed = 1, uses_anonymous_args = 0
+  32 0000 80B5     		push	{r7, lr}
+  33              	.LCFI0:
+  34              		.cfi_def_cfa_offset 8
+  35              		.cfi_offset 7, -8
+  36              		.cfi_offset 14, -4
+  37 0002 00AF     		add	r7, sp, #0
+  38              	.LCFI1:
+  39              		.cfi_def_cfa_register 7
+  16:User/BSP/Stm32_time.c **** 	return HAL_GetTick();
+  40              		.loc 1 16 9
+  41 0004 FFF7FEFF 		bl	HAL_GetTick
+  42 0008 0346     		mov	r3, r0
+ARM GAS  C:\Users\fffff\AppData\Local\Temp\ccfRNJhh.s 			page 2
+
+
+  17:User/BSP/Stm32_time.c **** }
+  43              		.loc 1 17 1
+  44 000a 1846     		mov	r0, r3
+  45 000c 80BD     		pop	{r7, pc}
+  46              		.cfi_endproc
+  47              	.LFE144:
+  49              		.section	.text.Get_sys_time_s,"ax",%progbits
+  50              		.align	1
+  51              		.global	Get_sys_time_s
+  52              		.syntax unified
+  53              		.thumb
+  54              		.thumb_func
+  56              	Get_sys_time_s:
+  57              	.LFB145:
+  18:User/BSP/Stm32_time.c **** 
+  19:User/BSP/Stm32_time.c **** float Get_sys_time_s(void)
+  20:User/BSP/Stm32_time.c **** {
+  58              		.loc 1 20 1
+  59              		.cfi_startproc
+  60              		@ args = 0, pretend = 0, frame = 0
+  61              		@ frame_needed = 1, uses_anonymous_args = 0
+  62 0000 80B5     		push	{r7, lr}
+  63              	.LCFI2:
+  64              		.cfi_def_cfa_offset 8
+  65              		.cfi_offset 7, -8
+  66              		.cfi_offset 14, -4
+  67 0002 00AF     		add	r7, sp, #0
+  68              	.LCFI3:
+  69              		.cfi_def_cfa_register 7
+  21:User/BSP/Stm32_time.c **** 	return HAL_GetTick() / 1000.0f;
+  70              		.loc 1 21 9
+  71 0004 FFF7FEFF 		bl	HAL_GetTick
+  72 0008 07EE900A 		vmov	s15, r0	@ int
+  73              		.loc 1 21 23 discriminator 1
+  74 000c F8EE677A 		vcvt.f32.u32	s15, s15
+  75 0010 9FED047A 		vldr.32	s14, .L5
+  76 0014 C7EE876A 		vdiv.f32	s13, s15, s14
+  77 0018 F0EE667A 		vmov.f32	s15, s13
+  22:User/BSP/Stm32_time.c **** }
+  78              		.loc 1 22 1
+  79 001c B0EE670A 		vmov.f32	s0, s15
+  80 0020 80BD     		pop	{r7, pc}
+  81              	.L6:
+  82 0022 00BF     		.align	2
+  83              	.L5:
+  84 0024 00007A44 		.word	1148846080
+  85              		.cfi_endproc
+  86              	.LFE145:
+  88              		.global	cnt
+  89              		.section	.bss.cnt,"aw",%nobits
+  90              		.align	2
+  93              	cnt:
+  94 0000 00000000 		.space	4
+  95              		.section	.text.TIM_count_100KHz,"ax",%progbits
+  96              		.align	1
+  97              		.global	TIM_count_100KHz
+  98              		.syntax unified
+ARM GAS  C:\Users\fffff\AppData\Local\Temp\ccfRNJhh.s 			page 3
+
+
+  99              		.thumb
+ 100              		.thumb_func
+ 102              	TIM_count_100KHz:
+ 103              	.LFB146:
+  23:User/BSP/Stm32_time.c **** 
+  24:User/BSP/Stm32_time.c **** uint32_t cnt = 0;
+  25:User/BSP/Stm32_time.c **** void TIM_count_100KHz(void)
+  26:User/BSP/Stm32_time.c **** {
+ 104              		.loc 1 26 1
+ 105              		.cfi_startproc
+ 106              		@ args = 0, pretend = 0, frame = 0
+ 107              		@ frame_needed = 1, uses_anonymous_args = 0
+ 108              		@ link register save eliminated.
+ 109 0000 80B4     		push	{r7}
+ 110              	.LCFI4:
+ 111              		.cfi_def_cfa_offset 4
+ 112              		.cfi_offset 7, -4
+ 113 0002 00AF     		add	r7, sp, #0
+ 114              	.LCFI5:
+ 115              		.cfi_def_cfa_register 7
+  27:User/BSP/Stm32_time.c **** 	cnt+=10;
+ 116              		.loc 1 27 5
+ 117 0004 044B     		ldr	r3, .L8
+ 118 0006 1B68     		ldr	r3, [r3]
+ 119 0008 0A33     		adds	r3, r3, #10
+ 120 000a 034A     		ldr	r2, .L8
+ 121 000c 1360     		str	r3, [r2]
+  28:User/BSP/Stm32_time.c **** }
+ 122              		.loc 1 28 1
+ 123 000e 00BF     		nop
+ 124 0010 BD46     		mov	sp, r7
+ 125              	.LCFI6:
+ 126              		.cfi_def_cfa_register 13
+ 127              		@ sp needed
+ 128 0012 5DF8047B 		ldr	r7, [sp], #4
+ 129              	.LCFI7:
+ 130              		.cfi_restore 7
+ 131              		.cfi_def_cfa_offset 0
+ 132 0016 7047     		bx	lr
+ 133              	.L9:
+ 134              		.align	2
+ 135              	.L8:
+ 136 0018 00000000 		.word	cnt
+ 137              		.cfi_endproc
+ 138              	.LFE146:
+ 140              		.section	.text.Get_sys_time_us,"ax",%progbits
+ 141              		.align	1
+ 142              		.global	Get_sys_time_us
+ 143              		.syntax unified
+ 144              		.thumb
+ 145              		.thumb_func
+ 147              	Get_sys_time_us:
+ 148              	.LFB147:
+  29:User/BSP/Stm32_time.c **** uint32_t Get_sys_time_us(void)
+  30:User/BSP/Stm32_time.c **** {
+ 149              		.loc 1 30 1
+ 150              		.cfi_startproc
+ARM GAS  C:\Users\fffff\AppData\Local\Temp\ccfRNJhh.s 			page 4
+
+
+ 151              		@ args = 0, pretend = 0, frame = 0
+ 152              		@ frame_needed = 1, uses_anonymous_args = 0
+ 153              		@ link register save eliminated.
+ 154 0000 80B4     		push	{r7}
+ 155              	.LCFI8:
+ 156              		.cfi_def_cfa_offset 4
+ 157              		.cfi_offset 7, -4
+ 158 0002 00AF     		add	r7, sp, #0
+ 159              	.LCFI9:
+ 160              		.cfi_def_cfa_register 7
+  31:User/BSP/Stm32_time.c **** 	return cnt;
+ 161              		.loc 1 31 9
+ 162 0004 034B     		ldr	r3, .L12
+ 163 0006 1B68     		ldr	r3, [r3]
+  32:User/BSP/Stm32_time.c **** }
+ 164              		.loc 1 32 1
+ 165 0008 1846     		mov	r0, r3
+ 166 000a BD46     		mov	sp, r7
+ 167              	.LCFI10:
+ 168              		.cfi_def_cfa_register 13
+ 169              		@ sp needed
+ 170 000c 5DF8047B 		ldr	r7, [sp], #4
+ 171              	.LCFI11:
+ 172              		.cfi_restore 7
+ 173              		.cfi_def_cfa_offset 0
+ 174 0010 7047     		bx	lr
+ 175              	.L13:
+ 176 0012 00BF     		.align	2
+ 177              	.L12:
+ 178 0014 00000000 		.word	cnt
+ 179              		.cfi_endproc
+ 180              	.LFE147:
+ 182              		.text
+ 183              	.Letext0:
+ 184              		.file 2 "C:/msys64/mingw64/arm-none-eabi/include/machine/_default_types.h"
+ 185              		.file 3 "C:/msys64/mingw64/arm-none-eabi/include/sys/_stdint.h"
+ 186              		.file 4 "Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal.h"
+ARM GAS  C:\Users\fffff\AppData\Local\Temp\ccfRNJhh.s 			page 5
+
+
+DEFINED SYMBOLS
+                            *ABS*:00000000 Stm32_time.c
+C:\Users\fffff\AppData\Local\Temp\ccfRNJhh.s:20     .text.Get_sys_time_ms:00000000 $t
+C:\Users\fffff\AppData\Local\Temp\ccfRNJhh.s:26     .text.Get_sys_time_ms:00000000 Get_sys_time_ms
+C:\Users\fffff\AppData\Local\Temp\ccfRNJhh.s:50     .text.Get_sys_time_s:00000000 $t
+C:\Users\fffff\AppData\Local\Temp\ccfRNJhh.s:56     .text.Get_sys_time_s:00000000 Get_sys_time_s
+C:\Users\fffff\AppData\Local\Temp\ccfRNJhh.s:84     .text.Get_sys_time_s:00000024 $d
+C:\Users\fffff\AppData\Local\Temp\ccfRNJhh.s:93     .bss.cnt:00000000 cnt
+C:\Users\fffff\AppData\Local\Temp\ccfRNJhh.s:90     .bss.cnt:00000000 $d
+C:\Users\fffff\AppData\Local\Temp\ccfRNJhh.s:96     .text.TIM_count_100KHz:00000000 $t
+C:\Users\fffff\AppData\Local\Temp\ccfRNJhh.s:102    .text.TIM_count_100KHz:00000000 TIM_count_100KHz
+C:\Users\fffff\AppData\Local\Temp\ccfRNJhh.s:136    .text.TIM_count_100KHz:00000018 $d
+C:\Users\fffff\AppData\Local\Temp\ccfRNJhh.s:141    .text.Get_sys_time_us:00000000 $t
+C:\Users\fffff\AppData\Local\Temp\ccfRNJhh.s:147    .text.Get_sys_time_us:00000000 Get_sys_time_us
+C:\Users\fffff\AppData\Local\Temp\ccfRNJhh.s:178    .text.Get_sys_time_us:00000014 $d
+
+UNDEFINED SYMBOLS
+HAL_GetTick

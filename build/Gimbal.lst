@@ -1,0 +1,836 @@
+ARM GAS  C:\Users\fffff\AppData\Local\Temp\ccnJ8tkb.s 			page 1
+
+
+   1              		.cpu cortex-m7
+   2              		.arch armv7e-m
+   3              		.fpu fpv5-d16
+   4              		.eabi_attribute 28, 1
+   5              		.eabi_attribute 20, 1
+   6              		.eabi_attribute 21, 1
+   7              		.eabi_attribute 23, 3
+   8              		.eabi_attribute 24, 1
+   9              		.eabi_attribute 25, 1
+  10              		.eabi_attribute 26, 1
+  11              		.eabi_attribute 30, 6
+  12              		.eabi_attribute 34, 1
+  13              		.eabi_attribute 18, 4
+  14              		.file	"Gimbal.c"
+  15              		.text
+  16              	.Ltext0:
+  17              		.cfi_sections	.debug_frame
+  18              		.file 1 "User/Software/Gimbal.c"
+  19              		.global	pitch_speed_pid
+  20              		.section	.bss.pitch_speed_pid,"aw",%nobits
+  21              		.align	2
+  24              	pitch_speed_pid:
+  25 0000 00000000 		.space	52
+  25      00000000 
+  25      00000000 
+  25      00000000 
+  25      00000000 
+  26              		.global	pitch_location_pid
+  27              		.section	.bss.pitch_location_pid,"aw",%nobits
+  28              		.align	2
+  31              	pitch_location_pid:
+  32 0000 00000000 		.space	52
+  32      00000000 
+  32      00000000 
+  32      00000000 
+  32      00000000 
+  33              		.global	yaw_speed_pid
+  34              		.section	.bss.yaw_speed_pid,"aw",%nobits
+  35              		.align	2
+  38              	yaw_speed_pid:
+  39 0000 00000000 		.space	52
+  39      00000000 
+  39      00000000 
+  39      00000000 
+  39      00000000 
+  40              		.global	yaw_location_pid
+  41              		.section	.bss.yaw_location_pid,"aw",%nobits
+  42              		.align	2
+  45              	yaw_location_pid:
+  46 0000 00000000 		.space	52
+  46      00000000 
+  46      00000000 
+  46      00000000 
+  46      00000000 
+  47              		.global	pitch_auto_speed_pid
+  48              		.section	.bss.pitch_auto_speed_pid,"aw",%nobits
+  49              		.align	2
+ARM GAS  C:\Users\fffff\AppData\Local\Temp\ccnJ8tkb.s 			page 2
+
+
+  52              	pitch_auto_speed_pid:
+  53 0000 00000000 		.space	52
+  53      00000000 
+  53      00000000 
+  53      00000000 
+  53      00000000 
+  54              		.global	pitch_auto_location_pid
+  55              		.section	.bss.pitch_auto_location_pid,"aw",%nobits
+  56              		.align	2
+  59              	pitch_auto_location_pid:
+  60 0000 00000000 		.space	52
+  60      00000000 
+  60      00000000 
+  60      00000000 
+  60      00000000 
+  61              		.global	yaw_auto_speed_pid
+  62              		.section	.bss.yaw_auto_speed_pid,"aw",%nobits
+  63              		.align	2
+  66              	yaw_auto_speed_pid:
+  67 0000 00000000 		.space	52
+  67      00000000 
+  67      00000000 
+  67      00000000 
+  67      00000000 
+  68              		.global	yaw_auto_location_pid
+  69              		.section	.bss.yaw_auto_location_pid,"aw",%nobits
+  70              		.align	2
+  73              	yaw_auto_location_pid:
+  74 0000 00000000 		.space	52
+  74      00000000 
+  74      00000000 
+  74      00000000 
+  74      00000000 
+  75              		.global	pitch_ramp
+  76              		.section	.bss.pitch_ramp,"aw",%nobits
+  77              		.align	2
+  80              	pitch_ramp:
+  81 0000 00000000 		.space	28
+  81      00000000 
+  81      00000000 
+  81      00000000 
+  81      00000000 
+  82              		.global	yaw_ramp
+  83              		.section	.bss.yaw_ramp,"aw",%nobits
+  84              		.align	2
+  87              	yaw_ramp:
+  88 0000 00000000 		.space	28
+  88      00000000 
+  88      00000000 
+  88      00000000 
+  88      00000000 
+  89              		.section	.text.Gimbal_init,"ax",%progbits
+  90              		.align	1
+  91              		.global	Gimbal_init
+  92              		.syntax unified
+  93              		.thumb
+  94              		.thumb_func
+ARM GAS  C:\Users\fffff\AppData\Local\Temp\ccnJ8tkb.s 			page 3
+
+
+  96              	Gimbal_init:
+  97              	.LFB144:
+   1:User/Software/Gimbal.c **** #include "Gimbal.h"
+   2:User/Software/Gimbal.c **** #include "Global_status.h"
+   3:User/Software/Gimbal.c **** 
+   4:User/Software/Gimbal.c **** #include "User_math.h"
+   5:User/Software/Gimbal.c **** #include "pid.h"
+   6:User/Software/Gimbal.c **** #include "ramp_generator.h"
+   7:User/Software/Gimbal.c **** 
+   8:User/Software/Gimbal.c **** #include "IMU_updata.h"
+   9:User/Software/Gimbal.c **** /*pid*/
+  10:User/Software/Gimbal.c **** pid_t pitch_speed_pid, pitch_location_pid;
+  11:User/Software/Gimbal.c **** pid_t yaw_speed_pid, yaw_location_pid;
+  12:User/Software/Gimbal.c **** pid_t pitch_auto_speed_pid, pitch_auto_location_pid;
+  13:User/Software/Gimbal.c **** pid_t yaw_auto_speed_pid, yaw_auto_location_pid;
+  14:User/Software/Gimbal.c **** /*斜坡*/
+  15:User/Software/Gimbal.c **** RampGenerator pitch_ramp, yaw_ramp;
+  16:User/Software/Gimbal.c **** 
+  17:User/Software/Gimbal.c **** /**
+  18:User/Software/Gimbal.c ****  * @brief 云台初始化
+  19:User/Software/Gimbal.c ****  *
+  20:User/Software/Gimbal.c ****  */
+  21:User/Software/Gimbal.c **** void Gimbal_init()
+  22:User/Software/Gimbal.c **** {
+  98              		.loc 1 22 1
+  99              		.cfi_startproc
+ 100              		@ args = 0, pretend = 0, frame = 0
+ 101              		@ frame_needed = 1, uses_anonymous_args = 0
+ 102 0000 80B5     		push	{r7, lr}
+ 103              	.LCFI0:
+ 104              		.cfi_def_cfa_offset 8
+ 105              		.cfi_offset 7, -8
+ 106              		.cfi_offset 14, -4
+ 107 0002 00AF     		add	r7, sp, #0
+ 108              	.LCFI1:
+ 109              		.cfi_def_cfa_register 7
+  23:User/Software/Gimbal.c ****     /*电机初始化*/
+  24:User/Software/Gimbal.c ****     GIMBALMotor_init(GM6020, YAWMotor);
+ 110              		.loc 1 24 5
+ 111 0004 0F21     		movs	r1, #15
+ 112 0006 0120     		movs	r0, #1
+ 113 0008 FFF7FEFF 		bl	DJIMotor_init
+  25:User/Software/Gimbal.c ****     GIMBALMotor_init(GM6020, PITCHMotor);
+ 114              		.loc 1 25 5
+ 115 000c 1021     		movs	r1, #16
+ 116 000e 0120     		movs	r0, #1
+ 117 0010 FFF7FEFF 		bl	DJIMotor_init
+  26:User/Software/Gimbal.c ****     /*PID速度环初始化*/
+  27:User/Software/Gimbal.c ****     // 遥控
+  28:User/Software/Gimbal.c ****     pid_set(&pitch_speed_pid, 150.0f, 0.0f, 0.0f, GIMBALMOTOR_MAX_CURRENT, 1000);
+ 118              		.loc 1 28 5
+ 119 0014 9FED3A2A 		vldr.32	s4, .L2+8
+ 120 0018 DFED3A1A 		vldr.32	s3, .L2+12
+ 121 001c 9FED3A1A 		vldr.32	s2, .L2+16
+ 122 0020 DFED390A 		vldr.32	s1, .L2+16
+ 123 0024 9FED390A 		vldr.32	s0, .L2+20
+ 124 0028 3948     		ldr	r0, .L2+24
+ARM GAS  C:\Users\fffff\AppData\Local\Temp\ccnJ8tkb.s 			page 4
+
+
+ 125 002a FFF7FEFF 		bl	pid_set
+  29:User/Software/Gimbal.c ****     pid_set(&yaw_speed_pid, 200.0f, 0.0f, 5.0f, GIMBALMOTOR_MAX_CURRENT, GIMBALMOTOR_MAX_CURRENT);
+ 126              		.loc 1 29 5
+ 127 002e 9FED352A 		vldr.32	s4, .L2+12
+ 128 0032 DFED341A 		vldr.32	s3, .L2+12
+ 129 0036 B1EE041A 		vmov.f32	s2, #5.0e+0
+ 130 003a DFED330A 		vldr.32	s1, .L2+16
+ 131 003e 9FED350A 		vldr.32	s0, .L2+28
+ 132 0042 3548     		ldr	r0, .L2+32
+ 133 0044 FFF7FEFF 		bl	pid_set
+  30:User/Software/Gimbal.c ****     // 自瞄
+  31:User/Software/Gimbal.c ****     pid_set(&pitch_auto_speed_pid, 100.0f, 0, 0, GIMBALMOTOR_MAX_CURRENT, 1000);
+ 134              		.loc 1 31 5
+ 135 0048 9FED2D2A 		vldr.32	s4, .L2+8
+ 136 004c DFED2D1A 		vldr.32	s3, .L2+12
+ 137 0050 9FED2D1A 		vldr.32	s2, .L2+16
+ 138 0054 DFED2C0A 		vldr.32	s1, .L2+16
+ 139 0058 9FED300A 		vldr.32	s0, .L2+36
+ 140 005c 3048     		ldr	r0, .L2+40
+ 141 005e FFF7FEFF 		bl	pid_set
+  32:User/Software/Gimbal.c ****     pid_set(&yaw_auto_speed_pid, 200.0f, 0.0f, 5.0f, GIMBALMOTOR_MAX_CURRENT, GIMBALMOTOR_MAX_CURRE
+ 142              		.loc 1 32 5
+ 143 0062 9FED282A 		vldr.32	s4, .L2+12
+ 144 0066 DFED271A 		vldr.32	s3, .L2+12
+ 145 006a B1EE041A 		vmov.f32	s2, #5.0e+0
+ 146 006e DFED260A 		vldr.32	s1, .L2+16
+ 147 0072 9FED280A 		vldr.32	s0, .L2+28
+ 148 0076 2B48     		ldr	r0, .L2+44
+ 149 0078 FFF7FEFF 		bl	pid_set
+  33:User/Software/Gimbal.c ****     /*PID位置环初始化*/
+  34:User/Software/Gimbal.c ****     // 遥控
+  35:User/Software/Gimbal.c ****     pid_set(&pitch_location_pid, 10.0f, 0.0f, 0, GIMBALMOTOR_MAX_CURRENT, 100);
+ 150              		.loc 1 35 5
+ 151 007c 9FED272A 		vldr.32	s4, .L2+36
+ 152 0080 DFED201A 		vldr.32	s3, .L2+12
+ 153 0084 9FED201A 		vldr.32	s2, .L2+16
+ 154 0088 DFED1F0A 		vldr.32	s1, .L2+16
+ 155 008c B2EE040A 		vmov.f32	s0, #1.0e+1
+ 156 0090 2548     		ldr	r0, .L2+48
+ 157 0092 FFF7FEFF 		bl	pid_set
+  36:User/Software/Gimbal.c ****     pid_set(&yaw_location_pid, 14.0f, 0.0f, 0.0f, GIMBALMOTOR_MAX_CURRENT, 1000);
+ 158              		.loc 1 36 5
+ 159 0096 9FED1A2A 		vldr.32	s4, .L2+8
+ 160 009a DFED1A1A 		vldr.32	s3, .L2+12
+ 161 009e 9FED1A1A 		vldr.32	s2, .L2+16
+ 162 00a2 DFED190A 		vldr.32	s1, .L2+16
+ 163 00a6 B2EE0C0A 		vmov.f32	s0, #1.4e+1
+ 164 00aa 2048     		ldr	r0, .L2+52
+ 165 00ac FFF7FEFF 		bl	pid_set
+  37:User/Software/Gimbal.c ****     // 自瞄
+  38:User/Software/Gimbal.c ****     pid_set(&pitch_auto_location_pid, 30.0f, 0.05f, 0, GIMBALMOTOR_MAX_CURRENT, 100);
+ 166              		.loc 1 38 5
+ 167 00b0 9FED1A2A 		vldr.32	s4, .L2+36
+ 168 00b4 DFED131A 		vldr.32	s3, .L2+12
+ 169 00b8 9FED131A 		vldr.32	s2, .L2+16
+ 170 00bc DFED1C0A 		vldr.32	s1, .L2+56
+ 171 00c0 B3EE0E0A 		vmov.f32	s0, #3.0e+1
+ARM GAS  C:\Users\fffff\AppData\Local\Temp\ccnJ8tkb.s 			page 5
+
+
+ 172 00c4 1B48     		ldr	r0, .L2+60
+ 173 00c6 FFF7FEFF 		bl	pid_set
+  39:User/Software/Gimbal.c ****     pid_set(&yaw_auto_location_pid, 15.0f, 0.0f, 0.0f, GIMBALMOTOR_MAX_CURRENT, 1000);
+ 174              		.loc 1 39 5
+ 175 00ca 9FED0D2A 		vldr.32	s4, .L2+8
+ 176 00ce DFED0D1A 		vldr.32	s3, .L2+12
+ 177 00d2 9FED0D1A 		vldr.32	s2, .L2+16
+ 178 00d6 DFED0C0A 		vldr.32	s1, .L2+16
+ 179 00da B2EE0E0A 		vmov.f32	s0, #1.5e+1
+ 180 00de 1648     		ldr	r0, .L2+64
+ 181 00e0 FFF7FEFF 		bl	pid_set
+  40:User/Software/Gimbal.c ****     /*斜坡初始化*/
+  41:User/Software/Gimbal.c ****     // RampGenerator_Init(&pitch_ramp,1,)
+  42:User/Software/Gimbal.c ****     /*零点与限位*/
+  43:User/Software/Gimbal.c ****     GIMBALMotor_setzero(102.5f, YAWMotor);
+ 182              		.loc 1 43 5
+ 183 00e4 0F20     		movs	r0, #15
+ 184 00e6 9FED040B 		vldr.64	d0, .L2
+ 185 00ea FFF7FEFF 		bl	DJIMotor_setzero
+  44:User/Software/Gimbal.c **** }
+ 186              		.loc 1 44 1
+ 187 00ee 00BF     		nop
+ 188 00f0 80BD     		pop	{r7, pc}
+ 189              	.L3:
+ 190 00f2 00BFAFF3 		.align	3
+ 190      0080
+ 191              	.L2:
+ 192 00f8 00000000 		.word	0
+ 193 00fc 00A05940 		.word	1079615488
+ 194 0100 00007A44 		.word	1148846080
+ 195 0104 00008046 		.word	1182793728
+ 196 0108 00000000 		.word	0
+ 197 010c 00001643 		.word	1125515264
+ 198 0110 00000000 		.word	pitch_speed_pid
+ 199 0114 00004843 		.word	1128792064
+ 200 0118 00000000 		.word	yaw_speed_pid
+ 201 011c 0000C842 		.word	1120403456
+ 202 0120 00000000 		.word	pitch_auto_speed_pid
+ 203 0124 00000000 		.word	yaw_auto_speed_pid
+ 204 0128 00000000 		.word	pitch_location_pid
+ 205 012c 00000000 		.word	yaw_location_pid
+ 206 0130 CDCC4C3D 		.word	1028443341
+ 207 0134 00000000 		.word	pitch_auto_location_pid
+ 208 0138 00000000 		.word	yaw_auto_location_pid
+ 209              		.cfi_endproc
+ 210              	.LFE144:
+ 212              		.section	.text.Gimbal_set_pitch_angle,"ax",%progbits
+ 213              		.align	1
+ 214              		.global	Gimbal_set_pitch_angle
+ 215              		.syntax unified
+ 216              		.thumb
+ 217              		.thumb_func
+ 219              	Gimbal_set_pitch_angle:
+ 220              	.LFB145:
+  45:User/Software/Gimbal.c **** 
+  46:User/Software/Gimbal.c **** /**
+  47:User/Software/Gimbal.c ****  * @brief 设置云台PITCHI轴角度
+ARM GAS  C:\Users\fffff\AppData\Local\Temp\ccnJ8tkb.s 			page 6
+
+
+  48:User/Software/Gimbal.c ****  *
+  49:User/Software/Gimbal.c ****  * @param angle 云台PITCHI轴角度
+  50:User/Software/Gimbal.c ****  */
+  51:User/Software/Gimbal.c **** void Gimbal_set_pitch_angle(float angle)
+  52:User/Software/Gimbal.c **** {
+ 221              		.loc 1 52 1
+ 222              		.cfi_startproc
+ 223              		@ args = 0, pretend = 0, frame = 8
+ 224              		@ frame_needed = 1, uses_anonymous_args = 0
+ 225              		@ link register save eliminated.
+ 226 0000 80B4     		push	{r7}
+ 227              	.LCFI2:
+ 228              		.cfi_def_cfa_offset 4
+ 229              		.cfi_offset 7, -4
+ 230 0002 83B0     		sub	sp, sp, #12
+ 231              	.LCFI3:
+ 232              		.cfi_def_cfa_offset 16
+ 233 0004 00AF     		add	r7, sp, #0
+ 234              	.LCFI4:
+ 235              		.cfi_def_cfa_register 7
+ 236 0006 87ED010A 		vstr.32	s0, [r7, #4]
+  53:User/Software/Gimbal.c ****     if (angle < PITCHI_MIN_ANGLE)
+ 237              		.loc 1 53 8
+ 238 000a D7ED017A 		vldr.32	s15, [r7, #4]
+ 239 000e BAEE0E7A 		vmov.f32	s14, #-1.5e+1
+ 240 0012 F4EEC77A 		vcmpe.f32	s15, s14
+ 241 0016 F1EE10FA 		vmrs	APSR_nzcv, FPSCR
+ 242 001a 01D5     		bpl	.L5
+  54:User/Software/Gimbal.c ****         angle = PITCHI_MIN_ANGLE;
+ 243              		.loc 1 54 15
+ 244 001c 0A4B     		ldr	r3, .L11
+ 245 001e 7B60     		str	r3, [r7, #4]	@ float
+ 246              	.L5:
+  55:User/Software/Gimbal.c ****     if (angle > PITCHI_MAX_ANGLE)
+ 247              		.loc 1 55 8
+ 248 0020 D7ED017A 		vldr.32	s15, [r7, #4]
+ 249 0024 B3EE097A 		vmov.f32	s14, #2.5e+1
+ 250 0028 F4EEC77A 		vcmpe.f32	s15, s14
+ 251 002c F1EE10FA 		vmrs	APSR_nzcv, FPSCR
+ 252 0030 01DD     		ble	.L7
+  56:User/Software/Gimbal.c ****         angle = PITCHI_MAX_ANGLE;
+ 253              		.loc 1 56 15
+ 254 0032 064B     		ldr	r3, .L11+4
+ 255 0034 7B60     		str	r3, [r7, #4]	@ float
+ 256              	.L7:
+  57:User/Software/Gimbal.c ****     Global.Gimbal.input.pitch = angle;
+ 257              		.loc 1 57 31
+ 258 0036 064A     		ldr	r2, .L11+8
+ 259 0038 7B68     		ldr	r3, [r7, #4]	@ float
+ 260 003a 9361     		str	r3, [r2, #24]	@ float
+  58:User/Software/Gimbal.c **** }
+ 261              		.loc 1 58 1
+ 262 003c 00BF     		nop
+ 263 003e 0C37     		adds	r7, r7, #12
+ 264              	.LCFI5:
+ 265              		.cfi_def_cfa_offset 4
+ 266 0040 BD46     		mov	sp, r7
+ARM GAS  C:\Users\fffff\AppData\Local\Temp\ccnJ8tkb.s 			page 7
+
+
+ 267              	.LCFI6:
+ 268              		.cfi_def_cfa_register 13
+ 269              		@ sp needed
+ 270 0042 5DF8047B 		ldr	r7, [sp], #4
+ 271              	.LCFI7:
+ 272              		.cfi_restore 7
+ 273              		.cfi_def_cfa_offset 0
+ 274 0046 7047     		bx	lr
+ 275              	.L12:
+ 276              		.align	2
+ 277              	.L11:
+ 278 0048 000070C1 		.word	-1049624576
+ 279 004c 0000C841 		.word	1103626240
+ 280 0050 00000000 		.word	Global
+ 281              		.cfi_endproc
+ 282              	.LFE145:
+ 284              		.section	.text.Gimbal_set_yaw_angle,"ax",%progbits
+ 285              		.align	1
+ 286              		.global	Gimbal_set_yaw_angle
+ 287              		.syntax unified
+ 288              		.thumb
+ 289              		.thumb_func
+ 291              	Gimbal_set_yaw_angle:
+ 292              	.LFB146:
+  59:User/Software/Gimbal.c **** 
+  60:User/Software/Gimbal.c **** /**
+  61:User/Software/Gimbal.c ****  * @brief 设置云台YAW轴角度
+  62:User/Software/Gimbal.c ****  *
+  63:User/Software/Gimbal.c ****  * @param angle 云台YAW轴角度
+  64:User/Software/Gimbal.c ****  */
+  65:User/Software/Gimbal.c **** void Gimbal_set_yaw_angle(float angle)
+  66:User/Software/Gimbal.c **** {
+ 293              		.loc 1 66 1
+ 294              		.cfi_startproc
+ 295              		@ args = 0, pretend = 0, frame = 8
+ 296              		@ frame_needed = 1, uses_anonymous_args = 0
+ 297              		@ link register save eliminated.
+ 298 0000 80B4     		push	{r7}
+ 299              	.LCFI8:
+ 300              		.cfi_def_cfa_offset 4
+ 301              		.cfi_offset 7, -4
+ 302 0002 83B0     		sub	sp, sp, #12
+ 303              	.LCFI9:
+ 304              		.cfi_def_cfa_offset 16
+ 305 0004 00AF     		add	r7, sp, #0
+ 306              	.LCFI10:
+ 307              		.cfi_def_cfa_register 7
+ 308 0006 87ED010A 		vstr.32	s0, [r7, #4]
+  67:User/Software/Gimbal.c ****     Global.Gimbal.input.yaw = angle;
+ 309              		.loc 1 67 29
+ 310 000a 044A     		ldr	r2, .L14
+ 311 000c 7B68     		ldr	r3, [r7, #4]	@ float
+ 312 000e D361     		str	r3, [r2, #28]	@ float
+  68:User/Software/Gimbal.c **** }
+ 313              		.loc 1 68 1
+ 314 0010 00BF     		nop
+ 315 0012 0C37     		adds	r7, r7, #12
+ARM GAS  C:\Users\fffff\AppData\Local\Temp\ccnJ8tkb.s 			page 8
+
+
+ 316              	.LCFI11:
+ 317              		.cfi_def_cfa_offset 4
+ 318 0014 BD46     		mov	sp, r7
+ 319              	.LCFI12:
+ 320              		.cfi_def_cfa_register 13
+ 321              		@ sp needed
+ 322 0016 5DF8047B 		ldr	r7, [sp], #4
+ 323              	.LCFI13:
+ 324              		.cfi_restore 7
+ 325              		.cfi_def_cfa_offset 0
+ 326 001a 7047     		bx	lr
+ 327              	.L15:
+ 328              		.align	2
+ 329              	.L14:
+ 330 001c 00000000 		.word	Global
+ 331              		.cfi_endproc
+ 332              	.LFE146:
+ 334              		.section	.text.Gimbal_control,"ax",%progbits
+ 335              		.align	1
+ 336              		.global	Gimbal_control
+ 337              		.syntax unified
+ 338              		.thumb
+ 339              		.thumb_func
+ 341              	Gimbal_control:
+ 342              	.LFB147:
+  69:User/Software/Gimbal.c **** 
+  70:User/Software/Gimbal.c **** void Gimbal_control()
+  71:User/Software/Gimbal.c **** {
+ 343              		.loc 1 71 1
+ 344              		.cfi_startproc
+ 345              		@ args = 0, pretend = 0, frame = 8
+ 346              		@ frame_needed = 1, uses_anonymous_args = 0
+ 347 0000 80B5     		push	{r7, lr}
+ 348              	.LCFI14:
+ 349              		.cfi_def_cfa_offset 8
+ 350              		.cfi_offset 7, -8
+ 351              		.cfi_offset 14, -4
+ 352 0002 2DED028B 		vpush.64	{d8}
+ 353              	.LCFI15:
+ 354              		.cfi_def_cfa_offset 16
+ 355              		.cfi_offset 80, -16
+ 356              		.cfi_offset 81, -12
+ 357 0006 82B0     		sub	sp, sp, #8
+ 358              	.LCFI16:
+ 359              		.cfi_def_cfa_offset 24
+ 360 0008 00AF     		add	r7, sp, #0
+ 361              	.LCFI17:
+ 362              		.cfi_def_cfa_register 7
+  72:User/Software/Gimbal.c ****     float pitch_speed, yaw_speed;
+  73:User/Software/Gimbal.c ****     if (Global.Auto.input.Auto_control_online <= 0 || Global.Auto.mode == NONE)
+ 363              		.loc 1 73 26
+ 364 000a 9F4B     		ldr	r3, .L20+16
+ 365 000c 1B6B     		ldr	r3, [r3, #48]
+ 366              		.loc 1 73 8
+ 367 000e 002B     		cmp	r3, #0
+ 368 0010 05DD     		ble	.L17
+ 369              		.loc 1 73 66 discriminator 1
+ARM GAS  C:\Users\fffff\AppData\Local\Temp\ccnJ8tkb.s 			page 9
+
+
+ 370 0012 9D4B     		ldr	r3, .L20+16
+ 371 0014 93F82430 		ldrb	r3, [r3, #36]	@ zero_extendqisi2
+ 372              		.loc 1 73 52 discriminator 1
+ 373 0018 002B     		cmp	r3, #0
+ 374 001a 40F09080 		bne	.L18
+ 375              	.L17:
+  74:User/Software/Gimbal.c ****     { // 非自瞄
+  75:User/Software/Gimbal.c ****         pitch_speed = pid_cal(&pitch_location_pid, RAD_TO_DEG * IMU_data.AHRS.pitch, Global.Gimbal.
+ 376              		.loc 1 75 78
+ 377 001e 9B4B     		ldr	r3, .L20+20
+ 378 0020 D3ED287A 		vldr.32	s15, [r3, #160]
+ 379 0024 B7EEE77A 		vcvt.f64.f32	d7, s15
+ 380              		.loc 1 75 63
+ 381 0028 9FED936B 		vldr.64	d6, .L20
+ 382 002c 27EE067B 		vmul.f64	d7, d7, d6
+ 383              		.loc 1 75 23
+ 384 0030 F7EEC77B 		vcvt.f32.f64	s15, d7
+ 385 0034 944B     		ldr	r3, .L20+16
+ 386 0036 93ED067A 		vldr.32	s14, [r3, #24]
+ 387 003a F0EE470A 		vmov.f32	s1, s14
+ 388 003e B0EE670A 		vmov.f32	s0, s15
+ 389 0042 9348     		ldr	r0, .L20+24
+ 390 0044 FFF7FEFF 		bl	pid_cal
+ 391 0048 87ED010A 		vstr.32	s0, [r7, #4]
+  76:User/Software/Gimbal.c ****         yaw_speed = pid_cal(&yaw_location_pid, RAD_TO_DEG * IMU_data.AHRS.yaw_rad_cnt, Global.Gimba
+ 392              		.loc 1 76 74
+ 393 004c 8F4B     		ldr	r3, .L20+20
+ 394 004e D3ED2D7A 		vldr.32	s15, [r3, #180]
+ 395 0052 B7EEE77A 		vcvt.f64.f32	d7, s15
+ 396              		.loc 1 76 59
+ 397 0056 9FED886B 		vldr.64	d6, .L20
+ 398 005a 27EE067B 		vmul.f64	d7, d7, d6
+ 399              		.loc 1 76 21
+ 400 005e F7EEC77B 		vcvt.f32.f64	s15, d7
+ 401 0062 894B     		ldr	r3, .L20+16
+ 402 0064 93ED077A 		vldr.32	s14, [r3, #28]
+ 403 0068 F0EE470A 		vmov.f32	s1, s14
+ 404 006c B0EE670A 		vmov.f32	s0, s15
+ 405 0070 8848     		ldr	r0, .L20+28
+ 406 0072 FFF7FEFF 		bl	pid_cal
+ 407 0076 87ED000A 		vstr.32	s0, [r7]
+  77:User/Software/Gimbal.c ****         GIMBALMotor_set(-pid_cal(&pitch_speed_pid, -RAD_TO_DEG * IMU_data.gyro[0], pitch_speed), PI
+ 408              		.loc 1 77 79
+ 409 007a 844B     		ldr	r3, .L20+20
+ 410 007c D3ED007A 		vldr.32	s15, [r3]
+ 411 0080 B7EEE77A 		vcvt.f64.f32	d7, s15
+ 412              		.loc 1 77 64
+ 413 0084 9FED7E6B 		vldr.64	d6, .L20+8
+ 414 0088 27EE067B 		vmul.f64	d7, d7, d6
+ 415              		.loc 1 77 26
+ 416 008c F7EEC77B 		vcvt.f32.f64	s15, d7
+ 417 0090 D7ED010A 		vldr.32	s1, [r7, #4]
+ 418 0094 B0EE670A 		vmov.f32	s0, s15
+ 419 0098 7F48     		ldr	r0, .L20+32
+ 420 009a FFF7FEFF 		bl	pid_cal
+ 421 009e F0EE407A 		vmov.f32	s15, s0
+ 422              		.loc 1 77 25 discriminator 1
+ARM GAS  C:\Users\fffff\AppData\Local\Temp\ccnJ8tkb.s 			page 10
+
+
+ 423 00a2 F1EE677A 		vneg.f32	s15, s15
+ 424              		.loc 1 77 9 discriminator 1
+ 425 00a6 FDEEE77A 		vcvt.s32.f32	s15, s15
+ 426 00aa 17EE903A 		vmov	r3, s15	@ int
+ 427 00ae 1BB2     		sxth	r3, r3
+ 428 00b0 1021     		movs	r1, #16
+ 429 00b2 1846     		mov	r0, r3
+ 430 00b4 FFF7FEFF 		bl	DJIMotor_set
+  78:User/Software/Gimbal.c ****         GIMBALMotor_set(pid_cal(&yaw_speed_pid, (cos(IMU_data.AHRS.pitch) * RAD_TO_DEG * IMU_data.g
+ 431              		.loc 1 78 67
+ 432 00b8 744B     		ldr	r3, .L20+20
+ 433 00ba D3ED287A 		vldr.32	s15, [r3, #160]
+ 434              		.loc 1 78 50
+ 435 00be B7EEE77A 		vcvt.f64.f32	d7, s15
+ 436 00c2 B0EE470B 		vmov.f64	d0, d7
+ 437 00c6 FFF7FEFF 		bl	cos
+ 438 00ca B0EE407B 		vmov.f64	d7, d0
+ 439              		.loc 1 78 75 discriminator 1
+ 440 00ce 9FED6A6B 		vldr.64	d6, .L20
+ 441 00d2 27EE066B 		vmul.f64	d6, d7, d6
+ 442              		.loc 1 78 103 discriminator 1
+ 443 00d6 6D4B     		ldr	r3, .L20+20
+ 444 00d8 D3ED027A 		vldr.32	s15, [r3, #8]
+ 445 00dc B7EEE77A 		vcvt.f64.f32	d7, s15
+ 446              		.loc 1 78 88 discriminator 1
+ 447 00e0 26EE078B 		vmul.f64	d8, d6, d7
+ 448              		.loc 1 78 126 discriminator 1
+ 449 00e4 694B     		ldr	r3, .L20+20
+ 450 00e6 D3ED287A 		vldr.32	s15, [r3, #160]
+ 451              		.loc 1 78 109 discriminator 1
+ 452 00ea B7EEE77A 		vcvt.f64.f32	d7, s15
+ 453 00ee B0EE470B 		vmov.f64	d0, d7
+ 454 00f2 FFF7FEFF 		bl	sin
+ 455 00f6 B0EE407B 		vmov.f64	d7, d0
+ 456              		.loc 1 78 134 discriminator 2
+ 457 00fa 9FED5F6B 		vldr.64	d6, .L20
+ 458 00fe 27EE066B 		vmul.f64	d6, d7, d6
+ 459              		.loc 1 78 162 discriminator 2
+ 460 0102 624B     		ldr	r3, .L20+20
+ 461 0104 D3ED017A 		vldr.32	s15, [r3, #4]
+ 462 0108 B7EEE77A 		vcvt.f64.f32	d7, s15
+ 463              		.loc 1 78 147 discriminator 2
+ 464 010c 26EE077B 		vmul.f64	d7, d6, d7
+ 465              		.loc 1 78 107 discriminator 2
+ 466 0110 38EE477B 		vsub.f64	d7, d8, d7
+ 467              		.loc 1 78 25 discriminator 2
+ 468 0114 F7EEC77B 		vcvt.f32.f64	s15, d7
+ 469 0118 D7ED000A 		vldr.32	s1, [r7]
+ 470 011c B0EE670A 		vmov.f32	s0, s15
+ 471 0120 5E48     		ldr	r0, .L20+36
+ 472 0122 FFF7FEFF 		bl	pid_cal
+ 473 0126 F0EE407A 		vmov.f32	s15, s0
+ 474              		.loc 1 78 9 discriminator 3
+ 475 012a FDEEE77A 		vcvt.s32.f32	s15, s15
+ 476 012e 17EE903A 		vmov	r3, s15	@ int
+ 477 0132 1BB2     		sxth	r3, r3
+ 478 0134 0F21     		movs	r1, #15
+ARM GAS  C:\Users\fffff\AppData\Local\Temp\ccnJ8tkb.s 			page 11
+
+
+ 479 0136 1846     		mov	r0, r3
+ 480 0138 FFF7FEFF 		bl	DJIMotor_set
+ 481              		.loc 1 78 9 is_stmt 0
+ 482 013c 94E0     		b	.L19
+ 483              	.L18:
+  79:User/Software/Gimbal.c ****     }
+  80:User/Software/Gimbal.c ****     else
+  81:User/Software/Gimbal.c ****     { // 自瞄
+  82:User/Software/Gimbal.c ****         pitch_speed = pid_cal(&pitch_auto_location_pid, RAD_TO_DEG * IMU_data.AHRS.pitch, Global.Gi
+ 484              		.loc 1 82 83 is_stmt 1
+ 485 013e 534B     		ldr	r3, .L20+20
+ 486 0140 D3ED287A 		vldr.32	s15, [r3, #160]
+ 487 0144 B7EEE77A 		vcvt.f64.f32	d7, s15
+ 488              		.loc 1 82 68
+ 489 0148 9FED4B6B 		vldr.64	d6, .L20
+ 490 014c 27EE067B 		vmul.f64	d7, d7, d6
+ 491              		.loc 1 82 23
+ 492 0150 F7EEC77B 		vcvt.f32.f64	s15, d7
+ 493 0154 4C4B     		ldr	r3, .L20+16
+ 494 0156 93ED067A 		vldr.32	s14, [r3, #24]
+ 495 015a F0EE470A 		vmov.f32	s1, s14
+ 496 015e B0EE670A 		vmov.f32	s0, s15
+ 497 0162 4F48     		ldr	r0, .L20+40
+ 498 0164 FFF7FEFF 		bl	pid_cal
+ 499 0168 87ED010A 		vstr.32	s0, [r7, #4]
+  83:User/Software/Gimbal.c ****         yaw_speed = pid_cal(&yaw_auto_location_pid, RAD_TO_DEG * IMU_data.AHRS.yaw_rad_cnt, Global.
+ 500              		.loc 1 83 79
+ 501 016c 474B     		ldr	r3, .L20+20
+ 502 016e D3ED2D7A 		vldr.32	s15, [r3, #180]
+ 503 0172 B7EEE77A 		vcvt.f64.f32	d7, s15
+ 504              		.loc 1 83 64
+ 505 0176 9FED406B 		vldr.64	d6, .L20
+ 506 017a 27EE067B 		vmul.f64	d7, d7, d6
+ 507              		.loc 1 83 21
+ 508 017e F7EEC77B 		vcvt.f32.f64	s15, d7
+ 509 0182 414B     		ldr	r3, .L20+16
+ 510 0184 93ED077A 		vldr.32	s14, [r3, #28]
+ 511 0188 F0EE470A 		vmov.f32	s1, s14
+ 512 018c B0EE670A 		vmov.f32	s0, s15
+ 513 0190 4448     		ldr	r0, .L20+44
+ 514 0192 FFF7FEFF 		bl	pid_cal
+ 515 0196 87ED000A 		vstr.32	s0, [r7]
+  84:User/Software/Gimbal.c ****         GIMBALMotor_set(-pid_cal(&pitch_auto_speed_pid, -RAD_TO_DEG * IMU_data.gyro[0], pitch_speed
+ 516              		.loc 1 84 84
+ 517 019a 3C4B     		ldr	r3, .L20+20
+ 518 019c D3ED007A 		vldr.32	s15, [r3]
+ 519 01a0 B7EEE77A 		vcvt.f64.f32	d7, s15
+ 520              		.loc 1 84 69
+ 521 01a4 9FED366B 		vldr.64	d6, .L20+8
+ 522 01a8 27EE067B 		vmul.f64	d7, d7, d6
+ 523              		.loc 1 84 26
+ 524 01ac F7EEC77B 		vcvt.f32.f64	s15, d7
+ 525 01b0 D7ED010A 		vldr.32	s1, [r7, #4]
+ 526 01b4 B0EE670A 		vmov.f32	s0, s15
+ 527 01b8 3B48     		ldr	r0, .L20+48
+ 528 01ba FFF7FEFF 		bl	pid_cal
+ 529 01be F0EE407A 		vmov.f32	s15, s0
+ARM GAS  C:\Users\fffff\AppData\Local\Temp\ccnJ8tkb.s 			page 12
+
+
+ 530              		.loc 1 84 25 discriminator 1
+ 531 01c2 F1EE677A 		vneg.f32	s15, s15
+ 532              		.loc 1 84 9 discriminator 1
+ 533 01c6 FDEEE77A 		vcvt.s32.f32	s15, s15
+ 534 01ca 17EE903A 		vmov	r3, s15	@ int
+ 535 01ce 1BB2     		sxth	r3, r3
+ 536 01d0 1021     		movs	r1, #16
+ 537 01d2 1846     		mov	r0, r3
+ 538 01d4 FFF7FEFF 		bl	DJIMotor_set
+  85:User/Software/Gimbal.c ****         GIMBALMotor_set(pid_cal(&yaw_auto_speed_pid, (cos(IMU_data.AHRS.pitch) * RAD_TO_DEG * IMU_d
+ 539              		.loc 1 85 72
+ 540 01d8 2C4B     		ldr	r3, .L20+20
+ 541 01da D3ED287A 		vldr.32	s15, [r3, #160]
+ 542              		.loc 1 85 55
+ 543 01de B7EEE77A 		vcvt.f64.f32	d7, s15
+ 544 01e2 B0EE470B 		vmov.f64	d0, d7
+ 545 01e6 FFF7FEFF 		bl	cos
+ 546 01ea B0EE407B 		vmov.f64	d7, d0
+ 547              		.loc 1 85 80 discriminator 1
+ 548 01ee 9FED226B 		vldr.64	d6, .L20
+ 549 01f2 27EE066B 		vmul.f64	d6, d7, d6
+ 550              		.loc 1 85 108 discriminator 1
+ 551 01f6 254B     		ldr	r3, .L20+20
+ 552 01f8 D3ED027A 		vldr.32	s15, [r3, #8]
+ 553 01fc B7EEE77A 		vcvt.f64.f32	d7, s15
+ 554              		.loc 1 85 93 discriminator 1
+ 555 0200 26EE078B 		vmul.f64	d8, d6, d7
+ 556              		.loc 1 85 131 discriminator 1
+ 557 0204 214B     		ldr	r3, .L20+20
+ 558 0206 D3ED287A 		vldr.32	s15, [r3, #160]
+ 559              		.loc 1 85 114 discriminator 1
+ 560 020a B7EEE77A 		vcvt.f64.f32	d7, s15
+ 561 020e B0EE470B 		vmov.f64	d0, d7
+ 562 0212 FFF7FEFF 		bl	sin
+ 563 0216 B0EE407B 		vmov.f64	d7, d0
+ 564              		.loc 1 85 139 discriminator 2
+ 565 021a 9FED176B 		vldr.64	d6, .L20
+ 566 021e 27EE066B 		vmul.f64	d6, d7, d6
+ 567              		.loc 1 85 167 discriminator 2
+ 568 0222 1A4B     		ldr	r3, .L20+20
+ 569 0224 D3ED017A 		vldr.32	s15, [r3, #4]
+ 570 0228 B7EEE77A 		vcvt.f64.f32	d7, s15
+ 571              		.loc 1 85 152 discriminator 2
+ 572 022c 26EE077B 		vmul.f64	d7, d6, d7
+ 573              		.loc 1 85 112 discriminator 2
+ 574 0230 38EE477B 		vsub.f64	d7, d8, d7
+ 575              		.loc 1 85 25 discriminator 2
+ 576 0234 F7EEC77B 		vcvt.f32.f64	s15, d7
+ 577 0238 D7ED000A 		vldr.32	s1, [r7]
+ 578 023c B0EE670A 		vmov.f32	s0, s15
+ 579 0240 1A48     		ldr	r0, .L20+52
+ 580 0242 FFF7FEFF 		bl	pid_cal
+ 581 0246 F0EE407A 		vmov.f32	s15, s0
+ 582              		.loc 1 85 9 discriminator 3
+ 583 024a FDEEE77A 		vcvt.s32.f32	s15, s15
+ 584 024e 17EE903A 		vmov	r3, s15	@ int
+ 585 0252 1BB2     		sxth	r3, r3
+ARM GAS  C:\Users\fffff\AppData\Local\Temp\ccnJ8tkb.s 			page 13
+
+
+ 586 0254 0F21     		movs	r1, #15
+ 587 0256 1846     		mov	r0, r3
+ 588 0258 FFF7FEFF 		bl	DJIMotor_set
+  86:User/Software/Gimbal.c ****         Global.Auto.input.Auto_control_online--;
+ 589              		.loc 1 86 26
+ 590 025c 0A4B     		ldr	r3, .L20+16
+ 591 025e 1B6B     		ldr	r3, [r3, #48]
+ 592              		.loc 1 86 46
+ 593 0260 013B     		subs	r3, r3, #1
+ 594 0262 094A     		ldr	r2, .L20+16
+ 595 0264 1363     		str	r3, [r2, #48]
+  87:User/Software/Gimbal.c ****     }
+  88:User/Software/Gimbal.c **** }
+ 596              		.loc 1 88 1
+ 597 0266 00BF     		nop
+ 598              	.L19:
+ 599 0268 00BF     		nop
+ 600 026a 0837     		adds	r7, r7, #8
+ 601              	.LCFI18:
+ 602              		.cfi_def_cfa_offset 16
+ 603 026c BD46     		mov	sp, r7
+ 604              	.LCFI19:
+ 605              		.cfi_def_cfa_register 13
+ 606              		@ sp needed
+ 607 026e BDEC028B 		vldm	sp!, {d8}
+ 608              	.LCFI20:
+ 609              		.cfi_restore 80
+ 610              		.cfi_restore 81
+ 611              		.cfi_def_cfa_offset 8
+ 612 0272 80BD     		pop	{r7, pc}
+ 613              	.L21:
+ 614 0274 AFF30080 		.align	3
+ 615              	.L20:
+ 616 0278 F8C1631A 		.word	442745336
+ 617 027c DCA54C40 		.word	1078765020
+ 618 0280 F8C1631A 		.word	442745336
+ 619 0284 DCA54CC0 		.word	-1068718628
+ 620 0288 00000000 		.word	Global
+ 621 028c 00000000 		.word	IMU_data
+ 622 0290 00000000 		.word	pitch_location_pid
+ 623 0294 00000000 		.word	yaw_location_pid
+ 624 0298 00000000 		.word	pitch_speed_pid
+ 625 029c 00000000 		.word	yaw_speed_pid
+ 626 02a0 00000000 		.word	pitch_auto_location_pid
+ 627 02a4 00000000 		.word	yaw_auto_location_pid
+ 628 02a8 00000000 		.word	pitch_auto_speed_pid
+ 629 02ac 00000000 		.word	yaw_auto_speed_pid
+ 630              		.cfi_endproc
+ 631              	.LFE147:
+ 633              		.text
+ 634              	.Letext0:
+ 635              		.file 2 "C:/msys64/mingw64/arm-none-eabi/include/machine/_default_types.h"
+ 636              		.file 3 "C:/msys64/mingw64/arm-none-eabi/include/sys/_stdint.h"
+ 637              		.file 4 "User/Hardware/motor.h"
+ 638              		.file 5 "User/Software/Global_status.h"
+ 639              		.file 6 "Algorithm/pid.h"
+ 640              		.file 7 "Algorithm/ramp_generator.h"
+ARM GAS  C:\Users\fffff\AppData\Local\Temp\ccnJ8tkb.s 			page 14
+
+
+ 641              		.file 8 "Core/Inc/struct_typedef.h"
+ 642              		.file 9 "Algorithm/Kalman_Filter_c.h"
+ 643              		.file 10 "User/Hardware/IMU_updata.h"
+ 644              		.file 11 "C:/msys64/mingw64/arm-none-eabi/include/math.h"
+ 645              		.file 12 "User/Software/Gimbal.h"
+ARM GAS  C:\Users\fffff\AppData\Local\Temp\ccnJ8tkb.s 			page 15
+
+
+DEFINED SYMBOLS
+                            *ABS*:00000000 Gimbal.c
+C:\Users\fffff\AppData\Local\Temp\ccnJ8tkb.s:24     .bss.pitch_speed_pid:00000000 pitch_speed_pid
+C:\Users\fffff\AppData\Local\Temp\ccnJ8tkb.s:21     .bss.pitch_speed_pid:00000000 $d
+C:\Users\fffff\AppData\Local\Temp\ccnJ8tkb.s:31     .bss.pitch_location_pid:00000000 pitch_location_pid
+C:\Users\fffff\AppData\Local\Temp\ccnJ8tkb.s:28     .bss.pitch_location_pid:00000000 $d
+C:\Users\fffff\AppData\Local\Temp\ccnJ8tkb.s:38     .bss.yaw_speed_pid:00000000 yaw_speed_pid
+C:\Users\fffff\AppData\Local\Temp\ccnJ8tkb.s:35     .bss.yaw_speed_pid:00000000 $d
+C:\Users\fffff\AppData\Local\Temp\ccnJ8tkb.s:45     .bss.yaw_location_pid:00000000 yaw_location_pid
+C:\Users\fffff\AppData\Local\Temp\ccnJ8tkb.s:42     .bss.yaw_location_pid:00000000 $d
+C:\Users\fffff\AppData\Local\Temp\ccnJ8tkb.s:52     .bss.pitch_auto_speed_pid:00000000 pitch_auto_speed_pid
+C:\Users\fffff\AppData\Local\Temp\ccnJ8tkb.s:49     .bss.pitch_auto_speed_pid:00000000 $d
+C:\Users\fffff\AppData\Local\Temp\ccnJ8tkb.s:59     .bss.pitch_auto_location_pid:00000000 pitch_auto_location_pid
+C:\Users\fffff\AppData\Local\Temp\ccnJ8tkb.s:56     .bss.pitch_auto_location_pid:00000000 $d
+C:\Users\fffff\AppData\Local\Temp\ccnJ8tkb.s:66     .bss.yaw_auto_speed_pid:00000000 yaw_auto_speed_pid
+C:\Users\fffff\AppData\Local\Temp\ccnJ8tkb.s:63     .bss.yaw_auto_speed_pid:00000000 $d
+C:\Users\fffff\AppData\Local\Temp\ccnJ8tkb.s:73     .bss.yaw_auto_location_pid:00000000 yaw_auto_location_pid
+C:\Users\fffff\AppData\Local\Temp\ccnJ8tkb.s:70     .bss.yaw_auto_location_pid:00000000 $d
+C:\Users\fffff\AppData\Local\Temp\ccnJ8tkb.s:80     .bss.pitch_ramp:00000000 pitch_ramp
+C:\Users\fffff\AppData\Local\Temp\ccnJ8tkb.s:77     .bss.pitch_ramp:00000000 $d
+C:\Users\fffff\AppData\Local\Temp\ccnJ8tkb.s:87     .bss.yaw_ramp:00000000 yaw_ramp
+C:\Users\fffff\AppData\Local\Temp\ccnJ8tkb.s:84     .bss.yaw_ramp:00000000 $d
+C:\Users\fffff\AppData\Local\Temp\ccnJ8tkb.s:90     .text.Gimbal_init:00000000 $t
+C:\Users\fffff\AppData\Local\Temp\ccnJ8tkb.s:96     .text.Gimbal_init:00000000 Gimbal_init
+C:\Users\fffff\AppData\Local\Temp\ccnJ8tkb.s:192    .text.Gimbal_init:000000f8 $d
+C:\Users\fffff\AppData\Local\Temp\ccnJ8tkb.s:213    .text.Gimbal_set_pitch_angle:00000000 $t
+C:\Users\fffff\AppData\Local\Temp\ccnJ8tkb.s:219    .text.Gimbal_set_pitch_angle:00000000 Gimbal_set_pitch_angle
+C:\Users\fffff\AppData\Local\Temp\ccnJ8tkb.s:278    .text.Gimbal_set_pitch_angle:00000048 $d
+C:\Users\fffff\AppData\Local\Temp\ccnJ8tkb.s:285    .text.Gimbal_set_yaw_angle:00000000 $t
+C:\Users\fffff\AppData\Local\Temp\ccnJ8tkb.s:291    .text.Gimbal_set_yaw_angle:00000000 Gimbal_set_yaw_angle
+C:\Users\fffff\AppData\Local\Temp\ccnJ8tkb.s:330    .text.Gimbal_set_yaw_angle:0000001c $d
+C:\Users\fffff\AppData\Local\Temp\ccnJ8tkb.s:335    .text.Gimbal_control:00000000 $t
+C:\Users\fffff\AppData\Local\Temp\ccnJ8tkb.s:341    .text.Gimbal_control:00000000 Gimbal_control
+C:\Users\fffff\AppData\Local\Temp\ccnJ8tkb.s:616    .text.Gimbal_control:00000278 $d
+
+UNDEFINED SYMBOLS
+DJIMotor_init
+pid_set
+DJIMotor_setzero
+Global
+pid_cal
+DJIMotor_set
+cos
+sin
+IMU_data

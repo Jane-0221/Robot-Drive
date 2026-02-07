@@ -1,0 +1,912 @@
+ARM GAS  C:\Users\23671\AppData\Local\Temp\ccsOBOMf.s 			page 1
+
+
+   1              		.cpu cortex-m7
+   2              		.arch armv7e-m
+   3              		.fpu fpv5-d16
+   4              		.eabi_attribute 28, 1
+   5              		.eabi_attribute 20, 1
+   6              		.eabi_attribute 21, 1
+   7              		.eabi_attribute 23, 3
+   8              		.eabi_attribute 24, 1
+   9              		.eabi_attribute 25, 1
+  10              		.eabi_attribute 26, 1
+  11              		.eabi_attribute 30, 6
+  12              		.eabi_attribute 34, 1
+  13              		.eabi_attribute 18, 4
+  14              		.file	"ui_Omni_Shoot_Low_0.c"
+  15              		.text
+  16              	.Ltext0:
+  17              		.cfi_sections	.debug_frame
+  18              		.file 1 "Drivers/UI/ui_Omni_Shoot_Low_0.c"
+  19              		.global	ui_Omni_Shoot_Low_0
+  20              		.section	.bss.ui_Omni_Shoot_Low_0,"aw",%nobits
+  21              		.align	2
+  24              	ui_Omni_Shoot_Low_0:
+  25 0000 00000000 		.space	90
+  25      00000000 
+  25      00000000 
+  25      00000000 
+  25      00000000 
+  26              		.global	ui_Omni_Shoot_Low_Auto_rect
+  27              		.section	.data.ui_Omni_Shoot_Low_Auto_rect,"aw"
+  28              		.align	2
+  31              	ui_Omni_Shoot_Low_Auto_rect:
+  32 0000 0D000000 		.word	ui_Omni_Shoot_Low_0+13
+  33              		.global	ui_Omni_Shoot_Low_Shoot_Round
+  34              		.section	.data.ui_Omni_Shoot_Low_Shoot_Round,"aw"
+  35              		.align	2
+  38              	ui_Omni_Shoot_Low_Shoot_Round:
+  39 0000 1C000000 		.word	ui_Omni_Shoot_Low_0+28
+  40              		.global	ui_Omni_Shoot_Low_Shootend_Round
+  41              		.section	.data.ui_Omni_Shoot_Low_Shootend_Round,"aw"
+  42              		.align	2
+  45              	ui_Omni_Shoot_Low_Shootend_Round:
+  46 0000 2B000000 		.word	ui_Omni_Shoot_Low_0+43
+  47              		.global	ui_Omni_Shoot_Low_NewRound
+  48              		.section	.data.ui_Omni_Shoot_Low_NewRound,"aw"
+  49              		.align	2
+  52              	ui_Omni_Shoot_Low_NewRound:
+  53 0000 3A000000 		.word	ui_Omni_Shoot_Low_0+58
+  54              		.global	ui_Omni_Shoot_Low_NewEllipse
+  55              		.section	.data.ui_Omni_Shoot_Low_NewEllipse,"aw"
+  56              		.align	2
+  59              	ui_Omni_Shoot_Low_NewEllipse:
+  60 0000 49000000 		.word	ui_Omni_Shoot_Low_0+73
+  61              		.section	.text._ui_init_Omni_Shoot_Low_0,"ax",%progbits
+  62              		.align	1
+  63              		.global	_ui_init_Omni_Shoot_Low_0
+  64              		.syntax unified
+  65              		.thumb
+ARM GAS  C:\Users\23671\AppData\Local\Temp\ccsOBOMf.s 			page 2
+
+
+  66              		.thumb_func
+  68              	_ui_init_Omni_Shoot_Low_0:
+  69              	.LFB147:
+   1:Drivers/UI/ui_Omni_Shoot_Low_0.c **** //
+   2:Drivers/UI/ui_Omni_Shoot_Low_0.c **** // Created by RM UI Designer
+   3:Drivers/UI/ui_Omni_Shoot_Low_0.c **** //
+   4:Drivers/UI/ui_Omni_Shoot_Low_0.c **** 
+   5:Drivers/UI/ui_Omni_Shoot_Low_0.c **** #include "ui_Omni_Shoot_Low_0.h"
+   6:Drivers/UI/ui_Omni_Shoot_Low_0.c **** 
+   7:Drivers/UI/ui_Omni_Shoot_Low_0.c **** #define FRAME_ID 1
+   8:Drivers/UI/ui_Omni_Shoot_Low_0.c **** #define GROUP_ID 0
+   9:Drivers/UI/ui_Omni_Shoot_Low_0.c **** #define START_ID 0
+  10:Drivers/UI/ui_Omni_Shoot_Low_0.c **** #define OBJ_NUM 5
+  11:Drivers/UI/ui_Omni_Shoot_Low_0.c **** #define FRAME_OBJ_NUM 5
+  12:Drivers/UI/ui_Omni_Shoot_Low_0.c **** 
+  13:Drivers/UI/ui_Omni_Shoot_Low_0.c **** CAT(ui_, CAT(FRAME_OBJ_NUM, _frame_t)) ui_Omni_Shoot_Low_0;
+  14:Drivers/UI/ui_Omni_Shoot_Low_0.c **** ui_interface_rect_t *ui_Omni_Shoot_Low_Auto_rect = (ui_interface_rect_t *)&(ui_Omni_Shoot_Low_0.dat
+  15:Drivers/UI/ui_Omni_Shoot_Low_0.c **** ui_interface_round_t *ui_Omni_Shoot_Low_Shoot_Round = (ui_interface_round_t *)&(ui_Omni_Shoot_Low_0
+  16:Drivers/UI/ui_Omni_Shoot_Low_0.c **** ui_interface_round_t *ui_Omni_Shoot_Low_Shootend_Round = (ui_interface_round_t *)&(ui_Omni_Shoot_Lo
+  17:Drivers/UI/ui_Omni_Shoot_Low_0.c **** ui_interface_round_t *ui_Omni_Shoot_Low_NewRound = (ui_interface_round_t *)&(ui_Omni_Shoot_Low_0.da
+  18:Drivers/UI/ui_Omni_Shoot_Low_0.c **** ui_interface_ellipse_t *ui_Omni_Shoot_Low_NewEllipse = (ui_interface_ellipse_t *)&(ui_Omni_Shoot_Lo
+  19:Drivers/UI/ui_Omni_Shoot_Low_0.c **** 
+  20:Drivers/UI/ui_Omni_Shoot_Low_0.c **** void _ui_init_Omni_Shoot_Low_0() {
+  70              		.loc 1 20 34
+  71              		.cfi_startproc
+  72              		@ args = 0, pretend = 0, frame = 8
+  73              		@ frame_needed = 1, uses_anonymous_args = 0
+  74 0000 80B5     		push	{r7, lr}
+  75              	.LCFI0:
+  76              		.cfi_def_cfa_offset 8
+  77              		.cfi_offset 7, -8
+  78              		.cfi_offset 14, -4
+  79 0002 82B0     		sub	sp, sp, #8
+  80              	.LCFI1:
+  81              		.cfi_def_cfa_offset 16
+  82 0004 00AF     		add	r7, sp, #0
+  83              	.LCFI2:
+  84              		.cfi_def_cfa_register 7
+  85              	.LBB2:
+  21:Drivers/UI/ui_Omni_Shoot_Low_0.c ****     for (int i = 0; i < OBJ_NUM; i++) {
+  86              		.loc 1 21 14
+  87 0006 0023     		movs	r3, #0
+  88 0008 7B60     		str	r3, [r7, #4]
+  89              		.loc 1 21 5
+  90 000a 2CE0     		b	.L2
+  91              	.L3:
+  22:Drivers/UI/ui_Omni_Shoot_Low_0.c ****         ui_Omni_Shoot_Low_0.data[i].figure_name[0] = FRAME_ID;
+  92              		.loc 1 22 52
+  93 000c 1949     		ldr	r1, .L6
+  94 000e 7A68     		ldr	r2, [r7, #4]
+  95 0010 1346     		mov	r3, r2
+  96 0012 1B01     		lsls	r3, r3, #4
+  97 0014 9B1A     		subs	r3, r3, r2
+  98 0016 0B44     		add	r3, r3, r1
+  99 0018 0D33     		adds	r3, r3, #13
+ 100 001a 0122     		movs	r2, #1
+ 101 001c 1A70     		strb	r2, [r3]
+ARM GAS  C:\Users\23671\AppData\Local\Temp\ccsOBOMf.s 			page 3
+
+
+  23:Drivers/UI/ui_Omni_Shoot_Low_0.c ****         ui_Omni_Shoot_Low_0.data[i].figure_name[1] = GROUP_ID;
+ 102              		.loc 1 23 52
+ 103 001e 1549     		ldr	r1, .L6
+ 104 0020 7A68     		ldr	r2, [r7, #4]
+ 105 0022 1346     		mov	r3, r2
+ 106 0024 1B01     		lsls	r3, r3, #4
+ 107 0026 9B1A     		subs	r3, r3, r2
+ 108 0028 0B44     		add	r3, r3, r1
+ 109 002a 0E33     		adds	r3, r3, #14
+ 110 002c 0022     		movs	r2, #0
+ 111 002e 1A70     		strb	r2, [r3]
+  24:Drivers/UI/ui_Omni_Shoot_Low_0.c ****         ui_Omni_Shoot_Low_0.data[i].figure_name[2] = i + START_ID;
+ 112              		.loc 1 24 52
+ 113 0030 7B68     		ldr	r3, [r7, #4]
+ 114 0032 D8B2     		uxtb	r0, r3
+ 115 0034 0F49     		ldr	r1, .L6
+ 116 0036 7A68     		ldr	r2, [r7, #4]
+ 117 0038 1346     		mov	r3, r2
+ 118 003a 1B01     		lsls	r3, r3, #4
+ 119 003c 9B1A     		subs	r3, r3, r2
+ 120 003e 0B44     		add	r3, r3, r1
+ 121 0040 0F33     		adds	r3, r3, #15
+ 122 0042 0246     		mov	r2, r0
+ 123 0044 1A70     		strb	r2, [r3]
+  25:Drivers/UI/ui_Omni_Shoot_Low_0.c ****         ui_Omni_Shoot_Low_0.data[i].operate_tpyel = 1;
+ 124              		.loc 1 25 51
+ 125 0046 0B49     		ldr	r1, .L6
+ 126 0048 7A68     		ldr	r2, [r7, #4]
+ 127 004a 1346     		mov	r3, r2
+ 128 004c 1B01     		lsls	r3, r3, #4
+ 129 004e 9B1A     		subs	r3, r3, r2
+ 130 0050 0B44     		add	r3, r3, r1
+ 131 0052 03F10802 		add	r2, r3, #8
+ 132 0056 137A     		ldrb	r3, [r2, #8]
+ 133 0058 0121     		movs	r1, #1
+ 134 005a 61F30203 		bfi	r3, r1, #0, #3
+ 135 005e 1372     		strb	r3, [r2, #8]
+  21:Drivers/UI/ui_Omni_Shoot_Low_0.c ****         ui_Omni_Shoot_Low_0.data[i].figure_name[0] = FRAME_ID;
+ 136              		.loc 1 21 35 discriminator 3
+ 137 0060 7B68     		ldr	r3, [r7, #4]
+ 138 0062 0133     		adds	r3, r3, #1
+ 139 0064 7B60     		str	r3, [r7, #4]
+ 140              	.L2:
+  21:Drivers/UI/ui_Omni_Shoot_Low_0.c ****         ui_Omni_Shoot_Low_0.data[i].figure_name[0] = FRAME_ID;
+ 141              		.loc 1 21 23 discriminator 1
+ 142 0066 7B68     		ldr	r3, [r7, #4]
+ 143 0068 042B     		cmp	r3, #4
+ 144 006a CFDD     		ble	.L3
+ 145              	.LBE2:
+ 146              	.LBB3:
+  26:Drivers/UI/ui_Omni_Shoot_Low_0.c ****     }
+  27:Drivers/UI/ui_Omni_Shoot_Low_0.c ****     for (int i = OBJ_NUM; i < FRAME_OBJ_NUM; i++) {
+ 147              		.loc 1 27 14
+ 148 006c 0523     		movs	r3, #5
+ 149 006e 3B60     		str	r3, [r7]
+ 150              		.loc 1 27 5
+ 151 0070 11E0     		b	.L4
+ARM GAS  C:\Users\23671\AppData\Local\Temp\ccsOBOMf.s 			page 4
+
+
+ 152              	.L7:
+ 153 0072 00BF     		.align	2
+ 154              	.L6:
+ 155 0074 00000000 		.word	ui_Omni_Shoot_Low_0
+ 156              	.L5:
+  28:Drivers/UI/ui_Omni_Shoot_Low_0.c ****         ui_Omni_Shoot_Low_0.data[i].operate_tpyel = 0;
+ 157              		.loc 1 28 51
+ 158 0078 C949     		ldr	r1, .L8
+ 159 007a 3A68     		ldr	r2, [r7]
+ 160 007c 1346     		mov	r3, r2
+ 161 007e 1B01     		lsls	r3, r3, #4
+ 162 0080 9B1A     		subs	r3, r3, r2
+ 163 0082 0B44     		add	r3, r3, r1
+ 164 0084 03F10802 		add	r2, r3, #8
+ 165 0088 137A     		ldrb	r3, [r2, #8]
+ 166 008a 23F00703 		bic	r3, r3, #7
+ 167 008e 1372     		strb	r3, [r2, #8]
+  27:Drivers/UI/ui_Omni_Shoot_Low_0.c ****         ui_Omni_Shoot_Low_0.data[i].operate_tpyel = 0;
+ 168              		.loc 1 27 47 discriminator 3
+ 169 0090 3B68     		ldr	r3, [r7]
+ 170 0092 0133     		adds	r3, r3, #1
+ 171 0094 3B60     		str	r3, [r7]
+ 172              	.L4:
+  27:Drivers/UI/ui_Omni_Shoot_Low_0.c ****         ui_Omni_Shoot_Low_0.data[i].operate_tpyel = 0;
+ 173              		.loc 1 27 29 discriminator 1
+ 174 0096 3B68     		ldr	r3, [r7]
+ 175 0098 042B     		cmp	r3, #4
+ 176 009a EDDD     		ble	.L5
+ 177              	.LBE3:
+  29:Drivers/UI/ui_Omni_Shoot_Low_0.c ****     }
+  30:Drivers/UI/ui_Omni_Shoot_Low_0.c **** 
+  31:Drivers/UI/ui_Omni_Shoot_Low_0.c ****     ui_Omni_Shoot_Low_Auto_rect->figure_tpye = 1;
+ 178              		.loc 1 31 32
+ 179 009c C14B     		ldr	r3, .L8+4
+ 180 009e 1A68     		ldr	r2, [r3]
+ 181              		.loc 1 31 46
+ 182 00a0 D378     		ldrb	r3, [r2, #3]
+ 183 00a2 0121     		movs	r1, #1
+ 184 00a4 61F3C503 		bfi	r3, r1, #3, #3
+ 185 00a8 D370     		strb	r3, [r2, #3]
+  32:Drivers/UI/ui_Omni_Shoot_Low_0.c ****     ui_Omni_Shoot_Low_Auto_rect->layer = 0;
+ 186              		.loc 1 32 32
+ 187 00aa BE4B     		ldr	r3, .L8+4
+ 188 00ac 1B68     		ldr	r3, [r3]
+ 189              		.loc 1 32 40
+ 190 00ae DA78     		ldrb	r2, [r3, #3]
+ 191 00b0 02F03F02 		and	r2, r2, #63
+ 192 00b4 DA70     		strb	r2, [r3, #3]
+ 193 00b6 1A79     		ldrb	r2, [r3, #4]
+ 194 00b8 22F00302 		bic	r2, r2, #3
+ 195 00bc 1A71     		strb	r2, [r3, #4]
+  33:Drivers/UI/ui_Omni_Shoot_Low_0.c ****     ui_Omni_Shoot_Low_Auto_rect->start_x = 615;
+ 196              		.loc 1 33 32
+ 197 00be B94B     		ldr	r3, .L8+4
+ 198 00c0 1B68     		ldr	r3, [r3]
+ 199              		.loc 1 33 42
+ 200 00c2 1A7A     		ldrb	r2, [r3, #8]
+ARM GAS  C:\Users\23671\AppData\Local\Temp\ccsOBOMf.s 			page 5
+
+
+ 201 00c4 02F00302 		and	r2, r2, #3
+ 202 00c8 62F06302 		orn	r2, r2, #99
+ 203 00cc 1A72     		strb	r2, [r3, #8]
+ 204 00ce 5A7A     		ldrb	r2, [r3, #9]
+ 205 00d0 22F01F02 		bic	r2, r2, #31
+ 206 00d4 42F00902 		orr	r2, r2, #9
+ 207 00d8 5A72     		strb	r2, [r3, #9]
+  34:Drivers/UI/ui_Omni_Shoot_Low_0.c ****     ui_Omni_Shoot_Low_Auto_rect->start_y = 246;
+ 208              		.loc 1 34 32
+ 209 00da B24B     		ldr	r3, .L8+4
+ 210 00dc 1B68     		ldr	r3, [r3]
+ 211              		.loc 1 34 42
+ 212 00de 5A7A     		ldrb	r2, [r3, #9]
+ 213 00e0 02F01F02 		and	r2, r2, #31
+ 214 00e4 62F03F02 		orn	r2, r2, #63
+ 215 00e8 5A72     		strb	r2, [r3, #9]
+ 216 00ea 0022     		movs	r2, #0
+ 217 00ec 42F01E02 		orr	r2, r2, #30
+ 218 00f0 9A72     		strb	r2, [r3, #10]
+  35:Drivers/UI/ui_Omni_Shoot_Low_0.c ****     ui_Omni_Shoot_Low_Auto_rect->color = 8;
+ 219              		.loc 1 35 32
+ 220 00f2 AC4B     		ldr	r3, .L8+4
+ 221 00f4 1A68     		ldr	r2, [r3]
+ 222              		.loc 1 35 40
+ 223 00f6 1379     		ldrb	r3, [r2, #4]
+ 224 00f8 0821     		movs	r1, #8
+ 225 00fa 61F38503 		bfi	r3, r1, #2, #4
+ 226 00fe 1371     		strb	r3, [r2, #4]
+  36:Drivers/UI/ui_Omni_Shoot_Low_0.c ****     ui_Omni_Shoot_Low_Auto_rect->width = 5;
+ 227              		.loc 1 36 32
+ 228 0100 A84B     		ldr	r3, .L8+4
+ 229 0102 1B68     		ldr	r3, [r3]
+ 230              		.loc 1 36 40
+ 231 0104 0022     		movs	r2, #0
+ 232 0106 42F00502 		orr	r2, r2, #5
+ 233 010a DA71     		strb	r2, [r3, #7]
+ 234 010c 1A7A     		ldrb	r2, [r3, #8]
+ 235 010e 22F00302 		bic	r2, r2, #3
+ 236 0112 1A72     		strb	r2, [r3, #8]
+  37:Drivers/UI/ui_Omni_Shoot_Low_0.c ****     ui_Omni_Shoot_Low_Auto_rect->end_x = 1247;
+ 237              		.loc 1 37 32
+ 238 0114 A34B     		ldr	r3, .L8+4
+ 239 0116 1B68     		ldr	r3, [r3]
+ 240              		.loc 1 37 40
+ 241 0118 1A7B     		ldrb	r2, [r3, #12]
+ 242 011a 02F00302 		and	r2, r2, #3
+ 243 011e 42F07C02 		orr	r2, r2, #124
+ 244 0122 1A73     		strb	r2, [r3, #12]
+ 245 0124 5A7B     		ldrb	r2, [r3, #13]
+ 246 0126 22F01F02 		bic	r2, r2, #31
+ 247 012a 42F01302 		orr	r2, r2, #19
+ 248 012e 5A73     		strb	r2, [r3, #13]
+  38:Drivers/UI/ui_Omni_Shoot_Low_0.c ****     ui_Omni_Shoot_Low_Auto_rect->end_y = 808;
+ 249              		.loc 1 38 32
+ 250 0130 9C4B     		ldr	r3, .L8+4
+ 251 0132 1B68     		ldr	r3, [r3]
+ 252              		.loc 1 38 40
+ARM GAS  C:\Users\23671\AppData\Local\Temp\ccsOBOMf.s 			page 6
+
+
+ 253 0134 5A7B     		ldrb	r2, [r3, #13]
+ 254 0136 02F01F02 		and	r2, r2, #31
+ 255 013a 5A73     		strb	r2, [r3, #13]
+ 256 013c 0022     		movs	r2, #0
+ 257 013e 42F06502 		orr	r2, r2, #101
+ 258 0142 9A73     		strb	r2, [r3, #14]
+  39:Drivers/UI/ui_Omni_Shoot_Low_0.c **** 
+  40:Drivers/UI/ui_Omni_Shoot_Low_0.c ****     ui_Omni_Shoot_Low_Shoot_Round->figure_tpye = 2;
+ 259              		.loc 1 40 34
+ 260 0144 984B     		ldr	r3, .L8+8
+ 261 0146 1A68     		ldr	r2, [r3]
+ 262              		.loc 1 40 48
+ 263 0148 D378     		ldrb	r3, [r2, #3]
+ 264 014a 0221     		movs	r1, #2
+ 265 014c 61F3C503 		bfi	r3, r1, #3, #3
+ 266 0150 D370     		strb	r3, [r2, #3]
+  41:Drivers/UI/ui_Omni_Shoot_Low_0.c ****     ui_Omni_Shoot_Low_Shoot_Round->layer = 0;
+ 267              		.loc 1 41 34
+ 268 0152 954B     		ldr	r3, .L8+8
+ 269 0154 1B68     		ldr	r3, [r3]
+ 270              		.loc 1 41 42
+ 271 0156 DA78     		ldrb	r2, [r3, #3]
+ 272 0158 02F03F02 		and	r2, r2, #63
+ 273 015c DA70     		strb	r2, [r3, #3]
+ 274 015e 1A79     		ldrb	r2, [r3, #4]
+ 275 0160 22F00302 		bic	r2, r2, #3
+ 276 0164 1A71     		strb	r2, [r3, #4]
+  42:Drivers/UI/ui_Omni_Shoot_Low_0.c ****     ui_Omni_Shoot_Low_Shoot_Round->r = 13;
+ 277              		.loc 1 42 34
+ 278 0166 904B     		ldr	r3, .L8+8
+ 279 0168 1B68     		ldr	r3, [r3]
+ 280              		.loc 1 42 38
+ 281 016a 0022     		movs	r2, #0
+ 282 016c 42F00D02 		orr	r2, r2, #13
+ 283 0170 DA72     		strb	r2, [r3, #11]
+ 284 0172 1A7B     		ldrb	r2, [r3, #12]
+ 285 0174 22F00302 		bic	r2, r2, #3
+ 286 0178 1A73     		strb	r2, [r3, #12]
+  43:Drivers/UI/ui_Omni_Shoot_Low_0.c ****     ui_Omni_Shoot_Low_Shoot_Round->start_x = 960;
+ 287              		.loc 1 43 34
+ 288 017a 8B4B     		ldr	r3, .L8+8
+ 289 017c 1B68     		ldr	r3, [r3]
+ 290              		.loc 1 43 44
+ 291 017e 1A7A     		ldrb	r2, [r3, #8]
+ 292 0180 02F00302 		and	r2, r2, #3
+ 293 0184 1A72     		strb	r2, [r3, #8]
+ 294 0186 5A7A     		ldrb	r2, [r3, #9]
+ 295 0188 22F01F02 		bic	r2, r2, #31
+ 296 018c 42F00F02 		orr	r2, r2, #15
+ 297 0190 5A72     		strb	r2, [r3, #9]
+  44:Drivers/UI/ui_Omni_Shoot_Low_0.c ****     ui_Omni_Shoot_Low_Shoot_Round->start_y = 540;
+ 298              		.loc 1 44 34
+ 299 0192 854B     		ldr	r3, .L8+8
+ 300 0194 1B68     		ldr	r3, [r3]
+ 301              		.loc 1 44 44
+ 302 0196 5A7A     		ldrb	r2, [r3, #9]
+ 303 0198 02F01F02 		and	r2, r2, #31
+ARM GAS  C:\Users\23671\AppData\Local\Temp\ccsOBOMf.s 			page 7
+
+
+ 304 019c 62F07F02 		orn	r2, r2, #127
+ 305 01a0 5A72     		strb	r2, [r3, #9]
+ 306 01a2 0022     		movs	r2, #0
+ 307 01a4 42F04302 		orr	r2, r2, #67
+ 308 01a8 9A72     		strb	r2, [r3, #10]
+  45:Drivers/UI/ui_Omni_Shoot_Low_0.c ****     ui_Omni_Shoot_Low_Shoot_Round->color = 4;
+ 309              		.loc 1 45 34
+ 310 01aa 7F4B     		ldr	r3, .L8+8
+ 311 01ac 1A68     		ldr	r2, [r3]
+ 312              		.loc 1 45 42
+ 313 01ae 1379     		ldrb	r3, [r2, #4]
+ 314 01b0 0421     		movs	r1, #4
+ 315 01b2 61F38503 		bfi	r3, r1, #2, #4
+ 316 01b6 1371     		strb	r3, [r2, #4]
+  46:Drivers/UI/ui_Omni_Shoot_Low_0.c ****     ui_Omni_Shoot_Low_Shoot_Round->width = 2;
+ 317              		.loc 1 46 34
+ 318 01b8 7B4B     		ldr	r3, .L8+8
+ 319 01ba 1B68     		ldr	r3, [r3]
+ 320              		.loc 1 46 42
+ 321 01bc 0022     		movs	r2, #0
+ 322 01be 42F00202 		orr	r2, r2, #2
+ 323 01c2 DA71     		strb	r2, [r3, #7]
+ 324 01c4 1A7A     		ldrb	r2, [r3, #8]
+ 325 01c6 22F00302 		bic	r2, r2, #3
+ 326 01ca 1A72     		strb	r2, [r3, #8]
+  47:Drivers/UI/ui_Omni_Shoot_Low_0.c **** 
+  48:Drivers/UI/ui_Omni_Shoot_Low_0.c ****     ui_Omni_Shoot_Low_Shootend_Round->figure_tpye = 2;
+ 327              		.loc 1 48 37
+ 328 01cc 774B     		ldr	r3, .L8+12
+ 329 01ce 1A68     		ldr	r2, [r3]
+ 330              		.loc 1 48 51
+ 331 01d0 D378     		ldrb	r3, [r2, #3]
+ 332 01d2 0221     		movs	r1, #2
+ 333 01d4 61F3C503 		bfi	r3, r1, #3, #3
+ 334 01d8 D370     		strb	r3, [r2, #3]
+  49:Drivers/UI/ui_Omni_Shoot_Low_0.c ****     ui_Omni_Shoot_Low_Shootend_Round->layer = 0;
+ 335              		.loc 1 49 37
+ 336 01da 744B     		ldr	r3, .L8+12
+ 337 01dc 1B68     		ldr	r3, [r3]
+ 338              		.loc 1 49 45
+ 339 01de DA78     		ldrb	r2, [r3, #3]
+ 340 01e0 02F03F02 		and	r2, r2, #63
+ 341 01e4 DA70     		strb	r2, [r3, #3]
+ 342 01e6 1A79     		ldrb	r2, [r3, #4]
+ 343 01e8 22F00302 		bic	r2, r2, #3
+ 344 01ec 1A71     		strb	r2, [r3, #4]
+  50:Drivers/UI/ui_Omni_Shoot_Low_0.c ****     ui_Omni_Shoot_Low_Shootend_Round->r = 15;
+ 345              		.loc 1 50 37
+ 346 01ee 6F4B     		ldr	r3, .L8+12
+ 347 01f0 1B68     		ldr	r3, [r3]
+ 348              		.loc 1 50 41
+ 349 01f2 0022     		movs	r2, #0
+ 350 01f4 42F00F02 		orr	r2, r2, #15
+ 351 01f8 DA72     		strb	r2, [r3, #11]
+ 352 01fa 1A7B     		ldrb	r2, [r3, #12]
+ 353 01fc 22F00302 		bic	r2, r2, #3
+ 354 0200 1A73     		strb	r2, [r3, #12]
+ARM GAS  C:\Users\23671\AppData\Local\Temp\ccsOBOMf.s 			page 8
+
+
+  51:Drivers/UI/ui_Omni_Shoot_Low_0.c ****     ui_Omni_Shoot_Low_Shootend_Round->start_x = 920;
+ 355              		.loc 1 51 37
+ 356 0202 6A4B     		ldr	r3, .L8+12
+ 357 0204 1B68     		ldr	r3, [r3]
+ 358              		.loc 1 51 47
+ 359 0206 1A7A     		ldrb	r2, [r3, #8]
+ 360 0208 02F00302 		and	r2, r2, #3
+ 361 020c 42F06002 		orr	r2, r2, #96
+ 362 0210 1A72     		strb	r2, [r3, #8]
+ 363 0212 5A7A     		ldrb	r2, [r3, #9]
+ 364 0214 22F01F02 		bic	r2, r2, #31
+ 365 0218 42F00E02 		orr	r2, r2, #14
+ 366 021c 5A72     		strb	r2, [r3, #9]
+  52:Drivers/UI/ui_Omni_Shoot_Low_0.c ****     ui_Omni_Shoot_Low_Shootend_Round->start_y = 460;
+ 367              		.loc 1 52 37
+ 368 021e 634B     		ldr	r3, .L8+12
+ 369 0220 1B68     		ldr	r3, [r3]
+ 370              		.loc 1 52 47
+ 371 0222 5A7A     		ldrb	r2, [r3, #9]
+ 372 0224 02F01F02 		and	r2, r2, #31
+ 373 0228 62F07F02 		orn	r2, r2, #127
+ 374 022c 5A72     		strb	r2, [r3, #9]
+ 375 022e 0022     		movs	r2, #0
+ 376 0230 42F03902 		orr	r2, r2, #57
+ 377 0234 9A72     		strb	r2, [r3, #10]
+  53:Drivers/UI/ui_Omni_Shoot_Low_0.c ****     ui_Omni_Shoot_Low_Shootend_Round->color = 0;
+ 378              		.loc 1 53 37
+ 379 0236 5D4B     		ldr	r3, .L8+12
+ 380 0238 1A68     		ldr	r2, [r3]
+ 381              		.loc 1 53 45
+ 382 023a 1379     		ldrb	r3, [r2, #4]
+ 383 023c 23F03C03 		bic	r3, r3, #60
+ 384 0240 1371     		strb	r3, [r2, #4]
+  54:Drivers/UI/ui_Omni_Shoot_Low_0.c ****     ui_Omni_Shoot_Low_Shootend_Round->width = 3;
+ 385              		.loc 1 54 37
+ 386 0242 5A4B     		ldr	r3, .L8+12
+ 387 0244 1B68     		ldr	r3, [r3]
+ 388              		.loc 1 54 45
+ 389 0246 0022     		movs	r2, #0
+ 390 0248 42F00302 		orr	r2, r2, #3
+ 391 024c DA71     		strb	r2, [r3, #7]
+ 392 024e 1A7A     		ldrb	r2, [r3, #8]
+ 393 0250 22F00302 		bic	r2, r2, #3
+ 394 0254 1A72     		strb	r2, [r3, #8]
+  55:Drivers/UI/ui_Omni_Shoot_Low_0.c **** 
+  56:Drivers/UI/ui_Omni_Shoot_Low_0.c ****     ui_Omni_Shoot_Low_NewRound->figure_tpye = 2;
+ 395              		.loc 1 56 31
+ 396 0256 564B     		ldr	r3, .L8+16
+ 397 0258 1A68     		ldr	r2, [r3]
+ 398              		.loc 1 56 45
+ 399 025a D378     		ldrb	r3, [r2, #3]
+ 400 025c 0221     		movs	r1, #2
+ 401 025e 61F3C503 		bfi	r3, r1, #3, #3
+ 402 0262 D370     		strb	r3, [r2, #3]
+  57:Drivers/UI/ui_Omni_Shoot_Low_0.c ****     ui_Omni_Shoot_Low_NewRound->layer = 0;
+ 403              		.loc 1 57 31
+ 404 0264 524B     		ldr	r3, .L8+16
+ARM GAS  C:\Users\23671\AppData\Local\Temp\ccsOBOMf.s 			page 9
+
+
+ 405 0266 1B68     		ldr	r3, [r3]
+ 406              		.loc 1 57 39
+ 407 0268 DA78     		ldrb	r2, [r3, #3]
+ 408 026a 02F03F02 		and	r2, r2, #63
+ 409 026e DA70     		strb	r2, [r3, #3]
+ 410 0270 1A79     		ldrb	r2, [r3, #4]
+ 411 0272 22F00302 		bic	r2, r2, #3
+ 412 0276 1A71     		strb	r2, [r3, #4]
+  58:Drivers/UI/ui_Omni_Shoot_Low_0.c ****     ui_Omni_Shoot_Low_NewRound->r = 76;
+ 413              		.loc 1 58 31
+ 414 0278 4D4B     		ldr	r3, .L8+16
+ 415 027a 1B68     		ldr	r3, [r3]
+ 416              		.loc 1 58 35
+ 417 027c 0022     		movs	r2, #0
+ 418 027e 42F04C02 		orr	r2, r2, #76
+ 419 0282 DA72     		strb	r2, [r3, #11]
+ 420 0284 1A7B     		ldrb	r2, [r3, #12]
+ 421 0286 22F00302 		bic	r2, r2, #3
+ 422 028a 1A73     		strb	r2, [r3, #12]
+  59:Drivers/UI/ui_Omni_Shoot_Low_0.c ****     ui_Omni_Shoot_Low_NewRound->start_x = 126;
+ 423              		.loc 1 59 31
+ 424 028c 484B     		ldr	r3, .L8+16
+ 425 028e 1B68     		ldr	r3, [r3]
+ 426              		.loc 1 59 41
+ 427 0290 1A7A     		ldrb	r2, [r3, #8]
+ 428 0292 02F00302 		and	r2, r2, #3
+ 429 0296 62F00702 		orn	r2, r2, #7
+ 430 029a 1A72     		strb	r2, [r3, #8]
+ 431 029c 5A7A     		ldrb	r2, [r3, #9]
+ 432 029e 22F01F02 		bic	r2, r2, #31
+ 433 02a2 42F00102 		orr	r2, r2, #1
+ 434 02a6 5A72     		strb	r2, [r3, #9]
+  60:Drivers/UI/ui_Omni_Shoot_Low_0.c ****     ui_Omni_Shoot_Low_NewRound->start_y = 126;
+ 435              		.loc 1 60 31
+ 436 02a8 414B     		ldr	r3, .L8+16
+ 437 02aa 1B68     		ldr	r3, [r3]
+ 438              		.loc 1 60 41
+ 439 02ac 5A7A     		ldrb	r2, [r3, #9]
+ 440 02ae 02F01F02 		and	r2, r2, #31
+ 441 02b2 62F03F02 		orn	r2, r2, #63
+ 442 02b6 5A72     		strb	r2, [r3, #9]
+ 443 02b8 0022     		movs	r2, #0
+ 444 02ba 42F00F02 		orr	r2, r2, #15
+ 445 02be 9A72     		strb	r2, [r3, #10]
+  61:Drivers/UI/ui_Omni_Shoot_Low_0.c ****     ui_Omni_Shoot_Low_NewRound->color = 0;
+ 446              		.loc 1 61 31
+ 447 02c0 3B4B     		ldr	r3, .L8+16
+ 448 02c2 1A68     		ldr	r2, [r3]
+ 449              		.loc 1 61 39
+ 450 02c4 1379     		ldrb	r3, [r2, #4]
+ 451 02c6 23F03C03 		bic	r3, r3, #60
+ 452 02ca 1371     		strb	r3, [r2, #4]
+  62:Drivers/UI/ui_Omni_Shoot_Low_0.c ****     ui_Omni_Shoot_Low_NewRound->width = 1;
+ 453              		.loc 1 62 31
+ 454 02cc 384B     		ldr	r3, .L8+16
+ 455 02ce 1B68     		ldr	r3, [r3]
+ 456              		.loc 1 62 39
+ARM GAS  C:\Users\23671\AppData\Local\Temp\ccsOBOMf.s 			page 10
+
+
+ 457 02d0 0022     		movs	r2, #0
+ 458 02d2 42F00102 		orr	r2, r2, #1
+ 459 02d6 DA71     		strb	r2, [r3, #7]
+ 460 02d8 1A7A     		ldrb	r2, [r3, #8]
+ 461 02da 22F00302 		bic	r2, r2, #3
+ 462 02de 1A72     		strb	r2, [r3, #8]
+  63:Drivers/UI/ui_Omni_Shoot_Low_0.c **** 
+  64:Drivers/UI/ui_Omni_Shoot_Low_0.c ****     ui_Omni_Shoot_Low_NewEllipse->figure_tpye = 3;
+ 463              		.loc 1 64 33
+ 464 02e0 344B     		ldr	r3, .L8+20
+ 465 02e2 1A68     		ldr	r2, [r3]
+ 466              		.loc 1 64 47
+ 467 02e4 D378     		ldrb	r3, [r2, #3]
+ 468 02e6 0321     		movs	r1, #3
+ 469 02e8 61F3C503 		bfi	r3, r1, #3, #3
+ 470 02ec D370     		strb	r3, [r2, #3]
+  65:Drivers/UI/ui_Omni_Shoot_Low_0.c ****     ui_Omni_Shoot_Low_NewEllipse->layer = 0;
+ 471              		.loc 1 65 33
+ 472 02ee 314B     		ldr	r3, .L8+20
+ 473 02f0 1B68     		ldr	r3, [r3]
+ 474              		.loc 1 65 41
+ 475 02f2 DA78     		ldrb	r2, [r3, #3]
+ 476 02f4 02F03F02 		and	r2, r2, #63
+ 477 02f8 DA70     		strb	r2, [r3, #3]
+ 478 02fa 1A79     		ldrb	r2, [r3, #4]
+ 479 02fc 22F00302 		bic	r2, r2, #3
+ 480 0300 1A71     		strb	r2, [r3, #4]
+  66:Drivers/UI/ui_Omni_Shoot_Low_0.c ****     ui_Omni_Shoot_Low_NewEllipse->rx = 50;
+ 481              		.loc 1 66 33
+ 482 0302 2C4B     		ldr	r3, .L8+20
+ 483 0304 1B68     		ldr	r3, [r3]
+ 484              		.loc 1 66 38
+ 485 0306 1A7B     		ldrb	r2, [r3, #12]
+ 486 0308 02F00302 		and	r2, r2, #3
+ 487 030c 62F03702 		orn	r2, r2, #55
+ 488 0310 1A73     		strb	r2, [r3, #12]
+ 489 0312 5A7B     		ldrb	r2, [r3, #13]
+ 490 0314 22F01F02 		bic	r2, r2, #31
+ 491 0318 5A73     		strb	r2, [r3, #13]
+  67:Drivers/UI/ui_Omni_Shoot_Low_0.c ****     ui_Omni_Shoot_Low_NewEllipse->ry = 50;
+ 492              		.loc 1 67 33
+ 493 031a 264B     		ldr	r3, .L8+20
+ 494 031c 1B68     		ldr	r3, [r3]
+ 495              		.loc 1 67 38
+ 496 031e 5A7B     		ldrb	r2, [r3, #13]
+ 497 0320 02F01F02 		and	r2, r2, #31
+ 498 0324 42F04002 		orr	r2, r2, #64
+ 499 0328 5A73     		strb	r2, [r3, #13]
+ 500 032a 0022     		movs	r2, #0
+ 501 032c 42F00602 		orr	r2, r2, #6
+ 502 0330 9A73     		strb	r2, [r3, #14]
+  68:Drivers/UI/ui_Omni_Shoot_Low_0.c ****     ui_Omni_Shoot_Low_NewEllipse->start_x = 100;
+ 503              		.loc 1 68 33
+ 504 0332 204B     		ldr	r3, .L8+20
+ 505 0334 1B68     		ldr	r3, [r3]
+ 506              		.loc 1 68 43
+ 507 0336 1A7A     		ldrb	r2, [r3, #8]
+ARM GAS  C:\Users\23671\AppData\Local\Temp\ccsOBOMf.s 			page 11
+
+
+ 508 0338 02F00302 		and	r2, r2, #3
+ 509 033c 62F06F02 		orn	r2, r2, #111
+ 510 0340 1A72     		strb	r2, [r3, #8]
+ 511 0342 5A7A     		ldrb	r2, [r3, #9]
+ 512 0344 22F01F02 		bic	r2, r2, #31
+ 513 0348 42F00102 		orr	r2, r2, #1
+ 514 034c 5A72     		strb	r2, [r3, #9]
+  69:Drivers/UI/ui_Omni_Shoot_Low_0.c ****     ui_Omni_Shoot_Low_NewEllipse->start_y = 100;
+ 515              		.loc 1 69 33
+ 516 034e 194B     		ldr	r3, .L8+20
+ 517 0350 1B68     		ldr	r3, [r3]
+ 518              		.loc 1 69 43
+ 519 0352 5A7A     		ldrb	r2, [r3, #9]
+ 520 0354 02F01F02 		and	r2, r2, #31
+ 521 0358 62F07F02 		orn	r2, r2, #127
+ 522 035c 5A72     		strb	r2, [r3, #9]
+ 523 035e 0022     		movs	r2, #0
+ 524 0360 42F00C02 		orr	r2, r2, #12
+ 525 0364 9A72     		strb	r2, [r3, #10]
+  70:Drivers/UI/ui_Omni_Shoot_Low_0.c ****     ui_Omni_Shoot_Low_NewEllipse->color = 0;
+ 526              		.loc 1 70 33
+ 527 0366 134B     		ldr	r3, .L8+20
+ 528 0368 1A68     		ldr	r2, [r3]
+ 529              		.loc 1 70 41
+ 530 036a 1379     		ldrb	r3, [r2, #4]
+ 531 036c 23F03C03 		bic	r3, r3, #60
+ 532 0370 1371     		strb	r3, [r2, #4]
+  71:Drivers/UI/ui_Omni_Shoot_Low_0.c ****     ui_Omni_Shoot_Low_NewEllipse->width = 1;
+ 533              		.loc 1 71 33
+ 534 0372 104B     		ldr	r3, .L8+20
+ 535 0374 1B68     		ldr	r3, [r3]
+ 536              		.loc 1 71 41
+ 537 0376 0022     		movs	r2, #0
+ 538 0378 42F00102 		orr	r2, r2, #1
+ 539 037c DA71     		strb	r2, [r3, #7]
+ 540 037e 1A7A     		ldrb	r2, [r3, #8]
+ 541 0380 22F00302 		bic	r2, r2, #3
+ 542 0384 1A72     		strb	r2, [r3, #8]
+  72:Drivers/UI/ui_Omni_Shoot_Low_0.c **** 
+  73:Drivers/UI/ui_Omni_Shoot_Low_0.c **** 
+  74:Drivers/UI/ui_Omni_Shoot_Low_0.c ****     CAT(ui_proc_, CAT(FRAME_OBJ_NUM, _frame))(&ui_Omni_Shoot_Low_0);
+ 543              		.loc 1 74 5
+ 544 0386 0648     		ldr	r0, .L8
+ 545 0388 FFF7FEFF 		bl	ui_proc_5_frame
+  75:Drivers/UI/ui_Omni_Shoot_Low_0.c ****     SEND_MESSAGE((uint8_t *) &ui_Omni_Shoot_Low_0, sizeof(ui_Omni_Shoot_Low_0));
+ 546              		.loc 1 75 5
+ 547 038c 6423     		movs	r3, #100
+ 548 038e 5A22     		movs	r2, #90
+ 549 0390 0349     		ldr	r1, .L8
+ 550 0392 0948     		ldr	r0, .L8+24
+ 551 0394 FFF7FEFF 		bl	HAL_UART_Transmit
+  76:Drivers/UI/ui_Omni_Shoot_Low_0.c **** }
+ 552              		.loc 1 76 1
+ 553 0398 00BF     		nop
+ 554 039a 0837     		adds	r7, r7, #8
+ 555              	.LCFI3:
+ 556              		.cfi_def_cfa_offset 8
+ARM GAS  C:\Users\23671\AppData\Local\Temp\ccsOBOMf.s 			page 12
+
+
+ 557 039c BD46     		mov	sp, r7
+ 558              	.LCFI4:
+ 559              		.cfi_def_cfa_register 13
+ 560              		@ sp needed
+ 561 039e 80BD     		pop	{r7, pc}
+ 562              	.L9:
+ 563              		.align	2
+ 564              	.L8:
+ 565 03a0 00000000 		.word	ui_Omni_Shoot_Low_0
+ 566 03a4 00000000 		.word	ui_Omni_Shoot_Low_Auto_rect
+ 567 03a8 00000000 		.word	ui_Omni_Shoot_Low_Shoot_Round
+ 568 03ac 00000000 		.word	ui_Omni_Shoot_Low_Shootend_Round
+ 569 03b0 00000000 		.word	ui_Omni_Shoot_Low_NewRound
+ 570 03b4 00000000 		.word	ui_Omni_Shoot_Low_NewEllipse
+ 571 03b8 00000000 		.word	huart7
+ 572              		.cfi_endproc
+ 573              	.LFE147:
+ 575              		.section	.text._ui_update_Omni_Shoot_Low_0,"ax",%progbits
+ 576              		.align	1
+ 577              		.global	_ui_update_Omni_Shoot_Low_0
+ 578              		.syntax unified
+ 579              		.thumb
+ 580              		.thumb_func
+ 582              	_ui_update_Omni_Shoot_Low_0:
+ 583              	.LFB148:
+  77:Drivers/UI/ui_Omni_Shoot_Low_0.c **** 
+  78:Drivers/UI/ui_Omni_Shoot_Low_0.c **** void _ui_update_Omni_Shoot_Low_0() {
+ 584              		.loc 1 78 36
+ 585              		.cfi_startproc
+ 586              		@ args = 0, pretend = 0, frame = 8
+ 587              		@ frame_needed = 1, uses_anonymous_args = 0
+ 588 0000 80B5     		push	{r7, lr}
+ 589              	.LCFI5:
+ 590              		.cfi_def_cfa_offset 8
+ 591              		.cfi_offset 7, -8
+ 592              		.cfi_offset 14, -4
+ 593 0002 82B0     		sub	sp, sp, #8
+ 594              	.LCFI6:
+ 595              		.cfi_def_cfa_offset 16
+ 596 0004 00AF     		add	r7, sp, #0
+ 597              	.LCFI7:
+ 598              		.cfi_def_cfa_register 7
+ 599              	.LBB4:
+  79:Drivers/UI/ui_Omni_Shoot_Low_0.c ****     for (int i = 0; i < OBJ_NUM; i++) {
+ 600              		.loc 1 79 14
+ 601 0006 0023     		movs	r3, #0
+ 602 0008 7B60     		str	r3, [r7, #4]
+ 603              		.loc 1 79 5
+ 604 000a 0FE0     		b	.L11
+ 605              	.L12:
+  80:Drivers/UI/ui_Omni_Shoot_Low_0.c ****         ui_Omni_Shoot_Low_0.data[i].operate_tpyel = 2;
+ 606              		.loc 1 80 51
+ 607 000c 0F49     		ldr	r1, .L13
+ 608 000e 7A68     		ldr	r2, [r7, #4]
+ 609 0010 1346     		mov	r3, r2
+ 610 0012 1B01     		lsls	r3, r3, #4
+ 611 0014 9B1A     		subs	r3, r3, r2
+ARM GAS  C:\Users\23671\AppData\Local\Temp\ccsOBOMf.s 			page 13
+
+
+ 612 0016 0B44     		add	r3, r3, r1
+ 613 0018 03F10802 		add	r2, r3, #8
+ 614 001c 137A     		ldrb	r3, [r2, #8]
+ 615 001e 0221     		movs	r1, #2
+ 616 0020 61F30203 		bfi	r3, r1, #0, #3
+ 617 0024 1372     		strb	r3, [r2, #8]
+  79:Drivers/UI/ui_Omni_Shoot_Low_0.c ****     for (int i = 0; i < OBJ_NUM; i++) {
+ 618              		.loc 1 79 35 discriminator 3
+ 619 0026 7B68     		ldr	r3, [r7, #4]
+ 620 0028 0133     		adds	r3, r3, #1
+ 621 002a 7B60     		str	r3, [r7, #4]
+ 622              	.L11:
+  79:Drivers/UI/ui_Omni_Shoot_Low_0.c ****     for (int i = 0; i < OBJ_NUM; i++) {
+ 623              		.loc 1 79 23 discriminator 1
+ 624 002c 7B68     		ldr	r3, [r7, #4]
+ 625 002e 042B     		cmp	r3, #4
+ 626 0030 ECDD     		ble	.L12
+ 627              	.LBE4:
+  81:Drivers/UI/ui_Omni_Shoot_Low_0.c ****     }
+  82:Drivers/UI/ui_Omni_Shoot_Low_0.c **** 
+  83:Drivers/UI/ui_Omni_Shoot_Low_0.c ****     CAT(ui_proc_, CAT(FRAME_OBJ_NUM, _frame))(&ui_Omni_Shoot_Low_0);
+ 628              		.loc 1 83 5
+ 629 0032 0648     		ldr	r0, .L13
+ 630 0034 FFF7FEFF 		bl	ui_proc_5_frame
+  84:Drivers/UI/ui_Omni_Shoot_Low_0.c ****     SEND_MESSAGE((uint8_t *) &ui_Omni_Shoot_Low_0, sizeof(ui_Omni_Shoot_Low_0));
+ 631              		.loc 1 84 5
+ 632 0038 6423     		movs	r3, #100
+ 633 003a 5A22     		movs	r2, #90
+ 634 003c 0349     		ldr	r1, .L13
+ 635 003e 0448     		ldr	r0, .L13+4
+ 636 0040 FFF7FEFF 		bl	HAL_UART_Transmit
+  85:Drivers/UI/ui_Omni_Shoot_Low_0.c **** }
+ 637              		.loc 1 85 1
+ 638 0044 00BF     		nop
+ 639 0046 0837     		adds	r7, r7, #8
+ 640              	.LCFI8:
+ 641              		.cfi_def_cfa_offset 8
+ 642 0048 BD46     		mov	sp, r7
+ 643              	.LCFI9:
+ 644              		.cfi_def_cfa_register 13
+ 645              		@ sp needed
+ 646 004a 80BD     		pop	{r7, pc}
+ 647              	.L14:
+ 648              		.align	2
+ 649              	.L13:
+ 650 004c 00000000 		.word	ui_Omni_Shoot_Low_0
+ 651 0050 00000000 		.word	huart7
+ 652              		.cfi_endproc
+ 653              	.LFE148:
+ 655              		.section	.text._ui_remove_Omni_Shoot_Low_0,"ax",%progbits
+ 656              		.align	1
+ 657              		.global	_ui_remove_Omni_Shoot_Low_0
+ 658              		.syntax unified
+ 659              		.thumb
+ 660              		.thumb_func
+ 662              	_ui_remove_Omni_Shoot_Low_0:
+ 663              	.LFB149:
+ARM GAS  C:\Users\23671\AppData\Local\Temp\ccsOBOMf.s 			page 14
+
+
+  86:Drivers/UI/ui_Omni_Shoot_Low_0.c **** 
+  87:Drivers/UI/ui_Omni_Shoot_Low_0.c **** void _ui_remove_Omni_Shoot_Low_0() {
+ 664              		.loc 1 87 36
+ 665              		.cfi_startproc
+ 666              		@ args = 0, pretend = 0, frame = 8
+ 667              		@ frame_needed = 1, uses_anonymous_args = 0
+ 668 0000 80B5     		push	{r7, lr}
+ 669              	.LCFI10:
+ 670              		.cfi_def_cfa_offset 8
+ 671              		.cfi_offset 7, -8
+ 672              		.cfi_offset 14, -4
+ 673 0002 82B0     		sub	sp, sp, #8
+ 674              	.LCFI11:
+ 675              		.cfi_def_cfa_offset 16
+ 676 0004 00AF     		add	r7, sp, #0
+ 677              	.LCFI12:
+ 678              		.cfi_def_cfa_register 7
+ 679              	.LBB5:
+  88:Drivers/UI/ui_Omni_Shoot_Low_0.c ****     for (int i = 0; i < OBJ_NUM; i++) {
+ 680              		.loc 1 88 14
+ 681 0006 0023     		movs	r3, #0
+ 682 0008 7B60     		str	r3, [r7, #4]
+ 683              		.loc 1 88 5
+ 684 000a 0FE0     		b	.L16
+ 685              	.L17:
+  89:Drivers/UI/ui_Omni_Shoot_Low_0.c ****         ui_Omni_Shoot_Low_0.data[i].operate_tpyel = 3;
+ 686              		.loc 1 89 51
+ 687 000c 0F49     		ldr	r1, .L18
+ 688 000e 7A68     		ldr	r2, [r7, #4]
+ 689 0010 1346     		mov	r3, r2
+ 690 0012 1B01     		lsls	r3, r3, #4
+ 691 0014 9B1A     		subs	r3, r3, r2
+ 692 0016 0B44     		add	r3, r3, r1
+ 693 0018 03F10802 		add	r2, r3, #8
+ 694 001c 137A     		ldrb	r3, [r2, #8]
+ 695 001e 0321     		movs	r1, #3
+ 696 0020 61F30203 		bfi	r3, r1, #0, #3
+ 697 0024 1372     		strb	r3, [r2, #8]
+  88:Drivers/UI/ui_Omni_Shoot_Low_0.c ****     for (int i = 0; i < OBJ_NUM; i++) {
+ 698              		.loc 1 88 35 discriminator 3
+ 699 0026 7B68     		ldr	r3, [r7, #4]
+ 700 0028 0133     		adds	r3, r3, #1
+ 701 002a 7B60     		str	r3, [r7, #4]
+ 702              	.L16:
+  88:Drivers/UI/ui_Omni_Shoot_Low_0.c ****     for (int i = 0; i < OBJ_NUM; i++) {
+ 703              		.loc 1 88 23 discriminator 1
+ 704 002c 7B68     		ldr	r3, [r7, #4]
+ 705 002e 042B     		cmp	r3, #4
+ 706 0030 ECDD     		ble	.L17
+ 707              	.LBE5:
+  90:Drivers/UI/ui_Omni_Shoot_Low_0.c ****     }
+  91:Drivers/UI/ui_Omni_Shoot_Low_0.c **** 
+  92:Drivers/UI/ui_Omni_Shoot_Low_0.c ****     CAT(ui_proc_, CAT(FRAME_OBJ_NUM, _frame))(&ui_Omni_Shoot_Low_0);
+ 708              		.loc 1 92 5
+ 709 0032 0648     		ldr	r0, .L18
+ 710 0034 FFF7FEFF 		bl	ui_proc_5_frame
+  93:Drivers/UI/ui_Omni_Shoot_Low_0.c ****     SEND_MESSAGE((uint8_t *) &ui_Omni_Shoot_Low_0, sizeof(ui_Omni_Shoot_Low_0));
+ARM GAS  C:\Users\23671\AppData\Local\Temp\ccsOBOMf.s 			page 15
+
+
+ 711              		.loc 1 93 5
+ 712 0038 6423     		movs	r3, #100
+ 713 003a 5A22     		movs	r2, #90
+ 714 003c 0349     		ldr	r1, .L18
+ 715 003e 0448     		ldr	r0, .L18+4
+ 716 0040 FFF7FEFF 		bl	HAL_UART_Transmit
+  94:Drivers/UI/ui_Omni_Shoot_Low_0.c **** }
+ 717              		.loc 1 94 1
+ 718 0044 00BF     		nop
+ 719 0046 0837     		adds	r7, r7, #8
+ 720              	.LCFI13:
+ 721              		.cfi_def_cfa_offset 8
+ 722 0048 BD46     		mov	sp, r7
+ 723              	.LCFI14:
+ 724              		.cfi_def_cfa_register 13
+ 725              		@ sp needed
+ 726 004a 80BD     		pop	{r7, pc}
+ 727              	.L19:
+ 728              		.align	2
+ 729              	.L18:
+ 730 004c 00000000 		.word	ui_Omni_Shoot_Low_0
+ 731 0050 00000000 		.word	huart7
+ 732              		.cfi_endproc
+ 733              	.LFE149:
+ 735              		.text
+ 736              	.Letext0:
+ 737              		.file 2 "D:/MSYS2/mingw64/arm-none-eabi/include/machine/_default_types.h"
+ 738              		.file 3 "D:/MSYS2/mingw64/arm-none-eabi/include/sys/_stdint.h"
+ 739              		.file 4 "Drivers/UI/ui_types.h"
+ 740              		.file 5 "Drivers/CMSIS/Device/ST/STM32H7xx/Include/stm32h723xx.h"
+ 741              		.file 6 "Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal_def.h"
+ 742              		.file 7 "Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal_dma.h"
+ 743              		.file 8 "Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal_uart.h"
+ 744              		.file 9 "Core/Inc/usart.h"
+ 745              		.file 10 "Drivers/UI/ui_Omni_Shoot_Low_0.h"
+ 746              		.file 11 "Drivers/UI/ui_interface.h"
+ARM GAS  C:\Users\23671\AppData\Local\Temp\ccsOBOMf.s 			page 16
+
+
+DEFINED SYMBOLS
+                            *ABS*:00000000 ui_Omni_Shoot_Low_0.c
+C:\Users\23671\AppData\Local\Temp\ccsOBOMf.s:24     .bss.ui_Omni_Shoot_Low_0:00000000 ui_Omni_Shoot_Low_0
+C:\Users\23671\AppData\Local\Temp\ccsOBOMf.s:21     .bss.ui_Omni_Shoot_Low_0:00000000 $d
+C:\Users\23671\AppData\Local\Temp\ccsOBOMf.s:31     .data.ui_Omni_Shoot_Low_Auto_rect:00000000 ui_Omni_Shoot_Low_Auto_rect
+C:\Users\23671\AppData\Local\Temp\ccsOBOMf.s:28     .data.ui_Omni_Shoot_Low_Auto_rect:00000000 $d
+C:\Users\23671\AppData\Local\Temp\ccsOBOMf.s:38     .data.ui_Omni_Shoot_Low_Shoot_Round:00000000 ui_Omni_Shoot_Low_Shoot_Round
+C:\Users\23671\AppData\Local\Temp\ccsOBOMf.s:35     .data.ui_Omni_Shoot_Low_Shoot_Round:00000000 $d
+C:\Users\23671\AppData\Local\Temp\ccsOBOMf.s:45     .data.ui_Omni_Shoot_Low_Shootend_Round:00000000 ui_Omni_Shoot_Low_Shootend_Round
+C:\Users\23671\AppData\Local\Temp\ccsOBOMf.s:42     .data.ui_Omni_Shoot_Low_Shootend_Round:00000000 $d
+C:\Users\23671\AppData\Local\Temp\ccsOBOMf.s:52     .data.ui_Omni_Shoot_Low_NewRound:00000000 ui_Omni_Shoot_Low_NewRound
+C:\Users\23671\AppData\Local\Temp\ccsOBOMf.s:49     .data.ui_Omni_Shoot_Low_NewRound:00000000 $d
+C:\Users\23671\AppData\Local\Temp\ccsOBOMf.s:59     .data.ui_Omni_Shoot_Low_NewEllipse:00000000 ui_Omni_Shoot_Low_NewEllipse
+C:\Users\23671\AppData\Local\Temp\ccsOBOMf.s:56     .data.ui_Omni_Shoot_Low_NewEllipse:00000000 $d
+C:\Users\23671\AppData\Local\Temp\ccsOBOMf.s:62     .text._ui_init_Omni_Shoot_Low_0:00000000 $t
+C:\Users\23671\AppData\Local\Temp\ccsOBOMf.s:68     .text._ui_init_Omni_Shoot_Low_0:00000000 _ui_init_Omni_Shoot_Low_0
+C:\Users\23671\AppData\Local\Temp\ccsOBOMf.s:155    .text._ui_init_Omni_Shoot_Low_0:00000074 $d
+C:\Users\23671\AppData\Local\Temp\ccsOBOMf.s:158    .text._ui_init_Omni_Shoot_Low_0:00000078 $t
+C:\Users\23671\AppData\Local\Temp\ccsOBOMf.s:565    .text._ui_init_Omni_Shoot_Low_0:000003a0 $d
+C:\Users\23671\AppData\Local\Temp\ccsOBOMf.s:576    .text._ui_update_Omni_Shoot_Low_0:00000000 $t
+C:\Users\23671\AppData\Local\Temp\ccsOBOMf.s:582    .text._ui_update_Omni_Shoot_Low_0:00000000 _ui_update_Omni_Shoot_Low_0
+C:\Users\23671\AppData\Local\Temp\ccsOBOMf.s:650    .text._ui_update_Omni_Shoot_Low_0:0000004c $d
+C:\Users\23671\AppData\Local\Temp\ccsOBOMf.s:656    .text._ui_remove_Omni_Shoot_Low_0:00000000 $t
+C:\Users\23671\AppData\Local\Temp\ccsOBOMf.s:662    .text._ui_remove_Omni_Shoot_Low_0:00000000 _ui_remove_Omni_Shoot_Low_0
+C:\Users\23671\AppData\Local\Temp\ccsOBOMf.s:730    .text._ui_remove_Omni_Shoot_Low_0:0000004c $d
+
+UNDEFINED SYMBOLS
+ui_proc_5_frame
+HAL_UART_Transmit
+huart7

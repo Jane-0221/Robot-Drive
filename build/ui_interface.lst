@@ -1,0 +1,2385 @@
+ARM GAS  C:\Users\23671\AppData\Local\Temp\cc9KKtsa.s 			page 1
+
+
+   1              		.cpu cortex-m7
+   2              		.arch armv7e-m
+   3              		.fpu fpv5-d16
+   4              		.eabi_attribute 28, 1
+   5              		.eabi_attribute 20, 1
+   6              		.eabi_attribute 21, 1
+   7              		.eabi_attribute 23, 3
+   8              		.eabi_attribute 24, 1
+   9              		.eabi_attribute 25, 1
+  10              		.eabi_attribute 26, 1
+  11              		.eabi_attribute 30, 6
+  12              		.eabi_attribute 34, 1
+  13              		.eabi_attribute 18, 4
+  14              		.file	"ui_interface.c"
+  15              		.text
+  16              	.Ltext0:
+  17              		.cfi_sections	.debug_frame
+  18              		.file 1 "Drivers/UI/ui_interface.c"
+  19              		.global	seq
+  20              		.section	.bss.seq,"aw",%nobits
+  23              	seq:
+  24 0000 00       		.space	1
+  25              		.global	ui_self_id
+  26              		.section	.data.ui_self_id,"aw"
+  27              		.align	2
+  30              	ui_self_id:
+  31 0000 01000000 		.word	1
+  32              		.global	_ui_string_frame
+  33              		.section	.bss._ui_string_frame,"aw",%nobits
+  34              		.align	2
+  37              	_ui_string_frame:
+  38 0000 00000000 		.space	60
+  38      00000000 
+  38      00000000 
+  38      00000000 
+  38      00000000 
+  39              		.global	_ui_1_frame
+  40              		.section	.bss._ui_1_frame,"aw",%nobits
+  41              		.align	2
+  44              	_ui_1_frame:
+  45 0000 00000000 		.space	30
+  45      00000000 
+  45      00000000 
+  45      00000000 
+  45      00000000 
+  46              		.global	_ui_2_frame
+  47              		.section	.bss._ui_2_frame,"aw",%nobits
+  48              		.align	2
+  51              	_ui_2_frame:
+  52 0000 00000000 		.space	45
+  52      00000000 
+  52      00000000 
+  52      00000000 
+  52      00000000 
+  53              		.global	_ui_5_frame
+  54              		.section	.bss._ui_5_frame,"aw",%nobits
+  55              		.align	2
+ARM GAS  C:\Users\23671\AppData\Local\Temp\cc9KKtsa.s 			page 2
+
+
+  58              	_ui_5_frame:
+  59 0000 00000000 		.space	90
+  59      00000000 
+  59      00000000 
+  59      00000000 
+  59      00000000 
+  60              		.global	_ui_7_frame
+  61              		.section	.bss._ui_7_frame,"aw",%nobits
+  62              		.align	2
+  65              	_ui_7_frame:
+  66 0000 00000000 		.space	120
+  66      00000000 
+  66      00000000 
+  66      00000000 
+  66      00000000 
+  67              		.section	.rodata
+  68              		.align	2
+  69              	.LC0:
+  70 0000 25303278 		.ascii	"%02x \000"
+  70      2000
+  71 0006 0000     		.align	2
+  72              	.LC1:
+  73 0008 0A00     		.ascii	"\012\000"
+  74              		.section	.text.print_message,"ax",%progbits
+  75              		.align	1
+  76              		.global	print_message
+  77              		.syntax unified
+  78              		.thumb
+  79              		.thumb_func
+  81              	print_message:
+  82              	.LFB147:
+   1:Drivers/UI/ui_interface.c **** //
+   2:Drivers/UI/ui_interface.c **** // Created by bismarckkk on 2025/3/22.
+   3:Drivers/UI/ui_interface.c **** // Dynamic Edition
+   4:Drivers/UI/ui_interface.c **** //
+   5:Drivers/UI/ui_interface.c **** 
+   6:Drivers/UI/ui_interface.c **** #include <string.h>
+   7:Drivers/UI/ui_interface.c **** #include <stdio.h>
+   8:Drivers/UI/ui_interface.c **** #include "ui_interface.h"
+   9:Drivers/UI/ui_interface.c **** 
+  10:Drivers/UI/ui_interface.c **** uint8_t seq = 0;
+  11:Drivers/UI/ui_interface.c **** int ui_self_id = 1;
+  12:Drivers/UI/ui_interface.c **** 
+  13:Drivers/UI/ui_interface.c **** ui_string_frame_t _ui_string_frame;
+  14:Drivers/UI/ui_interface.c **** ui_1_frame_t _ui_1_frame;
+  15:Drivers/UI/ui_interface.c **** ui_2_frame_t _ui_2_frame;
+  16:Drivers/UI/ui_interface.c **** ui_5_frame_t _ui_5_frame;
+  17:Drivers/UI/ui_interface.c **** ui_7_frame_t _ui_7_frame;
+  18:Drivers/UI/ui_interface.c **** 
+  19:Drivers/UI/ui_interface.c **** void print_message(const uint8_t *message, const int length) {
+  83              		.loc 1 19 62
+  84              		.cfi_startproc
+  85              		@ args = 0, pretend = 0, frame = 16
+  86              		@ frame_needed = 1, uses_anonymous_args = 0
+  87 0000 80B5     		push	{r7, lr}
+  88              	.LCFI0:
+  89              		.cfi_def_cfa_offset 8
+ARM GAS  C:\Users\23671\AppData\Local\Temp\cc9KKtsa.s 			page 3
+
+
+  90              		.cfi_offset 7, -8
+  91              		.cfi_offset 14, -4
+  92 0002 84B0     		sub	sp, sp, #16
+  93              	.LCFI1:
+  94              		.cfi_def_cfa_offset 24
+  95 0004 00AF     		add	r7, sp, #0
+  96              	.LCFI2:
+  97              		.cfi_def_cfa_register 7
+  98 0006 7860     		str	r0, [r7, #4]
+  99 0008 3960     		str	r1, [r7]
+ 100              	.LBB2:
+  20:Drivers/UI/ui_interface.c ****     for (int i = 0; i < length; i++) {
+ 101              		.loc 1 20 14
+ 102 000a 0023     		movs	r3, #0
+ 103 000c FB60     		str	r3, [r7, #12]
+ 104              		.loc 1 20 5
+ 105 000e 0AE0     		b	.L2
+ 106              	.L3:
+  21:Drivers/UI/ui_interface.c ****         printf("%02x ", message[i]);
+ 107              		.loc 1 21 32
+ 108 0010 FB68     		ldr	r3, [r7, #12]
+ 109 0012 7A68     		ldr	r2, [r7, #4]
+ 110 0014 1344     		add	r3, r3, r2
+ 111 0016 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 112              		.loc 1 21 9
+ 113 0018 1946     		mov	r1, r3
+ 114 001a 0848     		ldr	r0, .L4
+ 115 001c FFF7FEFF 		bl	printf
+  20:Drivers/UI/ui_interface.c ****     for (int i = 0; i < length; i++) {
+ 116              		.loc 1 20 34 discriminator 3
+ 117 0020 FB68     		ldr	r3, [r7, #12]
+ 118 0022 0133     		adds	r3, r3, #1
+ 119 0024 FB60     		str	r3, [r7, #12]
+ 120              	.L2:
+  20:Drivers/UI/ui_interface.c ****     for (int i = 0; i < length; i++) {
+ 121              		.loc 1 20 23 discriminator 1
+ 122 0026 FA68     		ldr	r2, [r7, #12]
+ 123 0028 3B68     		ldr	r3, [r7]
+ 124 002a 9A42     		cmp	r2, r3
+ 125 002c F0DB     		blt	.L3
+ 126              	.LBE2:
+  22:Drivers/UI/ui_interface.c ****     }
+  23:Drivers/UI/ui_interface.c ****     printf("\n\n");
+ 127              		.loc 1 23 5
+ 128 002e 0448     		ldr	r0, .L4+4
+ 129 0030 FFF7FEFF 		bl	puts
+  24:Drivers/UI/ui_interface.c **** }
+ 130              		.loc 1 24 1
+ 131 0034 00BF     		nop
+ 132 0036 1037     		adds	r7, r7, #16
+ 133              	.LCFI3:
+ 134              		.cfi_def_cfa_offset 8
+ 135 0038 BD46     		mov	sp, r7
+ 136              	.LCFI4:
+ 137              		.cfi_def_cfa_register 13
+ 138              		@ sp needed
+ 139 003a 80BD     		pop	{r7, pc}
+ARM GAS  C:\Users\23671\AppData\Local\Temp\cc9KKtsa.s 			page 4
+
+
+ 140              	.L5:
+ 141              		.align	2
+ 142              	.L4:
+ 143 003c 00000000 		.word	.LC0
+ 144 0040 08000000 		.word	.LC1
+ 145              		.cfi_endproc
+ 146              	.LFE147:
+ 148              		.global	CRC8_TAB
+ 149              		.section	.rodata.CRC8_TAB,"a"
+ 150              		.align	2
+ 153              	CRC8_TAB:
+ 154 0000 005EBCE2 		.ascii	"\000^\274\342a?\335\203\302\234~ \243\375\037A\235\303"
+ 154      613FDD83 
+ 154      C29C7E20 
+ 154      A3FD1F41 
+ 154      9DC3
+ 155 0012 217FFCA2 		.ascii	"!\177\374\242@\036_\001\343\275>`\202\334#}\237\301"
+ 155      401E5F01 
+ 155      E3BD3E60 
+ 155      82DC237D 
+ 155      9FC1
+ 156 0024 421CFEA0 		.ascii	"B\034\376\240\341\277]\003\200\336<b\276\340\002\\\337"
+ 156      E1BF5D03 
+ 156      80DE3C62 
+ 156      BEE0025C 
+ 156      DF
+ 157 0035 81633D7C 		.ascii	"\201c=|\"\300\236\035C\241\377F\030\372\244'y\233\305"
+ 157      22C09E1D 
+ 157      43A1FF46 
+ 157      18FAA427 
+ 157      799BC5
+ 158 0048 84DA3866 		.ascii	"\204\3328f\345\273Y\007\333\205g9\272\344\006X\031G"
+ 158      E5BB5907 
+ 158      DB856739 
+ 158      BAE40658 
+ 158      1947
+ 159 005a A5FB7826 		.ascii	"\245\373x&\304\232e;\331\207\004Z\270\346\247\371\033"
+ 159      C49A653B 
+ 159      D987045A 
+ 159      B8E6A7F9 
+ 159      1B
+ 160 006b 45C6987A 		.ascii	"E\306\230z$\370\246D\032\231\307%{:d\206\330[\005\347"
+ 160      24F8A644 
+ 160      1A99C725 
+ 160      7B3A6486 
+ 160      D85B05E7 
+ 161 007f B98CD230 		.ascii	"\271\214\3220n\355\263Q\017N\020\362\254/q\223\315\021"
+ 161      6EEDB351 
+ 161      0F4E10F2 
+ 161      AC2F7193 
+ 161      CD11
+ 162 0091 4FADF370 		.ascii	"O\255\363p.\314\222\323\215o1\262\354\016P\257\361\023"
+ 162      2ECC92D3 
+ 162      8D6F31B2 
+ 162      EC0E50AF 
+ 162      F113
+ 163 00a3 4DCE9072 		.ascii	"M\316\220r,m3\321\217\014R\260\3562l\216\320S\015\357"
+ARM GAS  C:\Users\23671\AppData\Local\Temp\cc9KKtsa.s 			page 5
+
+
+ 163      2C6D33D1 
+ 163      8F0C52B0 
+ 163      EE326C8E 
+ 163      D0530DEF 
+ 164 00b7 B1F0AE4C 		.ascii	"\261\360\256L\022\221\317-s\312\224v(\253\365\027I\010"
+ 164      1291CF2D 
+ 164      73CA9476 
+ 164      28ABF517 
+ 164      4908
+ 165 00c9 56B4EA69 		.ascii	"V\264\352i7\325\213W\011\353\2656h\212\324\225\313)"
+ 165      37D58B57 
+ 165      09EBB536 
+ 165      688AD495 
+ 165      CB29
+ 166 00db 77F4AA48 		.ascii	"w\364\252H\026\351\267U\013\210\3264j+u\227\311J\024"
+ 166      16E9B755 
+ 166      0B88D634 
+ 166      6A2B7597 
+ 166      C94A14
+ 167 00ee F6A8742A 		.ascii	"\366\250t*\310\226\025K\251\367\266\350\012T\327\211"
+ 167      C896154B 
+ 167      A9F7B6E8 
+ 167      0A54D789 
+ 168 00fe 6B35     		.ascii	"k5"
+ 169              		.section	.text.calc_crc8,"ax",%progbits
+ 170              		.align	1
+ 171              		.global	calc_crc8
+ 172              		.syntax unified
+ 173              		.thumb
+ 174              		.thumb_func
+ 176              	calc_crc8:
+ 177              	.LFB148:
+  25:Drivers/UI/ui_interface.c **** 
+  26:Drivers/UI/ui_interface.c **** const unsigned char CRC8_TAB[256] = {
+  27:Drivers/UI/ui_interface.c ****     0x00, 0x5e, 0xbc, 0xe2, 0x61, 0x3f, 0xdd, 0x83, 0xc2, 0x9c, 0x7e, 0x20, 0xa3, 0xfd, 0x1f, 0x41,
+  28:Drivers/UI/ui_interface.c ****     0x9d, 0xc3, 0x21, 0x7f, 0xfc, 0xa2, 0x40, 0x1e, 0x5f, 0x01, 0xe3, 0xbd, 0x3e, 0x60, 0x82, 0xdc,
+  29:Drivers/UI/ui_interface.c ****     0x7d, 0x9f, 0xc1, 0x42, 0x1c, 0xfe, 0xa0, 0xe1, 0xbf, 0x5d, 0x03, 0x80, 0xde, 0x3c, 0x62, 0xbe,
+  30:Drivers/UI/ui_interface.c ****     0x02, 0x5c, 0xdf, 0x81, 0x63, 0x3d, 0x7c, 0x22, 0xc0, 0x9e, 0x1d, 0x43, 0xa1, 0xff, 0x46, 0x18,
+  31:Drivers/UI/ui_interface.c ****     0xa4, 0x27, 0x79, 0x9b, 0xc5, 0x84, 0xda, 0x38, 0x66, 0xe5, 0xbb, 0x59, 0x07, 0xdb, 0x85, 0x67,
+  32:Drivers/UI/ui_interface.c ****     0x39, 0xba, 0xe4, 0x06, 0x58, 0x19, 0x47, 0xa5, 0xfb, 0x78, 0x26, 0xc4, 0x9a, 0x65, 0x3b, 0xd9,
+  33:Drivers/UI/ui_interface.c ****     0x04, 0x5a, 0xb8, 0xe6, 0xa7, 0xf9, 0x1b, 0x45, 0xc6, 0x98, 0x7a, 0x24, 0xf8, 0xa6, 0x44, 0x1a,
+  34:Drivers/UI/ui_interface.c ****     0xc7, 0x25, 0x7b, 0x3a, 0x64, 0x86, 0xd8, 0x5b, 0x05, 0xe7, 0xb9,
+  35:Drivers/UI/ui_interface.c ****     0x8c, 0xd2, 0x30, 0x6e, 0xed, 0xb3, 0x51, 0x0f, 0x4e, 0x10, 0xf2, 0xac, 0x2f, 0x71, 0x93, 0xcd,
+  36:Drivers/UI/ui_interface.c ****     0x4f, 0xad, 0xf3, 0x70, 0x2e, 0xcc, 0x92, 0xd3, 0x8d, 0x6f, 0x31, 0xb2, 0xec, 0x0e, 0x50, 0xaf,
+  37:Drivers/UI/ui_interface.c ****     0x13, 0x4d, 0xce, 0x90, 0x72, 0x2c, 0x6d, 0x33, 0xd1, 0x8f, 0x0c, 0x52, 0xb0, 0xee, 0x32, 0x6c,
+  38:Drivers/UI/ui_interface.c ****     0xd0, 0x53, 0x0d, 0xef, 0xb1, 0xf0, 0xae, 0x4c, 0x12, 0x91, 0xcf, 0x2d, 0x73, 0xca, 0x94, 0x76,
+  39:Drivers/UI/ui_interface.c ****     0xab, 0xf5, 0x17, 0x49, 0x08, 0x56, 0xb4, 0xea, 0x69, 0x37, 0xd5, 0x8b, 0x57, 0x09, 0xeb, 0xb5,
+  40:Drivers/UI/ui_interface.c ****     0x36, 0x68, 0x8a, 0xd4, 0x95, 0xcb, 0x29, 0x77, 0xf4, 0xaa, 0x48, 0x16, 0xe9, 0xb7, 0x55, 0x0b,
+  41:Drivers/UI/ui_interface.c ****     0xd6, 0x34, 0x6a, 0x2b, 0x75, 0x97, 0xc9, 0x4a, 0x14, 0xf6, 0xa8,
+  42:Drivers/UI/ui_interface.c ****     0x74, 0x2a, 0xc8, 0x96, 0x15, 0x4b, 0xa9, 0xf7, 0xb6, 0xe8, 0x0a, 0x54, 0xd7, 0x89, 0x6b, 0x35,
+  43:Drivers/UI/ui_interface.c **** };
+  44:Drivers/UI/ui_interface.c **** 
+  45:Drivers/UI/ui_interface.c **** unsigned char calc_crc8(unsigned char *pchMessage, unsigned int dwLength) {
+ 178              		.loc 1 45 75
+ 179              		.cfi_startproc
+ 180              		@ args = 0, pretend = 0, frame = 16
+ 181              		@ frame_needed = 1, uses_anonymous_args = 0
+ARM GAS  C:\Users\23671\AppData\Local\Temp\cc9KKtsa.s 			page 6
+
+
+ 182              		@ link register save eliminated.
+ 183 0000 80B4     		push	{r7}
+ 184              	.LCFI5:
+ 185              		.cfi_def_cfa_offset 4
+ 186              		.cfi_offset 7, -4
+ 187 0002 85B0     		sub	sp, sp, #20
+ 188              	.LCFI6:
+ 189              		.cfi_def_cfa_offset 24
+ 190 0004 00AF     		add	r7, sp, #0
+ 191              	.LCFI7:
+ 192              		.cfi_def_cfa_register 7
+ 193 0006 7860     		str	r0, [r7, #4]
+ 194 0008 3960     		str	r1, [r7]
+  46:Drivers/UI/ui_interface.c ****     unsigned char ucCRC8 = 0xff;
+ 195              		.loc 1 46 19
+ 196 000a FF23     		movs	r3, #255
+ 197 000c FB73     		strb	r3, [r7, #15]
+  47:Drivers/UI/ui_interface.c ****     unsigned char ucIndex;
+  48:Drivers/UI/ui_interface.c ****     while (dwLength--) {
+ 198              		.loc 1 48 11
+ 199 000e 0AE0     		b	.L7
+ 200              	.L8:
+  49:Drivers/UI/ui_interface.c ****         ucIndex = ucCRC8 ^ (*pchMessage++);
+ 201              		.loc 1 49 40
+ 202 0010 7B68     		ldr	r3, [r7, #4]
+ 203 0012 5A1C     		adds	r2, r3, #1
+ 204 0014 7A60     		str	r2, [r7, #4]
+ 205              		.loc 1 49 29
+ 206 0016 1A78     		ldrb	r2, [r3]	@ zero_extendqisi2
+ 207              		.loc 1 49 17
+ 208 0018 FB7B     		ldrb	r3, [r7, #15]
+ 209 001a 5340     		eors	r3, r3, r2
+ 210 001c BB73     		strb	r3, [r7, #14]
+  50:Drivers/UI/ui_interface.c ****         ucCRC8 = CRC8_TAB[ucIndex];
+ 211              		.loc 1 50 26
+ 212 001e BB7B     		ldrb	r3, [r7, #14]	@ zero_extendqisi2
+ 213              		.loc 1 50 16
+ 214 0020 074A     		ldr	r2, .L10
+ 215 0022 D35C     		ldrb	r3, [r2, r3]
+ 216 0024 FB73     		strb	r3, [r7, #15]
+ 217              	.L7:
+  48:Drivers/UI/ui_interface.c ****         ucIndex = ucCRC8 ^ (*pchMessage++);
+ 218              		.loc 1 48 20
+ 219 0026 3B68     		ldr	r3, [r7]
+ 220 0028 5A1E     		subs	r2, r3, #1
+ 221 002a 3A60     		str	r2, [r7]
+  48:Drivers/UI/ui_interface.c ****         ucIndex = ucCRC8 ^ (*pchMessage++);
+ 222              		.loc 1 48 12
+ 223 002c 002B     		cmp	r3, #0
+ 224 002e EFD1     		bne	.L8
+  51:Drivers/UI/ui_interface.c ****     }
+  52:Drivers/UI/ui_interface.c ****     return (ucCRC8);
+ 225              		.loc 1 52 12
+ 226 0030 FB7B     		ldrb	r3, [r7, #15]	@ zero_extendqisi2
+  53:Drivers/UI/ui_interface.c **** }
+ 227              		.loc 1 53 1
+ 228 0032 1846     		mov	r0, r3
+ARM GAS  C:\Users\23671\AppData\Local\Temp\cc9KKtsa.s 			page 7
+
+
+ 229 0034 1437     		adds	r7, r7, #20
+ 230              	.LCFI8:
+ 231              		.cfi_def_cfa_offset 4
+ 232 0036 BD46     		mov	sp, r7
+ 233              	.LCFI9:
+ 234              		.cfi_def_cfa_register 13
+ 235              		@ sp needed
+ 236 0038 5DF8047B 		ldr	r7, [sp], #4
+ 237              	.LCFI10:
+ 238              		.cfi_restore 7
+ 239              		.cfi_def_cfa_offset 0
+ 240 003c 7047     		bx	lr
+ 241              	.L11:
+ 242 003e 00BF     		.align	2
+ 243              	.L10:
+ 244 0040 00000000 		.word	CRC8_TAB
+ 245              		.cfi_endproc
+ 246              	.LFE148:
+ 248              		.global	wCRC_Table
+ 249              		.section	.rodata.wCRC_Table,"a"
+ 250              		.align	2
+ 253              	wCRC_Table:
+ 254 0000 0000     		.short	0
+ 255 0002 8911     		.short	4489
+ 256 0004 1223     		.short	8978
+ 257 0006 9B32     		.short	12955
+ 258 0008 2446     		.short	17956
+ 259 000a AD57     		.short	22445
+ 260 000c 3665     		.short	25910
+ 261 000e BF74     		.short	29887
+ 262 0010 488C     		.short	-29624
+ 263 0012 C19D     		.short	-25151
+ 264 0014 5AAF     		.short	-20646
+ 265 0016 D3BE     		.short	-16685
+ 266 0018 6CCA     		.short	-13716
+ 267 001a E5DB     		.short	-9243
+ 268 001c 7EE9     		.short	-5762
+ 269 001e F7F8     		.short	-1801
+ 270 0020 8110     		.short	4225
+ 271 0022 0801     		.short	264
+ 272 0024 9333     		.short	13203
+ 273 0026 1A22     		.short	8730
+ 274 0028 A556     		.short	22181
+ 275 002a 2C47     		.short	18220
+ 276 002c B775     		.short	30135
+ 277 002e 3E64     		.short	25662
+ 278 0030 C99C     		.short	-25399
+ 279 0032 408D     		.short	-29376
+ 280 0034 DBBF     		.short	-16421
+ 281 0036 52AE     		.short	-20910
+ 282 0038 EDDA     		.short	-9491
+ 283 003a 64CB     		.short	-13468
+ 284 003c FFF9     		.short	-1537
+ 285 003e 76E8     		.short	-6026
+ 286 0040 0221     		.short	8450
+ 287 0042 8B30     		.short	12427
+ 288 0044 1002     		.short	528
+ARM GAS  C:\Users\23671\AppData\Local\Temp\cc9KKtsa.s 			page 8
+
+
+ 289 0046 9913     		.short	5017
+ 290 0048 2667     		.short	26406
+ 291 004a AF76     		.short	30383
+ 292 004c 3444     		.short	17460
+ 293 004e BD55     		.short	21949
+ 294 0050 4AAD     		.short	-21174
+ 295 0052 C3BC     		.short	-17213
+ 296 0054 588E     		.short	-29096
+ 297 0056 D19F     		.short	-24623
+ 298 0058 6EEB     		.short	-5266
+ 299 005a E7FA     		.short	-1305
+ 300 005c 7CC8     		.short	-14212
+ 301 005e F5D9     		.short	-9739
+ 302 0060 8331     		.short	12675
+ 303 0062 0A20     		.short	8202
+ 304 0064 9112     		.short	4753
+ 305 0066 1803     		.short	792
+ 306 0068 A777     		.short	30631
+ 307 006a 2E66     		.short	26158
+ 308 006c B554     		.short	21685
+ 309 006e 3C45     		.short	17724
+ 310 0070 CBBD     		.short	-16949
+ 311 0072 42AC     		.short	-21438
+ 312 0074 D99E     		.short	-24871
+ 313 0076 508F     		.short	-28848
+ 314 0078 EFFB     		.short	-1041
+ 315 007a 66EA     		.short	-5530
+ 316 007c FDD8     		.short	-9987
+ 317 007e 74C9     		.short	-13964
+ 318 0080 0442     		.short	16900
+ 319 0082 8D53     		.short	21389
+ 320 0084 1661     		.short	24854
+ 321 0086 9F70     		.short	28831
+ 322 0088 2004     		.short	1056
+ 323 008a A915     		.short	5545
+ 324 008c 3227     		.short	10034
+ 325 008e BB36     		.short	14011
+ 326 0090 4CCE     		.short	-12724
+ 327 0092 C5DF     		.short	-8251
+ 328 0094 5EED     		.short	-4770
+ 329 0096 D7FC     		.short	-809
+ 330 0098 6888     		.short	-30616
+ 331 009a E199     		.short	-26143
+ 332 009c 7AAB     		.short	-21638
+ 333 009e F3BA     		.short	-17677
+ 334 00a0 8552     		.short	21125
+ 335 00a2 0C43     		.short	17164
+ 336 00a4 9771     		.short	29079
+ 337 00a6 1E60     		.short	24606
+ 338 00a8 A114     		.short	5281
+ 339 00aa 2805     		.short	1320
+ 340 00ac B337     		.short	14259
+ 341 00ae 3A26     		.short	9786
+ 342 00b0 CDDE     		.short	-8499
+ 343 00b2 44CF     		.short	-12476
+ 344 00b4 DFFD     		.short	-545
+ 345 00b6 56EC     		.short	-5034
+ARM GAS  C:\Users\23671\AppData\Local\Temp\cc9KKtsa.s 			page 9
+
+
+ 346 00b8 E998     		.short	-26391
+ 347 00ba 6089     		.short	-30368
+ 348 00bc FBBB     		.short	-17413
+ 349 00be 72AA     		.short	-21902
+ 350 00c0 0663     		.short	25350
+ 351 00c2 8F72     		.short	29327
+ 352 00c4 1440     		.short	16404
+ 353 00c6 9D51     		.short	20893
+ 354 00c8 2225     		.short	9506
+ 355 00ca AB34     		.short	13483
+ 356 00cc 3006     		.short	1584
+ 357 00ce B917     		.short	6073
+ 358 00d0 4EEF     		.short	-4274
+ 359 00d2 C7FE     		.short	-313
+ 360 00d4 5CCC     		.short	-13220
+ 361 00d6 D5DD     		.short	-8747
+ 362 00d8 6AA9     		.short	-22166
+ 363 00da E3B8     		.short	-18205
+ 364 00dc 788A     		.short	-30088
+ 365 00de F19B     		.short	-25615
+ 366 00e0 8773     		.short	29575
+ 367 00e2 0E62     		.short	25102
+ 368 00e4 9550     		.short	20629
+ 369 00e6 1C41     		.short	16668
+ 370 00e8 A335     		.short	13731
+ 371 00ea 2A24     		.short	9258
+ 372 00ec B116     		.short	5809
+ 373 00ee 3807     		.short	1848
+ 374 00f0 CFFF     		.short	-49
+ 375 00f2 46EE     		.short	-4538
+ 376 00f4 DDDC     		.short	-8995
+ 377 00f6 54CD     		.short	-12972
+ 378 00f8 EBB9     		.short	-17941
+ 379 00fa 62A8     		.short	-22430
+ 380 00fc F99A     		.short	-25863
+ 381 00fe 708B     		.short	-29840
+ 382 0100 0884     		.short	-31736
+ 383 0102 8195     		.short	-27263
+ 384 0104 1AA7     		.short	-22758
+ 385 0106 93B6     		.short	-18797
+ 386 0108 2CC2     		.short	-15828
+ 387 010a A5D3     		.short	-11355
+ 388 010c 3EE1     		.short	-7874
+ 389 010e B7F0     		.short	-3913
+ 390 0110 4008     		.short	2112
+ 391 0112 C919     		.short	6601
+ 392 0114 522B     		.short	11090
+ 393 0116 DB3A     		.short	15067
+ 394 0118 644E     		.short	20068
+ 395 011a ED5F     		.short	24557
+ 396 011c 766D     		.short	28022
+ 397 011e FF7C     		.short	31999
+ 398 0120 8994     		.short	-27511
+ 399 0122 0085     		.short	-31488
+ 400 0124 9BB7     		.short	-18533
+ 401 0126 12A6     		.short	-23022
+ 402 0128 ADD2     		.short	-11603
+ARM GAS  C:\Users\23671\AppData\Local\Temp\cc9KKtsa.s 			page 10
+
+
+ 403 012a 24C3     		.short	-15580
+ 404 012c BFF1     		.short	-3649
+ 405 012e 36E0     		.short	-8138
+ 406 0130 C118     		.short	6337
+ 407 0132 4809     		.short	2376
+ 408 0134 D33B     		.short	15315
+ 409 0136 5A2A     		.short	10842
+ 410 0138 E55E     		.short	24293
+ 411 013a 6C4F     		.short	20332
+ 412 013c F77D     		.short	32247
+ 413 013e 7E6C     		.short	27774
+ 414 0140 0AA5     		.short	-23286
+ 415 0142 83B4     		.short	-19325
+ 416 0144 1886     		.short	-31208
+ 417 0146 9197     		.short	-26735
+ 418 0148 2EE3     		.short	-7378
+ 419 014a A7F2     		.short	-3417
+ 420 014c 3CC0     		.short	-16324
+ 421 014e B5D1     		.short	-11851
+ 422 0150 4229     		.short	10562
+ 423 0152 CB38     		.short	14539
+ 424 0154 500A     		.short	2640
+ 425 0156 D91B     		.short	7129
+ 426 0158 666F     		.short	28518
+ 427 015a EF7E     		.short	32495
+ 428 015c 744C     		.short	19572
+ 429 015e FD5D     		.short	24061
+ 430 0160 8BB5     		.short	-19061
+ 431 0162 02A4     		.short	-23550
+ 432 0164 9996     		.short	-26983
+ 433 0166 1087     		.short	-30960
+ 434 0168 AFF3     		.short	-3153
+ 435 016a 26E2     		.short	-7642
+ 436 016c BDD0     		.short	-12099
+ 437 016e 34C1     		.short	-16076
+ 438 0170 C339     		.short	14787
+ 439 0172 4A28     		.short	10314
+ 440 0174 D11A     		.short	6865
+ 441 0176 580B     		.short	2904
+ 442 0178 E77F     		.short	32743
+ 443 017a 6E6E     		.short	28270
+ 444 017c F55C     		.short	23797
+ 445 017e 7C4D     		.short	19836
+ 446 0180 0CC6     		.short	-14836
+ 447 0182 85D7     		.short	-10363
+ 448 0184 1EE5     		.short	-6882
+ 449 0186 97F4     		.short	-2921
+ 450 0188 2880     		.short	-32728
+ 451 018a A191     		.short	-28255
+ 452 018c 3AA3     		.short	-23750
+ 453 018e B3B2     		.short	-19789
+ 454 0190 444A     		.short	19012
+ 455 0192 CD5B     		.short	23501
+ 456 0194 5669     		.short	26966
+ 457 0196 DF78     		.short	30943
+ 458 0198 600C     		.short	3168
+ 459 019a E91D     		.short	7657
+ARM GAS  C:\Users\23671\AppData\Local\Temp\cc9KKtsa.s 			page 11
+
+
+ 460 019c 722F     		.short	12146
+ 461 019e FB3E     		.short	16123
+ 462 01a0 8DD6     		.short	-10611
+ 463 01a2 04C7     		.short	-14588
+ 464 01a4 9FF5     		.short	-2657
+ 465 01a6 16E4     		.short	-7146
+ 466 01a8 A990     		.short	-28503
+ 467 01aa 2081     		.short	-32480
+ 468 01ac BBB3     		.short	-19525
+ 469 01ae 32A2     		.short	-24014
+ 470 01b0 C55A     		.short	23237
+ 471 01b2 4C4B     		.short	19276
+ 472 01b4 D779     		.short	31191
+ 473 01b6 5E68     		.short	26718
+ 474 01b8 E11C     		.short	7393
+ 475 01ba 680D     		.short	3432
+ 476 01bc F33F     		.short	16371
+ 477 01be 7A2E     		.short	11898
+ 478 01c0 0EE7     		.short	-6386
+ 479 01c2 87F6     		.short	-2425
+ 480 01c4 1CC4     		.short	-15332
+ 481 01c6 95D5     		.short	-10859
+ 482 01c8 2AA1     		.short	-24278
+ 483 01ca A3B0     		.short	-20317
+ 484 01cc 3882     		.short	-32200
+ 485 01ce B193     		.short	-27727
+ 486 01d0 466B     		.short	27462
+ 487 01d2 CF7A     		.short	31439
+ 488 01d4 5448     		.short	18516
+ 489 01d6 DD59     		.short	23005
+ 490 01d8 622D     		.short	11618
+ 491 01da EB3C     		.short	15595
+ 492 01dc 700E     		.short	3696
+ 493 01de F91F     		.short	8185
+ 494 01e0 8FF7     		.short	-2161
+ 495 01e2 06E6     		.short	-6650
+ 496 01e4 9DD4     		.short	-11107
+ 497 01e6 14C5     		.short	-15084
+ 498 01e8 ABB1     		.short	-20053
+ 499 01ea 22A0     		.short	-24542
+ 500 01ec B992     		.short	-27975
+ 501 01ee 3083     		.short	-31952
+ 502 01f0 C77B     		.short	31687
+ 503 01f2 4E6A     		.short	27214
+ 504 01f4 D558     		.short	22741
+ 505 01f6 5C49     		.short	18780
+ 506 01f8 E33D     		.short	15843
+ 507 01fa 6A2C     		.short	11370
+ 508 01fc F11E     		.short	7921
+ 509 01fe 780F     		.short	3960
+ 510              		.section	.text.calc_crc16,"ax",%progbits
+ 511              		.align	1
+ 512              		.global	calc_crc16
+ 513              		.syntax unified
+ 514              		.thumb
+ 515              		.thumb_func
+ 517              	calc_crc16:
+ARM GAS  C:\Users\23671\AppData\Local\Temp\cc9KKtsa.s 			page 12
+
+
+ 518              	.LFB149:
+  54:Drivers/UI/ui_interface.c **** 
+  55:Drivers/UI/ui_interface.c **** const uint16_t wCRC_Table[256] = {
+  56:Drivers/UI/ui_interface.c ****     0x0000, 0x1189, 0x2312, 0x329b, 0x4624, 0x57ad, 0x6536, 0x74bf,
+  57:Drivers/UI/ui_interface.c ****     0x8c48, 0x9dc1, 0xaf5a, 0xbed3, 0xca6c, 0xdbe5, 0xe97e, 0xf8f7,
+  58:Drivers/UI/ui_interface.c ****     0x1081, 0x0108, 0x3393, 0x221a, 0x56a5, 0x472c, 0x75b7, 0x643e,
+  59:Drivers/UI/ui_interface.c ****     0x9cc9, 0x8d40, 0xbfdb, 0xae52, 0xdaed, 0xcb64, 0xf9ff, 0xe876,
+  60:Drivers/UI/ui_interface.c ****     0x2102, 0x308b, 0x0210, 0x1399, 0x6726, 0x76af, 0x4434, 0x55bd,
+  61:Drivers/UI/ui_interface.c ****     0xad4a, 0xbcc3, 0x8e58, 0x9fd1, 0xeb6e, 0xfae7, 0xc87c, 0xd9f5,
+  62:Drivers/UI/ui_interface.c ****     0x3183, 0x200a, 0x1291, 0x0318, 0x77a7, 0x662e, 0x54b5, 0x453c,
+  63:Drivers/UI/ui_interface.c ****     0xbdcb, 0xac42, 0x9ed9, 0x8f50, 0xfbef, 0xea66, 0xd8fd, 0xc974,
+  64:Drivers/UI/ui_interface.c ****     0x4204, 0x538d, 0x6116, 0x709f, 0x0420, 0x15a9, 0x2732, 0x36bb,
+  65:Drivers/UI/ui_interface.c ****     0xce4c, 0xdfc5, 0xed5e, 0xfcd7, 0x8868, 0x99e1, 0xab7a, 0xbaf3,
+  66:Drivers/UI/ui_interface.c ****     0x5285, 0x430c, 0x7197, 0x601e, 0x14a1, 0x0528, 0x37b3, 0x263a,
+  67:Drivers/UI/ui_interface.c ****     0xdecd, 0xcf44, 0xfddf, 0xec56, 0x98e9, 0x8960, 0xbbfb, 0xaa72,
+  68:Drivers/UI/ui_interface.c ****     0x6306, 0x728f, 0x4014, 0x519d, 0x2522, 0x34ab, 0x0630, 0x17b9,
+  69:Drivers/UI/ui_interface.c ****     0xef4e, 0xfec7, 0xcc5c, 0xddd5, 0xa96a, 0xb8e3, 0x8a78, 0x9bf1,
+  70:Drivers/UI/ui_interface.c ****     0x7387, 0x620e, 0x5095, 0x411c, 0x35a3, 0x242a, 0x16b1, 0x0738,
+  71:Drivers/UI/ui_interface.c ****     0xffcf, 0xee46, 0xdcdd, 0xcd54, 0xb9eb, 0xa862, 0x9af9, 0x8b70,
+  72:Drivers/UI/ui_interface.c ****     0x8408, 0x9581, 0xa71a, 0xb693, 0xc22c, 0xd3a5, 0xe13e, 0xf0b7,
+  73:Drivers/UI/ui_interface.c ****     0x0840, 0x19c9, 0x2b52, 0x3adb, 0x4e64, 0x5fed, 0x6d76, 0x7cff,
+  74:Drivers/UI/ui_interface.c ****     0x9489, 0x8500, 0xb79b, 0xa612, 0xd2ad, 0xc324, 0xf1bf, 0xe036,
+  75:Drivers/UI/ui_interface.c ****     0x18c1, 0x0948, 0x3bd3, 0x2a5a, 0x5ee5, 0x4f6c, 0x7df7, 0x6c7e,
+  76:Drivers/UI/ui_interface.c ****     0xa50a, 0xb483, 0x8618, 0x9791, 0xe32e, 0xf2a7, 0xc03c, 0xd1b5,
+  77:Drivers/UI/ui_interface.c ****     0x2942, 0x38cb, 0x0a50, 0x1bd9, 0x6f66, 0x7eef, 0x4c74, 0x5dfd,
+  78:Drivers/UI/ui_interface.c ****     0xb58b, 0xa402, 0x9699, 0x8710, 0xf3af, 0xe226, 0xd0bd, 0xc134,
+  79:Drivers/UI/ui_interface.c ****     0x39c3, 0x284a, 0x1ad1, 0x0b58, 0x7fe7, 0x6e6e, 0x5cf5, 0x4d7c,
+  80:Drivers/UI/ui_interface.c ****     0xc60c, 0xd785, 0xe51e, 0xf497, 0x8028, 0x91a1, 0xa33a, 0xb2b3,
+  81:Drivers/UI/ui_interface.c ****     0x4a44, 0x5bcd, 0x6956, 0x78df, 0x0c60, 0x1de9, 0x2f72, 0x3efb,
+  82:Drivers/UI/ui_interface.c ****     0xd68d, 0xc704, 0xf59f, 0xe416, 0x90a9, 0x8120, 0xb3bb, 0xa232,
+  83:Drivers/UI/ui_interface.c ****     0x5ac5, 0x4b4c, 0x79d7, 0x685e, 0x1ce1, 0x0d68, 0x3ff3, 0x2e7a,
+  84:Drivers/UI/ui_interface.c ****     0xe70e, 0xf687, 0xc41c, 0xd595, 0xa12a, 0xb0a3, 0x8238, 0x93b1,
+  85:Drivers/UI/ui_interface.c ****     0x6b46, 0x7acf, 0x4854, 0x59dd, 0x2d62, 0x3ceb, 0x0e70, 0x1ff9,
+  86:Drivers/UI/ui_interface.c ****     0xf78f, 0xe606, 0xd49d, 0xc514, 0xb1ab, 0xa022, 0x92b9, 0x8330,
+  87:Drivers/UI/ui_interface.c ****     0x7bc7, 0x6a4e, 0x58d5, 0x495c, 0x3de3, 0x2c6a, 0x1ef1, 0x0f78
+  88:Drivers/UI/ui_interface.c **** };
+  89:Drivers/UI/ui_interface.c **** 
+  90:Drivers/UI/ui_interface.c **** uint16_t calc_crc16(uint8_t *pchMessage, uint32_t dwLength)
+  91:Drivers/UI/ui_interface.c **** {
+ 519              		.loc 1 91 1
+ 520              		.cfi_startproc
+ 521              		@ args = 0, pretend = 0, frame = 16
+ 522              		@ frame_needed = 1, uses_anonymous_args = 0
+ 523              		@ link register save eliminated.
+ 524 0000 80B4     		push	{r7}
+ 525              	.LCFI11:
+ 526              		.cfi_def_cfa_offset 4
+ 527              		.cfi_offset 7, -4
+ 528 0002 85B0     		sub	sp, sp, #20
+ 529              	.LCFI12:
+ 530              		.cfi_def_cfa_offset 24
+ 531 0004 00AF     		add	r7, sp, #0
+ 532              	.LCFI13:
+ 533              		.cfi_def_cfa_register 7
+ 534 0006 7860     		str	r0, [r7, #4]
+ 535 0008 3960     		str	r1, [r7]
+  92:Drivers/UI/ui_interface.c ****     uint16_t wCRC = 0xffff;
+ARM GAS  C:\Users\23671\AppData\Local\Temp\cc9KKtsa.s 			page 13
+
+
+ 536              		.loc 1 92 14
+ 537 000a 4FF6FF73 		movw	r3, #65535
+ 538 000e FB81     		strh	r3, [r7, #14]	@ movhi
+  93:Drivers/UI/ui_interface.c ****     uint8_t chData;
+  94:Drivers/UI/ui_interface.c ****     if (pchMessage == NULL)
+ 539              		.loc 1 94 8
+ 540 0010 7B68     		ldr	r3, [r7, #4]
+ 541 0012 002B     		cmp	r3, #0
+ 542 0014 13D1     		bne	.L15
+  95:Drivers/UI/ui_interface.c ****     {
+  96:Drivers/UI/ui_interface.c ****         return 0xFFFF;
+ 543              		.loc 1 96 16
+ 544 0016 4FF6FF73 		movw	r3, #65535
+ 545 001a 16E0     		b	.L14
+ 546              	.L16:
+  97:Drivers/UI/ui_interface.c ****     }
+  98:Drivers/UI/ui_interface.c ****     while(dwLength--)
+  99:Drivers/UI/ui_interface.c ****     {
+ 100:Drivers/UI/ui_interface.c ****         chData = *pchMessage++;
+ 547              		.loc 1 100 29
+ 548 001c 7B68     		ldr	r3, [r7, #4]
+ 549 001e 5A1C     		adds	r2, r3, #1
+ 550 0020 7A60     		str	r2, [r7, #4]
+ 551              		.loc 1 100 16
+ 552 0022 1B78     		ldrb	r3, [r3]
+ 553 0024 7B73     		strb	r3, [r7, #13]
+ 101:Drivers/UI/ui_interface.c ****         (wCRC) = ((uint16_t)(wCRC) >> 8) ^ wCRC_Table[((uint16_t)(wCRC) ^ (uint16_t)(chData)) & 0x0
+ 554              		.loc 1 101 16
+ 555 0026 FB89     		ldrh	r3, [r7, #14]
+ 556 0028 1B0A     		lsrs	r3, r3, #8
+ 557 002a 9AB2     		uxth	r2, r3
+ 558              		.loc 1 101 56
+ 559 002c F989     		ldrh	r1, [r7, #14]
+ 560              		.loc 1 101 75
+ 561 002e 7B7B     		ldrb	r3, [r7, #13]	@ zero_extendqisi2
+ 562              		.loc 1 101 73
+ 563 0030 4B40     		eors	r3, r3, r1
+ 564              		.loc 1 101 95
+ 565 0032 DBB2     		uxtb	r3, r3
+ 566              		.loc 1 101 54
+ 567 0034 0849     		ldr	r1, .L17
+ 568 0036 31F81330 		ldrh	r3, [r1, r3, lsl #1]
+ 569              		.loc 1 101 16
+ 570 003a 5340     		eors	r3, r3, r2
+ 571 003c FB81     		strh	r3, [r7, #14]	@ movhi
+ 572              	.L15:
+  98:Drivers/UI/ui_interface.c ****     {
+ 573              		.loc 1 98 19
+ 574 003e 3B68     		ldr	r3, [r7]
+ 575 0040 5A1E     		subs	r2, r3, #1
+ 576 0042 3A60     		str	r2, [r7]
+  98:Drivers/UI/ui_interface.c ****     {
+ 577              		.loc 1 98 11
+ 578 0044 002B     		cmp	r3, #0
+ 579 0046 E9D1     		bne	.L16
+ 102:Drivers/UI/ui_interface.c ****     }
+ 103:Drivers/UI/ui_interface.c ****     return wCRC;
+ARM GAS  C:\Users\23671\AppData\Local\Temp\cc9KKtsa.s 			page 14
+
+
+ 580              		.loc 1 103 12
+ 581 0048 FB89     		ldrh	r3, [r7, #14]
+ 582              	.L14:
+ 104:Drivers/UI/ui_interface.c **** }
+ 583              		.loc 1 104 1
+ 584 004a 1846     		mov	r0, r3
+ 585 004c 1437     		adds	r7, r7, #20
+ 586              	.LCFI14:
+ 587              		.cfi_def_cfa_offset 4
+ 588 004e BD46     		mov	sp, r7
+ 589              	.LCFI15:
+ 590              		.cfi_def_cfa_register 13
+ 591              		@ sp needed
+ 592 0050 5DF8047B 		ldr	r7, [sp], #4
+ 593              	.LCFI16:
+ 594              		.cfi_restore 7
+ 595              		.cfi_def_cfa_offset 0
+ 596 0054 7047     		bx	lr
+ 597              	.L18:
+ 598 0056 00BF     		.align	2
+ 599              	.L17:
+ 600 0058 00000000 		.word	wCRC_Table
+ 601              		.cfi_endproc
+ 602              	.LFE149:
+ 604              		.section	.text.ui_proc_1_frame,"ax",%progbits
+ 605              		.align	1
+ 606              		.global	ui_proc_1_frame
+ 607              		.syntax unified
+ 608              		.thumb
+ 609              		.thumb_func
+ 611              	ui_proc_1_frame:
+ 612              	.LFB150:
+ 105:Drivers/UI/ui_interface.c **** 
+ 106:Drivers/UI/ui_interface.c **** #define DEFINE_FRAME_PROC(num, id)                          \
+ 107:Drivers/UI/ui_interface.c **** void ui_proc_ ## num##_frame(ui_ ## num##_frame_t *msg) {   \
+ 108:Drivers/UI/ui_interface.c ****     msg->header.SOF = 0xA5;                                 \
+ 109:Drivers/UI/ui_interface.c ****     msg->header.length = 6 + 15 * num;                      \
+ 110:Drivers/UI/ui_interface.c ****     msg->header.seq = seq++;                                \
+ 111:Drivers/UI/ui_interface.c ****     msg->header.crc8 = calc_crc8((uint8_t*)msg, 4);        \
+ 112:Drivers/UI/ui_interface.c ****     msg->header.cmd_id = 0x0301;                            \
+ 113:Drivers/UI/ui_interface.c ****     msg->header.sub_id = id;                                \
+ 114:Drivers/UI/ui_interface.c ****     msg->header.send_id = ui_self_id;                       \
+ 115:Drivers/UI/ui_interface.c ****     msg->header.recv_id = ui_self_id + 256;                 \
+ 116:Drivers/UI/ui_interface.c ****     msg->crc16 = calc_crc16((uint8_t*)msg, 13 + 15 * num); \
+ 117:Drivers/UI/ui_interface.c **** }
+ 118:Drivers/UI/ui_interface.c **** 
+ 119:Drivers/UI/ui_interface.c **** DEFINE_FRAME_PROC(1, 0x0101)
+ 613              		.loc 1 119 1
+ 614              		.cfi_startproc
+ 615              		@ args = 0, pretend = 0, frame = 8
+ 616              		@ frame_needed = 1, uses_anonymous_args = 0
+ 617 0000 80B5     		push	{r7, lr}
+ 618              	.LCFI17:
+ 619              		.cfi_def_cfa_offset 8
+ 620              		.cfi_offset 7, -8
+ 621              		.cfi_offset 14, -4
+ 622 0002 82B0     		sub	sp, sp, #8
+ARM GAS  C:\Users\23671\AppData\Local\Temp\cc9KKtsa.s 			page 15
+
+
+ 623              	.LCFI18:
+ 624              		.cfi_def_cfa_offset 16
+ 625 0004 00AF     		add	r7, sp, #0
+ 626              	.LCFI19:
+ 627              		.cfi_def_cfa_register 7
+ 628 0006 7860     		str	r0, [r7, #4]
+ 629              		.loc 1 119 1
+ 630 0008 7B68     		ldr	r3, [r7, #4]
+ 631 000a A522     		movs	r2, #165
+ 632 000c 1A70     		strb	r2, [r3]
+ 633 000e 7B68     		ldr	r3, [r7, #4]
+ 634 0010 0022     		movs	r2, #0
+ 635 0012 42F01502 		orr	r2, r2, #21
+ 636 0016 5A70     		strb	r2, [r3, #1]
+ 637 0018 0022     		movs	r2, #0
+ 638 001a 9A70     		strb	r2, [r3, #2]
+ 639 001c 1D4B     		ldr	r3, .L20
+ 640 001e 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 641 0020 5A1C     		adds	r2, r3, #1
+ 642 0022 D1B2     		uxtb	r1, r2
+ 643 0024 1B4A     		ldr	r2, .L20
+ 644 0026 1170     		strb	r1, [r2]
+ 645 0028 7A68     		ldr	r2, [r7, #4]
+ 646 002a D370     		strb	r3, [r2, #3]
+ 647 002c 0421     		movs	r1, #4
+ 648 002e 7868     		ldr	r0, [r7, #4]
+ 649 0030 FFF7FEFF 		bl	calc_crc8
+ 650 0034 0346     		mov	r3, r0
+ 651 0036 1A46     		mov	r2, r3
+ 652              		.loc 1 119 1 is_stmt 0 discriminator 1
+ 653 0038 7B68     		ldr	r3, [r7, #4]
+ 654 003a 1A71     		strb	r2, [r3, #4]
+ 655 003c 7B68     		ldr	r3, [r7, #4]
+ 656 003e 0022     		movs	r2, #0
+ 657 0040 42F00102 		orr	r2, r2, #1
+ 658 0044 5A71     		strb	r2, [r3, #5]
+ 659 0046 0022     		movs	r2, #0
+ 660 0048 42F00302 		orr	r2, r2, #3
+ 661 004c 9A71     		strb	r2, [r3, #6]
+ 662 004e 7B68     		ldr	r3, [r7, #4]
+ 663 0050 0022     		movs	r2, #0
+ 664 0052 42F00102 		orr	r2, r2, #1
+ 665 0056 DA71     		strb	r2, [r3, #7]
+ 666 0058 0022     		movs	r2, #0
+ 667 005a 42F00102 		orr	r2, r2, #1
+ 668 005e 1A72     		strb	r2, [r3, #8]
+ 669 0060 0D4B     		ldr	r3, .L20+4
+ 670 0062 1B68     		ldr	r3, [r3]
+ 671 0064 9AB2     		uxth	r2, r3
+ 672 0066 7B68     		ldr	r3, [r7, #4]
+ 673 0068 A3F80920 		strh	r2, [r3, #9]	@ unaligned
+ 674 006c 0A4B     		ldr	r3, .L20+4
+ 675 006e 1B68     		ldr	r3, [r3]
+ 676 0070 9BB2     		uxth	r3, r3
+ 677 0072 03F58073 		add	r3, r3, #256
+ 678 0076 9AB2     		uxth	r2, r3
+ 679 0078 7B68     		ldr	r3, [r7, #4]
+ARM GAS  C:\Users\23671\AppData\Local\Temp\cc9KKtsa.s 			page 16
+
+
+ 680 007a A3F80B20 		strh	r2, [r3, #11]	@ unaligned
+ 681 007e 1C21     		movs	r1, #28
+ 682 0080 7868     		ldr	r0, [r7, #4]
+ 683 0082 FFF7FEFF 		bl	calc_crc16
+ 684 0086 0346     		mov	r3, r0
+ 685 0088 1A46     		mov	r2, r3
+ 686              		.loc 1 119 1 discriminator 2
+ 687 008a 7B68     		ldr	r3, [r7, #4]
+ 688 008c 9A83     		strh	r2, [r3, #28]	@ unaligned
+ 689              		.loc 1 119 1
+ 690 008e 0837     		adds	r7, r7, #8
+ 691              	.LCFI20:
+ 692              		.cfi_def_cfa_offset 8
+ 693 0090 BD46     		mov	sp, r7
+ 694              	.LCFI21:
+ 695              		.cfi_def_cfa_register 13
+ 696              		@ sp needed
+ 697 0092 80BD     		pop	{r7, pc}
+ 698              	.L21:
+ 699              		.align	2
+ 700              	.L20:
+ 701 0094 00000000 		.word	seq
+ 702 0098 00000000 		.word	ui_self_id
+ 703              		.cfi_endproc
+ 704              	.LFE150:
+ 706              		.section	.text.ui_proc_2_frame,"ax",%progbits
+ 707              		.align	1
+ 708              		.global	ui_proc_2_frame
+ 709              		.syntax unified
+ 710              		.thumb
+ 711              		.thumb_func
+ 713              	ui_proc_2_frame:
+ 714              	.LFB151:
+ 120:Drivers/UI/ui_interface.c **** DEFINE_FRAME_PROC(2, 0x0102)
+ 715              		.loc 1 120 1 is_stmt 1
+ 716              		.cfi_startproc
+ 717              		@ args = 0, pretend = 0, frame = 8
+ 718              		@ frame_needed = 1, uses_anonymous_args = 0
+ 719 0000 80B5     		push	{r7, lr}
+ 720              	.LCFI22:
+ 721              		.cfi_def_cfa_offset 8
+ 722              		.cfi_offset 7, -8
+ 723              		.cfi_offset 14, -4
+ 724 0002 82B0     		sub	sp, sp, #8
+ 725              	.LCFI23:
+ 726              		.cfi_def_cfa_offset 16
+ 727 0004 00AF     		add	r7, sp, #0
+ 728              	.LCFI24:
+ 729              		.cfi_def_cfa_register 7
+ 730 0006 7860     		str	r0, [r7, #4]
+ 731              		.loc 1 120 1
+ 732 0008 7B68     		ldr	r3, [r7, #4]
+ 733 000a A522     		movs	r2, #165
+ 734 000c 1A70     		strb	r2, [r3]
+ 735 000e 7B68     		ldr	r3, [r7, #4]
+ 736 0010 0022     		movs	r2, #0
+ 737 0012 42F02402 		orr	r2, r2, #36
+ARM GAS  C:\Users\23671\AppData\Local\Temp\cc9KKtsa.s 			page 17
+
+
+ 738 0016 5A70     		strb	r2, [r3, #1]
+ 739 0018 0022     		movs	r2, #0
+ 740 001a 9A70     		strb	r2, [r3, #2]
+ 741 001c 1E4B     		ldr	r3, .L23
+ 742 001e 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 743 0020 5A1C     		adds	r2, r3, #1
+ 744 0022 D1B2     		uxtb	r1, r2
+ 745 0024 1C4A     		ldr	r2, .L23
+ 746 0026 1170     		strb	r1, [r2]
+ 747 0028 7A68     		ldr	r2, [r7, #4]
+ 748 002a D370     		strb	r3, [r2, #3]
+ 749 002c 0421     		movs	r1, #4
+ 750 002e 7868     		ldr	r0, [r7, #4]
+ 751 0030 FFF7FEFF 		bl	calc_crc8
+ 752 0034 0346     		mov	r3, r0
+ 753 0036 1A46     		mov	r2, r3
+ 754              		.loc 1 120 1 is_stmt 0 discriminator 1
+ 755 0038 7B68     		ldr	r3, [r7, #4]
+ 756 003a 1A71     		strb	r2, [r3, #4]
+ 757 003c 7B68     		ldr	r3, [r7, #4]
+ 758 003e 0022     		movs	r2, #0
+ 759 0040 42F00102 		orr	r2, r2, #1
+ 760 0044 5A71     		strb	r2, [r3, #5]
+ 761 0046 0022     		movs	r2, #0
+ 762 0048 42F00302 		orr	r2, r2, #3
+ 763 004c 9A71     		strb	r2, [r3, #6]
+ 764 004e 7B68     		ldr	r3, [r7, #4]
+ 765 0050 0022     		movs	r2, #0
+ 766 0052 42F00202 		orr	r2, r2, #2
+ 767 0056 DA71     		strb	r2, [r3, #7]
+ 768 0058 0022     		movs	r2, #0
+ 769 005a 42F00102 		orr	r2, r2, #1
+ 770 005e 1A72     		strb	r2, [r3, #8]
+ 771 0060 0E4B     		ldr	r3, .L23+4
+ 772 0062 1B68     		ldr	r3, [r3]
+ 773 0064 9AB2     		uxth	r2, r3
+ 774 0066 7B68     		ldr	r3, [r7, #4]
+ 775 0068 A3F80920 		strh	r2, [r3, #9]	@ unaligned
+ 776 006c 0B4B     		ldr	r3, .L23+4
+ 777 006e 1B68     		ldr	r3, [r3]
+ 778 0070 9BB2     		uxth	r3, r3
+ 779 0072 03F58073 		add	r3, r3, #256
+ 780 0076 9AB2     		uxth	r2, r3
+ 781 0078 7B68     		ldr	r3, [r7, #4]
+ 782 007a A3F80B20 		strh	r2, [r3, #11]	@ unaligned
+ 783 007e 2B21     		movs	r1, #43
+ 784 0080 7868     		ldr	r0, [r7, #4]
+ 785 0082 FFF7FEFF 		bl	calc_crc16
+ 786 0086 0346     		mov	r3, r0
+ 787 0088 1A46     		mov	r2, r3
+ 788              		.loc 1 120 1 discriminator 2
+ 789 008a 7B68     		ldr	r3, [r7, #4]
+ 790 008c A3F82B20 		strh	r2, [r3, #43]	@ unaligned
+ 791              		.loc 1 120 1
+ 792 0090 0837     		adds	r7, r7, #8
+ 793              	.LCFI25:
+ 794              		.cfi_def_cfa_offset 8
+ARM GAS  C:\Users\23671\AppData\Local\Temp\cc9KKtsa.s 			page 18
+
+
+ 795 0092 BD46     		mov	sp, r7
+ 796              	.LCFI26:
+ 797              		.cfi_def_cfa_register 13
+ 798              		@ sp needed
+ 799 0094 80BD     		pop	{r7, pc}
+ 800              	.L24:
+ 801 0096 00BF     		.align	2
+ 802              	.L23:
+ 803 0098 00000000 		.word	seq
+ 804 009c 00000000 		.word	ui_self_id
+ 805              		.cfi_endproc
+ 806              	.LFE151:
+ 808              		.section	.text.ui_proc_5_frame,"ax",%progbits
+ 809              		.align	1
+ 810              		.global	ui_proc_5_frame
+ 811              		.syntax unified
+ 812              		.thumb
+ 813              		.thumb_func
+ 815              	ui_proc_5_frame:
+ 816              	.LFB152:
+ 121:Drivers/UI/ui_interface.c **** DEFINE_FRAME_PROC(5, 0x0103)
+ 817              		.loc 1 121 1 is_stmt 1
+ 818              		.cfi_startproc
+ 819              		@ args = 0, pretend = 0, frame = 8
+ 820              		@ frame_needed = 1, uses_anonymous_args = 0
+ 821 0000 80B5     		push	{r7, lr}
+ 822              	.LCFI27:
+ 823              		.cfi_def_cfa_offset 8
+ 824              		.cfi_offset 7, -8
+ 825              		.cfi_offset 14, -4
+ 826 0002 82B0     		sub	sp, sp, #8
+ 827              	.LCFI28:
+ 828              		.cfi_def_cfa_offset 16
+ 829 0004 00AF     		add	r7, sp, #0
+ 830              	.LCFI29:
+ 831              		.cfi_def_cfa_register 7
+ 832 0006 7860     		str	r0, [r7, #4]
+ 833              		.loc 1 121 1
+ 834 0008 7B68     		ldr	r3, [r7, #4]
+ 835 000a A522     		movs	r2, #165
+ 836 000c 1A70     		strb	r2, [r3]
+ 837 000e 7B68     		ldr	r3, [r7, #4]
+ 838 0010 0022     		movs	r2, #0
+ 839 0012 42F05102 		orr	r2, r2, #81
+ 840 0016 5A70     		strb	r2, [r3, #1]
+ 841 0018 0022     		movs	r2, #0
+ 842 001a 9A70     		strb	r2, [r3, #2]
+ 843 001c 1E4B     		ldr	r3, .L26
+ 844 001e 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 845 0020 5A1C     		adds	r2, r3, #1
+ 846 0022 D1B2     		uxtb	r1, r2
+ 847 0024 1C4A     		ldr	r2, .L26
+ 848 0026 1170     		strb	r1, [r2]
+ 849 0028 7A68     		ldr	r2, [r7, #4]
+ 850 002a D370     		strb	r3, [r2, #3]
+ 851 002c 0421     		movs	r1, #4
+ 852 002e 7868     		ldr	r0, [r7, #4]
+ARM GAS  C:\Users\23671\AppData\Local\Temp\cc9KKtsa.s 			page 19
+
+
+ 853 0030 FFF7FEFF 		bl	calc_crc8
+ 854 0034 0346     		mov	r3, r0
+ 855 0036 1A46     		mov	r2, r3
+ 856              		.loc 1 121 1 is_stmt 0 discriminator 1
+ 857 0038 7B68     		ldr	r3, [r7, #4]
+ 858 003a 1A71     		strb	r2, [r3, #4]
+ 859 003c 7B68     		ldr	r3, [r7, #4]
+ 860 003e 0022     		movs	r2, #0
+ 861 0040 42F00102 		orr	r2, r2, #1
+ 862 0044 5A71     		strb	r2, [r3, #5]
+ 863 0046 0022     		movs	r2, #0
+ 864 0048 42F00302 		orr	r2, r2, #3
+ 865 004c 9A71     		strb	r2, [r3, #6]
+ 866 004e 7B68     		ldr	r3, [r7, #4]
+ 867 0050 0022     		movs	r2, #0
+ 868 0052 42F00302 		orr	r2, r2, #3
+ 869 0056 DA71     		strb	r2, [r3, #7]
+ 870 0058 0022     		movs	r2, #0
+ 871 005a 42F00102 		orr	r2, r2, #1
+ 872 005e 1A72     		strb	r2, [r3, #8]
+ 873 0060 0E4B     		ldr	r3, .L26+4
+ 874 0062 1B68     		ldr	r3, [r3]
+ 875 0064 9AB2     		uxth	r2, r3
+ 876 0066 7B68     		ldr	r3, [r7, #4]
+ 877 0068 A3F80920 		strh	r2, [r3, #9]	@ unaligned
+ 878 006c 0B4B     		ldr	r3, .L26+4
+ 879 006e 1B68     		ldr	r3, [r3]
+ 880 0070 9BB2     		uxth	r3, r3
+ 881 0072 03F58073 		add	r3, r3, #256
+ 882 0076 9AB2     		uxth	r2, r3
+ 883 0078 7B68     		ldr	r3, [r7, #4]
+ 884 007a A3F80B20 		strh	r2, [r3, #11]	@ unaligned
+ 885 007e 5821     		movs	r1, #88
+ 886 0080 7868     		ldr	r0, [r7, #4]
+ 887 0082 FFF7FEFF 		bl	calc_crc16
+ 888 0086 0346     		mov	r3, r0
+ 889 0088 1A46     		mov	r2, r3
+ 890              		.loc 1 121 1 discriminator 2
+ 891 008a 7B68     		ldr	r3, [r7, #4]
+ 892 008c A3F85820 		strh	r2, [r3, #88]	@ unaligned
+ 893              		.loc 1 121 1
+ 894 0090 0837     		adds	r7, r7, #8
+ 895              	.LCFI30:
+ 896              		.cfi_def_cfa_offset 8
+ 897 0092 BD46     		mov	sp, r7
+ 898              	.LCFI31:
+ 899              		.cfi_def_cfa_register 13
+ 900              		@ sp needed
+ 901 0094 80BD     		pop	{r7, pc}
+ 902              	.L27:
+ 903 0096 00BF     		.align	2
+ 904              	.L26:
+ 905 0098 00000000 		.word	seq
+ 906 009c 00000000 		.word	ui_self_id
+ 907              		.cfi_endproc
+ 908              	.LFE152:
+ 910              		.section	.text.ui_proc_7_frame,"ax",%progbits
+ARM GAS  C:\Users\23671\AppData\Local\Temp\cc9KKtsa.s 			page 20
+
+
+ 911              		.align	1
+ 912              		.global	ui_proc_7_frame
+ 913              		.syntax unified
+ 914              		.thumb
+ 915              		.thumb_func
+ 917              	ui_proc_7_frame:
+ 918              	.LFB153:
+ 122:Drivers/UI/ui_interface.c **** DEFINE_FRAME_PROC(7, 0x0104)
+ 919              		.loc 1 122 1 is_stmt 1
+ 920              		.cfi_startproc
+ 921              		@ args = 0, pretend = 0, frame = 8
+ 922              		@ frame_needed = 1, uses_anonymous_args = 0
+ 923 0000 80B5     		push	{r7, lr}
+ 924              	.LCFI32:
+ 925              		.cfi_def_cfa_offset 8
+ 926              		.cfi_offset 7, -8
+ 927              		.cfi_offset 14, -4
+ 928 0002 82B0     		sub	sp, sp, #8
+ 929              	.LCFI33:
+ 930              		.cfi_def_cfa_offset 16
+ 931 0004 00AF     		add	r7, sp, #0
+ 932              	.LCFI34:
+ 933              		.cfi_def_cfa_register 7
+ 934 0006 7860     		str	r0, [r7, #4]
+ 935              		.loc 1 122 1
+ 936 0008 7B68     		ldr	r3, [r7, #4]
+ 937 000a A522     		movs	r2, #165
+ 938 000c 1A70     		strb	r2, [r3]
+ 939 000e 7B68     		ldr	r3, [r7, #4]
+ 940 0010 0022     		movs	r2, #0
+ 941 0012 42F06F02 		orr	r2, r2, #111
+ 942 0016 5A70     		strb	r2, [r3, #1]
+ 943 0018 0022     		movs	r2, #0
+ 944 001a 9A70     		strb	r2, [r3, #2]
+ 945 001c 1E4B     		ldr	r3, .L29
+ 946 001e 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 947 0020 5A1C     		adds	r2, r3, #1
+ 948 0022 D1B2     		uxtb	r1, r2
+ 949 0024 1C4A     		ldr	r2, .L29
+ 950 0026 1170     		strb	r1, [r2]
+ 951 0028 7A68     		ldr	r2, [r7, #4]
+ 952 002a D370     		strb	r3, [r2, #3]
+ 953 002c 0421     		movs	r1, #4
+ 954 002e 7868     		ldr	r0, [r7, #4]
+ 955 0030 FFF7FEFF 		bl	calc_crc8
+ 956 0034 0346     		mov	r3, r0
+ 957 0036 1A46     		mov	r2, r3
+ 958              		.loc 1 122 1 is_stmt 0 discriminator 1
+ 959 0038 7B68     		ldr	r3, [r7, #4]
+ 960 003a 1A71     		strb	r2, [r3, #4]
+ 961 003c 7B68     		ldr	r3, [r7, #4]
+ 962 003e 0022     		movs	r2, #0
+ 963 0040 42F00102 		orr	r2, r2, #1
+ 964 0044 5A71     		strb	r2, [r3, #5]
+ 965 0046 0022     		movs	r2, #0
+ 966 0048 42F00302 		orr	r2, r2, #3
+ 967 004c 9A71     		strb	r2, [r3, #6]
+ARM GAS  C:\Users\23671\AppData\Local\Temp\cc9KKtsa.s 			page 21
+
+
+ 968 004e 7B68     		ldr	r3, [r7, #4]
+ 969 0050 0022     		movs	r2, #0
+ 970 0052 42F00402 		orr	r2, r2, #4
+ 971 0056 DA71     		strb	r2, [r3, #7]
+ 972 0058 0022     		movs	r2, #0
+ 973 005a 42F00102 		orr	r2, r2, #1
+ 974 005e 1A72     		strb	r2, [r3, #8]
+ 975 0060 0E4B     		ldr	r3, .L29+4
+ 976 0062 1B68     		ldr	r3, [r3]
+ 977 0064 9AB2     		uxth	r2, r3
+ 978 0066 7B68     		ldr	r3, [r7, #4]
+ 979 0068 A3F80920 		strh	r2, [r3, #9]	@ unaligned
+ 980 006c 0B4B     		ldr	r3, .L29+4
+ 981 006e 1B68     		ldr	r3, [r3]
+ 982 0070 9BB2     		uxth	r3, r3
+ 983 0072 03F58073 		add	r3, r3, #256
+ 984 0076 9AB2     		uxth	r2, r3
+ 985 0078 7B68     		ldr	r3, [r7, #4]
+ 986 007a A3F80B20 		strh	r2, [r3, #11]	@ unaligned
+ 987 007e 7621     		movs	r1, #118
+ 988 0080 7868     		ldr	r0, [r7, #4]
+ 989 0082 FFF7FEFF 		bl	calc_crc16
+ 990 0086 0346     		mov	r3, r0
+ 991 0088 1A46     		mov	r2, r3
+ 992              		.loc 1 122 1 discriminator 2
+ 993 008a 7B68     		ldr	r3, [r7, #4]
+ 994 008c A3F87620 		strh	r2, [r3, #118]	@ unaligned
+ 995              		.loc 1 122 1
+ 996 0090 0837     		adds	r7, r7, #8
+ 997              	.LCFI35:
+ 998              		.cfi_def_cfa_offset 8
+ 999 0092 BD46     		mov	sp, r7
+ 1000              	.LCFI36:
+ 1001              		.cfi_def_cfa_register 13
+ 1002              		@ sp needed
+ 1003 0094 80BD     		pop	{r7, pc}
+ 1004              	.L30:
+ 1005 0096 00BF     		.align	2
+ 1006              	.L29:
+ 1007 0098 00000000 		.word	seq
+ 1008 009c 00000000 		.word	ui_self_id
+ 1009              		.cfi_endproc
+ 1010              	.LFE153:
+ 1012              		.section	.text.ui_proc_string_frame,"ax",%progbits
+ 1013              		.align	1
+ 1014              		.global	ui_proc_string_frame
+ 1015              		.syntax unified
+ 1016              		.thumb
+ 1017              		.thumb_func
+ 1019              	ui_proc_string_frame:
+ 1020              	.LFB154:
+ 123:Drivers/UI/ui_interface.c **** 
+ 124:Drivers/UI/ui_interface.c **** void ui_proc_string_frame(ui_string_frame_t *msg) {
+ 1021              		.loc 1 124 51 is_stmt 1
+ 1022              		.cfi_startproc
+ 1023              		@ args = 0, pretend = 0, frame = 8
+ 1024              		@ frame_needed = 1, uses_anonymous_args = 0
+ARM GAS  C:\Users\23671\AppData\Local\Temp\cc9KKtsa.s 			page 22
+
+
+ 1025 0000 90B5     		push	{r4, r7, lr}
+ 1026              	.LCFI37:
+ 1027              		.cfi_def_cfa_offset 12
+ 1028              		.cfi_offset 4, -12
+ 1029              		.cfi_offset 7, -8
+ 1030              		.cfi_offset 14, -4
+ 1031 0002 83B0     		sub	sp, sp, #12
+ 1032              	.LCFI38:
+ 1033              		.cfi_def_cfa_offset 24
+ 1034 0004 00AF     		add	r7, sp, #0
+ 1035              	.LCFI39:
+ 1036              		.cfi_def_cfa_register 7
+ 1037 0006 7860     		str	r0, [r7, #4]
+ 125:Drivers/UI/ui_interface.c ****     msg->header.SOF = 0xA5;
+ 1038              		.loc 1 125 21
+ 1039 0008 7B68     		ldr	r3, [r7, #4]
+ 1040 000a A522     		movs	r2, #165
+ 1041 000c 1A70     		strb	r2, [r3]
+ 126:Drivers/UI/ui_interface.c ****     msg->header.length = 51;
+ 1042              		.loc 1 126 24
+ 1043 000e 7B68     		ldr	r3, [r7, #4]
+ 1044 0010 0022     		movs	r2, #0
+ 1045 0012 42F03302 		orr	r2, r2, #51
+ 1046 0016 5A70     		strb	r2, [r3, #1]
+ 1047 0018 0022     		movs	r2, #0
+ 1048 001a 9A70     		strb	r2, [r3, #2]
+ 127:Drivers/UI/ui_interface.c ****     msg->header.seq = seq++;
+ 1049              		.loc 1 127 26
+ 1050 001c 2B4B     		ldr	r3, .L32
+ 1051 001e 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 1052 0020 5A1C     		adds	r2, r3, #1
+ 1053 0022 D1B2     		uxtb	r1, r2
+ 1054 0024 294A     		ldr	r2, .L32
+ 1055 0026 1170     		strb	r1, [r2]
+ 1056              		.loc 1 127 21
+ 1057 0028 7A68     		ldr	r2, [r7, #4]
+ 1058 002a D370     		strb	r3, [r2, #3]
+ 128:Drivers/UI/ui_interface.c ****     msg->header.crc8 = calc_crc8((uint8_t *) msg, 4);
+ 1059              		.loc 1 128 24
+ 1060 002c 0421     		movs	r1, #4
+ 1061 002e 7868     		ldr	r0, [r7, #4]
+ 1062 0030 FFF7FEFF 		bl	calc_crc8
+ 1063 0034 0346     		mov	r3, r0
+ 1064 0036 1A46     		mov	r2, r3
+ 1065              		.loc 1 128 22 discriminator 1
+ 1066 0038 7B68     		ldr	r3, [r7, #4]
+ 1067 003a 1A71     		strb	r2, [r3, #4]
+ 129:Drivers/UI/ui_interface.c ****     msg->header.cmd_id = 0x0301;
+ 1068              		.loc 1 129 24
+ 1069 003c 7B68     		ldr	r3, [r7, #4]
+ 1070 003e 0022     		movs	r2, #0
+ 1071 0040 42F00102 		orr	r2, r2, #1
+ 1072 0044 5A71     		strb	r2, [r3, #5]
+ 1073 0046 0022     		movs	r2, #0
+ 1074 0048 42F00302 		orr	r2, r2, #3
+ 1075 004c 9A71     		strb	r2, [r3, #6]
+ 130:Drivers/UI/ui_interface.c ****     msg->header.sub_id = 0x0110;
+ARM GAS  C:\Users\23671\AppData\Local\Temp\cc9KKtsa.s 			page 23
+
+
+ 1076              		.loc 1 130 24
+ 1077 004e 7B68     		ldr	r3, [r7, #4]
+ 1078 0050 0022     		movs	r2, #0
+ 1079 0052 42F01002 		orr	r2, r2, #16
+ 1080 0056 DA71     		strb	r2, [r3, #7]
+ 1081 0058 0022     		movs	r2, #0
+ 1082 005a 42F00102 		orr	r2, r2, #1
+ 1083 005e 1A72     		strb	r2, [r3, #8]
+ 131:Drivers/UI/ui_interface.c ****     msg->header.send_id = ui_self_id;
+ 1084              		.loc 1 131 25
+ 1085 0060 1B4B     		ldr	r3, .L32+4
+ 1086 0062 1B68     		ldr	r3, [r3]
+ 1087 0064 9AB2     		uxth	r2, r3
+ 1088 0066 7B68     		ldr	r3, [r7, #4]
+ 1089 0068 A3F80920 		strh	r2, [r3, #9]	@ unaligned
+ 132:Drivers/UI/ui_interface.c ****     msg->header.recv_id = ui_self_id + 256;
+ 1090              		.loc 1 132 38
+ 1091 006c 184B     		ldr	r3, .L32+4
+ 1092 006e 1B68     		ldr	r3, [r3]
+ 1093 0070 9BB2     		uxth	r3, r3
+ 1094 0072 03F58073 		add	r3, r3, #256
+ 1095 0076 9AB2     		uxth	r2, r3
+ 1096              		.loc 1 132 25
+ 1097 0078 7B68     		ldr	r3, [r7, #4]
+ 1098 007a A3F80B20 		strh	r2, [r3, #11]	@ unaligned
+ 133:Drivers/UI/ui_interface.c ****     msg->option.str_length = strlen(msg->option.string);
+ 1099              		.loc 1 133 48
+ 1100 007e 7B68     		ldr	r3, [r7, #4]
+ 1101 0080 1C33     		adds	r3, r3, #28
+ 1102              		.loc 1 133 30
+ 1103 0082 1846     		mov	r0, r3
+ 1104 0084 FFF7FEFF 		bl	strlen
+ 1105 0088 0346     		mov	r3, r0
+ 1106              		.loc 1 133 30 is_stmt 0 discriminator 1
+ 1107 008a C3F30803 		ubfx	r3, r3, #0, #9
+ 1108 008e 9AB2     		uxth	r2, r3
+ 1109              		.loc 1 133 28 is_stmt 1 discriminator 1
+ 1110 0090 7B68     		ldr	r3, [r7, #4]
+ 1111 0092 02F00101 		and	r1, r2, #1
+ 1112 0096 CC01     		lsls	r4, r1, #7
+ 1113 0098 997C     		ldrb	r1, [r3, #18]
+ 1114 009a 01F07F01 		and	r1, r1, #127
+ 1115 009e 0846     		mov	r0, r1
+ 1116 00a0 2146     		mov	r1, r4
+ 1117 00a2 0143     		orrs	r1, r1, r0
+ 1118 00a4 9974     		strb	r1, [r3, #18]
+ 1119 00a6 5208     		lsrs	r2, r2, #1
+ 1120 00a8 92B2     		uxth	r2, r2
+ 1121 00aa D2B2     		uxtb	r2, r2
+ 1122 00ac 0021     		movs	r1, #0
+ 1123 00ae 0A43     		orrs	r2, r2, r1
+ 1124 00b0 DA74     		strb	r2, [r3, #19]
+ 134:Drivers/UI/ui_interface.c ****     msg->crc16 = calc_crc16((uint8_t *) msg, 58);
+ 1125              		.loc 1 134 18
+ 1126 00b2 3A21     		movs	r1, #58
+ 1127 00b4 7868     		ldr	r0, [r7, #4]
+ 1128 00b6 FFF7FEFF 		bl	calc_crc16
+ARM GAS  C:\Users\23671\AppData\Local\Temp\cc9KKtsa.s 			page 24
+
+
+ 1129 00ba 0346     		mov	r3, r0
+ 1130 00bc 1A46     		mov	r2, r3
+ 1131              		.loc 1 134 16 discriminator 1
+ 1132 00be 7B68     		ldr	r3, [r7, #4]
+ 1133 00c0 5A87     		strh	r2, [r3, #58]	@ unaligned
+ 135:Drivers/UI/ui_interface.c **** }
+ 1134              		.loc 1 135 1
+ 1135 00c2 00BF     		nop
+ 1136 00c4 0C37     		adds	r7, r7, #12
+ 1137              	.LCFI40:
+ 1138              		.cfi_def_cfa_offset 12
+ 1139 00c6 BD46     		mov	sp, r7
+ 1140              	.LCFI41:
+ 1141              		.cfi_def_cfa_register 13
+ 1142              		@ sp needed
+ 1143 00c8 90BD     		pop	{r4, r7, pc}
+ 1144              	.L33:
+ 1145 00ca 00BF     		.align	2
+ 1146              	.L32:
+ 1147 00cc 00000000 		.word	seq
+ 1148 00d0 00000000 		.word	ui_self_id
+ 1149              		.cfi_endproc
+ 1150              	.LFE154:
+ 1152              		.section	.text.ui_proc_delete_frame,"ax",%progbits
+ 1153              		.align	1
+ 1154              		.global	ui_proc_delete_frame
+ 1155              		.syntax unified
+ 1156              		.thumb
+ 1157              		.thumb_func
+ 1159              	ui_proc_delete_frame:
+ 1160              	.LFB155:
+ 136:Drivers/UI/ui_interface.c **** 
+ 137:Drivers/UI/ui_interface.c **** void ui_proc_delete_frame(ui_delete_frame_t *msg) {
+ 1161              		.loc 1 137 51
+ 1162              		.cfi_startproc
+ 1163              		@ args = 0, pretend = 0, frame = 8
+ 1164              		@ frame_needed = 1, uses_anonymous_args = 0
+ 1165 0000 80B5     		push	{r7, lr}
+ 1166              	.LCFI42:
+ 1167              		.cfi_def_cfa_offset 8
+ 1168              		.cfi_offset 7, -8
+ 1169              		.cfi_offset 14, -4
+ 1170 0002 82B0     		sub	sp, sp, #8
+ 1171              	.LCFI43:
+ 1172              		.cfi_def_cfa_offset 16
+ 1173 0004 00AF     		add	r7, sp, #0
+ 1174              	.LCFI44:
+ 1175              		.cfi_def_cfa_register 7
+ 1176 0006 7860     		str	r0, [r7, #4]
+ 138:Drivers/UI/ui_interface.c ****     msg->header.SOF = 0xA5;
+ 1177              		.loc 1 138 21
+ 1178 0008 7B68     		ldr	r3, [r7, #4]
+ 1179 000a A522     		movs	r2, #165
+ 1180 000c 1A70     		strb	r2, [r3]
+ 139:Drivers/UI/ui_interface.c ****     msg->header.length = 8;
+ 1181              		.loc 1 139 24
+ 1182 000e 7B68     		ldr	r3, [r7, #4]
+ARM GAS  C:\Users\23671\AppData\Local\Temp\cc9KKtsa.s 			page 25
+
+
+ 1183 0010 0022     		movs	r2, #0
+ 1184 0012 42F00802 		orr	r2, r2, #8
+ 1185 0016 5A70     		strb	r2, [r3, #1]
+ 1186 0018 0022     		movs	r2, #0
+ 1187 001a 9A70     		strb	r2, [r3, #2]
+ 140:Drivers/UI/ui_interface.c ****     msg->header.seq = seq++;
+ 1188              		.loc 1 140 26
+ 1189 001c 1D4B     		ldr	r3, .L35
+ 1190 001e 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 1191 0020 5A1C     		adds	r2, r3, #1
+ 1192 0022 D1B2     		uxtb	r1, r2
+ 1193 0024 1B4A     		ldr	r2, .L35
+ 1194 0026 1170     		strb	r1, [r2]
+ 1195              		.loc 1 140 21
+ 1196 0028 7A68     		ldr	r2, [r7, #4]
+ 1197 002a D370     		strb	r3, [r2, #3]
+ 141:Drivers/UI/ui_interface.c ****     msg->header.crc8 = calc_crc8((uint8_t *) msg, 4);
+ 1198              		.loc 1 141 24
+ 1199 002c 0421     		movs	r1, #4
+ 1200 002e 7868     		ldr	r0, [r7, #4]
+ 1201 0030 FFF7FEFF 		bl	calc_crc8
+ 1202 0034 0346     		mov	r3, r0
+ 1203 0036 1A46     		mov	r2, r3
+ 1204              		.loc 1 141 22 discriminator 1
+ 1205 0038 7B68     		ldr	r3, [r7, #4]
+ 1206 003a 1A71     		strb	r2, [r3, #4]
+ 142:Drivers/UI/ui_interface.c ****     msg->header.cmd_id = 0x0301;
+ 1207              		.loc 1 142 24
+ 1208 003c 7B68     		ldr	r3, [r7, #4]
+ 1209 003e 0022     		movs	r2, #0
+ 1210 0040 42F00102 		orr	r2, r2, #1
+ 1211 0044 5A71     		strb	r2, [r3, #5]
+ 1212 0046 0022     		movs	r2, #0
+ 1213 0048 42F00302 		orr	r2, r2, #3
+ 1214 004c 9A71     		strb	r2, [r3, #6]
+ 143:Drivers/UI/ui_interface.c ****     msg->header.sub_id = 0x0100;
+ 1215              		.loc 1 143 24
+ 1216 004e 7B68     		ldr	r3, [r7, #4]
+ 1217 0050 0022     		movs	r2, #0
+ 1218 0052 DA71     		strb	r2, [r3, #7]
+ 1219 0054 0022     		movs	r2, #0
+ 1220 0056 42F00102 		orr	r2, r2, #1
+ 1221 005a 1A72     		strb	r2, [r3, #8]
+ 144:Drivers/UI/ui_interface.c ****     msg->header.send_id = ui_self_id;
+ 1222              		.loc 1 144 25
+ 1223 005c 0E4B     		ldr	r3, .L35+4
+ 1224 005e 1B68     		ldr	r3, [r3]
+ 1225 0060 9AB2     		uxth	r2, r3
+ 1226 0062 7B68     		ldr	r3, [r7, #4]
+ 1227 0064 A3F80920 		strh	r2, [r3, #9]	@ unaligned
+ 145:Drivers/UI/ui_interface.c ****     msg->header.recv_id = ui_self_id + 256;
+ 1228              		.loc 1 145 38
+ 1229 0068 0B4B     		ldr	r3, .L35+4
+ 1230 006a 1B68     		ldr	r3, [r3]
+ 1231 006c 9BB2     		uxth	r3, r3
+ 1232 006e 03F58073 		add	r3, r3, #256
+ 1233 0072 9AB2     		uxth	r2, r3
+ARM GAS  C:\Users\23671\AppData\Local\Temp\cc9KKtsa.s 			page 26
+
+
+ 1234              		.loc 1 145 25
+ 1235 0074 7B68     		ldr	r3, [r7, #4]
+ 1236 0076 A3F80B20 		strh	r2, [r3, #11]	@ unaligned
+ 146:Drivers/UI/ui_interface.c ****     msg->crc16 = calc_crc16((uint8_t *) msg, 15);
+ 1237              		.loc 1 146 18
+ 1238 007a 0F21     		movs	r1, #15
+ 1239 007c 7868     		ldr	r0, [r7, #4]
+ 1240 007e FFF7FEFF 		bl	calc_crc16
+ 1241 0082 0346     		mov	r3, r0
+ 1242 0084 1A46     		mov	r2, r3
+ 1243              		.loc 1 146 16 discriminator 1
+ 1244 0086 7B68     		ldr	r3, [r7, #4]
+ 1245 0088 A3F80F20 		strh	r2, [r3, #15]	@ unaligned
+ 147:Drivers/UI/ui_interface.c **** }
+ 1246              		.loc 1 147 1
+ 1247 008c 00BF     		nop
+ 1248 008e 0837     		adds	r7, r7, #8
+ 1249              	.LCFI45:
+ 1250              		.cfi_def_cfa_offset 8
+ 1251 0090 BD46     		mov	sp, r7
+ 1252              	.LCFI46:
+ 1253              		.cfi_def_cfa_register 13
+ 1254              		@ sp needed
+ 1255 0092 80BD     		pop	{r7, pc}
+ 1256              	.L36:
+ 1257              		.align	2
+ 1258              	.L35:
+ 1259 0094 00000000 		.word	seq
+ 1260 0098 00000000 		.word	ui_self_id
+ 1261              		.cfi_endproc
+ 1262              	.LFE155:
+ 1264              		.global	ui_delete_frame
+ 1265              		.section	.bss.ui_delete_frame,"aw",%nobits
+ 1266              		.align	2
+ 1269              	ui_delete_frame:
+ 1270 0000 00000000 		.space	17
+ 1270      00000000 
+ 1270      00000000 
+ 1270      00000000 
+ 1270      00
+ 1271              		.section	.text.ui_delete_layer,"ax",%progbits
+ 1272              		.align	1
+ 1273              		.global	ui_delete_layer
+ 1274              		.syntax unified
+ 1275              		.thumb
+ 1276              		.thumb_func
+ 1278              	ui_delete_layer:
+ 1279              	.LFB156:
+ 148:Drivers/UI/ui_interface.c **** 
+ 149:Drivers/UI/ui_interface.c **** ui_delete_frame_t ui_delete_frame;
+ 150:Drivers/UI/ui_interface.c **** 
+ 151:Drivers/UI/ui_interface.c **** void ui_delete_layer(const uint8_t delete_type, const uint8_t layer) {
+ 1280              		.loc 1 151 70
+ 1281              		.cfi_startproc
+ 1282              		@ args = 0, pretend = 0, frame = 8
+ 1283              		@ frame_needed = 1, uses_anonymous_args = 0
+ 1284 0000 80B5     		push	{r7, lr}
+ARM GAS  C:\Users\23671\AppData\Local\Temp\cc9KKtsa.s 			page 27
+
+
+ 1285              	.LCFI47:
+ 1286              		.cfi_def_cfa_offset 8
+ 1287              		.cfi_offset 7, -8
+ 1288              		.cfi_offset 14, -4
+ 1289 0002 82B0     		sub	sp, sp, #8
+ 1290              	.LCFI48:
+ 1291              		.cfi_def_cfa_offset 16
+ 1292 0004 00AF     		add	r7, sp, #0
+ 1293              	.LCFI49:
+ 1294              		.cfi_def_cfa_register 7
+ 1295 0006 0346     		mov	r3, r0
+ 1296 0008 0A46     		mov	r2, r1
+ 1297 000a FB71     		strb	r3, [r7, #7]
+ 1298 000c 1346     		mov	r3, r2
+ 1299 000e BB71     		strb	r3, [r7, #6]
+ 152:Drivers/UI/ui_interface.c ****     ui_delete_frame.delete_type = delete_type;
+ 1300              		.loc 1 152 33
+ 1301 0010 094A     		ldr	r2, .L38
+ 1302 0012 FB79     		ldrb	r3, [r7, #7]
+ 1303 0014 5373     		strb	r3, [r2, #13]
+ 153:Drivers/UI/ui_interface.c ****     ui_delete_frame.layer = layer;
+ 1304              		.loc 1 153 27
+ 1305 0016 084A     		ldr	r2, .L38
+ 1306 0018 BB79     		ldrb	r3, [r7, #6]
+ 1307 001a 9373     		strb	r3, [r2, #14]
+ 154:Drivers/UI/ui_interface.c ****     ui_proc_delete_frame(&ui_delete_frame);
+ 1308              		.loc 1 154 5
+ 1309 001c 0648     		ldr	r0, .L38
+ 1310 001e FFF7FEFF 		bl	ui_proc_delete_frame
+ 155:Drivers/UI/ui_interface.c ****     SEND_MESSAGE((uint8_t *) &ui_delete_frame, sizeof(ui_delete_frame));
+ 1311              		.loc 1 155 5
+ 1312 0022 6423     		movs	r3, #100
+ 1313 0024 1122     		movs	r2, #17
+ 1314 0026 0449     		ldr	r1, .L38
+ 1315 0028 0448     		ldr	r0, .L38+4
+ 1316 002a FFF7FEFF 		bl	HAL_UART_Transmit
+ 156:Drivers/UI/ui_interface.c **** }
+ 1317              		.loc 1 156 1
+ 1318 002e 00BF     		nop
+ 1319 0030 0837     		adds	r7, r7, #8
+ 1320              	.LCFI50:
+ 1321              		.cfi_def_cfa_offset 8
+ 1322 0032 BD46     		mov	sp, r7
+ 1323              	.LCFI51:
+ 1324              		.cfi_def_cfa_register 13
+ 1325              		@ sp needed
+ 1326 0034 80BD     		pop	{r7, pc}
+ 1327              	.L39:
+ 1328 0036 00BF     		.align	2
+ 1329              	.L38:
+ 1330 0038 00000000 		.word	ui_delete_frame
+ 1331 003c 00000000 		.word	huart7
+ 1332              		.cfi_endproc
+ 1333              	.LFE156:
+ 1335              		.section	.text.ui_scan_and_send,"ax",%progbits
+ 1336              		.align	1
+ 1337              		.global	ui_scan_and_send
+ARM GAS  C:\Users\23671\AppData\Local\Temp\cc9KKtsa.s 			page 28
+
+
+ 1338              		.syntax unified
+ 1339              		.thumb
+ 1340              		.thumb_func
+ 1342              	ui_scan_and_send:
+ 1343              	.LFB157:
+ 157:Drivers/UI/ui_interface.c **** 
+ 158:Drivers/UI/ui_interface.c **** void ui_scan_and_send(const ui_interface_figure_t *ui_now_figures, uint8_t *ui_dirty_figure,
+ 159:Drivers/UI/ui_interface.c ****                       const ui_interface_string_t *ui_now_strings, uint8_t *ui_dirty_string, const 
+ 160:Drivers/UI/ui_interface.c ****                       const int total_strings) {
+ 1344              		.loc 1 160 48
+ 1345              		.cfi_startproc
+ 1346              		@ args = 8, pretend = 0, frame = 56
+ 1347              		@ frame_needed = 1, uses_anonymous_args = 0
+ 1348 0000 F0B5     		push	{r4, r5, r6, r7, lr}
+ 1349              	.LCFI52:
+ 1350              		.cfi_def_cfa_offset 20
+ 1351              		.cfi_offset 4, -20
+ 1352              		.cfi_offset 5, -16
+ 1353              		.cfi_offset 6, -12
+ 1354              		.cfi_offset 7, -8
+ 1355              		.cfi_offset 14, -4
+ 1356 0002 8FB0     		sub	sp, sp, #60
+ 1357              	.LCFI53:
+ 1358              		.cfi_def_cfa_offset 80
+ 1359 0004 00AF     		add	r7, sp, #0
+ 1360              	.LCFI54:
+ 1361              		.cfi_def_cfa_register 7
+ 1362 0006 F860     		str	r0, [r7, #12]
+ 1363 0008 B960     		str	r1, [r7, #8]
+ 1364 000a 7A60     		str	r2, [r7, #4]
+ 1365 000c 3B60     		str	r3, [r7]
+ 161:Drivers/UI/ui_interface.c ****     if (total_figures > 0) {
+ 1366              		.loc 1 161 8
+ 1367 000e 3B6D     		ldr	r3, [r7, #80]
+ 1368 0010 002B     		cmp	r3, #0
+ 1369 0012 40F34C81 		ble	.L41
+ 1370              	.LBB3:
+ 162:Drivers/UI/ui_interface.c ****         int total_figure = 0;
+ 1371              		.loc 1 162 13
+ 1372 0016 0023     		movs	r3, #0
+ 1373 0018 7B63     		str	r3, [r7, #52]
+ 1374              	.LBB4:
+ 163:Drivers/UI/ui_interface.c ****         for (int i = 0; i < total_figures; i++) {
+ 1375              		.loc 1 163 18
+ 1376 001a 0023     		movs	r3, #0
+ 1377 001c 3B63     		str	r3, [r7, #48]
+ 1378              		.loc 1 163 9
+ 1379 001e 0BE0     		b	.L42
+ 1380              	.L44:
+ 164:Drivers/UI/ui_interface.c ****             if (ui_dirty_figure[i] == 1) {
+ 1381              		.loc 1 164 32
+ 1382 0020 3B6B     		ldr	r3, [r7, #48]
+ 1383 0022 BA68     		ldr	r2, [r7, #8]
+ 1384 0024 1344     		add	r3, r3, r2
+ 1385 0026 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 1386              		.loc 1 164 16
+ 1387 0028 012B     		cmp	r3, #1
+ARM GAS  C:\Users\23671\AppData\Local\Temp\cc9KKtsa.s 			page 29
+
+
+ 1388 002a 02D1     		bne	.L43
+ 165:Drivers/UI/ui_interface.c ****                 total_figure++;
+ 1389              		.loc 1 165 29
+ 1390 002c 7B6B     		ldr	r3, [r7, #52]
+ 1391 002e 0133     		adds	r3, r3, #1
+ 1392 0030 7B63     		str	r3, [r7, #52]
+ 1393              	.L43:
+ 163:Drivers/UI/ui_interface.c ****         for (int i = 0; i < total_figures; i++) {
+ 1394              		.loc 1 163 45 discriminator 2
+ 1395 0032 3B6B     		ldr	r3, [r7, #48]
+ 1396 0034 0133     		adds	r3, r3, #1
+ 1397 0036 3B63     		str	r3, [r7, #48]
+ 1398              	.L42:
+ 163:Drivers/UI/ui_interface.c ****         for (int i = 0; i < total_figures; i++) {
+ 1399              		.loc 1 163 27 discriminator 1
+ 1400 0038 3A6B     		ldr	r2, [r7, #48]
+ 1401 003a 3B6D     		ldr	r3, [r7, #80]
+ 1402 003c 9A42     		cmp	r2, r3
+ 1403 003e EFDB     		blt	.L44
+ 1404              	.LBE4:
+ 1405              	.LBB5:
+ 166:Drivers/UI/ui_interface.c ****             }
+ 167:Drivers/UI/ui_interface.c ****         }
+ 168:Drivers/UI/ui_interface.c ****         for (int i = 0, now_cap = 0, pack_size = 0; i < total_figures; i++) {
+ 1406              		.loc 1 168 18
+ 1407 0040 0023     		movs	r3, #0
+ 1408 0042 FB62     		str	r3, [r7, #44]
+ 1409              		.loc 1 168 25
+ 1410 0044 0023     		movs	r3, #0
+ 1411 0046 BB62     		str	r3, [r7, #40]
+ 1412              		.loc 1 168 38
+ 1413 0048 0023     		movs	r3, #0
+ 1414 004a 7B62     		str	r3, [r7, #36]
+ 1415              		.loc 1 168 9
+ 1416 004c 2AE1     		b	.L45
+ 1417              	.L66:
+ 169:Drivers/UI/ui_interface.c ****             if (ui_dirty_figure[i] == 1) {
+ 1418              		.loc 1 169 32
+ 1419 004e FB6A     		ldr	r3, [r7, #44]
+ 1420 0050 BA68     		ldr	r2, [r7, #8]
+ 1421 0052 1344     		add	r3, r3, r2
+ 1422 0054 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 1423              		.loc 1 169 16
+ 1424 0056 012B     		cmp	r3, #1
+ 1425 0058 40F02181 		bne	.L46
+ 1426              	.LBB6:
+ 170:Drivers/UI/ui_interface.c ****                 const int now_idx = now_cap % 7;
+ 1427              		.loc 1 170 27
+ 1428 005c BA6A     		ldr	r2, [r7, #40]
+ 1429 005e 974B     		ldr	r3, .L73
+ 1430 0060 83FB0213 		smull	r1, r3, r3, r2
+ 1431 0064 1344     		add	r3, r3, r2
+ 1432 0066 9910     		asrs	r1, r3, #2
+ 1433 0068 D317     		asrs	r3, r2, #31
+ 1434 006a C91A     		subs	r1, r1, r3
+ 1435 006c 0B46     		mov	r3, r1
+ 1436 006e DB00     		lsls	r3, r3, #3
+ARM GAS  C:\Users\23671\AppData\Local\Temp\cc9KKtsa.s 			page 30
+
+
+ 1437 0070 5B1A     		subs	r3, r3, r1
+ 1438 0072 D31A     		subs	r3, r2, r3
+ 1439 0074 BB61     		str	r3, [r7, #24]
+ 171:Drivers/UI/ui_interface.c ****                 if (now_idx == 0) {
+ 1440              		.loc 1 171 20
+ 1441 0076 BB69     		ldr	r3, [r7, #24]
+ 1442 0078 002B     		cmp	r3, #0
+ 1443 007a 17D1     		bne	.L47
+ 1444              	.LBB7:
+ 172:Drivers/UI/ui_interface.c ****                     const int remain_size = total_figure - now_cap;
+ 1445              		.loc 1 172 31
+ 1446 007c 7A6B     		ldr	r2, [r7, #52]
+ 1447 007e BB6A     		ldr	r3, [r7, #40]
+ 1448 0080 D31A     		subs	r3, r2, r3
+ 1449 0082 7B61     		str	r3, [r7, #20]
+ 173:Drivers/UI/ui_interface.c ****                     if (remain_size > 5) {
+ 1450              		.loc 1 173 24
+ 1451 0084 7B69     		ldr	r3, [r7, #20]
+ 1452 0086 052B     		cmp	r3, #5
+ 1453 0088 02DD     		ble	.L48
+ 174:Drivers/UI/ui_interface.c ****                         pack_size = 7;
+ 1454              		.loc 1 174 35
+ 1455 008a 0723     		movs	r3, #7
+ 1456 008c 7B62     		str	r3, [r7, #36]
+ 1457 008e 0DE0     		b	.L47
+ 1458              	.L48:
+ 175:Drivers/UI/ui_interface.c ****                     } else if (remain_size > 2) {
+ 1459              		.loc 1 175 31
+ 1460 0090 7B69     		ldr	r3, [r7, #20]
+ 1461 0092 022B     		cmp	r3, #2
+ 1462 0094 02DD     		ble	.L49
+ 176:Drivers/UI/ui_interface.c ****                         pack_size = 5;
+ 1463              		.loc 1 176 35
+ 1464 0096 0523     		movs	r3, #5
+ 1465 0098 7B62     		str	r3, [r7, #36]
+ 1466 009a 07E0     		b	.L47
+ 1467              	.L49:
+ 177:Drivers/UI/ui_interface.c ****                     } else if (remain_size > 1) {
+ 1468              		.loc 1 177 31
+ 1469 009c 7B69     		ldr	r3, [r7, #20]
+ 1470 009e 012B     		cmp	r3, #1
+ 1471 00a0 02DD     		ble	.L50
+ 178:Drivers/UI/ui_interface.c ****                         pack_size = 2;
+ 1472              		.loc 1 178 35
+ 1473 00a2 0223     		movs	r3, #2
+ 1474 00a4 7B62     		str	r3, [r7, #36]
+ 1475 00a6 01E0     		b	.L47
+ 1476              	.L50:
+ 179:Drivers/UI/ui_interface.c ****                     } else {
+ 180:Drivers/UI/ui_interface.c ****                         pack_size = 1;
+ 1477              		.loc 1 180 35
+ 1478 00a8 0123     		movs	r3, #1
+ 1479 00aa 7B62     		str	r3, [r7, #36]
+ 1480              	.L47:
+ 1481              	.LBE7:
+ 181:Drivers/UI/ui_interface.c ****                     }
+ 182:Drivers/UI/ui_interface.c ****                 }
+ARM GAS  C:\Users\23671\AppData\Local\Temp\cc9KKtsa.s 			page 31
+
+
+ 183:Drivers/UI/ui_interface.c ****                 if (pack_size == 7) {
+ 1482              		.loc 1 183 20
+ 1483 00ac 7B6A     		ldr	r3, [r7, #36]
+ 1484 00ae 072B     		cmp	r3, #7
+ 1485 00b0 19D1     		bne	.L51
+ 184:Drivers/UI/ui_interface.c ****                     _ui_7_frame.data[now_idx] = ui_now_figures[i];
+ 1486              		.loc 1 184 63
+ 1487 00b2 FA6A     		ldr	r2, [r7, #44]
+ 1488 00b4 1346     		mov	r3, r2
+ 1489 00b6 1B01     		lsls	r3, r3, #4
+ 1490 00b8 9B1A     		subs	r3, r3, r2
+ 1491 00ba FA68     		ldr	r2, [r7, #12]
+ 1492 00bc D018     		adds	r0, r2, r3
+ 1493              		.loc 1 184 47
+ 1494 00be 8049     		ldr	r1, .L73+4
+ 1495 00c0 BA69     		ldr	r2, [r7, #24]
+ 1496 00c2 1346     		mov	r3, r2
+ 1497 00c4 1B01     		lsls	r3, r3, #4
+ 1498 00c6 9B1A     		subs	r3, r3, r2
+ 1499 00c8 0B44     		add	r3, r3, r1
+ 1500 00ca 0833     		adds	r3, r3, #8
+ 1501 00cc 0533     		adds	r3, r3, #5
+ 1502 00ce 0246     		mov	r2, r0
+ 1503 00d0 1468     		ldr	r4, [r2]	@ unaligned
+ 1504 00d2 5068     		ldr	r0, [r2, #4]	@ unaligned
+ 1505 00d4 9168     		ldr	r1, [r2, #8]	@ unaligned
+ 1506 00d6 1C60     		str	r4, [r3]	@ unaligned
+ 1507 00d8 5860     		str	r0, [r3, #4]	@ unaligned
+ 1508 00da 9960     		str	r1, [r3, #8]	@ unaligned
+ 1509 00dc 9189     		ldrh	r1, [r2, #12]	@ unaligned
+ 1510 00de 927B     		ldrb	r2, [r2, #14]
+ 1511 00e0 9981     		strh	r1, [r3, #12]	@ unaligned
+ 1512 00e2 9A73     		strb	r2, [r3, #14]
+ 1513 00e4 52E0     		b	.L52
+ 1514              	.L51:
+ 185:Drivers/UI/ui_interface.c ****                 } else if (pack_size == 5) {
+ 1515              		.loc 1 185 27
+ 1516 00e6 7B6A     		ldr	r3, [r7, #36]
+ 1517 00e8 052B     		cmp	r3, #5
+ 1518 00ea 19D1     		bne	.L53
+ 186:Drivers/UI/ui_interface.c ****                     _ui_5_frame.data[now_idx] = ui_now_figures[i];
+ 1519              		.loc 1 186 63
+ 1520 00ec FA6A     		ldr	r2, [r7, #44]
+ 1521 00ee 1346     		mov	r3, r2
+ 1522 00f0 1B01     		lsls	r3, r3, #4
+ 1523 00f2 9B1A     		subs	r3, r3, r2
+ 1524 00f4 FA68     		ldr	r2, [r7, #12]
+ 1525 00f6 D018     		adds	r0, r2, r3
+ 1526              		.loc 1 186 47
+ 1527 00f8 7249     		ldr	r1, .L73+8
+ 1528 00fa BA69     		ldr	r2, [r7, #24]
+ 1529 00fc 1346     		mov	r3, r2
+ 1530 00fe 1B01     		lsls	r3, r3, #4
+ 1531 0100 9B1A     		subs	r3, r3, r2
+ 1532 0102 0B44     		add	r3, r3, r1
+ 1533 0104 0833     		adds	r3, r3, #8
+ 1534 0106 0533     		adds	r3, r3, #5
+ARM GAS  C:\Users\23671\AppData\Local\Temp\cc9KKtsa.s 			page 32
+
+
+ 1535 0108 0246     		mov	r2, r0
+ 1536 010a 1468     		ldr	r4, [r2]	@ unaligned
+ 1537 010c 5068     		ldr	r0, [r2, #4]	@ unaligned
+ 1538 010e 9168     		ldr	r1, [r2, #8]	@ unaligned
+ 1539 0110 1C60     		str	r4, [r3]	@ unaligned
+ 1540 0112 5860     		str	r0, [r3, #4]	@ unaligned
+ 1541 0114 9960     		str	r1, [r3, #8]	@ unaligned
+ 1542 0116 9189     		ldrh	r1, [r2, #12]	@ unaligned
+ 1543 0118 927B     		ldrb	r2, [r2, #14]
+ 1544 011a 9981     		strh	r1, [r3, #12]	@ unaligned
+ 1545 011c 9A73     		strb	r2, [r3, #14]
+ 1546 011e 35E0     		b	.L52
+ 1547              	.L53:
+ 187:Drivers/UI/ui_interface.c ****                 } else if (pack_size == 2) {
+ 1548              		.loc 1 187 27
+ 1549 0120 7B6A     		ldr	r3, [r7, #36]
+ 1550 0122 022B     		cmp	r3, #2
+ 1551 0124 19D1     		bne	.L54
+ 188:Drivers/UI/ui_interface.c ****                     _ui_2_frame.data[now_idx] = ui_now_figures[i];
+ 1552              		.loc 1 188 63
+ 1553 0126 FA6A     		ldr	r2, [r7, #44]
+ 1554 0128 1346     		mov	r3, r2
+ 1555 012a 1B01     		lsls	r3, r3, #4
+ 1556 012c 9B1A     		subs	r3, r3, r2
+ 1557 012e FA68     		ldr	r2, [r7, #12]
+ 1558 0130 D018     		adds	r0, r2, r3
+ 1559              		.loc 1 188 47
+ 1560 0132 6549     		ldr	r1, .L73+12
+ 1561 0134 BA69     		ldr	r2, [r7, #24]
+ 1562 0136 1346     		mov	r3, r2
+ 1563 0138 1B01     		lsls	r3, r3, #4
+ 1564 013a 9B1A     		subs	r3, r3, r2
+ 1565 013c 0B44     		add	r3, r3, r1
+ 1566 013e 0833     		adds	r3, r3, #8
+ 1567 0140 0533     		adds	r3, r3, #5
+ 1568 0142 0246     		mov	r2, r0
+ 1569 0144 1468     		ldr	r4, [r2]	@ unaligned
+ 1570 0146 5068     		ldr	r0, [r2, #4]	@ unaligned
+ 1571 0148 9168     		ldr	r1, [r2, #8]	@ unaligned
+ 1572 014a 1C60     		str	r4, [r3]	@ unaligned
+ 1573 014c 5860     		str	r0, [r3, #4]	@ unaligned
+ 1574 014e 9960     		str	r1, [r3, #8]	@ unaligned
+ 1575 0150 9189     		ldrh	r1, [r2, #12]	@ unaligned
+ 1576 0152 927B     		ldrb	r2, [r2, #14]
+ 1577 0154 9981     		strh	r1, [r3, #12]	@ unaligned
+ 1578 0156 9A73     		strb	r2, [r3, #14]
+ 1579 0158 18E0     		b	.L52
+ 1580              	.L54:
+ 189:Drivers/UI/ui_interface.c ****                 } else {
+ 190:Drivers/UI/ui_interface.c ****                     _ui_1_frame.data[now_idx] = ui_now_figures[i];
+ 1581              		.loc 1 190 63
+ 1582 015a FA6A     		ldr	r2, [r7, #44]
+ 1583 015c 1346     		mov	r3, r2
+ 1584 015e 1B01     		lsls	r3, r3, #4
+ 1585 0160 9B1A     		subs	r3, r3, r2
+ 1586 0162 FA68     		ldr	r2, [r7, #12]
+ 1587 0164 D018     		adds	r0, r2, r3
+ARM GAS  C:\Users\23671\AppData\Local\Temp\cc9KKtsa.s 			page 33
+
+
+ 1588              		.loc 1 190 47
+ 1589 0166 5949     		ldr	r1, .L73+16
+ 1590 0168 BA69     		ldr	r2, [r7, #24]
+ 1591 016a 1346     		mov	r3, r2
+ 1592 016c 1B01     		lsls	r3, r3, #4
+ 1593 016e 9B1A     		subs	r3, r3, r2
+ 1594 0170 0B44     		add	r3, r3, r1
+ 1595 0172 0833     		adds	r3, r3, #8
+ 1596 0174 0533     		adds	r3, r3, #5
+ 1597 0176 0246     		mov	r2, r0
+ 1598 0178 1468     		ldr	r4, [r2]	@ unaligned
+ 1599 017a 5068     		ldr	r0, [r2, #4]	@ unaligned
+ 1600 017c 9168     		ldr	r1, [r2, #8]	@ unaligned
+ 1601 017e 1C60     		str	r4, [r3]	@ unaligned
+ 1602 0180 5860     		str	r0, [r3, #4]	@ unaligned
+ 1603 0182 9960     		str	r1, [r3, #8]	@ unaligned
+ 1604 0184 9189     		ldrh	r1, [r2, #12]	@ unaligned
+ 1605 0186 927B     		ldrb	r2, [r2, #14]
+ 1606 0188 9981     		strh	r1, [r3, #12]	@ unaligned
+ 1607 018a 9A73     		strb	r2, [r3, #14]
+ 1608              	.L52:
+ 191:Drivers/UI/ui_interface.c ****                 }
+ 192:Drivers/UI/ui_interface.c ****                 if (now_idx + 1 == pack_size || now_cap + 1 == total_figure) {
+ 1609              		.loc 1 192 29
+ 1610 018c BB69     		ldr	r3, [r7, #24]
+ 1611 018e 0133     		adds	r3, r3, #1
+ 1612              		.loc 1 192 20
+ 1613 0190 7A6A     		ldr	r2, [r7, #36]
+ 1614 0192 9A42     		cmp	r2, r3
+ 1615 0194 04D0     		beq	.L55
+ 1616              		.loc 1 192 57 discriminator 1
+ 1617 0196 BB6A     		ldr	r3, [r7, #40]
+ 1618 0198 0133     		adds	r3, r3, #1
+ 1619              		.loc 1 192 46 discriminator 1
+ 1620 019a 7A6B     		ldr	r2, [r7, #52]
+ 1621 019c 9A42     		cmp	r2, r3
+ 1622 019e 76D1     		bne	.L56
+ 1623              	.L55:
+ 1624              	.LBB8:
+ 193:Drivers/UI/ui_interface.c ****                     for (int j = now_idx + 1; j < pack_size + 1; j++) {
+ 1625              		.loc 1 193 30
+ 1626 01a0 BB69     		ldr	r3, [r7, #24]
+ 1627 01a2 0133     		adds	r3, r3, #1
+ 1628 01a4 3B62     		str	r3, [r7, #32]
+ 1629              		.loc 1 193 21
+ 1630 01a6 3EE0     		b	.L57
+ 1631              	.L62:
+ 194:Drivers/UI/ui_interface.c ****                         if (pack_size == 7) {
+ 1632              		.loc 1 194 28
+ 1633 01a8 7B6A     		ldr	r3, [r7, #36]
+ 1634 01aa 072B     		cmp	r3, #7
+ 1635 01ac 0CD1     		bne	.L58
+ 195:Drivers/UI/ui_interface.c ****                             _ui_7_frame.data[j].operate_type = 0;
+ 1636              		.loc 1 195 62
+ 1637 01ae 4449     		ldr	r1, .L73+4
+ 1638 01b0 3A6A     		ldr	r2, [r7, #32]
+ 1639 01b2 1346     		mov	r3, r2
+ARM GAS  C:\Users\23671\AppData\Local\Temp\cc9KKtsa.s 			page 34
+
+
+ 1640 01b4 1B01     		lsls	r3, r3, #4
+ 1641 01b6 9B1A     		subs	r3, r3, r2
+ 1642 01b8 0B44     		add	r3, r3, r1
+ 1643 01ba 03F10802 		add	r2, r3, #8
+ 1644 01be 137A     		ldrb	r3, [r2, #8]
+ 1645 01c0 23F00703 		bic	r3, r3, #7
+ 1646 01c4 1372     		strb	r3, [r2, #8]
+ 1647 01c6 2BE0     		b	.L59
+ 1648              	.L58:
+ 196:Drivers/UI/ui_interface.c ****                         } else if (pack_size == 5) {
+ 1649              		.loc 1 196 35
+ 1650 01c8 7B6A     		ldr	r3, [r7, #36]
+ 1651 01ca 052B     		cmp	r3, #5
+ 1652 01cc 0CD1     		bne	.L60
+ 197:Drivers/UI/ui_interface.c ****                             _ui_5_frame.data[j].operate_type = 0;
+ 1653              		.loc 1 197 62
+ 1654 01ce 3D49     		ldr	r1, .L73+8
+ 1655 01d0 3A6A     		ldr	r2, [r7, #32]
+ 1656 01d2 1346     		mov	r3, r2
+ 1657 01d4 1B01     		lsls	r3, r3, #4
+ 1658 01d6 9B1A     		subs	r3, r3, r2
+ 1659 01d8 0B44     		add	r3, r3, r1
+ 1660 01da 03F10802 		add	r2, r3, #8
+ 1661 01de 137A     		ldrb	r3, [r2, #8]
+ 1662 01e0 23F00703 		bic	r3, r3, #7
+ 1663 01e4 1372     		strb	r3, [r2, #8]
+ 1664 01e6 1BE0     		b	.L59
+ 1665              	.L60:
+ 198:Drivers/UI/ui_interface.c ****                         } else if (pack_size == 2) {
+ 1666              		.loc 1 198 35
+ 1667 01e8 7B6A     		ldr	r3, [r7, #36]
+ 1668 01ea 022B     		cmp	r3, #2
+ 1669 01ec 0CD1     		bne	.L61
+ 199:Drivers/UI/ui_interface.c ****                             _ui_2_frame.data[j].operate_type = 0;
+ 1670              		.loc 1 199 62
+ 1671 01ee 3649     		ldr	r1, .L73+12
+ 1672 01f0 3A6A     		ldr	r2, [r7, #32]
+ 1673 01f2 1346     		mov	r3, r2
+ 1674 01f4 1B01     		lsls	r3, r3, #4
+ 1675 01f6 9B1A     		subs	r3, r3, r2
+ 1676 01f8 0B44     		add	r3, r3, r1
+ 1677 01fa 03F10802 		add	r2, r3, #8
+ 1678 01fe 137A     		ldrb	r3, [r2, #8]
+ 1679 0200 23F00703 		bic	r3, r3, #7
+ 1680 0204 1372     		strb	r3, [r2, #8]
+ 1681 0206 0BE0     		b	.L59
+ 1682              	.L61:
+ 200:Drivers/UI/ui_interface.c ****                         } else {
+ 201:Drivers/UI/ui_interface.c ****                             _ui_1_frame.data[j].operate_type = 0;
+ 1683              		.loc 1 201 62
+ 1684 0208 3049     		ldr	r1, .L73+16
+ 1685 020a 3A6A     		ldr	r2, [r7, #32]
+ 1686 020c 1346     		mov	r3, r2
+ 1687 020e 1B01     		lsls	r3, r3, #4
+ 1688 0210 9B1A     		subs	r3, r3, r2
+ 1689 0212 0B44     		add	r3, r3, r1
+ 1690 0214 03F10802 		add	r2, r3, #8
+ARM GAS  C:\Users\23671\AppData\Local\Temp\cc9KKtsa.s 			page 35
+
+
+ 1691 0218 137A     		ldrb	r3, [r2, #8]
+ 1692 021a 23F00703 		bic	r3, r3, #7
+ 1693 021e 1372     		strb	r3, [r2, #8]
+ 1694              	.L59:
+ 193:Drivers/UI/ui_interface.c ****                         if (pack_size == 7) {
+ 1695              		.loc 1 193 67 discriminator 2
+ 1696 0220 3B6A     		ldr	r3, [r7, #32]
+ 1697 0222 0133     		adds	r3, r3, #1
+ 1698 0224 3B62     		str	r3, [r7, #32]
+ 1699              	.L57:
+ 193:Drivers/UI/ui_interface.c ****                         if (pack_size == 7) {
+ 1700              		.loc 1 193 49 discriminator 1
+ 1701 0226 7A6A     		ldr	r2, [r7, #36]
+ 1702 0228 3B6A     		ldr	r3, [r7, #32]
+ 1703 022a 9A42     		cmp	r2, r3
+ 1704 022c BCDA     		bge	.L62
+ 1705              	.LBE8:
+ 202:Drivers/UI/ui_interface.c ****                         }
+ 203:Drivers/UI/ui_interface.c ****                     }
+ 204:Drivers/UI/ui_interface.c ****                     if (pack_size == 7) {
+ 1706              		.loc 1 204 24
+ 1707 022e 7B6A     		ldr	r3, [r7, #36]
+ 1708 0230 072B     		cmp	r3, #7
+ 1709 0232 09D1     		bne	.L63
+ 205:Drivers/UI/ui_interface.c ****                         ui_proc_7_frame(&_ui_7_frame);
+ 1710              		.loc 1 205 25
+ 1711 0234 2248     		ldr	r0, .L73+4
+ 1712 0236 FFF7FEFF 		bl	ui_proc_7_frame
+ 206:Drivers/UI/ui_interface.c ****                         SEND_MESSAGE((uint8_t *) &_ui_7_frame, sizeof(_ui_7_frame));
+ 1713              		.loc 1 206 25
+ 1714 023a 6423     		movs	r3, #100
+ 1715 023c 7822     		movs	r2, #120
+ 1716 023e 2049     		ldr	r1, .L73+4
+ 1717 0240 2348     		ldr	r0, .L73+20
+ 1718 0242 FFF7FEFF 		bl	HAL_UART_Transmit
+ 1719 0246 22E0     		b	.L56
+ 1720              	.L63:
+ 207:Drivers/UI/ui_interface.c ****                     } else if (pack_size == 5) {
+ 1721              		.loc 1 207 31
+ 1722 0248 7B6A     		ldr	r3, [r7, #36]
+ 1723 024a 052B     		cmp	r3, #5
+ 1724 024c 09D1     		bne	.L64
+ 208:Drivers/UI/ui_interface.c ****                         ui_proc_5_frame(&_ui_5_frame);
+ 1725              		.loc 1 208 25
+ 1726 024e 1D48     		ldr	r0, .L73+8
+ 1727 0250 FFF7FEFF 		bl	ui_proc_5_frame
+ 209:Drivers/UI/ui_interface.c ****                         SEND_MESSAGE((uint8_t *) &_ui_5_frame, sizeof(_ui_5_frame));
+ 1728              		.loc 1 209 25
+ 1729 0254 6423     		movs	r3, #100
+ 1730 0256 5A22     		movs	r2, #90
+ 1731 0258 1A49     		ldr	r1, .L73+8
+ 1732 025a 1D48     		ldr	r0, .L73+20
+ 1733 025c FFF7FEFF 		bl	HAL_UART_Transmit
+ 1734 0260 15E0     		b	.L56
+ 1735              	.L64:
+ 210:Drivers/UI/ui_interface.c ****                     } else if (pack_size == 2) {
+ 1736              		.loc 1 210 31
+ARM GAS  C:\Users\23671\AppData\Local\Temp\cc9KKtsa.s 			page 36
+
+
+ 1737 0262 7B6A     		ldr	r3, [r7, #36]
+ 1738 0264 022B     		cmp	r3, #2
+ 1739 0266 09D1     		bne	.L65
+ 211:Drivers/UI/ui_interface.c ****                         ui_proc_2_frame(&_ui_2_frame);
+ 1740              		.loc 1 211 25
+ 1741 0268 1748     		ldr	r0, .L73+12
+ 1742 026a FFF7FEFF 		bl	ui_proc_2_frame
+ 212:Drivers/UI/ui_interface.c ****                         SEND_MESSAGE((uint8_t *) &_ui_2_frame, sizeof(_ui_2_frame));
+ 1743              		.loc 1 212 25
+ 1744 026e 6423     		movs	r3, #100
+ 1745 0270 2D22     		movs	r2, #45
+ 1746 0272 1549     		ldr	r1, .L73+12
+ 1747 0274 1648     		ldr	r0, .L73+20
+ 1748 0276 FFF7FEFF 		bl	HAL_UART_Transmit
+ 1749 027a 08E0     		b	.L56
+ 1750              	.L65:
+ 213:Drivers/UI/ui_interface.c ****                     } else {
+ 214:Drivers/UI/ui_interface.c ****                         ui_proc_1_frame(&_ui_1_frame);
+ 1751              		.loc 1 214 25
+ 1752 027c 1348     		ldr	r0, .L73+16
+ 1753 027e FFF7FEFF 		bl	ui_proc_1_frame
+ 215:Drivers/UI/ui_interface.c ****                         SEND_MESSAGE((uint8_t *) &_ui_1_frame, sizeof(_ui_1_frame));
+ 1754              		.loc 1 215 25
+ 1755 0282 6423     		movs	r3, #100
+ 1756 0284 1E22     		movs	r2, #30
+ 1757 0286 1149     		ldr	r1, .L73+16
+ 1758 0288 1148     		ldr	r0, .L73+20
+ 1759 028a FFF7FEFF 		bl	HAL_UART_Transmit
+ 1760              	.L56:
+ 216:Drivers/UI/ui_interface.c ****                     }
+ 217:Drivers/UI/ui_interface.c ****                 }
+ 218:Drivers/UI/ui_interface.c ****                 now_cap++;
+ 1761              		.loc 1 218 24
+ 1762 028e BB6A     		ldr	r3, [r7, #40]
+ 1763 0290 0133     		adds	r3, r3, #1
+ 1764 0292 BB62     		str	r3, [r7, #40]
+ 219:Drivers/UI/ui_interface.c ****                 ui_dirty_figure[i] = 0;
+ 1765              		.loc 1 219 32
+ 1766 0294 FB6A     		ldr	r3, [r7, #44]
+ 1767 0296 BA68     		ldr	r2, [r7, #8]
+ 1768 0298 1344     		add	r3, r3, r2
+ 1769              		.loc 1 219 36
+ 1770 029a 0022     		movs	r2, #0
+ 1771 029c 1A70     		strb	r2, [r3]
+ 1772              	.L46:
+ 1773              	.LBE6:
+ 168:Drivers/UI/ui_interface.c ****             if (ui_dirty_figure[i] == 1) {
+ 1774              		.loc 1 168 73 discriminator 2
+ 1775 029e FB6A     		ldr	r3, [r7, #44]
+ 1776 02a0 0133     		adds	r3, r3, #1
+ 1777 02a2 FB62     		str	r3, [r7, #44]
+ 1778              	.L45:
+ 168:Drivers/UI/ui_interface.c ****             if (ui_dirty_figure[i] == 1) {
+ 1779              		.loc 1 168 55 discriminator 1
+ 1780 02a4 FA6A     		ldr	r2, [r7, #44]
+ 1781 02a6 3B6D     		ldr	r3, [r7, #80]
+ 1782 02a8 9A42     		cmp	r2, r3
+ARM GAS  C:\Users\23671\AppData\Local\Temp\cc9KKtsa.s 			page 37
+
+
+ 1783 02aa FFF6D0AE 		blt	.L66
+ 1784              	.L41:
+ 1785              	.LBE5:
+ 1786              	.LBE3:
+ 220:Drivers/UI/ui_interface.c ****             }
+ 221:Drivers/UI/ui_interface.c ****         }
+ 222:Drivers/UI/ui_interface.c ****     }
+ 223:Drivers/UI/ui_interface.c ****     if (total_strings > 0) {
+ 1787              		.loc 1 223 8
+ 1788 02ae 7B6D     		ldr	r3, [r7, #84]
+ 1789 02b0 002B     		cmp	r3, #0
+ 1790 02b2 50DD     		ble	.L72
+ 1791              	.LBB9:
+ 224:Drivers/UI/ui_interface.c ****         for (int i = 0; i < total_strings; i++) {
+ 1792              		.loc 1 224 18
+ 1793 02b4 0023     		movs	r3, #0
+ 1794 02b6 FB61     		str	r3, [r7, #28]
+ 1795              		.loc 1 224 9
+ 1796 02b8 49E0     		b	.L68
+ 1797              	.L74:
+ 1798 02ba 00BF     		.align	2
+ 1799              	.L73:
+ 1800 02bc 93244992 		.word	-1840700269
+ 1801 02c0 00000000 		.word	_ui_7_frame
+ 1802 02c4 00000000 		.word	_ui_5_frame
+ 1803 02c8 00000000 		.word	_ui_2_frame
+ 1804 02cc 00000000 		.word	_ui_1_frame
+ 1805 02d0 00000000 		.word	huart7
+ 1806              	.L71:
+ 225:Drivers/UI/ui_interface.c ****             if (ui_dirty_string[i] == 1) {
+ 1807              		.loc 1 225 32
+ 1808 02d4 FB69     		ldr	r3, [r7, #28]
+ 1809 02d6 3A68     		ldr	r2, [r7]
+ 1810 02d8 1344     		add	r3, r3, r2
+ 1811 02da 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 1812              		.loc 1 225 16
+ 1813 02dc 012B     		cmp	r3, #1
+ 1814 02de 33D1     		bne	.L69
+ 226:Drivers/UI/ui_interface.c ****                 _ui_string_frame.option = ui_now_strings[i];
+ 1815              		.loc 1 226 57
+ 1816 02e0 FA69     		ldr	r2, [r7, #28]
+ 1817 02e2 1346     		mov	r3, r2
+ 1818 02e4 5B00     		lsls	r3, r3, #1
+ 1819 02e6 1344     		add	r3, r3, r2
+ 1820 02e8 1A01     		lsls	r2, r3, #4
+ 1821 02ea D31A     		subs	r3, r2, r3
+ 1822 02ec 7A68     		ldr	r2, [r7, #4]
+ 1823 02ee 1344     		add	r3, r3, r2
+ 1824              		.loc 1 226 41
+ 1825 02f0 1B4A     		ldr	r2, .L75
+ 1826 02f2 02F10D00 		add	r0, r2, #13
+ 1827 02f6 03F12004 		add	r4, r3, #32
+ 1828              	.L70:
+ 1829 02fa 0246     		mov	r2, r0
+ 1830 02fc 1946     		mov	r1, r3
+ 1831 02fe D1F800C0 		ldr	ip, [r1]	@ unaligned
+ 1832 0302 4E68     		ldr	r6, [r1, #4]	@ unaligned
+ARM GAS  C:\Users\23671\AppData\Local\Temp\cc9KKtsa.s 			page 38
+
+
+ 1833 0304 8D68     		ldr	r5, [r1, #8]	@ unaligned
+ 1834 0306 C968     		ldr	r1, [r1, #12]	@ unaligned
+ 1835 0308 C2F800C0 		str	ip, [r2]	@ unaligned
+ 1836 030c 5660     		str	r6, [r2, #4]	@ unaligned
+ 1837 030e 9560     		str	r5, [r2, #8]	@ unaligned
+ 1838 0310 D160     		str	r1, [r2, #12]	@ unaligned
+ 1839 0312 1033     		adds	r3, r3, #16
+ 1840 0314 1030     		adds	r0, r0, #16
+ 1841 0316 A342     		cmp	r3, r4
+ 1842 0318 EFD1     		bne	.L70
+ 1843 031a 0246     		mov	r2, r0
+ 1844 031c 1C68     		ldr	r4, [r3]	@ unaligned
+ 1845 031e 5868     		ldr	r0, [r3, #4]	@ unaligned
+ 1846 0320 9968     		ldr	r1, [r3, #8]	@ unaligned
+ 1847 0322 1460     		str	r4, [r2]	@ unaligned
+ 1848 0324 5060     		str	r0, [r2, #4]	@ unaligned
+ 1849 0326 9160     		str	r1, [r2, #8]	@ unaligned
+ 1850 0328 1B7B     		ldrb	r3, [r3, #12]
+ 1851 032a 1373     		strb	r3, [r2, #12]
+ 227:Drivers/UI/ui_interface.c ****                 ui_proc_string_frame(&_ui_string_frame);
+ 1852              		.loc 1 227 17
+ 1853 032c 0C48     		ldr	r0, .L75
+ 1854 032e FFF7FEFF 		bl	ui_proc_string_frame
+ 228:Drivers/UI/ui_interface.c ****                 SEND_MESSAGE((uint8_t *) &_ui_string_frame, sizeof(_ui_string_frame));
+ 1855              		.loc 1 228 17
+ 1856 0332 6423     		movs	r3, #100
+ 1857 0334 3C22     		movs	r2, #60
+ 1858 0336 0A49     		ldr	r1, .L75
+ 1859 0338 0A48     		ldr	r0, .L75+4
+ 1860 033a FFF7FEFF 		bl	HAL_UART_Transmit
+ 229:Drivers/UI/ui_interface.c ****                 ui_dirty_string[i] = 0;
+ 1861              		.loc 1 229 32
+ 1862 033e FB69     		ldr	r3, [r7, #28]
+ 1863 0340 3A68     		ldr	r2, [r7]
+ 1864 0342 1344     		add	r3, r3, r2
+ 1865              		.loc 1 229 36
+ 1866 0344 0022     		movs	r2, #0
+ 1867 0346 1A70     		strb	r2, [r3]
+ 1868              	.L69:
+ 224:Drivers/UI/ui_interface.c ****             if (ui_dirty_string[i] == 1) {
+ 1869              		.loc 1 224 45 discriminator 2
+ 1870 0348 FB69     		ldr	r3, [r7, #28]
+ 1871 034a 0133     		adds	r3, r3, #1
+ 1872 034c FB61     		str	r3, [r7, #28]
+ 1873              	.L68:
+ 224:Drivers/UI/ui_interface.c ****             if (ui_dirty_string[i] == 1) {
+ 1874              		.loc 1 224 27 discriminator 1
+ 1875 034e FA69     		ldr	r2, [r7, #28]
+ 1876 0350 7B6D     		ldr	r3, [r7, #84]
+ 1877 0352 9A42     		cmp	r2, r3
+ 1878 0354 BEDB     		blt	.L71
+ 1879              	.L72:
+ 1880              	.LBE9:
+ 230:Drivers/UI/ui_interface.c ****             }
+ 231:Drivers/UI/ui_interface.c ****         }
+ 232:Drivers/UI/ui_interface.c ****     }
+ 233:Drivers/UI/ui_interface.c **** }
+ARM GAS  C:\Users\23671\AppData\Local\Temp\cc9KKtsa.s 			page 39
+
+
+ 1881              		.loc 1 233 1
+ 1882 0356 00BF     		nop
+ 1883 0358 3C37     		adds	r7, r7, #60
+ 1884              	.LCFI55:
+ 1885              		.cfi_def_cfa_offset 20
+ 1886 035a BD46     		mov	sp, r7
+ 1887              	.LCFI56:
+ 1888              		.cfi_def_cfa_register 13
+ 1889              		@ sp needed
+ 1890 035c F0BD     		pop	{r4, r5, r6, r7, pc}
+ 1891              	.L76:
+ 1892 035e 00BF     		.align	2
+ 1893              	.L75:
+ 1894 0360 00000000 		.word	_ui_string_frame
+ 1895 0364 00000000 		.word	huart7
+ 1896              		.cfi_endproc
+ 1897              	.LFE157:
+ 1899              		.text
+ 1900              	.Letext0:
+ 1901              		.file 2 "D:/MSYS2/mingw64/lib/gcc/arm-none-eabi/13.3.0/include/stddef.h"
+ 1902              		.file 3 "D:/MSYS2/mingw64/arm-none-eabi/include/machine/_default_types.h"
+ 1903              		.file 4 "D:/MSYS2/mingw64/arm-none-eabi/include/sys/_stdint.h"
+ 1904              		.file 5 "Drivers/UI/ui_types.h"
+ 1905              		.file 6 "Drivers/CMSIS/Device/ST/STM32H7xx/Include/stm32h723xx.h"
+ 1906              		.file 7 "Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal_def.h"
+ 1907              		.file 8 "Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal_dma.h"
+ 1908              		.file 9 "Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal_uart.h"
+ 1909              		.file 10 "Core/Inc/usart.h"
+ 1910              		.file 11 "Drivers/UI/ui_interface.h"
+ 1911              		.file 12 "D:/MSYS2/mingw64/arm-none-eabi/include/string.h"
+ 1912              		.file 13 "D:/MSYS2/mingw64/arm-none-eabi/include/stdio.h"
+ARM GAS  C:\Users\23671\AppData\Local\Temp\cc9KKtsa.s 			page 40
+
+
+DEFINED SYMBOLS
+                            *ABS*:00000000 ui_interface.c
+C:\Users\23671\AppData\Local\Temp\cc9KKtsa.s:23     .bss.seq:00000000 seq
+C:\Users\23671\AppData\Local\Temp\cc9KKtsa.s:24     .bss.seq:00000000 $d
+C:\Users\23671\AppData\Local\Temp\cc9KKtsa.s:30     .data.ui_self_id:00000000 ui_self_id
+C:\Users\23671\AppData\Local\Temp\cc9KKtsa.s:27     .data.ui_self_id:00000000 $d
+C:\Users\23671\AppData\Local\Temp\cc9KKtsa.s:37     .bss._ui_string_frame:00000000 _ui_string_frame
+C:\Users\23671\AppData\Local\Temp\cc9KKtsa.s:34     .bss._ui_string_frame:00000000 $d
+C:\Users\23671\AppData\Local\Temp\cc9KKtsa.s:44     .bss._ui_1_frame:00000000 _ui_1_frame
+C:\Users\23671\AppData\Local\Temp\cc9KKtsa.s:41     .bss._ui_1_frame:00000000 $d
+C:\Users\23671\AppData\Local\Temp\cc9KKtsa.s:51     .bss._ui_2_frame:00000000 _ui_2_frame
+C:\Users\23671\AppData\Local\Temp\cc9KKtsa.s:48     .bss._ui_2_frame:00000000 $d
+C:\Users\23671\AppData\Local\Temp\cc9KKtsa.s:58     .bss._ui_5_frame:00000000 _ui_5_frame
+C:\Users\23671\AppData\Local\Temp\cc9KKtsa.s:55     .bss._ui_5_frame:00000000 $d
+C:\Users\23671\AppData\Local\Temp\cc9KKtsa.s:65     .bss._ui_7_frame:00000000 _ui_7_frame
+C:\Users\23671\AppData\Local\Temp\cc9KKtsa.s:62     .bss._ui_7_frame:00000000 $d
+C:\Users\23671\AppData\Local\Temp\cc9KKtsa.s:68     .rodata:00000000 $d
+C:\Users\23671\AppData\Local\Temp\cc9KKtsa.s:75     .text.print_message:00000000 $t
+C:\Users\23671\AppData\Local\Temp\cc9KKtsa.s:81     .text.print_message:00000000 print_message
+C:\Users\23671\AppData\Local\Temp\cc9KKtsa.s:143    .text.print_message:0000003c $d
+C:\Users\23671\AppData\Local\Temp\cc9KKtsa.s:153    .rodata.CRC8_TAB:00000000 CRC8_TAB
+C:\Users\23671\AppData\Local\Temp\cc9KKtsa.s:150    .rodata.CRC8_TAB:00000000 $d
+C:\Users\23671\AppData\Local\Temp\cc9KKtsa.s:170    .text.calc_crc8:00000000 $t
+C:\Users\23671\AppData\Local\Temp\cc9KKtsa.s:176    .text.calc_crc8:00000000 calc_crc8
+C:\Users\23671\AppData\Local\Temp\cc9KKtsa.s:244    .text.calc_crc8:00000040 $d
+C:\Users\23671\AppData\Local\Temp\cc9KKtsa.s:253    .rodata.wCRC_Table:00000000 wCRC_Table
+C:\Users\23671\AppData\Local\Temp\cc9KKtsa.s:250    .rodata.wCRC_Table:00000000 $d
+C:\Users\23671\AppData\Local\Temp\cc9KKtsa.s:511    .text.calc_crc16:00000000 $t
+C:\Users\23671\AppData\Local\Temp\cc9KKtsa.s:517    .text.calc_crc16:00000000 calc_crc16
+C:\Users\23671\AppData\Local\Temp\cc9KKtsa.s:600    .text.calc_crc16:00000058 $d
+C:\Users\23671\AppData\Local\Temp\cc9KKtsa.s:605    .text.ui_proc_1_frame:00000000 $t
+C:\Users\23671\AppData\Local\Temp\cc9KKtsa.s:611    .text.ui_proc_1_frame:00000000 ui_proc_1_frame
+C:\Users\23671\AppData\Local\Temp\cc9KKtsa.s:701    .text.ui_proc_1_frame:00000094 $d
+C:\Users\23671\AppData\Local\Temp\cc9KKtsa.s:707    .text.ui_proc_2_frame:00000000 $t
+C:\Users\23671\AppData\Local\Temp\cc9KKtsa.s:713    .text.ui_proc_2_frame:00000000 ui_proc_2_frame
+C:\Users\23671\AppData\Local\Temp\cc9KKtsa.s:803    .text.ui_proc_2_frame:00000098 $d
+C:\Users\23671\AppData\Local\Temp\cc9KKtsa.s:809    .text.ui_proc_5_frame:00000000 $t
+C:\Users\23671\AppData\Local\Temp\cc9KKtsa.s:815    .text.ui_proc_5_frame:00000000 ui_proc_5_frame
+C:\Users\23671\AppData\Local\Temp\cc9KKtsa.s:905    .text.ui_proc_5_frame:00000098 $d
+C:\Users\23671\AppData\Local\Temp\cc9KKtsa.s:911    .text.ui_proc_7_frame:00000000 $t
+C:\Users\23671\AppData\Local\Temp\cc9KKtsa.s:917    .text.ui_proc_7_frame:00000000 ui_proc_7_frame
+C:\Users\23671\AppData\Local\Temp\cc9KKtsa.s:1007   .text.ui_proc_7_frame:00000098 $d
+C:\Users\23671\AppData\Local\Temp\cc9KKtsa.s:1013   .text.ui_proc_string_frame:00000000 $t
+C:\Users\23671\AppData\Local\Temp\cc9KKtsa.s:1019   .text.ui_proc_string_frame:00000000 ui_proc_string_frame
+C:\Users\23671\AppData\Local\Temp\cc9KKtsa.s:1147   .text.ui_proc_string_frame:000000cc $d
+C:\Users\23671\AppData\Local\Temp\cc9KKtsa.s:1153   .text.ui_proc_delete_frame:00000000 $t
+C:\Users\23671\AppData\Local\Temp\cc9KKtsa.s:1159   .text.ui_proc_delete_frame:00000000 ui_proc_delete_frame
+C:\Users\23671\AppData\Local\Temp\cc9KKtsa.s:1259   .text.ui_proc_delete_frame:00000094 $d
+C:\Users\23671\AppData\Local\Temp\cc9KKtsa.s:1269   .bss.ui_delete_frame:00000000 ui_delete_frame
+C:\Users\23671\AppData\Local\Temp\cc9KKtsa.s:1266   .bss.ui_delete_frame:00000000 $d
+C:\Users\23671\AppData\Local\Temp\cc9KKtsa.s:1272   .text.ui_delete_layer:00000000 $t
+C:\Users\23671\AppData\Local\Temp\cc9KKtsa.s:1278   .text.ui_delete_layer:00000000 ui_delete_layer
+C:\Users\23671\AppData\Local\Temp\cc9KKtsa.s:1330   .text.ui_delete_layer:00000038 $d
+C:\Users\23671\AppData\Local\Temp\cc9KKtsa.s:1336   .text.ui_scan_and_send:00000000 $t
+C:\Users\23671\AppData\Local\Temp\cc9KKtsa.s:1342   .text.ui_scan_and_send:00000000 ui_scan_and_send
+C:\Users\23671\AppData\Local\Temp\cc9KKtsa.s:1800   .text.ui_scan_and_send:000002bc $d
+C:\Users\23671\AppData\Local\Temp\cc9KKtsa.s:1808   .text.ui_scan_and_send:000002d4 $t
+ARM GAS  C:\Users\23671\AppData\Local\Temp\cc9KKtsa.s 			page 41
+
+
+C:\Users\23671\AppData\Local\Temp\cc9KKtsa.s:1894   .text.ui_scan_and_send:00000360 $d
+
+UNDEFINED SYMBOLS
+printf
+puts
+strlen
+HAL_UART_Transmit
+huart7

@@ -1,0 +1,1877 @@
+ARM GAS  C:\Users\fffff\AppData\Local\Temp\cciJBK57.s 			page 1
+
+
+   1              		.cpu cortex-m7
+   2              		.arch armv7e-m
+   3              		.fpu fpv5-d16
+   4              		.eabi_attribute 28, 1
+   5              		.eabi_attribute 20, 1
+   6              		.eabi_attribute 21, 1
+   7              		.eabi_attribute 23, 3
+   8              		.eabi_attribute 24, 1
+   9              		.eabi_attribute 25, 1
+  10              		.eabi_attribute 26, 1
+  11              		.eabi_attribute 30, 6
+  12              		.eabi_attribute 34, 1
+  13              		.eabi_attribute 18, 4
+  14              		.file	"MahonyAHRS.c"
+  15              		.text
+  16              	.Ltext0:
+  17              		.cfi_sections	.debug_frame
+  18              		.file 1 "Algorithm/MahonyAHRS.c"
+  19              		.global	twoKp
+  20              		.section	.data.twoKp,"aw"
+  21              		.align	2
+  24              	twoKp:
+  25 0000 0000803F 		.word	1065353216
+  26              		.global	twoKi
+  27              		.section	.bss.twoKi,"aw",%nobits
+  28              		.align	2
+  31              	twoKi:
+  32 0000 00000000 		.space	4
+  33              		.global	integralFBx
+  34              		.section	.bss.integralFBx,"aw",%nobits
+  35              		.align	2
+  38              	integralFBx:
+  39 0000 00000000 		.space	4
+  40              		.global	integralFBy
+  41              		.section	.bss.integralFBy,"aw",%nobits
+  42              		.align	2
+  45              	integralFBy:
+  46 0000 00000000 		.space	4
+  47              		.global	integralFBz
+  48              		.section	.bss.integralFBz,"aw",%nobits
+  49              		.align	2
+  52              	integralFBz:
+  53 0000 00000000 		.space	4
+  54              		.section	.text.MahonyAHRSupdate,"ax",%progbits
+  55              		.align	1
+  56              		.global	MahonyAHRSupdate
+  57              		.syntax unified
+  58              		.thumb
+  59              		.thumb_func
+  61              	MahonyAHRSupdate:
+  62              	.LFB0:
+   1:Algorithm/MahonyAHRS.c **** //=================================================================================================
+   2:Algorithm/MahonyAHRS.c **** // MahonyAHRS.c
+   3:Algorithm/MahonyAHRS.c **** //=================================================================================================
+   4:Algorithm/MahonyAHRS.c **** //
+   5:Algorithm/MahonyAHRS.c **** // Madgwick's implementation of Mayhony's AHRS algorithm.
+   6:Algorithm/MahonyAHRS.c **** // See: http://www.x-io.co.uk/node/8#open_source_ahrs_and_imu_algorithms
+ARM GAS  C:\Users\fffff\AppData\Local\Temp\cciJBK57.s 			page 2
+
+
+   7:Algorithm/MahonyAHRS.c **** //
+   8:Algorithm/MahonyAHRS.c **** // Date			Author			Notes
+   9:Algorithm/MahonyAHRS.c **** // 29/09/2011	SOH Madgwick    Initial release
+  10:Algorithm/MahonyAHRS.c **** // 02/10/2011	SOH Madgwick	Optimised for reduced CPU load
+  11:Algorithm/MahonyAHRS.c **** //
+  12:Algorithm/MahonyAHRS.c **** //=================================================================================================
+  13:Algorithm/MahonyAHRS.c **** 
+  14:Algorithm/MahonyAHRS.c **** //-------------------------------------------------------------------------------------------------
+  15:Algorithm/MahonyAHRS.c **** // Header files
+  16:Algorithm/MahonyAHRS.c **** 
+  17:Algorithm/MahonyAHRS.c **** #include "MahonyAHRS.h"
+  18:Algorithm/MahonyAHRS.c **** #include <math.h>
+  19:Algorithm/MahonyAHRS.c **** 
+  20:Algorithm/MahonyAHRS.c **** //-------------------------------------------------------------------------------------------------
+  21:Algorithm/MahonyAHRS.c **** // Definitions
+  22:Algorithm/MahonyAHRS.c **** 
+  23:Algorithm/MahonyAHRS.c **** #define sampleFreq 1000.0f			// sample frequency in Hz
+  24:Algorithm/MahonyAHRS.c **** #define twoKpDef	(2.0f * 0.5f)	// 2 * proportional gain
+  25:Algorithm/MahonyAHRS.c **** #define twoKiDef	(2.0f * 0.0f)	// 2 * integral gain
+  26:Algorithm/MahonyAHRS.c **** 
+  27:Algorithm/MahonyAHRS.c **** //-------------------------------------------------------------------------------------------------
+  28:Algorithm/MahonyAHRS.c **** // Variable definitions
+  29:Algorithm/MahonyAHRS.c **** 
+  30:Algorithm/MahonyAHRS.c **** volatile float twoKp = twoKpDef;											// 2 * proportional gain (Kp)
+  31:Algorithm/MahonyAHRS.c **** volatile float twoKi = twoKiDef;											// 2 * integral gain (Ki)
+  32:Algorithm/MahonyAHRS.c **** //volatile float q0 = 1.0f, q1 = 0.0f, q2 = 0.0f, q3 = 0.0f;					// quaternion of sensor frame rela
+  33:Algorithm/MahonyAHRS.c **** volatile float integralFBx = 0.0f,  integralFBy = 0.0f, integralFBz = 0.0f;	// integral error terms
+  34:Algorithm/MahonyAHRS.c **** 
+  35:Algorithm/MahonyAHRS.c **** //-------------------------------------------------------------------------------------------------
+  36:Algorithm/MahonyAHRS.c **** // Function declarations
+  37:Algorithm/MahonyAHRS.c **** 
+  38:Algorithm/MahonyAHRS.c **** float invSqrt(float x);
+  39:Algorithm/MahonyAHRS.c **** 
+  40:Algorithm/MahonyAHRS.c **** //=================================================================================================
+  41:Algorithm/MahonyAHRS.c **** // Functions
+  42:Algorithm/MahonyAHRS.c **** 
+  43:Algorithm/MahonyAHRS.c **** //-------------------------------------------------------------------------------------------------
+  44:Algorithm/MahonyAHRS.c **** // AHRS algorithm update
+  45:Algorithm/MahonyAHRS.c **** 
+  46:Algorithm/MahonyAHRS.c **** void MahonyAHRSupdate(float q[4], float gx, float gy, float gz, float ax, float ay, float az, float
+  63              		.loc 1 46 125
+  64              		.cfi_startproc
+  65              		@ args = 0, pretend = 0, frame = 152
+  66              		@ frame_needed = 1, uses_anonymous_args = 0
+  67 0000 80B5     		push	{r7, lr}
+  68              	.LCFI0:
+  69              		.cfi_def_cfa_offset 8
+  70              		.cfi_offset 7, -8
+  71              		.cfi_offset 14, -4
+  72 0002 A6B0     		sub	sp, sp, #152
+  73              	.LCFI1:
+  74              		.cfi_def_cfa_offset 160
+  75 0004 00AF     		add	r7, sp, #0
+  76              	.LCFI2:
+  77              		.cfi_def_cfa_register 7
+  78 0006 7862     		str	r0, [r7, #36]
+  79 0008 87ED080A 		vstr.32	s0, [r7, #32]
+ARM GAS  C:\Users\fffff\AppData\Local\Temp\cciJBK57.s 			page 3
+
+
+  80 000c C7ED070A 		vstr.32	s1, [r7, #28]
+  81 0010 87ED061A 		vstr.32	s2, [r7, #24]
+  82 0014 C7ED051A 		vstr.32	s3, [r7, #20]
+  83 0018 87ED042A 		vstr.32	s4, [r7, #16]
+  84 001c C7ED032A 		vstr.32	s5, [r7, #12]
+  85 0020 87ED023A 		vstr.32	s6, [r7, #8]
+  86 0024 C7ED013A 		vstr.32	s7, [r7, #4]
+  87 0028 87ED004A 		vstr.32	s8, [r7]
+  47:Algorithm/MahonyAHRS.c **** 	float recipNorm;
+  48:Algorithm/MahonyAHRS.c ****     float q0q0, q0q1, q0q2, q0q3, q1q1, q1q2, q1q3, q2q2, q2q3, q3q3;  
+  49:Algorithm/MahonyAHRS.c **** 	float hx, hy, bx, bz;
+  50:Algorithm/MahonyAHRS.c **** 	float halfvx, halfvy, halfvz, halfwx, halfwy, halfwz;
+  51:Algorithm/MahonyAHRS.c **** 	float halfex, halfey, halfez;
+  52:Algorithm/MahonyAHRS.c **** 	float qa, qb, qc;
+  53:Algorithm/MahonyAHRS.c **** 
+  54:Algorithm/MahonyAHRS.c **** 	// Use IMU algorithm if magnetometer measurement invalid (avoids NaN in magnetometer normalisation
+  55:Algorithm/MahonyAHRS.c **** 	if((mx == 0.0f) && (my == 0.0f) && (mz == 0.0f)) {
+  88              		.loc 1 55 4
+  89 002c D7ED027A 		vldr.32	s15, [r7, #8]
+  90 0030 F5EE407A 		vcmp.f32	s15, #0
+  91 0034 F1EE10FA 		vmrs	APSR_nzcv, FPSCR
+  92 0038 1DD1     		bne	.L2
+  93              		.loc 1 55 18 discriminator 1
+  94 003a D7ED017A 		vldr.32	s15, [r7, #4]
+  95 003e F5EE407A 		vcmp.f32	s15, #0
+  96 0042 F1EE10FA 		vmrs	APSR_nzcv, FPSCR
+  97 0046 16D1     		bne	.L2
+  98              		.loc 1 55 34 discriminator 2
+  99 0048 D7ED007A 		vldr.32	s15, [r7]
+ 100 004c F5EE407A 		vcmp.f32	s15, #0
+ 101 0050 F1EE10FA 		vmrs	APSR_nzcv, FPSCR
+ 102 0054 0FD1     		bne	.L2
+  56:Algorithm/MahonyAHRS.c **** 		MahonyAHRSupdateIMU(q, gx, gy, gz, ax, ay, az);
+ 103              		.loc 1 56 3
+ 104 0056 D7ED032A 		vldr.32	s5, [r7, #12]
+ 105 005a 97ED042A 		vldr.32	s4, [r7, #16]
+ 106 005e D7ED051A 		vldr.32	s3, [r7, #20]
+ 107 0062 97ED061A 		vldr.32	s2, [r7, #24]
+ 108 0066 D7ED070A 		vldr.32	s1, [r7, #28]
+ 109 006a 97ED080A 		vldr.32	s0, [r7, #32]
+ 110 006e 786A     		ldr	r0, [r7, #36]
+ 111 0070 FFF7FEFF 		bl	MahonyAHRSupdateIMU
+  57:Algorithm/MahonyAHRS.c **** 		return;
+ 112              		.loc 1 57 3
+ 113 0074 DBE3     		b	.L1
+ 114              	.L2:
+  58:Algorithm/MahonyAHRS.c **** 	}
+  59:Algorithm/MahonyAHRS.c **** 
+  60:Algorithm/MahonyAHRS.c **** 	// Compute feedback only if accelerometer measurement valid (avoids NaN in accelerometer normalisa
+  61:Algorithm/MahonyAHRS.c **** 	if(!((ax == 0.0f) && (ay == 0.0f) && (az == 0.0f))) {
+ 115              		.loc 1 61 4
+ 116 0076 D7ED057A 		vldr.32	s15, [r7, #20]
+ 117 007a F5EE407A 		vcmp.f32	s15, #0
+ 118 007e F1EE10FA 		vmrs	APSR_nzcv, FPSCR
+ 119 0082 0ED1     		bne	.L4
+ 120              		.loc 1 61 20 discriminator 1
+ 121 0084 D7ED047A 		vldr.32	s15, [r7, #16]
+ARM GAS  C:\Users\fffff\AppData\Local\Temp\cciJBK57.s 			page 4
+
+
+ 122 0088 F5EE407A 		vcmp.f32	s15, #0
+ 123 008c F1EE10FA 		vmrs	APSR_nzcv, FPSCR
+ 124 0090 07D1     		bne	.L4
+ 125              		.loc 1 61 5 discriminator 2
+ 126 0092 D7ED037A 		vldr.32	s15, [r7, #12]
+ 127 0096 F5EE407A 		vcmp.f32	s15, #0
+ 128 009a F1EE10FA 		vmrs	APSR_nzcv, FPSCR
+ 129 009e 00F0BF82 		beq	.L5
+ 130              	.L4:
+  62:Algorithm/MahonyAHRS.c **** 
+  63:Algorithm/MahonyAHRS.c **** 		// Normalise accelerometer measurement
+  64:Algorithm/MahonyAHRS.c **** 		recipNorm = invSqrt(ax * ax + ay * ay + az * az);
+ 131              		.loc 1 64 26
+ 132 00a2 D7ED057A 		vldr.32	s15, [r7, #20]
+ 133 00a6 27EEA77A 		vmul.f32	s14, s15, s15
+ 134              		.loc 1 64 36
+ 135 00aa D7ED047A 		vldr.32	s15, [r7, #16]
+ 136 00ae 67EEA77A 		vmul.f32	s15, s15, s15
+ 137              		.loc 1 64 31
+ 138 00b2 37EE277A 		vadd.f32	s14, s14, s15
+ 139              		.loc 1 64 46
+ 140 00b6 D7ED037A 		vldr.32	s15, [r7, #12]
+ 141 00ba 67EEA77A 		vmul.f32	s15, s15, s15
+ 142              		.loc 1 64 15
+ 143 00be 77EE277A 		vadd.f32	s15, s14, s15
+ 144 00c2 B0EE670A 		vmov.f32	s0, s15
+ 145 00c6 FFF7FEFF 		bl	invSqrt
+ 146 00ca 87ED250A 		vstr.32	s0, [r7, #148]
+  65:Algorithm/MahonyAHRS.c **** 		ax *= recipNorm;
+ 147              		.loc 1 65 6
+ 148 00ce 97ED057A 		vldr.32	s14, [r7, #20]
+ 149 00d2 D7ED257A 		vldr.32	s15, [r7, #148]
+ 150 00d6 67EE277A 		vmul.f32	s15, s14, s15
+ 151 00da C7ED057A 		vstr.32	s15, [r7, #20]
+  66:Algorithm/MahonyAHRS.c **** 		ay *= recipNorm;
+ 152              		.loc 1 66 6
+ 153 00de 97ED047A 		vldr.32	s14, [r7, #16]
+ 154 00e2 D7ED257A 		vldr.32	s15, [r7, #148]
+ 155 00e6 67EE277A 		vmul.f32	s15, s14, s15
+ 156 00ea C7ED047A 		vstr.32	s15, [r7, #16]
+  67:Algorithm/MahonyAHRS.c **** 		az *= recipNorm;     
+ 157              		.loc 1 67 6
+ 158 00ee 97ED037A 		vldr.32	s14, [r7, #12]
+ 159 00f2 D7ED257A 		vldr.32	s15, [r7, #148]
+ 160 00f6 67EE277A 		vmul.f32	s15, s14, s15
+ 161 00fa C7ED037A 		vstr.32	s15, [r7, #12]
+  68:Algorithm/MahonyAHRS.c **** 
+  69:Algorithm/MahonyAHRS.c **** 		// Normalise magnetometer measurement
+  70:Algorithm/MahonyAHRS.c **** 		recipNorm = invSqrt(mx * mx + my * my + mz * mz);
+ 162              		.loc 1 70 26
+ 163 00fe D7ED027A 		vldr.32	s15, [r7, #8]
+ 164 0102 27EEA77A 		vmul.f32	s14, s15, s15
+ 165              		.loc 1 70 36
+ 166 0106 D7ED017A 		vldr.32	s15, [r7, #4]
+ 167 010a 67EEA77A 		vmul.f32	s15, s15, s15
+ 168              		.loc 1 70 31
+ 169 010e 37EE277A 		vadd.f32	s14, s14, s15
+ARM GAS  C:\Users\fffff\AppData\Local\Temp\cciJBK57.s 			page 5
+
+
+ 170              		.loc 1 70 46
+ 171 0112 D7ED007A 		vldr.32	s15, [r7]
+ 172 0116 67EEA77A 		vmul.f32	s15, s15, s15
+ 173              		.loc 1 70 15
+ 174 011a 77EE277A 		vadd.f32	s15, s14, s15
+ 175 011e B0EE670A 		vmov.f32	s0, s15
+ 176 0122 FFF7FEFF 		bl	invSqrt
+ 177 0126 87ED250A 		vstr.32	s0, [r7, #148]
+  71:Algorithm/MahonyAHRS.c **** 		mx *= recipNorm;
+ 178              		.loc 1 71 6
+ 179 012a 97ED027A 		vldr.32	s14, [r7, #8]
+ 180 012e D7ED257A 		vldr.32	s15, [r7, #148]
+ 181 0132 67EE277A 		vmul.f32	s15, s14, s15
+ 182 0136 C7ED027A 		vstr.32	s15, [r7, #8]
+  72:Algorithm/MahonyAHRS.c **** 		my *= recipNorm;
+ 183              		.loc 1 72 6
+ 184 013a 97ED017A 		vldr.32	s14, [r7, #4]
+ 185 013e D7ED257A 		vldr.32	s15, [r7, #148]
+ 186 0142 67EE277A 		vmul.f32	s15, s14, s15
+ 187 0146 C7ED017A 		vstr.32	s15, [r7, #4]
+  73:Algorithm/MahonyAHRS.c **** 		mz *= recipNorm;   
+ 188              		.loc 1 73 6
+ 189 014a 97ED007A 		vldr.32	s14, [r7]
+ 190 014e D7ED257A 		vldr.32	s15, [r7, #148]
+ 191 0152 67EE277A 		vmul.f32	s15, s14, s15
+ 192 0156 C7ED007A 		vstr.32	s15, [r7]
+  74:Algorithm/MahonyAHRS.c **** 
+  75:Algorithm/MahonyAHRS.c ****         // Auxiliary variables to avoid repeated arithmetic
+  76:Algorithm/MahonyAHRS.c ****         q0q0 = q[0] * q[0];
+ 193              		.loc 1 76 17
+ 194 015a 7B6A     		ldr	r3, [r7, #36]
+ 195 015c 93ED007A 		vldr.32	s14, [r3]
+ 196              		.loc 1 76 24
+ 197 0160 7B6A     		ldr	r3, [r7, #36]
+ 198 0162 D3ED007A 		vldr.32	s15, [r3]
+ 199              		.loc 1 76 14
+ 200 0166 67EE277A 		vmul.f32	s15, s14, s15
+ 201 016a C7ED247A 		vstr.32	s15, [r7, #144]
+  77:Algorithm/MahonyAHRS.c ****         q0q1 = q[0] * q[1];
+ 202              		.loc 1 77 17
+ 203 016e 7B6A     		ldr	r3, [r7, #36]
+ 204 0170 93ED007A 		vldr.32	s14, [r3]
+ 205              		.loc 1 77 24
+ 206 0174 7B6A     		ldr	r3, [r7, #36]
+ 207 0176 0433     		adds	r3, r3, #4
+ 208 0178 D3ED007A 		vldr.32	s15, [r3]
+ 209              		.loc 1 77 14
+ 210 017c 67EE277A 		vmul.f32	s15, s14, s15
+ 211 0180 C7ED237A 		vstr.32	s15, [r7, #140]
+  78:Algorithm/MahonyAHRS.c ****         q0q2 = q[0] * q[2];
+ 212              		.loc 1 78 17
+ 213 0184 7B6A     		ldr	r3, [r7, #36]
+ 214 0186 93ED007A 		vldr.32	s14, [r3]
+ 215              		.loc 1 78 24
+ 216 018a 7B6A     		ldr	r3, [r7, #36]
+ 217 018c 0833     		adds	r3, r3, #8
+ 218 018e D3ED007A 		vldr.32	s15, [r3]
+ARM GAS  C:\Users\fffff\AppData\Local\Temp\cciJBK57.s 			page 6
+
+
+ 219              		.loc 1 78 14
+ 220 0192 67EE277A 		vmul.f32	s15, s14, s15
+ 221 0196 C7ED227A 		vstr.32	s15, [r7, #136]
+  79:Algorithm/MahonyAHRS.c ****         q0q3 = q[0] * q[3];
+ 222              		.loc 1 79 17
+ 223 019a 7B6A     		ldr	r3, [r7, #36]
+ 224 019c 93ED007A 		vldr.32	s14, [r3]
+ 225              		.loc 1 79 24
+ 226 01a0 7B6A     		ldr	r3, [r7, #36]
+ 227 01a2 0C33     		adds	r3, r3, #12
+ 228 01a4 D3ED007A 		vldr.32	s15, [r3]
+ 229              		.loc 1 79 14
+ 230 01a8 67EE277A 		vmul.f32	s15, s14, s15
+ 231 01ac C7ED217A 		vstr.32	s15, [r7, #132]
+  80:Algorithm/MahonyAHRS.c ****         q1q1 = q[1] * q[1];
+ 232              		.loc 1 80 17
+ 233 01b0 7B6A     		ldr	r3, [r7, #36]
+ 234 01b2 0433     		adds	r3, r3, #4
+ 235 01b4 93ED007A 		vldr.32	s14, [r3]
+ 236              		.loc 1 80 24
+ 237 01b8 7B6A     		ldr	r3, [r7, #36]
+ 238 01ba 0433     		adds	r3, r3, #4
+ 239 01bc D3ED007A 		vldr.32	s15, [r3]
+ 240              		.loc 1 80 14
+ 241 01c0 67EE277A 		vmul.f32	s15, s14, s15
+ 242 01c4 C7ED207A 		vstr.32	s15, [r7, #128]
+  81:Algorithm/MahonyAHRS.c ****         q1q2 = q[1] * q[2];
+ 243              		.loc 1 81 17
+ 244 01c8 7B6A     		ldr	r3, [r7, #36]
+ 245 01ca 0433     		adds	r3, r3, #4
+ 246 01cc 93ED007A 		vldr.32	s14, [r3]
+ 247              		.loc 1 81 24
+ 248 01d0 7B6A     		ldr	r3, [r7, #36]
+ 249 01d2 0833     		adds	r3, r3, #8
+ 250 01d4 D3ED007A 		vldr.32	s15, [r3]
+ 251              		.loc 1 81 14
+ 252 01d8 67EE277A 		vmul.f32	s15, s14, s15
+ 253 01dc C7ED1F7A 		vstr.32	s15, [r7, #124]
+  82:Algorithm/MahonyAHRS.c ****         q1q3 = q[1] * q[3];
+ 254              		.loc 1 82 17
+ 255 01e0 7B6A     		ldr	r3, [r7, #36]
+ 256 01e2 0433     		adds	r3, r3, #4
+ 257 01e4 93ED007A 		vldr.32	s14, [r3]
+ 258              		.loc 1 82 24
+ 259 01e8 7B6A     		ldr	r3, [r7, #36]
+ 260 01ea 0C33     		adds	r3, r3, #12
+ 261 01ec D3ED007A 		vldr.32	s15, [r3]
+ 262              		.loc 1 82 14
+ 263 01f0 67EE277A 		vmul.f32	s15, s14, s15
+ 264 01f4 C7ED1E7A 		vstr.32	s15, [r7, #120]
+  83:Algorithm/MahonyAHRS.c ****         q2q2 = q[2] * q[2];
+ 265              		.loc 1 83 17
+ 266 01f8 7B6A     		ldr	r3, [r7, #36]
+ 267 01fa 0833     		adds	r3, r3, #8
+ 268 01fc 93ED007A 		vldr.32	s14, [r3]
+ 269              		.loc 1 83 24
+ 270 0200 7B6A     		ldr	r3, [r7, #36]
+ARM GAS  C:\Users\fffff\AppData\Local\Temp\cciJBK57.s 			page 7
+
+
+ 271 0202 0833     		adds	r3, r3, #8
+ 272 0204 D3ED007A 		vldr.32	s15, [r3]
+ 273              		.loc 1 83 14
+ 274 0208 67EE277A 		vmul.f32	s15, s14, s15
+ 275 020c C7ED1D7A 		vstr.32	s15, [r7, #116]
+  84:Algorithm/MahonyAHRS.c ****         q2q3 = q[2] * q[3];
+ 276              		.loc 1 84 17
+ 277 0210 7B6A     		ldr	r3, [r7, #36]
+ 278 0212 0833     		adds	r3, r3, #8
+ 279 0214 93ED007A 		vldr.32	s14, [r3]
+ 280              		.loc 1 84 24
+ 281 0218 7B6A     		ldr	r3, [r7, #36]
+ 282 021a 0C33     		adds	r3, r3, #12
+ 283 021c D3ED007A 		vldr.32	s15, [r3]
+ 284              		.loc 1 84 14
+ 285 0220 67EE277A 		vmul.f32	s15, s14, s15
+ 286 0224 C7ED1C7A 		vstr.32	s15, [r7, #112]
+  85:Algorithm/MahonyAHRS.c ****         q3q3 = q[3] * q[3];   
+ 287              		.loc 1 85 17
+ 288 0228 7B6A     		ldr	r3, [r7, #36]
+ 289 022a 0C33     		adds	r3, r3, #12
+ 290 022c 93ED007A 		vldr.32	s14, [r3]
+ 291              		.loc 1 85 24
+ 292 0230 7B6A     		ldr	r3, [r7, #36]
+ 293 0232 0C33     		adds	r3, r3, #12
+ 294 0234 D3ED007A 		vldr.32	s15, [r3]
+ 295              		.loc 1 85 14
+ 296 0238 67EE277A 		vmul.f32	s15, s14, s15
+ 297 023c C7ED1B7A 		vstr.32	s15, [r7, #108]
+  86:Algorithm/MahonyAHRS.c **** 
+  87:Algorithm/MahonyAHRS.c ****         // Reference direction of Earth's magnetic field
+  88:Algorithm/MahonyAHRS.c ****         hx = 2.0f * (mx * (0.5f - q2q2 - q3q3) + my * (q1q2 - q0q3) + mz * (q1q3 + q0q2));
+ 298              		.loc 1 88 33
+ 299 0240 B6EE007A 		vmov.f32	s14, #5.0e-1
+ 300 0244 D7ED1D7A 		vldr.32	s15, [r7, #116]
+ 301 0248 37EE677A 		vsub.f32	s14, s14, s15
+ 302              		.loc 1 88 40
+ 303 024c D7ED1B7A 		vldr.32	s15, [r7, #108]
+ 304 0250 37EE677A 		vsub.f32	s14, s14, s15
+ 305              		.loc 1 88 25
+ 306 0254 D7ED027A 		vldr.32	s15, [r7, #8]
+ 307 0258 27EE277A 		vmul.f32	s14, s14, s15
+ 308              		.loc 1 88 61
+ 309 025c D7ED1F6A 		vldr.32	s13, [r7, #124]
+ 310 0260 D7ED217A 		vldr.32	s15, [r7, #132]
+ 311 0264 76EEE76A 		vsub.f32	s13, s13, s15
+ 312              		.loc 1 88 53
+ 313 0268 D7ED017A 		vldr.32	s15, [r7, #4]
+ 314 026c 66EEA77A 		vmul.f32	s15, s13, s15
+ 315              		.loc 1 88 48
+ 316 0270 37EE277A 		vadd.f32	s14, s14, s15
+ 317              		.loc 1 88 82
+ 318 0274 D7ED1E6A 		vldr.32	s13, [r7, #120]
+ 319 0278 D7ED227A 		vldr.32	s15, [r7, #136]
+ 320 027c 76EEA76A 		vadd.f32	s13, s13, s15
+ 321              		.loc 1 88 74
+ 322 0280 D7ED007A 		vldr.32	s15, [r7]
+ARM GAS  C:\Users\fffff\AppData\Local\Temp\cciJBK57.s 			page 8
+
+
+ 323 0284 66EEA77A 		vmul.f32	s15, s13, s15
+ 324              		.loc 1 88 69
+ 325 0288 77EE277A 		vadd.f32	s15, s14, s15
+ 326              		.loc 1 88 12
+ 327 028c 77EEA77A 		vadd.f32	s15, s15, s15
+ 328 0290 C7ED1A7A 		vstr.32	s15, [r7, #104]
+  89:Algorithm/MahonyAHRS.c ****         hy = 2.0f * (mx * (q1q2 + q0q3) + my * (0.5f - q1q1 - q3q3) + mz * (q2q3 - q0q1));
+ 329              		.loc 1 89 33
+ 330 0294 97ED1F7A 		vldr.32	s14, [r7, #124]
+ 331 0298 D7ED217A 		vldr.32	s15, [r7, #132]
+ 332 029c 37EE277A 		vadd.f32	s14, s14, s15
+ 333              		.loc 1 89 25
+ 334 02a0 D7ED027A 		vldr.32	s15, [r7, #8]
+ 335 02a4 27EE277A 		vmul.f32	s14, s14, s15
+ 336              		.loc 1 89 54
+ 337 02a8 F6EE006A 		vmov.f32	s13, #5.0e-1
+ 338 02ac D7ED207A 		vldr.32	s15, [r7, #128]
+ 339 02b0 76EEE76A 		vsub.f32	s13, s13, s15
+ 340              		.loc 1 89 61
+ 341 02b4 D7ED1B7A 		vldr.32	s15, [r7, #108]
+ 342 02b8 76EEE76A 		vsub.f32	s13, s13, s15
+ 343              		.loc 1 89 46
+ 344 02bc D7ED017A 		vldr.32	s15, [r7, #4]
+ 345 02c0 66EEA77A 		vmul.f32	s15, s13, s15
+ 346              		.loc 1 89 41
+ 347 02c4 37EE277A 		vadd.f32	s14, s14, s15
+ 348              		.loc 1 89 82
+ 349 02c8 D7ED1C6A 		vldr.32	s13, [r7, #112]
+ 350 02cc D7ED237A 		vldr.32	s15, [r7, #140]
+ 351 02d0 76EEE76A 		vsub.f32	s13, s13, s15
+ 352              		.loc 1 89 74
+ 353 02d4 D7ED007A 		vldr.32	s15, [r7]
+ 354 02d8 66EEA77A 		vmul.f32	s15, s13, s15
+ 355              		.loc 1 89 69
+ 356 02dc 77EE277A 		vadd.f32	s15, s14, s15
+ 357              		.loc 1 89 12
+ 358 02e0 77EEA77A 		vadd.f32	s15, s15, s15
+ 359 02e4 C7ED197A 		vstr.32	s15, [r7, #100]
+  90:Algorithm/MahonyAHRS.c ****         bx = sqrt(hx * hx + hy * hy);
+ 360              		.loc 1 90 22
+ 361 02e8 D7ED1A7A 		vldr.32	s15, [r7, #104]
+ 362 02ec 27EEA77A 		vmul.f32	s14, s15, s15
+ 363              		.loc 1 90 32
+ 364 02f0 D7ED197A 		vldr.32	s15, [r7, #100]
+ 365 02f4 67EEA77A 		vmul.f32	s15, s15, s15
+ 366              		.loc 1 90 27
+ 367 02f8 77EE277A 		vadd.f32	s15, s14, s15
+ 368              		.loc 1 90 14
+ 369 02fc B7EEE77A 		vcvt.f64.f32	d7, s15
+ 370 0300 B0EE470B 		vmov.f64	d0, d7
+ 371 0304 FFF7FEFF 		bl	sqrt
+ 372 0308 B0EE407B 		vmov.f64	d7, d0
+ 373              		.loc 1 90 12 discriminator 1
+ 374 030c F7EEC77B 		vcvt.f32.f64	s15, d7
+ 375 0310 C7ED187A 		vstr.32	s15, [r7, #96]
+  91:Algorithm/MahonyAHRS.c ****         bz = 2.0f * (mx * (q1q3 - q0q2) + my * (q2q3 + q0q1) + mz * (0.5f - q1q1 - q2q2));
+ 376              		.loc 1 91 33
+ARM GAS  C:\Users\fffff\AppData\Local\Temp\cciJBK57.s 			page 9
+
+
+ 377 0314 97ED1E7A 		vldr.32	s14, [r7, #120]
+ 378 0318 D7ED227A 		vldr.32	s15, [r7, #136]
+ 379 031c 37EE677A 		vsub.f32	s14, s14, s15
+ 380              		.loc 1 91 25
+ 381 0320 D7ED027A 		vldr.32	s15, [r7, #8]
+ 382 0324 27EE277A 		vmul.f32	s14, s14, s15
+ 383              		.loc 1 91 54
+ 384 0328 D7ED1C6A 		vldr.32	s13, [r7, #112]
+ 385 032c D7ED237A 		vldr.32	s15, [r7, #140]
+ 386 0330 76EEA76A 		vadd.f32	s13, s13, s15
+ 387              		.loc 1 91 46
+ 388 0334 D7ED017A 		vldr.32	s15, [r7, #4]
+ 389 0338 66EEA77A 		vmul.f32	s15, s13, s15
+ 390              		.loc 1 91 41
+ 391 033c 37EE277A 		vadd.f32	s14, s14, s15
+ 392              		.loc 1 91 75
+ 393 0340 F6EE006A 		vmov.f32	s13, #5.0e-1
+ 394 0344 D7ED207A 		vldr.32	s15, [r7, #128]
+ 395 0348 76EEE76A 		vsub.f32	s13, s13, s15
+ 396              		.loc 1 91 82
+ 397 034c D7ED1D7A 		vldr.32	s15, [r7, #116]
+ 398 0350 76EEE76A 		vsub.f32	s13, s13, s15
+ 399              		.loc 1 91 67
+ 400 0354 D7ED007A 		vldr.32	s15, [r7]
+ 401 0358 66EEA77A 		vmul.f32	s15, s13, s15
+ 402              		.loc 1 91 62
+ 403 035c 77EE277A 		vadd.f32	s15, s14, s15
+ 404              		.loc 1 91 12
+ 405 0360 77EEA77A 		vadd.f32	s15, s15, s15
+ 406 0364 C7ED177A 		vstr.32	s15, [r7, #92]
+  92:Algorithm/MahonyAHRS.c **** 
+  93:Algorithm/MahonyAHRS.c **** 		// Estimated direction of gravity and magnetic field
+  94:Algorithm/MahonyAHRS.c **** 		halfvx = q1q3 - q0q2;
+ 407              		.loc 1 94 10
+ 408 0368 97ED1E7A 		vldr.32	s14, [r7, #120]
+ 409 036c D7ED227A 		vldr.32	s15, [r7, #136]
+ 410 0370 77EE677A 		vsub.f32	s15, s14, s15
+ 411 0374 C7ED167A 		vstr.32	s15, [r7, #88]
+  95:Algorithm/MahonyAHRS.c **** 		halfvy = q0q1 + q2q3;
+ 412              		.loc 1 95 10
+ 413 0378 97ED237A 		vldr.32	s14, [r7, #140]
+ 414 037c D7ED1C7A 		vldr.32	s15, [r7, #112]
+ 415 0380 77EE277A 		vadd.f32	s15, s14, s15
+ 416 0384 C7ED157A 		vstr.32	s15, [r7, #84]
+  96:Algorithm/MahonyAHRS.c **** 		halfvz = q0q0 - 0.5f + q3q3;
+ 417              		.loc 1 96 17
+ 418 0388 D7ED247A 		vldr.32	s15, [r7, #144]
+ 419 038c B6EE007A 		vmov.f32	s14, #5.0e-1
+ 420 0390 77EEC77A 		vsub.f32	s15, s15, s14
+ 421              		.loc 1 96 10
+ 422 0394 97ED1B7A 		vldr.32	s14, [r7, #108]
+ 423 0398 77EE277A 		vadd.f32	s15, s14, s15
+ 424 039c C7ED147A 		vstr.32	s15, [r7, #80]
+  97:Algorithm/MahonyAHRS.c ****         halfwx = bx * (0.5f - q2q2 - q3q3) + bz * (q1q3 - q0q2);
+ 425              		.loc 1 97 29
+ 426 03a0 B6EE007A 		vmov.f32	s14, #5.0e-1
+ 427 03a4 D7ED1D7A 		vldr.32	s15, [r7, #116]
+ARM GAS  C:\Users\fffff\AppData\Local\Temp\cciJBK57.s 			page 10
+
+
+ 428 03a8 37EE677A 		vsub.f32	s14, s14, s15
+ 429              		.loc 1 97 36
+ 430 03ac D7ED1B7A 		vldr.32	s15, [r7, #108]
+ 431 03b0 37EE677A 		vsub.f32	s14, s14, s15
+ 432              		.loc 1 97 21
+ 433 03b4 D7ED187A 		vldr.32	s15, [r7, #96]
+ 434 03b8 27EE277A 		vmul.f32	s14, s14, s15
+ 435              		.loc 1 97 57
+ 436 03bc D7ED1E6A 		vldr.32	s13, [r7, #120]
+ 437 03c0 D7ED227A 		vldr.32	s15, [r7, #136]
+ 438 03c4 76EEE76A 		vsub.f32	s13, s13, s15
+ 439              		.loc 1 97 49
+ 440 03c8 D7ED177A 		vldr.32	s15, [r7, #92]
+ 441 03cc 66EEA77A 		vmul.f32	s15, s13, s15
+ 442              		.loc 1 97 16
+ 443 03d0 77EE277A 		vadd.f32	s15, s14, s15
+ 444 03d4 C7ED137A 		vstr.32	s15, [r7, #76]
+  98:Algorithm/MahonyAHRS.c ****         halfwy = bx * (q1q2 - q0q3) + bz * (q0q1 + q2q3);
+ 445              		.loc 1 98 29
+ 446 03d8 97ED1F7A 		vldr.32	s14, [r7, #124]
+ 447 03dc D7ED217A 		vldr.32	s15, [r7, #132]
+ 448 03e0 37EE677A 		vsub.f32	s14, s14, s15
+ 449              		.loc 1 98 21
+ 450 03e4 D7ED187A 		vldr.32	s15, [r7, #96]
+ 451 03e8 27EE277A 		vmul.f32	s14, s14, s15
+ 452              		.loc 1 98 50
+ 453 03ec D7ED236A 		vldr.32	s13, [r7, #140]
+ 454 03f0 D7ED1C7A 		vldr.32	s15, [r7, #112]
+ 455 03f4 76EEA76A 		vadd.f32	s13, s13, s15
+ 456              		.loc 1 98 42
+ 457 03f8 D7ED177A 		vldr.32	s15, [r7, #92]
+ 458 03fc 66EEA77A 		vmul.f32	s15, s13, s15
+ 459              		.loc 1 98 16
+ 460 0400 77EE277A 		vadd.f32	s15, s14, s15
+ 461 0404 C7ED127A 		vstr.32	s15, [r7, #72]
+  99:Algorithm/MahonyAHRS.c ****         halfwz = bx * (q0q2 + q1q3) + bz * (0.5f - q1q1 - q2q2);  
+ 462              		.loc 1 99 29
+ 463 0408 97ED227A 		vldr.32	s14, [r7, #136]
+ 464 040c D7ED1E7A 		vldr.32	s15, [r7, #120]
+ 465 0410 37EE277A 		vadd.f32	s14, s14, s15
+ 466              		.loc 1 99 21
+ 467 0414 D7ED187A 		vldr.32	s15, [r7, #96]
+ 468 0418 27EE277A 		vmul.f32	s14, s14, s15
+ 469              		.loc 1 99 50
+ 470 041c F6EE006A 		vmov.f32	s13, #5.0e-1
+ 471 0420 D7ED207A 		vldr.32	s15, [r7, #128]
+ 472 0424 76EEE76A 		vsub.f32	s13, s13, s15
+ 473              		.loc 1 99 57
+ 474 0428 D7ED1D7A 		vldr.32	s15, [r7, #116]
+ 475 042c 76EEE76A 		vsub.f32	s13, s13, s15
+ 476              		.loc 1 99 42
+ 477 0430 D7ED177A 		vldr.32	s15, [r7, #92]
+ 478 0434 66EEA77A 		vmul.f32	s15, s13, s15
+ 479              		.loc 1 99 16
+ 480 0438 77EE277A 		vadd.f32	s15, s14, s15
+ 481 043c C7ED117A 		vstr.32	s15, [r7, #68]
+ 100:Algorithm/MahonyAHRS.c **** 	
+ARM GAS  C:\Users\fffff\AppData\Local\Temp\cciJBK57.s 			page 11
+
+
+ 101:Algorithm/MahonyAHRS.c **** 		// Error is sum of cross product between estimated direction and measured direction of field vect
+ 102:Algorithm/MahonyAHRS.c **** 		halfex = (ay * halfvz - az * halfvy) + (my * halfwz - mz * halfwy);
+ 482              		.loc 1 102 16
+ 483 0440 97ED047A 		vldr.32	s14, [r7, #16]
+ 484 0444 D7ED147A 		vldr.32	s15, [r7, #80]
+ 485 0448 27EE277A 		vmul.f32	s14, s14, s15
+ 486              		.loc 1 102 30
+ 487 044c D7ED036A 		vldr.32	s13, [r7, #12]
+ 488 0450 D7ED157A 		vldr.32	s15, [r7, #84]
+ 489 0454 66EEA77A 		vmul.f32	s15, s13, s15
+ 490              		.loc 1 102 25
+ 491 0458 37EE677A 		vsub.f32	s14, s14, s15
+ 492              		.loc 1 102 46
+ 493 045c D7ED016A 		vldr.32	s13, [r7, #4]
+ 494 0460 D7ED117A 		vldr.32	s15, [r7, #68]
+ 495 0464 66EEA76A 		vmul.f32	s13, s13, s15
+ 496              		.loc 1 102 60
+ 497 0468 97ED006A 		vldr.32	s12, [r7]
+ 498 046c D7ED127A 		vldr.32	s15, [r7, #72]
+ 499 0470 66EE277A 		vmul.f32	s15, s12, s15
+ 500              		.loc 1 102 55
+ 501 0474 76EEE77A 		vsub.f32	s15, s13, s15
+ 502              		.loc 1 102 10
+ 503 0478 77EE277A 		vadd.f32	s15, s14, s15
+ 504 047c C7ED107A 		vstr.32	s15, [r7, #64]
+ 103:Algorithm/MahonyAHRS.c **** 		halfey = (az * halfvx - ax * halfvz) + (mz * halfwx - mx * halfwz);
+ 505              		.loc 1 103 16
+ 506 0480 97ED037A 		vldr.32	s14, [r7, #12]
+ 507 0484 D7ED167A 		vldr.32	s15, [r7, #88]
+ 508 0488 27EE277A 		vmul.f32	s14, s14, s15
+ 509              		.loc 1 103 30
+ 510 048c D7ED056A 		vldr.32	s13, [r7, #20]
+ 511 0490 D7ED147A 		vldr.32	s15, [r7, #80]
+ 512 0494 66EEA77A 		vmul.f32	s15, s13, s15
+ 513              		.loc 1 103 25
+ 514 0498 37EE677A 		vsub.f32	s14, s14, s15
+ 515              		.loc 1 103 46
+ 516 049c D7ED006A 		vldr.32	s13, [r7]
+ 517 04a0 D7ED137A 		vldr.32	s15, [r7, #76]
+ 518 04a4 66EEA76A 		vmul.f32	s13, s13, s15
+ 519              		.loc 1 103 60
+ 520 04a8 97ED026A 		vldr.32	s12, [r7, #8]
+ 521 04ac D7ED117A 		vldr.32	s15, [r7, #68]
+ 522 04b0 66EE277A 		vmul.f32	s15, s12, s15
+ 523              		.loc 1 103 55
+ 524 04b4 76EEE77A 		vsub.f32	s15, s13, s15
+ 525              		.loc 1 103 10
+ 526 04b8 77EE277A 		vadd.f32	s15, s14, s15
+ 527 04bc C7ED0F7A 		vstr.32	s15, [r7, #60]
+ 104:Algorithm/MahonyAHRS.c **** 		halfez = (ax * halfvy - ay * halfvx) + (mx * halfwy - my * halfwx);
+ 528              		.loc 1 104 16
+ 529 04c0 97ED057A 		vldr.32	s14, [r7, #20]
+ 530 04c4 D7ED157A 		vldr.32	s15, [r7, #84]
+ 531 04c8 27EE277A 		vmul.f32	s14, s14, s15
+ 532              		.loc 1 104 30
+ 533 04cc D7ED046A 		vldr.32	s13, [r7, #16]
+ 534 04d0 D7ED167A 		vldr.32	s15, [r7, #88]
+ARM GAS  C:\Users\fffff\AppData\Local\Temp\cciJBK57.s 			page 12
+
+
+ 535 04d4 66EEA77A 		vmul.f32	s15, s13, s15
+ 536              		.loc 1 104 25
+ 537 04d8 37EE677A 		vsub.f32	s14, s14, s15
+ 538              		.loc 1 104 46
+ 539 04dc D7ED026A 		vldr.32	s13, [r7, #8]
+ 540 04e0 D7ED127A 		vldr.32	s15, [r7, #72]
+ 541 04e4 66EEA76A 		vmul.f32	s13, s13, s15
+ 542              		.loc 1 104 60
+ 543 04e8 97ED016A 		vldr.32	s12, [r7, #4]
+ 544 04ec D7ED137A 		vldr.32	s15, [r7, #76]
+ 545 04f0 66EE277A 		vmul.f32	s15, s12, s15
+ 546              		.loc 1 104 55
+ 547 04f4 76EEE77A 		vsub.f32	s15, s13, s15
+ 548              		.loc 1 104 10
+ 549 04f8 77EE277A 		vadd.f32	s15, s14, s15
+ 550 04fc C7ED0E7A 		vstr.32	s15, [r7, #56]
+ 105:Algorithm/MahonyAHRS.c **** 
+ 106:Algorithm/MahonyAHRS.c **** 		// Compute and apply integral feedback if enabled
+ 107:Algorithm/MahonyAHRS.c **** 		if(twoKi > 0.0f) {
+ 551              		.loc 1 107 12
+ 552 0500 CC4B     		ldr	r3, .L11
+ 553 0502 D3ED007A 		vldr.32	s15, [r3]
+ 554              		.loc 1 107 5
+ 555 0506 F5EEC07A 		vcmpe.f32	s15, #0
+ 556 050a F1EE10FA 		vmrs	APSR_nzcv, FPSCR
+ 557 050e 54DD     		ble	.L10
+ 108:Algorithm/MahonyAHRS.c **** 			integralFBx += twoKi * halfex * (1.0f / sampleFreq);	// integral error scaled by Ki
+ 558              		.loc 1 108 25
+ 559 0510 C84B     		ldr	r3, .L11
+ 560 0512 93ED007A 		vldr.32	s14, [r3]
+ 561 0516 D7ED107A 		vldr.32	s15, [r7, #64]
+ 562 051a 67EE277A 		vmul.f32	s15, s14, s15
+ 563              		.loc 1 108 34
+ 564 051e 9FEDC67A 		vldr.32	s14, .L11+4
+ 565 0522 27EE877A 		vmul.f32	s14, s15, s14
+ 566              		.loc 1 108 16
+ 567 0526 C54B     		ldr	r3, .L11+8
+ 568 0528 D3ED007A 		vldr.32	s15, [r3]
+ 569 052c 77EE277A 		vadd.f32	s15, s14, s15
+ 570 0530 C24B     		ldr	r3, .L11+8
+ 571 0532 C3ED007A 		vstr.32	s15, [r3]
+ 109:Algorithm/MahonyAHRS.c **** 			integralFBy += twoKi * halfey * (1.0f / sampleFreq);
+ 572              		.loc 1 109 25
+ 573 0536 BF4B     		ldr	r3, .L11
+ 574 0538 93ED007A 		vldr.32	s14, [r3]
+ 575 053c D7ED0F7A 		vldr.32	s15, [r7, #60]
+ 576 0540 67EE277A 		vmul.f32	s15, s14, s15
+ 577              		.loc 1 109 34
+ 578 0544 9FEDBC7A 		vldr.32	s14, .L11+4
+ 579 0548 27EE877A 		vmul.f32	s14, s15, s14
+ 580              		.loc 1 109 16
+ 581 054c BC4B     		ldr	r3, .L11+12
+ 582 054e D3ED007A 		vldr.32	s15, [r3]
+ 583 0552 77EE277A 		vadd.f32	s15, s14, s15
+ 584 0556 BA4B     		ldr	r3, .L11+12
+ 585 0558 C3ED007A 		vstr.32	s15, [r3]
+ 110:Algorithm/MahonyAHRS.c **** 			integralFBz += twoKi * halfez * (1.0f / sampleFreq);
+ARM GAS  C:\Users\fffff\AppData\Local\Temp\cciJBK57.s 			page 13
+
+
+ 586              		.loc 1 110 25
+ 587 055c B54B     		ldr	r3, .L11
+ 588 055e 93ED007A 		vldr.32	s14, [r3]
+ 589 0562 D7ED0E7A 		vldr.32	s15, [r7, #56]
+ 590 0566 67EE277A 		vmul.f32	s15, s14, s15
+ 591              		.loc 1 110 34
+ 592 056a 9FEDB37A 		vldr.32	s14, .L11+4
+ 593 056e 27EE877A 		vmul.f32	s14, s15, s14
+ 594              		.loc 1 110 16
+ 595 0572 B44B     		ldr	r3, .L11+16
+ 596 0574 D3ED007A 		vldr.32	s15, [r3]
+ 597 0578 77EE277A 		vadd.f32	s15, s14, s15
+ 598 057c B14B     		ldr	r3, .L11+16
+ 599 057e C3ED007A 		vstr.32	s15, [r3]
+ 111:Algorithm/MahonyAHRS.c **** 			gx += integralFBx;	// apply integral feedback
+ 600              		.loc 1 111 4
+ 601 0582 AE4B     		ldr	r3, .L11+8
+ 602 0584 D3ED007A 		vldr.32	s15, [r3]
+ 603              		.loc 1 111 7
+ 604 0588 97ED087A 		vldr.32	s14, [r7, #32]
+ 605 058c 77EE277A 		vadd.f32	s15, s14, s15
+ 606 0590 C7ED087A 		vstr.32	s15, [r7, #32]
+ 112:Algorithm/MahonyAHRS.c **** 			gy += integralFBy;
+ 607              		.loc 1 112 4
+ 608 0594 AA4B     		ldr	r3, .L11+12
+ 609 0596 D3ED007A 		vldr.32	s15, [r3]
+ 610              		.loc 1 112 7
+ 611 059a 97ED077A 		vldr.32	s14, [r7, #28]
+ 612 059e 77EE277A 		vadd.f32	s15, s14, s15
+ 613 05a2 C7ED077A 		vstr.32	s15, [r7, #28]
+ 113:Algorithm/MahonyAHRS.c **** 			gz += integralFBz;
+ 614              		.loc 1 113 4
+ 615 05a6 A74B     		ldr	r3, .L11+16
+ 616 05a8 D3ED007A 		vldr.32	s15, [r3]
+ 617              		.loc 1 113 7
+ 618 05ac 97ED067A 		vldr.32	s14, [r7, #24]
+ 619 05b0 77EE277A 		vadd.f32	s15, s14, s15
+ 620 05b4 C7ED067A 		vstr.32	s15, [r7, #24]
+ 621 05b8 0BE0     		b	.L8
+ 622              	.L10:
+ 114:Algorithm/MahonyAHRS.c **** 		}
+ 115:Algorithm/MahonyAHRS.c **** 		else {
+ 116:Algorithm/MahonyAHRS.c **** 			integralFBx = 0.0f;	// prevent integral windup
+ 623              		.loc 1 116 16
+ 624 05ba A04B     		ldr	r3, .L11+8
+ 625 05bc 4FF00002 		mov	r2, #0
+ 626 05c0 1A60     		str	r2, [r3]	@ float
+ 117:Algorithm/MahonyAHRS.c **** 			integralFBy = 0.0f;
+ 627              		.loc 1 117 16
+ 628 05c2 9F4B     		ldr	r3, .L11+12
+ 629 05c4 4FF00002 		mov	r2, #0
+ 630 05c8 1A60     		str	r2, [r3]	@ float
+ 118:Algorithm/MahonyAHRS.c **** 			integralFBz = 0.0f;
+ 631              		.loc 1 118 16
+ 632 05ca 9E4B     		ldr	r3, .L11+16
+ 633 05cc 4FF00002 		mov	r2, #0
+ 634 05d0 1A60     		str	r2, [r3]	@ float
+ARM GAS  C:\Users\fffff\AppData\Local\Temp\cciJBK57.s 			page 14
+
+
+ 635              	.L8:
+ 119:Algorithm/MahonyAHRS.c **** 		}
+ 120:Algorithm/MahonyAHRS.c **** 
+ 121:Algorithm/MahonyAHRS.c **** 		// Apply proportional feedback
+ 122:Algorithm/MahonyAHRS.c **** 		gx += twoKp * halfex;
+ 636              		.loc 1 122 15
+ 637 05d2 9D4B     		ldr	r3, .L11+20
+ 638 05d4 93ED007A 		vldr.32	s14, [r3]
+ 639 05d8 D7ED107A 		vldr.32	s15, [r7, #64]
+ 640 05dc 67EE277A 		vmul.f32	s15, s14, s15
+ 641              		.loc 1 122 6
+ 642 05e0 97ED087A 		vldr.32	s14, [r7, #32]
+ 643 05e4 77EE277A 		vadd.f32	s15, s14, s15
+ 644 05e8 C7ED087A 		vstr.32	s15, [r7, #32]
+ 123:Algorithm/MahonyAHRS.c **** 		gy += twoKp * halfey;
+ 645              		.loc 1 123 15
+ 646 05ec 964B     		ldr	r3, .L11+20
+ 647 05ee 93ED007A 		vldr.32	s14, [r3]
+ 648 05f2 D7ED0F7A 		vldr.32	s15, [r7, #60]
+ 649 05f6 67EE277A 		vmul.f32	s15, s14, s15
+ 650              		.loc 1 123 6
+ 651 05fa 97ED077A 		vldr.32	s14, [r7, #28]
+ 652 05fe 77EE277A 		vadd.f32	s15, s14, s15
+ 653 0602 C7ED077A 		vstr.32	s15, [r7, #28]
+ 124:Algorithm/MahonyAHRS.c **** 		gz += twoKp * halfez;
+ 654              		.loc 1 124 15
+ 655 0606 904B     		ldr	r3, .L11+20
+ 656 0608 93ED007A 		vldr.32	s14, [r3]
+ 657 060c D7ED0E7A 		vldr.32	s15, [r7, #56]
+ 658 0610 67EE277A 		vmul.f32	s15, s14, s15
+ 659              		.loc 1 124 6
+ 660 0614 97ED067A 		vldr.32	s14, [r7, #24]
+ 661 0618 77EE277A 		vadd.f32	s15, s14, s15
+ 662 061c C7ED067A 		vstr.32	s15, [r7, #24]
+ 663              	.L5:
+ 125:Algorithm/MahonyAHRS.c **** 	}
+ 126:Algorithm/MahonyAHRS.c **** 	
+ 127:Algorithm/MahonyAHRS.c **** 	// Integrate rate of change of quaternion
+ 128:Algorithm/MahonyAHRS.c **** 	gx *= (0.5f * (1.0f / sampleFreq));		// pre-multiply common factors
+ 664              		.loc 1 128 5
+ 665 0620 D7ED087A 		vldr.32	s15, [r7, #32]
+ 666 0624 9FED897A 		vldr.32	s14, .L11+24
+ 667 0628 67EE877A 		vmul.f32	s15, s15, s14
+ 668 062c C7ED087A 		vstr.32	s15, [r7, #32]
+ 129:Algorithm/MahonyAHRS.c **** 	gy *= (0.5f * (1.0f / sampleFreq));
+ 669              		.loc 1 129 5
+ 670 0630 D7ED077A 		vldr.32	s15, [r7, #28]
+ 671 0634 9FED857A 		vldr.32	s14, .L11+24
+ 672 0638 67EE877A 		vmul.f32	s15, s15, s14
+ 673 063c C7ED077A 		vstr.32	s15, [r7, #28]
+ 130:Algorithm/MahonyAHRS.c **** 	gz *= (0.5f * (1.0f / sampleFreq));
+ 674              		.loc 1 130 5
+ 675 0640 D7ED067A 		vldr.32	s15, [r7, #24]
+ 676 0644 9FED817A 		vldr.32	s14, .L11+24
+ 677 0648 67EE877A 		vmul.f32	s15, s15, s14
+ 678 064c C7ED067A 		vstr.32	s15, [r7, #24]
+ 131:Algorithm/MahonyAHRS.c **** 	qa = q[0];
+ARM GAS  C:\Users\fffff\AppData\Local\Temp\cciJBK57.s 			page 15
+
+
+ 679              		.loc 1 131 5
+ 680 0650 7B6A     		ldr	r3, [r7, #36]
+ 681 0652 1B68     		ldr	r3, [r3]	@ float
+ 682 0654 7B63     		str	r3, [r7, #52]	@ float
+ 132:Algorithm/MahonyAHRS.c **** 	qb = q[1];
+ 683              		.loc 1 132 5
+ 684 0656 7B6A     		ldr	r3, [r7, #36]
+ 685 0658 5B68     		ldr	r3, [r3, #4]	@ float
+ 686 065a 3B63     		str	r3, [r7, #48]	@ float
+ 133:Algorithm/MahonyAHRS.c **** 	qc = q[2];
+ 687              		.loc 1 133 5
+ 688 065c 7B6A     		ldr	r3, [r7, #36]
+ 689 065e 9B68     		ldr	r3, [r3, #8]	@ float
+ 690 0660 FB62     		str	r3, [r7, #44]	@ float
+ 134:Algorithm/MahonyAHRS.c **** 	q[0] += (-qb * gx - qc * gy - q[3] * gz);
+ 691              		.loc 1 134 3
+ 692 0662 7B6A     		ldr	r3, [r7, #36]
+ 693 0664 93ED007A 		vldr.32	s14, [r3]
+ 694              		.loc 1 134 11
+ 695 0668 D7ED0C7A 		vldr.32	s15, [r7, #48]
+ 696 066c F1EE676A 		vneg.f32	s13, s15
+ 697              		.loc 1 134 15
+ 698 0670 D7ED087A 		vldr.32	s15, [r7, #32]
+ 699 0674 66EEA76A 		vmul.f32	s13, s13, s15
+ 700              		.loc 1 134 25
+ 701 0678 97ED0B6A 		vldr.32	s12, [r7, #44]
+ 702 067c D7ED077A 		vldr.32	s15, [r7, #28]
+ 703 0680 66EE277A 		vmul.f32	s15, s12, s15
+ 704              		.loc 1 134 20
+ 705 0684 76EEE76A 		vsub.f32	s13, s13, s15
+ 706              		.loc 1 134 33
+ 707 0688 7B6A     		ldr	r3, [r7, #36]
+ 708 068a 0C33     		adds	r3, r3, #12
+ 709 068c 93ED006A 		vldr.32	s12, [r3]
+ 710              		.loc 1 134 37
+ 711 0690 D7ED067A 		vldr.32	s15, [r7, #24]
+ 712 0694 66EE277A 		vmul.f32	s15, s12, s15
+ 713              		.loc 1 134 30
+ 714 0698 76EEE77A 		vsub.f32	s15, s13, s15
+ 715              		.loc 1 134 7
+ 716 069c 77EE277A 		vadd.f32	s15, s14, s15
+ 717 06a0 7B6A     		ldr	r3, [r7, #36]
+ 718 06a2 C3ED007A 		vstr.32	s15, [r3]
+ 135:Algorithm/MahonyAHRS.c **** 	q[1] += (qa * gx + qc * gz - q[3] * gy);
+ 719              		.loc 1 135 3
+ 720 06a6 7B6A     		ldr	r3, [r7, #36]
+ 721 06a8 0433     		adds	r3, r3, #4
+ 722 06aa 93ED007A 		vldr.32	s14, [r3]
+ 723              		.loc 1 135 14
+ 724 06ae D7ED0D6A 		vldr.32	s13, [r7, #52]
+ 725 06b2 D7ED087A 		vldr.32	s15, [r7, #32]
+ 726 06b6 66EEA76A 		vmul.f32	s13, s13, s15
+ 727              		.loc 1 135 24
+ 728 06ba 97ED0B6A 		vldr.32	s12, [r7, #44]
+ 729 06be D7ED067A 		vldr.32	s15, [r7, #24]
+ 730 06c2 66EE277A 		vmul.f32	s15, s12, s15
+ 731              		.loc 1 135 19
+ARM GAS  C:\Users\fffff\AppData\Local\Temp\cciJBK57.s 			page 16
+
+
+ 732 06c6 76EEA76A 		vadd.f32	s13, s13, s15
+ 733              		.loc 1 135 32
+ 734 06ca 7B6A     		ldr	r3, [r7, #36]
+ 735 06cc 0C33     		adds	r3, r3, #12
+ 736 06ce 93ED006A 		vldr.32	s12, [r3]
+ 737              		.loc 1 135 36
+ 738 06d2 D7ED077A 		vldr.32	s15, [r7, #28]
+ 739 06d6 66EE277A 		vmul.f32	s15, s12, s15
+ 740              		.loc 1 135 29
+ 741 06da 76EEE77A 		vsub.f32	s15, s13, s15
+ 742              		.loc 1 135 3
+ 743 06de 7B6A     		ldr	r3, [r7, #36]
+ 744 06e0 0433     		adds	r3, r3, #4
+ 745              		.loc 1 135 7
+ 746 06e2 77EE277A 		vadd.f32	s15, s14, s15
+ 747 06e6 C3ED007A 		vstr.32	s15, [r3]
+ 136:Algorithm/MahonyAHRS.c **** 	q[2] += (qa * gy - qb * gz + q[3] * gx);
+ 748              		.loc 1 136 3
+ 749 06ea 7B6A     		ldr	r3, [r7, #36]
+ 750 06ec 0833     		adds	r3, r3, #8
+ 751 06ee 93ED007A 		vldr.32	s14, [r3]
+ 752              		.loc 1 136 14
+ 753 06f2 D7ED0D6A 		vldr.32	s13, [r7, #52]
+ 754 06f6 D7ED077A 		vldr.32	s15, [r7, #28]
+ 755 06fa 66EEA76A 		vmul.f32	s13, s13, s15
+ 756              		.loc 1 136 24
+ 757 06fe 97ED0C6A 		vldr.32	s12, [r7, #48]
+ 758 0702 D7ED067A 		vldr.32	s15, [r7, #24]
+ 759 0706 66EE277A 		vmul.f32	s15, s12, s15
+ 760              		.loc 1 136 19
+ 761 070a 76EEE76A 		vsub.f32	s13, s13, s15
+ 762              		.loc 1 136 32
+ 763 070e 7B6A     		ldr	r3, [r7, #36]
+ 764 0710 0C33     		adds	r3, r3, #12
+ 765 0712 93ED006A 		vldr.32	s12, [r3]
+ 766              		.loc 1 136 36
+ 767 0716 D7ED087A 		vldr.32	s15, [r7, #32]
+ 768 071a 66EE277A 		vmul.f32	s15, s12, s15
+ 769              		.loc 1 136 29
+ 770 071e 76EEA77A 		vadd.f32	s15, s13, s15
+ 771              		.loc 1 136 3
+ 772 0722 7B6A     		ldr	r3, [r7, #36]
+ 773 0724 0833     		adds	r3, r3, #8
+ 774              		.loc 1 136 7
+ 775 0726 77EE277A 		vadd.f32	s15, s14, s15
+ 776 072a C3ED007A 		vstr.32	s15, [r3]
+ 137:Algorithm/MahonyAHRS.c **** 	q[3] += (qa * gz + qb * gy - qc * gx); 
+ 777              		.loc 1 137 3
+ 778 072e 7B6A     		ldr	r3, [r7, #36]
+ 779 0730 0C33     		adds	r3, r3, #12
+ 780 0732 93ED007A 		vldr.32	s14, [r3]
+ 781              		.loc 1 137 14
+ 782 0736 D7ED0D6A 		vldr.32	s13, [r7, #52]
+ 783 073a D7ED067A 		vldr.32	s15, [r7, #24]
+ 784 073e 66EEA76A 		vmul.f32	s13, s13, s15
+ 785              		.loc 1 137 24
+ 786 0742 97ED0C6A 		vldr.32	s12, [r7, #48]
+ARM GAS  C:\Users\fffff\AppData\Local\Temp\cciJBK57.s 			page 17
+
+
+ 787 0746 D7ED077A 		vldr.32	s15, [r7, #28]
+ 788 074a 66EE277A 		vmul.f32	s15, s12, s15
+ 789              		.loc 1 137 19
+ 790 074e 76EEA76A 		vadd.f32	s13, s13, s15
+ 791              		.loc 1 137 34
+ 792 0752 97ED0B6A 		vldr.32	s12, [r7, #44]
+ 793 0756 D7ED087A 		vldr.32	s15, [r7, #32]
+ 794 075a 66EE277A 		vmul.f32	s15, s12, s15
+ 795              		.loc 1 137 29
+ 796 075e 76EEE77A 		vsub.f32	s15, s13, s15
+ 797              		.loc 1 137 3
+ 798 0762 7B6A     		ldr	r3, [r7, #36]
+ 799 0764 0C33     		adds	r3, r3, #12
+ 800              		.loc 1 137 7
+ 801 0766 77EE277A 		vadd.f32	s15, s14, s15
+ 802 076a C3ED007A 		vstr.32	s15, [r3]
+ 138:Algorithm/MahonyAHRS.c **** 	
+ 139:Algorithm/MahonyAHRS.c **** 	// Normalise quaternion
+ 140:Algorithm/MahonyAHRS.c **** 	recipNorm = invSqrt(q[0] * q[0] + q[1] * q[1] + q[2] * q[2] + q[3] * q[3]);
+ 803              		.loc 1 140 23
+ 804 076e 7B6A     		ldr	r3, [r7, #36]
+ 805 0770 93ED007A 		vldr.32	s14, [r3]
+ 806              		.loc 1 140 30
+ 807 0774 7B6A     		ldr	r3, [r7, #36]
+ 808 0776 D3ED007A 		vldr.32	s15, [r3]
+ 809              		.loc 1 140 27
+ 810 077a 27EE277A 		vmul.f32	s14, s14, s15
+ 811              		.loc 1 140 37
+ 812 077e 7B6A     		ldr	r3, [r7, #36]
+ 813 0780 0433     		adds	r3, r3, #4
+ 814 0782 D3ED006A 		vldr.32	s13, [r3]
+ 815              		.loc 1 140 44
+ 816 0786 7B6A     		ldr	r3, [r7, #36]
+ 817 0788 0433     		adds	r3, r3, #4
+ 818 078a D3ED007A 		vldr.32	s15, [r3]
+ 819              		.loc 1 140 41
+ 820 078e 66EEA77A 		vmul.f32	s15, s13, s15
+ 821              		.loc 1 140 34
+ 822 0792 37EE277A 		vadd.f32	s14, s14, s15
+ 823              		.loc 1 140 51
+ 824 0796 7B6A     		ldr	r3, [r7, #36]
+ 825 0798 0833     		adds	r3, r3, #8
+ 826 079a D3ED006A 		vldr.32	s13, [r3]
+ 827              		.loc 1 140 58
+ 828 079e 7B6A     		ldr	r3, [r7, #36]
+ 829 07a0 0833     		adds	r3, r3, #8
+ 830 07a2 D3ED007A 		vldr.32	s15, [r3]
+ 831              		.loc 1 140 55
+ 832 07a6 66EEA77A 		vmul.f32	s15, s13, s15
+ 833              		.loc 1 140 48
+ 834 07aa 37EE277A 		vadd.f32	s14, s14, s15
+ 835              		.loc 1 140 65
+ 836 07ae 7B6A     		ldr	r3, [r7, #36]
+ 837 07b0 0C33     		adds	r3, r3, #12
+ 838 07b2 D3ED006A 		vldr.32	s13, [r3]
+ 839              		.loc 1 140 72
+ 840 07b6 7B6A     		ldr	r3, [r7, #36]
+ARM GAS  C:\Users\fffff\AppData\Local\Temp\cciJBK57.s 			page 18
+
+
+ 841 07b8 0C33     		adds	r3, r3, #12
+ 842 07ba D3ED007A 		vldr.32	s15, [r3]
+ 843              		.loc 1 140 69
+ 844 07be 66EEA77A 		vmul.f32	s15, s13, s15
+ 845              		.loc 1 140 14
+ 846 07c2 77EE277A 		vadd.f32	s15, s14, s15
+ 847 07c6 B0EE670A 		vmov.f32	s0, s15
+ 848 07ca FFF7FEFF 		bl	invSqrt
+ 849 07ce 87ED250A 		vstr.32	s0, [r7, #148]
+ 141:Algorithm/MahonyAHRS.c **** 	q[0] *= recipNorm;
+ 850              		.loc 1 141 3
+ 851 07d2 7B6A     		ldr	r3, [r7, #36]
+ 852 07d4 93ED007A 		vldr.32	s14, [r3]
+ 853              		.loc 1 141 7
+ 854 07d8 D7ED257A 		vldr.32	s15, [r7, #148]
+ 855 07dc 67EE277A 		vmul.f32	s15, s14, s15
+ 856 07e0 7B6A     		ldr	r3, [r7, #36]
+ 857 07e2 C3ED007A 		vstr.32	s15, [r3]
+ 142:Algorithm/MahonyAHRS.c **** 	q[1] *= recipNorm;
+ 858              		.loc 1 142 3
+ 859 07e6 7B6A     		ldr	r3, [r7, #36]
+ 860 07e8 0433     		adds	r3, r3, #4
+ 861 07ea 93ED007A 		vldr.32	s14, [r3]
+ 862 07ee 7B6A     		ldr	r3, [r7, #36]
+ 863 07f0 0433     		adds	r3, r3, #4
+ 864              		.loc 1 142 7
+ 865 07f2 D7ED257A 		vldr.32	s15, [r7, #148]
+ 866 07f6 67EE277A 		vmul.f32	s15, s14, s15
+ 867 07fa C3ED007A 		vstr.32	s15, [r3]
+ 143:Algorithm/MahonyAHRS.c **** 	q[2] *= recipNorm;
+ 868              		.loc 1 143 3
+ 869 07fe 7B6A     		ldr	r3, [r7, #36]
+ 870 0800 0833     		adds	r3, r3, #8
+ 871 0802 93ED007A 		vldr.32	s14, [r3]
+ 872 0806 7B6A     		ldr	r3, [r7, #36]
+ 873 0808 0833     		adds	r3, r3, #8
+ 874              		.loc 1 143 7
+ 875 080a D7ED257A 		vldr.32	s15, [r7, #148]
+ 876 080e 67EE277A 		vmul.f32	s15, s14, s15
+ 877 0812 C3ED007A 		vstr.32	s15, [r3]
+ 144:Algorithm/MahonyAHRS.c **** 	q[3] *= recipNorm;
+ 878              		.loc 1 144 3
+ 879 0816 7B6A     		ldr	r3, [r7, #36]
+ 880 0818 0C33     		adds	r3, r3, #12
+ 881 081a 93ED007A 		vldr.32	s14, [r3]
+ 882 081e 7B6A     		ldr	r3, [r7, #36]
+ 883 0820 0C33     		adds	r3, r3, #12
+ 884              		.loc 1 144 7
+ 885 0822 D7ED257A 		vldr.32	s15, [r7, #148]
+ 886 0826 67EE277A 		vmul.f32	s15, s14, s15
+ 887 082a C3ED007A 		vstr.32	s15, [r3]
+ 888              	.L1:
+ 145:Algorithm/MahonyAHRS.c **** }
+ 889              		.loc 1 145 1
+ 890 082e 9837     		adds	r7, r7, #152
+ 891              	.LCFI3:
+ 892              		.cfi_def_cfa_offset 8
+ARM GAS  C:\Users\fffff\AppData\Local\Temp\cciJBK57.s 			page 19
+
+
+ 893 0830 BD46     		mov	sp, r7
+ 894              	.LCFI4:
+ 895              		.cfi_def_cfa_register 13
+ 896              		@ sp needed
+ 897 0832 80BD     		pop	{r7, pc}
+ 898              	.L12:
+ 899              		.align	2
+ 900              	.L11:
+ 901 0834 00000000 		.word	twoKi
+ 902 0838 6F12833A 		.word	981668463
+ 903 083c 00000000 		.word	integralFBx
+ 904 0840 00000000 		.word	integralFBy
+ 905 0844 00000000 		.word	integralFBz
+ 906 0848 00000000 		.word	twoKp
+ 907 084c 6F12033A 		.word	973279855
+ 908              		.cfi_endproc
+ 909              	.LFE0:
+ 911              		.section	.text.MahonyAHRSupdateIMU,"ax",%progbits
+ 912              		.align	1
+ 913              		.global	MahonyAHRSupdateIMU
+ 914              		.syntax unified
+ 915              		.thumb
+ 916              		.thumb_func
+ 918              	MahonyAHRSupdateIMU:
+ 919              	.LFB1:
+ 146:Algorithm/MahonyAHRS.c **** 
+ 147:Algorithm/MahonyAHRS.c **** //-------------------------------------------------------------------------------------------------
+ 148:Algorithm/MahonyAHRS.c **** // IMU algorithm update
+ 149:Algorithm/MahonyAHRS.c **** 
+ 150:Algorithm/MahonyAHRS.c **** void MahonyAHRSupdateIMU(float q[4], float gx, float gy, float gz, float ax, float ay, float az) {
+ 920              		.loc 1 150 98
+ 921              		.cfi_startproc
+ 922              		@ args = 0, pretend = 0, frame = 72
+ 923              		@ frame_needed = 1, uses_anonymous_args = 0
+ 924 0000 80B5     		push	{r7, lr}
+ 925              	.LCFI5:
+ 926              		.cfi_def_cfa_offset 8
+ 927              		.cfi_offset 7, -8
+ 928              		.cfi_offset 14, -4
+ 929 0002 92B0     		sub	sp, sp, #72
+ 930              	.LCFI6:
+ 931              		.cfi_def_cfa_offset 80
+ 932 0004 00AF     		add	r7, sp, #0
+ 933              	.LCFI7:
+ 934              		.cfi_def_cfa_register 7
+ 935 0006 F861     		str	r0, [r7, #28]
+ 936 0008 87ED060A 		vstr.32	s0, [r7, #24]
+ 937 000c C7ED050A 		vstr.32	s1, [r7, #20]
+ 938 0010 87ED041A 		vstr.32	s2, [r7, #16]
+ 939 0014 C7ED031A 		vstr.32	s3, [r7, #12]
+ 940 0018 87ED022A 		vstr.32	s4, [r7, #8]
+ 941 001c C7ED012A 		vstr.32	s5, [r7, #4]
+ 151:Algorithm/MahonyAHRS.c **** 	float recipNorm;
+ 152:Algorithm/MahonyAHRS.c **** 	float halfvx, halfvy, halfvz;
+ 153:Algorithm/MahonyAHRS.c **** 	float halfex, halfey, halfez;
+ 154:Algorithm/MahonyAHRS.c **** 	float qa, qb, qc;
+ 155:Algorithm/MahonyAHRS.c **** 
+ARM GAS  C:\Users\fffff\AppData\Local\Temp\cciJBK57.s 			page 20
+
+
+ 156:Algorithm/MahonyAHRS.c **** 	// Compute feedback only if accelerometer measurement valid (avoids NaN in accelerometer normalisa
+ 157:Algorithm/MahonyAHRS.c **** 	if(!((ax == 0.0f) && (ay == 0.0f) && (az == 0.0f))) {
+ 942              		.loc 1 157 4
+ 943 0020 D7ED037A 		vldr.32	s15, [r7, #12]
+ 944 0024 F5EE407A 		vcmp.f32	s15, #0
+ 945 0028 F1EE10FA 		vmrs	APSR_nzcv, FPSCR
+ 946 002c 0ED1     		bne	.L14
+ 947              		.loc 1 157 20 discriminator 1
+ 948 002e D7ED027A 		vldr.32	s15, [r7, #8]
+ 949 0032 F5EE407A 		vcmp.f32	s15, #0
+ 950 0036 F1EE10FA 		vmrs	APSR_nzcv, FPSCR
+ 951 003a 07D1     		bne	.L14
+ 952              		.loc 1 157 5 discriminator 2
+ 953 003c D7ED017A 		vldr.32	s15, [r7, #4]
+ 954 0040 F5EE407A 		vcmp.f32	s15, #0
+ 955 0044 F1EE10FA 		vmrs	APSR_nzcv, FPSCR
+ 956 0048 00F03681 		beq	.L15
+ 957              	.L14:
+ 158:Algorithm/MahonyAHRS.c **** 
+ 159:Algorithm/MahonyAHRS.c **** 		// Normalise accelerometer measurement
+ 160:Algorithm/MahonyAHRS.c **** 		recipNorm = invSqrt(ax * ax + ay * ay + az * az);
+ 958              		.loc 1 160 26
+ 959 004c D7ED037A 		vldr.32	s15, [r7, #12]
+ 960 0050 27EEA77A 		vmul.f32	s14, s15, s15
+ 961              		.loc 1 160 36
+ 962 0054 D7ED027A 		vldr.32	s15, [r7, #8]
+ 963 0058 67EEA77A 		vmul.f32	s15, s15, s15
+ 964              		.loc 1 160 31
+ 965 005c 37EE277A 		vadd.f32	s14, s14, s15
+ 966              		.loc 1 160 46
+ 967 0060 D7ED017A 		vldr.32	s15, [r7, #4]
+ 968 0064 67EEA77A 		vmul.f32	s15, s15, s15
+ 969              		.loc 1 160 15
+ 970 0068 77EE277A 		vadd.f32	s15, s14, s15
+ 971 006c B0EE670A 		vmov.f32	s0, s15
+ 972 0070 FFF7FEFF 		bl	invSqrt
+ 973 0074 87ED110A 		vstr.32	s0, [r7, #68]
+ 161:Algorithm/MahonyAHRS.c **** 		ax *= recipNorm;
+ 974              		.loc 1 161 6
+ 975 0078 97ED037A 		vldr.32	s14, [r7, #12]
+ 976 007c D7ED117A 		vldr.32	s15, [r7, #68]
+ 977 0080 67EE277A 		vmul.f32	s15, s14, s15
+ 978 0084 C7ED037A 		vstr.32	s15, [r7, #12]
+ 162:Algorithm/MahonyAHRS.c **** 		ay *= recipNorm;
+ 979              		.loc 1 162 6
+ 980 0088 97ED027A 		vldr.32	s14, [r7, #8]
+ 981 008c D7ED117A 		vldr.32	s15, [r7, #68]
+ 982 0090 67EE277A 		vmul.f32	s15, s14, s15
+ 983 0094 C7ED027A 		vstr.32	s15, [r7, #8]
+ 163:Algorithm/MahonyAHRS.c **** 		az *= recipNorm;        
+ 984              		.loc 1 163 6
+ 985 0098 97ED017A 		vldr.32	s14, [r7, #4]
+ 986 009c D7ED117A 		vldr.32	s15, [r7, #68]
+ 987 00a0 67EE277A 		vmul.f32	s15, s14, s15
+ 988 00a4 C7ED017A 		vstr.32	s15, [r7, #4]
+ 164:Algorithm/MahonyAHRS.c **** 
+ 165:Algorithm/MahonyAHRS.c **** 		// Estimated direction of gravity and vector perpendicular to magnetic flux
+ARM GAS  C:\Users\fffff\AppData\Local\Temp\cciJBK57.s 			page 21
+
+
+ 166:Algorithm/MahonyAHRS.c **** 		halfvx = q[1] * q[3] - q[0] * q[2];
+ 989              		.loc 1 166 13
+ 990 00a8 FB69     		ldr	r3, [r7, #28]
+ 991 00aa 0433     		adds	r3, r3, #4
+ 992 00ac 93ED007A 		vldr.32	s14, [r3]
+ 993              		.loc 1 166 20
+ 994 00b0 FB69     		ldr	r3, [r7, #28]
+ 995 00b2 0C33     		adds	r3, r3, #12
+ 996 00b4 D3ED007A 		vldr.32	s15, [r3]
+ 997              		.loc 1 166 17
+ 998 00b8 27EE277A 		vmul.f32	s14, s14, s15
+ 999              		.loc 1 166 27
+ 1000 00bc FB69     		ldr	r3, [r7, #28]
+ 1001 00be D3ED006A 		vldr.32	s13, [r3]
+ 1002              		.loc 1 166 34
+ 1003 00c2 FB69     		ldr	r3, [r7, #28]
+ 1004 00c4 0833     		adds	r3, r3, #8
+ 1005 00c6 D3ED007A 		vldr.32	s15, [r3]
+ 1006              		.loc 1 166 31
+ 1007 00ca 66EEA77A 		vmul.f32	s15, s13, s15
+ 1008              		.loc 1 166 10
+ 1009 00ce 77EE677A 		vsub.f32	s15, s14, s15
+ 1010 00d2 C7ED107A 		vstr.32	s15, [r7, #64]
+ 167:Algorithm/MahonyAHRS.c **** 		halfvy = q[0] * q[1] + q[2] * q[3];
+ 1011              		.loc 1 167 13
+ 1012 00d6 FB69     		ldr	r3, [r7, #28]
+ 1013 00d8 93ED007A 		vldr.32	s14, [r3]
+ 1014              		.loc 1 167 20
+ 1015 00dc FB69     		ldr	r3, [r7, #28]
+ 1016 00de 0433     		adds	r3, r3, #4
+ 1017 00e0 D3ED007A 		vldr.32	s15, [r3]
+ 1018              		.loc 1 167 17
+ 1019 00e4 27EE277A 		vmul.f32	s14, s14, s15
+ 1020              		.loc 1 167 27
+ 1021 00e8 FB69     		ldr	r3, [r7, #28]
+ 1022 00ea 0833     		adds	r3, r3, #8
+ 1023 00ec D3ED006A 		vldr.32	s13, [r3]
+ 1024              		.loc 1 167 34
+ 1025 00f0 FB69     		ldr	r3, [r7, #28]
+ 1026 00f2 0C33     		adds	r3, r3, #12
+ 1027 00f4 D3ED007A 		vldr.32	s15, [r3]
+ 1028              		.loc 1 167 31
+ 1029 00f8 66EEA77A 		vmul.f32	s15, s13, s15
+ 1030              		.loc 1 167 10
+ 1031 00fc 77EE277A 		vadd.f32	s15, s14, s15
+ 1032 0100 C7ED0F7A 		vstr.32	s15, [r7, #60]
+ 168:Algorithm/MahonyAHRS.c **** 		halfvz = q[0] * q[0] - 0.5f + q[3] * q[3];
+ 1033              		.loc 1 168 13
+ 1034 0104 FB69     		ldr	r3, [r7, #28]
+ 1035 0106 93ED007A 		vldr.32	s14, [r3]
+ 1036              		.loc 1 168 20
+ 1037 010a FB69     		ldr	r3, [r7, #28]
+ 1038 010c D3ED007A 		vldr.32	s15, [r3]
+ 1039              		.loc 1 168 17
+ 1040 0110 67EE277A 		vmul.f32	s15, s14, s15
+ 1041              		.loc 1 168 24
+ 1042 0114 B6EE007A 		vmov.f32	s14, #5.0e-1
+ARM GAS  C:\Users\fffff\AppData\Local\Temp\cciJBK57.s 			page 22
+
+
+ 1043 0118 37EEC77A 		vsub.f32	s14, s15, s14
+ 1044              		.loc 1 168 34
+ 1045 011c FB69     		ldr	r3, [r7, #28]
+ 1046 011e 0C33     		adds	r3, r3, #12
+ 1047 0120 D3ED006A 		vldr.32	s13, [r3]
+ 1048              		.loc 1 168 41
+ 1049 0124 FB69     		ldr	r3, [r7, #28]
+ 1050 0126 0C33     		adds	r3, r3, #12
+ 1051 0128 D3ED007A 		vldr.32	s15, [r3]
+ 1052              		.loc 1 168 38
+ 1053 012c 66EEA77A 		vmul.f32	s15, s13, s15
+ 1054              		.loc 1 168 10
+ 1055 0130 77EE277A 		vadd.f32	s15, s14, s15
+ 1056 0134 C7ED0E7A 		vstr.32	s15, [r7, #56]
+ 169:Algorithm/MahonyAHRS.c **** 	
+ 170:Algorithm/MahonyAHRS.c **** 		// Error is sum of cross product between estimated and measured direction of gravity
+ 171:Algorithm/MahonyAHRS.c **** 		halfex = (ay * halfvz - az * halfvy);
+ 1057              		.loc 1 171 16
+ 1058 0138 97ED027A 		vldr.32	s14, [r7, #8]
+ 1059 013c D7ED0E7A 		vldr.32	s15, [r7, #56]
+ 1060 0140 27EE277A 		vmul.f32	s14, s14, s15
+ 1061              		.loc 1 171 30
+ 1062 0144 D7ED016A 		vldr.32	s13, [r7, #4]
+ 1063 0148 D7ED0F7A 		vldr.32	s15, [r7, #60]
+ 1064 014c 66EEA77A 		vmul.f32	s15, s13, s15
+ 1065              		.loc 1 171 10
+ 1066 0150 77EE677A 		vsub.f32	s15, s14, s15
+ 1067 0154 C7ED0D7A 		vstr.32	s15, [r7, #52]
+ 172:Algorithm/MahonyAHRS.c **** 		halfey = (az * halfvx - ax * halfvz);
+ 1068              		.loc 1 172 16
+ 1069 0158 97ED017A 		vldr.32	s14, [r7, #4]
+ 1070 015c D7ED107A 		vldr.32	s15, [r7, #64]
+ 1071 0160 27EE277A 		vmul.f32	s14, s14, s15
+ 1072              		.loc 1 172 30
+ 1073 0164 D7ED036A 		vldr.32	s13, [r7, #12]
+ 1074 0168 D7ED0E7A 		vldr.32	s15, [r7, #56]
+ 1075 016c 66EEA77A 		vmul.f32	s15, s13, s15
+ 1076              		.loc 1 172 10
+ 1077 0170 77EE677A 		vsub.f32	s15, s14, s15
+ 1078 0174 C7ED0C7A 		vstr.32	s15, [r7, #48]
+ 173:Algorithm/MahonyAHRS.c **** 		halfez = (ax * halfvy - ay * halfvx);
+ 1079              		.loc 1 173 16
+ 1080 0178 97ED037A 		vldr.32	s14, [r7, #12]
+ 1081 017c D7ED0F7A 		vldr.32	s15, [r7, #60]
+ 1082 0180 27EE277A 		vmul.f32	s14, s14, s15
+ 1083              		.loc 1 173 30
+ 1084 0184 D7ED026A 		vldr.32	s13, [r7, #8]
+ 1085 0188 D7ED107A 		vldr.32	s15, [r7, #64]
+ 1086 018c 66EEA77A 		vmul.f32	s15, s13, s15
+ 1087              		.loc 1 173 10
+ 1088 0190 77EE677A 		vsub.f32	s15, s14, s15
+ 1089 0194 C7ED0B7A 		vstr.32	s15, [r7, #44]
+ 174:Algorithm/MahonyAHRS.c **** 
+ 175:Algorithm/MahonyAHRS.c **** 		// Compute and apply integral feedback if enabled
+ 176:Algorithm/MahonyAHRS.c **** 		if(twoKi > 0.0f) {
+ 1090              		.loc 1 176 12
+ 1091 0198 CD4B     		ldr	r3, .L21
+ARM GAS  C:\Users\fffff\AppData\Local\Temp\cciJBK57.s 			page 23
+
+
+ 1092 019a D3ED007A 		vldr.32	s15, [r3]
+ 1093              		.loc 1 176 5
+ 1094 019e F5EEC07A 		vcmpe.f32	s15, #0
+ 1095 01a2 F1EE10FA 		vmrs	APSR_nzcv, FPSCR
+ 1096 01a6 54DD     		ble	.L20
+ 177:Algorithm/MahonyAHRS.c **** 			integralFBx += twoKi * halfex * (1.0f / sampleFreq);	// integral error scaled by Ki
+ 1097              		.loc 1 177 25
+ 1098 01a8 C94B     		ldr	r3, .L21
+ 1099 01aa 93ED007A 		vldr.32	s14, [r3]
+ 1100 01ae D7ED0D7A 		vldr.32	s15, [r7, #52]
+ 1101 01b2 67EE277A 		vmul.f32	s15, s14, s15
+ 1102              		.loc 1 177 34
+ 1103 01b6 9FEDC77A 		vldr.32	s14, .L21+4
+ 1104 01ba 27EE877A 		vmul.f32	s14, s15, s14
+ 1105              		.loc 1 177 16
+ 1106 01be C64B     		ldr	r3, .L21+8
+ 1107 01c0 D3ED007A 		vldr.32	s15, [r3]
+ 1108 01c4 77EE277A 		vadd.f32	s15, s14, s15
+ 1109 01c8 C34B     		ldr	r3, .L21+8
+ 1110 01ca C3ED007A 		vstr.32	s15, [r3]
+ 178:Algorithm/MahonyAHRS.c **** 			integralFBy += twoKi * halfey * (1.0f / sampleFreq);
+ 1111              		.loc 1 178 25
+ 1112 01ce C04B     		ldr	r3, .L21
+ 1113 01d0 93ED007A 		vldr.32	s14, [r3]
+ 1114 01d4 D7ED0C7A 		vldr.32	s15, [r7, #48]
+ 1115 01d8 67EE277A 		vmul.f32	s15, s14, s15
+ 1116              		.loc 1 178 34
+ 1117 01dc 9FEDBD7A 		vldr.32	s14, .L21+4
+ 1118 01e0 27EE877A 		vmul.f32	s14, s15, s14
+ 1119              		.loc 1 178 16
+ 1120 01e4 BD4B     		ldr	r3, .L21+12
+ 1121 01e6 D3ED007A 		vldr.32	s15, [r3]
+ 1122 01ea 77EE277A 		vadd.f32	s15, s14, s15
+ 1123 01ee BB4B     		ldr	r3, .L21+12
+ 1124 01f0 C3ED007A 		vstr.32	s15, [r3]
+ 179:Algorithm/MahonyAHRS.c **** 			integralFBz += twoKi * halfez * (1.0f / sampleFreq);
+ 1125              		.loc 1 179 25
+ 1126 01f4 B64B     		ldr	r3, .L21
+ 1127 01f6 93ED007A 		vldr.32	s14, [r3]
+ 1128 01fa D7ED0B7A 		vldr.32	s15, [r7, #44]
+ 1129 01fe 67EE277A 		vmul.f32	s15, s14, s15
+ 1130              		.loc 1 179 34
+ 1131 0202 9FEDB47A 		vldr.32	s14, .L21+4
+ 1132 0206 27EE877A 		vmul.f32	s14, s15, s14
+ 1133              		.loc 1 179 16
+ 1134 020a B54B     		ldr	r3, .L21+16
+ 1135 020c D3ED007A 		vldr.32	s15, [r3]
+ 1136 0210 77EE277A 		vadd.f32	s15, s14, s15
+ 1137 0214 B24B     		ldr	r3, .L21+16
+ 1138 0216 C3ED007A 		vstr.32	s15, [r3]
+ 180:Algorithm/MahonyAHRS.c **** 			gx += integralFBx;	// apply integral feedback
+ 1139              		.loc 1 180 4
+ 1140 021a AF4B     		ldr	r3, .L21+8
+ 1141 021c D3ED007A 		vldr.32	s15, [r3]
+ 1142              		.loc 1 180 7
+ 1143 0220 97ED067A 		vldr.32	s14, [r7, #24]
+ 1144 0224 77EE277A 		vadd.f32	s15, s14, s15
+ARM GAS  C:\Users\fffff\AppData\Local\Temp\cciJBK57.s 			page 24
+
+
+ 1145 0228 C7ED067A 		vstr.32	s15, [r7, #24]
+ 181:Algorithm/MahonyAHRS.c **** 			gy += integralFBy;
+ 1146              		.loc 1 181 4
+ 1147 022c AB4B     		ldr	r3, .L21+12
+ 1148 022e D3ED007A 		vldr.32	s15, [r3]
+ 1149              		.loc 1 181 7
+ 1150 0232 97ED057A 		vldr.32	s14, [r7, #20]
+ 1151 0236 77EE277A 		vadd.f32	s15, s14, s15
+ 1152 023a C7ED057A 		vstr.32	s15, [r7, #20]
+ 182:Algorithm/MahonyAHRS.c **** 			gz += integralFBz;
+ 1153              		.loc 1 182 4
+ 1154 023e A84B     		ldr	r3, .L21+16
+ 1155 0240 D3ED007A 		vldr.32	s15, [r3]
+ 1156              		.loc 1 182 7
+ 1157 0244 97ED047A 		vldr.32	s14, [r7, #16]
+ 1158 0248 77EE277A 		vadd.f32	s15, s14, s15
+ 1159 024c C7ED047A 		vstr.32	s15, [r7, #16]
+ 1160 0250 0BE0     		b	.L18
+ 1161              	.L20:
+ 183:Algorithm/MahonyAHRS.c **** 		}
+ 184:Algorithm/MahonyAHRS.c **** 		else {
+ 185:Algorithm/MahonyAHRS.c **** 			integralFBx = 0.0f;	// prevent integral windup
+ 1162              		.loc 1 185 16
+ 1163 0252 A14B     		ldr	r3, .L21+8
+ 1164 0254 4FF00002 		mov	r2, #0
+ 1165 0258 1A60     		str	r2, [r3]	@ float
+ 186:Algorithm/MahonyAHRS.c **** 			integralFBy = 0.0f;
+ 1166              		.loc 1 186 16
+ 1167 025a A04B     		ldr	r3, .L21+12
+ 1168 025c 4FF00002 		mov	r2, #0
+ 1169 0260 1A60     		str	r2, [r3]	@ float
+ 187:Algorithm/MahonyAHRS.c **** 			integralFBz = 0.0f;
+ 1170              		.loc 1 187 16
+ 1171 0262 9F4B     		ldr	r3, .L21+16
+ 1172 0264 4FF00002 		mov	r2, #0
+ 1173 0268 1A60     		str	r2, [r3]	@ float
+ 1174              	.L18:
+ 188:Algorithm/MahonyAHRS.c **** 		}
+ 189:Algorithm/MahonyAHRS.c **** 
+ 190:Algorithm/MahonyAHRS.c **** 		// Apply proportional feedback
+ 191:Algorithm/MahonyAHRS.c **** 		gx += twoKp * halfex;
+ 1175              		.loc 1 191 15
+ 1176 026a 9E4B     		ldr	r3, .L21+20
+ 1177 026c 93ED007A 		vldr.32	s14, [r3]
+ 1178 0270 D7ED0D7A 		vldr.32	s15, [r7, #52]
+ 1179 0274 67EE277A 		vmul.f32	s15, s14, s15
+ 1180              		.loc 1 191 6
+ 1181 0278 97ED067A 		vldr.32	s14, [r7, #24]
+ 1182 027c 77EE277A 		vadd.f32	s15, s14, s15
+ 1183 0280 C7ED067A 		vstr.32	s15, [r7, #24]
+ 192:Algorithm/MahonyAHRS.c **** 		gy += twoKp * halfey;
+ 1184              		.loc 1 192 15
+ 1185 0284 974B     		ldr	r3, .L21+20
+ 1186 0286 93ED007A 		vldr.32	s14, [r3]
+ 1187 028a D7ED0C7A 		vldr.32	s15, [r7, #48]
+ 1188 028e 67EE277A 		vmul.f32	s15, s14, s15
+ 1189              		.loc 1 192 6
+ARM GAS  C:\Users\fffff\AppData\Local\Temp\cciJBK57.s 			page 25
+
+
+ 1190 0292 97ED057A 		vldr.32	s14, [r7, #20]
+ 1191 0296 77EE277A 		vadd.f32	s15, s14, s15
+ 1192 029a C7ED057A 		vstr.32	s15, [r7, #20]
+ 193:Algorithm/MahonyAHRS.c **** 		gz += twoKp * halfez;
+ 1193              		.loc 1 193 15
+ 1194 029e 914B     		ldr	r3, .L21+20
+ 1195 02a0 93ED007A 		vldr.32	s14, [r3]
+ 1196 02a4 D7ED0B7A 		vldr.32	s15, [r7, #44]
+ 1197 02a8 67EE277A 		vmul.f32	s15, s14, s15
+ 1198              		.loc 1 193 6
+ 1199 02ac 97ED047A 		vldr.32	s14, [r7, #16]
+ 1200 02b0 77EE277A 		vadd.f32	s15, s14, s15
+ 1201 02b4 C7ED047A 		vstr.32	s15, [r7, #16]
+ 1202              	.L15:
+ 194:Algorithm/MahonyAHRS.c **** 	}
+ 195:Algorithm/MahonyAHRS.c **** 	
+ 196:Algorithm/MahonyAHRS.c **** 	// Integrate rate of change of quaternion
+ 197:Algorithm/MahonyAHRS.c **** 	gx *= (0.5f * (1.0f / sampleFreq));		// pre-multiply common factors
+ 1203              		.loc 1 197 5
+ 1204 02b8 D7ED067A 		vldr.32	s15, [r7, #24]
+ 1205 02bc 9FED8A7A 		vldr.32	s14, .L21+24
+ 1206 02c0 67EE877A 		vmul.f32	s15, s15, s14
+ 1207 02c4 C7ED067A 		vstr.32	s15, [r7, #24]
+ 198:Algorithm/MahonyAHRS.c **** 	gy *= (0.5f * (1.0f / sampleFreq));
+ 1208              		.loc 1 198 5
+ 1209 02c8 D7ED057A 		vldr.32	s15, [r7, #20]
+ 1210 02cc 9FED867A 		vldr.32	s14, .L21+24
+ 1211 02d0 67EE877A 		vmul.f32	s15, s15, s14
+ 1212 02d4 C7ED057A 		vstr.32	s15, [r7, #20]
+ 199:Algorithm/MahonyAHRS.c **** 	gz *= (0.5f * (1.0f / sampleFreq));
+ 1213              		.loc 1 199 5
+ 1214 02d8 D7ED047A 		vldr.32	s15, [r7, #16]
+ 1215 02dc 9FED827A 		vldr.32	s14, .L21+24
+ 1216 02e0 67EE877A 		vmul.f32	s15, s15, s14
+ 1217 02e4 C7ED047A 		vstr.32	s15, [r7, #16]
+ 200:Algorithm/MahonyAHRS.c **** 	qa = q[0];
+ 1218              		.loc 1 200 5
+ 1219 02e8 FB69     		ldr	r3, [r7, #28]
+ 1220 02ea 1B68     		ldr	r3, [r3]	@ float
+ 1221 02ec BB62     		str	r3, [r7, #40]	@ float
+ 201:Algorithm/MahonyAHRS.c **** 	qb = q[1];
+ 1222              		.loc 1 201 5
+ 1223 02ee FB69     		ldr	r3, [r7, #28]
+ 1224 02f0 5B68     		ldr	r3, [r3, #4]	@ float
+ 1225 02f2 7B62     		str	r3, [r7, #36]	@ float
+ 202:Algorithm/MahonyAHRS.c **** 	qc = q[2];
+ 1226              		.loc 1 202 5
+ 1227 02f4 FB69     		ldr	r3, [r7, #28]
+ 1228 02f6 9B68     		ldr	r3, [r3, #8]	@ float
+ 1229 02f8 3B62     		str	r3, [r7, #32]	@ float
+ 203:Algorithm/MahonyAHRS.c **** 	q[0] += (-qb * gx - qc * gy - q[3] * gz);
+ 1230              		.loc 1 203 3
+ 1231 02fa FB69     		ldr	r3, [r7, #28]
+ 1232 02fc 93ED007A 		vldr.32	s14, [r3]
+ 1233              		.loc 1 203 11
+ 1234 0300 D7ED097A 		vldr.32	s15, [r7, #36]
+ 1235 0304 F1EE676A 		vneg.f32	s13, s15
+ARM GAS  C:\Users\fffff\AppData\Local\Temp\cciJBK57.s 			page 26
+
+
+ 1236              		.loc 1 203 15
+ 1237 0308 D7ED067A 		vldr.32	s15, [r7, #24]
+ 1238 030c 66EEA76A 		vmul.f32	s13, s13, s15
+ 1239              		.loc 1 203 25
+ 1240 0310 97ED086A 		vldr.32	s12, [r7, #32]
+ 1241 0314 D7ED057A 		vldr.32	s15, [r7, #20]
+ 1242 0318 66EE277A 		vmul.f32	s15, s12, s15
+ 1243              		.loc 1 203 20
+ 1244 031c 76EEE76A 		vsub.f32	s13, s13, s15
+ 1245              		.loc 1 203 33
+ 1246 0320 FB69     		ldr	r3, [r7, #28]
+ 1247 0322 0C33     		adds	r3, r3, #12
+ 1248 0324 93ED006A 		vldr.32	s12, [r3]
+ 1249              		.loc 1 203 37
+ 1250 0328 D7ED047A 		vldr.32	s15, [r7, #16]
+ 1251 032c 66EE277A 		vmul.f32	s15, s12, s15
+ 1252              		.loc 1 203 30
+ 1253 0330 76EEE77A 		vsub.f32	s15, s13, s15
+ 1254              		.loc 1 203 7
+ 1255 0334 77EE277A 		vadd.f32	s15, s14, s15
+ 1256 0338 FB69     		ldr	r3, [r7, #28]
+ 1257 033a C3ED007A 		vstr.32	s15, [r3]
+ 204:Algorithm/MahonyAHRS.c **** 	q[1] += (qa * gx + qc * gz - q[3] * gy);
+ 1258              		.loc 1 204 3
+ 1259 033e FB69     		ldr	r3, [r7, #28]
+ 1260 0340 0433     		adds	r3, r3, #4
+ 1261 0342 93ED007A 		vldr.32	s14, [r3]
+ 1262              		.loc 1 204 14
+ 1263 0346 D7ED0A6A 		vldr.32	s13, [r7, #40]
+ 1264 034a D7ED067A 		vldr.32	s15, [r7, #24]
+ 1265 034e 66EEA76A 		vmul.f32	s13, s13, s15
+ 1266              		.loc 1 204 24
+ 1267 0352 97ED086A 		vldr.32	s12, [r7, #32]
+ 1268 0356 D7ED047A 		vldr.32	s15, [r7, #16]
+ 1269 035a 66EE277A 		vmul.f32	s15, s12, s15
+ 1270              		.loc 1 204 19
+ 1271 035e 76EEA76A 		vadd.f32	s13, s13, s15
+ 1272              		.loc 1 204 32
+ 1273 0362 FB69     		ldr	r3, [r7, #28]
+ 1274 0364 0C33     		adds	r3, r3, #12
+ 1275 0366 93ED006A 		vldr.32	s12, [r3]
+ 1276              		.loc 1 204 36
+ 1277 036a D7ED057A 		vldr.32	s15, [r7, #20]
+ 1278 036e 66EE277A 		vmul.f32	s15, s12, s15
+ 1279              		.loc 1 204 29
+ 1280 0372 76EEE77A 		vsub.f32	s15, s13, s15
+ 1281              		.loc 1 204 3
+ 1282 0376 FB69     		ldr	r3, [r7, #28]
+ 1283 0378 0433     		adds	r3, r3, #4
+ 1284              		.loc 1 204 7
+ 1285 037a 77EE277A 		vadd.f32	s15, s14, s15
+ 1286 037e C3ED007A 		vstr.32	s15, [r3]
+ 205:Algorithm/MahonyAHRS.c **** 	q[2] += (qa * gy - qb * gz + q[3] * gx);
+ 1287              		.loc 1 205 3
+ 1288 0382 FB69     		ldr	r3, [r7, #28]
+ 1289 0384 0833     		adds	r3, r3, #8
+ 1290 0386 93ED007A 		vldr.32	s14, [r3]
+ARM GAS  C:\Users\fffff\AppData\Local\Temp\cciJBK57.s 			page 27
+
+
+ 1291              		.loc 1 205 14
+ 1292 038a D7ED0A6A 		vldr.32	s13, [r7, #40]
+ 1293 038e D7ED057A 		vldr.32	s15, [r7, #20]
+ 1294 0392 66EEA76A 		vmul.f32	s13, s13, s15
+ 1295              		.loc 1 205 24
+ 1296 0396 97ED096A 		vldr.32	s12, [r7, #36]
+ 1297 039a D7ED047A 		vldr.32	s15, [r7, #16]
+ 1298 039e 66EE277A 		vmul.f32	s15, s12, s15
+ 1299              		.loc 1 205 19
+ 1300 03a2 76EEE76A 		vsub.f32	s13, s13, s15
+ 1301              		.loc 1 205 32
+ 1302 03a6 FB69     		ldr	r3, [r7, #28]
+ 1303 03a8 0C33     		adds	r3, r3, #12
+ 1304 03aa 93ED006A 		vldr.32	s12, [r3]
+ 1305              		.loc 1 205 36
+ 1306 03ae D7ED067A 		vldr.32	s15, [r7, #24]
+ 1307 03b2 66EE277A 		vmul.f32	s15, s12, s15
+ 1308              		.loc 1 205 29
+ 1309 03b6 76EEA77A 		vadd.f32	s15, s13, s15
+ 1310              		.loc 1 205 3
+ 1311 03ba FB69     		ldr	r3, [r7, #28]
+ 1312 03bc 0833     		adds	r3, r3, #8
+ 1313              		.loc 1 205 7
+ 1314 03be 77EE277A 		vadd.f32	s15, s14, s15
+ 1315 03c2 C3ED007A 		vstr.32	s15, [r3]
+ 206:Algorithm/MahonyAHRS.c **** 	q[3] += (qa * gz + qb * gy - qc * gx); 
+ 1316              		.loc 1 206 3
+ 1317 03c6 FB69     		ldr	r3, [r7, #28]
+ 1318 03c8 0C33     		adds	r3, r3, #12
+ 1319 03ca 93ED007A 		vldr.32	s14, [r3]
+ 1320              		.loc 1 206 14
+ 1321 03ce D7ED0A6A 		vldr.32	s13, [r7, #40]
+ 1322 03d2 D7ED047A 		vldr.32	s15, [r7, #16]
+ 1323 03d6 66EEA76A 		vmul.f32	s13, s13, s15
+ 1324              		.loc 1 206 24
+ 1325 03da 97ED096A 		vldr.32	s12, [r7, #36]
+ 1326 03de D7ED057A 		vldr.32	s15, [r7, #20]
+ 1327 03e2 66EE277A 		vmul.f32	s15, s12, s15
+ 1328              		.loc 1 206 19
+ 1329 03e6 76EEA76A 		vadd.f32	s13, s13, s15
+ 1330              		.loc 1 206 34
+ 1331 03ea 97ED086A 		vldr.32	s12, [r7, #32]
+ 1332 03ee D7ED067A 		vldr.32	s15, [r7, #24]
+ 1333 03f2 66EE277A 		vmul.f32	s15, s12, s15
+ 1334              		.loc 1 206 29
+ 1335 03f6 76EEE77A 		vsub.f32	s15, s13, s15
+ 1336              		.loc 1 206 3
+ 1337 03fa FB69     		ldr	r3, [r7, #28]
+ 1338 03fc 0C33     		adds	r3, r3, #12
+ 1339              		.loc 1 206 7
+ 1340 03fe 77EE277A 		vadd.f32	s15, s14, s15
+ 1341 0402 C3ED007A 		vstr.32	s15, [r3]
+ 207:Algorithm/MahonyAHRS.c **** 	
+ 208:Algorithm/MahonyAHRS.c **** 	// Normalise quaternion
+ 209:Algorithm/MahonyAHRS.c **** 	recipNorm = invSqrt(q[0] * q[0] + q[1] * q[1] + q[2] * q[2] + q[3] * q[3]);
+ 1342              		.loc 1 209 23
+ 1343 0406 FB69     		ldr	r3, [r7, #28]
+ARM GAS  C:\Users\fffff\AppData\Local\Temp\cciJBK57.s 			page 28
+
+
+ 1344 0408 93ED007A 		vldr.32	s14, [r3]
+ 1345              		.loc 1 209 30
+ 1346 040c FB69     		ldr	r3, [r7, #28]
+ 1347 040e D3ED007A 		vldr.32	s15, [r3]
+ 1348              		.loc 1 209 27
+ 1349 0412 27EE277A 		vmul.f32	s14, s14, s15
+ 1350              		.loc 1 209 37
+ 1351 0416 FB69     		ldr	r3, [r7, #28]
+ 1352 0418 0433     		adds	r3, r3, #4
+ 1353 041a D3ED006A 		vldr.32	s13, [r3]
+ 1354              		.loc 1 209 44
+ 1355 041e FB69     		ldr	r3, [r7, #28]
+ 1356 0420 0433     		adds	r3, r3, #4
+ 1357 0422 D3ED007A 		vldr.32	s15, [r3]
+ 1358              		.loc 1 209 41
+ 1359 0426 66EEA77A 		vmul.f32	s15, s13, s15
+ 1360              		.loc 1 209 34
+ 1361 042a 37EE277A 		vadd.f32	s14, s14, s15
+ 1362              		.loc 1 209 51
+ 1363 042e FB69     		ldr	r3, [r7, #28]
+ 1364 0430 0833     		adds	r3, r3, #8
+ 1365 0432 D3ED006A 		vldr.32	s13, [r3]
+ 1366              		.loc 1 209 58
+ 1367 0436 FB69     		ldr	r3, [r7, #28]
+ 1368 0438 0833     		adds	r3, r3, #8
+ 1369 043a D3ED007A 		vldr.32	s15, [r3]
+ 1370              		.loc 1 209 55
+ 1371 043e 66EEA77A 		vmul.f32	s15, s13, s15
+ 1372              		.loc 1 209 48
+ 1373 0442 37EE277A 		vadd.f32	s14, s14, s15
+ 1374              		.loc 1 209 65
+ 1375 0446 FB69     		ldr	r3, [r7, #28]
+ 1376 0448 0C33     		adds	r3, r3, #12
+ 1377 044a D3ED006A 		vldr.32	s13, [r3]
+ 1378              		.loc 1 209 72
+ 1379 044e FB69     		ldr	r3, [r7, #28]
+ 1380 0450 0C33     		adds	r3, r3, #12
+ 1381 0452 D3ED007A 		vldr.32	s15, [r3]
+ 1382              		.loc 1 209 69
+ 1383 0456 66EEA77A 		vmul.f32	s15, s13, s15
+ 1384              		.loc 1 209 14
+ 1385 045a 77EE277A 		vadd.f32	s15, s14, s15
+ 1386 045e B0EE670A 		vmov.f32	s0, s15
+ 1387 0462 FFF7FEFF 		bl	invSqrt
+ 1388 0466 87ED110A 		vstr.32	s0, [r7, #68]
+ 210:Algorithm/MahonyAHRS.c **** 	q[0] *= recipNorm;
+ 1389              		.loc 1 210 3
+ 1390 046a FB69     		ldr	r3, [r7, #28]
+ 1391 046c 93ED007A 		vldr.32	s14, [r3]
+ 1392              		.loc 1 210 7
+ 1393 0470 D7ED117A 		vldr.32	s15, [r7, #68]
+ 1394 0474 67EE277A 		vmul.f32	s15, s14, s15
+ 1395 0478 FB69     		ldr	r3, [r7, #28]
+ 1396 047a C3ED007A 		vstr.32	s15, [r3]
+ 211:Algorithm/MahonyAHRS.c **** 	q[1] *= recipNorm;
+ 1397              		.loc 1 211 3
+ 1398 047e FB69     		ldr	r3, [r7, #28]
+ARM GAS  C:\Users\fffff\AppData\Local\Temp\cciJBK57.s 			page 29
+
+
+ 1399 0480 0433     		adds	r3, r3, #4
+ 1400 0482 93ED007A 		vldr.32	s14, [r3]
+ 1401 0486 FB69     		ldr	r3, [r7, #28]
+ 1402 0488 0433     		adds	r3, r3, #4
+ 1403              		.loc 1 211 7
+ 1404 048a D7ED117A 		vldr.32	s15, [r7, #68]
+ 1405 048e 67EE277A 		vmul.f32	s15, s14, s15
+ 1406 0492 C3ED007A 		vstr.32	s15, [r3]
+ 212:Algorithm/MahonyAHRS.c **** 	q[2] *= recipNorm;
+ 1407              		.loc 1 212 3
+ 1408 0496 FB69     		ldr	r3, [r7, #28]
+ 1409 0498 0833     		adds	r3, r3, #8
+ 1410 049a 93ED007A 		vldr.32	s14, [r3]
+ 1411 049e FB69     		ldr	r3, [r7, #28]
+ 1412 04a0 0833     		adds	r3, r3, #8
+ 1413              		.loc 1 212 7
+ 1414 04a2 D7ED117A 		vldr.32	s15, [r7, #68]
+ 1415 04a6 67EE277A 		vmul.f32	s15, s14, s15
+ 1416 04aa C3ED007A 		vstr.32	s15, [r3]
+ 213:Algorithm/MahonyAHRS.c **** 	q[3] *= recipNorm;
+ 1417              		.loc 1 213 3
+ 1418 04ae FB69     		ldr	r3, [r7, #28]
+ 1419 04b0 0C33     		adds	r3, r3, #12
+ 1420 04b2 93ED007A 		vldr.32	s14, [r3]
+ 1421 04b6 FB69     		ldr	r3, [r7, #28]
+ 1422 04b8 0C33     		adds	r3, r3, #12
+ 1423              		.loc 1 213 7
+ 1424 04ba D7ED117A 		vldr.32	s15, [r7, #68]
+ 1425 04be 67EE277A 		vmul.f32	s15, s14, s15
+ 1426 04c2 C3ED007A 		vstr.32	s15, [r3]
+ 214:Algorithm/MahonyAHRS.c **** }
+ 1427              		.loc 1 214 1
+ 1428 04c6 00BF     		nop
+ 1429 04c8 4837     		adds	r7, r7, #72
+ 1430              	.LCFI8:
+ 1431              		.cfi_def_cfa_offset 8
+ 1432 04ca BD46     		mov	sp, r7
+ 1433              	.LCFI9:
+ 1434              		.cfi_def_cfa_register 13
+ 1435              		@ sp needed
+ 1436 04cc 80BD     		pop	{r7, pc}
+ 1437              	.L22:
+ 1438 04ce 00BF     		.align	2
+ 1439              	.L21:
+ 1440 04d0 00000000 		.word	twoKi
+ 1441 04d4 6F12833A 		.word	981668463
+ 1442 04d8 00000000 		.word	integralFBx
+ 1443 04dc 00000000 		.word	integralFBy
+ 1444 04e0 00000000 		.word	integralFBz
+ 1445 04e4 00000000 		.word	twoKp
+ 1446 04e8 6F12033A 		.word	973279855
+ 1447              		.cfi_endproc
+ 1448              	.LFE1:
+ 1450              		.section	.text.invSqrt,"ax",%progbits
+ 1451              		.align	1
+ 1452              		.global	invSqrt
+ 1453              		.syntax unified
+ARM GAS  C:\Users\fffff\AppData\Local\Temp\cciJBK57.s 			page 30
+
+
+ 1454              		.thumb
+ 1455              		.thumb_func
+ 1457              	invSqrt:
+ 1458              	.LFB2:
+ 215:Algorithm/MahonyAHRS.c **** 
+ 216:Algorithm/MahonyAHRS.c **** //-------------------------------------------------------------------------------------------------
+ 217:Algorithm/MahonyAHRS.c **** // Fast inverse square-root
+ 218:Algorithm/MahonyAHRS.c **** // See: http://en.wikipedia.org/wiki/Fast_inverse_square_root
+ 219:Algorithm/MahonyAHRS.c **** 
+ 220:Algorithm/MahonyAHRS.c **** float invSqrt(float x) {
+ 1459              		.loc 1 220 24
+ 1460              		.cfi_startproc
+ 1461              		@ args = 0, pretend = 0, frame = 24
+ 1462              		@ frame_needed = 1, uses_anonymous_args = 0
+ 1463              		@ link register save eliminated.
+ 1464 0000 80B4     		push	{r7}
+ 1465              	.LCFI10:
+ 1466              		.cfi_def_cfa_offset 4
+ 1467              		.cfi_offset 7, -4
+ 1468 0002 87B0     		sub	sp, sp, #28
+ 1469              	.LCFI11:
+ 1470              		.cfi_def_cfa_offset 32
+ 1471 0004 00AF     		add	r7, sp, #0
+ 1472              	.LCFI12:
+ 1473              		.cfi_def_cfa_register 7
+ 1474 0006 87ED010A 		vstr.32	s0, [r7, #4]
+ 221:Algorithm/MahonyAHRS.c **** 	float halfx = 0.5f * x;
+ 1475              		.loc 1 221 8
+ 1476 000a D7ED017A 		vldr.32	s15, [r7, #4]
+ 1477 000e B6EE007A 		vmov.f32	s14, #5.0e-1
+ 1478 0012 67EE877A 		vmul.f32	s15, s15, s14
+ 1479 0016 C7ED057A 		vstr.32	s15, [r7, #20]
+ 222:Algorithm/MahonyAHRS.c **** 	float y = x;
+ 1480              		.loc 1 222 8
+ 1481 001a 7B68     		ldr	r3, [r7, #4]	@ float
+ 1482 001c 3B61     		str	r3, [r7, #16]	@ float
+ 223:Algorithm/MahonyAHRS.c **** 	long i = *(long*)&y;
+ 1483              		.loc 1 223 19
+ 1484 001e 07F11003 		add	r3, r7, #16
+ 1485              		.loc 1 223 11
+ 1486 0022 1B68     		ldr	r3, [r3]
+ 1487              		.loc 1 223 7
+ 1488 0024 FB60     		str	r3, [r7, #12]
+ 224:Algorithm/MahonyAHRS.c **** 	i = 0x5f3759df - (i>>1);
+ 1489              		.loc 1 224 21
+ 1490 0026 FB68     		ldr	r3, [r7, #12]
+ 1491 0028 5A10     		asrs	r2, r3, #1
+ 1492              		.loc 1 224 17
+ 1493 002a 124B     		ldr	r3, .L25
+ 1494 002c 9B1A     		subs	r3, r3, r2
+ 1495              		.loc 1 224 4
+ 1496 002e FB60     		str	r3, [r7, #12]
+ 225:Algorithm/MahonyAHRS.c **** 	y = *(float*)&i;
+ 1497              		.loc 1 225 15
+ 1498 0030 07F10C03 		add	r3, r7, #12
+ 1499              		.loc 1 225 6
+ 1500 0034 1B68     		ldr	r3, [r3]	@ float
+ARM GAS  C:\Users\fffff\AppData\Local\Temp\cciJBK57.s 			page 31
+
+
+ 1501              		.loc 1 225 4
+ 1502 0036 3B61     		str	r3, [r7, #16]	@ float
+ 226:Algorithm/MahonyAHRS.c **** 	y = y * (1.5f - (halfx * y * y));
+ 1503              		.loc 1 226 25
+ 1504 0038 97ED047A 		vldr.32	s14, [r7, #16]
+ 1505 003c D7ED057A 		vldr.32	s15, [r7, #20]
+ 1506 0040 27EE277A 		vmul.f32	s14, s14, s15
+ 1507              		.loc 1 226 29
+ 1508 0044 D7ED047A 		vldr.32	s15, [r7, #16]
+ 1509 0048 67EE277A 		vmul.f32	s15, s14, s15
+ 1510              		.loc 1 226 16
+ 1511 004c B7EE087A 		vmov.f32	s14, #1.5e+0
+ 1512 0050 37EE677A 		vsub.f32	s14, s14, s15
+ 1513              		.loc 1 226 8
+ 1514 0054 D7ED047A 		vldr.32	s15, [r7, #16]
+ 1515 0058 67EE277A 		vmul.f32	s15, s14, s15
+ 1516              		.loc 1 226 4
+ 1517 005c C7ED047A 		vstr.32	s15, [r7, #16]
+ 227:Algorithm/MahonyAHRS.c **** 	return y;
+ 1518              		.loc 1 227 9
+ 1519 0060 3B69     		ldr	r3, [r7, #16]	@ float
+ 1520 0062 07EE903A 		vmov	s15, r3
+ 228:Algorithm/MahonyAHRS.c **** }
+ 1521              		.loc 1 228 1
+ 1522 0066 B0EE670A 		vmov.f32	s0, s15
+ 1523 006a 1C37     		adds	r7, r7, #28
+ 1524              	.LCFI13:
+ 1525              		.cfi_def_cfa_offset 4
+ 1526 006c BD46     		mov	sp, r7
+ 1527              	.LCFI14:
+ 1528              		.cfi_def_cfa_register 13
+ 1529              		@ sp needed
+ 1530 006e 5DF8047B 		ldr	r7, [sp], #4
+ 1531              	.LCFI15:
+ 1532              		.cfi_restore 7
+ 1533              		.cfi_def_cfa_offset 0
+ 1534 0072 7047     		bx	lr
+ 1535              	.L26:
+ 1536              		.align	2
+ 1537              	.L25:
+ 1538 0074 DF59375F 		.word	1597463007
+ 1539              		.cfi_endproc
+ 1540              	.LFE2:
+ 1542              		.text
+ 1543              	.Letext0:
+ 1544              		.file 2 "Algorithm/MahonyAHRS.h"
+ 1545              		.file 3 "C:/msys64/mingw64/arm-none-eabi/include/math.h"
+ARM GAS  C:\Users\fffff\AppData\Local\Temp\cciJBK57.s 			page 32
+
+
+DEFINED SYMBOLS
+                            *ABS*:00000000 MahonyAHRS.c
+C:\Users\fffff\AppData\Local\Temp\cciJBK57.s:24     .data.twoKp:00000000 twoKp
+C:\Users\fffff\AppData\Local\Temp\cciJBK57.s:21     .data.twoKp:00000000 $d
+C:\Users\fffff\AppData\Local\Temp\cciJBK57.s:31     .bss.twoKi:00000000 twoKi
+C:\Users\fffff\AppData\Local\Temp\cciJBK57.s:28     .bss.twoKi:00000000 $d
+C:\Users\fffff\AppData\Local\Temp\cciJBK57.s:38     .bss.integralFBx:00000000 integralFBx
+C:\Users\fffff\AppData\Local\Temp\cciJBK57.s:35     .bss.integralFBx:00000000 $d
+C:\Users\fffff\AppData\Local\Temp\cciJBK57.s:45     .bss.integralFBy:00000000 integralFBy
+C:\Users\fffff\AppData\Local\Temp\cciJBK57.s:42     .bss.integralFBy:00000000 $d
+C:\Users\fffff\AppData\Local\Temp\cciJBK57.s:52     .bss.integralFBz:00000000 integralFBz
+C:\Users\fffff\AppData\Local\Temp\cciJBK57.s:49     .bss.integralFBz:00000000 $d
+C:\Users\fffff\AppData\Local\Temp\cciJBK57.s:55     .text.MahonyAHRSupdate:00000000 $t
+C:\Users\fffff\AppData\Local\Temp\cciJBK57.s:61     .text.MahonyAHRSupdate:00000000 MahonyAHRSupdate
+C:\Users\fffff\AppData\Local\Temp\cciJBK57.s:918    .text.MahonyAHRSupdateIMU:00000000 MahonyAHRSupdateIMU
+C:\Users\fffff\AppData\Local\Temp\cciJBK57.s:1457   .text.invSqrt:00000000 invSqrt
+C:\Users\fffff\AppData\Local\Temp\cciJBK57.s:901    .text.MahonyAHRSupdate:00000834 $d
+C:\Users\fffff\AppData\Local\Temp\cciJBK57.s:912    .text.MahonyAHRSupdateIMU:00000000 $t
+C:\Users\fffff\AppData\Local\Temp\cciJBK57.s:1440   .text.MahonyAHRSupdateIMU:000004d0 $d
+C:\Users\fffff\AppData\Local\Temp\cciJBK57.s:1451   .text.invSqrt:00000000 $t
+C:\Users\fffff\AppData\Local\Temp\cciJBK57.s:1538   .text.invSqrt:00000074 $d
+
+UNDEFINED SYMBOLS
+sqrt

@@ -1,0 +1,310 @@
+ARM GAS  C:\Users\fffff\AppData\Local\Temp\ccf50pDY.s 			page 1
+
+
+   1              		.cpu cortex-m7
+   2              		.arch armv7e-m
+   3              		.fpu fpv5-d16
+   4              		.eabi_attribute 28, 1
+   5              		.eabi_attribute 20, 1
+   6              		.eabi_attribute 21, 1
+   7              		.eabi_attribute 23, 3
+   8              		.eabi_attribute 24, 1
+   9              		.eabi_attribute 25, 1
+  10              		.eabi_attribute 26, 1
+  11              		.eabi_attribute 30, 6
+  12              		.eabi_attribute 34, 1
+  13              		.eabi_attribute 18, 4
+  14              		.file	"buzzer.c"
+  15              		.text
+  16              	.Ltext0:
+  17              		.cfi_sections	.debug_frame
+  18              		.file 1 "User/Hardware/buzzer.c"
+  19              		.section	.text.Buzzer_init,"ax",%progbits
+  20              		.align	1
+  21              		.global	Buzzer_init
+  22              		.syntax unified
+  23              		.thumb
+  24              		.thumb_func
+  26              	Buzzer_init:
+  27              	.LFB144:
+   1:User/Hardware/buzzer.c **** #include "buzzer.h"
+   2:User/Hardware/buzzer.c **** #include "cmsis_os2.h"
+   3:User/Hardware/buzzer.c **** 
+   4:User/Hardware/buzzer.c **** void Buzzer_init(){
+  28              		.loc 1 4 19
+  29              		.cfi_startproc
+  30              		@ args = 0, pretend = 0, frame = 0
+  31              		@ frame_needed = 1, uses_anonymous_args = 0
+  32              		@ link register save eliminated.
+  33 0000 80B4     		push	{r7}
+  34              	.LCFI0:
+  35              		.cfi_def_cfa_offset 4
+  36              		.cfi_offset 7, -4
+  37 0002 00AF     		add	r7, sp, #0
+  38              	.LCFI1:
+  39              		.cfi_def_cfa_register 7
+   5:User/Hardware/buzzer.c ****     __HAL_TIM_ENABLE(&BUZZER_TIM);
+  40              		.loc 1 5 5
+  41 0004 064B     		ldr	r3, .L2
+  42 0006 1B68     		ldr	r3, [r3]
+  43 0008 1A68     		ldr	r2, [r3]
+  44 000a 054B     		ldr	r3, .L2
+  45 000c 1B68     		ldr	r3, [r3]
+  46 000e 42F00102 		orr	r2, r2, #1
+  47 0012 1A60     		str	r2, [r3]
+   6:User/Hardware/buzzer.c **** }
+  48              		.loc 1 6 1
+  49 0014 00BF     		nop
+  50 0016 BD46     		mov	sp, r7
+  51              	.LCFI2:
+  52              		.cfi_def_cfa_register 13
+ARM GAS  C:\Users\fffff\AppData\Local\Temp\ccf50pDY.s 			page 2
+
+
+  53              		@ sp needed
+  54 0018 5DF8047B 		ldr	r7, [sp], #4
+  55              	.LCFI3:
+  56              		.cfi_restore 7
+  57              		.cfi_def_cfa_offset 0
+  58 001c 7047     		bx	lr
+  59              	.L3:
+  60 001e 00BF     		.align	2
+  61              	.L2:
+  62 0020 00000000 		.word	htim12
+  63              		.cfi_endproc
+  64              	.LFE144:
+  66              		.section	.text.Buzzer_on,"ax",%progbits
+  67              		.align	1
+  68              		.global	Buzzer_on
+  69              		.syntax unified
+  70              		.thumb
+  71              		.thumb_func
+  73              	Buzzer_on:
+  74              	.LFB145:
+   7:User/Hardware/buzzer.c **** 
+   8:User/Hardware/buzzer.c **** void Buzzer_on(){
+  75              		.loc 1 8 17
+  76              		.cfi_startproc
+  77              		@ args = 0, pretend = 0, frame = 0
+  78              		@ frame_needed = 1, uses_anonymous_args = 0
+  79 0000 80B5     		push	{r7, lr}
+  80              	.LCFI4:
+  81              		.cfi_def_cfa_offset 8
+  82              		.cfi_offset 7, -8
+  83              		.cfi_offset 14, -4
+  84 0002 00AF     		add	r7, sp, #0
+  85              	.LCFI5:
+  86              		.cfi_def_cfa_register 7
+   9:User/Hardware/buzzer.c ****     HAL_TIM_PWM_Start(&BUZZER_TIM,BUZZER_CHANNEL);  //PB15
+  87              		.loc 1 9 5
+  88 0004 0421     		movs	r1, #4
+  89 0006 0248     		ldr	r0, .L5
+  90 0008 FFF7FEFF 		bl	HAL_TIM_PWM_Start
+  10:User/Hardware/buzzer.c **** }
+  91              		.loc 1 10 1
+  92 000c 00BF     		nop
+  93 000e 80BD     		pop	{r7, pc}
+  94              	.L6:
+  95              		.align	2
+  96              	.L5:
+  97 0010 00000000 		.word	htim12
+  98              		.cfi_endproc
+  99              	.LFE145:
+ 101              		.section	.text.Buzzer_off,"ax",%progbits
+ 102              		.align	1
+ 103              		.global	Buzzer_off
+ 104              		.syntax unified
+ 105              		.thumb
+ 106              		.thumb_func
+ 108              	Buzzer_off:
+ 109              	.LFB146:
+ARM GAS  C:\Users\fffff\AppData\Local\Temp\ccf50pDY.s 			page 3
+
+
+  11:User/Hardware/buzzer.c **** 
+  12:User/Hardware/buzzer.c **** void Buzzer_off(){
+ 110              		.loc 1 12 18
+ 111              		.cfi_startproc
+ 112              		@ args = 0, pretend = 0, frame = 0
+ 113              		@ frame_needed = 1, uses_anonymous_args = 0
+ 114 0000 80B5     		push	{r7, lr}
+ 115              	.LCFI6:
+ 116              		.cfi_def_cfa_offset 8
+ 117              		.cfi_offset 7, -8
+ 118              		.cfi_offset 14, -4
+ 119 0002 00AF     		add	r7, sp, #0
+ 120              	.LCFI7:
+ 121              		.cfi_def_cfa_register 7
+  13:User/Hardware/buzzer.c ****     HAL_TIM_PWM_Stop(&BUZZER_TIM,BUZZER_CHANNEL);
+ 122              		.loc 1 13 5
+ 123 0004 0421     		movs	r1, #4
+ 124 0006 0248     		ldr	r0, .L8
+ 125 0008 FFF7FEFF 		bl	HAL_TIM_PWM_Stop
+  14:User/Hardware/buzzer.c **** }
+ 126              		.loc 1 14 1
+ 127 000c 00BF     		nop
+ 128 000e 80BD     		pop	{r7, pc}
+ 129              	.L9:
+ 130              		.align	2
+ 131              	.L8:
+ 132 0010 00000000 		.word	htim12
+ 133              		.cfi_endproc
+ 134              	.LFE146:
+ 136              		.section	.text.Buzzer_set_frequency,"ax",%progbits
+ 137              		.align	1
+ 138              		.global	Buzzer_set_frequency
+ 139              		.syntax unified
+ 140              		.thumb
+ 141              		.thumb_func
+ 143              	Buzzer_set_frequency:
+ 144              	.LFB147:
+  15:User/Hardware/buzzer.c **** 
+  16:User/Hardware/buzzer.c **** void Buzzer_set_frequency(float fre){
+ 145              		.loc 1 16 37
+ 146              		.cfi_startproc
+ 147              		@ args = 0, pretend = 0, frame = 8
+ 148              		@ frame_needed = 1, uses_anonymous_args = 0
+ 149              		@ link register save eliminated.
+ 150 0000 80B4     		push	{r7}
+ 151              	.LCFI8:
+ 152              		.cfi_def_cfa_offset 4
+ 153              		.cfi_offset 7, -4
+ 154 0002 83B0     		sub	sp, sp, #12
+ 155              	.LCFI9:
+ 156              		.cfi_def_cfa_offset 16
+ 157 0004 00AF     		add	r7, sp, #0
+ 158              	.LCFI10:
+ 159              		.cfi_def_cfa_register 7
+ 160 0006 87ED010A 		vstr.32	s0, [r7, #4]
+  17:User/Hardware/buzzer.c ****     __HAL_TIM_DISABLE(&BUZZER_TIM);
+ 161              		.loc 1 17 5
+ARM GAS  C:\Users\fffff\AppData\Local\Temp\ccf50pDY.s 			page 4
+
+
+ 162 000a 264B     		ldr	r3, .L12
+ 163 000c 1B68     		ldr	r3, [r3]
+ 164 000e 1A6A     		ldr	r2, [r3, #32]
+ 165 0010 41F21113 		movw	r3, #4369
+ 166 0014 1340     		ands	r3, r3, r2
+ 167 0016 002B     		cmp	r3, #0
+ 168 0018 0FD1     		bne	.L11
+ 169              		.loc 1 17 5 is_stmt 0 discriminator 1
+ 170 001a 224B     		ldr	r3, .L12
+ 171 001c 1B68     		ldr	r3, [r3]
+ 172 001e 1A6A     		ldr	r2, [r3, #32]
+ 173 0020 40F24443 		movw	r3, #1092
+ 174 0024 1340     		ands	r3, r3, r2
+ 175 0026 002B     		cmp	r3, #0
+ 176 0028 07D1     		bne	.L11
+ 177              		.loc 1 17 5 discriminator 2
+ 178 002a 1E4B     		ldr	r3, .L12
+ 179 002c 1B68     		ldr	r3, [r3]
+ 180 002e 1A68     		ldr	r2, [r3]
+ 181 0030 1C4B     		ldr	r3, .L12
+ 182 0032 1B68     		ldr	r3, [r3]
+ 183 0034 22F00102 		bic	r2, r2, #1
+ 184 0038 1A60     		str	r2, [r3]
+ 185              	.L11:
+  18:User/Hardware/buzzer.c ****     BUZZER_TIM.Instance->CNT = 0;
+ 186              		.loc 1 18 15 is_stmt 1
+ 187 003a 1A4B     		ldr	r3, .L12
+ 188 003c 1B68     		ldr	r3, [r3]
+ 189              		.loc 1 18 30
+ 190 003e 0022     		movs	r2, #0
+ 191 0040 5A62     		str	r2, [r3, #36]
+  19:User/Hardware/buzzer.c ****     BUZZER_TIM.Instance->ARR = (1000000/fre-1)*1u;  //修改重装载值-》频率
+ 192              		.loc 1 19 40
+ 193 0042 DFED196A 		vldr.32	s13, .L12+4
+ 194 0046 97ED017A 		vldr.32	s14, [r7, #4]
+ 195 004a C6EE877A 		vdiv.f32	s15, s13, s14
+ 196              		.loc 1 19 47
+ 197 004e B7EE007A 		vmov.f32	s14, #1.0e+0
+ 198 0052 77EEC77A 		vsub.f32	s15, s15, s14
+ 199              		.loc 1 19 15
+ 200 0056 134B     		ldr	r3, .L12
+ 201 0058 1B68     		ldr	r3, [r3]
+ 202              		.loc 1 19 30
+ 203 005a FCEEE77A 		vcvt.u32.f32	s15, s15
+ 204 005e 17EE902A 		vmov	r2, s15	@ int
+ 205 0062 DA62     		str	r2, [r3, #44]
+  20:User/Hardware/buzzer.c ****     BUZZER_TIM.Instance->CCR2 = (500000/fre-1)*1u;
+ 206              		.loc 1 20 40
+ 207 0064 DFED116A 		vldr.32	s13, .L12+8
+ 208 0068 97ED017A 		vldr.32	s14, [r7, #4]
+ 209 006c C6EE877A 		vdiv.f32	s15, s13, s14
+ 210              		.loc 1 20 47
+ 211 0070 B7EE007A 		vmov.f32	s14, #1.0e+0
+ 212 0074 77EEC77A 		vsub.f32	s15, s15, s14
+ 213              		.loc 1 20 15
+ 214 0078 0A4B     		ldr	r3, .L12
+ 215 007a 1B68     		ldr	r3, [r3]
+ARM GAS  C:\Users\fffff\AppData\Local\Temp\ccf50pDY.s 			page 5
+
+
+ 216              		.loc 1 20 31
+ 217 007c FCEEE77A 		vcvt.u32.f32	s15, s15
+ 218 0080 17EE902A 		vmov	r2, s15	@ int
+ 219 0084 9A63     		str	r2, [r3, #56]
+  21:User/Hardware/buzzer.c ****     __HAL_TIM_ENABLE(&BUZZER_TIM);
+ 220              		.loc 1 21 5
+ 221 0086 074B     		ldr	r3, .L12
+ 222 0088 1B68     		ldr	r3, [r3]
+ 223 008a 1A68     		ldr	r2, [r3]
+ 224 008c 054B     		ldr	r3, .L12
+ 225 008e 1B68     		ldr	r3, [r3]
+ 226 0090 42F00102 		orr	r2, r2, #1
+ 227 0094 1A60     		str	r2, [r3]
+  22:User/Hardware/buzzer.c **** }...
+ 228              		.loc 1 22 1
+ 229 0096 00BF     		nop
+ 230 0098 0C37     		adds	r7, r7, #12
+ 231              	.LCFI11:
+ 232              		.cfi_def_cfa_offset 4
+ 233 009a BD46     		mov	sp, r7
+ 234              	.LCFI12:
+ 235              		.cfi_def_cfa_register 13
+ 236              		@ sp needed
+ 237 009c 5DF8047B 		ldr	r7, [sp], #4
+ 238              	.LCFI13:
+ 239              		.cfi_restore 7
+ 240              		.cfi_def_cfa_offset 0
+ 241 00a0 7047     		bx	lr
+ 242              	.L13:
+ 243 00a2 00BF     		.align	2
+ 244              	.L12:
+ 245 00a4 00000000 		.word	htim12
+ 246 00a8 00247449 		.word	1232348160
+ 247 00ac 0024F448 		.word	1223959552
+ 248              		.cfi_endproc
+ 249              	.LFE147:
+ 251              		.text
+ 252              	.Letext0:
+ 253              		.file 2 "C:/msys64/mingw64/arm-none-eabi/include/machine/_default_types.h"
+ 254              		.file 3 "C:/msys64/mingw64/arm-none-eabi/include/sys/_stdint.h"
+ 255              		.file 4 "Drivers/CMSIS/Device/ST/STM32H7xx/Include/stm32h723xx.h"
+ 256              		.file 5 "Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal_def.h"
+ 257              		.file 6 "Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal_dma.h"
+ 258              		.file 7 "Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal_tim.h"
+ 259              		.file 8 "Core/Inc/tim.h"
+ARM GAS  C:\Users\fffff\AppData\Local\Temp\ccf50pDY.s 			page 6
+
+
+DEFINED SYMBOLS
+                            *ABS*:00000000 buzzer.c
+C:\Users\fffff\AppData\Local\Temp\ccf50pDY.s:20     .text.Buzzer_init:00000000 $t
+C:\Users\fffff\AppData\Local\Temp\ccf50pDY.s:26     .text.Buzzer_init:00000000 Buzzer_init
+C:\Users\fffff\AppData\Local\Temp\ccf50pDY.s:62     .text.Buzzer_init:00000020 $d
+C:\Users\fffff\AppData\Local\Temp\ccf50pDY.s:67     .text.Buzzer_on:00000000 $t
+C:\Users\fffff\AppData\Local\Temp\ccf50pDY.s:73     .text.Buzzer_on:00000000 Buzzer_on
+C:\Users\fffff\AppData\Local\Temp\ccf50pDY.s:97     .text.Buzzer_on:00000010 $d
+C:\Users\fffff\AppData\Local\Temp\ccf50pDY.s:102    .text.Buzzer_off:00000000 $t
+C:\Users\fffff\AppData\Local\Temp\ccf50pDY.s:108    .text.Buzzer_off:00000000 Buzzer_off
+C:\Users\fffff\AppData\Local\Temp\ccf50pDY.s:132    .text.Buzzer_off:00000010 $d
+C:\Users\fffff\AppData\Local\Temp\ccf50pDY.s:137    .text.Buzzer_set_frequency:00000000 $t
+C:\Users\fffff\AppData\Local\Temp\ccf50pDY.s:143    .text.Buzzer_set_frequency:00000000 Buzzer_set_frequency
+C:\Users\fffff\AppData\Local\Temp\ccf50pDY.s:245    .text.Buzzer_set_frequency:000000a4 $d
+
+UNDEFINED SYMBOLS
+htim12
+HAL_TIM_PWM_Start
+HAL_TIM_PWM_Stop

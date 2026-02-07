@@ -1,0 +1,2273 @@
+ARM GAS  C:\Users\fffff\AppData\Local\Temp\ccBCDhmD.s 			page 1
+
+
+   1              		.cpu cortex-m7
+   2              		.arch armv7e-m
+   3              		.fpu fpv5-d16
+   4              		.eabi_attribute 28, 1
+   5              		.eabi_attribute 20, 1
+   6              		.eabi_attribute 21, 1
+   7              		.eabi_attribute 23, 3
+   8              		.eabi_attribute 24, 1
+   9              		.eabi_attribute 25, 1
+  10              		.eabi_attribute 26, 1
+  11              		.eabi_attribute 30, 6
+  12              		.eabi_attribute 34, 1
+  13              		.eabi_attribute 18, 4
+  14              		.file	"IMU_updata.c"
+  15              		.text
+  16              	.Ltext0:
+  17              		.cfi_sections	.debug_frame
+  18              		.file 1 "User/Hardware/IMU_updata.c"
+  19              		.global	IMU_FIR_COFFES
+  20              		.section	.rodata.IMU_FIR_COFFES,"a"
+  21              		.align	2
+  24              	IMU_FIR_COFFES:
+  25 0000 1D9E4F39 		.word	961519133
+  26 0004 C4F325BA 		.word	-1171917884
+  27 0008 A188CD3A 		.word	986548385
+  28 000c D89358BB 		.word	-1151822888
+  29 0010 59F0CC3B 		.word	1003286617
+  30 0014 BF7333BC 		.word	-1137478721
+  31 0018 A363943C 		.word	1016357795
+  32 001c 3D9EEBBC 		.word	-1125409219
+  33 0020 6EA6363D 		.word	1026991726
+  34 0024 0B548DBD 		.word	-1114811381
+  35 0028 6AC2E23D 		.word	1038271082
+  36 002c F7B14EBE 		.word	-1102138889
+  37 0030 D212223F 		.word	1059197650
+  38 0034 D212223F 		.word	1059197650
+  39 0038 F7B14EBE 		.word	-1102138889
+  40 003c 6AC2E23D 		.word	1038271082
+  41 0040 0B548DBD 		.word	-1114811381
+  42 0044 6EA6363D 		.word	1026991726
+  43 0048 3D9EEBBC 		.word	-1125409219
+  44 004c A363943C 		.word	1016357795
+  45 0050 BF7333BC 		.word	-1137478721
+  46 0054 59F0CC3B 		.word	1003286617
+  47 0058 D89358BB 		.word	-1151822888
+  48 005c A188CD3A 		.word	986548385
+  49 0060 C4F325BA 		.word	-1171917884
+  50 0064 1D9E4F39 		.word	961519133
+  51              		.section	.text.FIR_process,"ax",%progbits
+  52              		.align	1
+  53              		.global	FIR_process
+  54              		.syntax unified
+  55              		.thumb
+  56              		.thumb_func
+  58              	FIR_process:
+  59              	.LFB144:
+  60              		.file 2 "Algorithm/fdacoefs.h"
+ARM GAS  C:\Users\fffff\AppData\Local\Temp\ccBCDhmD.s 			page 2
+
+
+   1:Algorithm/fdacoefs.h **** /*
+   2:Algorithm/fdacoefs.h ****  * 离散时间 FIR 滤波器(实数)
+   3:Algorithm/fdacoefs.h ****  * ----------------
+   4:Algorithm/fdacoefs.h ****  * 滤波器结构  : 直接型 FIR
+   5:Algorithm/fdacoefs.h ****  * 滤波器长度  : 26
+   6:Algorithm/fdacoefs.h ****  * 稳定     : 是
+   7:Algorithm/fdacoefs.h ****  * 线性相位   : 是 (Type 2)
+   8:Algorithm/fdacoefs.h ****  */
+   9:Algorithm/fdacoefs.h **** /*
+  10:Algorithm/fdacoefs.h ****  * Warning - Filter coefficients were truncated to fit specified data type.  
+  11:Algorithm/fdacoefs.h ****  *   The resulting response may not match generated theoretical response.
+  12:Algorithm/fdacoefs.h ****  *   Use the Filter Design & Analysis Tool to design accurate
+  13:Algorithm/fdacoefs.h ****  *   single-precision filter coefficients.
+  14:Algorithm/fdacoefs.h ****  */
+  15:Algorithm/fdacoefs.h **** #define IMU_FIR_FILTER_LENGTH 26
+  16:Algorithm/fdacoefs.h **** const float IMU_FIR_COFFES[IMU_FIR_FILTER_LENGTH] = {
+  17:Algorithm/fdacoefs.h ****   0.0001979996014,-0.0006330574397, 0.001568097738,-0.003304710612, 0.006254237611,
+  18:Algorithm/fdacoefs.h ****    -0.01095288899,  0.01811391674, -0.02876197733,  0.04459231347, -0.06900795549,
+  19:Algorithm/fdacoefs.h ****      0.1107223779,   -0.201850757,   0.6330996752,   0.6330996752,   -0.201850757,
+  20:Algorithm/fdacoefs.h ****      0.1107223779, -0.06900795549,  0.04459231347, -0.02876197733,  0.01811391674,
+  21:Algorithm/fdacoefs.h ****    -0.01095288899, 0.006254237611,-0.003304710612, 0.001568097738,-0.0006330574397,
+  22:Algorithm/fdacoefs.h ****   0.0001979996014
+  23:Algorithm/fdacoefs.h **** };
+  24:Algorithm/fdacoefs.h **** 
+  25:Algorithm/fdacoefs.h **** /**
+  26:Algorithm/fdacoefs.h ****  * @brief 
+  27:Algorithm/fdacoefs.h ****  * 
+  28:Algorithm/fdacoefs.h ****  * @param state FIR滤波器状态 长度为FIR_FILTER_LENGTH + 1
+  29:Algorithm/fdacoefs.h ****  * @param x 
+  30:Algorithm/fdacoefs.h ****  * @param y 
+  31:Algorithm/fdacoefs.h ****  * @param N 
+  32:Algorithm/fdacoefs.h ****  */
+  33:Algorithm/fdacoefs.h **** void FIR_process(float state[], float *x,float *y,int N, const float FIR_coffes[], int FIR_len)
+  34:Algorithm/fdacoefs.h **** {
+  61              		.loc 2 34 1
+  62              		.cfi_startproc
+  63              		@ args = 8, pretend = 0, frame = 32
+  64              		@ frame_needed = 1, uses_anonymous_args = 0
+  65              		@ link register save eliminated.
+  66 0000 80B4     		push	{r7}
+  67              	.LCFI0:
+  68              		.cfi_def_cfa_offset 4
+  69              		.cfi_offset 7, -4
+  70 0002 89B0     		sub	sp, sp, #36
+  71              	.LCFI1:
+  72              		.cfi_def_cfa_offset 40
+  73 0004 00AF     		add	r7, sp, #0
+  74              	.LCFI2:
+  75              		.cfi_def_cfa_register 7
+  76 0006 F860     		str	r0, [r7, #12]
+  77 0008 B960     		str	r1, [r7, #8]
+  78 000a 7A60     		str	r2, [r7, #4]
+  79 000c 3B60     		str	r3, [r7]
+  35:Algorithm/fdacoefs.h **** 	int i = 0,j = 0,k=0;
+  80              		.loc 2 35 6
+  81 000e 0023     		movs	r3, #0
+  82 0010 FB61     		str	r3, [r7, #28]
+ARM GAS  C:\Users\fffff\AppData\Local\Temp\ccBCDhmD.s 			page 3
+
+
+  83              		.loc 2 35 12
+  84 0012 0023     		movs	r3, #0
+  85 0014 BB61     		str	r3, [r7, #24]
+  86              		.loc 2 35 18
+  87 0016 0023     		movs	r3, #0
+  88 0018 7B61     		str	r3, [r7, #20]
+  36:Algorithm/fdacoefs.h **** 	float temp; 
+  37:Algorithm/fdacoefs.h **** 	for (k = 0; k < N; k++) 
+  89              		.loc 2 37 9
+  90 001a 0023     		movs	r3, #0
+  91 001c 7B61     		str	r3, [r7, #20]
+  92              		.loc 2 37 2
+  93 001e 45E0     		b	.L2
+  94              	.L7:
+  38:Algorithm/fdacoefs.h **** 	{ 
+  39:Algorithm/fdacoefs.h **** 		state[0] = x[k];
+  95              		.loc 2 39 15
+  96 0020 7B69     		ldr	r3, [r7, #20]
+  97 0022 9B00     		lsls	r3, r3, #2
+  98 0024 BA68     		ldr	r2, [r7, #8]
+  99 0026 1344     		add	r3, r3, r2
+ 100 0028 1A68     		ldr	r2, [r3]	@ float
+ 101              		.loc 2 39 12
+ 102 002a FB68     		ldr	r3, [r7, #12]
+ 103 002c 1A60     		str	r2, [r3]	@ float
+  40:Algorithm/fdacoefs.h **** 		for (i = 0, temp = 0; i < FIR_len; i++)
+ 104              		.loc 2 40 10
+ 105 002e 0023     		movs	r3, #0
+ 106 0030 FB61     		str	r3, [r7, #28]
+ 107              		.loc 2 40 20
+ 108 0032 4FF00003 		mov	r3, #0
+ 109 0036 3B61     		str	r3, [r7, #16]	@ float
+ 110              		.loc 2 40 3
+ 111 0038 16E0     		b	.L3
+ 112              	.L4:
+  41:Algorithm/fdacoefs.h **** 			temp += FIR_coffes[i] * state[i];
+ 113              		.loc 2 41 22
+ 114 003a FB69     		ldr	r3, [r7, #28]
+ 115 003c 9B00     		lsls	r3, r3, #2
+ 116 003e BA6A     		ldr	r2, [r7, #40]
+ 117 0040 1344     		add	r3, r3, r2
+ 118 0042 93ED007A 		vldr.32	s14, [r3]
+ 119              		.loc 2 41 33
+ 120 0046 FB69     		ldr	r3, [r7, #28]
+ 121 0048 9B00     		lsls	r3, r3, #2
+ 122 004a FA68     		ldr	r2, [r7, #12]
+ 123 004c 1344     		add	r3, r3, r2
+ 124 004e D3ED007A 		vldr.32	s15, [r3]
+ 125              		.loc 2 41 26
+ 126 0052 67EE277A 		vmul.f32	s15, s14, s15
+ 127              		.loc 2 41 9
+ 128 0056 97ED047A 		vldr.32	s14, [r7, #16]
+ 129 005a 77EE277A 		vadd.f32	s15, s14, s15
+ 130 005e C7ED047A 		vstr.32	s15, [r7, #16]
+  40:Algorithm/fdacoefs.h **** 		for (i = 0, temp = 0; i < FIR_len; i++)
+ 131              		.loc 2 40 39 discriminator 3
+ 132 0062 FB69     		ldr	r3, [r7, #28]
+ARM GAS  C:\Users\fffff\AppData\Local\Temp\ccBCDhmD.s 			page 4
+
+
+ 133 0064 0133     		adds	r3, r3, #1
+ 134 0066 FB61     		str	r3, [r7, #28]
+ 135              	.L3:
+  40:Algorithm/fdacoefs.h **** 		for (i = 0, temp = 0; i < FIR_len; i++)
+ 136              		.loc 2 40 27 discriminator 1
+ 137 0068 FA69     		ldr	r2, [r7, #28]
+ 138 006a FB6A     		ldr	r3, [r7, #44]
+ 139 006c 9A42     		cmp	r2, r3
+ 140 006e E4DB     		blt	.L4
+  42:Algorithm/fdacoefs.h **** 		y[k] = temp;
+ 141              		.loc 2 42 4
+ 142 0070 7B69     		ldr	r3, [r7, #20]
+ 143 0072 9B00     		lsls	r3, r3, #2
+ 144 0074 7A68     		ldr	r2, [r7, #4]
+ 145 0076 1344     		add	r3, r3, r2
+ 146              		.loc 2 42 8
+ 147 0078 3A69     		ldr	r2, [r7, #16]	@ float
+ 148 007a 1A60     		str	r2, [r3]	@ float
+  43:Algorithm/fdacoefs.h **** 		for (j = FIR_len - 1; j > -1 ; j--)
+ 149              		.loc 2 43 10
+ 150 007c FB6A     		ldr	r3, [r7, #44]
+ 151 007e 013B     		subs	r3, r3, #1
+ 152 0080 BB61     		str	r3, [r7, #24]
+ 153              		.loc 2 43 3
+ 154 0082 0DE0     		b	.L5
+ 155              	.L6:
+  44:Algorithm/fdacoefs.h **** 		state[j+1] = state[j];
+ 156              		.loc 2 44 21
+ 157 0084 BB69     		ldr	r3, [r7, #24]
+ 158 0086 9B00     		lsls	r3, r3, #2
+ 159 0088 FA68     		ldr	r2, [r7, #12]
+ 160 008a 1A44     		add	r2, r2, r3
+ 161              		.loc 2 44 8
+ 162 008c BB69     		ldr	r3, [r7, #24]
+ 163 008e 0133     		adds	r3, r3, #1
+ 164 0090 9B00     		lsls	r3, r3, #2
+ 165 0092 F968     		ldr	r1, [r7, #12]
+ 166 0094 0B44     		add	r3, r3, r1
+ 167              		.loc 2 44 21
+ 168 0096 1268     		ldr	r2, [r2]	@ float
+ 169              		.loc 2 44 14
+ 170 0098 1A60     		str	r2, [r3]	@ float
+  43:Algorithm/fdacoefs.h **** 		for (j = FIR_len - 1; j > -1 ; j--)
+ 171              		.loc 2 43 35 discriminator 3
+ 172 009a BB69     		ldr	r3, [r7, #24]
+ 173 009c 013B     		subs	r3, r3, #1
+ 174 009e BB61     		str	r3, [r7, #24]
+ 175              	.L5:
+  43:Algorithm/fdacoefs.h **** 		for (j = FIR_len - 1; j > -1 ; j--)
+ 176              		.loc 2 43 27 discriminator 1
+ 177 00a0 BB69     		ldr	r3, [r7, #24]
+ 178 00a2 002B     		cmp	r3, #0
+ 179 00a4 EEDA     		bge	.L6
+  37:Algorithm/fdacoefs.h **** 	{ 
+ 180              		.loc 2 37 22 discriminator 2
+ 181 00a6 7B69     		ldr	r3, [r7, #20]
+ 182 00a8 0133     		adds	r3, r3, #1
+ARM GAS  C:\Users\fffff\AppData\Local\Temp\ccBCDhmD.s 			page 5
+
+
+ 183 00aa 7B61     		str	r3, [r7, #20]
+ 184              	.L2:
+  37:Algorithm/fdacoefs.h **** 	{ 
+ 185              		.loc 2 37 16 discriminator 1
+ 186 00ac 7A69     		ldr	r2, [r7, #20]
+ 187 00ae 3B68     		ldr	r3, [r7]
+ 188 00b0 9A42     		cmp	r2, r3
+ 189 00b2 B5DB     		blt	.L7
+  45:Algorithm/fdacoefs.h **** 	}
+  46:Algorithm/fdacoefs.h **** }
+ 190              		.loc 2 46 1
+ 191 00b4 00BF     		nop
+ 192 00b6 00BF     		nop
+ 193 00b8 2437     		adds	r7, r7, #36
+ 194              	.LCFI3:
+ 195              		.cfi_def_cfa_offset 4
+ 196 00ba BD46     		mov	sp, r7
+ 197              	.LCFI4:
+ 198              		.cfi_def_cfa_register 13
+ 199              		@ sp needed
+ 200 00bc 5DF8047B 		ldr	r7, [sp], #4
+ 201              	.LCFI5:
+ 202              		.cfi_restore 7
+ 203              		.cfi_def_cfa_offset 0
+ 204 00c0 7047     		bx	lr
+ 205              		.cfi_endproc
+ 206              	.LFE144:
+ 208              		.global	IMU_tempure_pid
+ 209              		.section	.bss.IMU_tempure_pid,"aw",%nobits
+ 210              		.align	2
+ 213              	IMU_tempure_pid:
+ 214 0000 00000000 		.space	52
+ 214      00000000 
+ 214      00000000 
+ 214      00000000 
+ 214      00000000 
+ 215              		.section	.bss.accel_fliter_1,"aw",%nobits
+ 216              		.align	2
+ 219              	accel_fliter_1:
+ 220 0000 00000000 		.space	12
+ 220      00000000 
+ 220      00000000 
+ 221              		.section	.bss.accel_fliter_2,"aw",%nobits
+ 222              		.align	2
+ 225              	accel_fliter_2:
+ 226 0000 00000000 		.space	12
+ 226      00000000 
+ 226      00000000 
+ 227              		.section	.bss.accel_fliter_3,"aw",%nobits
+ 228              		.align	2
+ 231              	accel_fliter_3:
+ 232 0000 00000000 		.space	12
+ 232      00000000 
+ 232      00000000 
+ 233              		.section	.rodata.fliter_num,"a"
+ 234              		.align	2
+ 237              	fliter_num:
+ARM GAS  C:\Users\fffff\AppData\Local\Temp\ccBCDhmD.s 			page 6
+
+
+ 238 0000 5AF8F63F 		.word	1073150042
+ 239 0004 5D896EBF 		.word	-1083274915
+ 240 0008 D5A9183B 		.word	991472085
+ 241              		.section	.bss.first_temperate,"aw",%nobits
+ 244              	first_temperate:
+ 245 0000 00       		.space	1
+ 246              		.global	ulTdleCycleCount
+ 247              		.section	.bss.ulTdleCycleCount,"aw",%nobits
+ 248              		.align	2
+ 251              	ulTdleCycleCount:
+ 252 0000 00000000 		.space	4
+ 253              		.global	IMU_data
+ 254              		.section	.bss.IMU_data,"aw",%nobits
+ 255              		.align	2
+ 258              	IMU_data:
+ 259 0000 00000000 		.space	188
+ 259      00000000 
+ 259      00000000 
+ 259      00000000 
+ 259      00000000 
+ 260              		.section	.text.Get_angle,"ax",%progbits
+ 261              		.align	1
+ 262              		.global	Get_angle
+ 263              		.syntax unified
+ 264              		.thumb
+ 265              		.thumb_func
+ 267              	Get_angle:
+ 268              	.LFB145:
+   1:User/Hardware/IMU_updata.c **** /**
+   2:User/Hardware/IMU_updata.c ****  * @file IMU_updata.c
+   3:User/Hardware/IMU_updata.c ****  * @author sethome
+   4:User/Hardware/IMU_updata.c ****  * @brief IMU updata info
+   5:User/Hardware/IMU_updata.c ****  * @version 0.1
+   6:User/Hardware/IMU_updata.c ****  * @date 2022-11-19
+   7:User/Hardware/IMU_updata.c ****  *
+   8:User/Hardware/IMU_updata.c ****  * @copyright Copyright (c) 2022
+   9:User/Hardware/IMU_updata.c ****  *
+  10:User/Hardware/IMU_updata.c ****  */
+  11:User/Hardware/IMU_updata.c **** 
+  12:User/Hardware/IMU_updata.c **** #include "pid.h"
+  13:User/Hardware/IMU_updata.c **** #include "IMU_updata.h"
+  14:User/Hardware/IMU_updata.c **** #include "BMI088Middleware.h"
+  15:User/Hardware/IMU_updata.c **** #include "BMI088driver.h"
+  16:User/Hardware/IMU_updata.c **** 
+  17:User/Hardware/IMU_updata.c **** // #include "ist8310driver.h"
+  18:User/Hardware/IMU_updata.c **** #include "fdacoefs.h"
+  19:User/Hardware/IMU_updata.c **** 
+  20:User/Hardware/IMU_updata.c **** #include "User_math.h"
+  21:User/Hardware/IMU_updata.c **** #include "MahonyAHRS.h"
+  22:User/Hardware/IMU_updata.c **** #include "madgwick.h"
+  23:User/Hardware/IMU_updata.c **** #include "AHRS.h"
+  24:User/Hardware/IMU_updata.c **** #include "bsxlite_interface.h"
+  25:User/Hardware/IMU_updata.c **** 
+  26:User/Hardware/IMU_updata.c **** #include "tim.h"
+  27:User/Hardware/IMU_updata.c **** // #include "iwdg.h"
+  28:User/Hardware/IMU_updata.c **** #include "Stm32_time.h"
+  29:User/Hardware/IMU_updata.c **** 
+ARM GAS  C:\Users\fffff\AppData\Local\Temp\ccBCDhmD.s 			page 7
+
+
+  30:User/Hardware/IMU_updata.c **** // made by sethome
+  31:User/Hardware/IMU_updata.c **** // 使用TIM14定频更新
+  32:User/Hardware/IMU_updata.c **** 
+  33:User/Hardware/IMU_updata.c **** // 陀螺仪温度PID
+  34:User/Hardware/IMU_updata.c **** pid_t IMU_tempure_pid;
+  35:User/Hardware/IMU_updata.c **** 
+  36:User/Hardware/IMU_updata.c **** // 加速度计低通滤波
+  37:User/Hardware/IMU_updata.c **** static fp32 accel_fliter_1[3] = {0.0f, 0.0f, 0.0f};
+  38:User/Hardware/IMU_updata.c **** static fp32 accel_fliter_2[3] = {0.0f, 0.0f, 0.0f};
+  39:User/Hardware/IMU_updata.c **** static fp32 accel_fliter_3[3] = {0.0f, 0.0f, 0.0f};
+  40:User/Hardware/IMU_updata.c **** static const fp32 fliter_num[3] = {1.929454039488895f, -0.93178349823448126f, 0.002329458745586203f
+  41:User/Hardware/IMU_updata.c **** static uint8_t first_temperate;
+  42:User/Hardware/IMU_updata.c **** 
+  43:User/Hardware/IMU_updata.c **** unsigned long ulTdleCycleCount = 0UL;
+  44:User/Hardware/IMU_updata.c **** 
+  45:User/Hardware/IMU_updata.c **** // 定时器变量
+  46:User/Hardware/IMU_updata.c **** extern TIM_HandleTypeDef htim3;
+  47:User/Hardware/IMU_updata.c **** 
+  48:User/Hardware/IMU_updata.c **** struct IMU_t IMU_data; // IMU数据结构体
+  49:User/Hardware/IMU_updata.c **** 
+  50:User/Hardware/IMU_updata.c **** // 内部调用
+  51:User/Hardware/IMU_updata.c **** 
+  52:User/Hardware/IMU_updata.c **** void IMU_heat_set(uint16_t ccr); // 加热电阻PWM占空比
+  53:User/Hardware/IMU_updata.c **** void shiftArray(float arr[], int size);
+  54:User/Hardware/IMU_updata.c **** static void imu_temp_control(fp32 temp);
+  55:User/Hardware/IMU_updata.c **** 
+  56:User/Hardware/IMU_updata.c **** // 四元数转为欧拉角 非调用lib版本，勿删
+  57:User/Hardware/IMU_updata.c **** void Get_angle(fp32 q[4], fp32 *yaw, fp32 *pitch, fp32 *roll)
+  58:User/Hardware/IMU_updata.c **** {
+ 269              		.loc 1 58 1
+ 270              		.cfi_startproc
+ 271              		@ args = 0, pretend = 0, frame = 16
+ 272              		@ frame_needed = 1, uses_anonymous_args = 0
+ 273 0000 80B5     		push	{r7, lr}
+ 274              	.LCFI6:
+ 275              		.cfi_def_cfa_offset 8
+ 276              		.cfi_offset 7, -8
+ 277              		.cfi_offset 14, -4
+ 278 0002 84B0     		sub	sp, sp, #16
+ 279              	.LCFI7:
+ 280              		.cfi_def_cfa_offset 24
+ 281 0004 00AF     		add	r7, sp, #0
+ 282              	.LCFI8:
+ 283              		.cfi_def_cfa_register 7
+ 284 0006 F860     		str	r0, [r7, #12]
+ 285 0008 B960     		str	r1, [r7, #8]
+ 286 000a 7A60     		str	r2, [r7, #4]
+ 287 000c 3B60     		str	r3, [r7]
+  59:User/Hardware/IMU_updata.c **** 	*yaw = atan2f(2.0f * (q[0] * q[3] + q[1] * q[2]), 2.0f * (q[0] * q[0] + q[1] * q[1]) - 1.0f);
+ 288              		.loc 1 59 25
+ 289 000e FB68     		ldr	r3, [r7, #12]
+ 290 0010 93ED007A 		vldr.32	s14, [r3]
+ 291              		.loc 1 59 32
+ 292 0014 FB68     		ldr	r3, [r7, #12]
+ 293 0016 0C33     		adds	r3, r3, #12
+ 294 0018 D3ED007A 		vldr.32	s15, [r3]
+ 295              		.loc 1 59 29
+ARM GAS  C:\Users\fffff\AppData\Local\Temp\ccBCDhmD.s 			page 8
+
+
+ 296 001c 27EE277A 		vmul.f32	s14, s14, s15
+ 297              		.loc 1 59 39
+ 298 0020 FB68     		ldr	r3, [r7, #12]
+ 299 0022 0433     		adds	r3, r3, #4
+ 300 0024 D3ED006A 		vldr.32	s13, [r3]
+ 301              		.loc 1 59 46
+ 302 0028 FB68     		ldr	r3, [r7, #12]
+ 303 002a 0833     		adds	r3, r3, #8
+ 304 002c D3ED007A 		vldr.32	s15, [r3]
+ 305              		.loc 1 59 43
+ 306 0030 66EEA77A 		vmul.f32	s15, s13, s15
+ 307              		.loc 1 59 36
+ 308 0034 77EE277A 		vadd.f32	s15, s14, s15
+ 309              		.loc 1 59 9
+ 310 0038 37EEA76A 		vadd.f32	s12, s15, s15
+ 311              		.loc 1 59 61
+ 312 003c FB68     		ldr	r3, [r7, #12]
+ 313 003e 93ED007A 		vldr.32	s14, [r3]
+ 314              		.loc 1 59 68
+ 315 0042 FB68     		ldr	r3, [r7, #12]
+ 316 0044 D3ED007A 		vldr.32	s15, [r3]
+ 317              		.loc 1 59 65
+ 318 0048 27EE277A 		vmul.f32	s14, s14, s15
+ 319              		.loc 1 59 75
+ 320 004c FB68     		ldr	r3, [r7, #12]
+ 321 004e 0433     		adds	r3, r3, #4
+ 322 0050 D3ED006A 		vldr.32	s13, [r3]
+ 323              		.loc 1 59 82
+ 324 0054 FB68     		ldr	r3, [r7, #12]
+ 325 0056 0433     		adds	r3, r3, #4
+ 326 0058 D3ED007A 		vldr.32	s15, [r3]
+ 327              		.loc 1 59 79
+ 328 005c 66EEA77A 		vmul.f32	s15, s13, s15
+ 329              		.loc 1 59 72
+ 330 0060 77EE277A 		vadd.f32	s15, s14, s15
+ 331              		.loc 1 59 57
+ 332 0064 77EEA77A 		vadd.f32	s15, s15, s15
+ 333              		.loc 1 59 9
+ 334 0068 B7EE007A 		vmov.f32	s14, #1.0e+0
+ 335 006c 77EEC77A 		vsub.f32	s15, s15, s14
+ 336 0070 F0EE670A 		vmov.f32	s1, s15
+ 337 0074 B0EE460A 		vmov.f32	s0, s12
+ 338 0078 FFF7FEFF 		bl	atan2f
+ 339 007c F0EE407A 		vmov.f32	s15, s0
+ 340              		.loc 1 59 7 discriminator 1
+ 341 0080 BB68     		ldr	r3, [r7, #8]
+ 342 0082 C3ED007A 		vstr.32	s15, [r3]
+  60:User/Hardware/IMU_updata.c **** 	*pitch = asinf(-2.0f * (q[1] * q[3] - q[0] * q[2]));
+ 343              		.loc 1 60 27
+ 344 0086 FB68     		ldr	r3, [r7, #12]
+ 345 0088 0433     		adds	r3, r3, #4
+ 346 008a 93ED007A 		vldr.32	s14, [r3]
+ 347              		.loc 1 60 34
+ 348 008e FB68     		ldr	r3, [r7, #12]
+ 349 0090 0C33     		adds	r3, r3, #12
+ 350 0092 D3ED007A 		vldr.32	s15, [r3]
+ 351              		.loc 1 60 31
+ARM GAS  C:\Users\fffff\AppData\Local\Temp\ccBCDhmD.s 			page 9
+
+
+ 352 0096 27EE277A 		vmul.f32	s14, s14, s15
+ 353              		.loc 1 60 41
+ 354 009a FB68     		ldr	r3, [r7, #12]
+ 355 009c D3ED006A 		vldr.32	s13, [r3]
+ 356              		.loc 1 60 48
+ 357 00a0 FB68     		ldr	r3, [r7, #12]
+ 358 00a2 0833     		adds	r3, r3, #8
+ 359 00a4 D3ED007A 		vldr.32	s15, [r3]
+ 360              		.loc 1 60 45
+ 361 00a8 66EEA77A 		vmul.f32	s15, s13, s15
+ 362              		.loc 1 60 38
+ 363 00ac 77EE677A 		vsub.f32	s15, s14, s15
+ 364              		.loc 1 60 11
+ 365 00b0 B8EE007A 		vmov.f32	s14, #-2.0e+0
+ 366 00b4 67EE877A 		vmul.f32	s15, s15, s14
+ 367 00b8 B0EE670A 		vmov.f32	s0, s15
+ 368 00bc FFF7FEFF 		bl	asinf
+ 369 00c0 F0EE407A 		vmov.f32	s15, s0
+ 370              		.loc 1 60 9 discriminator 1
+ 371 00c4 7B68     		ldr	r3, [r7, #4]
+ 372 00c6 C3ED007A 		vstr.32	s15, [r3]
+  61:User/Hardware/IMU_updata.c **** 	*roll = atan2f(2.0f * (q[0] * q[1] + q[2] * q[3]), 2.0f * (q[0] * q[0] + q[3] * q[3]) - 1.0f);
+ 373              		.loc 1 61 26
+ 374 00ca FB68     		ldr	r3, [r7, #12]
+ 375 00cc 93ED007A 		vldr.32	s14, [r3]
+ 376              		.loc 1 61 33
+ 377 00d0 FB68     		ldr	r3, [r7, #12]
+ 378 00d2 0433     		adds	r3, r3, #4
+ 379 00d4 D3ED007A 		vldr.32	s15, [r3]
+ 380              		.loc 1 61 30
+ 381 00d8 27EE277A 		vmul.f32	s14, s14, s15
+ 382              		.loc 1 61 40
+ 383 00dc FB68     		ldr	r3, [r7, #12]
+ 384 00de 0833     		adds	r3, r3, #8
+ 385 00e0 D3ED006A 		vldr.32	s13, [r3]
+ 386              		.loc 1 61 47
+ 387 00e4 FB68     		ldr	r3, [r7, #12]
+ 388 00e6 0C33     		adds	r3, r3, #12
+ 389 00e8 D3ED007A 		vldr.32	s15, [r3]
+ 390              		.loc 1 61 44
+ 391 00ec 66EEA77A 		vmul.f32	s15, s13, s15
+ 392              		.loc 1 61 37
+ 393 00f0 77EE277A 		vadd.f32	s15, s14, s15
+ 394              		.loc 1 61 10
+ 395 00f4 37EEA76A 		vadd.f32	s12, s15, s15
+ 396              		.loc 1 61 62
+ 397 00f8 FB68     		ldr	r3, [r7, #12]
+ 398 00fa 93ED007A 		vldr.32	s14, [r3]
+ 399              		.loc 1 61 69
+ 400 00fe FB68     		ldr	r3, [r7, #12]
+ 401 0100 D3ED007A 		vldr.32	s15, [r3]
+ 402              		.loc 1 61 66
+ 403 0104 27EE277A 		vmul.f32	s14, s14, s15
+ 404              		.loc 1 61 76
+ 405 0108 FB68     		ldr	r3, [r7, #12]
+ 406 010a 0C33     		adds	r3, r3, #12
+ 407 010c D3ED006A 		vldr.32	s13, [r3]
+ARM GAS  C:\Users\fffff\AppData\Local\Temp\ccBCDhmD.s 			page 10
+
+
+ 408              		.loc 1 61 83
+ 409 0110 FB68     		ldr	r3, [r7, #12]
+ 410 0112 0C33     		adds	r3, r3, #12
+ 411 0114 D3ED007A 		vldr.32	s15, [r3]
+ 412              		.loc 1 61 80
+ 413 0118 66EEA77A 		vmul.f32	s15, s13, s15
+ 414              		.loc 1 61 73
+ 415 011c 77EE277A 		vadd.f32	s15, s14, s15
+ 416              		.loc 1 61 58
+ 417 0120 77EEA77A 		vadd.f32	s15, s15, s15
+ 418              		.loc 1 61 10
+ 419 0124 B7EE007A 		vmov.f32	s14, #1.0e+0
+ 420 0128 77EEC77A 		vsub.f32	s15, s15, s14
+ 421 012c F0EE670A 		vmov.f32	s1, s15
+ 422 0130 B0EE460A 		vmov.f32	s0, s12
+ 423 0134 FFF7FEFF 		bl	atan2f
+ 424 0138 F0EE407A 		vmov.f32	s15, s0
+ 425              		.loc 1 61 8 discriminator 1
+ 426 013c 3B68     		ldr	r3, [r7]
+ 427 013e C3ED007A 		vstr.32	s15, [r3]
+  62:User/Hardware/IMU_updata.c **** }
+ 428              		.loc 1 62 1
+ 429 0142 00BF     		nop
+ 430 0144 1037     		adds	r7, r7, #16
+ 431              	.LCFI9:
+ 432              		.cfi_def_cfa_offset 8
+ 433 0146 BD46     		mov	sp, r7
+ 434              	.LCFI10:
+ 435              		.cfi_def_cfa_register 13
+ 436              		@ sp needed
+ 437 0148 80BD     		pop	{r7, pc}
+ 438              		.cfi_endproc
+ 439              	.LFE145:
+ 441              		.section	.text.IMU_init,"ax",%progbits
+ 442              		.align	1
+ 443              		.global	IMU_init
+ 444              		.syntax unified
+ 445              		.thumb
+ 446              		.thumb_func
+ 448              	IMU_init:
+ 449              	.LFB146:
+  63:User/Hardware/IMU_updata.c **** 
+  64:User/Hardware/IMU_updata.c **** // 初始化
+  65:User/Hardware/IMU_updata.c **** void IMU_init()
+  66:User/Hardware/IMU_updata.c **** {
+ 450              		.loc 1 66 1
+ 451              		.cfi_startproc
+ 452              		@ args = 0, pretend = 0, frame = 0
+ 453              		@ frame_needed = 1, uses_anonymous_args = 0
+ 454 0000 80B5     		push	{r7, lr}
+ 455              	.LCFI11:
+ 456              		.cfi_def_cfa_offset 8
+ 457              		.cfi_offset 7, -8
+ 458              		.cfi_offset 14, -4
+ 459 0002 00AF     		add	r7, sp, #0
+ 460              	.LCFI12:
+ 461              		.cfi_def_cfa_register 7
+ARM GAS  C:\Users\fffff\AppData\Local\Temp\ccBCDhmD.s 			page 11
+
+
+  67:User/Hardware/IMU_updata.c **** 	BMI088_init(); // 陀螺仪
+ 462              		.loc 1 67 2
+ 463 0004 FFF7FEFF 		bl	BMI088_init
+  68:User/Hardware/IMU_updata.c **** 
+  69:User/Hardware/IMU_updata.c **** 	IMU_data.Mahony.q[0] = 1.0f;
+ 464              		.loc 1 69 23
+ 465 0008 1F4B     		ldr	r3, .L10
+ 466 000a 4FF07E52 		mov	r2, #1065353216
+ 467 000e 9A65     		str	r2, [r3, #88]	@ float
+  70:User/Hardware/IMU_updata.c **** 	IMU_data.Mahony.q[1] = 0.0f;
+ 468              		.loc 1 70 23
+ 469 0010 1D4B     		ldr	r3, .L10
+ 470 0012 4FF00002 		mov	r2, #0
+ 471 0016 DA65     		str	r2, [r3, #92]	@ float
+  71:User/Hardware/IMU_updata.c **** 	IMU_data.Mahony.q[2] = 0.0f;
+ 472              		.loc 1 71 23
+ 473 0018 1B4B     		ldr	r3, .L10
+ 474 001a 4FF00002 		mov	r2, #0
+ 475 001e 1A66     		str	r2, [r3, #96]	@ float
+  72:User/Hardware/IMU_updata.c **** 	IMU_data.Mahony.q[3] = 0.0f;
+ 476              		.loc 1 72 23
+ 477 0020 194B     		ldr	r3, .L10
+ 478 0022 4FF00002 		mov	r2, #0
+ 479 0026 5A66     		str	r2, [r3, #100]	@ float
+  73:User/Hardware/IMU_updata.c **** 
+  74:User/Hardware/IMU_updata.c **** 	IMU_data.madgwick.q[0] = 1.0f;
+ 480              		.loc 1 74 25
+ 481 0028 174B     		ldr	r3, .L10
+ 482 002a 4FF07E52 		mov	r2, #1065353216
+ 483 002e 5A67     		str	r2, [r3, #116]	@ float
+  75:User/Hardware/IMU_updata.c **** 	IMU_data.madgwick.q[1] = 0.0f;
+ 484              		.loc 1 75 25
+ 485 0030 154B     		ldr	r3, .L10
+ 486 0032 4FF00002 		mov	r2, #0
+ 487 0036 9A67     		str	r2, [r3, #120]	@ float
+  76:User/Hardware/IMU_updata.c **** 	IMU_data.madgwick.q[2] = 0.0f;
+ 488              		.loc 1 76 25
+ 489 0038 134B     		ldr	r3, .L10
+ 490 003a 4FF00002 		mov	r2, #0
+ 491 003e DA67     		str	r2, [r3, #124]	@ float
+  77:User/Hardware/IMU_updata.c **** 	IMU_data.madgwick.q[3] = 0.0f;
+ 492              		.loc 1 77 25
+ 493 0040 114B     		ldr	r3, .L10
+ 494 0042 4FF00002 		mov	r2, #0
+ 495 0046 C3F88020 		str	r2, [r3, #128]	@ float
+  78:User/Hardware/IMU_updata.c **** 
+  79:User/Hardware/IMU_updata.c **** 	AHRS_init(IMU_data.AHRS.q, IMU_data.accel, IMU_data.mag); // AHRS滤波参数
+ 496              		.loc 1 79 2
+ 497 004a 104A     		ldr	r2, .L10+4
+ 498 004c 1049     		ldr	r1, .L10+8
+ 499 004e 1148     		ldr	r0, .L10+12
+ 500 0050 FFF7FEFF 		bl	AHRS_init
+  80:User/Hardware/IMU_updata.c **** 
+  81:User/Hardware/IMU_updata.c **** 	pid_set(&IMU_tempure_pid, 2000, 0.2, 0, 4500, 4400);
+ 501              		.loc 1 81 2
+ 502 0054 9FED102A 		vldr.32	s4, .L10+16
+ 503 0058 DFED101A 		vldr.32	s3, .L10+20
+ARM GAS  C:\Users\fffff\AppData\Local\Temp\ccBCDhmD.s 			page 12
+
+
+ 504 005c 9FED101A 		vldr.32	s2, .L10+24
+ 505 0060 DFED100A 		vldr.32	s1, .L10+28
+ 506 0064 9FED100A 		vldr.32	s0, .L10+32
+ 507 0068 1048     		ldr	r0, .L10+36
+ 508 006a FFF7FEFF 		bl	pid_set
+  82:User/Hardware/IMU_updata.c **** 	
+  83:User/Hardware/IMU_updata.c **** 	HAL_TIM_Base_Start(&htim3); // 加热电阻PWM
+ 509              		.loc 1 83 2
+ 510 006e 1048     		ldr	r0, .L10+40
+ 511 0070 FFF7FEFF 		bl	HAL_TIM_Base_Start
+  84:User/Hardware/IMU_updata.c **** 	HAL_TIM_PWM_Start(&htim3, TIM_CHANNEL_4);
+ 512              		.loc 1 84 2
+ 513 0074 0C21     		movs	r1, #12
+ 514 0076 0E48     		ldr	r0, .L10+40
+ 515 0078 FFF7FEFF 		bl	HAL_TIM_PWM_Start
+  85:User/Hardware/IMU_updata.c **** 	HAL_TIM_Base_Start_IT(&htim13); // 使能更新中断，1000HZ
+ 516              		.loc 1 85 2
+ 517 007c 0D48     		ldr	r0, .L10+44
+ 518 007e FFF7FEFF 		bl	HAL_TIM_Base_Start_IT
+  86:User/Hardware/IMU_updata.c **** 
+  87:User/Hardware/IMU_updata.c **** 	// 校准加速度（未完成）和角速度计
+  88:User/Hardware/IMU_updata.c **** 	// for (int i = 0; i < 1000;)
+  89:User/Hardware/IMU_updata.c **** 	// {
+  90:User/Hardware/IMU_updata.c **** 	// 	float x_ = IMU_data.gyro[0];
+  91:User/Hardware/IMU_updata.c **** 	// 	float y_ = IMU_data.gyro[1];
+  92:User/Hardware/IMU_updata.c **** 	// 	float z_ = IMU_data.gyro[2];
+  93:User/Hardware/IMU_updata.c **** 	// 	if (fabs(x_) > 1.0f && fabs(y_) > 1.0f && fabs(z_) > 1.0f)
+  94:User/Hardware/IMU_updata.c **** 	// 		continue;
+  95:User/Hardware/IMU_updata.c **** 	// 	IMU_data.calibration[0] += x_ / 1000.0f;
+  96:User/Hardware/IMU_updata.c **** 	// 	IMU_data.calibration[1] += y_ / 1000.0f;
+  97:User/Hardware/IMU_updata.c **** 	// 	IMU_data.calibration[2] += z_ / 1000.0f;
+  98:User/Hardware/IMU_updata.c **** 	// 	i++;
+  99:User/Hardware/IMU_updata.c **** 	// 	HAL_Delay(1);
+ 100:User/Hardware/IMU_updata.c **** 	// }
+ 101:User/Hardware/IMU_updata.c **** }
+ 519              		.loc 1 101 1
+ 520 0082 00BF     		nop
+ 521 0084 80BD     		pop	{r7, pc}
+ 522              	.L11:
+ 523 0086 00BF     		.align	2
+ 524              	.L10:
+ 525 0088 00000000 		.word	IMU_data
+ 526 008c 18000000 		.word	IMU_data+24
+ 527 0090 0C000000 		.word	IMU_data+12
+ 528 0094 90000000 		.word	IMU_data+144
+ 529 0098 00808945 		.word	1166639104
+ 530 009c 00A08C45 		.word	1166843904
+ 531 00a0 00000000 		.word	0
+ 532 00a4 CDCC4C3E 		.word	1045220557
+ 533 00a8 0000FA44 		.word	1157234688
+ 534 00ac 00000000 		.word	IMU_tempure_pid
+ 535 00b0 00000000 		.word	htim3
+ 536 00b4 00000000 		.word	htim13
+ 537              		.cfi_endproc
+ 538              	.LFE146:
+ 540              		.section	.text.process_IMU_data,"ax",%progbits
+ 541              		.align	1
+ARM GAS  C:\Users\fffff\AppData\Local\Temp\ccBCDhmD.s 			page 13
+
+
+ 542              		.global	process_IMU_data
+ 543              		.syntax unified
+ 544              		.thumb
+ 545              		.thumb_func
+ 547              	process_IMU_data:
+ 548              	.LFB147:
+ 102:User/Hardware/IMU_updata.c **** 
+ 103:User/Hardware/IMU_updata.c **** void process_IMU_data()
+ 104:User/Hardware/IMU_updata.c **** {
+ 549              		.loc 1 104 1
+ 550              		.cfi_startproc
+ 551              		@ args = 0, pretend = 0, frame = 0
+ 552              		@ frame_needed = 1, uses_anonymous_args = 0
+ 553              		@ link register save eliminated.
+ 554 0000 80B4     		push	{r7}
+ 555              	.LCFI13:
+ 556              		.cfi_def_cfa_offset 4
+ 557              		.cfi_offset 7, -4
+ 558 0002 00AF     		add	r7, sp, #0
+ 559              	.LCFI14:
+ 560              		.cfi_def_cfa_register 7
+ 105:User/Hardware/IMU_updata.c **** 	// 计算总圈数
+ 106:User/Hardware/IMU_updata.c **** 	if (IMU_data.AHRS.last_yaw > 3.0f && IMU_data.AHRS.yaw < -3.0f)
+ 561              		.loc 1 106 19
+ 562 0004 374B     		ldr	r3, .L24
+ 563 0006 D3ED2C7A 		vldr.32	s15, [r3, #176]
+ 564              		.loc 1 106 5
+ 565 000a B0EE087A 		vmov.f32	s14, #3.0e+0
+ 566 000e F4EEC77A 		vcmpe.f32	s15, s14
+ 567 0012 F1EE10FA 		vmrs	APSR_nzcv, FPSCR
+ 568 0016 22DD     		ble	.L13
+ 569              		.loc 1 106 52 discriminator 1
+ 570 0018 324B     		ldr	r3, .L24
+ 571 001a D3ED297A 		vldr.32	s15, [r3, #164]
+ 572              		.loc 1 106 36 discriminator 1
+ 573 001e B8EE087A 		vmov.f32	s14, #-3.0e+0
+ 574 0022 F4EEC77A 		vcmpe.f32	s15, s14
+ 575 0026 F1EE10FA 		vmrs	APSR_nzcv, FPSCR
+ 576 002a 18D5     		bpl	.L13
+ 107:User/Hardware/IMU_updata.c **** 		IMU_data.AHRS.yaw_rad_cnt += ((PI - IMU_data.AHRS.last_yaw) + (IMU_data.AHRS.yaw + PI));
+ 577              		.loc 1 107 16
+ 578 002c 2D4B     		ldr	r3, .L24
+ 579 002e 93ED2D7A 		vldr.32	s14, [r3, #180]
+ 580              		.loc 1 107 52
+ 581 0032 2C4B     		ldr	r3, .L24
+ 582 0034 D3ED2C7A 		vldr.32	s15, [r3, #176]
+ 583              		.loc 1 107 37
+ 584 0038 DFED2B6A 		vldr.32	s13, .L24+4
+ 585 003c 76EEE76A 		vsub.f32	s13, s13, s15
+ 586              		.loc 1 107 79
+ 587 0040 284B     		ldr	r3, .L24
+ 588 0042 D3ED297A 		vldr.32	s15, [r3, #164]
+ 589              		.loc 1 107 84
+ 590 0046 9FED286A 		vldr.32	s12, .L24+4
+ 591 004a 77EE867A 		vadd.f32	s15, s15, s12
+ 592              		.loc 1 107 63
+ 593 004e 76EEA77A 		vadd.f32	s15, s13, s15
+ARM GAS  C:\Users\fffff\AppData\Local\Temp\ccBCDhmD.s 			page 14
+
+
+ 594              		.loc 1 107 29
+ 595 0052 77EE277A 		vadd.f32	s15, s14, s15
+ 596 0056 234B     		ldr	r3, .L24
+ 597 0058 C3ED2D7A 		vstr.32	s15, [r3, #180]
+ 598 005c 3DE0     		b	.L16
+ 599              	.L13:
+ 108:User/Hardware/IMU_updata.c **** 	else if (IMU_data.AHRS.last_yaw < -3.0f && IMU_data.AHRS.yaw > 3.0f)
+ 600              		.loc 1 108 24
+ 601 005e 214B     		ldr	r3, .L24
+ 602 0060 D3ED2C7A 		vldr.32	s15, [r3, #176]
+ 603              		.loc 1 108 10
+ 604 0064 B8EE087A 		vmov.f32	s14, #-3.0e+0
+ 605 0068 F4EEC77A 		vcmpe.f32	s15, s14
+ 606 006c F1EE10FA 		vmrs	APSR_nzcv, FPSCR
+ 607 0070 22D5     		bpl	.L17
+ 608              		.loc 1 108 58 discriminator 1
+ 609 0072 1C4B     		ldr	r3, .L24
+ 610 0074 D3ED297A 		vldr.32	s15, [r3, #164]
+ 611              		.loc 1 108 42 discriminator 1
+ 612 0078 B0EE087A 		vmov.f32	s14, #3.0e+0
+ 613 007c F4EEC77A 		vcmpe.f32	s15, s14
+ 614 0080 F1EE10FA 		vmrs	APSR_nzcv, FPSCR
+ 615 0084 18DD     		ble	.L17
+ 109:User/Hardware/IMU_updata.c **** 		IMU_data.AHRS.yaw_rad_cnt -= ((PI + IMU_data.AHRS.last_yaw) + (PI - IMU_data.AHRS.yaw));
+ 616              		.loc 1 109 16
+ 617 0086 174B     		ldr	r3, .L24
+ 618 0088 93ED2D7A 		vldr.32	s14, [r3, #180]
+ 619              		.loc 1 109 52
+ 620 008c 154B     		ldr	r3, .L24
+ 621 008e D3ED2C7A 		vldr.32	s15, [r3, #176]
+ 622              		.loc 1 109 37
+ 623 0092 DFED156A 		vldr.32	s13, .L24+4
+ 624 0096 77EEA66A 		vadd.f32	s13, s15, s13
+ 625              		.loc 1 109 84
+ 626 009a 124B     		ldr	r3, .L24
+ 627 009c D3ED297A 		vldr.32	s15, [r3, #164]
+ 628              		.loc 1 109 69
+ 629 00a0 9FED116A 		vldr.32	s12, .L24+4
+ 630 00a4 76EE677A 		vsub.f32	s15, s12, s15
+ 631              		.loc 1 109 63
+ 632 00a8 76EEA77A 		vadd.f32	s15, s13, s15
+ 633              		.loc 1 109 29
+ 634 00ac 77EE677A 		vsub.f32	s15, s14, s15
+ 635 00b0 0C4B     		ldr	r3, .L24
+ 636 00b2 C3ED2D7A 		vstr.32	s15, [r3, #180]
+ 637 00b6 10E0     		b	.L16
+ 638              	.L17:
+ 110:User/Hardware/IMU_updata.c **** 	else
+ 111:User/Hardware/IMU_updata.c **** 		IMU_data.AHRS.yaw_rad_cnt += (IMU_data.AHRS.yaw - IMU_data.AHRS.last_yaw);
+ 639              		.loc 1 111 16
+ 640 00b8 0A4B     		ldr	r3, .L24
+ 641 00ba 93ED2D7A 		vldr.32	s14, [r3, #180]
+ 642              		.loc 1 111 46
+ 643 00be 094B     		ldr	r3, .L24
+ 644 00c0 D3ED296A 		vldr.32	s13, [r3, #164]
+ 645              		.loc 1 111 66
+ 646 00c4 074B     		ldr	r3, .L24
+ARM GAS  C:\Users\fffff\AppData\Local\Temp\ccBCDhmD.s 			page 15
+
+
+ 647 00c6 D3ED2C7A 		vldr.32	s15, [r3, #176]
+ 648              		.loc 1 111 51
+ 649 00ca 76EEE77A 		vsub.f32	s15, s13, s15
+ 650              		.loc 1 111 29
+ 651 00ce 77EE277A 		vadd.f32	s15, s14, s15
+ 652 00d2 044B     		ldr	r3, .L24
+ 653 00d4 C3ED2D7A 		vstr.32	s15, [r3, #180]
+ 112:User/Hardware/IMU_updata.c **** }
+ 654              		.loc 1 112 1
+ 655 00d8 00BF     		nop
+ 656              	.L16:
+ 657 00da 00BF     		nop
+ 658 00dc BD46     		mov	sp, r7
+ 659              	.LCFI15:
+ 660              		.cfi_def_cfa_register 13
+ 661              		@ sp needed
+ 662 00de 5DF8047B 		ldr	r7, [sp], #4
+ 663              	.LCFI16:
+ 664              		.cfi_restore 7
+ 665              		.cfi_def_cfa_offset 0
+ 666 00e2 7047     		bx	lr
+ 667              	.L25:
+ 668              		.align	2
+ 669              	.L24:
+ 670 00e4 00000000 		.word	IMU_data
+ 671 00e8 DA0F4940 		.word	1078530010
+ 672              		.cfi_endproc
+ 673              	.LFE147:
+ 675              		.section	.text.IMU_updata,"ax",%progbits
+ 676              		.align	1
+ 677              		.global	IMU_updata
+ 678              		.syntax unified
+ 679              		.thumb
+ 680              		.thumb_func
+ 682              	IMU_updata:
+ 683              	.LFB148:
+ 113:User/Hardware/IMU_updata.c **** // IMU更新函数
+ 114:User/Hardware/IMU_updata.c **** void IMU_updata() // 1000HZ
+ 115:User/Hardware/IMU_updata.c **** {
+ 684              		.loc 1 115 1
+ 685              		.cfi_startproc
+ 686              		@ args = 0, pretend = 0, frame = 0
+ 687              		@ frame_needed = 1, uses_anonymous_args = 0
+ 688 0000 80B5     		push	{r7, lr}
+ 689              	.LCFI17:
+ 690              		.cfi_def_cfa_offset 8
+ 691              		.cfi_offset 7, -8
+ 692              		.cfi_offset 14, -4
+ 693 0002 00AF     		add	r7, sp, #0
+ 694              	.LCFI18:
+ 695              		.cfi_def_cfa_register 7
+ 116:User/Hardware/IMU_updata.c **** 	//  读取陀螺仪和地磁计信息
+ 117:User/Hardware/IMU_updata.c **** 	BMI088_read(IMU_data.gyro, IMU_data.accel, &IMU_data.temp);
+ 696              		.loc 1 117 2
+ 697 0004 844A     		ldr	r2, .L38
+ 698 0006 8549     		ldr	r1, .L38+4
+ 699 0008 8548     		ldr	r0, .L38+8
+ARM GAS  C:\Users\fffff\AppData\Local\Temp\ccBCDhmD.s 			page 16
+
+
+ 700 000a FFF7FEFF 		bl	BMI088_read
+ 118:User/Hardware/IMU_updata.c **** 	// 零漂移补偿
+ 119:User/Hardware/IMU_updata.c **** 	//	IMU_data.gyro[0] -= 0.00103224139;
+ 120:User/Hardware/IMU_updata.c **** 	//	IMU_data.gyro[1] += 0.0050994223;
+ 121:User/Hardware/IMU_updata.c **** 	//	IMU_data.gyro[2] -= 0.000232788681 ;
+ 122:User/Hardware/IMU_updata.c **** 
+ 123:User/Hardware/IMU_updata.c **** 	// IMU_data.gyro[0] += 0.00169377134;
+ 124:User/Hardware/IMU_updata.c **** 	// IMU_data.gyro[1] += 0.00817589462;
+ 125:User/Hardware/IMU_updata.c **** 	// IMU_data.gyro[2] -= 0.000124635975;
+ 126:User/Hardware/IMU_updata.c **** 
+ 127:User/Hardware/IMU_updata.c **** 	// 加热器PID计算
+ 128:User/Hardware/IMU_updata.c **** 	imu_temp_control(IMU_data.temp);
+ 701              		.loc 1 128 2
+ 702 000e 844B     		ldr	r3, .L38+8
+ 703 0010 D3ED097A 		vldr.32	s15, [r3, #36]
+ 704 0014 B0EE670A 		vmov.f32	s0, s15
+ 705 0018 FFF7FEFF 		bl	imu_temp_control
+ 129:User/Hardware/IMU_updata.c **** 
+ 130:User/Hardware/IMU_updata.c **** 	// 加速度计低通滤波
+ 131:User/Hardware/IMU_updata.c **** 	// accel low-pass filter
+ 132:User/Hardware/IMU_updata.c **** 	accel_fliter_1[0] = accel_fliter_2[0];
+ 706              		.loc 1 132 36
+ 707 001c 814B     		ldr	r3, .L38+12
+ 708 001e 1B68     		ldr	r3, [r3]	@ float
+ 709              		.loc 1 132 20
+ 710 0020 814A     		ldr	r2, .L38+16
+ 711 0022 1360     		str	r3, [r2]	@ float
+ 133:User/Hardware/IMU_updata.c **** 	accel_fliter_2[0] = accel_fliter_3[0];
+ 712              		.loc 1 133 36
+ 713 0024 814B     		ldr	r3, .L38+20
+ 714 0026 1B68     		ldr	r3, [r3]	@ float
+ 715              		.loc 1 133 20
+ 716 0028 7E4A     		ldr	r2, .L38+12
+ 717 002a 1360     		str	r3, [r2]	@ float
+ 134:User/Hardware/IMU_updata.c **** 
+ 135:User/Hardware/IMU_updata.c **** 	accel_fliter_3[0] = accel_fliter_2[0] * fliter_num[0] + accel_fliter_1[0] * fliter_num[1] + IMU_da
+ 718              		.loc 1 135 36
+ 719 002c 7D4B     		ldr	r3, .L38+12
+ 720 002e D3ED007A 		vldr.32	s15, [r3]
+ 721              		.loc 1 135 52
+ 722 0032 9FED7F7A 		vldr.32	s14, .L38+24
+ 723              		.loc 1 135 40
+ 724 0036 27EE877A 		vmul.f32	s14, s15, s14
+ 725              		.loc 1 135 72
+ 726 003a 7B4B     		ldr	r3, .L38+16
+ 727 003c D3ED007A 		vldr.32	s15, [r3]
+ 728              		.loc 1 135 88
+ 729 0040 DFED7C6A 		vldr.32	s13, .L38+28
+ 730              		.loc 1 135 76
+ 731 0044 67EEA67A 		vmul.f32	s15, s15, s13
+ 732              		.loc 1 135 56
+ 733 0048 37EE277A 		vadd.f32	s14, s14, s15
+ 734              		.loc 1 135 108
+ 735 004c 744B     		ldr	r3, .L38+8
+ 736 004e D3ED037A 		vldr.32	s15, [r3, #12]
+ 737              		.loc 1 135 124
+ 738 0052 DFED796A 		vldr.32	s13, .L38+32
+ARM GAS  C:\Users\fffff\AppData\Local\Temp\ccBCDhmD.s 			page 17
+
+
+ 739              		.loc 1 135 112
+ 740 0056 67EEA67A 		vmul.f32	s15, s15, s13
+ 741              		.loc 1 135 92
+ 742 005a 77EE277A 		vadd.f32	s15, s14, s15
+ 743              		.loc 1 135 20
+ 744 005e 734B     		ldr	r3, .L38+20
+ 745 0060 C3ED007A 		vstr.32	s15, [r3]
+ 136:User/Hardware/IMU_updata.c **** 
+ 137:User/Hardware/IMU_updata.c **** 	accel_fliter_1[1] = accel_fliter_2[1];
+ 746              		.loc 1 137 36
+ 747 0064 6F4B     		ldr	r3, .L38+12
+ 748 0066 5B68     		ldr	r3, [r3, #4]	@ float
+ 749              		.loc 1 137 20
+ 750 0068 6F4A     		ldr	r2, .L38+16
+ 751 006a 5360     		str	r3, [r2, #4]	@ float
+ 138:User/Hardware/IMU_updata.c **** 	accel_fliter_2[1] = accel_fliter_3[1];
+ 752              		.loc 1 138 36
+ 753 006c 6F4B     		ldr	r3, .L38+20
+ 754 006e 5B68     		ldr	r3, [r3, #4]	@ float
+ 755              		.loc 1 138 20
+ 756 0070 6C4A     		ldr	r2, .L38+12
+ 757 0072 5360     		str	r3, [r2, #4]	@ float
+ 139:User/Hardware/IMU_updata.c **** 
+ 140:User/Hardware/IMU_updata.c **** 	accel_fliter_3[1] = accel_fliter_2[1] * fliter_num[0] + accel_fliter_1[1] * fliter_num[1] + IMU_da
+ 758              		.loc 1 140 36
+ 759 0074 6B4B     		ldr	r3, .L38+12
+ 760 0076 D3ED017A 		vldr.32	s15, [r3, #4]
+ 761              		.loc 1 140 52
+ 762 007a 9FED6D7A 		vldr.32	s14, .L38+24
+ 763              		.loc 1 140 40
+ 764 007e 27EE877A 		vmul.f32	s14, s15, s14
+ 765              		.loc 1 140 72
+ 766 0082 694B     		ldr	r3, .L38+16
+ 767 0084 D3ED017A 		vldr.32	s15, [r3, #4]
+ 768              		.loc 1 140 88
+ 769 0088 DFED6A6A 		vldr.32	s13, .L38+28
+ 770              		.loc 1 140 76
+ 771 008c 67EEA67A 		vmul.f32	s15, s15, s13
+ 772              		.loc 1 140 56
+ 773 0090 37EE277A 		vadd.f32	s14, s14, s15
+ 774              		.loc 1 140 108
+ 775 0094 624B     		ldr	r3, .L38+8
+ 776 0096 D3ED047A 		vldr.32	s15, [r3, #16]
+ 777              		.loc 1 140 124
+ 778 009a DFED676A 		vldr.32	s13, .L38+32
+ 779              		.loc 1 140 112
+ 780 009e 67EEA67A 		vmul.f32	s15, s15, s13
+ 781              		.loc 1 140 92
+ 782 00a2 77EE277A 		vadd.f32	s15, s14, s15
+ 783              		.loc 1 140 20
+ 784 00a6 614B     		ldr	r3, .L38+20
+ 785 00a8 C3ED017A 		vstr.32	s15, [r3, #4]
+ 141:User/Hardware/IMU_updata.c **** 
+ 142:User/Hardware/IMU_updata.c **** 	accel_fliter_1[2] = accel_fliter_2[2];
+ 786              		.loc 1 142 36
+ 787 00ac 5D4B     		ldr	r3, .L38+12
+ 788 00ae 9B68     		ldr	r3, [r3, #8]	@ float
+ARM GAS  C:\Users\fffff\AppData\Local\Temp\ccBCDhmD.s 			page 18
+
+
+ 789              		.loc 1 142 20
+ 790 00b0 5D4A     		ldr	r2, .L38+16
+ 791 00b2 9360     		str	r3, [r2, #8]	@ float
+ 143:User/Hardware/IMU_updata.c **** 	accel_fliter_2[2] = accel_fliter_3[2];
+ 792              		.loc 1 143 36
+ 793 00b4 5D4B     		ldr	r3, .L38+20
+ 794 00b6 9B68     		ldr	r3, [r3, #8]	@ float
+ 795              		.loc 1 143 20
+ 796 00b8 5A4A     		ldr	r2, .L38+12
+ 797 00ba 9360     		str	r3, [r2, #8]	@ float
+ 144:User/Hardware/IMU_updata.c **** 
+ 145:User/Hardware/IMU_updata.c **** 	accel_fliter_3[2] = accel_fliter_2[2] * fliter_num[0] + accel_fliter_1[2] * fliter_num[1] + IMU_da
+ 798              		.loc 1 145 36
+ 799 00bc 594B     		ldr	r3, .L38+12
+ 800 00be D3ED027A 		vldr.32	s15, [r3, #8]
+ 801              		.loc 1 145 52
+ 802 00c2 9FED5B7A 		vldr.32	s14, .L38+24
+ 803              		.loc 1 145 40
+ 804 00c6 27EE877A 		vmul.f32	s14, s15, s14
+ 805              		.loc 1 145 72
+ 806 00ca 574B     		ldr	r3, .L38+16
+ 807 00cc D3ED027A 		vldr.32	s15, [r3, #8]
+ 808              		.loc 1 145 88
+ 809 00d0 DFED586A 		vldr.32	s13, .L38+28
+ 810              		.loc 1 145 76
+ 811 00d4 67EEA67A 		vmul.f32	s15, s15, s13
+ 812              		.loc 1 145 56
+ 813 00d8 37EE277A 		vadd.f32	s14, s14, s15
+ 814              		.loc 1 145 108
+ 815 00dc 504B     		ldr	r3, .L38+8
+ 816 00de D3ED057A 		vldr.32	s15, [r3, #20]
+ 817              		.loc 1 145 124
+ 818 00e2 DFED556A 		vldr.32	s13, .L38+32
+ 819              		.loc 1 145 112
+ 820 00e6 67EEA67A 		vmul.f32	s15, s15, s13
+ 821              		.loc 1 145 92
+ 822 00ea 77EE277A 		vadd.f32	s15, s14, s15
+ 823              		.loc 1 145 20
+ 824 00ee 4F4B     		ldr	r3, .L38+20
+ 825 00f0 C3ED027A 		vstr.32	s15, [r3, #8]
+ 146:User/Hardware/IMU_updata.c **** 
+ 147:User/Hardware/IMU_updata.c **** 	// AHRS.lib
+ 148:User/Hardware/IMU_updata.c **** 	// 如果失败，返回0
+ 149:User/Hardware/IMU_updata.c **** 	static uint32_t last_time = 0;
+ 150:User/Hardware/IMU_updata.c **** 	IMU_data.AHRS.err_code = AHRS_update(IMU_data.AHRS.q,0.001f,
+ 826              		.loc 1 150 27
+ 827 00f4 514B     		ldr	r3, .L38+36
+ 828 00f6 4D4A     		ldr	r2, .L38+20
+ 829 00f8 4949     		ldr	r1, .L38+8
+ 830 00fa 9FED510A 		vldr.32	s0, .L38+40
+ 831 00fe 5148     		ldr	r0, .L38+44
+ 832 0100 FFF7FEFF 		bl	AHRS_update
+ 833 0104 0346     		mov	r3, r0
+ 834              		.loc 1 150 27 is_stmt 0 discriminator 1
+ 835 0106 5AB2     		sxtb	r2, r3
+ 836              		.loc 1 150 25 is_stmt 1 discriminator 1
+ 837 0108 454B     		ldr	r3, .L38+8
+ARM GAS  C:\Users\fffff\AppData\Local\Temp\ccBCDhmD.s 			page 19
+
+
+ 838 010a 83F8AC20 		strb	r2, [r3, #172]
+ 151:User/Hardware/IMU_updata.c **** 										 IMU_data.gyro,
+ 152:User/Hardware/IMU_updata.c **** 										 accel_fliter_3,
+ 153:User/Hardware/IMU_updata.c **** 										 IMU_data.mag);
+ 154:User/Hardware/IMU_updata.c **** 	last_time = Get_sys_time_ms();
+ 839              		.loc 1 154 14
+ 840 010e FFF7FEFF 		bl	Get_sys_time_ms
+ 841 0112 0346     		mov	r3, r0
+ 842              		.loc 1 154 12 discriminator 1
+ 843 0114 4C4A     		ldr	r2, .L38+48
+ 844 0116 1360     		str	r3, [r2]
+ 155:User/Hardware/IMU_updata.c **** 	get_angle(IMU_data.AHRS.q, &IMU_data.AHRS.yaw, &IMU_data.AHRS.roll, &IMU_data.AHRS.pitch);
+ 845              		.loc 1 155 2
+ 846 0118 4C4B     		ldr	r3, .L38+52
+ 847 011a 4D4A     		ldr	r2, .L38+56
+ 848 011c 4D49     		ldr	r1, .L38+60
+ 849 011e 4948     		ldr	r0, .L38+44
+ 850 0120 FFF7FEFF 		bl	get_angle
+ 156:User/Hardware/IMU_updata.c **** 
+ 157:User/Hardware/IMU_updata.c **** 	// process_IMU_data();
+ 158:User/Hardware/IMU_updata.c **** 	if (IMU_data.AHRS.last_yaw > 3.0f && IMU_data.AHRS.yaw < -3.0f)
+ 851              		.loc 1 158 19
+ 852 0124 3E4B     		ldr	r3, .L38+8
+ 853 0126 D3ED2C7A 		vldr.32	s15, [r3, #176]
+ 854              		.loc 1 158 5
+ 855 012a B0EE087A 		vmov.f32	s14, #3.0e+0
+ 856 012e F4EEC77A 		vcmpe.f32	s15, s14
+ 857 0132 F1EE10FA 		vmrs	APSR_nzcv, FPSCR
+ 858 0136 22DD     		ble	.L27
+ 859              		.loc 1 158 52 discriminator 1
+ 860 0138 394B     		ldr	r3, .L38+8
+ 861 013a D3ED297A 		vldr.32	s15, [r3, #164]
+ 862              		.loc 1 158 36 discriminator 1
+ 863 013e B8EE087A 		vmov.f32	s14, #-3.0e+0
+ 864 0142 F4EEC77A 		vcmpe.f32	s15, s14
+ 865 0146 F1EE10FA 		vmrs	APSR_nzcv, FPSCR
+ 866 014a 18D5     		bpl	.L27
+ 159:User/Hardware/IMU_updata.c **** 		IMU_data.AHRS.yaw_rad_cnt += ((PI - IMU_data.AHRS.last_yaw) + (IMU_data.AHRS.yaw + PI));
+ 867              		.loc 1 159 16
+ 868 014c 344B     		ldr	r3, .L38+8
+ 869 014e 93ED2D7A 		vldr.32	s14, [r3, #180]
+ 870              		.loc 1 159 52
+ 871 0152 334B     		ldr	r3, .L38+8
+ 872 0154 D3ED2C7A 		vldr.32	s15, [r3, #176]
+ 873              		.loc 1 159 37
+ 874 0158 DFED3F6A 		vldr.32	s13, .L38+64
+ 875 015c 76EEE76A 		vsub.f32	s13, s13, s15
+ 876              		.loc 1 159 79
+ 877 0160 2F4B     		ldr	r3, .L38+8
+ 878 0162 D3ED297A 		vldr.32	s15, [r3, #164]
+ 879              		.loc 1 159 84
+ 880 0166 9FED3C6A 		vldr.32	s12, .L38+64
+ 881 016a 77EE867A 		vadd.f32	s15, s15, s12
+ 882              		.loc 1 159 63
+ 883 016e 76EEA77A 		vadd.f32	s15, s13, s15
+ 884              		.loc 1 159 29
+ 885 0172 77EE277A 		vadd.f32	s15, s14, s15
+ARM GAS  C:\Users\fffff\AppData\Local\Temp\ccBCDhmD.s 			page 20
+
+
+ 886 0176 2A4B     		ldr	r3, .L38+8
+ 887 0178 C3ED2D7A 		vstr.32	s15, [r3, #180]
+ 888 017c 3CE0     		b	.L30
+ 889              	.L27:
+ 160:User/Hardware/IMU_updata.c **** 	else if (IMU_data.AHRS.last_yaw < -3.0f && IMU_data.AHRS.yaw > 3.0f)
+ 890              		.loc 1 160 24
+ 891 017e 284B     		ldr	r3, .L38+8
+ 892 0180 D3ED2C7A 		vldr.32	s15, [r3, #176]
+ 893              		.loc 1 160 10
+ 894 0184 B8EE087A 		vmov.f32	s14, #-3.0e+0
+ 895 0188 F4EEC77A 		vcmpe.f32	s15, s14
+ 896 018c F1EE10FA 		vmrs	APSR_nzcv, FPSCR
+ 897 0190 22D5     		bpl	.L31
+ 898              		.loc 1 160 58 discriminator 1
+ 899 0192 234B     		ldr	r3, .L38+8
+ 900 0194 D3ED297A 		vldr.32	s15, [r3, #164]
+ 901              		.loc 1 160 42 discriminator 1
+ 902 0198 B0EE087A 		vmov.f32	s14, #3.0e+0
+ 903 019c F4EEC77A 		vcmpe.f32	s15, s14
+ 904 01a0 F1EE10FA 		vmrs	APSR_nzcv, FPSCR
+ 905 01a4 18DD     		ble	.L31
+ 161:User/Hardware/IMU_updata.c **** 		IMU_data.AHRS.yaw_rad_cnt -= ((PI + IMU_data.AHRS.last_yaw) + (PI - IMU_data.AHRS.yaw));
+ 906              		.loc 1 161 16
+ 907 01a6 1E4B     		ldr	r3, .L38+8
+ 908 01a8 93ED2D7A 		vldr.32	s14, [r3, #180]
+ 909              		.loc 1 161 52
+ 910 01ac 1C4B     		ldr	r3, .L38+8
+ 911 01ae D3ED2C7A 		vldr.32	s15, [r3, #176]
+ 912              		.loc 1 161 37
+ 913 01b2 DFED296A 		vldr.32	s13, .L38+64
+ 914 01b6 77EEA66A 		vadd.f32	s13, s15, s13
+ 915              		.loc 1 161 84
+ 916 01ba 194B     		ldr	r3, .L38+8
+ 917 01bc D3ED297A 		vldr.32	s15, [r3, #164]
+ 918              		.loc 1 161 69
+ 919 01c0 9FED256A 		vldr.32	s12, .L38+64
+ 920 01c4 76EE677A 		vsub.f32	s15, s12, s15
+ 921              		.loc 1 161 63
+ 922 01c8 76EEA77A 		vadd.f32	s15, s13, s15
+ 923              		.loc 1 161 29
+ 924 01cc 77EE677A 		vsub.f32	s15, s14, s15
+ 925 01d0 134B     		ldr	r3, .L38+8
+ 926 01d2 C3ED2D7A 		vstr.32	s15, [r3, #180]
+ 927 01d6 0FE0     		b	.L30
+ 928              	.L31:
+ 162:User/Hardware/IMU_updata.c **** 	else
+ 163:User/Hardware/IMU_updata.c **** 		IMU_data.AHRS.yaw_rad_cnt += (IMU_data.AHRS.yaw - IMU_data.AHRS.last_yaw);
+ 929              		.loc 1 163 16
+ 930 01d8 114B     		ldr	r3, .L38+8
+ 931 01da 93ED2D7A 		vldr.32	s14, [r3, #180]
+ 932              		.loc 1 163 46
+ 933 01de 104B     		ldr	r3, .L38+8
+ 934 01e0 D3ED296A 		vldr.32	s13, [r3, #164]
+ 935              		.loc 1 163 66
+ 936 01e4 0E4B     		ldr	r3, .L38+8
+ 937 01e6 D3ED2C7A 		vldr.32	s15, [r3, #176]
+ 938              		.loc 1 163 51
+ARM GAS  C:\Users\fffff\AppData\Local\Temp\ccBCDhmD.s 			page 21
+
+
+ 939 01ea 76EEE77A 		vsub.f32	s15, s13, s15
+ 940              		.loc 1 163 29
+ 941 01ee 77EE277A 		vadd.f32	s15, s14, s15
+ 942 01f2 0B4B     		ldr	r3, .L38+8
+ 943 01f4 C3ED2D7A 		vstr.32	s15, [r3, #180]
+ 944              	.L30:
+ 164:User/Hardware/IMU_updata.c **** 	IMU_data.AHRS.pitch*=-1;
+ 945              		.loc 1 164 15
+ 946 01f8 094B     		ldr	r3, .L38+8
+ 947 01fa D3ED287A 		vldr.32	s15, [r3, #160]
+ 948              		.loc 1 164 21
+ 949 01fe F1EE677A 		vneg.f32	s15, s15
+ 950 0202 074B     		ldr	r3, .L38+8
+ 951 0204 C3ED287A 		vstr.32	s15, [r3, #160]
+ 165:User/Hardware/IMU_updata.c **** 	IMU_data.AHRS.last_yaw = IMU_data.AHRS.yaw;
+ 952              		.loc 1 165 40
+ 953 0208 054B     		ldr	r3, .L38+8
+ 954 020a D3F8A430 		ldr	r3, [r3, #164]	@ float
+ 955              		.loc 1 165 25
+ 956 020e 044A     		ldr	r2, .L38+8
+ 957 0210 C2F8B030 		str	r3, [r2, #176]	@ float
+ 166:User/Hardware/IMU_updata.c **** }
+ 958              		.loc 1 166 1
+ 959 0214 00BF     		nop
+ 960 0216 80BD     		pop	{r7, pc}
+ 961              	.L39:
+ 962              		.align	2
+ 963              	.L38:
+ 964 0218 24000000 		.word	IMU_data+36
+ 965 021c 0C000000 		.word	IMU_data+12
+ 966 0220 00000000 		.word	IMU_data
+ 967 0224 00000000 		.word	accel_fliter_2
+ 968 0228 00000000 		.word	accel_fliter_1
+ 969 022c 00000000 		.word	accel_fliter_3
+ 970 0230 5AF8F63F 		.word	1073150042
+ 971 0234 5D896EBF 		.word	-1083274915
+ 972 0238 D5A9183B 		.word	991472085
+ 973 023c 18000000 		.word	IMU_data+24
+ 974 0240 6F12833A 		.word	981668463
+ 975 0244 90000000 		.word	IMU_data+144
+ 976 0248 00000000 		.word	last_time.1
+ 977 024c A0000000 		.word	IMU_data+160
+ 978 0250 A8000000 		.word	IMU_data+168
+ 979 0254 A4000000 		.word	IMU_data+164
+ 980 0258 DA0F4940 		.word	1078530010
+ 981              		.cfi_endproc
+ 982              	.LFE148:
+ 984              		.section	.text.rad2degree,"ax",%progbits
+ 985              		.align	1
+ 986              		.global	rad2degree
+ 987              		.syntax unified
+ 988              		.thumb
+ 989              		.thumb_func
+ 991              	rad2degree:
+ 992              	.LFB149:
+ 167:User/Hardware/IMU_updata.c **** 
+ 168:User/Hardware/IMU_updata.c **** float rad2degree(float a)
+ARM GAS  C:\Users\fffff\AppData\Local\Temp\ccBCDhmD.s 			page 22
+
+
+ 169:User/Hardware/IMU_updata.c **** {
+ 993              		.loc 1 169 1
+ 994              		.cfi_startproc
+ 995              		@ args = 0, pretend = 0, frame = 8
+ 996              		@ frame_needed = 1, uses_anonymous_args = 0
+ 997              		@ link register save eliminated.
+ 998 0000 80B4     		push	{r7}
+ 999              	.LCFI19:
+ 1000              		.cfi_def_cfa_offset 4
+ 1001              		.cfi_offset 7, -4
+ 1002 0002 83B0     		sub	sp, sp, #12
+ 1003              	.LCFI20:
+ 1004              		.cfi_def_cfa_offset 16
+ 1005 0004 00AF     		add	r7, sp, #0
+ 1006              	.LCFI21:
+ 1007              		.cfi_def_cfa_register 7
+ 1008 0006 87ED010A 		vstr.32	s0, [r7, #4]
+ 170:User/Hardware/IMU_updata.c **** 	return a / PI * 180.0f;
+ 1009              		.loc 1 170 11
+ 1010 000a 97ED017A 		vldr.32	s14, [r7, #4]
+ 1011 000e DFED076A 		vldr.32	s13, .L42
+ 1012 0012 C7EE267A 		vdiv.f32	s15, s14, s13
+ 1013              		.loc 1 170 16
+ 1014 0016 9FED067A 		vldr.32	s14, .L42+4
+ 1015 001a 67EE877A 		vmul.f32	s15, s15, s14
+ 171:User/Hardware/IMU_updata.c **** }
+ 1016              		.loc 1 171 1
+ 1017 001e B0EE670A 		vmov.f32	s0, s15
+ 1018 0022 0C37     		adds	r7, r7, #12
+ 1019              	.LCFI22:
+ 1020              		.cfi_def_cfa_offset 4
+ 1021 0024 BD46     		mov	sp, r7
+ 1022              	.LCFI23:
+ 1023              		.cfi_def_cfa_register 13
+ 1024              		@ sp needed
+ 1025 0026 5DF8047B 		ldr	r7, [sp], #4
+ 1026              	.LCFI24:
+ 1027              		.cfi_restore 7
+ 1028              		.cfi_def_cfa_offset 0
+ 1029 002a 7047     		bx	lr
+ 1030              	.L43:
+ 1031              		.align	2
+ 1032              	.L42:
+ 1033 002c DA0F4940 		.word	1078530010
+ 1034 0030 00003443 		.word	1127481344
+ 1035              		.cfi_endproc
+ 1036              	.LFE149:
+ 1038              		.section	.text.degree2rad,"ax",%progbits
+ 1039              		.align	1
+ 1040              		.global	degree2rad
+ 1041              		.syntax unified
+ 1042              		.thumb
+ 1043              		.thumb_func
+ 1045              	degree2rad:
+ 1046              	.LFB150:
+ 172:User/Hardware/IMU_updata.c **** float degree2rad(float a)
+ 173:User/Hardware/IMU_updata.c **** {
+ARM GAS  C:\Users\fffff\AppData\Local\Temp\ccBCDhmD.s 			page 23
+
+
+ 1047              		.loc 1 173 1
+ 1048              		.cfi_startproc
+ 1049              		@ args = 0, pretend = 0, frame = 8
+ 1050              		@ frame_needed = 1, uses_anonymous_args = 0
+ 1051              		@ link register save eliminated.
+ 1052 0000 80B4     		push	{r7}
+ 1053              	.LCFI25:
+ 1054              		.cfi_def_cfa_offset 4
+ 1055              		.cfi_offset 7, -4
+ 1056 0002 83B0     		sub	sp, sp, #12
+ 1057              	.LCFI26:
+ 1058              		.cfi_def_cfa_offset 16
+ 1059 0004 00AF     		add	r7, sp, #0
+ 1060              	.LCFI27:
+ 1061              		.cfi_def_cfa_register 7
+ 1062 0006 87ED010A 		vstr.32	s0, [r7, #4]
+ 174:User/Hardware/IMU_updata.c **** 	return a / 180.0f * PI;
+ 1063              		.loc 1 174 11
+ 1064 000a 97ED017A 		vldr.32	s14, [r7, #4]
+ 1065 000e DFED076A 		vldr.32	s13, .L46
+ 1066 0012 C7EE267A 		vdiv.f32	s15, s14, s13
+ 1067              		.loc 1 174 20
+ 1068 0016 9FED067A 		vldr.32	s14, .L46+4
+ 1069 001a 67EE877A 		vmul.f32	s15, s15, s14
+ 175:User/Hardware/IMU_updata.c **** }
+ 1070              		.loc 1 175 1
+ 1071 001e B0EE670A 		vmov.f32	s0, s15
+ 1072 0022 0C37     		adds	r7, r7, #12
+ 1073              	.LCFI28:
+ 1074              		.cfi_def_cfa_offset 4
+ 1075 0024 BD46     		mov	sp, r7
+ 1076              	.LCFI29:
+ 1077              		.cfi_def_cfa_register 13
+ 1078              		@ sp needed
+ 1079 0026 5DF8047B 		ldr	r7, [sp], #4
+ 1080              	.LCFI30:
+ 1081              		.cfi_restore 7
+ 1082              		.cfi_def_cfa_offset 0
+ 1083 002a 7047     		bx	lr
+ 1084              	.L47:
+ 1085              		.align	2
+ 1086              	.L46:
+ 1087 002c 00003443 		.word	1127481344
+ 1088 0030 DA0F4940 		.word	1078530010
+ 1089              		.cfi_endproc
+ 1090              	.LFE150:
+ 1092              		.section	.text.MagUpdate,"ax",%progbits
+ 1093              		.align	1
+ 1094              		.global	MagUpdate
+ 1095              		.syntax unified
+ 1096              		.thumb
+ 1097              		.thumb_func
+ 1099              	MagUpdate:
+ 1100              	.LFB151:
+ 176:User/Hardware/IMU_updata.c **** 
+ 177:User/Hardware/IMU_updata.c **** void MagUpdate() // 更新地磁计
+ 178:User/Hardware/IMU_updata.c **** {
+ARM GAS  C:\Users\fffff\AppData\Local\Temp\ccBCDhmD.s 			page 24
+
+
+ 1101              		.loc 1 178 1
+ 1102              		.cfi_startproc
+ 1103              		@ args = 0, pretend = 0, frame = 0
+ 1104              		@ frame_needed = 1, uses_anonymous_args = 0
+ 1105              		@ link register save eliminated.
+ 1106 0000 80B4     		push	{r7}
+ 1107              	.LCFI31:
+ 1108              		.cfi_def_cfa_offset 4
+ 1109              		.cfi_offset 7, -4
+ 1110 0002 00AF     		add	r7, sp, #0
+ 1111              	.LCFI32:
+ 1112              		.cfi_def_cfa_register 7
+ 179:User/Hardware/IMU_updata.c **** 	// ist8310_read_mag(IMU_data.mag);
+ 180:User/Hardware/IMU_updata.c **** }
+ 1113              		.loc 1 180 1
+ 1114 0004 00BF     		nop
+ 1115 0006 BD46     		mov	sp, r7
+ 1116              	.LCFI33:
+ 1117              		.cfi_def_cfa_register 13
+ 1118              		@ sp needed
+ 1119 0008 5DF8047B 		ldr	r7, [sp], #4
+ 1120              	.LCFI34:
+ 1121              		.cfi_restore 7
+ 1122              		.cfi_def_cfa_offset 0
+ 1123 000c 7047     		bx	lr
+ 1124              		.cfi_endproc
+ 1125              	.LFE151:
+ 1127              		.section	.text.MagZero,"ax",%progbits
+ 1128              		.align	1
+ 1129              		.global	MagZero
+ 1130              		.syntax unified
+ 1131              		.thumb
+ 1132              		.thumb_func
+ 1134              	MagZero:
+ 1135              	.LFB152:
+ 181:User/Hardware/IMU_updata.c **** void MagZero() // 清零地磁计
+ 182:User/Hardware/IMU_updata.c **** {
+ 1136              		.loc 1 182 1
+ 1137              		.cfi_startproc
+ 1138              		@ args = 0, pretend = 0, frame = 0
+ 1139              		@ frame_needed = 1, uses_anonymous_args = 0
+ 1140              		@ link register save eliminated.
+ 1141 0000 80B4     		push	{r7}
+ 1142              	.LCFI35:
+ 1143              		.cfi_def_cfa_offset 4
+ 1144              		.cfi_offset 7, -4
+ 1145 0002 00AF     		add	r7, sp, #0
+ 1146              	.LCFI36:
+ 1147              		.cfi_def_cfa_register 7
+ 183:User/Hardware/IMU_updata.c **** 	IMU_data.mag[0] = 0;
+ 1148              		.loc 1 183 18
+ 1149 0004 084B     		ldr	r3, .L50
+ 1150 0006 4FF00002 		mov	r2, #0
+ 1151 000a 9A61     		str	r2, [r3, #24]	@ float
+ 184:User/Hardware/IMU_updata.c **** 	IMU_data.mag[1] = 0;
+ 1152              		.loc 1 184 18
+ 1153 000c 064B     		ldr	r3, .L50
+ARM GAS  C:\Users\fffff\AppData\Local\Temp\ccBCDhmD.s 			page 25
+
+
+ 1154 000e 4FF00002 		mov	r2, #0
+ 1155 0012 DA61     		str	r2, [r3, #28]	@ float
+ 185:User/Hardware/IMU_updata.c **** 	IMU_data.mag[2] = 0;
+ 1156              		.loc 1 185 18
+ 1157 0014 044B     		ldr	r3, .L50
+ 1158 0016 4FF00002 		mov	r2, #0
+ 1159 001a 1A62     		str	r2, [r3, #32]	@ float
+ 186:User/Hardware/IMU_updata.c **** }
+ 1160              		.loc 1 186 1
+ 1161 001c 00BF     		nop
+ 1162 001e BD46     		mov	sp, r7
+ 1163              	.LCFI37:
+ 1164              		.cfi_def_cfa_register 13
+ 1165              		@ sp needed
+ 1166 0020 5DF8047B 		ldr	r7, [sp], #4
+ 1167              	.LCFI38:
+ 1168              		.cfi_restore 7
+ 1169              		.cfi_def_cfa_offset 0
+ 1170 0024 7047     		bx	lr
+ 1171              	.L51:
+ 1172 0026 00BF     		.align	2
+ 1173              	.L50:
+ 1174 0028 00000000 		.word	IMU_data
+ 1175              		.cfi_endproc
+ 1176              	.LFE152:
+ 1178              		.section	.text.IMU_heat_set,"ax",%progbits
+ 1179              		.align	1
+ 1180              		.global	IMU_heat_set
+ 1181              		.syntax unified
+ 1182              		.thumb
+ 1183              		.thumb_func
+ 1185              	IMU_heat_set:
+ 1186              	.LFB153:
+ 187:User/Hardware/IMU_updata.c **** // 设定加热的PWM占空比
+ 188:User/Hardware/IMU_updata.c **** void IMU_heat_set(uint16_t ccr)
+ 189:User/Hardware/IMU_updata.c **** {
+ 1187              		.loc 1 189 1
+ 1188              		.cfi_startproc
+ 1189              		@ args = 0, pretend = 0, frame = 8
+ 1190              		@ frame_needed = 1, uses_anonymous_args = 0
+ 1191              		@ link register save eliminated.
+ 1192 0000 80B4     		push	{r7}
+ 1193              	.LCFI39:
+ 1194              		.cfi_def_cfa_offset 4
+ 1195              		.cfi_offset 7, -4
+ 1196 0002 83B0     		sub	sp, sp, #12
+ 1197              	.LCFI40:
+ 1198              		.cfi_def_cfa_offset 16
+ 1199 0004 00AF     		add	r7, sp, #0
+ 1200              	.LCFI41:
+ 1201              		.cfi_def_cfa_register 7
+ 1202 0006 0346     		mov	r3, r0
+ 1203 0008 FB80     		strh	r3, [r7, #6]	@ movhi
+ 190:User/Hardware/IMU_updata.c **** 	if (ccr < 0)
+ 191:User/Hardware/IMU_updata.c **** 	{
+ 192:User/Hardware/IMU_updata.c **** 		ccr = 0;
+ 193:User/Hardware/IMU_updata.c **** 	}
+ARM GAS  C:\Users\fffff\AppData\Local\Temp\ccBCDhmD.s 			page 26
+
+
+ 194:User/Hardware/IMU_updata.c **** 	__HAL_TIM_SetCompare(&htim3, TIM_CHANNEL_4, ccr); // HAL库PWM的CCR设定
+ 1204              		.loc 1 194 2
+ 1205 000a 054B     		ldr	r3, .L53
+ 1206 000c 1B68     		ldr	r3, [r3]
+ 1207 000e FA88     		ldrh	r2, [r7, #6]
+ 1208 0010 1A64     		str	r2, [r3, #64]
+ 195:User/Hardware/IMU_updata.c **** 													  // TIM10->CCR1 = (pwm);
+ 196:User/Hardware/IMU_updata.c **** }
+ 1209              		.loc 1 196 1
+ 1210 0012 00BF     		nop
+ 1211 0014 0C37     		adds	r7, r7, #12
+ 1212              	.LCFI42:
+ 1213              		.cfi_def_cfa_offset 4
+ 1214 0016 BD46     		mov	sp, r7
+ 1215              	.LCFI43:
+ 1216              		.cfi_def_cfa_register 13
+ 1217              		@ sp needed
+ 1218 0018 5DF8047B 		ldr	r7, [sp], #4
+ 1219              	.LCFI44:
+ 1220              		.cfi_restore 7
+ 1221              		.cfi_def_cfa_offset 0
+ 1222 001c 7047     		bx	lr
+ 1223              	.L54:
+ 1224 001e 00BF     		.align	2
+ 1225              	.L53:
+ 1226 0020 00000000 		.word	htim3
+ 1227              		.cfi_endproc
+ 1228              	.LFE153:
+ 1230              		.section	.text.imu_temp_control,"ax",%progbits
+ 1231              		.align	1
+ 1232              		.syntax unified
+ 1233              		.thumb
+ 1234              		.thumb_func
+ 1236              	imu_temp_control:
+ 1237              	.LFB154:
+ 197:User/Hardware/IMU_updata.c **** 
+ 198:User/Hardware/IMU_updata.c **** /**
+ 199:User/Hardware/IMU_updata.c ****  * @brief          控制bmi088的温度
+ 200:User/Hardware/IMU_updata.c ****  * @param[in]      temp:bmi088的温度
+ 201:User/Hardware/IMU_updata.c ****  * @retval         none
+ 202:User/Hardware/IMU_updata.c ****  */
+ 203:User/Hardware/IMU_updata.c **** static void imu_temp_control(fp32 temp)
+ 204:User/Hardware/IMU_updata.c **** {
+ 1238              		.loc 1 204 1
+ 1239              		.cfi_startproc
+ 1240              		@ args = 0, pretend = 0, frame = 16
+ 1241              		@ frame_needed = 1, uses_anonymous_args = 0
+ 1242 0000 80B5     		push	{r7, lr}
+ 1243              	.LCFI45:
+ 1244              		.cfi_def_cfa_offset 8
+ 1245              		.cfi_offset 7, -8
+ 1246              		.cfi_offset 14, -4
+ 1247 0002 84B0     		sub	sp, sp, #16
+ 1248              	.LCFI46:
+ 1249              		.cfi_def_cfa_offset 24
+ 1250 0004 00AF     		add	r7, sp, #0
+ 1251              	.LCFI47:
+ARM GAS  C:\Users\fffff\AppData\Local\Temp\ccBCDhmD.s 			page 27
+
+
+ 1252              		.cfi_def_cfa_register 7
+ 1253 0006 87ED010A 		vstr.32	s0, [r7, #4]
+ 205:User/Hardware/IMU_updata.c **** 	uint16_t tempPWM;
+ 206:User/Hardware/IMU_updata.c **** 	static uint8_t temp_constant_time = 0;
+ 207:User/Hardware/IMU_updata.c **** 	if(first_temperate)
+ 1254              		.loc 1 207 5
+ 1255 000a 134B     		ldr	r3, .L61
+ 1256 000c 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 1257              		.loc 1 207 4
+ 1258 000e 002B     		cmp	r3, #0
+ 1259 0010 1ED0     		beq	.L60
+ 208:User/Hardware/IMU_updata.c **** 	{
+ 209:User/Hardware/IMU_updata.c **** 		pid_cal(&IMU_tempure_pid, temp, 45);
+ 1260              		.loc 1 209 3
+ 1261 0012 DFED120A 		vldr.32	s1, .L61+4
+ 1262 0016 97ED010A 		vldr.32	s0, [r7, #4]
+ 1263 001a 1148     		ldr	r0, .L61+8
+ 1264 001c FFF7FEFF 		bl	pid_cal
+ 210:User/Hardware/IMU_updata.c **** 
+ 211:User/Hardware/IMU_updata.c **** 		if (IMU_tempure_pid.total_out < 0.0f)
+ 1265              		.loc 1 211 22
+ 1266 0020 0F4B     		ldr	r3, .L61+8
+ 1267 0022 D3ED0A7A 		vldr.32	s15, [r3, #40]
+ 1268              		.loc 1 211 6
+ 1269 0026 F5EEC07A 		vcmpe.f32	s15, #0
+ 1270 002a F1EE10FA 		vmrs	APSR_nzcv, FPSCR
+ 1271 002e 03D5     		bpl	.L57
+ 212:User/Hardware/IMU_updata.c **** 		{
+ 213:User/Hardware/IMU_updata.c **** 			IMU_tempure_pid.total_out = 0.0f;
+ 1272              		.loc 1 213 30
+ 1273 0030 0B4B     		ldr	r3, .L61+8
+ 1274 0032 4FF00002 		mov	r2, #0
+ 1275 0036 9A62     		str	r2, [r3, #40]	@ float
+ 1276              	.L57:
+ 214:User/Hardware/IMU_updata.c **** 		}
+ 215:User/Hardware/IMU_updata.c **** 		tempPWM = (uint16_t)IMU_tempure_pid.total_out;
+ 1277              		.loc 1 215 38
+ 1278 0038 094B     		ldr	r3, .L61+8
+ 1279 003a D3ED0A7A 		vldr.32	s15, [r3, #40]
+ 1280              		.loc 1 215 11
+ 1281 003e FCEEE77A 		vcvt.u32.f32	s15, s15
+ 1282 0042 17EE903A 		vmov	r3, s15	@ int
+ 1283 0046 FB81     		strh	r3, [r7, #14]	@ movhi
+ 216:User/Hardware/IMU_updata.c **** 		IMU_heat_set(tempPWM);
+ 1284              		.loc 1 216 3
+ 1285 0048 FB89     		ldrh	r3, [r7, #14]
+ 1286 004a 1846     		mov	r0, r3
+ 1287 004c FFF7FEFF 		bl	IMU_heat_set
+ 1288              	.L60:
+ 217:User/Hardware/IMU_updata.c **** 	}
+ 218:User/Hardware/IMU_updata.c **** 	
+ 219:User/Hardware/IMU_updata.c **** }
+ 1289              		.loc 1 219 1
+ 1290 0050 00BF     		nop
+ 1291 0052 1037     		adds	r7, r7, #16
+ 1292              	.LCFI48:
+ 1293              		.cfi_def_cfa_offset 8
+ARM GAS  C:\Users\fffff\AppData\Local\Temp\ccBCDhmD.s 			page 28
+
+
+ 1294 0054 BD46     		mov	sp, r7
+ 1295              	.LCFI49:
+ 1296              		.cfi_def_cfa_register 13
+ 1297              		@ sp needed
+ 1298 0056 80BD     		pop	{r7, pc}
+ 1299              	.L62:
+ 1300              		.align	2
+ 1301              	.L61:
+ 1302 0058 00000000 		.word	first_temperate
+ 1303 005c 00003442 		.word	1110704128
+ 1304 0060 00000000 		.word	IMU_tempure_pid
+ 1305              		.cfi_endproc
+ 1306              	.LFE154:
+ 1308              		.section	.text.imu_cail_program,"ax",%progbits
+ 1309              		.align	1
+ 1310              		.global	imu_cail_program
+ 1311              		.syntax unified
+ 1312              		.thumb
+ 1313              		.thumb_func
+ 1315              	imu_cail_program:
+ 1316              	.LFB155:
+ 220:User/Hardware/IMU_updata.c **** 
+ 221:User/Hardware/IMU_updata.c **** void imu_cail_program(void) // 陀螺仪校准程序，放在闲置任务里面，需要的时候校准一次算出平均数值加上
+ 222:User/Hardware/IMU_updata.c **** {
+ 1317              		.loc 1 222 1
+ 1318              		.cfi_startproc
+ 1319              		@ args = 0, pretend = 0, frame = 16
+ 1320              		@ frame_needed = 1, uses_anonymous_args = 0
+ 1321              		@ link register save eliminated.
+ 1322 0000 80B4     		push	{r7}
+ 1323              	.LCFI50:
+ 1324              		.cfi_def_cfa_offset 4
+ 1325              		.cfi_offset 7, -4
+ 1326 0002 85B0     		sub	sp, sp, #20
+ 1327              	.LCFI51:
+ 1328              		.cfi_def_cfa_offset 24
+ 1329 0004 00AF     		add	r7, sp, #0
+ 1330              	.LCFI52:
+ 1331              		.cfi_def_cfa_register 7
+ 223:User/Hardware/IMU_updata.c **** 	IMU_data.calibration[0] = 0;
+ 1332              		.loc 1 223 26
+ 1333 0006 4B4B     		ldr	r3, .L76
+ 1334 0008 4FF00002 		mov	r2, #0
+ 1335 000c 9A62     		str	r2, [r3, #40]	@ float
+ 224:User/Hardware/IMU_updata.c **** 	IMU_data.calibration[1] = 0;
+ 1336              		.loc 1 224 26
+ 1337 000e 494B     		ldr	r3, .L76
+ 1338 0010 4FF00002 		mov	r2, #0
+ 1339 0014 DA62     		str	r2, [r3, #44]	@ float
+ 225:User/Hardware/IMU_updata.c **** 	IMU_data.calibration[2] = 0;
+ 1340              		.loc 1 225 26
+ 1341 0016 474B     		ldr	r3, .L76
+ 1342 0018 4FF00002 		mov	r2, #0
+ 1343 001c 1A63     		str	r2, [r3, #48]	@ float
+ 1344              	.LBB2:
+ 226:User/Hardware/IMU_updata.c **** 	for (int i = 0; i < 1000;)
+ 1345              		.loc 1 226 11
+ARM GAS  C:\Users\fffff\AppData\Local\Temp\ccBCDhmD.s 			page 29
+
+
+ 1346 001e 0023     		movs	r3, #0
+ 1347 0020 FB60     		str	r3, [r7, #12]
+ 1348              		.loc 1 226 2
+ 1349 0022 58E0     		b	.L64
+ 1350              	.L70:
+ 1351              	.LBB3:
+ 227:User/Hardware/IMU_updata.c **** 	{
+ 228:User/Hardware/IMU_updata.c **** 		float x_ = IMU_data.gyro[0];
+ 1352              		.loc 1 228 9
+ 1353 0024 434B     		ldr	r3, .L76
+ 1354 0026 1B68     		ldr	r3, [r3]	@ float
+ 1355 0028 BB60     		str	r3, [r7, #8]	@ float
+ 229:User/Hardware/IMU_updata.c **** 		float y_ = IMU_data.gyro[1];
+ 1356              		.loc 1 229 9
+ 1357 002a 424B     		ldr	r3, .L76
+ 1358 002c 5B68     		ldr	r3, [r3, #4]	@ float
+ 1359 002e 7B60     		str	r3, [r7, #4]	@ float
+ 230:User/Hardware/IMU_updata.c **** 		float z_ = IMU_data.gyro[2];
+ 1360              		.loc 1 230 9
+ 1361 0030 404B     		ldr	r3, .L76
+ 1362 0032 9B68     		ldr	r3, [r3, #8]	@ float
+ 1363 0034 3B60     		str	r3, [r7]	@ float
+ 231:User/Hardware/IMU_updata.c **** 		if (fabs(x_) > 1.0f && fabs(y_) > 1.0f && fabs(z_) > 1.0f)
+ 1364              		.loc 1 231 7
+ 1365 0036 D7ED027A 		vldr.32	s15, [r7, #8]
+ 1366 003a F0EEE77A 		vabs.f32	s15, s15
+ 1367              		.loc 1 231 6
+ 1368 003e B7EE007A 		vmov.f32	s14, #1.0e+0
+ 1369 0042 F4EEC77A 		vcmpe.f32	s15, s14
+ 1370 0046 F1EE10FA 		vmrs	APSR_nzcv, FPSCR
+ 1371 004a 15DD     		ble	.L65
+ 1372              		.loc 1 231 26 discriminator 1
+ 1373 004c D7ED017A 		vldr.32	s15, [r7, #4]
+ 1374 0050 F0EEE77A 		vabs.f32	s15, s15
+ 1375              		.loc 1 231 23 discriminator 1
+ 1376 0054 B7EE007A 		vmov.f32	s14, #1.0e+0
+ 1377 0058 F4EEC77A 		vcmpe.f32	s15, s14
+ 1378 005c F1EE10FA 		vmrs	APSR_nzcv, FPSCR
+ 1379 0060 0ADD     		ble	.L65
+ 1380              		.loc 1 231 45 discriminator 2
+ 1381 0062 D7ED007A 		vldr.32	s15, [r7]
+ 1382 0066 F0EEE77A 		vabs.f32	s15, s15
+ 1383              		.loc 1 231 42 discriminator 2
+ 1384 006a B7EE007A 		vmov.f32	s14, #1.0e+0
+ 1385 006e F4EEC77A 		vcmpe.f32	s15, s14
+ 1386 0072 F1EE10FA 		vmrs	APSR_nzcv, FPSCR
+ 1387 0076 2DDC     		bgt	.L74
+ 1388              	.L65:
+ 232:User/Hardware/IMU_updata.c **** 			continue;
+ 233:User/Hardware/IMU_updata.c **** 		IMU_data.calibration[0] += x_ / 1000.0f;
+ 1389              		.loc 1 233 23
+ 1390 0078 2E4B     		ldr	r3, .L76
+ 1391 007a 93ED0A7A 		vldr.32	s14, [r3, #40]
+ 1392              		.loc 1 233 33
+ 1393 007e D7ED026A 		vldr.32	s13, [r7, #8]
+ 1394 0082 9FED2D6A 		vldr.32	s12, .L76+4
+ 1395 0086 C6EE867A 		vdiv.f32	s15, s13, s12
+ARM GAS  C:\Users\fffff\AppData\Local\Temp\ccBCDhmD.s 			page 30
+
+
+ 1396              		.loc 1 233 27
+ 1397 008a 77EE277A 		vadd.f32	s15, s14, s15
+ 1398 008e 294B     		ldr	r3, .L76
+ 1399 0090 C3ED0A7A 		vstr.32	s15, [r3, #40]
+ 234:User/Hardware/IMU_updata.c **** 		IMU_data.calibration[1] += y_ / 1000.0f;
+ 1400              		.loc 1 234 23
+ 1401 0094 274B     		ldr	r3, .L76
+ 1402 0096 93ED0B7A 		vldr.32	s14, [r3, #44]
+ 1403              		.loc 1 234 33
+ 1404 009a D7ED016A 		vldr.32	s13, [r7, #4]
+ 1405 009e 9FED266A 		vldr.32	s12, .L76+4
+ 1406 00a2 C6EE867A 		vdiv.f32	s15, s13, s12
+ 1407              		.loc 1 234 27
+ 1408 00a6 77EE277A 		vadd.f32	s15, s14, s15
+ 1409 00aa 224B     		ldr	r3, .L76
+ 1410 00ac C3ED0B7A 		vstr.32	s15, [r3, #44]
+ 235:User/Hardware/IMU_updata.c **** 		IMU_data.calibration[2] += z_ / 1000.0f;
+ 1411              		.loc 1 235 23
+ 1412 00b0 204B     		ldr	r3, .L76
+ 1413 00b2 93ED0C7A 		vldr.32	s14, [r3, #48]
+ 1414              		.loc 1 235 33
+ 1415 00b6 D7ED006A 		vldr.32	s13, [r7]
+ 1416 00ba 9FED1F6A 		vldr.32	s12, .L76+4
+ 1417 00be C6EE867A 		vdiv.f32	s15, s13, s12
+ 1418              		.loc 1 235 27
+ 1419 00c2 77EE277A 		vadd.f32	s15, s14, s15
+ 1420 00c6 1B4B     		ldr	r3, .L76
+ 1421 00c8 C3ED0C7A 		vstr.32	s15, [r3, #48]
+ 236:User/Hardware/IMU_updata.c **** 		i++;
+ 1422              		.loc 1 236 4
+ 1423 00cc FB68     		ldr	r3, [r7, #12]
+ 1424 00ce 0133     		adds	r3, r3, #1
+ 1425 00d0 FB60     		str	r3, [r7, #12]
+ 1426 00d2 00E0     		b	.L64
+ 1427              	.L74:
+ 232:User/Hardware/IMU_updata.c **** 		IMU_data.calibration[0] += x_ / 1000.0f;
+ 1428              		.loc 1 232 4
+ 1429 00d4 00BF     		nop
+ 1430              	.L64:
+ 1431              	.LBE3:
+ 226:User/Hardware/IMU_updata.c **** 	{
+ 1432              		.loc 1 226 20 discriminator 1
+ 1433 00d6 FB68     		ldr	r3, [r7, #12]
+ 1434 00d8 B3F57A7F 		cmp	r3, #1000
+ 1435 00dc A2DB     		blt	.L70
+ 1436              	.LBE2:
+ 237:User/Hardware/IMU_updata.c **** 	}
+ 238:User/Hardware/IMU_updata.c **** 	if (IMU_data.calibration[0] != 0 && IMU_data.calibration[1] != 0 && IMU_data.calibration[2] != 0)
+ 1437              		.loc 1 238 26
+ 1438 00de 154B     		ldr	r3, .L76
+ 1439 00e0 D3ED0A7A 		vldr.32	s15, [r3, #40]
+ 1440              		.loc 1 238 5
+ 1441 00e4 F5EE407A 		vcmp.f32	s15, #0
+ 1442 00e8 F1EE10FA 		vmrs	APSR_nzcv, FPSCR
+ 1443 00ec 1BD0     		beq	.L75
+ 1444              		.loc 1 238 58 discriminator 1
+ 1445 00ee 114B     		ldr	r3, .L76
+ARM GAS  C:\Users\fffff\AppData\Local\Temp\ccBCDhmD.s 			page 31
+
+
+ 1446 00f0 D3ED0B7A 		vldr.32	s15, [r3, #44]
+ 1447              		.loc 1 238 35 discriminator 1
+ 1448 00f4 F5EE407A 		vcmp.f32	s15, #0
+ 1449 00f8 F1EE10FA 		vmrs	APSR_nzcv, FPSCR
+ 1450 00fc 13D0     		beq	.L75
+ 1451              		.loc 1 238 90 discriminator 2
+ 1452 00fe 0D4B     		ldr	r3, .L76
+ 1453 0100 D3ED0C7A 		vldr.32	s15, [r3, #48]
+ 1454              		.loc 1 238 67 discriminator 2
+ 1455 0104 F5EE407A 		vcmp.f32	s15, #0
+ 1456 0108 F1EE10FA 		vmrs	APSR_nzcv, FPSCR
+ 1457 010c 0BD0     		beq	.L75
+ 239:User/Hardware/IMU_updata.c **** 	{
+ 240:User/Hardware/IMU_updata.c **** 		IMU_data.cali_end[0] = IMU_data.calibration[0];
+ 1458              		.loc 1 240 46
+ 1459 010e 094B     		ldr	r3, .L76
+ 1460 0110 9B6A     		ldr	r3, [r3, #40]	@ float
+ 1461              		.loc 1 240 24
+ 1462 0112 084A     		ldr	r2, .L76
+ 1463 0114 5363     		str	r3, [r2, #52]	@ float
+ 241:User/Hardware/IMU_updata.c **** 		IMU_data.cali_end[1] = IMU_data.calibration[1];
+ 1464              		.loc 1 241 46
+ 1465 0116 074B     		ldr	r3, .L76
+ 1466 0118 DB6A     		ldr	r3, [r3, #44]	@ float
+ 1467              		.loc 1 241 24
+ 1468 011a 064A     		ldr	r2, .L76
+ 1469 011c 9363     		str	r3, [r2, #56]	@ float
+ 242:User/Hardware/IMU_updata.c **** 		IMU_data.cali_end[2] = IMU_data.calibration[2];
+ 1470              		.loc 1 242 46
+ 1471 011e 054B     		ldr	r3, .L76
+ 1472 0120 1B6B     		ldr	r3, [r3, #48]	@ float
+ 1473              		.loc 1 242 24
+ 1474 0122 044A     		ldr	r2, .L76
+ 1475 0124 D363     		str	r3, [r2, #60]	@ float
+ 1476              	.L75:
+ 243:User/Hardware/IMU_updata.c **** 	}
+ 244:User/Hardware/IMU_updata.c **** }
+ 1477              		.loc 1 244 1
+ 1478 0126 00BF     		nop
+ 1479 0128 1437     		adds	r7, r7, #20
+ 1480              	.LCFI53:
+ 1481              		.cfi_def_cfa_offset 4
+ 1482 012a BD46     		mov	sp, r7
+ 1483              	.LCFI54:
+ 1484              		.cfi_def_cfa_register 13
+ 1485              		@ sp needed
+ 1486 012c 5DF8047B 		ldr	r7, [sp], #4
+ 1487              	.LCFI55:
+ 1488              		.cfi_restore 7
+ 1489              		.cfi_def_cfa_offset 0
+ 1490 0130 7047     		bx	lr
+ 1491              	.L77:
+ 1492 0132 00BF     		.align	2
+ 1493              	.L76:
+ 1494 0134 00000000 		.word	IMU_data
+ 1495 0138 00007A44 		.word	1148846080
+ 1496              		.cfi_endproc
+ARM GAS  C:\Users\fffff\AppData\Local\Temp\ccBCDhmD.s 			page 32
+
+
+ 1497              	.LFE155:
+ 1499              		.section	.text.IMU_offest,"ax",%progbits
+ 1500              		.align	1
+ 1501              		.global	IMU_offest
+ 1502              		.syntax unified
+ 1503              		.thumb
+ 1504              		.thumb_func
+ 1506              	IMU_offest:
+ 1507              	.LFB156:
+ 245:User/Hardware/IMU_updata.c **** 
+ 246:User/Hardware/IMU_updata.c **** void IMU_offest()
+ 247:User/Hardware/IMU_updata.c **** {
+ 1508              		.loc 1 247 1
+ 1509              		.cfi_startproc
+ 1510              		@ args = 0, pretend = 0, frame = 16
+ 1511              		@ frame_needed = 1, uses_anonymous_args = 0
+ 1512              		@ link register save eliminated.
+ 1513 0000 80B4     		push	{r7}
+ 1514              	.LCFI56:
+ 1515              		.cfi_def_cfa_offset 4
+ 1516              		.cfi_offset 7, -4
+ 1517 0002 85B0     		sub	sp, sp, #20
+ 1518              	.LCFI57:
+ 1519              		.cfi_def_cfa_offset 24
+ 1520 0004 00AF     		add	r7, sp, #0
+ 1521              	.LCFI58:
+ 1522              		.cfi_def_cfa_register 7
+ 248:User/Hardware/IMU_updata.c **** 	if (fabs(IMU_data.gyro[0]) > 1.0f && fabs(IMU_data.gyro[1]) > 1.0f && fabs(IMU_data.gyro[2]) > 1.0
+ 1523              		.loc 1 248 24
+ 1524 0006 784B     		ldr	r3, .L95+24
+ 1525 0008 D3ED007A 		vldr.32	s15, [r3]
+ 1526              		.loc 1 248 6
+ 1527 000c F0EEE77A 		vabs.f32	s15, s15
+ 1528              		.loc 1 248 5
+ 1529 0010 B7EE007A 		vmov.f32	s14, #1.0e+0
+ 1530 0014 F4EEC77A 		vcmpe.f32	s15, s14
+ 1531 0018 F1EE10FA 		vmrs	APSR_nzcv, FPSCR
+ 1532 001c 18DD     		ble	.L79
+ 1533              		.loc 1 248 57 discriminator 1
+ 1534 001e 724B     		ldr	r3, .L95+24
+ 1535 0020 D3ED017A 		vldr.32	s15, [r3, #4]
+ 1536              		.loc 1 248 39 discriminator 1
+ 1537 0024 F0EEE77A 		vabs.f32	s15, s15
+ 1538              		.loc 1 248 36 discriminator 1
+ 1539 0028 B7EE007A 		vmov.f32	s14, #1.0e+0
+ 1540 002c F4EEC77A 		vcmpe.f32	s15, s14
+ 1541 0030 F1EE10FA 		vmrs	APSR_nzcv, FPSCR
+ 1542 0034 0CDD     		ble	.L79
+ 1543              		.loc 1 248 90 discriminator 2
+ 1544 0036 6C4B     		ldr	r3, .L95+24
+ 1545 0038 D3ED027A 		vldr.32	s15, [r3, #8]
+ 1546              		.loc 1 248 72 discriminator 2
+ 1547 003c F0EEE77A 		vabs.f32	s15, s15
+ 1548              		.loc 1 248 69 discriminator 2
+ 1549 0040 B7EE007A 		vmov.f32	s14, #1.0e+0
+ 1550 0044 F4EEC77A 		vcmpe.f32	s15, s14
+ 1551 0048 F1EE10FA 		vmrs	APSR_nzcv, FPSCR
+ARM GAS  C:\Users\fffff\AppData\Local\Temp\ccBCDhmD.s 			page 33
+
+
+ 1552 004c 00F38C80 		bgt	.L83
+ 1553              	.L79:
+ 1554              	.LBB4:
+ 249:User/Hardware/IMU_updata.c **** 	{
+ 250:User/Hardware/IMU_updata.c **** 	}
+ 251:User/Hardware/IMU_updata.c **** 	else
+ 252:User/Hardware/IMU_updata.c **** 	{
+ 253:User/Hardware/IMU_updata.c **** 		for (int j = 0; j < 1000;)
+ 1555              		.loc 1 253 12
+ 1556 0050 0023     		movs	r3, #0
+ 1557 0052 FB60     		str	r3, [r7, #12]
+ 1558              		.loc 1 253 3
+ 1559 0054 83E0     		b	.L84
+ 1560              	.L89:
+ 1561              	.LBB5:
+ 254:User/Hardware/IMU_updata.c **** 		{
+ 255:User/Hardware/IMU_updata.c **** 			float x_ = IMU_data.gyro[0];
+ 1562              		.loc 1 255 10
+ 1563 0056 644B     		ldr	r3, .L95+24
+ 1564 0058 1B68     		ldr	r3, [r3]	@ float
+ 1565 005a BB60     		str	r3, [r7, #8]	@ float
+ 256:User/Hardware/IMU_updata.c **** 			float y_ = IMU_data.gyro[1];
+ 1566              		.loc 1 256 10
+ 1567 005c 624B     		ldr	r3, .L95+24
+ 1568 005e 5B68     		ldr	r3, [r3, #4]	@ float
+ 1569 0060 7B60     		str	r3, [r7, #4]	@ float
+ 257:User/Hardware/IMU_updata.c **** 			float z_ = IMU_data.gyro[2];
+ 1570              		.loc 1 257 10
+ 1571 0062 614B     		ldr	r3, .L95+24
+ 1572 0064 9B68     		ldr	r3, [r3, #8]	@ float
+ 1573 0066 3B60     		str	r3, [r7]	@ float
+ 258:User/Hardware/IMU_updata.c **** 
+ 259:User/Hardware/IMU_updata.c **** 			if (fabs(IMU_data.gyro[0]) > 1.0f && fabs(IMU_data.gyro[1]) > 1.0f && fabs(IMU_data.gyro[2]) > 1
+ 1574              		.loc 1 259 26
+ 1575 0068 5F4B     		ldr	r3, .L95+24
+ 1576 006a D3ED007A 		vldr.32	s15, [r3]
+ 1577              		.loc 1 259 8
+ 1578 006e F0EEE77A 		vabs.f32	s15, s15
+ 1579              		.loc 1 259 7
+ 1580 0072 B7EE007A 		vmov.f32	s14, #1.0e+0
+ 1581 0076 F4EEC77A 		vcmpe.f32	s15, s14
+ 1582 007a F1EE10FA 		vmrs	APSR_nzcv, FPSCR
+ 1583 007e 41DD     		ble	.L85
+ 1584              		.loc 1 259 59 discriminator 1
+ 1585 0080 594B     		ldr	r3, .L95+24
+ 1586 0082 D3ED017A 		vldr.32	s15, [r3, #4]
+ 1587              		.loc 1 259 41 discriminator 1
+ 1588 0086 F0EEE77A 		vabs.f32	s15, s15
+ 1589              		.loc 1 259 38 discriminator 1
+ 1590 008a B7EE007A 		vmov.f32	s14, #1.0e+0
+ 1591 008e F4EEC77A 		vcmpe.f32	s15, s14
+ 1592 0092 F1EE10FA 		vmrs	APSR_nzcv, FPSCR
+ 1593 0096 35DD     		ble	.L85
+ 1594              		.loc 1 259 92 discriminator 2
+ 1595 0098 534B     		ldr	r3, .L95+24
+ 1596 009a D3ED027A 		vldr.32	s15, [r3, #8]
+ 1597              		.loc 1 259 74 discriminator 2
+ARM GAS  C:\Users\fffff\AppData\Local\Temp\ccBCDhmD.s 			page 34
+
+
+ 1598 009e F0EEE77A 		vabs.f32	s15, s15
+ 1599              		.loc 1 259 71 discriminator 2
+ 1600 00a2 B7EE007A 		vmov.f32	s14, #1.0e+0
+ 1601 00a6 F4EEC77A 		vcmpe.f32	s15, s14
+ 1602 00aa F1EE10FA 		vmrs	APSR_nzcv, FPSCR
+ 1603 00ae 29DD     		ble	.L85
+ 260:User/Hardware/IMU_updata.c **** 			{
+ 261:User/Hardware/IMU_updata.c **** 				IMU_data.gyro[0] -= 0.007288707553;
+ 1604              		.loc 1 261 18
+ 1605 00b0 4D4B     		ldr	r3, .L95+24
+ 1606 00b2 D3ED007A 		vldr.32	s15, [r3]
+ 1607 00b6 B7EEE77A 		vcvt.f64.f32	d7, s15
+ 1608              		.loc 1 261 22
+ 1609 00ba 9FED456B 		vldr.64	d6, .L95
+ 1610 00be 37EE467B 		vsub.f64	d7, d7, d6
+ 1611 00c2 F7EEC77B 		vcvt.f32.f64	s15, d7
+ 1612 00c6 484B     		ldr	r3, .L95+24
+ 1613 00c8 C3ED007A 		vstr.32	s15, [r3]
+ 262:User/Hardware/IMU_updata.c **** 				IMU_data.gyro[1] -= -0.00267180009;
+ 1614              		.loc 1 262 18
+ 1615 00cc 464B     		ldr	r3, .L95+24
+ 1616 00ce D3ED017A 		vldr.32	s15, [r3, #4]
+ 1617 00d2 B7EEE77A 		vcvt.f64.f32	d7, s15
+ 1618              		.loc 1 262 22
+ 1619 00d6 9FED406B 		vldr.64	d6, .L95+8
+ 1620 00da 37EE067B 		vadd.f64	d7, d7, d6
+ 1621 00de F7EEC77B 		vcvt.f32.f64	s15, d7
+ 1622 00e2 414B     		ldr	r3, .L95+24
+ 1623 00e4 C3ED017A 		vstr.32	s15, [r3, #4]
+ 263:User/Hardware/IMU_updata.c **** 				IMU_data.gyro[2] -= 0.90244110504;
+ 1624              		.loc 1 263 18
+ 1625 00e8 3F4B     		ldr	r3, .L95+24
+ 1626 00ea D3ED027A 		vldr.32	s15, [r3, #8]
+ 1627 00ee B7EEE77A 		vcvt.f64.f32	d7, s15
+ 1628              		.loc 1 263 22
+ 1629 00f2 9FED3B6B 		vldr.64	d6, .L95+16
+ 1630 00f6 37EE467B 		vsub.f64	d7, d7, d6
+ 1631 00fa F7EEC77B 		vcvt.f32.f64	s15, d7
+ 1632 00fe 3A4B     		ldr	r3, .L95+24
+ 1633 0100 C3ED027A 		vstr.32	s15, [r3, #8]
+ 1634              	.L85:
+ 264:User/Hardware/IMU_updata.c **** 			}
+ 265:User/Hardware/IMU_updata.c **** 
+ 266:User/Hardware/IMU_updata.c **** 			IMU_data.calibration[0] += x_ / 1000.0f;
+ 1635              		.loc 1 266 24
+ 1636 0104 384B     		ldr	r3, .L95+24
+ 1637 0106 93ED0A7A 		vldr.32	s14, [r3, #40]
+ 1638              		.loc 1 266 34
+ 1639 010a D7ED026A 		vldr.32	s13, [r7, #8]
+ 1640 010e 9FED376A 		vldr.32	s12, .L95+28
+ 1641 0112 C6EE867A 		vdiv.f32	s15, s13, s12
+ 1642              		.loc 1 266 28
+ 1643 0116 77EE277A 		vadd.f32	s15, s14, s15
+ 1644 011a 334B     		ldr	r3, .L95+24
+ 1645 011c C3ED0A7A 		vstr.32	s15, [r3, #40]
+ 267:User/Hardware/IMU_updata.c **** 			IMU_data.calibration[1] += y_ / 1000.0f;
+ 1646              		.loc 1 267 24
+ARM GAS  C:\Users\fffff\AppData\Local\Temp\ccBCDhmD.s 			page 35
+
+
+ 1647 0120 314B     		ldr	r3, .L95+24
+ 1648 0122 93ED0B7A 		vldr.32	s14, [r3, #44]
+ 1649              		.loc 1 267 34
+ 1650 0126 D7ED016A 		vldr.32	s13, [r7, #4]
+ 1651 012a 9FED306A 		vldr.32	s12, .L95+28
+ 1652 012e C6EE867A 		vdiv.f32	s15, s13, s12
+ 1653              		.loc 1 267 28
+ 1654 0132 77EE277A 		vadd.f32	s15, s14, s15
+ 1655 0136 2C4B     		ldr	r3, .L95+24
+ 1656 0138 C3ED0B7A 		vstr.32	s15, [r3, #44]
+ 268:User/Hardware/IMU_updata.c **** 			IMU_data.calibration[2] += z_ / 1000.0f;
+ 1657              		.loc 1 268 24
+ 1658 013c 2A4B     		ldr	r3, .L95+24
+ 1659 013e 93ED0C7A 		vldr.32	s14, [r3, #48]
+ 1660              		.loc 1 268 34
+ 1661 0142 D7ED006A 		vldr.32	s13, [r7]
+ 1662 0146 9FED296A 		vldr.32	s12, .L95+28
+ 1663 014a C6EE867A 		vdiv.f32	s15, s13, s12
+ 1664              		.loc 1 268 28
+ 1665 014e 77EE277A 		vadd.f32	s15, s14, s15
+ 1666 0152 254B     		ldr	r3, .L95+24
+ 1667 0154 C3ED0C7A 		vstr.32	s15, [r3, #48]
+ 269:User/Hardware/IMU_updata.c **** 
+ 270:User/Hardware/IMU_updata.c **** 			j++;
+ 1668              		.loc 1 270 5
+ 1669 0158 FB68     		ldr	r3, [r7, #12]
+ 1670 015a 0133     		adds	r3, r3, #1
+ 1671 015c FB60     		str	r3, [r7, #12]
+ 1672              	.L84:
+ 1673              	.LBE5:
+ 253:User/Hardware/IMU_updata.c **** 		{
+ 1674              		.loc 1 253 21 discriminator 1
+ 1675 015e FB68     		ldr	r3, [r7, #12]
+ 1676 0160 B3F57A7F 		cmp	r3, #1000
+ 1677 0164 FFF677AF 		blt	.L89
+ 1678              	.L83:
+ 1679              	.LBE4:
+ 271:User/Hardware/IMU_updata.c **** 		}
+ 272:User/Hardware/IMU_updata.c **** 	}
+ 273:User/Hardware/IMU_updata.c **** 
+ 274:User/Hardware/IMU_updata.c **** 	IMU_data.gyro[0] -= IMU_data.calibration[0];
+ 1680              		.loc 1 274 15
+ 1681 0168 1F4B     		ldr	r3, .L95+24
+ 1682 016a 93ED007A 		vldr.32	s14, [r3]
+ 1683              		.loc 1 274 42
+ 1684 016e 1E4B     		ldr	r3, .L95+24
+ 1685 0170 D3ED0A7A 		vldr.32	s15, [r3, #40]
+ 1686              		.loc 1 274 19
+ 1687 0174 77EE677A 		vsub.f32	s15, s14, s15
+ 1688 0178 1B4B     		ldr	r3, .L95+24
+ 1689 017a C3ED007A 		vstr.32	s15, [r3]
+ 275:User/Hardware/IMU_updata.c **** 	IMU_data.gyro[1] -= IMU_data.calibration[1];
+ 1690              		.loc 1 275 15
+ 1691 017e 1A4B     		ldr	r3, .L95+24
+ 1692 0180 93ED017A 		vldr.32	s14, [r3, #4]
+ 1693              		.loc 1 275 42
+ 1694 0184 184B     		ldr	r3, .L95+24
+ARM GAS  C:\Users\fffff\AppData\Local\Temp\ccBCDhmD.s 			page 36
+
+
+ 1695 0186 D3ED0B7A 		vldr.32	s15, [r3, #44]
+ 1696              		.loc 1 275 19
+ 1697 018a 77EE677A 		vsub.f32	s15, s14, s15
+ 1698 018e 164B     		ldr	r3, .L95+24
+ 1699 0190 C3ED017A 		vstr.32	s15, [r3, #4]
+ 276:User/Hardware/IMU_updata.c **** 	IMU_data.gyro[2] -= IMU_data.calibration[2];
+ 1700              		.loc 1 276 15
+ 1701 0194 144B     		ldr	r3, .L95+24
+ 1702 0196 93ED027A 		vldr.32	s14, [r3, #8]
+ 1703              		.loc 1 276 42
+ 1704 019a 134B     		ldr	r3, .L95+24
+ 1705 019c D3ED0C7A 		vldr.32	s15, [r3, #48]
+ 1706              		.loc 1 276 19
+ 1707 01a0 77EE677A 		vsub.f32	s15, s14, s15
+ 1708 01a4 104B     		ldr	r3, .L95+24
+ 1709 01a6 C3ED027A 		vstr.32	s15, [r3, #8]
+ 277:User/Hardware/IMU_updata.c **** 
+ 278:User/Hardware/IMU_updata.c **** 	IMU_data.calibration[0] = 0; //-0.005116222685;
+ 1710              		.loc 1 278 26
+ 1711 01aa 0F4B     		ldr	r3, .L95+24
+ 1712 01ac 4FF00002 		mov	r2, #0
+ 1713 01b0 9A62     		str	r2, [r3, #40]	@ float
+ 279:User/Hardware/IMU_updata.c **** 	IMU_data.calibration[1] = 0;
+ 1714              		.loc 1 279 26
+ 1715 01b2 0D4B     		ldr	r3, .L95+24
+ 1716 01b4 4FF00002 		mov	r2, #0
+ 1717 01b8 DA62     		str	r2, [r3, #44]	@ float
+ 280:User/Hardware/IMU_updata.c **** 	IMU_data.calibration[2] = 0;
+ 1718              		.loc 1 280 26
+ 1719 01ba 0B4B     		ldr	r3, .L95+24
+ 1720 01bc 4FF00002 		mov	r2, #0
+ 1721 01c0 1A63     		str	r2, [r3, #48]	@ float
+ 281:User/Hardware/IMU_updata.c **** }
+ 1722              		.loc 1 281 1
+ 1723 01c2 00BF     		nop
+ 1724 01c4 1437     		adds	r7, r7, #20
+ 1725              	.LCFI59:
+ 1726              		.cfi_def_cfa_offset 4
+ 1727 01c6 BD46     		mov	sp, r7
+ 1728              	.LCFI60:
+ 1729              		.cfi_def_cfa_register 13
+ 1730              		@ sp needed
+ 1731 01c8 5DF8047B 		ldr	r7, [sp], #4
+ 1732              	.LCFI61:
+ 1733              		.cfi_restore 7
+ 1734              		.cfi_def_cfa_offset 0
+ 1735 01cc 7047     		bx	lr
+ 1736              	.L96:
+ 1737 01ce 00BF     		.align	3
+ 1738              	.L95:
+ 1739 01d0 52B71F89 		.word	-1994410158
+ 1740 01d4 C3DA7D3F 		.word	1065212611
+ 1741 01d8 EA8841C0 		.word	-1069446934
+ 1742 01dc 2BE3653F 		.word	1063641899
+ 1743 01e0 15D0162B 		.word	722915349
+ 1744 01e4 CCE0EC3F 		.word	1072488652
+ 1745 01e8 00000000 		.word	IMU_data
+ARM GAS  C:\Users\fffff\AppData\Local\Temp\ccBCDhmD.s 			page 37
+
+
+ 1746 01ec 00007A44 		.word	1148846080
+ 1747              		.cfi_endproc
+ 1748              	.LFE156:
+ 1750              		.section	.bss.last_time.1,"aw",%nobits
+ 1751              		.align	2
+ 1754              	last_time.1:
+ 1755 0000 00000000 		.space	4
+ 1756              		.section	.bss.temp_constant_time.0,"aw",%nobits
+ 1759              	temp_constant_time.0:
+ 1760 0000 00       		.space	1
+ 1761              		.text
+ 1762              	.Letext0:
+ 1763              		.file 3 "Algorithm/pid.h"
+ 1764              		.file 4 "C:/msys64/mingw64/arm-none-eabi/include/machine/_default_types.h"
+ 1765              		.file 5 "C:/msys64/mingw64/arm-none-eabi/include/sys/_stdint.h"
+ 1766              		.file 6 "Core/Inc/struct_typedef.h"
+ 1767              		.file 7 "Algorithm/Kalman_Filter_c.h"
+ 1768              		.file 8 "User/Hardware/IMU_updata.h"
+ 1769              		.file 9 "Drivers/CMSIS/Device/ST/STM32H7xx/Include/stm32h723xx.h"
+ 1770              		.file 10 "Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal_def.h"
+ 1771              		.file 11 "Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal_dma.h"
+ 1772              		.file 12 "Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal_tim.h"
+ 1773              		.file 13 "Core/Inc/tim.h"
+ 1774              		.file 14 "Algorithm/AHRS.h"
+ 1775              		.file 15 "Drivers/Chip/bmi088/BMI088driver.h"
+ 1776              		.file 16 "User/BSP/Stm32_time.h"
+ 1777              		.file 17 "C:/msys64/mingw64/arm-none-eabi/include/math.h"
+ARM GAS  C:\Users\fffff\AppData\Local\Temp\ccBCDhmD.s 			page 38
+
+
+DEFINED SYMBOLS
+                            *ABS*:00000000 IMU_updata.c
+C:\Users\fffff\AppData\Local\Temp\ccBCDhmD.s:24     .rodata.IMU_FIR_COFFES:00000000 IMU_FIR_COFFES
+C:\Users\fffff\AppData\Local\Temp\ccBCDhmD.s:21     .rodata.IMU_FIR_COFFES:00000000 $d
+C:\Users\fffff\AppData\Local\Temp\ccBCDhmD.s:52     .text.FIR_process:00000000 $t
+C:\Users\fffff\AppData\Local\Temp\ccBCDhmD.s:58     .text.FIR_process:00000000 FIR_process
+C:\Users\fffff\AppData\Local\Temp\ccBCDhmD.s:213    .bss.IMU_tempure_pid:00000000 IMU_tempure_pid
+C:\Users\fffff\AppData\Local\Temp\ccBCDhmD.s:210    .bss.IMU_tempure_pid:00000000 $d
+C:\Users\fffff\AppData\Local\Temp\ccBCDhmD.s:216    .bss.accel_fliter_1:00000000 $d
+C:\Users\fffff\AppData\Local\Temp\ccBCDhmD.s:219    .bss.accel_fliter_1:00000000 accel_fliter_1
+C:\Users\fffff\AppData\Local\Temp\ccBCDhmD.s:222    .bss.accel_fliter_2:00000000 $d
+C:\Users\fffff\AppData\Local\Temp\ccBCDhmD.s:225    .bss.accel_fliter_2:00000000 accel_fliter_2
+C:\Users\fffff\AppData\Local\Temp\ccBCDhmD.s:228    .bss.accel_fliter_3:00000000 $d
+C:\Users\fffff\AppData\Local\Temp\ccBCDhmD.s:231    .bss.accel_fliter_3:00000000 accel_fliter_3
+C:\Users\fffff\AppData\Local\Temp\ccBCDhmD.s:234    .rodata.fliter_num:00000000 $d
+C:\Users\fffff\AppData\Local\Temp\ccBCDhmD.s:237    .rodata.fliter_num:00000000 fliter_num
+C:\Users\fffff\AppData\Local\Temp\ccBCDhmD.s:244    .bss.first_temperate:00000000 first_temperate
+C:\Users\fffff\AppData\Local\Temp\ccBCDhmD.s:245    .bss.first_temperate:00000000 $d
+C:\Users\fffff\AppData\Local\Temp\ccBCDhmD.s:251    .bss.ulTdleCycleCount:00000000 ulTdleCycleCount
+C:\Users\fffff\AppData\Local\Temp\ccBCDhmD.s:248    .bss.ulTdleCycleCount:00000000 $d
+C:\Users\fffff\AppData\Local\Temp\ccBCDhmD.s:258    .bss.IMU_data:00000000 IMU_data
+C:\Users\fffff\AppData\Local\Temp\ccBCDhmD.s:255    .bss.IMU_data:00000000 $d
+C:\Users\fffff\AppData\Local\Temp\ccBCDhmD.s:261    .text.Get_angle:00000000 $t
+C:\Users\fffff\AppData\Local\Temp\ccBCDhmD.s:267    .text.Get_angle:00000000 Get_angle
+C:\Users\fffff\AppData\Local\Temp\ccBCDhmD.s:442    .text.IMU_init:00000000 $t
+C:\Users\fffff\AppData\Local\Temp\ccBCDhmD.s:448    .text.IMU_init:00000000 IMU_init
+C:\Users\fffff\AppData\Local\Temp\ccBCDhmD.s:525    .text.IMU_init:00000088 $d
+C:\Users\fffff\AppData\Local\Temp\ccBCDhmD.s:541    .text.process_IMU_data:00000000 $t
+C:\Users\fffff\AppData\Local\Temp\ccBCDhmD.s:547    .text.process_IMU_data:00000000 process_IMU_data
+C:\Users\fffff\AppData\Local\Temp\ccBCDhmD.s:670    .text.process_IMU_data:000000e4 $d
+C:\Users\fffff\AppData\Local\Temp\ccBCDhmD.s:676    .text.IMU_updata:00000000 $t
+C:\Users\fffff\AppData\Local\Temp\ccBCDhmD.s:682    .text.IMU_updata:00000000 IMU_updata
+C:\Users\fffff\AppData\Local\Temp\ccBCDhmD.s:1236   .text.imu_temp_control:00000000 imu_temp_control
+C:\Users\fffff\AppData\Local\Temp\ccBCDhmD.s:964    .text.IMU_updata:00000218 $d
+C:\Users\fffff\AppData\Local\Temp\ccBCDhmD.s:1754   .bss.last_time.1:00000000 last_time.1
+C:\Users\fffff\AppData\Local\Temp\ccBCDhmD.s:985    .text.rad2degree:00000000 $t
+C:\Users\fffff\AppData\Local\Temp\ccBCDhmD.s:991    .text.rad2degree:00000000 rad2degree
+C:\Users\fffff\AppData\Local\Temp\ccBCDhmD.s:1033   .text.rad2degree:0000002c $d
+C:\Users\fffff\AppData\Local\Temp\ccBCDhmD.s:1039   .text.degree2rad:00000000 $t
+C:\Users\fffff\AppData\Local\Temp\ccBCDhmD.s:1045   .text.degree2rad:00000000 degree2rad
+C:\Users\fffff\AppData\Local\Temp\ccBCDhmD.s:1087   .text.degree2rad:0000002c $d
+C:\Users\fffff\AppData\Local\Temp\ccBCDhmD.s:1093   .text.MagUpdate:00000000 $t
+C:\Users\fffff\AppData\Local\Temp\ccBCDhmD.s:1099   .text.MagUpdate:00000000 MagUpdate
+C:\Users\fffff\AppData\Local\Temp\ccBCDhmD.s:1128   .text.MagZero:00000000 $t
+C:\Users\fffff\AppData\Local\Temp\ccBCDhmD.s:1134   .text.MagZero:00000000 MagZero
+C:\Users\fffff\AppData\Local\Temp\ccBCDhmD.s:1174   .text.MagZero:00000028 $d
+C:\Users\fffff\AppData\Local\Temp\ccBCDhmD.s:1179   .text.IMU_heat_set:00000000 $t
+C:\Users\fffff\AppData\Local\Temp\ccBCDhmD.s:1185   .text.IMU_heat_set:00000000 IMU_heat_set
+C:\Users\fffff\AppData\Local\Temp\ccBCDhmD.s:1226   .text.IMU_heat_set:00000020 $d
+C:\Users\fffff\AppData\Local\Temp\ccBCDhmD.s:1231   .text.imu_temp_control:00000000 $t
+C:\Users\fffff\AppData\Local\Temp\ccBCDhmD.s:1302   .text.imu_temp_control:00000058 $d
+C:\Users\fffff\AppData\Local\Temp\ccBCDhmD.s:1309   .text.imu_cail_program:00000000 $t
+C:\Users\fffff\AppData\Local\Temp\ccBCDhmD.s:1315   .text.imu_cail_program:00000000 imu_cail_program
+C:\Users\fffff\AppData\Local\Temp\ccBCDhmD.s:1494   .text.imu_cail_program:00000134 $d
+C:\Users\fffff\AppData\Local\Temp\ccBCDhmD.s:1500   .text.IMU_offest:00000000 $t
+C:\Users\fffff\AppData\Local\Temp\ccBCDhmD.s:1506   .text.IMU_offest:00000000 IMU_offest
+C:\Users\fffff\AppData\Local\Temp\ccBCDhmD.s:1739   .text.IMU_offest:000001d0 $d
+ARM GAS  C:\Users\fffff\AppData\Local\Temp\ccBCDhmD.s 			page 39
+
+
+C:\Users\fffff\AppData\Local\Temp\ccBCDhmD.s:1751   .bss.last_time.1:00000000 $d
+C:\Users\fffff\AppData\Local\Temp\ccBCDhmD.s:1759   .bss.temp_constant_time.0:00000000 temp_constant_time.0
+C:\Users\fffff\AppData\Local\Temp\ccBCDhmD.s:1760   .bss.temp_constant_time.0:00000000 $d
+
+UNDEFINED SYMBOLS
+atan2f
+asinf
+BMI088_init
+AHRS_init
+pid_set
+HAL_TIM_Base_Start
+HAL_TIM_PWM_Start
+HAL_TIM_Base_Start_IT
+htim3
+htim13
+BMI088_read
+AHRS_update
+Get_sys_time_ms
+get_angle
+pid_cal

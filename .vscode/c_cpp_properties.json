@@ -1,0 +1,48 @@
+{
+    "configurations": [
+        {
+    "name": "windows-gcc-x64",
+    "includePath": [
+        // 第一个路径：项目根目录（递归搜索所有子文件夹）
+        "C:/Users/Godwin/Desktop/Energy/final_engineer-main/**",
+        // 第二个路径：指定的核心头文件目录
+        "C:/Users/Godwin/Desktop/Energy/final_engineer-main/User/Software"
+    ],
+    "compilerPath": "C:/msys64/ucrt64/bin/gcc.exe",
+    "intelliSenseMode": "windows-gcc-x64",
+    "compilerArgs": [
+        ""
+    ],
+    "mergeConfigurations": false,
+    "browse": {
+        "path": [
+            // 同步更新 browse 路径（保持和 includePath 一致）
+            "C:/Users/Godwin/Desktop/Energy/final_engineer-main/**",
+            "C:/Users/Godwin/Desktop/Energy/final_engineer-main/User/Software",
+            "${workspaceFolder}"
+        ],
+        "limitSymbolsToIncludedHeaders": true
+    },
+    "cStandard": "c17"
+        },
+        {
+            "name": "arm-gnu-toolchain",
+            "includePath": [
+                "${workspaceFolder}/**",
+                "${workspaceFolder}/User/Hardware",
+                "${workspaceFolder}/User/BSP",
+                "${workspaceFolder}/User/Software"
+            ],
+            "defines": [
+                "USE_HAL_DRIVER",
+                "STM32H723xx",
+                "YOUNG_OMNI"
+            ],
+            "compilerPath": "C:\\msys64\\ucrt64\\bin\\gcc.exe",
+            "cStandard": "c17",
+            "cppStandard": "gnu++14",
+            "intelliSenseMode": "gcc-arm"
+        }
+    ],
+    "version": 4
+}

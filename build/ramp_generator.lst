@@ -1,0 +1,933 @@
+ARM GAS  C:\Users\fffff\AppData\Local\Temp\ccokmegf.s 			page 1
+
+
+   1              		.cpu cortex-m7
+   2              		.arch armv7e-m
+   3              		.fpu fpv5-d16
+   4              		.eabi_attribute 28, 1
+   5              		.eabi_attribute 20, 1
+   6              		.eabi_attribute 21, 1
+   7              		.eabi_attribute 23, 3
+   8              		.eabi_attribute 24, 1
+   9              		.eabi_attribute 25, 1
+  10              		.eabi_attribute 26, 1
+  11              		.eabi_attribute 30, 6
+  12              		.eabi_attribute 34, 1
+  13              		.eabi_attribute 18, 4
+  14              		.file	"ramp_generator.c"
+  15              		.text
+  16              	.Ltext0:
+  17              		.cfi_sections	.debug_frame
+  18              		.file 1 "Algorithm/ramp_generator.c"
+  19              		.section	.text.RampGenerator_Init,"ax",%progbits
+  20              		.align	1
+  21              		.global	RampGenerator_Init
+  22              		.syntax unified
+  23              		.thumb
+  24              		.thumb_func
+  26              	RampGenerator_Init:
+  27              	.LFB0:
+   1:Algorithm/ramp_generator.c **** #include "ramp_generator.h"
+   2:Algorithm/ramp_generator.c **** #include <math.h>
+   3:Algorithm/ramp_generator.c **** 
+   4:Algorithm/ramp_generator.c **** void RampGenerator_Init(RampGenerator *ramp,
+   5:Algorithm/ramp_generator.c ****                         unsigned int interval_ms,
+   6:Algorithm/ramp_generator.c ****                         float accel,
+   7:Algorithm/ramp_generator.c ****                         float decel,
+   8:Algorithm/ramp_generator.c ****                         float max_limit)
+   9:Algorithm/ramp_generator.c **** {
+  28              		.loc 1 9 1
+  29              		.cfi_startproc
+  30              		@ args = 0, pretend = 0, frame = 24
+  31              		@ frame_needed = 1, uses_anonymous_args = 0
+  32 0000 80B5     		push	{r7, lr}
+  33              	.LCFI0:
+  34              		.cfi_def_cfa_offset 8
+  35              		.cfi_offset 7, -8
+  36              		.cfi_offset 14, -4
+  37 0002 86B0     		sub	sp, sp, #24
+  38              	.LCFI1:
+  39              		.cfi_def_cfa_offset 32
+  40 0004 00AF     		add	r7, sp, #0
+  41              	.LCFI2:
+  42              		.cfi_def_cfa_register 7
+  43 0006 7861     		str	r0, [r7, #20]
+  44 0008 3961     		str	r1, [r7, #16]
+  45 000a 87ED030A 		vstr.32	s0, [r7, #12]
+  46 000e C7ED020A 		vstr.32	s1, [r7, #8]
+  47 0012 87ED011A 		vstr.32	s2, [r7, #4]
+  10:Algorithm/ramp_generator.c ****     ramp->current_value = 0.0f;
+  48              		.loc 1 10 25
+ARM GAS  C:\Users\fffff\AppData\Local\Temp\ccokmegf.s 			page 2
+
+
+  49 0016 7B69     		ldr	r3, [r7, #20]
+  50 0018 4FF00002 		mov	r2, #0
+  51 001c 1A60     		str	r2, [r3]	@ float
+  11:Algorithm/ramp_generator.c ****     ramp->target_value = 0.0f;
+  52              		.loc 1 11 24
+  53 001e 7B69     		ldr	r3, [r7, #20]
+  54 0020 4FF00002 		mov	r2, #0
+  55 0024 5A60     		str	r2, [r3, #4]	@ float
+  12:Algorithm/ramp_generator.c ****     ramp->interval_ms = (interval_ms > 0) ? interval_ms : 1;
+  56              		.loc 1 12 57
+  57 0026 3B69     		ldr	r3, [r7, #16]
+  58 0028 002B     		cmp	r3, #0
+  59 002a 01D0     		beq	.L2
+  60              		.loc 1 12 57 is_stmt 0 discriminator 1
+  61 002c 3B69     		ldr	r3, [r7, #16]
+  62 002e 00E0     		b	.L3
+  63              	.L2:
+  64              		.loc 1 12 57 discriminator 2
+  65 0030 0123     		movs	r3, #1
+  66              	.L3:
+  67              		.loc 1 12 23 is_stmt 1 discriminator 4
+  68 0032 7A69     		ldr	r2, [r7, #20]
+  69 0034 9360     		str	r3, [r2, #8]
+  13:Algorithm/ramp_generator.c ****     ramp->accel = fmaxf(accel, 0.0f);
+  70              		.loc 1 13 19
+  71 0036 DFED120A 		vldr.32	s1, .L4
+  72 003a 97ED030A 		vldr.32	s0, [r7, #12]
+  73 003e FFF7FEFF 		bl	fmaxf
+  74 0042 F0EE407A 		vmov.f32	s15, s0
+  75              		.loc 1 13 17 discriminator 1
+  76 0046 7B69     		ldr	r3, [r7, #20]
+  77 0048 C3ED037A 		vstr.32	s15, [r3, #12]
+  14:Algorithm/ramp_generator.c ****     ramp->decel = fmaxf(decel, 0.0f);
+  78              		.loc 1 14 19
+  79 004c DFED0C0A 		vldr.32	s1, .L4
+  80 0050 97ED020A 		vldr.32	s0, [r7, #8]
+  81 0054 FFF7FEFF 		bl	fmaxf
+  82 0058 F0EE407A 		vmov.f32	s15, s0
+  83              		.loc 1 14 17 discriminator 1
+  84 005c 7B69     		ldr	r3, [r7, #20]
+  85 005e C3ED047A 		vstr.32	s15, [r3, #16]
+  15:Algorithm/ramp_generator.c ****     ramp->max_limit = fabsf(max_limit);
+  86              		.loc 1 15 23
+  87 0062 D7ED017A 		vldr.32	s15, [r7, #4]
+  88 0066 F0EEE77A 		vabs.f32	s15, s15
+  89              		.loc 1 15 21
+  90 006a 7B69     		ldr	r3, [r7, #20]
+  91 006c C3ED057A 		vstr.32	s15, [r3, #20]
+  16:Algorithm/ramp_generator.c ****     ramp->last_update_time = 0;
+  92              		.loc 1 16 28
+  93 0070 7B69     		ldr	r3, [r7, #20]
+  94 0072 0022     		movs	r2, #0
+  95 0074 9A61     		str	r2, [r3, #24]
+  17:Algorithm/ramp_generator.c **** }
+  96              		.loc 1 17 1
+  97 0076 00BF     		nop
+  98 0078 1837     		adds	r7, r7, #24
+ARM GAS  C:\Users\fffff\AppData\Local\Temp\ccokmegf.s 			page 3
+
+
+  99              	.LCFI3:
+ 100              		.cfi_def_cfa_offset 8
+ 101 007a BD46     		mov	sp, r7
+ 102              	.LCFI4:
+ 103              		.cfi_def_cfa_register 13
+ 104              		@ sp needed
+ 105 007c 80BD     		pop	{r7, pc}
+ 106              	.L5:
+ 107 007e 00BF     		.align	2
+ 108              	.L4:
+ 109 0080 00000000 		.word	0
+ 110              		.cfi_endproc
+ 111              	.LFE0:
+ 113              		.section	.text.RampGenerator_SetTarget,"ax",%progbits
+ 114              		.align	1
+ 115              		.global	RampGenerator_SetTarget
+ 116              		.syntax unified
+ 117              		.thumb
+ 118              		.thumb_func
+ 120              	RampGenerator_SetTarget:
+ 121              	.LFB1:
+  18:Algorithm/ramp_generator.c **** 
+  19:Algorithm/ramp_generator.c **** void RampGenerator_SetTarget(RampGenerator *ramp, float target)
+  20:Algorithm/ramp_generator.c **** {
+ 122              		.loc 1 20 1
+ 123              		.cfi_startproc
+ 124              		@ args = 0, pretend = 0, frame = 8
+ 125              		@ frame_needed = 1, uses_anonymous_args = 0
+ 126              		@ link register save eliminated.
+ 127 0000 80B4     		push	{r7}
+ 128              	.LCFI5:
+ 129              		.cfi_def_cfa_offset 4
+ 130              		.cfi_offset 7, -4
+ 131 0002 83B0     		sub	sp, sp, #12
+ 132              	.LCFI6:
+ 133              		.cfi_def_cfa_offset 16
+ 134 0004 00AF     		add	r7, sp, #0
+ 135              	.LCFI7:
+ 136              		.cfi_def_cfa_register 7
+ 137 0006 7860     		str	r0, [r7, #4]
+ 138 0008 87ED000A 		vstr.32	s0, [r7]
+  21:Algorithm/ramp_generator.c ****     ramp->target_value = target;
+ 139              		.loc 1 21 24
+ 140 000c 7B68     		ldr	r3, [r7, #4]
+ 141 000e 3A68     		ldr	r2, [r7]	@ float
+ 142 0010 5A60     		str	r2, [r3, #4]	@ float
+  22:Algorithm/ramp_generator.c **** }
+ 143              		.loc 1 22 1
+ 144 0012 00BF     		nop
+ 145 0014 0C37     		adds	r7, r7, #12
+ 146              	.LCFI8:
+ 147              		.cfi_def_cfa_offset 4
+ 148 0016 BD46     		mov	sp, r7
+ 149              	.LCFI9:
+ 150              		.cfi_def_cfa_register 13
+ 151              		@ sp needed
+ 152 0018 5DF8047B 		ldr	r7, [sp], #4
+ARM GAS  C:\Users\fffff\AppData\Local\Temp\ccokmegf.s 			page 4
+
+
+ 153              	.LCFI10:
+ 154              		.cfi_restore 7
+ 155              		.cfi_def_cfa_offset 0
+ 156 001c 7047     		bx	lr
+ 157              		.cfi_endproc
+ 158              	.LFE1:
+ 160              		.section	.text.RampGenerator_GetCurrent,"ax",%progbits
+ 161              		.align	1
+ 162              		.global	RampGenerator_GetCurrent
+ 163              		.syntax unified
+ 164              		.thumb
+ 165              		.thumb_func
+ 167              	RampGenerator_GetCurrent:
+ 168              	.LFB2:
+  23:Algorithm/ramp_generator.c **** 
+  24:Algorithm/ramp_generator.c **** float RampGenerator_GetCurrent(const RampGenerator *ramp)
+  25:Algorithm/ramp_generator.c **** {
+ 169              		.loc 1 25 1
+ 170              		.cfi_startproc
+ 171              		@ args = 0, pretend = 0, frame = 8
+ 172              		@ frame_needed = 1, uses_anonymous_args = 0
+ 173              		@ link register save eliminated.
+ 174 0000 80B4     		push	{r7}
+ 175              	.LCFI11:
+ 176              		.cfi_def_cfa_offset 4
+ 177              		.cfi_offset 7, -4
+ 178 0002 83B0     		sub	sp, sp, #12
+ 179              	.LCFI12:
+ 180              		.cfi_def_cfa_offset 16
+ 181 0004 00AF     		add	r7, sp, #0
+ 182              	.LCFI13:
+ 183              		.cfi_def_cfa_register 7
+ 184 0006 7860     		str	r0, [r7, #4]
+  26:Algorithm/ramp_generator.c ****     return ramp->current_value;
+ 185              		.loc 1 26 16
+ 186 0008 7B68     		ldr	r3, [r7, #4]
+ 187 000a 1B68     		ldr	r3, [r3]	@ float
+ 188              		.loc 1 26 16 is_stmt 0 discriminator 1
+ 189 000c 07EE903A 		vmov	s15, r3
+  27:Algorithm/ramp_generator.c **** }
+ 190              		.loc 1 27 1 is_stmt 1
+ 191 0010 B0EE670A 		vmov.f32	s0, s15
+ 192 0014 0C37     		adds	r7, r7, #12
+ 193              	.LCFI14:
+ 194              		.cfi_def_cfa_offset 4
+ 195 0016 BD46     		mov	sp, r7
+ 196              	.LCFI15:
+ 197              		.cfi_def_cfa_register 13
+ 198              		@ sp needed
+ 199 0018 5DF8047B 		ldr	r7, [sp], #4
+ 200              	.LCFI16:
+ 201              		.cfi_restore 7
+ 202              		.cfi_def_cfa_offset 0
+ 203 001c 7047     		bx	lr
+ 204              		.cfi_endproc
+ 205              	.LFE2:
+ 207              		.section	.text.RampGenerator_Update,"ax",%progbits
+ARM GAS  C:\Users\fffff\AppData\Local\Temp\ccokmegf.s 			page 5
+
+
+ 208              		.align	1
+ 209              		.global	RampGenerator_Update
+ 210              		.syntax unified
+ 211              		.thumb
+ 212              		.thumb_func
+ 214              	RampGenerator_Update:
+ 215              	.LFB3:
+  28:Algorithm/ramp_generator.c **** 
+  29:Algorithm/ramp_generator.c **** void RampGenerator_Update(RampGenerator *ramp, unsigned long current_time_ms) {
+ 216              		.loc 1 29 79
+ 217              		.cfi_startproc
+ 218              		@ args = 0, pretend = 0, frame = 48
+ 219              		@ frame_needed = 1, uses_anonymous_args = 0
+ 220 0000 80B5     		push	{r7, lr}
+ 221              	.LCFI17:
+ 222              		.cfi_def_cfa_offset 8
+ 223              		.cfi_offset 7, -8
+ 224              		.cfi_offset 14, -4
+ 225 0002 8CB0     		sub	sp, sp, #48
+ 226              	.LCFI18:
+ 227              		.cfi_def_cfa_offset 56
+ 228 0004 00AF     		add	r7, sp, #0
+ 229              	.LCFI19:
+ 230              		.cfi_def_cfa_register 7
+ 231 0006 7860     		str	r0, [r7, #4]
+ 232 0008 3960     		str	r1, [r7]
+  30:Algorithm/ramp_generator.c ****     if (ramp->last_update_time == 0) {
+ 233              		.loc 1 30 13
+ 234 000a 7B68     		ldr	r3, [r7, #4]
+ 235 000c 9B69     		ldr	r3, [r3, #24]
+ 236              		.loc 1 30 8
+ 237 000e 002B     		cmp	r3, #0
+ 238 0010 03D1     		bne	.L10
+  31:Algorithm/ramp_generator.c ****         ramp->last_update_time = current_time_ms;
+ 239              		.loc 1 31 32
+ 240 0012 7B68     		ldr	r3, [r7, #4]
+ 241 0014 3A68     		ldr	r2, [r7]
+ 242 0016 9A61     		str	r2, [r3, #24]
+  32:Algorithm/ramp_generator.c ****         return;
+ 243              		.loc 1 32 9
+ 244 0018 F8E0     		b	.L9
+ 245              	.L10:
+  33:Algorithm/ramp_generator.c ****     }
+  34:Algorithm/ramp_generator.c **** 
+  35:Algorithm/ramp_generator.c ****     unsigned long elapsed = current_time_ms - ramp->last_update_time;
+ 246              		.loc 1 35 51
+ 247 001a 7B68     		ldr	r3, [r7, #4]
+ 248 001c 9B69     		ldr	r3, [r3, #24]
+ 249              		.loc 1 35 19
+ 250 001e 3A68     		ldr	r2, [r7]
+ 251 0020 D31A     		subs	r3, r2, r3
+ 252 0022 3B62     		str	r3, [r7, #32]
+  36:Algorithm/ramp_generator.c ****     if (elapsed < ramp->interval_ms) {
+ 253              		.loc 1 36 23
+ 254 0024 7B68     		ldr	r3, [r7, #4]
+ 255 0026 9B68     		ldr	r3, [r3, #8]
+ 256              		.loc 1 36 8
+ARM GAS  C:\Users\fffff\AppData\Local\Temp\ccokmegf.s 			page 6
+
+
+ 257 0028 3A6A     		ldr	r2, [r7, #32]
+ 258 002a 9A42     		cmp	r2, r3
+ 259 002c C0F0ED80 		bcc	.L39
+  37:Algorithm/ramp_generator.c ****         return;
+  38:Algorithm/ramp_generator.c ****     }
+  39:Algorithm/ramp_generator.c **** 
+  40:Algorithm/ramp_generator.c ****     unsigned int num_steps = elapsed / ramp->interval_ms;
+ 260              		.loc 1 40 44
+ 261 0030 7B68     		ldr	r3, [r7, #4]
+ 262 0032 9B68     		ldr	r3, [r3, #8]
+ 263              		.loc 1 40 18
+ 264 0034 3A6A     		ldr	r2, [r7, #32]
+ 265 0036 B2FBF3F3 		udiv	r3, r2, r3
+ 266 003a FB61     		str	r3, [r7, #28]
+  41:Algorithm/ramp_generator.c ****     ramp->last_update_time += num_steps * ramp->interval_ms;
+ 267              		.loc 1 41 9
+ 268 003c 7B68     		ldr	r3, [r7, #4]
+ 269 003e 9A69     		ldr	r2, [r3, #24]
+ 270              		.loc 1 41 47
+ 271 0040 7B68     		ldr	r3, [r7, #4]
+ 272 0042 9B68     		ldr	r3, [r3, #8]
+ 273              		.loc 1 41 41
+ 274 0044 F969     		ldr	r1, [r7, #28]
+ 275 0046 01FB03F3 		mul	r3, r1, r3
+ 276              		.loc 1 41 28
+ 277 004a 1A44     		add	r2, r2, r3
+ 278 004c 7B68     		ldr	r3, [r7, #4]
+ 279 004e 9A61     		str	r2, [r3, #24]
+ 280              	.LBB2:
+  42:Algorithm/ramp_generator.c **** 
+  43:Algorithm/ramp_generator.c ****     for (unsigned int i = 0; i < num_steps; ++i) {
+ 281              		.loc 1 43 23
+ 282 0050 0023     		movs	r3, #0
+ 283 0052 FB62     		str	r3, [r7, #44]
+ 284              		.loc 1 43 5
+ 285 0054 D3E0     		b	.L13
+ 286              	.L33:
+ 287              	.LBB3:
+  44:Algorithm/ramp_generator.c ****         float delta = 0.0f;
+ 288              		.loc 1 44 15
+ 289 0056 4FF00003 		mov	r3, #0
+ 290 005a BB62     		str	r3, [r7, #40]	@ float
+  45:Algorithm/ramp_generator.c ****         const float time_step = ramp->interval_ms / 1000.0f;
+ 291              		.loc 1 45 37
+ 292 005c 7B68     		ldr	r3, [r7, #4]
+ 293 005e 9B68     		ldr	r3, [r3, #8]
+ 294              		.loc 1 45 51
+ 295 0060 07EE903A 		vmov	s15, r3	@ int
+ 296 0064 B8EE677A 		vcvt.f32.u32	s14, s15
+ 297              		.loc 1 45 21
+ 298 0068 DFED6A6A 		vldr.32	s13, .L40
+ 299 006c C7EE267A 		vdiv.f32	s15, s14, s13
+ 300 0070 C7ED067A 		vstr.32	s15, [r7, #24]
+  46:Algorithm/ramp_generator.c ****         const float error = ramp->target_value - ramp->current_value;
+ 301              		.loc 1 46 33
+ 302 0074 7B68     		ldr	r3, [r7, #4]
+ 303 0076 93ED017A 		vldr.32	s14, [r3, #4]
+ARM GAS  C:\Users\fffff\AppData\Local\Temp\ccokmegf.s 			page 7
+
+
+ 304              		.loc 1 46 54
+ 305 007a 7B68     		ldr	r3, [r7, #4]
+ 306 007c D3ED007A 		vldr.32	s15, [r3]
+ 307              		.loc 1 46 21
+ 308 0080 77EE677A 		vsub.f32	s15, s14, s15
+ 309 0084 C7ED057A 		vstr.32	s15, [r7, #20]
+  47:Algorithm/ramp_generator.c **** 
+  48:Algorithm/ramp_generator.c ****         if (fabsf(error) > 1e-6f) {
+ 310              		.loc 1 48 13
+ 311 0088 D7ED057A 		vldr.32	s15, [r7, #20]
+ 312 008c F0EEE77A 		vabs.f32	s15, s15
+ 313              		.loc 1 48 12
+ 314 0090 9FED617A 		vldr.32	s14, .L40+4
+ 315 0094 F4EEC77A 		vcmpe.f32	s15, s14
+ 316 0098 F1EE10FA 		vmrs	APSR_nzcv, FPSCR
+ 317 009c 4DDD     		ble	.L14
+ 318              	.LBB4:
+  49:Algorithm/ramp_generator.c ****             const int is_positive_direction = (error > 0);
+ 319              		.loc 1 49 54
+ 320 009e D7ED057A 		vldr.32	s15, [r7, #20]
+ 321 00a2 F5EEC07A 		vcmpe.f32	s15, #0
+ 322 00a6 F1EE10FA 		vmrs	APSR_nzcv, FPSCR
+ 323 00aa CCBF     		ite	gt
+ 324 00ac 0123     		movgt	r3, #1
+ 325 00ae 0023     		movle	r3, #0
+ 326 00b0 DBB2     		uxtb	r3, r3
+ 327              		.loc 1 49 23
+ 328 00b2 3B61     		str	r3, [r7, #16]
+  50:Algorithm/ramp_generator.c ****             
+  51:Algorithm/ramp_generator.c ****             // 核心修复：判断是否在增大绝对值
+  52:Algorithm/ramp_generator.c ****             const int is_increasing_magnitude = 
+  53:Algorithm/ramp_generator.c ****                 (is_positive_direction && (fabsf(ramp->target_value) > fabsf(ramp->current_value)))
+ 329              		.loc 1 53 101
+ 330 00b4 3B69     		ldr	r3, [r7, #16]
+ 331 00b6 002B     		cmp	r3, #0
+ 332 00b8 0ED0     		beq	.L16
+ 333              		.loc 1 53 54 discriminator 1
+ 334 00ba 7B68     		ldr	r3, [r7, #4]
+ 335 00bc D3ED017A 		vldr.32	s15, [r3, #4]
+ 336              		.loc 1 53 44 discriminator 1
+ 337 00c0 B0EEE77A 		vabs.f32	s14, s15
+ 338              		.loc 1 53 82 discriminator 1
+ 339 00c4 7B68     		ldr	r3, [r7, #4]
+ 340 00c6 D3ED007A 		vldr.32	s15, [r3]
+ 341              		.loc 1 53 72 discriminator 1
+ 342 00ca F0EEE77A 		vabs.f32	s15, s15
+ 343              		.loc 1 53 40 discriminator 1
+ 344 00ce B4EEE77A 		vcmpe.f32	s14, s15
+ 345 00d2 F1EE10FA 		vmrs	APSR_nzcv, FPSCR
+ 346 00d6 11DC     		bgt	.L17
+ 347              	.L16:
+ 348              		.loc 1 53 101 discriminator 4
+ 349 00d8 3B69     		ldr	r3, [r7, #16]
+ 350 00da 002B     		cmp	r3, #0
+ 351 00dc 10D1     		bne	.L18
+  54:Algorithm/ramp_generator.c ****                 (!is_positive_direction && (fabsf(ramp->target_value) > fabsf(ramp->current_value))
+ 352              		.loc 1 54 55
+ARM GAS  C:\Users\fffff\AppData\Local\Temp\ccokmegf.s 			page 8
+
+
+ 353 00de 7B68     		ldr	r3, [r7, #4]
+ 354 00e0 D3ED017A 		vldr.32	s15, [r3, #4]
+ 355              		.loc 1 54 45
+ 356 00e4 B0EEE77A 		vabs.f32	s14, s15
+ 357              		.loc 1 54 83
+ 358 00e8 7B68     		ldr	r3, [r7, #4]
+ 359 00ea D3ED007A 		vldr.32	s15, [r3]
+ 360              		.loc 1 54 73
+ 361 00ee F0EEE77A 		vabs.f32	s15, s15
+ 362              		.loc 1 54 41
+ 363 00f2 B4EEE77A 		vcmpe.f32	s14, s15
+ 364 00f6 F1EE10FA 		vmrs	APSR_nzcv, FPSCR
+ 365 00fa 01DD     		ble	.L18
+ 366              	.L17:
+  53:Algorithm/ramp_generator.c ****                 (!is_positive_direction && (fabsf(ramp->target_value) > fabsf(ramp->current_value))
+ 367              		.loc 1 53 101 discriminator 3
+ 368 00fc 0123     		movs	r3, #1
+  53:Algorithm/ramp_generator.c ****                 (!is_positive_direction && (fabsf(ramp->target_value) > fabsf(ramp->current_value))
+ 369              		.loc 1 53 101 is_stmt 0
+ 370 00fe 00E0     		b	.L20
+ 371              	.L18:
+  53:Algorithm/ramp_generator.c ****                 (!is_positive_direction && (fabsf(ramp->target_value) > fabsf(ramp->current_value))
+ 372              		.loc 1 53 101 discriminator 5
+ 373 0100 0023     		movs	r3, #0
+ 374              	.L20:
+  52:Algorithm/ramp_generator.c ****                 (is_positive_direction && (fabsf(ramp->target_value) > fabsf(ramp->current_value)))
+ 375              		.loc 1 52 23 is_stmt 1
+ 376 0102 FB60     		str	r3, [r7, #12]
+  55:Algorithm/ramp_generator.c **** 
+  56:Algorithm/ramp_generator.c ****             const float rate = is_increasing_magnitude ? ramp->accel : ramp->decel;
+ 377              		.loc 1 56 70
+ 378 0104 FB68     		ldr	r3, [r7, #12]
+ 379 0106 002B     		cmp	r3, #0
+ 380 0108 02D0     		beq	.L21
+ 381              		.loc 1 56 70 is_stmt 0 discriminator 1
+ 382 010a 7B68     		ldr	r3, [r7, #4]
+ 383 010c DB68     		ldr	r3, [r3, #12]	@ float
+ 384 010e 01E0     		b	.L22
+ 385              	.L21:
+ 386              		.loc 1 56 70 discriminator 2
+ 387 0110 7B68     		ldr	r3, [r7, #4]
+ 388 0112 1B69     		ldr	r3, [r3, #16]	@ float
+ 389              	.L22:
+ 390              		.loc 1 56 25 is_stmt 1 discriminator 4
+ 391 0114 BB60     		str	r3, [r7, #8]	@ float
+  57:Algorithm/ramp_generator.c ****             delta = rate * time_step * (is_positive_direction ? 1.0f : -1.0f);
+ 392              		.loc 1 57 26
+ 393 0116 97ED027A 		vldr.32	s14, [r7, #8]
+ 394 011a D7ED067A 		vldr.32	s15, [r7, #24]
+ 395 011e 67EE277A 		vmul.f32	s15, s14, s15
+ 396              		.loc 1 57 70
+ 397 0122 3B69     		ldr	r3, [r7, #16]
+ 398 0124 002B     		cmp	r3, #0
+ 399 0126 02D0     		beq	.L23
+ 400              		.loc 1 57 70 is_stmt 0 discriminator 1
+ 401 0128 B7EE007A 		vmov.f32	s14, #1.0e+0
+ 402 012c 01E0     		b	.L24
+ARM GAS  C:\Users\fffff\AppData\Local\Temp\ccokmegf.s 			page 9
+
+
+ 403              	.L23:
+ 404              		.loc 1 57 70 discriminator 2
+ 405 012e BFEE007A 		vmov.f32	s14, #-1.0e+0
+ 406              	.L24:
+ 407              		.loc 1 57 19 is_stmt 1 discriminator 4
+ 408 0132 67EE277A 		vmul.f32	s15, s14, s15
+ 409 0136 C7ED0A7A 		vstr.32	s15, [r7, #40]
+ 410              	.L14:
+ 411              	.LBE4:
+  58:Algorithm/ramp_generator.c ****         }
+  59:Algorithm/ramp_generator.c **** 
+  60:Algorithm/ramp_generator.c ****         // 防止过冲
+  61:Algorithm/ramp_generator.c ****         float new_value = ramp->current_value + delta;
+ 412              		.loc 1 61 31
+ 413 013a 7B68     		ldr	r3, [r7, #4]
+ 414 013c D3ED007A 		vldr.32	s15, [r3]
+ 415              		.loc 1 61 15
+ 416 0140 97ED0A7A 		vldr.32	s14, [r7, #40]
+ 417 0144 77EE277A 		vadd.f32	s15, s14, s15
+ 418 0148 C7ED097A 		vstr.32	s15, [r7, #36]
+  62:Algorithm/ramp_generator.c ****         if ((delta > 0 && new_value > ramp->target_value) || 
+ 419              		.loc 1 62 12
+ 420 014c D7ED0A7A 		vldr.32	s15, [r7, #40]
+ 421 0150 F5EEC07A 		vcmpe.f32	s15, #0
+ 422 0154 F1EE10FA 		vmrs	APSR_nzcv, FPSCR
+ 423 0158 09DD     		ble	.L25
+ 424              		.loc 1 62 43 discriminator 1
+ 425 015a 7B68     		ldr	r3, [r7, #4]
+ 426 015c D3ED017A 		vldr.32	s15, [r3, #4]
+ 427              		.loc 1 62 24 discriminator 1
+ 428 0160 97ED097A 		vldr.32	s14, [r7, #36]
+ 429 0164 B4EEE77A 		vcmpe.f32	s14, s15
+ 430 0168 F1EE10FA 		vmrs	APSR_nzcv, FPSCR
+ 431 016c 10DC     		bgt	.L27
+ 432              	.L25:
+ 433              		.loc 1 62 59 discriminator 3
+ 434 016e D7ED0A7A 		vldr.32	s15, [r7, #40]
+ 435 0172 F5EEC07A 		vcmpe.f32	s15, #0
+ 436 0176 F1EE10FA 		vmrs	APSR_nzcv, FPSCR
+ 437 017a 0CD5     		bpl	.L28
+  63:Algorithm/ramp_generator.c ****             (delta < 0 && new_value < ramp->target_value)) {
+ 438              		.loc 1 63 43
+ 439 017c 7B68     		ldr	r3, [r7, #4]
+ 440 017e D3ED017A 		vldr.32	s15, [r3, #4]
+ 441              		.loc 1 63 24
+ 442 0182 97ED097A 		vldr.32	s14, [r7, #36]
+ 443 0186 B4EEE77A 		vcmpe.f32	s14, s15
+ 444 018a F1EE10FA 		vmrs	APSR_nzcv, FPSCR
+ 445 018e 02D5     		bpl	.L28
+ 446              	.L27:
+  64:Algorithm/ramp_generator.c ****             new_value = ramp->target_value;
+ 447              		.loc 1 64 23
+ 448 0190 7B68     		ldr	r3, [r7, #4]
+ 449 0192 5B68     		ldr	r3, [r3, #4]	@ float
+ 450 0194 7B62     		str	r3, [r7, #36]	@ float
+ 451              	.L28:
+  65:Algorithm/ramp_generator.c ****         }
+ARM GAS  C:\Users\fffff\AppData\Local\Temp\ccokmegf.s 			page 10
+
+
+  66:Algorithm/ramp_generator.c **** 
+  67:Algorithm/ramp_generator.c ****         // 应用限幅
+  68:Algorithm/ramp_generator.c ****         new_value = fminf(new_value, ramp->max_limit);
+ 452              		.loc 1 68 21
+ 453 0196 7B68     		ldr	r3, [r7, #4]
+ 454 0198 D3ED057A 		vldr.32	s15, [r3, #20]
+ 455 019c F0EE670A 		vmov.f32	s1, s15
+ 456 01a0 97ED090A 		vldr.32	s0, [r7, #36]
+ 457 01a4 FFF7FEFF 		bl	fminf
+ 458 01a8 87ED090A 		vstr.32	s0, [r7, #36]
+  69:Algorithm/ramp_generator.c ****         new_value = fmaxf(new_value, -ramp->max_limit);
+ 459              		.loc 1 69 43
+ 460 01ac 7B68     		ldr	r3, [r7, #4]
+ 461 01ae D3ED057A 		vldr.32	s15, [r3, #20]
+ 462              		.loc 1 69 21
+ 463 01b2 F1EE677A 		vneg.f32	s15, s15
+ 464 01b6 F0EE670A 		vmov.f32	s1, s15
+ 465 01ba 97ED090A 		vldr.32	s0, [r7, #36]
+ 466 01be FFF7FEFF 		bl	fmaxf
+ 467 01c2 87ED090A 		vstr.32	s0, [r7, #36]
+  70:Algorithm/ramp_generator.c **** 
+  71:Algorithm/ramp_generator.c ****         ramp->current_value = new_value;
+ 468              		.loc 1 71 29
+ 469 01c6 7B68     		ldr	r3, [r7, #4]
+ 470 01c8 7A6A     		ldr	r2, [r7, #36]	@ float
+ 471 01ca 1A60     		str	r2, [r3]	@ float
+  72:Algorithm/ramp_generator.c **** 
+  73:Algorithm/ramp_generator.c ****         // 精度处理
+  74:Algorithm/ramp_generator.c ****         if (fabsf(ramp->current_value - ramp->target_value) < 1e-6f) {
+ 472              		.loc 1 74 23
+ 473 01cc 7B68     		ldr	r3, [r7, #4]
+ 474 01ce 93ED007A 		vldr.32	s14, [r3]
+ 475              		.loc 1 74 45
+ 476 01d2 7B68     		ldr	r3, [r7, #4]
+ 477 01d4 D3ED017A 		vldr.32	s15, [r3, #4]
+ 478              		.loc 1 74 39
+ 479 01d8 77EE677A 		vsub.f32	s15, s14, s15
+ 480              		.loc 1 74 13
+ 481 01dc F0EEE77A 		vabs.f32	s15, s15
+ 482              		.loc 1 74 12
+ 483 01e0 9FED0D7A 		vldr.32	s14, .L40+4
+ 484 01e4 F4EEC77A 		vcmpe.f32	s15, s14
+ 485 01e8 F1EE10FA 		vmrs	APSR_nzcv, FPSCR
+ 486 01ec 04D5     		bpl	.L38
+  75:Algorithm/ramp_generator.c ****             ramp->current_value = ramp->target_value;
+ 487              		.loc 1 75 39
+ 488 01ee 7B68     		ldr	r3, [r7, #4]
+ 489 01f0 5A68     		ldr	r2, [r3, #4]	@ float
+ 490              		.loc 1 75 33
+ 491 01f2 7B68     		ldr	r3, [r7, #4]
+ 492 01f4 1A60     		str	r2, [r3]	@ float
+  76:Algorithm/ramp_generator.c ****             break;
+ 493              		.loc 1 76 13
+ 494 01f6 09E0     		b	.L9
+ 495              	.L38:
+ 496              	.LBE3:
+  43:Algorithm/ramp_generator.c ****         float delta = 0.0f;
+ARM GAS  C:\Users\fffff\AppData\Local\Temp\ccokmegf.s 			page 11
+
+
+ 497              		.loc 1 43 45 discriminator 2
+ 498 01f8 FB6A     		ldr	r3, [r7, #44]
+ 499 01fa 0133     		adds	r3, r3, #1
+ 500 01fc FB62     		str	r3, [r7, #44]
+ 501              	.L13:
+  43:Algorithm/ramp_generator.c ****         float delta = 0.0f;
+ 502              		.loc 1 43 32 discriminator 1
+ 503 01fe FA6A     		ldr	r2, [r7, #44]
+ 504 0200 FB69     		ldr	r3, [r7, #28]
+ 505 0202 9A42     		cmp	r2, r3
+ 506 0204 FFF427AF 		bcc	.L33
+ 507 0208 00E0     		b	.L9
+ 508              	.L39:
+ 509              	.LBE2:
+  37:Algorithm/ramp_generator.c ****     }
+ 510              		.loc 1 37 9
+ 511 020a 00BF     		nop
+ 512              	.L9:
+  77:Algorithm/ramp_generator.c ****         }
+  78:Algorithm/ramp_generator.c ****     }
+  79:Algorithm/ramp_generator.c **** }
+ 513              		.loc 1 79 1
+ 514 020c 3037     		adds	r7, r7, #48
+ 515              	.LCFI20:
+ 516              		.cfi_def_cfa_offset 8
+ 517 020e BD46     		mov	sp, r7
+ 518              	.LCFI21:
+ 519              		.cfi_def_cfa_register 13
+ 520              		@ sp needed
+ 521 0210 80BD     		pop	{r7, pc}
+ 522              	.L41:
+ 523 0212 00BF     		.align	2
+ 524              	.L40:
+ 525 0214 00007A44 		.word	1148846080
+ 526 0218 BD378635 		.word	897988541
+ 527              		.cfi_endproc
+ 528              	.LFE3:
+ 530              		.section	.text.RampGenerator_SetInterval,"ax",%progbits
+ 531              		.align	1
+ 532              		.global	RampGenerator_SetInterval
+ 533              		.syntax unified
+ 534              		.thumb
+ 535              		.thumb_func
+ 537              	RampGenerator_SetInterval:
+ 538              	.LFB4:
+  80:Algorithm/ramp_generator.c **** 
+  81:Algorithm/ramp_generator.c **** void RampGenerator_SetInterval(RampGenerator *ramp, unsigned int interval_ms)
+  82:Algorithm/ramp_generator.c **** {
+ 539              		.loc 1 82 1
+ 540              		.cfi_startproc
+ 541              		@ args = 0, pretend = 0, frame = 8
+ 542              		@ frame_needed = 1, uses_anonymous_args = 0
+ 543              		@ link register save eliminated.
+ 544 0000 80B4     		push	{r7}
+ 545              	.LCFI22:
+ 546              		.cfi_def_cfa_offset 4
+ 547              		.cfi_offset 7, -4
+ARM GAS  C:\Users\fffff\AppData\Local\Temp\ccokmegf.s 			page 12
+
+
+ 548 0002 83B0     		sub	sp, sp, #12
+ 549              	.LCFI23:
+ 550              		.cfi_def_cfa_offset 16
+ 551 0004 00AF     		add	r7, sp, #0
+ 552              	.LCFI24:
+ 553              		.cfi_def_cfa_register 7
+ 554 0006 7860     		str	r0, [r7, #4]
+ 555 0008 3960     		str	r1, [r7]
+  83:Algorithm/ramp_generator.c ****     ramp->interval_ms = (interval_ms > 0) ? interval_ms : 1;
+ 556              		.loc 1 83 57
+ 557 000a 3B68     		ldr	r3, [r7]
+ 558 000c 002B     		cmp	r3, #0
+ 559 000e 01D0     		beq	.L43
+ 560              		.loc 1 83 57 is_stmt 0 discriminator 1
+ 561 0010 3B68     		ldr	r3, [r7]
+ 562 0012 00E0     		b	.L44
+ 563              	.L43:
+ 564              		.loc 1 83 57 discriminator 2
+ 565 0014 0123     		movs	r3, #1
+ 566              	.L44:
+ 567              		.loc 1 83 23 is_stmt 1 discriminator 4
+ 568 0016 7A68     		ldr	r2, [r7, #4]
+ 569 0018 9360     		str	r3, [r2, #8]
+  84:Algorithm/ramp_generator.c **** }
+ 570              		.loc 1 84 1
+ 571 001a 00BF     		nop
+ 572 001c 0C37     		adds	r7, r7, #12
+ 573              	.LCFI25:
+ 574              		.cfi_def_cfa_offset 4
+ 575 001e BD46     		mov	sp, r7
+ 576              	.LCFI26:
+ 577              		.cfi_def_cfa_register 13
+ 578              		@ sp needed
+ 579 0020 5DF8047B 		ldr	r7, [sp], #4
+ 580              	.LCFI27:
+ 581              		.cfi_restore 7
+ 582              		.cfi_def_cfa_offset 0
+ 583 0024 7047     		bx	lr
+ 584              		.cfi_endproc
+ 585              	.LFE4:
+ 587              		.section	.text.RampGenerator_SetAccel,"ax",%progbits
+ 588              		.align	1
+ 589              		.global	RampGenerator_SetAccel
+ 590              		.syntax unified
+ 591              		.thumb
+ 592              		.thumb_func
+ 594              	RampGenerator_SetAccel:
+ 595              	.LFB5:
+  85:Algorithm/ramp_generator.c **** 
+  86:Algorithm/ramp_generator.c **** void RampGenerator_SetAccel(RampGenerator *ramp, float accel)
+  87:Algorithm/ramp_generator.c **** {
+ 596              		.loc 1 87 1
+ 597              		.cfi_startproc
+ 598              		@ args = 0, pretend = 0, frame = 8
+ 599              		@ frame_needed = 1, uses_anonymous_args = 0
+ 600 0000 80B5     		push	{r7, lr}
+ 601              	.LCFI28:
+ARM GAS  C:\Users\fffff\AppData\Local\Temp\ccokmegf.s 			page 13
+
+
+ 602              		.cfi_def_cfa_offset 8
+ 603              		.cfi_offset 7, -8
+ 604              		.cfi_offset 14, -4
+ 605 0002 82B0     		sub	sp, sp, #8
+ 606              	.LCFI29:
+ 607              		.cfi_def_cfa_offset 16
+ 608 0004 00AF     		add	r7, sp, #0
+ 609              	.LCFI30:
+ 610              		.cfi_def_cfa_register 7
+ 611 0006 7860     		str	r0, [r7, #4]
+ 612 0008 87ED000A 		vstr.32	s0, [r7]
+  88:Algorithm/ramp_generator.c ****     ramp->accel = fmaxf(accel, 0.0f);
+ 613              		.loc 1 88 19
+ 614 000c DFED070A 		vldr.32	s1, .L46
+ 615 0010 97ED000A 		vldr.32	s0, [r7]
+ 616 0014 FFF7FEFF 		bl	fmaxf
+ 617 0018 F0EE407A 		vmov.f32	s15, s0
+ 618              		.loc 1 88 17 discriminator 1
+ 619 001c 7B68     		ldr	r3, [r7, #4]
+ 620 001e C3ED037A 		vstr.32	s15, [r3, #12]
+  89:Algorithm/ramp_generator.c **** }
+ 621              		.loc 1 89 1
+ 622 0022 00BF     		nop
+ 623 0024 0837     		adds	r7, r7, #8
+ 624              	.LCFI31:
+ 625              		.cfi_def_cfa_offset 8
+ 626 0026 BD46     		mov	sp, r7
+ 627              	.LCFI32:
+ 628              		.cfi_def_cfa_register 13
+ 629              		@ sp needed
+ 630 0028 80BD     		pop	{r7, pc}
+ 631              	.L47:
+ 632 002a 00BF     		.align	2
+ 633              	.L46:
+ 634 002c 00000000 		.word	0
+ 635              		.cfi_endproc
+ 636              	.LFE5:
+ 638              		.section	.text.RampGenerator_SetDecel,"ax",%progbits
+ 639              		.align	1
+ 640              		.global	RampGenerator_SetDecel
+ 641              		.syntax unified
+ 642              		.thumb
+ 643              		.thumb_func
+ 645              	RampGenerator_SetDecel:
+ 646              	.LFB6:
+  90:Algorithm/ramp_generator.c **** 
+  91:Algorithm/ramp_generator.c **** void RampGenerator_SetDecel(RampGenerator *ramp, float decel)
+  92:Algorithm/ramp_generator.c **** {
+ 647              		.loc 1 92 1
+ 648              		.cfi_startproc
+ 649              		@ args = 0, pretend = 0, frame = 8
+ 650              		@ frame_needed = 1, uses_anonymous_args = 0
+ 651 0000 80B5     		push	{r7, lr}
+ 652              	.LCFI33:
+ 653              		.cfi_def_cfa_offset 8
+ 654              		.cfi_offset 7, -8
+ 655              		.cfi_offset 14, -4
+ARM GAS  C:\Users\fffff\AppData\Local\Temp\ccokmegf.s 			page 14
+
+
+ 656 0002 82B0     		sub	sp, sp, #8
+ 657              	.LCFI34:
+ 658              		.cfi_def_cfa_offset 16
+ 659 0004 00AF     		add	r7, sp, #0
+ 660              	.LCFI35:
+ 661              		.cfi_def_cfa_register 7
+ 662 0006 7860     		str	r0, [r7, #4]
+ 663 0008 87ED000A 		vstr.32	s0, [r7]
+  93:Algorithm/ramp_generator.c ****     ramp->decel = fmaxf(decel, 0.0f);
+ 664              		.loc 1 93 19
+ 665 000c DFED070A 		vldr.32	s1, .L49
+ 666 0010 97ED000A 		vldr.32	s0, [r7]
+ 667 0014 FFF7FEFF 		bl	fmaxf
+ 668 0018 F0EE407A 		vmov.f32	s15, s0
+ 669              		.loc 1 93 17 discriminator 1
+ 670 001c 7B68     		ldr	r3, [r7, #4]
+ 671 001e C3ED047A 		vstr.32	s15, [r3, #16]
+  94:Algorithm/ramp_generator.c **** }
+ 672              		.loc 1 94 1
+ 673 0022 00BF     		nop
+ 674 0024 0837     		adds	r7, r7, #8
+ 675              	.LCFI36:
+ 676              		.cfi_def_cfa_offset 8
+ 677 0026 BD46     		mov	sp, r7
+ 678              	.LCFI37:
+ 679              		.cfi_def_cfa_register 13
+ 680              		@ sp needed
+ 681 0028 80BD     		pop	{r7, pc}
+ 682              	.L50:
+ 683 002a 00BF     		.align	2
+ 684              	.L49:
+ 685 002c 00000000 		.word	0
+ 686              		.cfi_endproc
+ 687              	.LFE6:
+ 689              		.section	.text.RampGenerator_SetMaxLimit,"ax",%progbits
+ 690              		.align	1
+ 691              		.global	RampGenerator_SetMaxLimit
+ 692              		.syntax unified
+ 693              		.thumb
+ 694              		.thumb_func
+ 696              	RampGenerator_SetMaxLimit:
+ 697              	.LFB7:
+  95:Algorithm/ramp_generator.c **** 
+  96:Algorithm/ramp_generator.c **** void RampGenerator_SetMaxLimit(RampGenerator *ramp, float max_limit)
+  97:Algorithm/ramp_generator.c **** {
+ 698              		.loc 1 97 1
+ 699              		.cfi_startproc
+ 700              		@ args = 0, pretend = 0, frame = 8
+ 701              		@ frame_needed = 1, uses_anonymous_args = 0
+ 702 0000 80B5     		push	{r7, lr}
+ 703              	.LCFI38:
+ 704              		.cfi_def_cfa_offset 8
+ 705              		.cfi_offset 7, -8
+ 706              		.cfi_offset 14, -4
+ 707 0002 82B0     		sub	sp, sp, #8
+ 708              	.LCFI39:
+ 709              		.cfi_def_cfa_offset 16
+ARM GAS  C:\Users\fffff\AppData\Local\Temp\ccokmegf.s 			page 15
+
+
+ 710 0004 00AF     		add	r7, sp, #0
+ 711              	.LCFI40:
+ 712              		.cfi_def_cfa_register 7
+ 713 0006 7860     		str	r0, [r7, #4]
+ 714 0008 87ED000A 		vstr.32	s0, [r7]
+  98:Algorithm/ramp_generator.c ****     ramp->max_limit = fabsf(max_limit);
+ 715              		.loc 1 98 23
+ 716 000c D7ED007A 		vldr.32	s15, [r7]
+ 717 0010 F0EEE77A 		vabs.f32	s15, s15
+ 718              		.loc 1 98 21
+ 719 0014 7B68     		ldr	r3, [r7, #4]
+ 720 0016 C3ED057A 		vstr.32	s15, [r3, #20]
+  99:Algorithm/ramp_generator.c ****     ramp->current_value = fminf(ramp->current_value, ramp->max_limit);
+ 721              		.loc 1 99 27
+ 722 001a 7B68     		ldr	r3, [r7, #4]
+ 723 001c D3ED007A 		vldr.32	s15, [r3]
+ 724 0020 7B68     		ldr	r3, [r7, #4]
+ 725 0022 93ED057A 		vldr.32	s14, [r3, #20]
+ 726 0026 F0EE470A 		vmov.f32	s1, s14
+ 727 002a B0EE670A 		vmov.f32	s0, s15
+ 728 002e FFF7FEFF 		bl	fminf
+ 729 0032 F0EE407A 		vmov.f32	s15, s0
+ 730              		.loc 1 99 25 discriminator 1
+ 731 0036 7B68     		ldr	r3, [r7, #4]
+ 732 0038 C3ED007A 		vstr.32	s15, [r3]
+ 100:Algorithm/ramp_generator.c ****     ramp->current_value = fmaxf(ramp->current_value, -ramp->max_limit);
+ 733              		.loc 1 100 27
+ 734 003c 7B68     		ldr	r3, [r7, #4]
+ 735 003e 93ED007A 		vldr.32	s14, [r3]
+ 736              		.loc 1 100 59
+ 737 0042 7B68     		ldr	r3, [r7, #4]
+ 738 0044 D3ED057A 		vldr.32	s15, [r3, #20]
+ 739              		.loc 1 100 27
+ 740 0048 F1EE677A 		vneg.f32	s15, s15
+ 741 004c F0EE670A 		vmov.f32	s1, s15
+ 742 0050 B0EE470A 		vmov.f32	s0, s14
+ 743 0054 FFF7FEFF 		bl	fmaxf
+ 744 0058 F0EE407A 		vmov.f32	s15, s0
+ 745              		.loc 1 100 25 discriminator 1
+ 746 005c 7B68     		ldr	r3, [r7, #4]
+ 747 005e C3ED007A 		vstr.32	s15, [r3]
+ 101:Algorithm/ramp_generator.c **** }...
+ 748              		.loc 1 101 1
+ 749 0062 00BF     		nop
+ 750 0064 0837     		adds	r7, r7, #8
+ 751              	.LCFI41:
+ 752              		.cfi_def_cfa_offset 8
+ 753 0066 BD46     		mov	sp, r7
+ 754              	.LCFI42:
+ 755              		.cfi_def_cfa_register 13
+ 756              		@ sp needed
+ 757 0068 80BD     		pop	{r7, pc}
+ 758              		.cfi_endproc
+ 759              	.LFE7:
+ 761              		.text
+ 762              	.Letext0:
+ 763              		.file 2 "Algorithm/ramp_generator.h"
+ARM GAS  C:\Users\fffff\AppData\Local\Temp\ccokmegf.s 			page 16
+
+
+ 764              		.file 3 "C:/msys64/mingw64/arm-none-eabi/include/math.h"
+ARM GAS  C:\Users\fffff\AppData\Local\Temp\ccokmegf.s 			page 17
+
+
+DEFINED SYMBOLS
+                            *ABS*:00000000 ramp_generator.c
+C:\Users\fffff\AppData\Local\Temp\ccokmegf.s:20     .text.RampGenerator_Init:00000000 $t
+C:\Users\fffff\AppData\Local\Temp\ccokmegf.s:26     .text.RampGenerator_Init:00000000 RampGenerator_Init
+C:\Users\fffff\AppData\Local\Temp\ccokmegf.s:109    .text.RampGenerator_Init:00000080 $d
+C:\Users\fffff\AppData\Local\Temp\ccokmegf.s:114    .text.RampGenerator_SetTarget:00000000 $t
+C:\Users\fffff\AppData\Local\Temp\ccokmegf.s:120    .text.RampGenerator_SetTarget:00000000 RampGenerator_SetTarget
+C:\Users\fffff\AppData\Local\Temp\ccokmegf.s:161    .text.RampGenerator_GetCurrent:00000000 $t
+C:\Users\fffff\AppData\Local\Temp\ccokmegf.s:167    .text.RampGenerator_GetCurrent:00000000 RampGenerator_GetCurrent
+C:\Users\fffff\AppData\Local\Temp\ccokmegf.s:208    .text.RampGenerator_Update:00000000 $t
+C:\Users\fffff\AppData\Local\Temp\ccokmegf.s:214    .text.RampGenerator_Update:00000000 RampGenerator_Update
+C:\Users\fffff\AppData\Local\Temp\ccokmegf.s:525    .text.RampGenerator_Update:00000214 $d
+C:\Users\fffff\AppData\Local\Temp\ccokmegf.s:531    .text.RampGenerator_SetInterval:00000000 $t
+C:\Users\fffff\AppData\Local\Temp\ccokmegf.s:537    .text.RampGenerator_SetInterval:00000000 RampGenerator_SetInterval
+C:\Users\fffff\AppData\Local\Temp\ccokmegf.s:588    .text.RampGenerator_SetAccel:00000000 $t
+C:\Users\fffff\AppData\Local\Temp\ccokmegf.s:594    .text.RampGenerator_SetAccel:00000000 RampGenerator_SetAccel
+C:\Users\fffff\AppData\Local\Temp\ccokmegf.s:634    .text.RampGenerator_SetAccel:0000002c $d
+C:\Users\fffff\AppData\Local\Temp\ccokmegf.s:639    .text.RampGenerator_SetDecel:00000000 $t
+C:\Users\fffff\AppData\Local\Temp\ccokmegf.s:645    .text.RampGenerator_SetDecel:00000000 RampGenerator_SetDecel
+C:\Users\fffff\AppData\Local\Temp\ccokmegf.s:685    .text.RampGenerator_SetDecel:0000002c $d
+C:\Users\fffff\AppData\Local\Temp\ccokmegf.s:690    .text.RampGenerator_SetMaxLimit:00000000 $t
+C:\Users\fffff\AppData\Local\Temp\ccokmegf.s:696    .text.RampGenerator_SetMaxLimit:00000000 RampGenerator_SetMaxLimit
+
+UNDEFINED SYMBOLS
+fmaxf
+fminf

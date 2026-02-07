@@ -1,0 +1,542 @@
+ARM GAS  C:\Users\fffff\AppData\Local\Temp\cctWiiiy.s 			page 1
+
+
+   1              		.cpu cortex-m7
+   2              		.arch armv7e-m
+   3              		.fpu fpv5-d16
+   4              		.eabi_attribute 28, 1
+   5              		.eabi_attribute 20, 1
+   6              		.eabi_attribute 21, 1
+   7              		.eabi_attribute 23, 3
+   8              		.eabi_attribute 24, 1
+   9              		.eabi_attribute 25, 1
+  10              		.eabi_attribute 26, 1
+  11              		.eabi_attribute 30, 6
+  12              		.eabi_attribute 34, 1
+  13              		.eabi_attribute 18, 4
+  14              		.file	"supercup.c"
+  15              		.text
+  16              	.Ltext0:
+  17              		.cfi_sections	.debug_frame
+  18              		.file 1 "User/Hardware/supercup.c"
+  19              		.global	cap
+  20              		.section	.bss.cap,"aw",%nobits
+  21              		.align	2
+  24              	cap:
+  25 0000 00000000 		.space	13
+  25      00000000 
+  25      00000000 
+  25      00
+  26              		.global	send_data_cap
+  27              		.section	.bss.send_data_cap,"aw",%nobits
+  28              		.align	2
+  31              	send_data_cap:
+  32 0000 00000000 		.space	5
+  32      00
+  33              		.global	Supercup_send_hfdcan
+  34              		.section	.bss.Supercup_send_hfdcan,"aw",%nobits
+  35              		.align	2
+  38              	Supercup_send_hfdcan:
+  39 0000 00000000 		.space	4
+  40              		.section	.text.Supercup_decode_candata,"ax",%progbits
+  41              		.align	1
+  42              		.global	Supercup_decode_candata
+  43              		.syntax unified
+  44              		.thumb
+  45              		.thumb_func
+  47              	Supercup_decode_candata:
+  48              	.LFB144:
+   1:User/Hardware/supercup.c **** /**
+   2:User/Hardware/supercup.c ****  * @file supercup.c
+   3:User/Hardware/supercup.c ****  * @author Siri (lixirui@outlook.com)
+   4:User/Hardware/supercup.c ****  * @brief 超电相关控制
+   5:User/Hardware/supercup.c ****  * @version 0.1
+   6:User/Hardware/supercup.c ****  * @date 2024-10-25
+   7:User/Hardware/supercup.c ****  * 
+   8:User/Hardware/supercup.c ****  * @copyright Copyright (c) 2024
+   9:User/Hardware/supercup.c ****  * 
+  10:User/Hardware/supercup.c ****  */
+  11:User/Hardware/supercup.c **** 
+  12:User/Hardware/supercup.c **** #include "supercup.h"
+ARM GAS  C:\Users\fffff\AppData\Local\Temp\cctWiiiy.s 			page 2
+
+
+  13:User/Hardware/supercup.c **** #include "string.h"
+  14:User/Hardware/supercup.c **** #include "stm32h7xx_hal.h"
+  15:User/Hardware/supercup.c **** 
+  16:User/Hardware/supercup.c **** Supercap_t cap;
+  17:User/Hardware/supercup.c **** Supercap_send_t send_data_cap;
+  18:User/Hardware/supercup.c **** FDCAN_HandleTypeDef *Supercup_send_hfdcan; // 通过此处自动确定超电挂载的can通道
+  19:User/Hardware/supercup.c **** 
+  20:User/Hardware/supercup.c **** /**
+  21:User/Hardware/supercup.c ****  * @brief 解码超电信息
+  22:User/Hardware/supercup.c ****  * 
+  23:User/Hardware/supercup.c ****  * @param hfdcan 收到超电信息的can通道
+  24:User/Hardware/supercup.c ****  * @param data 收到的数据
+  25:User/Hardware/supercup.c ****  */
+  26:User/Hardware/supercup.c **** void Supercup_decode_candata(FDCAN_HandleTypeDef *hfdcan, uint8_t *data)
+  27:User/Hardware/supercup.c **** {
+  49              		.loc 1 27 1
+  50              		.cfi_startproc
+  51              		@ args = 0, pretend = 0, frame = 8
+  52              		@ frame_needed = 1, uses_anonymous_args = 0
+  53              		@ link register save eliminated.
+  54 0000 80B4     		push	{r7}
+  55              	.LCFI0:
+  56              		.cfi_def_cfa_offset 4
+  57              		.cfi_offset 7, -4
+  58 0002 83B0     		sub	sp, sp, #12
+  59              	.LCFI1:
+  60              		.cfi_def_cfa_offset 16
+  61 0004 00AF     		add	r7, sp, #0
+  62              	.LCFI2:
+  63              		.cfi_def_cfa_register 7
+  64 0006 7860     		str	r0, [r7, #4]
+  65 0008 3960     		str	r1, [r7]
+  28:User/Hardware/supercup.c ****     // 确定超电所挂载的can通道
+  29:User/Hardware/supercup.c ****     Supercup_send_hfdcan = hfdcan;
+  66              		.loc 1 29 26
+  67 000a 094A     		ldr	r2, .L2
+  68 000c 7B68     		ldr	r3, [r7, #4]
+  69 000e 1360     		str	r3, [r2]
+  30:User/Hardware/supercup.c **** 
+  31:User/Hardware/supercup.c ****     // 获取超电电压
+  32:User/Hardware/supercup.c ****     static float rev_vol;
+  33:User/Hardware/supercup.c ****     memcpy(&rev_vol, data, sizeof(rev_vol));
+  70              		.loc 1 33 5
+  71 0010 3B68     		ldr	r3, [r7]
+  72 0012 1B68     		ldr	r3, [r3]	@ unaligned
+  73 0014 1A46     		mov	r2, r3
+  74 0016 074B     		ldr	r3, .L2+4
+  75 0018 1A60     		str	r2, [r3]
+  34:User/Hardware/supercup.c ****     cap.remain_vol = rev_vol;
+  76              		.loc 1 34 20
+  77 001a 064B     		ldr	r3, .L2+4
+  78 001c 1A68     		ldr	r2, [r3]	@ float
+  79 001e 064B     		ldr	r3, .L2+8
+  80 0020 C3F80520 		str	r2, [r3, #5]	@ unaligned
+  35:User/Hardware/supercup.c **** }
+  81              		.loc 1 35 1
+  82 0024 00BF     		nop
+ARM GAS  C:\Users\fffff\AppData\Local\Temp\cctWiiiy.s 			page 3
+
+
+  83 0026 0C37     		adds	r7, r7, #12
+  84              	.LCFI3:
+  85              		.cfi_def_cfa_offset 4
+  86 0028 BD46     		mov	sp, r7
+  87              	.LCFI4:
+  88              		.cfi_def_cfa_register 13
+  89              		@ sp needed
+  90 002a 5DF8047B 		ldr	r7, [sp], #4
+  91              	.LCFI5:
+  92              		.cfi_restore 7
+  93              		.cfi_def_cfa_offset 0
+  94 002e 7047     		bx	lr
+  95              	.L3:
+  96              		.align	2
+  97              	.L2:
+  98 0030 00000000 		.word	Supercup_send_hfdcan
+  99 0034 00000000 		.word	rev_vol.2
+ 100 0038 00000000 		.word	cap
+ 101              		.cfi_endproc
+ 102              	.LFE144:
+ 104              		.section	.text.Supercup_send_data,"ax",%progbits
+ 105              		.align	1
+ 106              		.global	Supercup_send_data
+ 107              		.syntax unified
+ 108              		.thumb
+ 109              		.thumb_func
+ 111              	Supercup_send_data:
+ 112              	.LFB145:
+  36:User/Hardware/supercup.c **** 
+  37:User/Hardware/supercup.c **** /**
+  38:User/Hardware/supercup.c ****  * @brief 发送超电控制数据
+  39:User/Hardware/supercup.c ****  * 
+  40:User/Hardware/supercup.c ****  */
+  41:User/Hardware/supercup.c **** void Supercup_send_data(void)
+  42:User/Hardware/supercup.c **** {
+ 113              		.loc 1 42 1
+ 114              		.cfi_startproc
+ 115              		@ args = 0, pretend = 0, frame = 8
+ 116              		@ frame_needed = 1, uses_anonymous_args = 0
+ 117 0000 80B5     		push	{r7, lr}
+ 118              	.LCFI6:
+ 119              		.cfi_def_cfa_offset 8
+ 120              		.cfi_offset 7, -8
+ 121              		.cfi_offset 14, -4
+ 122 0002 82B0     		sub	sp, sp, #8
+ 123              	.LCFI7:
+ 124              		.cfi_def_cfa_offset 16
+ 125 0004 00AF     		add	r7, sp, #0
+ 126              	.LCFI8:
+ 127              		.cfi_def_cfa_register 7
+  43:User/Hardware/supercup.c ****     static uint8_t can_send_data[8];
+  44:User/Hardware/supercup.c ****     static FDCAN_TxHeaderTypeDef tx_message;
+  45:User/Hardware/supercup.c **** 
+  46:User/Hardware/supercup.c ****     tx_message.Identifier = Supercap_send_id;
+ 128              		.loc 1 46 27
+ 129 0006 1C4B     		ldr	r3, .L5
+ 130 0008 40F20632 		movw	r2, #774
+ARM GAS  C:\Users\fffff\AppData\Local\Temp\cctWiiiy.s 			page 4
+
+
+ 131 000c 1A60     		str	r2, [r3]
+  47:User/Hardware/supercup.c ****     tx_message.IdType = FDCAN_STANDARD_ID;              // 标准ID
+ 132              		.loc 1 47 23
+ 133 000e 1A4B     		ldr	r3, .L5
+ 134 0010 0022     		movs	r2, #0
+ 135 0012 5A60     		str	r2, [r3, #4]
+  48:User/Hardware/supercup.c ****     tx_message.TxFrameType = FDCAN_DATA_FRAME;          // 数据帧
+ 136              		.loc 1 48 28
+ 137 0014 184B     		ldr	r3, .L5
+ 138 0016 0022     		movs	r2, #0
+ 139 0018 9A60     		str	r2, [r3, #8]
+  49:User/Hardware/supercup.c ****     tx_message.DataLength = FDCAN_DATA_BYTES_8;         // 发送数据长度
+ 140              		.loc 1 49 27
+ 141 001a 174B     		ldr	r3, .L5
+ 142 001c 0422     		movs	r2, #4
+ 143 001e DA60     		str	r2, [r3, #12]
+  50:User/Hardware/supercup.c ****     tx_message.ErrorStateIndicator = FDCAN_ESI_ACTIVE;  // 设置错误状态指示
+ 144              		.loc 1 50 36
+ 145 0020 154B     		ldr	r3, .L5
+ 146 0022 0022     		movs	r2, #0
+ 147 0024 1A61     		str	r2, [r3, #16]
+  51:User/Hardware/supercup.c ****     tx_message.BitRateSwitch = FDCAN_BRS_OFF;           // 不开启可变波特率
+ 148              		.loc 1 51 30
+ 149 0026 144B     		ldr	r3, .L5
+ 150 0028 0022     		movs	r2, #0
+ 151 002a 5A61     		str	r2, [r3, #20]
+  52:User/Hardware/supercup.c ****     tx_message.FDFormat = FDCAN_CLASSIC_CAN;            // 普通CAN格式
+ 152              		.loc 1 52 25
+ 153 002c 124B     		ldr	r3, .L5
+ 154 002e 0022     		movs	r2, #0
+ 155 0030 9A61     		str	r2, [r3, #24]
+  53:User/Hardware/supercup.c ****     tx_message.TxEventFifoControl = FDCAN_NO_TX_EVENTS; // 用于发送事件FIFO控制, 不存储
+ 156              		.loc 1 53 35
+ 157 0032 114B     		ldr	r3, .L5
+ 158 0034 0022     		movs	r2, #0
+ 159 0036 DA61     		str	r2, [r3, #28]
+  54:User/Hardware/supercup.c ****     tx_message.MessageMarker = 0x00;                    // 用于复制到TX EVENT FIFO的消息Maker来识别
+ 160              		.loc 1 54 30
+ 161 0038 0F4B     		ldr	r3, .L5
+ 162 003a 0022     		movs	r2, #0
+ 163 003c 1A62     		str	r2, [r3, #32]
+  55:User/Hardware/supercup.c **** 
+  56:User/Hardware/supercup.c ****     Supercap_send_t send_data;
+  57:User/Hardware/supercup.c **** 
+  58:User/Hardware/supercup.c ****     send_data.setPower = cap.set_max_power;
+ 164              		.loc 1 58 29
+ 165 003e 0F4B     		ldr	r3, .L5+4
+ 166 0040 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 167              		.loc 1 58 24
+ 168 0042 3B70     		strb	r3, [r7]
+  59:User/Hardware/supercup.c ****     send_data.cacheEnergy = cap.cache_energy;
+ 169              		.loc 1 59 32
+ 170 0044 0D4B     		ldr	r3, .L5+4
+ 171 0046 5B78     		ldrb	r3, [r3, #1]	@ zero_extendqisi2
+ 172              		.loc 1 59 27
+ 173 0048 A7F80130 		strh	r3, [r7, #1]	@ unaligned
+  60:User/Hardware/supercup.c ****     send_data.cacheEnergylimit = cap.cacheEnergylimit;
+ARM GAS  C:\Users\fffff\AppData\Local\Temp\cctWiiiy.s 			page 5
+
+
+ 174              		.loc 1 60 37
+ 175 004c 0B4B     		ldr	r3, .L5+4
+ 176 004e 5B88     		ldrh	r3, [r3, #2]
+ 177              		.loc 1 60 32
+ 178 0050 A7F80330 		strh	r3, [r7, #3]	@ unaligned
+  61:User/Hardware/supercup.c **** 
+  62:User/Hardware/supercup.c ****     memcpy(can_send_data, &send_data, sizeof(Supercap_send_t));
+ 179              		.loc 1 62 5
+ 180 0054 0A4B     		ldr	r3, .L5+8
+ 181 0056 3A46     		mov	r2, r7
+ 182 0058 92E80300 		ldm	r2, {r0, r1}
+ 183 005c 1860     		str	r0, [r3]
+ 184 005e 0433     		adds	r3, r3, #4
+ 185 0060 1970     		strb	r1, [r3]
+  63:User/Hardware/supercup.c **** 
+  64:User/Hardware/supercup.c ****     HAL_FDCAN_AddMessageToTxFifoQ(Supercup_send_hfdcan, &tx_message, can_send_data);
+ 186              		.loc 1 64 5
+ 187 0062 084B     		ldr	r3, .L5+12
+ 188 0064 1B68     		ldr	r3, [r3]
+ 189 0066 064A     		ldr	r2, .L5+8
+ 190 0068 0349     		ldr	r1, .L5
+ 191 006a 1846     		mov	r0, r3
+ 192 006c FFF7FEFF 		bl	HAL_FDCAN_AddMessageToTxFifoQ
+  65:User/Hardware/supercup.c **** }
+ 193              		.loc 1 65 1
+ 194 0070 00BF     		nop
+ 195 0072 0837     		adds	r7, r7, #8
+ 196              	.LCFI9:
+ 197              		.cfi_def_cfa_offset 8
+ 198 0074 BD46     		mov	sp, r7
+ 199              	.LCFI10:
+ 200              		.cfi_def_cfa_register 13
+ 201              		@ sp needed
+ 202 0076 80BD     		pop	{r7, pc}
+ 203              	.L6:
+ 204              		.align	2
+ 205              	.L5:
+ 206 0078 00000000 		.word	tx_message.1
+ 207 007c 00000000 		.word	cap
+ 208 0080 00000000 		.word	can_send_data.0
+ 209 0084 00000000 		.word	Supercup_send_hfdcan
+ 210              		.cfi_endproc
+ 211              	.LFE145:
+ 213              		.section	.text.Supercap_set_power,"ax",%progbits
+ 214              		.align	1
+ 215              		.global	Supercap_set_power
+ 216              		.syntax unified
+ 217              		.thumb
+ 218              		.thumb_func
+ 220              	Supercap_set_power:
+ 221              	.LFB146:
+  66:User/Hardware/supercup.c **** 
+  67:User/Hardware/supercup.c **** /**
+  68:User/Hardware/supercup.c ****  * @brief 设置超电的功率
+  69:User/Hardware/supercup.c ****  * 
+  70:User/Hardware/supercup.c ****  * @param set 设置值 50~200
+  71:User/Hardware/supercup.c ****  * @return int 是否设置成功 0成功，-1失败
+ARM GAS  C:\Users\fffff\AppData\Local\Temp\cctWiiiy.s 			page 6
+
+
+  72:User/Hardware/supercup.c ****  */
+  73:User/Hardware/supercup.c **** int Supercap_set_power(uint8_t set)
+  74:User/Hardware/supercup.c **** {
+ 222              		.loc 1 74 1
+ 223              		.cfi_startproc
+ 224              		@ args = 0, pretend = 0, frame = 8
+ 225              		@ frame_needed = 1, uses_anonymous_args = 0
+ 226              		@ link register save eliminated.
+ 227 0000 80B4     		push	{r7}
+ 228              	.LCFI11:
+ 229              		.cfi_def_cfa_offset 4
+ 230              		.cfi_offset 7, -4
+ 231 0002 83B0     		sub	sp, sp, #12
+ 232              	.LCFI12:
+ 233              		.cfi_def_cfa_offset 16
+ 234 0004 00AF     		add	r7, sp, #0
+ 235              	.LCFI13:
+ 236              		.cfi_def_cfa_register 7
+ 237 0006 0346     		mov	r3, r0
+ 238 0008 FB71     		strb	r3, [r7, #7]
+  75:User/Hardware/supercup.c **** 	if (set > 200 || set < 50)
+ 239              		.loc 1 75 5
+ 240 000a FB79     		ldrb	r3, [r7, #7]	@ zero_extendqisi2
+ 241 000c C82B     		cmp	r3, #200
+ 242 000e 02D8     		bhi	.L8
+ 243              		.loc 1 75 16 discriminator 1
+ 244 0010 FB79     		ldrb	r3, [r7, #7]	@ zero_extendqisi2
+ 245 0012 312B     		cmp	r3, #49
+ 246 0014 02D8     		bhi	.L9
+ 247              	.L8:
+  76:User/Hardware/supercup.c **** 		return -1;
+ 248              		.loc 1 76 10
+ 249 0016 4FF0FF33 		mov	r3, #-1
+ 250 001a 03E0     		b	.L10
+ 251              	.L9:
+  77:User/Hardware/supercup.c **** 	cap.set_max_power = set;
+ 252              		.loc 1 77 20
+ 253 001c 044A     		ldr	r2, .L11
+ 254 001e FB79     		ldrb	r3, [r7, #7]
+ 255 0020 1370     		strb	r3, [r2]
+  78:User/Hardware/supercup.c **** 	return 0;
+ 256              		.loc 1 78 9
+ 257 0022 0023     		movs	r3, #0
+ 258              	.L10:
+  79:User/Hardware/supercup.c **** }
+ 259              		.loc 1 79 1
+ 260 0024 1846     		mov	r0, r3
+ 261 0026 0C37     		adds	r7, r7, #12
+ 262              	.LCFI14:
+ 263              		.cfi_def_cfa_offset 4
+ 264 0028 BD46     		mov	sp, r7
+ 265              	.LCFI15:
+ 266              		.cfi_def_cfa_register 13
+ 267              		@ sp needed
+ 268 002a 5DF8047B 		ldr	r7, [sp], #4
+ 269              	.LCFI16:
+ 270              		.cfi_restore 7
+ARM GAS  C:\Users\fffff\AppData\Local\Temp\cctWiiiy.s 			page 7
+
+
+ 271              		.cfi_def_cfa_offset 0
+ 272 002e 7047     		bx	lr
+ 273              	.L12:
+ 274              		.align	2
+ 275              	.L11:
+ 276 0030 00000000 		.word	cap
+ 277              		.cfi_endproc
+ 278              	.LFE146:
+ 280              		.section	.text.Supercap_get_remain_vol,"ax",%progbits
+ 281              		.align	1
+ 282              		.global	Supercap_get_remain_vol
+ 283              		.syntax unified
+ 284              		.thumb
+ 285              		.thumb_func
+ 287              	Supercap_get_remain_vol:
+ 288              	.LFB147:
+  80:User/Hardware/supercup.c **** 
+  81:User/Hardware/supercup.c **** /**
+  82:User/Hardware/supercup.c ****  * @brief 获取超电剩余电压
+  83:User/Hardware/supercup.c ****  * 
+  84:User/Hardware/supercup.c ****  * @return float 超电剩余电压
+  85:User/Hardware/supercup.c ****  */
+  86:User/Hardware/supercup.c **** float Supercap_get_remain_vol(void)
+  87:User/Hardware/supercup.c **** {
+ 289              		.loc 1 87 1
+ 290              		.cfi_startproc
+ 291              		@ args = 0, pretend = 0, frame = 0
+ 292              		@ frame_needed = 1, uses_anonymous_args = 0
+ 293              		@ link register save eliminated.
+ 294 0000 80B4     		push	{r7}
+ 295              	.LCFI17:
+ 296              		.cfi_def_cfa_offset 4
+ 297              		.cfi_offset 7, -4
+ 298 0002 00AF     		add	r7, sp, #0
+ 299              	.LCFI18:
+ 300              		.cfi_def_cfa_register 7
+  88:User/Hardware/supercup.c **** 	return cap.remain_vol;
+ 301              		.loc 1 88 12
+ 302 0004 054B     		ldr	r3, .L15
+ 303 0006 D3F80530 		ldr	r3, [r3, #5]	@ unaligned
+ 304              		.loc 1 88 12 is_stmt 0 discriminator 1
+ 305 000a 07EE903A 		vmov	s15, r3
+  89:User/Hardware/supercup.c **** }
+ 306              		.loc 1 89 1 is_stmt 1
+ 307 000e B0EE670A 		vmov.f32	s0, s15
+ 308 0012 BD46     		mov	sp, r7
+ 309              	.LCFI19:
+ 310              		.cfi_def_cfa_register 13
+ 311              		@ sp needed
+ 312 0014 5DF8047B 		ldr	r7, [sp], #4
+ 313              	.LCFI20:
+ 314              		.cfi_restore 7
+ 315              		.cfi_def_cfa_offset 0
+ 316 0018 7047     		bx	lr
+ 317              	.L16:
+ 318 001a 00BF     		.align	2
+ 319              	.L15:
+ARM GAS  C:\Users\fffff\AppData\Local\Temp\cctWiiiy.s 			page 8
+
+
+ 320 001c 00000000 		.word	cap
+ 321              		.cfi_endproc
+ 322              	.LFE147:
+ 324              		.section	.text.Supercap_get_predict_energy,"ax",%progbits
+ 325              		.align	1
+ 326              		.global	Supercap_get_predict_energy
+ 327              		.syntax unified
+ 328              		.thumb
+ 329              		.thumb_func
+ 331              	Supercap_get_predict_energy:
+ 332              	.LFB148:
+  90:User/Hardware/supercup.c **** 
+  91:User/Hardware/supercup.c **** /**
+  92:User/Hardware/supercup.c ****  * @brief 获取超电预测剩余容量
+  93:User/Hardware/supercup.c ****  * 
+  94:User/Hardware/supercup.c ****  * @return float 超电剩余容量 百分值
+  95:User/Hardware/supercup.c ****  */
+  96:User/Hardware/supercup.c **** float Supercap_get_predict_energy(void)
+  97:User/Hardware/supercup.c **** {
+ 333              		.loc 1 97 1
+ 334              		.cfi_startproc
+ 335              		@ args = 0, pretend = 0, frame = 0
+ 336              		@ frame_needed = 1, uses_anonymous_args = 0
+ 337              		@ link register save eliminated.
+ 338 0000 80B4     		push	{r7}
+ 339              	.LCFI21:
+ 340              		.cfi_def_cfa_offset 4
+ 341              		.cfi_offset 7, -4
+ 342 0002 00AF     		add	r7, sp, #0
+ 343              	.LCFI22:
+ 344              		.cfi_def_cfa_register 7
+  98:User/Hardware/supercup.c **** 	return cap.prediect_energy;
+ 345              		.loc 1 98 12
+ 346 0004 054B     		ldr	r3, .L19
+ 347 0006 D3F80930 		ldr	r3, [r3, #9]	@ unaligned
+ 348              		.loc 1 98 12 is_stmt 0 discriminator 1
+ 349 000a 07EE903A 		vmov	s15, r3
+  99:User/Hardware/supercup.c **** }...
+ 350              		.loc 1 99 1 is_stmt 1
+ 351 000e B0EE670A 		vmov.f32	s0, s15
+ 352 0012 BD46     		mov	sp, r7
+ 353              	.LCFI23:
+ 354              		.cfi_def_cfa_register 13
+ 355              		@ sp needed
+ 356 0014 5DF8047B 		ldr	r7, [sp], #4
+ 357              	.LCFI24:
+ 358              		.cfi_restore 7
+ 359              		.cfi_def_cfa_offset 0
+ 360 0018 7047     		bx	lr
+ 361              	.L20:
+ 362 001a 00BF     		.align	2
+ 363              	.L19:
+ 364 001c 00000000 		.word	cap
+ 365              		.cfi_endproc
+ 366              	.LFE148:
+ 368              		.section	.bss.rev_vol.2,"aw",%nobits
+ 369              		.align	2
+ARM GAS  C:\Users\fffff\AppData\Local\Temp\cctWiiiy.s 			page 9
+
+
+ 372              	rev_vol.2:
+ 373 0000 00000000 		.space	4
+ 374              		.section	.bss.tx_message.1,"aw",%nobits
+ 375              		.align	2
+ 378              	tx_message.1:
+ 379 0000 00000000 		.space	36
+ 379      00000000 
+ 379      00000000 
+ 379      00000000 
+ 379      00000000 
+ 380              		.section	.bss.can_send_data.0,"aw",%nobits
+ 381              		.align	2
+ 384              	can_send_data.0:
+ 385 0000 00000000 		.space	8
+ 385      00000000 
+ 386              		.text
+ 387              	.Letext0:
+ 388              		.file 2 "C:/msys64/mingw64/arm-none-eabi/include/machine/_default_types.h"
+ 389              		.file 3 "C:/msys64/mingw64/arm-none-eabi/include/sys/_stdint.h"
+ 390              		.file 4 "Drivers/CMSIS/Device/ST/STM32H7xx/Include/stm32h723xx.h"
+ 391              		.file 5 "Drivers/CMSIS/Device/ST/STM32H7xx/Include/stm32h7xx.h"
+ 392              		.file 6 "Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal_def.h"
+ 393              		.file 7 "Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal_fdcan.h"
+ 394              		.file 8 "User/Hardware/supercup.h"
+ARM GAS  C:\Users\fffff\AppData\Local\Temp\cctWiiiy.s 			page 10
+
+
+DEFINED SYMBOLS
+                            *ABS*:00000000 supercup.c
+C:\Users\fffff\AppData\Local\Temp\cctWiiiy.s:24     .bss.cap:00000000 cap
+C:\Users\fffff\AppData\Local\Temp\cctWiiiy.s:21     .bss.cap:00000000 $d
+C:\Users\fffff\AppData\Local\Temp\cctWiiiy.s:31     .bss.send_data_cap:00000000 send_data_cap
+C:\Users\fffff\AppData\Local\Temp\cctWiiiy.s:28     .bss.send_data_cap:00000000 $d
+C:\Users\fffff\AppData\Local\Temp\cctWiiiy.s:38     .bss.Supercup_send_hfdcan:00000000 Supercup_send_hfdcan
+C:\Users\fffff\AppData\Local\Temp\cctWiiiy.s:35     .bss.Supercup_send_hfdcan:00000000 $d
+C:\Users\fffff\AppData\Local\Temp\cctWiiiy.s:41     .text.Supercup_decode_candata:00000000 $t
+C:\Users\fffff\AppData\Local\Temp\cctWiiiy.s:47     .text.Supercup_decode_candata:00000000 Supercup_decode_candata
+C:\Users\fffff\AppData\Local\Temp\cctWiiiy.s:98     .text.Supercup_decode_candata:00000030 $d
+C:\Users\fffff\AppData\Local\Temp\cctWiiiy.s:372    .bss.rev_vol.2:00000000 rev_vol.2
+C:\Users\fffff\AppData\Local\Temp\cctWiiiy.s:105    .text.Supercup_send_data:00000000 $t
+C:\Users\fffff\AppData\Local\Temp\cctWiiiy.s:111    .text.Supercup_send_data:00000000 Supercup_send_data
+C:\Users\fffff\AppData\Local\Temp\cctWiiiy.s:206    .text.Supercup_send_data:00000078 $d
+C:\Users\fffff\AppData\Local\Temp\cctWiiiy.s:378    .bss.tx_message.1:00000000 tx_message.1
+C:\Users\fffff\AppData\Local\Temp\cctWiiiy.s:384    .bss.can_send_data.0:00000000 can_send_data.0
+C:\Users\fffff\AppData\Local\Temp\cctWiiiy.s:214    .text.Supercap_set_power:00000000 $t
+C:\Users\fffff\AppData\Local\Temp\cctWiiiy.s:220    .text.Supercap_set_power:00000000 Supercap_set_power
+C:\Users\fffff\AppData\Local\Temp\cctWiiiy.s:276    .text.Supercap_set_power:00000030 $d
+C:\Users\fffff\AppData\Local\Temp\cctWiiiy.s:281    .text.Supercap_get_remain_vol:00000000 $t
+C:\Users\fffff\AppData\Local\Temp\cctWiiiy.s:287    .text.Supercap_get_remain_vol:00000000 Supercap_get_remain_vol
+C:\Users\fffff\AppData\Local\Temp\cctWiiiy.s:320    .text.Supercap_get_remain_vol:0000001c $d
+C:\Users\fffff\AppData\Local\Temp\cctWiiiy.s:325    .text.Supercap_get_predict_energy:00000000 $t
+C:\Users\fffff\AppData\Local\Temp\cctWiiiy.s:331    .text.Supercap_get_predict_energy:00000000 Supercap_get_predict_energy
+C:\Users\fffff\AppData\Local\Temp\cctWiiiy.s:364    .text.Supercap_get_predict_energy:0000001c $d
+C:\Users\fffff\AppData\Local\Temp\cctWiiiy.s:369    .bss.rev_vol.2:00000000 $d
+C:\Users\fffff\AppData\Local\Temp\cctWiiiy.s:375    .bss.tx_message.1:00000000 $d
+C:\Users\fffff\AppData\Local\Temp\cctWiiiy.s:381    .bss.can_send_data.0:00000000 $d
+
+UNDEFINED SYMBOLS
+HAL_FDCAN_AddMessageToTxFifoQ

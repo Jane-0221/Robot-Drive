@@ -1,0 +1,531 @@
+ARM GAS  C:\Users\23671\AppData\Local\Temp\ccRIn4ck.s 			page 1
+
+
+   1              		.cpu cortex-m7
+   2              		.arch armv7e-m
+   3              		.fpu fpv5-d16
+   4              		.eabi_attribute 28, 1
+   5              		.eabi_attribute 20, 1
+   6              		.eabi_attribute 21, 1
+   7              		.eabi_attribute 23, 3
+   8              		.eabi_attribute 24, 1
+   9              		.eabi_attribute 25, 1
+  10              		.eabi_attribute 26, 1
+  11              		.eabi_attribute 30, 6
+  12              		.eabi_attribute 34, 1
+  13              		.eabi_attribute 18, 4
+  14              		.file	"ui_Omni_Shoot_static_0.c"
+  15              		.text
+  16              	.Ltext0:
+  17              		.cfi_sections	.debug_frame
+  18              		.file 1 "Drivers/UI/ui_Omni_Shoot_static_0.c"
+  19              		.global	ui_Omni_Shoot_static_0
+  20              		.section	.bss.ui_Omni_Shoot_static_0,"aw",%nobits
+  21              		.align	2
+  24              	ui_Omni_Shoot_static_0:
+  25 0000 00000000 		.space	30
+  25      00000000 
+  25      00000000 
+  25      00000000 
+  25      00000000 
+  26              		.global	ui_Omni_Shoot_static_Shoot_Line
+  27              		.section	.data.ui_Omni_Shoot_static_Shoot_Line,"aw"
+  28              		.align	2
+  31              	ui_Omni_Shoot_static_Shoot_Line:
+  32 0000 0D000000 		.word	ui_Omni_Shoot_static_0+13
+  33              		.section	.text._ui_init_Omni_Shoot_static_0,"ax",%progbits
+  34              		.align	1
+  35              		.global	_ui_init_Omni_Shoot_static_0
+  36              		.syntax unified
+  37              		.thumb
+  38              		.thumb_func
+  40              	_ui_init_Omni_Shoot_static_0:
+  41              	.LFB147:
+   1:Drivers/UI/ui_Omni_Shoot_static_0.c **** //
+   2:Drivers/UI/ui_Omni_Shoot_static_0.c **** // Created by RM UI Designer
+   3:Drivers/UI/ui_Omni_Shoot_static_0.c **** //
+   4:Drivers/UI/ui_Omni_Shoot_static_0.c **** 
+   5:Drivers/UI/ui_Omni_Shoot_static_0.c **** #include "ui_Omni_Shoot_static_0.h"
+   6:Drivers/UI/ui_Omni_Shoot_static_0.c **** 
+   7:Drivers/UI/ui_Omni_Shoot_static_0.c **** #define FRAME_ID 1
+   8:Drivers/UI/ui_Omni_Shoot_static_0.c **** #define GROUP_ID 2
+   9:Drivers/UI/ui_Omni_Shoot_static_0.c **** #define START_ID 0
+  10:Drivers/UI/ui_Omni_Shoot_static_0.c **** #define OBJ_NUM 1
+  11:Drivers/UI/ui_Omni_Shoot_static_0.c **** #define FRAME_OBJ_NUM 1
+  12:Drivers/UI/ui_Omni_Shoot_static_0.c **** 
+  13:Drivers/UI/ui_Omni_Shoot_static_0.c **** CAT(ui_, CAT(FRAME_OBJ_NUM, _frame_t)) ui_Omni_Shoot_static_0;
+  14:Drivers/UI/ui_Omni_Shoot_static_0.c **** ui_interface_line_t *ui_Omni_Shoot_static_Shoot_Line = (ui_interface_line_t *)&(ui_Omni_Shoot_stati
+  15:Drivers/UI/ui_Omni_Shoot_static_0.c **** 
+  16:Drivers/UI/ui_Omni_Shoot_static_0.c **** void _ui_init_Omni_Shoot_static_0() {
+  42              		.loc 1 16 37
+ARM GAS  C:\Users\23671\AppData\Local\Temp\ccRIn4ck.s 			page 2
+
+
+  43              		.cfi_startproc
+  44              		@ args = 0, pretend = 0, frame = 8
+  45              		@ frame_needed = 1, uses_anonymous_args = 0
+  46 0000 80B5     		push	{r7, lr}
+  47              	.LCFI0:
+  48              		.cfi_def_cfa_offset 8
+  49              		.cfi_offset 7, -8
+  50              		.cfi_offset 14, -4
+  51 0002 82B0     		sub	sp, sp, #8
+  52              	.LCFI1:
+  53              		.cfi_def_cfa_offset 16
+  54 0004 00AF     		add	r7, sp, #0
+  55              	.LCFI2:
+  56              		.cfi_def_cfa_register 7
+  57              	.LBB2:
+  17:Drivers/UI/ui_Omni_Shoot_static_0.c ****     for (int i = 0; i < OBJ_NUM; i++) {
+  58              		.loc 1 17 14
+  59 0006 0023     		movs	r3, #0
+  60 0008 7B60     		str	r3, [r7, #4]
+  61              		.loc 1 17 5
+  62 000a 2CE0     		b	.L2
+  63              	.L3:
+  18:Drivers/UI/ui_Omni_Shoot_static_0.c ****         ui_Omni_Shoot_static_0.data[i].figure_name[0] = FRAME_ID;
+  64              		.loc 1 18 55
+  65 000c 4F49     		ldr	r1, .L6
+  66 000e 7A68     		ldr	r2, [r7, #4]
+  67 0010 1346     		mov	r3, r2
+  68 0012 1B01     		lsls	r3, r3, #4
+  69 0014 9B1A     		subs	r3, r3, r2
+  70 0016 0B44     		add	r3, r3, r1
+  71 0018 0D33     		adds	r3, r3, #13
+  72 001a 0122     		movs	r2, #1
+  73 001c 1A70     		strb	r2, [r3]
+  19:Drivers/UI/ui_Omni_Shoot_static_0.c ****         ui_Omni_Shoot_static_0.data[i].figure_name[1] = GROUP_ID;
+  74              		.loc 1 19 55
+  75 001e 4B49     		ldr	r1, .L6
+  76 0020 7A68     		ldr	r2, [r7, #4]
+  77 0022 1346     		mov	r3, r2
+  78 0024 1B01     		lsls	r3, r3, #4
+  79 0026 9B1A     		subs	r3, r3, r2
+  80 0028 0B44     		add	r3, r3, r1
+  81 002a 0E33     		adds	r3, r3, #14
+  82 002c 0222     		movs	r2, #2
+  83 002e 1A70     		strb	r2, [r3]
+  20:Drivers/UI/ui_Omni_Shoot_static_0.c ****         ui_Omni_Shoot_static_0.data[i].figure_name[2] = i + START_ID;
+  84              		.loc 1 20 55
+  85 0030 7B68     		ldr	r3, [r7, #4]
+  86 0032 D8B2     		uxtb	r0, r3
+  87 0034 4549     		ldr	r1, .L6
+  88 0036 7A68     		ldr	r2, [r7, #4]
+  89 0038 1346     		mov	r3, r2
+  90 003a 1B01     		lsls	r3, r3, #4
+  91 003c 9B1A     		subs	r3, r3, r2
+  92 003e 0B44     		add	r3, r3, r1
+  93 0040 0F33     		adds	r3, r3, #15
+  94 0042 0246     		mov	r2, r0
+  95 0044 1A70     		strb	r2, [r3]
+ARM GAS  C:\Users\23671\AppData\Local\Temp\ccRIn4ck.s 			page 3
+
+
+  21:Drivers/UI/ui_Omni_Shoot_static_0.c ****         ui_Omni_Shoot_static_0.data[i].operate_tpyel = 1;
+  96              		.loc 1 21 54
+  97 0046 4149     		ldr	r1, .L6
+  98 0048 7A68     		ldr	r2, [r7, #4]
+  99 004a 1346     		mov	r3, r2
+ 100 004c 1B01     		lsls	r3, r3, #4
+ 101 004e 9B1A     		subs	r3, r3, r2
+ 102 0050 0B44     		add	r3, r3, r1
+ 103 0052 03F10802 		add	r2, r3, #8
+ 104 0056 137A     		ldrb	r3, [r2, #8]
+ 105 0058 0121     		movs	r1, #1
+ 106 005a 61F30203 		bfi	r3, r1, #0, #3
+ 107 005e 1372     		strb	r3, [r2, #8]
+  17:Drivers/UI/ui_Omni_Shoot_static_0.c ****         ui_Omni_Shoot_static_0.data[i].figure_name[0] = FRAME_ID;
+ 108              		.loc 1 17 35 discriminator 3
+ 109 0060 7B68     		ldr	r3, [r7, #4]
+ 110 0062 0133     		adds	r3, r3, #1
+ 111 0064 7B60     		str	r3, [r7, #4]
+ 112              	.L2:
+  17:Drivers/UI/ui_Omni_Shoot_static_0.c ****         ui_Omni_Shoot_static_0.data[i].figure_name[0] = FRAME_ID;
+ 113              		.loc 1 17 23 discriminator 1
+ 114 0066 7B68     		ldr	r3, [r7, #4]
+ 115 0068 002B     		cmp	r3, #0
+ 116 006a CFDD     		ble	.L3
+ 117              	.LBE2:
+ 118              	.LBB3:
+  22:Drivers/UI/ui_Omni_Shoot_static_0.c ****     }
+  23:Drivers/UI/ui_Omni_Shoot_static_0.c ****     for (int i = OBJ_NUM; i < FRAME_OBJ_NUM; i++) {
+ 119              		.loc 1 23 14
+ 120 006c 0123     		movs	r3, #1
+ 121 006e 3B60     		str	r3, [r7]
+ 122              		.loc 1 23 5
+ 123 0070 0EE0     		b	.L4
+ 124              	.L5:
+  24:Drivers/UI/ui_Omni_Shoot_static_0.c ****         ui_Omni_Shoot_static_0.data[i].operate_tpyel = 0;
+ 125              		.loc 1 24 54
+ 126 0072 3649     		ldr	r1, .L6
+ 127 0074 3A68     		ldr	r2, [r7]
+ 128 0076 1346     		mov	r3, r2
+ 129 0078 1B01     		lsls	r3, r3, #4
+ 130 007a 9B1A     		subs	r3, r3, r2
+ 131 007c 0B44     		add	r3, r3, r1
+ 132 007e 03F10802 		add	r2, r3, #8
+ 133 0082 137A     		ldrb	r3, [r2, #8]
+ 134 0084 23F00703 		bic	r3, r3, #7
+ 135 0088 1372     		strb	r3, [r2, #8]
+  23:Drivers/UI/ui_Omni_Shoot_static_0.c ****         ui_Omni_Shoot_static_0.data[i].operate_tpyel = 0;
+ 136              		.loc 1 23 47 discriminator 3
+ 137 008a 3B68     		ldr	r3, [r7]
+ 138 008c 0133     		adds	r3, r3, #1
+ 139 008e 3B60     		str	r3, [r7]
+ 140              	.L4:
+  23:Drivers/UI/ui_Omni_Shoot_static_0.c ****         ui_Omni_Shoot_static_0.data[i].operate_tpyel = 0;
+ 141              		.loc 1 23 29 discriminator 1
+ 142 0090 3B68     		ldr	r3, [r7]
+ 143 0092 002B     		cmp	r3, #0
+ 144 0094 EDDD     		ble	.L5
+ARM GAS  C:\Users\23671\AppData\Local\Temp\ccRIn4ck.s 			page 4
+
+
+ 145              	.LBE3:
+  25:Drivers/UI/ui_Omni_Shoot_static_0.c ****     }
+  26:Drivers/UI/ui_Omni_Shoot_static_0.c **** 
+  27:Drivers/UI/ui_Omni_Shoot_static_0.c ****     ui_Omni_Shoot_static_Shoot_Line->figure_tpye = 0;
+ 146              		.loc 1 27 36
+ 147 0096 2E4B     		ldr	r3, .L6+4
+ 148 0098 1A68     		ldr	r2, [r3]
+ 149              		.loc 1 27 50
+ 150 009a D378     		ldrb	r3, [r2, #3]
+ 151 009c 23F03803 		bic	r3, r3, #56
+ 152 00a0 D370     		strb	r3, [r2, #3]
+  28:Drivers/UI/ui_Omni_Shoot_static_0.c ****     ui_Omni_Shoot_static_Shoot_Line->layer = 0;
+ 153              		.loc 1 28 36
+ 154 00a2 2B4B     		ldr	r3, .L6+4
+ 155 00a4 1B68     		ldr	r3, [r3]
+ 156              		.loc 1 28 44
+ 157 00a6 DA78     		ldrb	r2, [r3, #3]
+ 158 00a8 02F03F02 		and	r2, r2, #63
+ 159 00ac DA70     		strb	r2, [r3, #3]
+ 160 00ae 1A79     		ldrb	r2, [r3, #4]
+ 161 00b0 22F00302 		bic	r2, r2, #3
+ 162 00b4 1A71     		strb	r2, [r3, #4]
+  29:Drivers/UI/ui_Omni_Shoot_static_0.c ****     ui_Omni_Shoot_static_Shoot_Line->start_x = 960;
+ 163              		.loc 1 29 36
+ 164 00b6 264B     		ldr	r3, .L6+4
+ 165 00b8 1B68     		ldr	r3, [r3]
+ 166              		.loc 1 29 46
+ 167 00ba 1A7A     		ldrb	r2, [r3, #8]
+ 168 00bc 02F00302 		and	r2, r2, #3
+ 169 00c0 1A72     		strb	r2, [r3, #8]
+ 170 00c2 5A7A     		ldrb	r2, [r3, #9]
+ 171 00c4 22F01F02 		bic	r2, r2, #31
+ 172 00c8 42F00F02 		orr	r2, r2, #15
+ 173 00cc 5A72     		strb	r2, [r3, #9]
+  30:Drivers/UI/ui_Omni_Shoot_static_0.c ****     ui_Omni_Shoot_static_Shoot_Line->start_y = 541;
+ 174              		.loc 1 30 36
+ 175 00ce 204B     		ldr	r3, .L6+4
+ 176 00d0 1B68     		ldr	r3, [r3]
+ 177              		.loc 1 30 46
+ 178 00d2 5A7A     		ldrb	r2, [r3, #9]
+ 179 00d4 02F01F02 		and	r2, r2, #31
+ 180 00d8 62F05F02 		orn	r2, r2, #95
+ 181 00dc 5A72     		strb	r2, [r3, #9]
+ 182 00de 0022     		movs	r2, #0
+ 183 00e0 42F04302 		orr	r2, r2, #67
+ 184 00e4 9A72     		strb	r2, [r3, #10]
+  31:Drivers/UI/ui_Omni_Shoot_static_0.c ****     ui_Omni_Shoot_static_Shoot_Line->end_x = 960;
+ 185              		.loc 1 31 36
+ 186 00e6 1A4B     		ldr	r3, .L6+4
+ 187 00e8 1B68     		ldr	r3, [r3]
+ 188              		.loc 1 31 44
+ 189 00ea 1A7B     		ldrb	r2, [r3, #12]
+ 190 00ec 02F00302 		and	r2, r2, #3
+ 191 00f0 1A73     		strb	r2, [r3, #12]
+ 192 00f2 5A7B     		ldrb	r2, [r3, #13]
+ 193 00f4 22F01F02 		bic	r2, r2, #31
+ 194 00f8 42F00F02 		orr	r2, r2, #15
+ARM GAS  C:\Users\23671\AppData\Local\Temp\ccRIn4ck.s 			page 5
+
+
+ 195 00fc 5A73     		strb	r2, [r3, #13]
+  32:Drivers/UI/ui_Omni_Shoot_static_0.c ****     ui_Omni_Shoot_static_Shoot_Line->end_y = 400;
+ 196              		.loc 1 32 36
+ 197 00fe 144B     		ldr	r3, .L6+4
+ 198 0100 1B68     		ldr	r3, [r3]
+ 199              		.loc 1 32 44
+ 200 0102 5A7B     		ldrb	r2, [r3, #13]
+ 201 0104 02F01F02 		and	r2, r2, #31
+ 202 0108 5A73     		strb	r2, [r3, #13]
+ 203 010a 0022     		movs	r2, #0
+ 204 010c 42F03202 		orr	r2, r2, #50
+ 205 0110 9A73     		strb	r2, [r3, #14]
+  33:Drivers/UI/ui_Omni_Shoot_static_0.c ****     ui_Omni_Shoot_static_Shoot_Line->color = 0;
+ 206              		.loc 1 33 36
+ 207 0112 0F4B     		ldr	r3, .L6+4
+ 208 0114 1A68     		ldr	r2, [r3]
+ 209              		.loc 1 33 44
+ 210 0116 1379     		ldrb	r3, [r2, #4]
+ 211 0118 23F03C03 		bic	r3, r3, #60
+ 212 011c 1371     		strb	r3, [r2, #4]
+  34:Drivers/UI/ui_Omni_Shoot_static_0.c ****     ui_Omni_Shoot_static_Shoot_Line->width = 2;
+ 213              		.loc 1 34 36
+ 214 011e 0C4B     		ldr	r3, .L6+4
+ 215 0120 1B68     		ldr	r3, [r3]
+ 216              		.loc 1 34 44
+ 217 0122 0022     		movs	r2, #0
+ 218 0124 42F00202 		orr	r2, r2, #2
+ 219 0128 DA71     		strb	r2, [r3, #7]
+ 220 012a 1A7A     		ldrb	r2, [r3, #8]
+ 221 012c 22F00302 		bic	r2, r2, #3
+ 222 0130 1A72     		strb	r2, [r3, #8]
+  35:Drivers/UI/ui_Omni_Shoot_static_0.c **** 
+  36:Drivers/UI/ui_Omni_Shoot_static_0.c **** 
+  37:Drivers/UI/ui_Omni_Shoot_static_0.c ****     CAT(ui_proc_, CAT(FRAME_OBJ_NUM, _frame))(&ui_Omni_Shoot_static_0);
+ 223              		.loc 1 37 5
+ 224 0132 0648     		ldr	r0, .L6
+ 225 0134 FFF7FEFF 		bl	ui_proc_1_frame
+  38:Drivers/UI/ui_Omni_Shoot_static_0.c ****     SEND_MESSAGE((uint8_t *) &ui_Omni_Shoot_static_0, sizeof(ui_Omni_Shoot_static_0));
+ 226              		.loc 1 38 5
+ 227 0138 6423     		movs	r3, #100
+ 228 013a 1E22     		movs	r2, #30
+ 229 013c 0349     		ldr	r1, .L6
+ 230 013e 0548     		ldr	r0, .L6+8
+ 231 0140 FFF7FEFF 		bl	HAL_UART_Transmit
+  39:Drivers/UI/ui_Omni_Shoot_static_0.c **** }
+ 232              		.loc 1 39 1
+ 233 0144 00BF     		nop
+ 234 0146 0837     		adds	r7, r7, #8
+ 235              	.LCFI3:
+ 236              		.cfi_def_cfa_offset 8
+ 237 0148 BD46     		mov	sp, r7
+ 238              	.LCFI4:
+ 239              		.cfi_def_cfa_register 13
+ 240              		@ sp needed
+ 241 014a 80BD     		pop	{r7, pc}
+ 242              	.L7:
+ 243              		.align	2
+ARM GAS  C:\Users\23671\AppData\Local\Temp\ccRIn4ck.s 			page 6
+
+
+ 244              	.L6:
+ 245 014c 00000000 		.word	ui_Omni_Shoot_static_0
+ 246 0150 00000000 		.word	ui_Omni_Shoot_static_Shoot_Line
+ 247 0154 00000000 		.word	huart7
+ 248              		.cfi_endproc
+ 249              	.LFE147:
+ 251              		.section	.text._ui_update_Omni_Shoot_static_0,"ax",%progbits
+ 252              		.align	1
+ 253              		.global	_ui_update_Omni_Shoot_static_0
+ 254              		.syntax unified
+ 255              		.thumb
+ 256              		.thumb_func
+ 258              	_ui_update_Omni_Shoot_static_0:
+ 259              	.LFB148:
+  40:Drivers/UI/ui_Omni_Shoot_static_0.c **** 
+  41:Drivers/UI/ui_Omni_Shoot_static_0.c **** void _ui_update_Omni_Shoot_static_0() {
+ 260              		.loc 1 41 39
+ 261              		.cfi_startproc
+ 262              		@ args = 0, pretend = 0, frame = 8
+ 263              		@ frame_needed = 1, uses_anonymous_args = 0
+ 264 0000 80B5     		push	{r7, lr}
+ 265              	.LCFI5:
+ 266              		.cfi_def_cfa_offset 8
+ 267              		.cfi_offset 7, -8
+ 268              		.cfi_offset 14, -4
+ 269 0002 82B0     		sub	sp, sp, #8
+ 270              	.LCFI6:
+ 271              		.cfi_def_cfa_offset 16
+ 272 0004 00AF     		add	r7, sp, #0
+ 273              	.LCFI7:
+ 274              		.cfi_def_cfa_register 7
+ 275              	.LBB4:
+  42:Drivers/UI/ui_Omni_Shoot_static_0.c ****     for (int i = 0; i < OBJ_NUM; i++) {
+ 276              		.loc 1 42 14
+ 277 0006 0023     		movs	r3, #0
+ 278 0008 7B60     		str	r3, [r7, #4]
+ 279              		.loc 1 42 5
+ 280 000a 0FE0     		b	.L9
+ 281              	.L10:
+  43:Drivers/UI/ui_Omni_Shoot_static_0.c ****         ui_Omni_Shoot_static_0.data[i].operate_tpyel = 2;
+ 282              		.loc 1 43 54
+ 283 000c 0F49     		ldr	r1, .L11
+ 284 000e 7A68     		ldr	r2, [r7, #4]
+ 285 0010 1346     		mov	r3, r2
+ 286 0012 1B01     		lsls	r3, r3, #4
+ 287 0014 9B1A     		subs	r3, r3, r2
+ 288 0016 0B44     		add	r3, r3, r1
+ 289 0018 03F10802 		add	r2, r3, #8
+ 290 001c 137A     		ldrb	r3, [r2, #8]
+ 291 001e 0221     		movs	r1, #2
+ 292 0020 61F30203 		bfi	r3, r1, #0, #3
+ 293 0024 1372     		strb	r3, [r2, #8]
+  42:Drivers/UI/ui_Omni_Shoot_static_0.c ****     for (int i = 0; i < OBJ_NUM; i++) {
+ 294              		.loc 1 42 35 discriminator 3
+ 295 0026 7B68     		ldr	r3, [r7, #4]
+ 296 0028 0133     		adds	r3, r3, #1
+ 297 002a 7B60     		str	r3, [r7, #4]
+ARM GAS  C:\Users\23671\AppData\Local\Temp\ccRIn4ck.s 			page 7
+
+
+ 298              	.L9:
+  42:Drivers/UI/ui_Omni_Shoot_static_0.c ****     for (int i = 0; i < OBJ_NUM; i++) {
+ 299              		.loc 1 42 23 discriminator 1
+ 300 002c 7B68     		ldr	r3, [r7, #4]
+ 301 002e 002B     		cmp	r3, #0
+ 302 0030 ECDD     		ble	.L10
+ 303              	.LBE4:
+  44:Drivers/UI/ui_Omni_Shoot_static_0.c ****     }
+  45:Drivers/UI/ui_Omni_Shoot_static_0.c **** 
+  46:Drivers/UI/ui_Omni_Shoot_static_0.c ****     CAT(ui_proc_, CAT(FRAME_OBJ_NUM, _frame))(&ui_Omni_Shoot_static_0);
+ 304              		.loc 1 46 5
+ 305 0032 0648     		ldr	r0, .L11
+ 306 0034 FFF7FEFF 		bl	ui_proc_1_frame
+  47:Drivers/UI/ui_Omni_Shoot_static_0.c ****     SEND_MESSAGE((uint8_t *) &ui_Omni_Shoot_static_0, sizeof(ui_Omni_Shoot_static_0));
+ 307              		.loc 1 47 5
+ 308 0038 6423     		movs	r3, #100
+ 309 003a 1E22     		movs	r2, #30
+ 310 003c 0349     		ldr	r1, .L11
+ 311 003e 0448     		ldr	r0, .L11+4
+ 312 0040 FFF7FEFF 		bl	HAL_UART_Transmit
+  48:Drivers/UI/ui_Omni_Shoot_static_0.c **** }
+ 313              		.loc 1 48 1
+ 314 0044 00BF     		nop
+ 315 0046 0837     		adds	r7, r7, #8
+ 316              	.LCFI8:
+ 317              		.cfi_def_cfa_offset 8
+ 318 0048 BD46     		mov	sp, r7
+ 319              	.LCFI9:
+ 320              		.cfi_def_cfa_register 13
+ 321              		@ sp needed
+ 322 004a 80BD     		pop	{r7, pc}
+ 323              	.L12:
+ 324              		.align	2
+ 325              	.L11:
+ 326 004c 00000000 		.word	ui_Omni_Shoot_static_0
+ 327 0050 00000000 		.word	huart7
+ 328              		.cfi_endproc
+ 329              	.LFE148:
+ 331              		.section	.text._ui_remove_Omni_Shoot_static_0,"ax",%progbits
+ 332              		.align	1
+ 333              		.global	_ui_remove_Omni_Shoot_static_0
+ 334              		.syntax unified
+ 335              		.thumb
+ 336              		.thumb_func
+ 338              	_ui_remove_Omni_Shoot_static_0:
+ 339              	.LFB149:
+  49:Drivers/UI/ui_Omni_Shoot_static_0.c **** 
+  50:Drivers/UI/ui_Omni_Shoot_static_0.c **** void _ui_remove_Omni_Shoot_static_0() {
+ 340              		.loc 1 50 39
+ 341              		.cfi_startproc
+ 342              		@ args = 0, pretend = 0, frame = 8
+ 343              		@ frame_needed = 1, uses_anonymous_args = 0
+ 344 0000 80B5     		push	{r7, lr}
+ 345              	.LCFI10:
+ 346              		.cfi_def_cfa_offset 8
+ 347              		.cfi_offset 7, -8
+ 348              		.cfi_offset 14, -4
+ARM GAS  C:\Users\23671\AppData\Local\Temp\ccRIn4ck.s 			page 8
+
+
+ 349 0002 82B0     		sub	sp, sp, #8
+ 350              	.LCFI11:
+ 351              		.cfi_def_cfa_offset 16
+ 352 0004 00AF     		add	r7, sp, #0
+ 353              	.LCFI12:
+ 354              		.cfi_def_cfa_register 7
+ 355              	.LBB5:
+  51:Drivers/UI/ui_Omni_Shoot_static_0.c ****     for (int i = 0; i < OBJ_NUM; i++) {
+ 356              		.loc 1 51 14
+ 357 0006 0023     		movs	r3, #0
+ 358 0008 7B60     		str	r3, [r7, #4]
+ 359              		.loc 1 51 5
+ 360 000a 0FE0     		b	.L14
+ 361              	.L15:
+  52:Drivers/UI/ui_Omni_Shoot_static_0.c ****         ui_Omni_Shoot_static_0.data[i].operate_tpyel = 3;
+ 362              		.loc 1 52 54
+ 363 000c 0F49     		ldr	r1, .L16
+ 364 000e 7A68     		ldr	r2, [r7, #4]
+ 365 0010 1346     		mov	r3, r2
+ 366 0012 1B01     		lsls	r3, r3, #4
+ 367 0014 9B1A     		subs	r3, r3, r2
+ 368 0016 0B44     		add	r3, r3, r1
+ 369 0018 03F10802 		add	r2, r3, #8
+ 370 001c 137A     		ldrb	r3, [r2, #8]
+ 371 001e 0321     		movs	r1, #3
+ 372 0020 61F30203 		bfi	r3, r1, #0, #3
+ 373 0024 1372     		strb	r3, [r2, #8]
+  51:Drivers/UI/ui_Omni_Shoot_static_0.c ****     for (int i = 0; i < OBJ_NUM; i++) {
+ 374              		.loc 1 51 35 discriminator 3
+ 375 0026 7B68     		ldr	r3, [r7, #4]
+ 376 0028 0133     		adds	r3, r3, #1
+ 377 002a 7B60     		str	r3, [r7, #4]
+ 378              	.L14:
+  51:Drivers/UI/ui_Omni_Shoot_static_0.c ****     for (int i = 0; i < OBJ_NUM; i++) {
+ 379              		.loc 1 51 23 discriminator 1
+ 380 002c 7B68     		ldr	r3, [r7, #4]
+ 381 002e 002B     		cmp	r3, #0
+ 382 0030 ECDD     		ble	.L15
+ 383              	.LBE5:
+  53:Drivers/UI/ui_Omni_Shoot_static_0.c ****     }
+  54:Drivers/UI/ui_Omni_Shoot_static_0.c **** 
+  55:Drivers/UI/ui_Omni_Shoot_static_0.c ****     CAT(ui_proc_, CAT(FRAME_OBJ_NUM, _frame))(&ui_Omni_Shoot_static_0);
+ 384              		.loc 1 55 5
+ 385 0032 0648     		ldr	r0, .L16
+ 386 0034 FFF7FEFF 		bl	ui_proc_1_frame
+  56:Drivers/UI/ui_Omni_Shoot_static_0.c ****     SEND_MESSAGE((uint8_t *) &ui_Omni_Shoot_static_0, sizeof(ui_Omni_Shoot_static_0));
+ 387              		.loc 1 56 5
+ 388 0038 6423     		movs	r3, #100
+ 389 003a 1E22     		movs	r2, #30
+ 390 003c 0349     		ldr	r1, .L16
+ 391 003e 0448     		ldr	r0, .L16+4
+ 392 0040 FFF7FEFF 		bl	HAL_UART_Transmit
+  57:Drivers/UI/ui_Omni_Shoot_static_0.c **** }
+ 393              		.loc 1 57 1
+ 394 0044 00BF     		nop
+ 395 0046 0837     		adds	r7, r7, #8
+ 396              	.LCFI13:
+ARM GAS  C:\Users\23671\AppData\Local\Temp\ccRIn4ck.s 			page 9
+
+
+ 397              		.cfi_def_cfa_offset 8
+ 398 0048 BD46     		mov	sp, r7
+ 399              	.LCFI14:
+ 400              		.cfi_def_cfa_register 13
+ 401              		@ sp needed
+ 402 004a 80BD     		pop	{r7, pc}
+ 403              	.L17:
+ 404              		.align	2
+ 405              	.L16:
+ 406 004c 00000000 		.word	ui_Omni_Shoot_static_0
+ 407 0050 00000000 		.word	huart7
+ 408              		.cfi_endproc
+ 409              	.LFE149:
+ 411              		.text
+ 412              	.Letext0:
+ 413              		.file 2 "D:/MSYS2/mingw64/arm-none-eabi/include/machine/_default_types.h"
+ 414              		.file 3 "D:/MSYS2/mingw64/arm-none-eabi/include/sys/_stdint.h"
+ 415              		.file 4 "Drivers/UI/ui_types.h"
+ 416              		.file 5 "Drivers/CMSIS/Device/ST/STM32H7xx/Include/stm32h723xx.h"
+ 417              		.file 6 "Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal_def.h"
+ 418              		.file 7 "Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal_dma.h"
+ 419              		.file 8 "Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal_uart.h"
+ 420              		.file 9 "Core/Inc/usart.h"
+ 421              		.file 10 "Drivers/UI/ui_Omni_Shoot_static_0.h"
+ 422              		.file 11 "Drivers/UI/ui_interface.h"
+ARM GAS  C:\Users\23671\AppData\Local\Temp\ccRIn4ck.s 			page 10
+
+
+DEFINED SYMBOLS
+                            *ABS*:00000000 ui_Omni_Shoot_static_0.c
+C:\Users\23671\AppData\Local\Temp\ccRIn4ck.s:24     .bss.ui_Omni_Shoot_static_0:00000000 ui_Omni_Shoot_static_0
+C:\Users\23671\AppData\Local\Temp\ccRIn4ck.s:21     .bss.ui_Omni_Shoot_static_0:00000000 $d
+C:\Users\23671\AppData\Local\Temp\ccRIn4ck.s:31     .data.ui_Omni_Shoot_static_Shoot_Line:00000000 ui_Omni_Shoot_static_Shoot_Line
+C:\Users\23671\AppData\Local\Temp\ccRIn4ck.s:28     .data.ui_Omni_Shoot_static_Shoot_Line:00000000 $d
+C:\Users\23671\AppData\Local\Temp\ccRIn4ck.s:34     .text._ui_init_Omni_Shoot_static_0:00000000 $t
+C:\Users\23671\AppData\Local\Temp\ccRIn4ck.s:40     .text._ui_init_Omni_Shoot_static_0:00000000 _ui_init_Omni_Shoot_static_0
+C:\Users\23671\AppData\Local\Temp\ccRIn4ck.s:245    .text._ui_init_Omni_Shoot_static_0:0000014c $d
+C:\Users\23671\AppData\Local\Temp\ccRIn4ck.s:252    .text._ui_update_Omni_Shoot_static_0:00000000 $t
+C:\Users\23671\AppData\Local\Temp\ccRIn4ck.s:258    .text._ui_update_Omni_Shoot_static_0:00000000 _ui_update_Omni_Shoot_static_0
+C:\Users\23671\AppData\Local\Temp\ccRIn4ck.s:326    .text._ui_update_Omni_Shoot_static_0:0000004c $d
+C:\Users\23671\AppData\Local\Temp\ccRIn4ck.s:332    .text._ui_remove_Omni_Shoot_static_0:00000000 $t
+C:\Users\23671\AppData\Local\Temp\ccRIn4ck.s:338    .text._ui_remove_Omni_Shoot_static_0:00000000 _ui_remove_Omni_Shoot_static_0
+C:\Users\23671\AppData\Local\Temp\ccRIn4ck.s:406    .text._ui_remove_Omni_Shoot_static_0:0000004c $d
+
+UNDEFINED SYMBOLS
+ui_proc_1_frame
+HAL_UART_Transmit
+huart7
