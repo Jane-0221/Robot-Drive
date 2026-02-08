@@ -369,231 +369,15 @@ void key_mouse_control() // 键盘鼠标模式+自定义控制器
 }
 void ARM_CONNECT_STATUS_UPDATA()
 {
-    switch (arm_connect_status)
-    {
-    case ARM_CONNECT_STATUS_DISCONNECTED:
-        pos_motor.pos_rootyaw = -0.618f;
-        pos_motor.pos_rootpitch = -0.001f;
-        pos_motor.pos_middleyaw = 2.07f;
-        pos_motor.pos_middlerow = 0.23f;
-        pos_motor.pos_endyaw = 1.7f;
+ 
 
-        current_angle = custom_robot_data.data_5;
-        // 计算差值
-        delta_angle = current_angle - prev_angle;
-        // 处理回绕情况
-        if ((delta_angle > (angle_range / 2.0)))
-        {
-            delta_angle -= angle_range;
-        }
-        else if ((delta_angle < ((-angle_range) / 2.0)))
-        {
-            delta_angle += angle_range;
-        }
-        // 累积总角度
-        total_angle += delta_angle;
-
-        // 更新前一次角度
-        prev_angle = current_angle;
-
-        pos_motor.pos_row = total_angle;
-
-        if (((AHRS_yaw_set - IMU_data.AHRS.yaw) > PI) || ((AHRS_yaw_set - IMU_data.AHRS.yaw) < (-PI)))
-        {
-            AHRS_yaw_set = IMU_data.AHRS.yaw;
-        }
-        // pid计算
-        Global.Chssis.input.r = -(pid_cal(&yaw_pid, IMU_data.AHRS.yaw, AHRS_yaw_set) * 1.1);
-
-        if (IF_KEY_PRESSED_Q) // Q
-        {
-            AHRS_yaw_set = (IMU_data.AHRS.yaw + 0.2f);
-        }
-
-        if (IF_KEY_PRESSED_E) // E
-        {
-            AHRS_yaw_set = (IMU_data.AHRS.yaw - 0.2f);
-        }
-
-        if (remote_control.mouse_x > 30.0f || remote_control.mouse_x < -30.0f)
-        {
-            AHRS_yaw_set = (IMU_data.AHRS.yaw - (remote_control.mouse_x / 700.0f));
-            // Global.Chssis.input.r = (remote_control.mouse_x / 300.0f);
-        }
-
-        break;
-
-    case ARM_CONNECT_STATUS_CONNECTED:
-        // 斜坡函数后
-        pos_motor.pos_rootyaw = -smoothed_data.data_0;
-        pos_motor.pos_rootpitch = smoothed_data.data_1;
-        pos_motor.pos_middleyaw = -smoothed_data.data_2;
-        pos_motor.pos_middlerow = smoothed_data.data_3;
-        pos_motor.pos_endyaw = smoothed_data.data_4;
-
-        current_angle = custom_robot_data.data_5;
-        // 计算差值
-        delta_angle = current_angle - prev_angle;
-        // 处理回绕情况
-        if ((delta_angle > (angle_range / 2.0)))
-        {
-            delta_angle -= angle_range;
-        }
-        else if ((delta_angle < ((-angle_range) / 2.0)))
-        {
-            delta_angle += angle_range;
-        }
-        // 累积总角度
-        total_angle += delta_angle;
-
-        // 更新前一次角度
-        prev_angle = current_angle;
-
-        pos_motor.pos_row = total_angle;
-
-        // Global.Chssis.input.r = (remote_control.mouse_x / 300.0f);
-        if (IF_KEY_PRESSED_Q) // Q
-        {
-            Global.Chssis.input.r = (-0.5f);
-        }
-        else if (IF_KEY_PRESSED_E) // E
-        {
-            Global.Chssis.input.r = 0.5f;
-        }
-        else
-            Global.Chssis.input.r = 0.0f;
-        AHRS_yaw_set = IMU_data.AHRS.yaw;
-
-        break;
-
-    default:
-        break;
-    }
+    
 }
 //////////遥控器控制////////////////
 void RC_Control(void)
 {
 
-    //////////////*底盘控制*///////////////////////
-    Global.Chssis.mode = FLOW;
-    if (SBUS_CH.CH6 == 321 && SBUS_CH.CH7 == 321 && SBUS_CH.CH8 == 321)
-    { // 底盘
-        Chassis_set_x((SBUS_CH.CH1 - 992) / 40.0f);
-        Chassis_set_y(-(SBUS_CH.CH2 - 992) / 40.0f);
-        if ((SBUS_CH.CH4 != 992))
-        {
-            // AHRS_yaw_set = IMU_data.AHRS.yaw - (SBUS_CH.CH4 - 992) / 7000.0f;
-            AHRS_yaw_set = IMU_data.AHRS.yaw - (SBUS_CH.CH4 - 992) / 700.0f;
-        }
-        if (((AHRS_yaw_set - IMU_data.AHRS.yaw) > PI) || ((AHRS_yaw_set - IMU_data.AHRS.yaw) < (-PI)))
-        {
-            AHRS_yaw_set = IMU_data.AHRS.yaw;
-        }
-        // pid计算
-        Global.Chssis.input.r = -(pid_cal(&yaw_pid, IMU_data.AHRS.yaw, AHRS_yaw_set));
-    }
-    // 机械臂
-    //  机械臂1
-    if (SBUS_CH.CH5 == 321 && SBUS_CH.CH6 == 992 && SBUS_CH.CH7 == 992 && SBUS_CH.CH8 == 321)
-    {
-        // 大YAW
-        if (SBUS_CH.CH4 > 1050)
-        {
-            pos_motor.pos_rootyaw -= 0.0005;
-        }
-        else if (SBUS_CH.CH4 < 950)
-        {
-            pos_motor.pos_rootyaw += 0.0005;
-        }
-        else if (SBUS_CH.CH4 > 950 && SBUS_CH.CH4 < 1050)
-        {
-            pos_motor.pos_rootyaw += 0;
-        }
-
-        // 大PITCH
-        if (SBUS_CH.CH3 > 1050)
-        {
-            pos_motor.pos_rootpitch -= 0.0005;
-        }
-        else if (SBUS_CH.CH3 < 950)
-        {
-            pos_motor.pos_rootpitch += 0.0005;
-        }
-        else if (SBUS_CH.CH1 < 950 && SBUS_CH.CH1 < 1050)
-        {
-            pos_motor.pos_rootpitch += 0.0;
-        }
-
-        // 中yaw
-        if (SBUS_CH.CH1 > 1050)
-        {
-            pos_motor.pos_middleyaw -= 0.0005;
-        }
-        else if (SBUS_CH.CH1 < 950)
-        {
-            pos_motor.pos_middleyaw += 0.0005;
-        }
-        else if (SBUS_CH.CH1 > 950 && SBUS_CH.CH1 < 1050)
-        {
-            pos_motor.pos_middleyaw += 0;
-        }
-
-        // 小yaw(末端pitch)
-        if (SBUS_CH.CH2 > 1050)
-        {
-
-            pos_motor.pos_endyaw += 0.0005;
-            // SBUS_POS*(SBUS_CH.CH1-1050)
-        }
-        else if (SBUS_CH.CH2 < 950)
-        {
-            pos_motor.pos_endyaw -= 0.0005;
-            // SBUS_POS*(SBUS_CH.CH1-950)
-        }
-        else if (SBUS_CH.CH2 > 950 && SBUS_CH.CH2 < 1050)
-        {
-            pos_motor.pos_endyaw += 0;
-        }
-    }
-    // 机械臂2
-    if (SBUS_CH.CH5 == 321 && SBUS_CH.CH6 == 1663 && SBUS_CH.CH7 == 1663 && SBUS_CH.CH8 == 321)
-    {
-        // 中row
-        if (SBUS_CH.CH1 > 1050)
-        {
-            pos_motor.pos_middlerow += 0.0005;
-        }
-        else if (SBUS_CH.CH1 < 950)
-        {
-            pos_motor.pos_middlerow -= 0.0005;
-        }
-        else if (SBUS_CH.CH1 > 950 && SBUS_CH.CH1 < 1050)
-        {
-            pos_motor.pos_middlerow += 0;
-        }
-        // 小row
-        if (SBUS_CH.CH4 > 1050)
-        {
-            endrow_motor.set += 0.0001;
-        }
-        else if (SBUS_CH.CH4 < 950)
-        {
-            endrow_motor.set -= 0.0001;
-        }
-        else if (SBUS_CH.CH4 > 950 && SBUS_CH.CH4 < 1050)
-        {
-            endrow_motor.set += 0;
-        }
-    }
-    // 一键收起机械臂移动
-    if (SBUS_CH.CH5 == 1663 && SBUS_CH.CH6 == 321 && SBUS_CH.CH7 == 321 && SBUS_CH.CH8 == 321)
-    {
-        pos_motor.pos_rootyaw = -0.5255f;
-        pos_motor.pos_rootpitch = 0.1675f;
-        pos_motor.pos_middleyaw = 1.988f;
-        pos_motor.pos_middlerow = 0.0f;
-        pos_motor.pos_endyaw = 0.217f;
-    }
+    
     // 保存0点，慎用
     if (SBUS_CH.CH12 == 1663)
     {
@@ -635,81 +419,40 @@ void RC_Control(void)
 ///////////////////////////启动函数///////////////////////////
 void start()
 {
-    Flag_T13++;
-    if (Flag_T13 > 100)
-    {
-        VT13_data.rc.mode_sw = 0;
-    }
-    switch (VT13_data.rc.mode_sw)
-    {
-    case 2:
-        key_mouse_control(); // 键鼠控制
-        ARM_CONNECT_STATUS_UPDATA();
-        break;
-    case 1:
-        VT13toRCdata();
-        break;
-    case 0:
-        RC_Control(); // 遥控器控制
-        break;
-    default:
-        // mode_sw 不为 0、1、2 时执行
-        break;
-    }
-    if (SBUS_CH.CH5 == 1663 && SBUS_CH.CH6 == 1663 && SBUS_CH.CH7 == 1663 && SBUS_CH.CH8 == 1663)
-    {
-        disable_all(); // 失能
-    }
-    if (SBUS_CH.CH5 == 1663 && SBUS_CH.CH6 == 1663 && SBUS_CH.CH7 == 1663 && SBUS_CH.CH8 == 321)
-    {
-        enable_all(); // 使能
-    }
+    // Flag_T13++;
+    // if (Flag_T13 > 100)
+    // {
+    //     VT13_data.rc.mode_sw = 0;
+    // }
+    // switch (VT13_data.rc.mode_sw)
+    // {
+    // case 2:
+    //     key_mouse_control(); // 键鼠控制
+    //     ARM_CONNECT_STATUS_UPDATA();
+    //     break;
+    // case 1:
+    //     VT13toRCdata();
+    //     break;
+    // case 0:
+    //     RC_Control(); // 遥控器控制
+    //     break;
+    // default:
+    //     // mode_sw 不为 0、1、2 时执行
+    //     break;
+    // }
+    // if (SBUS_CH.CH5 == 1663 && SBUS_CH.CH6 == 1663 && SBUS_CH.CH7 == 1663 && SBUS_CH.CH8 == 1663)
+    // {
+    //     disable_all(); // 失能
+    // }
+    // if (SBUS_CH.CH5 == 1663 && SBUS_CH.CH6 == 1663 && SBUS_CH.CH7 == 1663 && SBUS_CH.CH8 == 321)
+    // {
+    //     enable_all(); // 使能
+    // }
 }
 
 void YAWFLOW_POS()
 {
-    float x = 0;
-    if (((AHRS_yaw_set - IMU_data.AHRS.yaw) > PI) || ((AHRS_yaw_set - IMU_data.AHRS.yaw) < (-PI)))
-    {
-        AHRS_yaw_set = IMU_data.AHRS.yaw;
-    }
 
-    current_angle = arm_motor[Motor1].para.pos;
-    // 计算差值
-    float delta_angle = current_angle - prev_angle;
-    // 处理回绕情况
-    if (delta_angle > angle_range / 2.0)
-    {
-        delta_angle -= angle_range;
-    }
-    else if (delta_angle < -angle_range / 2.0)
-    {
-        delta_angle += angle_range;
-    }
-    // 累积总角度
-    total_angle += delta_angle;
-
-    // 更新前一次角度
-    prev_angle = current_angle;
-
-    pos_motor.pos_rootyaw = total_angle + /*(1+2*arm_motor[Motor1].para.vel)**/ (pid_cal(&yaw_pid, IMU_data.AHRS.yaw, AHRS_yaw_set));
-
-    if (SBUS_CH.CH5 == 321 && SBUS_CH.CH6 == 321 && SBUS_CH.CH7 == 321 && SBUS_CH.CH8 == 321)
-    {
-        Global.Chssis.mode = FLOW;
-        return;
-    }
-
-    if (SBUS_CH.CH5 == 992 && SBUS_CH.CH6 == 321 && SBUS_CH.CH7 == 321 && SBUS_CH.CH8 == 321)
-    {
-        Global.Chssis.mode = SPIN_P;
-        return;
-    }
-    if (SBUS_CH.CH5 == 1663 && SBUS_CH.CH6 == 321 && SBUS_CH.CH7 == 321 && SBUS_CH.CH8 == 321)
-    {
-        Global.Chssis.mode = SPIN_N;
-        return;
-    }
 }
 
 //////////////////////全部失能，防止疯车//////////////////////////////
@@ -727,8 +470,6 @@ void disable_all()
     osDelay(1);
     CAN_Send_Exit(&hfdcan2, 0x02);
     osDelay(1);
-
-    endrow_motor.set = endrow_motor.now;
     // 底盘失能
     Chassis_set_x(0.0f);
     Chassis_set_y(0.0f);

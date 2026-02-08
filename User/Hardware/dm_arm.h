@@ -21,31 +21,13 @@ typedef enum Enum_Motor_DM_Status
     Motor_DM_Status_ENABLE,
 } Motor_DM_Status;
 extern Motor_DM_Status DM_Status[6];
-typedef struct
-{
-    float set, now, last, endrow_offset; // 设置角度值 目标值 实际值
-    float endrow_speed;
-    float set_endrow_speed;
-
-} Endrow_motor;
-extern Endrow_motor endrow_motor;
-// dji
-void Arm_DJI_pid_cal(void);
-void Arm_DJI_updata(void);
 // damiao
 void Arm_Init(void);
-void Arm_DJImotor(void);
-void Arm_motor1(void);
-void Arm_motor2(void);
-void Arm_motor3(void);
+// void Arm_motor1(void);
+// void Arm_motor2(void);
+// void Arm_motor3(void);
 void Arm_motor4(void);
 void Arm_motor5(void);
-void Arm_motor1_DISCON(void);
-void Arm_motor2_DISCON(void);
-void Arm_motor3_DISCON(void);
-void Arm_motor4_DISCON(void);
-void Arm_motor5_DISCON(void);
-void Arm_motor3_DISCON_OUT(void);
-
+void Arm_motor6(void);
 
 #endif

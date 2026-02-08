@@ -224,11 +224,7 @@ void Remote_control_Task(void *argument)
   for (;;)
   {
     start();
-    // ARM_CONNECT_STATUS_UPDATA();
-    //  YAWFLOW_POS();
-    //  VT13toRCdata();
-    //  disable_all();
-    //  switch_servos();
+
     osDelay(1);
   }
   /* USER CODE END Remote_control_Task */
@@ -247,51 +243,17 @@ void Eng_arm_Task(void *argument)
   /* Infinite loop */
   for (;;)
   {
-    if (arm_connect_status == ARM_CONNECT_STATUS_CONNECTED && (sum_arm >= 200))
-    {
-      Arm_motor2();
-      osDelay(1);
-      Arm_motor3();
-      osDelay(1);
-      Arm_motor4();
-      osDelay(1);
-      Arm_motor5();
-      osDelay(1);
-    }
-    // else(arm_connect_status == ARM_CONNECT_STATUS_DISCONNECTED)
-    else
-    {
-
-      Arm_motor2_DISCON();
-      osDelay(1);
-      Arm_motor4_DISCON();
-      osDelay(1);
-      Arm_motor5_DISCON();
-      osDelay(1);
-      if (arm_connect_status == ARM_CONNECT_STATUS_CONNECTED)
-      {
-        Arm_motor3_DISCON_OUT();
-      }
-      else if (arm_connect_status == ARM_CONNECT_STATUS_DISCONNECTED)
-      {
-        Arm_motor3_DISCON();
-      }
-      osDelay(1);
-      sum_arm++;
-      osDelay(1);
-    }
-
-    // if (arm_connect_status == ARM_CONNECT_STATUS_DISCONNECTED)
-    // {
-    //   Arm_motor2_DISCON();
-    //   osDelay(1);
-    //   Arm_motor3_DISCON();
-    //   osDelay(1);
-    //   Arm_motor4_DISCON();
-    //   osDelay(1);
-    //   Arm_motor5_DISCON();
-    //   osDelay(1);
-    // }
+    // Arm_motor1();
+    // osDelay(1);
+    // Arm_motor2();
+    // osDelay(1);
+    // Arm_motor3();
+    osDelay(1);
+    Arm_motor4();
+    osDelay(1);
+    Arm_motor5();
+    osDelay(1);
+    Arm_motor6();
     // printf("%f\n", pos_motor.pos_rootpitch);
   }
   /* USER CODE END Eng_arm_Task */
@@ -331,19 +293,7 @@ void Motor_control_Task(void *argument)
   /* Infinite loop */
   for (;;)
   {
-    Arm_DJImotor();
-    DJIMotor_send_current();
-    osDelay(1);
-    if (arm_connect_status == ARM_CONNECT_STATUS_CONNECTED && (sum_arm >= 200))
-    {
-      Arm_motor1();
-      osDelay(1);
-    }
-    else
-    {
-      Arm_motor1_DISCON();
-      osDelay(1);
-    }
+    
   }
   /* USER CODE END Motor_control_Task */
 }
@@ -382,11 +332,11 @@ void Referee_Task(void *argument)
   for (;;)
   {
 
-    Referee_unpack_fifo_data(&referee_fifo, &referee_unpack_obj);             // 锟斤拷锟�?
-    Referee_unpack_fifo_data(&referee_image_fifo, &referee_image_unpack_obj); // 图锟斤拷
+    Referee_unpack_fifo_data(&referee_fifo, &referee_unpack_obj);             // 閿熸枻鎷烽敓锟?
+    Referee_unpack_fifo_data(&referee_image_fifo, &referee_image_unpack_obj); // 鍥鹃敓鏂ゆ嫹
     update_limit_filter(&custom_robot_data, &filtered_data);
     unsigned long current_time_ms = HAL_GetTick();
-    update_smoothed_data(current_time_ms); // 锟斤拷通锟剿诧拷锟斤拷锟斤拷锟叫憋拷潞锟斤拷锟�?
+    update_smoothed_data(current_time_ms); // 閿熸枻鎷烽€氶敓鍓胯鎷烽敓鏂ゆ嫹閿熸枻鎷烽敓鍙唻鎷锋綖閿熸枻鎷烽敓锟?
 
     ui_self_id = Referee_data.robot_id;
     BOOMui_change();
