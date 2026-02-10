@@ -12,7 +12,7 @@
  */
 void lz_send_command(uint8_t can_bus, uint16_t motor_id, uint8_t *data) {
     FDCAN_HandleTypeDef *hfdcan = Get_CanHandle(can_bus);
-    Fdcanx_SendData(hfdcan, motor_id, data, 8);
+   canx_send_data(hfdcan, motor_id, data, 8);
 }
 
 /**

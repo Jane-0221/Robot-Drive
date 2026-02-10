@@ -37,7 +37,8 @@ build/motor.o: User/Hardware/motor.c User/Hardware/motor.h \
  Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal_uart_ex.h \
  Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal_pcd.h \
  Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_ll_usb.h \
- Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal_pcd_ex.h
+ Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal_pcd_ex.h \
+ User/Hardware/LZ_motor_driver.h Core/Inc/main.h
 User/Hardware/motor.h:
 Algorithm/User_math.h:
 User/BSP/CAN_receive_send.h:
@@ -83,3 +84,5 @@ Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal_uart_ex.h:
 Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal_pcd.h:
 Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_ll_usb.h:
 Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal_pcd_ex.h:
+User/Hardware/LZ_motor_driver.h:
+Core/Inc/main.h:

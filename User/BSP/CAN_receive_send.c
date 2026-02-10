@@ -27,7 +27,14 @@ uint32_t Pre_Flag_damiao [6] ={ 0};
 extern FDCAN_HandleTypeDef hfdcan1;
 extern FDCAN_HandleTypeDef hfdcan2;
 extern FDCAN_HandleTypeDef hfdcan3; // 定义原型在fdcan.c文件
-
+FDCAN_HandleTypeDef* Get_CanHandle(uint8_t can_bus) {
+    switch (can_bus) {
+        case 0: return &hfdcan1;
+        case 1: return &hfdcan2;
+        case 2: return &hfdcan3;
+        default: return &hfdcan1;
+    }
+}
 /**
  * @brief 初始化can,包含过滤器配置与使能
  *
@@ -167,6 +174,7 @@ void process_motor_data(motor_measure_t *motor_data)
   else
     motor_data->ecd_cnt += (motor_data->ecd - motor_data->last_ecd);
 }
+//
 
 //can接收回调  
 void HAL_FDCAN_RxFifo0Callback(FDCAN_HandleTypeDef *hfdcan, uint32_t RxFifo0ITs)

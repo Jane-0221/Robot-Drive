@@ -4,28 +4,46 @@
 #include "pid.h"
 #include "motor.h"
 #include "remote_control.h"
+#include "LZ_motor_driver.h"
+
 extern Motor_DM_Status DM_Status[6];
+
+
 void Arm_Init()
 {
-  arm_motor_init(&arm_motor[Motor1], 0x05, POS_MODE); // 设置ID和控制模式  大yaw
-  arm_motor_init(&arm_motor[Motor2], 0x02, POS_MODE); // 设置ID和控制模式  大pitch
-  arm_motor_init(&arm_motor[Motor3], 0x03, POS_MODE); // 设置ID和控制模式  中yaw
-  arm_motor_init(&arm_motor[Motor4], 0x04, POS_MODE); // 设置ID和控制模式  中row
-  arm_motor_init(&arm_motor[Motor5], 0x05, POS_MODE); // 设置ID和控制模式  末端pitch
+//灵足电机
+// lz_set_mode(2, 0x1,0x01);//设置模式
+// lz_enable_motor(0x2, 0x1);//使能电机
+LZMotor_position_init(LZ_CAN_1_1);
 
-  enable_motor_mode(&hfdcan1, 0x05, POS_MODE);
-  enable_motor_mode(&hfdcan2, 0x02, POS_MODE);
-  enable_motor_mode(&hfdcan2, 0x03, POS_MODE);
+
+// 达妙电机
+  arm_motor_init(&arm_motor[Motor4], 0x04, POS_MODE); // 设置ID和控制模式  
+  arm_motor_init(&arm_motor[Motor5], 0x05, POS_MODE); // 设置ID和控制模式  
+  arm_motor_init(&arm_motor[Motor6], 0x06, POS_MODE); // 设置ID和控制模式  
+
   enable_motor_mode(&hfdcan2, 0x04, POS_MODE);
   enable_motor_mode(&hfdcan2, 0x05, POS_MODE);
   enable_motor_mode(&hfdcan2, 0x06, POS_MODE);
   // 速度
-
   vel_motor.MT04 = 5.0;
   // 位置
   pos_motor.MT04 = 0;
-}
 
+}
+void Arm_update()
+{
+ 
+
+}
+void Arm_motor1()
+{
+// lz_set_mode(2, 0x1,1);//设置模式
+// lz_enable_motor(2, 0x1);//使能电机
+// lz_set_position(2, 0x01,20,2);
+ LZMotor_send_command(LZ_CAN_1_1);
+
+}
 void Arm_motor4()
 {
 

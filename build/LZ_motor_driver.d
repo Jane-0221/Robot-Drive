@@ -1,5 +1,5 @@
-build/Gimbal.o: User/Software/Gimbal.c User/Software/Gimbal.h \
- User/BSP/CAN_receive_send.h Core/Inc/fdcan.h Core/Inc/main.h \
+build/LZ_motor_driver.o: User/Hardware/LZ_motor_driver.c \
+ User/Hardware/LZ_motor_driver.h Core/Inc/main.h \
  Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal.h \
  Core/Inc/stm32h7xx_hal_conf.h \
  Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal_rcc.h \
@@ -37,15 +37,9 @@ build/Gimbal.o: User/Software/Gimbal.c User/Software/Gimbal.h \
  Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal_uart_ex.h \
  Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal_pcd.h \
  Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_ll_usb.h \
- Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal_pcd_ex.h \
- User/Hardware/motor.h Algorithm/User_math.h \
- User/Hardware/LZ_motor_driver.h Core/Inc/main.h \
- User/Software/Global_status.h Algorithm/pid.h Algorithm/ramp_generator.h \
- User/Hardware/IMU_updata.h Core/Inc/struct_typedef.h \
- Algorithm/Kalman_Filter_c.h
-User/Software/Gimbal.h:
-User/BSP/CAN_receive_send.h:
-Core/Inc/fdcan.h:
+ Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal_pcd_ex.h Core/Inc/fdcan.h \
+ Core/Inc/main.h User/BSP/CAN_receive_send.h Algorithm/User_math.h
+User/Hardware/LZ_motor_driver.h:
 Core/Inc/main.h:
 Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal.h:
 Core/Inc/stm32h7xx_hal_conf.h:
@@ -87,13 +81,7 @@ Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal_uart_ex.h:
 Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal_pcd.h:
 Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_ll_usb.h:
 Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal_pcd_ex.h:
-User/Hardware/motor.h:
-Algorithm/User_math.h:
-User/Hardware/LZ_motor_driver.h:
+Core/Inc/fdcan.h:
 Core/Inc/main.h:
-User/Software/Global_status.h:
-Algorithm/pid.h:
-Algorithm/ramp_generator.h:
-User/Hardware/IMU_updata.h:
-Core/Inc/struct_typedef.h:
-Algorithm/Kalman_Filter_c.h:
+User/BSP/CAN_receive_send.h:
+Algorithm/User_math.h:

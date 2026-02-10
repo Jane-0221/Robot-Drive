@@ -40,7 +40,8 @@ build/remote_control.o: User/Software/remote_control.c \
  Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal_pcd_ex.h \
  User/Software/Global_status.h User/Software/Chassis.h \
  User/BSP/CAN_receive_send.h Core/Inc/fdcan.h Core/Inc/main.h \
- Algorithm/User_math.h User/Hardware/motor.h User/Software/Gimbal.h \
+ Algorithm/User_math.h User/Hardware/motor.h \
+ User/Hardware/LZ_motor_driver.h User/Software/Gimbal.h \
  User/Software/ui.h Drivers/UI/ui_interface.h Drivers/UI/ui_types.h \
  Core/Inc/usart.h Drivers/UI/ui_g.h Drivers/UI/ui_interface.h \
  Algorithm/ramp_generator.h User/Software/limit_filter.h \
@@ -100,6 +101,7 @@ Core/Inc/fdcan.h:
 Core/Inc/main.h:
 Algorithm/User_math.h:
 User/Hardware/motor.h:
+User/Hardware/LZ_motor_driver.h:
 User/Software/Gimbal.h:
 User/Software/ui.h:
 Drivers/UI/ui_interface.h:

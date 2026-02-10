@@ -22,8 +22,9 @@ typedef enum Enum_Motor_DM_Status
 } Motor_DM_Status;
 extern Motor_DM_Status DM_Status[6];
 // damiao
+void Arm_update(void);
 void Arm_Init(void);
-// void Arm_motor1(void);
+void Arm_motor1(void);
 // void Arm_motor2(void);
 // void Arm_motor3(void);
 void Arm_motor4(void);

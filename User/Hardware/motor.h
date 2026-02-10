@@ -14,7 +14,7 @@
 #define ECD_TO_ANGEL_DJI 0.043945f //(360/8192),将编码器值转化为角度制
 #define DJIMOTOR_MAX_CURRENT 16384 // M2006+M3508最大电流 20A / DJI_MAX_CURRENT
 #define DJIMOTOR_T_A 0.3 //3508转矩常数
-
+#define USE_LZMotor     (1)  
 #ifdef USE_DJI_MOTOR
 typedef enum
 {
@@ -111,6 +111,60 @@ void DJIMotor_send_current(void);
 
 #endif //! USE_DJI_MOTOR
 
+#if (USE_LZMotor == 1)
+#include "LZ_motor_driver.h"
+
+// ???CAN???????????
+#define QUANTITY_OF_LZMOTOR 6
+
+// ???ID???????3·CAN???·6???????
+typedef enum {
+    LZ_CAN_1_1 = 0,
+    LZ_CAN_1_2,
+    LZ_CAN_1_3,
+    LZ_CAN_1_4,
+    LZ_CAN_1_5,
+    LZ_CAN_1_6,
+    
+    LZ_CAN_2_1,
+    LZ_CAN_2_2,
+    LZ_CAN_2_3,
+    LZ_CAN_2_4,
+    LZ_CAN_2_5,
+    LZ_CAN_2_6,
+    
+    LZ_CAN_3_1,
+    LZ_CAN_3_2,
+    LZ_CAN_3_3,
+    LZ_CAN_3_4,
+    LZ_CAN_3_5,
+    LZ_CAN_3_6,
+    
+    LZ_MOTOR_NUM
+} LZ_Motor_ID_t;
+
+void LZMotor_init(LZ_Motor_ID_t motor_id);
+void LZMotor_velocity_init(LZ_Motor_ID_t motor_id) ;
+void LZMotor_position_init(LZ_Motor_ID_t motor_id) ;
+
+void LZMotor_set_params(LZ_Motor_ID_t motor_id, float pos, float vel, float tor, float kp, float kd);
+void LZMotor_set_pos_param(LZ_Motor_ID_t motor_id, float pos, float vel) ;
+void LZMotor_set_vel_param(LZ_Motor_ID_t motor_id, float vel,float current_limit) ;
+
+void LZMotor_velocity_enable(LZ_Motor_ID_t motor_id) ;
+void LZMotor_position_enable(LZ_Motor_ID_t motor_id) ;
+
+int  LZMotor_send_command(LZ_Motor_ID_t motor_id);
+
+
+
+void LZMotor_disable(LZ_Motor_ID_t motor_id) ;
+void LZMotor_decode_candata(FDCAN_HandleTypeDef *hfdcan, uint32_t id, uint8_t *data);
+
+// ?????????????
+extern LZ_Motor_t LZ_Motors[QUANTITY_OF_CAN][QUANTITY_OF_LZMOTOR];
+
+#endif // USE_LINGZU_MOTOR
 #ifdef USE_UNTREE_MOTOR
 
 typedef struct

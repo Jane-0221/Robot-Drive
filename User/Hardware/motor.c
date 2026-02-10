@@ -14,6 +14,7 @@
 
 #ifdef USE_DJI_MOTOR
 #define abs(a) a > 0 ? a : -a
+#define USE_LZMotor     (1)  
 // 电机数据定义
 DJI_motor_data_s DJIMotor_data[QUANTITY_OF_CAN][QUANTITY_OF_DJIMOTOR];
 
@@ -252,3 +253,206 @@ void DJIMotor_send_current(void)
 }
 
 #endif // USE_DJI_MOTOR
+#if (USE_LZMotor == 1)
+// ???????????
+LZ_Motor_t LZ_Motors[QUANTITY_OF_CAN][QUANTITY_OF_LZMOTOR];
+
+/**
+ * @brief ?????????
+ */
+void  LZMotor_velocity_enable(LZ_Motor_ID_t motor_id) {
+    if (motor_id >= LZ_MOTOR_NUM) return;
+    
+    uint8_t cantype = motor_id / 6; // ?????????can·
+    uint8_t canid = motor_id % 6;   // ??????ID???
+
+    lz_set_mode(cantype, LZ_Motors[cantype][canid].id, LZ_MODE_VELOCITY);
+    lz_enable_motor(cantype, LZ_Motors[cantype][canid].id);
+  
+    LZ_Motors[cantype][canid].mode = LZ_MODE_VELOCITY; // ???????????????
+
+}
+
+void  LZMotor_position_enable(LZ_Motor_ID_t motor_id) {
+    if (motor_id >= LZ_MOTOR_NUM) return;
+    
+    uint8_t cantype = motor_id / 6; // ?????????can·
+    uint8_t canid = motor_id % 6;   // ??????ID???
+    
+    lz_set_mode(cantype, LZ_Motors[cantype][canid].id, LZ_MODE_POSITION);
+    lz_enable_motor(cantype, LZ_Motors[cantype][canid].id);
+    LZ_Motors[cantype][canid].mode = LZ_MODE_POSITION; // ??????????λ????
+}
+/**
+ * @brief ?????????
+ */
+void LZMotor_disable(LZ_Motor_ID_t motor_id) {
+    if (motor_id >= LZ_MOTOR_NUM) return;
+    
+    uint8_t cantype = motor_id / 6; // ?????????can·
+    uint8_t canid = motor_id % 6;   // ??????ID???
+    
+    lz_disable_motor(cantype, LZ_Motors[cantype][canid].id);
+    LZ_Motors[cantype][canid].mode = LZ_MODE_DISABLE;
+}
+
+/**
+ * @brief ???????????
+ */
+void LZMotor_velocity_init(LZ_Motor_ID_t motor_id) {
+    if (motor_id >= LZ_MOTOR_NUM) return;
+
+    uint8_t cantype = motor_id / 6; // ?????????can·
+    uint8_t canid = motor_id % 6;   // ??????ID???
+
+    memset(&LZ_Motors[cantype][canid], 0, sizeof(LZ_Motor_t));
+    
+    // ???????ID
+    LZ_Motors[cantype][canid].id = canid + 1;
+    LZ_Motors[cantype][canid].master_id = canid + 1;
+    LZ_Motors[cantype][canid].mode = LZ_MODE_VELOCITY;
+
+    // ?????
+    LZMotor_velocity_enable(motor_id);
+}
+void LZMotor_position_init(LZ_Motor_ID_t motor_id) {
+    if (motor_id >= LZ_MOTOR_NUM) return;
+
+    uint8_t cantype = motor_id / 6; // ?????????can·
+    uint8_t canid = motor_id % 6;   // ??????ID???
+
+    memset(&LZ_Motors[cantype][canid], 0, sizeof(LZ_Motor_t));
+    
+    // ???????ID
+    LZ_Motors[cantype][canid].id = canid + 1;
+    LZ_Motors[cantype][canid].master_id = canid + 1;
+    LZ_Motors[cantype][canid].mode = LZ_MODE_POSITION;
+
+    // ?????
+    LZMotor_position_enable(motor_id);
+}
+void LZMotor_init(LZ_Motor_ID_t motor_id) {
+    if (motor_id >= LZ_MOTOR_NUM) return;
+
+    uint8_t cantype = motor_id / 6; // ?????????can·
+    uint8_t canid = motor_id % 6;   // ??????ID???
+
+    memset(&LZ_Motors[cantype][canid], 0, sizeof(LZ_Motor_t));
+    
+    // ???????ID
+    LZ_Motors[cantype][canid].id = canid + 1;
+    LZ_Motors[cantype][canid].master_id = canid + 1;
+    LZ_Motors[cantype][canid].mode = LZ_MODE_MIT;
+
+    // ?????
+    LZMotor_velocity_enable(motor_id);
+}
+
+/**
+ * @brief ?????????????????
+ */
+void LZMotor_set_params(LZ_Motor_ID_t motor_id, float pos, float vel, float tor, float kp, float kd) 
+{
+    if (motor_id >= LZ_MOTOR_NUM) return;
+    
+    uint8_t cantype = motor_id / 6; // ?????????can·
+    uint8_t canid = motor_id % 6;   // ??????ID???
+    
+    LZ_Motors[cantype][canid].pos_set = pos;
+    LZ_Motors[cantype][canid].vel_set = vel;
+    LZ_Motors[cantype][canid].tor_set = tor;
+    LZ_Motors[cantype][canid].kp_set = kp;
+    LZ_Motors[cantype][canid].kd_set = kd;
+}
+
+void LZMotor_set_pos_param(LZ_Motor_ID_t motor_id, float pos, float vel) 
+{
+    if (motor_id >= LZ_MOTOR_NUM) return;
+    
+    uint8_t cantype = motor_id / 6; // ?????????can·
+    uint8_t canid = motor_id % 6;   // ??????ID???
+    
+    LZ_Motors[cantype][canid].pos_set = pos;
+    LZ_Motors[cantype][canid].vel_set = vel;
+}
+void LZMotor_set_vel_param(LZ_Motor_ID_t motor_id, float vel,float current_limit) 
+{
+    if (motor_id >= LZ_MOTOR_NUM) return;
+    
+    uint8_t cantype = motor_id / 6; // ?????????can·
+    uint8_t canid = motor_id % 6;   // ??????ID???
+    
+    LZ_Motors[cantype][canid].vel_set = vel;
+    LZ_Motors[cantype][canid].current_limit = current_limit;
+}
+/**
+ * @brief ??????????????????
+ */
+int LZMotor_send_command(LZ_Motor_ID_t motor_id) {
+    if (motor_id >= LZ_MOTOR_NUM) 
+        return 0;
+    
+    uint8_t cantype = motor_id / 6; // ?????????can·
+    uint8_t canid = motor_id % 6;   // ??????ID???
+    
+    LZ_Motor_t *motor = &LZ_Motors[cantype][canid];
+    if (motor->mode == LZ_MODE_VELOCITY) {
+        uint16_t  vel_id=(0x02 << 8) | (canid+1);
+        lz_set_velocity(cantype, vel_id, motor->vel_set, 10);
+        return 1;
+    } else if (motor->mode == LZ_MODE_POSITION) {
+        uint16_t  pos_id=(0x01 << 8) | (canid+1);
+        lz_set_position(cantype, pos_id, motor->pos_set, motor->vel_set);
+        return 1;
+    } 
+    else
+    {
+        lz_send_mit_params(cantype, motor->id, motor->pos_set, motor->vel_set, motor->kp_set, motor->kd_set, motor->tor_set);
+        return 1;
+        /* code */
+    }
+    
+}
+
+/**
+ * @brief ?????????????
+ */
+LZ_Motor_t LZMotor_get(LZ_Motor_ID_t motor_id) {
+    
+    uint8_t cantype = motor_id / 6; // ?????????can·
+    uint8_t canid = motor_id % 6;   // ??????ID???
+    
+    return LZ_Motors[cantype][canid];
+}
+/**
+ * @brief ??????CAN???????
+ */
+void LZMotor_decode_candata(FDCAN_HandleTypeDef *hfdcan, uint32_t id, uint8_t *data)
+ {
+    uint8_t motor_id = (data[0] - 1);
+    
+    // ???CAN????
+    uint8_t can_bus = 0;
+    if (hfdcan == &hfdcan2) can_bus = 1;
+    else if (hfdcan == &hfdcan3) can_bus = 2;
+
+    LZ_Motors[can_bus][motor_id].state.angle_last = LZ_Motors[can_bus][motor_id].state.angle;
+    LZ_Motors[can_bus][motor_id].state.angle = uint16_to_float((data[1]<<8) | (data[2]),P_MIN,P_MAX,16);
+    LZ_Motors[can_bus][motor_id].state.velocity = uint16_to_float((data[3]<<4) | (data[4]>>4),V_MIN,V_MAX,12);
+    LZ_Motors[can_bus][motor_id].state.torque = uint16_to_float((data[4]<<8) | (data[5]),T_MIN,T_MAX,12);
+    LZ_Motors[can_bus][motor_id].state.temperature = ((data[6]<<8) | data[7])*0.1;
+    
+    //???????
+        // count cnt
+    if(LZ_Motors[can_bus][motor_id].state.sign == 0) {LZ_Motors[can_bus][motor_id].state.sign ++ ; LZ_Motors[can_bus][motor_id].state.angle_last = LZ_Motors[can_bus][motor_id].state.angle;}
+    if (LZ_Motors[can_bus][motor_id].state.angle_last > 12 && LZ_Motors[can_bus][motor_id].state.angle < -12)
+        LZ_Motors[can_bus][motor_id].state.angle_cnt += ((P_MAX - LZ_Motors[can_bus][motor_id].state.angle_last) + (LZ_Motors[can_bus][motor_id].state.angle + P_MAX));
+    else if (LZ_Motors[can_bus][motor_id].state.angle_last < -12 && LZ_Motors[can_bus][motor_id].state.angle > 12)
+        LZ_Motors[can_bus][motor_id].state.angle_cnt -= ((P_MAX - LZ_Motors[can_bus][motor_id].state.angle) + LZ_Motors[can_bus][motor_id].state.angle_last + P_MAX);
+    else
+        LZ_Motors[can_bus][motor_id].state.angle_cnt += (LZ_Motors[can_bus][motor_id].state.angle - LZ_Motors[can_bus][motor_id].state.angle_last);
+ }
+
+
+
+#endif // USE_LZMotor

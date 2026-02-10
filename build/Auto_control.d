@@ -39,9 +39,10 @@ build/Auto_control.o: User/Software/Auto_control.c \
  Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal_pcd.h \
  Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_ll_usb.h \
  Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal_pcd_ex.h \
- User/Hardware/motor.h Algorithm/User_math.h User/Hardware/IMU_updata.h \
- Core/Inc/struct_typedef.h Algorithm/Kalman_Filter_c.h \
- User/Hardware/referee_system.h Core/Inc/main.h \
+ User/Hardware/motor.h Algorithm/User_math.h \
+ User/Hardware/LZ_motor_driver.h Core/Inc/main.h \
+ User/Hardware/IMU_updata.h Core/Inc/struct_typedef.h \
+ Algorithm/Kalman_Filter_c.h User/Hardware/referee_system.h \
  User/Hardware/referee_system_protocol.h Algorithm/fifo.h \
  User/BSP/UART_data_txrx.h Core/Inc/usart.h Algorithm/CRC8_CRC16.h
 User/Software/Auto_control.h:
@@ -92,11 +93,12 @@ Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_ll_usb.h:
 Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal_pcd_ex.h:
 User/Hardware/motor.h:
 Algorithm/User_math.h:
+User/Hardware/LZ_motor_driver.h:
+Core/Inc/main.h:
 User/Hardware/IMU_updata.h:
 Core/Inc/struct_typedef.h:
 Algorithm/Kalman_Filter_c.h:
 User/Hardware/referee_system.h:
-Core/Inc/main.h:
 User/Hardware/referee_system_protocol.h:
 Algorithm/fifo.h:
 User/BSP/UART_data_txrx.h:

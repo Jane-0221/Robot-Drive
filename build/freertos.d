@@ -50,7 +50,8 @@ build/freertos.o: Core/Src/freertos.c \
  Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2/cmsis_os2.h \
  User/Software/remote_control.h User/Software/Chassis.h \
  User/BSP/CAN_receive_send.h Core/Inc/fdcan.h Core/Inc/main.h \
- Algorithm/User_math.h User/Hardware/motor.h User/Software/Gimbal.h \
+ Algorithm/User_math.h User/Hardware/motor.h \
+ User/Hardware/LZ_motor_driver.h User/Software/Gimbal.h \
  User/Software/Global_status.h User/Hardware/VT13.h \
  Algorithm/CRC8_CRC16.h User/Software/Auto_control.h \
  User/Software/shoot.h User/Software/ui.h Drivers/UI/ui_interface.h \
@@ -122,6 +123,7 @@ Core/Inc/fdcan.h:
 Core/Inc/main.h:
 Algorithm/User_math.h:
 User/Hardware/motor.h:
+User/Hardware/LZ_motor_driver.h:
 User/Software/Gimbal.h:
 User/Software/Global_status.h:
 User/Hardware/VT13.h:

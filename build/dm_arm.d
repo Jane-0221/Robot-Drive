@@ -39,7 +39,8 @@ build/dm_arm.o: User/Hardware/dm_arm.c User/Hardware/dm_arm.h \
  Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_ll_usb.h \
  Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal_pcd_ex.h \
  User/Hardware/dm4310_drv.h Core/Inc/main.h User/Hardware/motor.h \
- Algorithm/User_math.h User/BSP/CAN_receive_send.h Algorithm/pid.h \
+ Algorithm/User_math.h User/BSP/CAN_receive_send.h \
+ User/Hardware/LZ_motor_driver.h Algorithm/pid.h \
  User/Software/remote_control.h
 User/Hardware/dm_arm.h:
 User/BSP/can_receive_send.h:
@@ -90,5 +91,6 @@ Core/Inc/main.h:
 User/Hardware/motor.h:
 Algorithm/User_math.h:
 User/BSP/CAN_receive_send.h:
+User/Hardware/LZ_motor_driver.h:
 Algorithm/pid.h:
 User/Software/remote_control.h:

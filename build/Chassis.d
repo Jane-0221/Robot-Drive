@@ -39,13 +39,13 @@ build/Chassis.o: User/Software/Chassis.c User/Software/Chassis.h \
  Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_ll_usb.h \
  Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal_pcd_ex.h \
  Algorithm/User_math.h User/Hardware/motor.h \
+ User/Hardware/LZ_motor_driver.h Core/Inc/main.h \
  User/Software/Global_status.h User/Software/Gimbal.h User/Software/ui.h \
  Drivers/UI/ui_interface.h Drivers/UI/ui_types.h Core/Inc/usart.h \
  Drivers/UI/ui_g.h Drivers/UI/ui_interface.h User/Hardware/IMU_updata.h \
  Core/Inc/struct_typedef.h Algorithm/Kalman_Filter_c.h \
- User/Hardware/referee_system.h Core/Inc/main.h \
- User/Hardware/referee_system_protocol.h Algorithm/fifo.h \
- User/Hardware/supercup.h User/BSP/stm32_time.h \
+ User/Hardware/referee_system.h User/Hardware/referee_system_protocol.h \
+ Algorithm/fifo.h User/Hardware/supercup.h User/BSP/stm32_time.h \
  User/Software/remote_control.h Algorithm/pid.h \
  Algorithm/ramp_generator.h User/Hardware/dm4310_drv.h \
  User/BSP/can_receive_send.h User/Hardware/DT7.h
@@ -95,6 +95,8 @@ Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_ll_usb.h:
 Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal_pcd_ex.h:
 Algorithm/User_math.h:
 User/Hardware/motor.h:
+User/Hardware/LZ_motor_driver.h:
+Core/Inc/main.h:
 User/Software/Global_status.h:
 User/Software/Gimbal.h:
 User/Software/ui.h:
@@ -107,7 +109,6 @@ User/Hardware/IMU_updata.h:
 Core/Inc/struct_typedef.h:
 Algorithm/Kalman_Filter_c.h:
 User/Hardware/referee_system.h:
-Core/Inc/main.h:
 User/Hardware/referee_system_protocol.h:
 Algorithm/fifo.h:
 User/Hardware/supercup.h:

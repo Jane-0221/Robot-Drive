@@ -243,8 +243,8 @@ void Eng_arm_Task(void *argument)
   /* Infinite loop */
   for (;;)
   {
-    // Arm_motor1();
-    // osDelay(1);
+    Arm_motor1();
+    osDelay(1);
     // Arm_motor2();
     // osDelay(1);
     // Arm_motor3();
@@ -252,8 +252,8 @@ void Eng_arm_Task(void *argument)
     Arm_motor4();
     osDelay(1);
     Arm_motor5();
-    osDelay(1);
-    Arm_motor6();
+    // osDelay(1);
+    // Arm_motor6();
     // printf("%f\n", pos_motor.pos_rootpitch);
   }
   /* USER CODE END Eng_arm_Task */
@@ -332,7 +332,7 @@ void Referee_Task(void *argument)
   for (;;)
   {
 
-    Referee_unpack_fifo_data(&referee_fifo, &referee_unpack_obj);             // 閿熸枻鎷烽敓锟?
+    Referee_unpack_fifo_data(&referee_fifo, &referee_unpack_obj);             // 閿熸枻鎷烽敓�??
     Referee_unpack_fifo_data(&referee_image_fifo, &referee_image_unpack_obj); // 鍥鹃敓鏂ゆ嫹
     update_limit_filter(&custom_robot_data, &filtered_data);
     unsigned long current_time_ms = HAL_GetTick();

@@ -39,10 +39,10 @@ build/Shoot.o: User/Software/Shoot.c User/Software/Shoot.h \
  Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_ll_usb.h \
  Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal_pcd_ex.h \
  User/Hardware/motor.h Algorithm/User_math.h \
+ User/Hardware/LZ_motor_driver.h Core/Inc/main.h \
  User/Software/Global_status.h User/Software/Gimbal.h Algorithm/pid.h \
- User/Hardware/referee_system.h Core/Inc/main.h \
- User/Hardware/referee_system_protocol.h Core/Inc/struct_typedef.h \
- Algorithm/fifo.h
+ User/Hardware/referee_system.h User/Hardware/referee_system_protocol.h \
+ Core/Inc/struct_typedef.h Algorithm/fifo.h
 User/Software/Shoot.h:
 User/BSP/CAN_receive_send.h:
 Core/Inc/fdcan.h:
@@ -89,11 +89,12 @@ Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_ll_usb.h:
 Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal_pcd_ex.h:
 User/Hardware/motor.h:
 Algorithm/User_math.h:
+User/Hardware/LZ_motor_driver.h:
+Core/Inc/main.h:
 User/Software/Global_status.h:
 User/Software/Gimbal.h:
 Algorithm/pid.h:
 User/Hardware/referee_system.h:
-Core/Inc/main.h:
 User/Hardware/referee_system_protocol.h:
 Core/Inc/struct_typedef.h:
 Algorithm/fifo.h:

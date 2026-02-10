@@ -1,0 +1,1112 @@
+ARM GAS  C:\Users\Godwin\AppData\Local\Temp\cchu8T3h.s 			page 1
+
+
+   1              		.cpu cortex-m7
+   2              		.arch armv7e-m
+   3              		.fpu fpv5-d16
+   4              		.eabi_attribute 28, 1
+   5              		.eabi_attribute 20, 1
+   6              		.eabi_attribute 21, 1
+   7              		.eabi_attribute 23, 3
+   8              		.eabi_attribute 24, 1
+   9              		.eabi_attribute 25, 1
+  10              		.eabi_attribute 26, 1
+  11              		.eabi_attribute 30, 6
+  12              		.eabi_attribute 34, 1
+  13              		.eabi_attribute 18, 4
+  14              		.file	"LZ_motor_driver.c"
+  15              		.text
+  16              	.Ltext0:
+  17              		.cfi_sections	.debug_frame
+  18              		.file 1 "User/Hardware/LZ_motor_driver.c"
+  19              		.section	.text.lz_send_command,"ax",%progbits
+  20              		.align	1
+  21              		.global	lz_send_command
+  22              		.syntax unified
+  23              		.thumb
+  24              		.thumb_func
+  26              	lz_send_command:
+  27              	.LFB144:
+   1:User/Hardware/LZ_motor_driver.c **** #include "LZ_motor_driver.h"
+   2:User/Hardware/LZ_motor_driver.c **** #include "CAN_receive_send.h"
+   3:User/Hardware/LZ_motor_driver.c **** #include "string.h"
+   4:User/Hardware/LZ_motor_driver.c **** #include "User_math.h"
+   5:User/Hardware/LZ_motor_driver.c **** 
+   6:User/Hardware/LZ_motor_driver.c **** /**
+   7:User/Hardware/LZ_motor_driver.c ****  * @brief 灵足电机先更改模式再使能，注意发送位置和速度时要加上3位id和原来id构成11位id
+   8:User/Hardware/LZ_motor_driver.c ****  */
+   9:User/Hardware/LZ_motor_driver.c **** 
+  10:User/Hardware/LZ_motor_driver.c **** /**
+  11:User/Hardware/LZ_motor_driver.c ****  * @brief 发送 MIT 协议指令（通用）
+  12:User/Hardware/LZ_motor_driver.c ****  */
+  13:User/Hardware/LZ_motor_driver.c **** void lz_send_command(uint8_t can_bus, uint16_t motor_id, uint8_t *data) {
+  28              		.loc 1 13 73
+  29              		.cfi_startproc
+  30              		@ args = 0, pretend = 0, frame = 16
+  31              		@ frame_needed = 1, uses_anonymous_args = 0
+  32 0000 80B5     		push	{r7, lr}
+  33              	.LCFI0:
+  34              		.cfi_def_cfa_offset 8
+  35              		.cfi_offset 7, -8
+  36              		.cfi_offset 14, -4
+  37 0002 84B0     		sub	sp, sp, #16
+  38              	.LCFI1:
+  39              		.cfi_def_cfa_offset 24
+  40 0004 00AF     		add	r7, sp, #0
+  41              	.LCFI2:
+  42              		.cfi_def_cfa_register 7
+  43 0006 0346     		mov	r3, r0
+  44 0008 3A60     		str	r2, [r7]
+  45 000a FB71     		strb	r3, [r7, #7]
+ARM GAS  C:\Users\Godwin\AppData\Local\Temp\cchu8T3h.s 			page 2
+
+
+  46 000c 0B46     		mov	r3, r1	@ movhi
+  47 000e BB80     		strh	r3, [r7, #4]	@ movhi
+  14:User/Hardware/LZ_motor_driver.c ****     FDCAN_HandleTypeDef *hfdcan = Get_CanHandle(can_bus);
+  48              		.loc 1 14 35
+  49 0010 FB79     		ldrb	r3, [r7, #7]	@ zero_extendqisi2
+  50 0012 1846     		mov	r0, r3
+  51 0014 FFF7FEFF 		bl	Get_CanHandle
+  52 0018 F860     		str	r0, [r7, #12]
+  15:User/Hardware/LZ_motor_driver.c ****    canx_send_data(hfdcan, motor_id, data, 8);
+  53              		.loc 1 15 4
+  54 001a B988     		ldrh	r1, [r7, #4]
+  55 001c 0823     		movs	r3, #8
+  56 001e 3A68     		ldr	r2, [r7]
+  57 0020 F868     		ldr	r0, [r7, #12]
+  58 0022 FFF7FEFF 		bl	canx_send_data
+  16:User/Hardware/LZ_motor_driver.c **** }
+  59              		.loc 1 16 1
+  60 0026 00BF     		nop
+  61 0028 1037     		adds	r7, r7, #16
+  62              	.LCFI3:
+  63              		.cfi_def_cfa_offset 8
+  64 002a BD46     		mov	sp, r7
+  65              	.LCFI4:
+  66              		.cfi_def_cfa_register 13
+  67              		@ sp needed
+  68 002c 80BD     		pop	{r7, pc}
+  69              		.cfi_endproc
+  70              	.LFE144:
+  72              		.section	.rodata
+  73              		.align	2
+  74              	.LC0:
+  75 0000 FFFFFFFF 		.ascii	"\377\377\377\377\377\377\377\374"
+  75      FFFFFFFC 
+  76              		.section	.text.lz_enable_motor,"ax",%progbits
+  77              		.align	1
+  78              		.global	lz_enable_motor
+  79              		.syntax unified
+  80              		.thumb
+  81              		.thumb_func
+  83              	lz_enable_motor:
+  84              	.LFB145:
+  17:User/Hardware/LZ_motor_driver.c **** 
+  18:User/Hardware/LZ_motor_driver.c **** /**
+  19:User/Hardware/LZ_motor_driver.c ****  * @brief 使能电机
+  20:User/Hardware/LZ_motor_driver.c ****  */
+  21:User/Hardware/LZ_motor_driver.c **** void lz_enable_motor(uint8_t can_bus, uint8_t motor_id) {
+  85              		.loc 1 21 57
+  86              		.cfi_startproc
+  87              		@ args = 0, pretend = 0, frame = 16
+  88              		@ frame_needed = 1, uses_anonymous_args = 0
+  89 0000 80B5     		push	{r7, lr}
+  90              	.LCFI5:
+  91              		.cfi_def_cfa_offset 8
+  92              		.cfi_offset 7, -8
+  93              		.cfi_offset 14, -4
+  94 0002 84B0     		sub	sp, sp, #16
+  95              	.LCFI6:
+ARM GAS  C:\Users\Godwin\AppData\Local\Temp\cchu8T3h.s 			page 3
+
+
+  96              		.cfi_def_cfa_offset 24
+  97 0004 00AF     		add	r7, sp, #0
+  98              	.LCFI7:
+  99              		.cfi_def_cfa_register 7
+ 100 0006 0346     		mov	r3, r0
+ 101 0008 0A46     		mov	r2, r1
+ 102 000a FB71     		strb	r3, [r7, #7]
+ 103 000c 1346     		mov	r3, r2
+ 104 000e BB71     		strb	r3, [r7, #6]
+  22:User/Hardware/LZ_motor_driver.c ****     uint8_t data[8] = {0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFC};
+ 105              		.loc 1 22 13
+ 106 0010 094A     		ldr	r2, .L3
+ 107 0012 07F10803 		add	r3, r7, #8
+ 108 0016 92E80300 		ldm	r2, {r0, r1}
+ 109 001a 83E80300 		stm	r3, {r0, r1}
+  23:User/Hardware/LZ_motor_driver.c ****     lz_send_command(can_bus, motor_id, data);
+ 110              		.loc 1 23 5
+ 111 001e BB79     		ldrb	r3, [r7, #6]	@ zero_extendqisi2
+ 112 0020 99B2     		uxth	r1, r3
+ 113 0022 07F10802 		add	r2, r7, #8
+ 114 0026 FB79     		ldrb	r3, [r7, #7]	@ zero_extendqisi2
+ 115 0028 1846     		mov	r0, r3
+ 116 002a FFF7FEFF 		bl	lz_send_command
+  24:User/Hardware/LZ_motor_driver.c **** }
+ 117              		.loc 1 24 1
+ 118 002e 00BF     		nop
+ 119 0030 1037     		adds	r7, r7, #16
+ 120              	.LCFI8:
+ 121              		.cfi_def_cfa_offset 8
+ 122 0032 BD46     		mov	sp, r7
+ 123              	.LCFI9:
+ 124              		.cfi_def_cfa_register 13
+ 125              		@ sp needed
+ 126 0034 80BD     		pop	{r7, pc}
+ 127              	.L4:
+ 128 0036 00BF     		.align	2
+ 129              	.L3:
+ 130 0038 00000000 		.word	.LC0
+ 131              		.cfi_endproc
+ 132              	.LFE145:
+ 134              		.section	.rodata
+ 135              		.align	2
+ 136              	.LC1:
+ 137 0008 FFFFFFFF 		.ascii	"\377\377\377\377\377\377\377\375"
+ 137      FFFFFFFD 
+ 138              		.section	.text.lz_disable_motor,"ax",%progbits
+ 139              		.align	1
+ 140              		.global	lz_disable_motor
+ 141              		.syntax unified
+ 142              		.thumb
+ 143              		.thumb_func
+ 145              	lz_disable_motor:
+ 146              	.LFB146:
+  25:User/Hardware/LZ_motor_driver.c **** 
+  26:User/Hardware/LZ_motor_driver.c **** /** 
+  27:User/Hardware/LZ_motor_driver.c ****  * @brief 停止电机
+  28:User/Hardware/LZ_motor_driver.c ****  */
+ARM GAS  C:\Users\Godwin\AppData\Local\Temp\cchu8T3h.s 			page 4
+
+
+  29:User/Hardware/LZ_motor_driver.c **** void lz_disable_motor(uint8_t can_bus, uint8_t motor_id) {
+ 147              		.loc 1 29 58
+ 148              		.cfi_startproc
+ 149              		@ args = 0, pretend = 0, frame = 16
+ 150              		@ frame_needed = 1, uses_anonymous_args = 0
+ 151 0000 80B5     		push	{r7, lr}
+ 152              	.LCFI10:
+ 153              		.cfi_def_cfa_offset 8
+ 154              		.cfi_offset 7, -8
+ 155              		.cfi_offset 14, -4
+ 156 0002 84B0     		sub	sp, sp, #16
+ 157              	.LCFI11:
+ 158              		.cfi_def_cfa_offset 24
+ 159 0004 00AF     		add	r7, sp, #0
+ 160              	.LCFI12:
+ 161              		.cfi_def_cfa_register 7
+ 162 0006 0346     		mov	r3, r0
+ 163 0008 0A46     		mov	r2, r1
+ 164 000a FB71     		strb	r3, [r7, #7]
+ 165 000c 1346     		mov	r3, r2
+ 166 000e BB71     		strb	r3, [r7, #6]
+  30:User/Hardware/LZ_motor_driver.c ****     uint8_t data[8] = {0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFD};
+ 167              		.loc 1 30 13
+ 168 0010 094A     		ldr	r2, .L6
+ 169 0012 07F10803 		add	r3, r7, #8
+ 170 0016 92E80300 		ldm	r2, {r0, r1}
+ 171 001a 83E80300 		stm	r3, {r0, r1}
+  31:User/Hardware/LZ_motor_driver.c ****     lz_send_command(can_bus, motor_id, data);
+ 172              		.loc 1 31 5
+ 173 001e BB79     		ldrb	r3, [r7, #6]	@ zero_extendqisi2
+ 174 0020 99B2     		uxth	r1, r3
+ 175 0022 07F10802 		add	r2, r7, #8
+ 176 0026 FB79     		ldrb	r3, [r7, #7]	@ zero_extendqisi2
+ 177 0028 1846     		mov	r0, r3
+ 178 002a FFF7FEFF 		bl	lz_send_command
+  32:User/Hardware/LZ_motor_driver.c **** }
+ 179              		.loc 1 32 1
+ 180 002e 00BF     		nop
+ 181 0030 1037     		adds	r7, r7, #16
+ 182              	.LCFI13:
+ 183              		.cfi_def_cfa_offset 8
+ 184 0032 BD46     		mov	sp, r7
+ 185              	.LCFI14:
+ 186              		.cfi_def_cfa_register 13
+ 187              		@ sp needed
+ 188 0034 80BD     		pop	{r7, pc}
+ 189              	.L7:
+ 190 0036 00BF     		.align	2
+ 191              	.L6:
+ 192 0038 08000000 		.word	.LC1
+ 193              		.cfi_endproc
+ 194              	.LFE146:
+ 196              		.section	.text.lz_send_mit_params,"ax",%progbits
+ 197              		.align	1
+ 198              		.global	lz_send_mit_params
+ 199              		.syntax unified
+ 200              		.thumb
+ARM GAS  C:\Users\Godwin\AppData\Local\Temp\cchu8T3h.s 			page 5
+
+
+ 201              		.thumb_func
+ 203              	lz_send_mit_params:
+ 204              	.LFB147:
+  33:User/Hardware/LZ_motor_driver.c **** 
+  34:User/Hardware/LZ_motor_driver.c **** /**
+  35:User/Hardware/LZ_motor_driver.c ****  * @brief 发送 MIT 动态参数（指令3）
+  36:User/Hardware/LZ_motor_driver.c ****  */
+  37:User/Hardware/LZ_motor_driver.c **** void lz_send_mit_params(uint8_t can_bus, uint8_t motor_id, float angle, float speed, float kp, floa
+ 205              		.loc 1 37 120
+ 206              		.cfi_startproc
+ 207              		@ args = 0, pretend = 0, frame = 48
+ 208              		@ frame_needed = 1, uses_anonymous_args = 0
+ 209 0000 80B5     		push	{r7, lr}
+ 210              	.LCFI15:
+ 211              		.cfi_def_cfa_offset 8
+ 212              		.cfi_offset 7, -8
+ 213              		.cfi_offset 14, -4
+ 214 0002 8CB0     		sub	sp, sp, #48
+ 215              	.LCFI16:
+ 216              		.cfi_def_cfa_offset 56
+ 217 0004 00AF     		add	r7, sp, #0
+ 218              	.LCFI17:
+ 219              		.cfi_def_cfa_register 7
+ 220 0006 0346     		mov	r3, r0
+ 221 0008 0A46     		mov	r2, r1
+ 222 000a 87ED040A 		vstr.32	s0, [r7, #16]
+ 223 000e C7ED030A 		vstr.32	s1, [r7, #12]
+ 224 0012 87ED021A 		vstr.32	s2, [r7, #8]
+ 225 0016 C7ED011A 		vstr.32	s3, [r7, #4]
+ 226 001a 87ED002A 		vstr.32	s4, [r7]
+ 227 001e FB75     		strb	r3, [r7, #23]
+ 228 0020 1346     		mov	r3, r2
+ 229 0022 BB75     		strb	r3, [r7, #22]
+  38:User/Hardware/LZ_motor_driver.c ****     uint16_t angle_uint = float_to_uint(angle, P_MIN, P_MAX, 16);
+ 230              		.loc 1 38 27
+ 231 0024 D7ED047A 		vldr.32	s15, [r7, #16]
+ 232 0028 B7EEE77A 		vcvt.f64.f32	d7, s15
+ 233 002c 1020     		movs	r0, #16
+ 234 002e 9FED462B 		vldr.64	d2, .L9
+ 235 0032 9FED471B 		vldr.64	d1, .L9+8
+ 236 0036 B0EE470B 		vmov.f64	d0, d7
+ 237 003a FFF7FEFF 		bl	float_to_uint
+ 238 003e 0346     		mov	r3, r0
+ 239              		.loc 1 38 14 discriminator 1
+ 240 0040 FB85     		strh	r3, [r7, #46]	@ movhi
+  39:User/Hardware/LZ_motor_driver.c ****     uint16_t speed_uint = float_to_uint(speed, V_MIN, V_MAX, 12);
+ 241              		.loc 1 39 27
+ 242 0042 D7ED037A 		vldr.32	s15, [r7, #12]
+ 243 0046 B7EEE77A 		vcvt.f64.f32	d7, s15
+ 244 004a 0C20     		movs	r0, #12
+ 245 004c 9FED422B 		vldr.64	d2, .L9+16
+ 246 0050 9FED431B 		vldr.64	d1, .L9+24
+ 247 0054 B0EE470B 		vmov.f64	d0, d7
+ 248 0058 FFF7FEFF 		bl	float_to_uint
+ 249 005c 0346     		mov	r3, r0
+ 250              		.loc 1 39 14 discriminator 1
+ 251 005e BB85     		strh	r3, [r7, #44]	@ movhi
+ARM GAS  C:\Users\Godwin\AppData\Local\Temp\cchu8T3h.s 			page 6
+
+
+  40:User/Hardware/LZ_motor_driver.c ****     uint16_t kp_uint = float_to_uint(kp, KP_MIN, KP_MAX, 12);
+ 252              		.loc 1 40 24
+ 253 0060 D7ED027A 		vldr.32	s15, [r7, #8]
+ 254 0064 B7EEE77A 		vcvt.f64.f32	d7, s15
+ 255 0068 0C20     		movs	r0, #12
+ 256 006a 9FED3F2B 		vldr.64	d2, .L9+32
+ 257 006e 9FED401B 		vldr.64	d1, .L9+40
+ 258 0072 B0EE470B 		vmov.f64	d0, d7
+ 259 0076 FFF7FEFF 		bl	float_to_uint
+ 260 007a 0346     		mov	r3, r0
+ 261              		.loc 1 40 14 discriminator 1
+ 262 007c 7B85     		strh	r3, [r7, #42]	@ movhi
+  41:User/Hardware/LZ_motor_driver.c ****     uint16_t kd_uint = float_to_uint(kd, KD_MIN, KD_MAX, 12);
+ 263              		.loc 1 41 24
+ 264 007e D7ED017A 		vldr.32	s15, [r7, #4]
+ 265 0082 B7EEE77A 		vcvt.f64.f32	d7, s15
+ 266 0086 0C20     		movs	r0, #12
+ 267 0088 B1EE042B 		vmov.f64	d2, #5.0e+0
+ 268 008c 9FED381B 		vldr.64	d1, .L9+40
+ 269 0090 B0EE470B 		vmov.f64	d0, d7
+ 270 0094 FFF7FEFF 		bl	float_to_uint
+ 271 0098 0346     		mov	r3, r0
+ 272              		.loc 1 41 14 discriminator 1
+ 273 009a 3B85     		strh	r3, [r7, #40]	@ movhi
+  42:User/Hardware/LZ_motor_driver.c ****     uint16_t torque_uint = float_to_uint(torque, T_MIN, T_MAX, 12);
+ 274              		.loc 1 42 28
+ 275 009c D7ED007A 		vldr.32	s15, [r7]
+ 276 00a0 B7EEE77A 		vcvt.f64.f32	d7, s15
+ 277 00a4 0C20     		movs	r0, #12
+ 278 00a6 B2EE0C2B 		vmov.f64	d2, #1.4e+1
+ 279 00aa BAEE0C1B 		vmov.f64	d1, #-1.4e+1
+ 280 00ae B0EE470B 		vmov.f64	d0, d7
+ 281 00b2 FFF7FEFF 		bl	float_to_uint
+ 282 00b6 0346     		mov	r3, r0
+ 283              		.loc 1 42 14 discriminator 1
+ 284 00b8 FB84     		strh	r3, [r7, #38]	@ movhi
+  43:User/Hardware/LZ_motor_driver.c **** 
+  44:User/Hardware/LZ_motor_driver.c ****     uint8_t data[8] = {
+  45:User/Hardware/LZ_motor_driver.c ****         (uint8_t)(angle_uint >> 8), 
+ 285              		.loc 1 45 9
+ 286 00ba FB8D     		ldrh	r3, [r7, #46]
+ 287 00bc 1B0A     		lsrs	r3, r3, #8
+ 288 00be 9BB2     		uxth	r3, r3
+ 289 00c0 DBB2     		uxtb	r3, r3
+  44:User/Hardware/LZ_motor_driver.c ****         (uint8_t)(angle_uint >> 8), 
+ 290              		.loc 1 44 13
+ 291 00c2 3B77     		strb	r3, [r7, #28]
+  46:User/Hardware/LZ_motor_driver.c ****         (uint8_t)(angle_uint & 0xFF),
+ 292              		.loc 1 46 9
+ 293 00c4 FB8D     		ldrh	r3, [r7, #46]	@ movhi
+ 294 00c6 DBB2     		uxtb	r3, r3
+  44:User/Hardware/LZ_motor_driver.c ****         (uint8_t)(angle_uint >> 8), 
+ 295              		.loc 1 44 13
+ 296 00c8 7B77     		strb	r3, [r7, #29]
+  47:User/Hardware/LZ_motor_driver.c ****         (uint8_t)((speed_uint >> 4) & 0xFF),
+ 297              		.loc 1 47 9
+ 298 00ca BB8D     		ldrh	r3, [r7, #44]
+ARM GAS  C:\Users\Godwin\AppData\Local\Temp\cchu8T3h.s 			page 7
+
+
+ 299 00cc 1B09     		lsrs	r3, r3, #4
+ 300 00ce 9BB2     		uxth	r3, r3
+ 301 00d0 DBB2     		uxtb	r3, r3
+  44:User/Hardware/LZ_motor_driver.c ****         (uint8_t)(angle_uint >> 8), 
+ 302              		.loc 1 44 13
+ 303 00d2 BB77     		strb	r3, [r7, #30]
+  48:User/Hardware/LZ_motor_driver.c ****         (uint8_t)(((speed_uint & 0x0F) << 4) | ((kp_uint >> 8) & 0x0F)),
+ 304              		.loc 1 48 46
+ 305 00d4 BB8D     		ldrh	r3, [r7, #44]	@ movhi
+ 306 00d6 5BB2     		sxtb	r3, r3
+ 307 00d8 1B01     		lsls	r3, r3, #4
+ 308 00da 5AB2     		sxtb	r2, r3
+ 309              		.loc 1 48 64
+ 310 00dc 7B8D     		ldrh	r3, [r7, #42]
+ 311 00de 1B0A     		lsrs	r3, r3, #8
+ 312 00e0 9BB2     		uxth	r3, r3
+ 313 00e2 5BB2     		sxtb	r3, r3
+ 314 00e4 03F00F03 		and	r3, r3, #15
+ 315 00e8 5BB2     		sxtb	r3, r3
+ 316              		.loc 1 48 46
+ 317 00ea 1343     		orrs	r3, r3, r2
+ 318 00ec 5BB2     		sxtb	r3, r3
+ 319              		.loc 1 48 9
+ 320 00ee DBB2     		uxtb	r3, r3
+  44:User/Hardware/LZ_motor_driver.c ****         (uint8_t)(angle_uint >> 8), 
+ 321              		.loc 1 44 13
+ 322 00f0 FB77     		strb	r3, [r7, #31]
+  49:User/Hardware/LZ_motor_driver.c ****         (uint8_t)(kp_uint & 0xFF),
+ 323              		.loc 1 49 9
+ 324 00f2 7B8D     		ldrh	r3, [r7, #42]	@ movhi
+ 325 00f4 DBB2     		uxtb	r3, r3
+  44:User/Hardware/LZ_motor_driver.c ****         (uint8_t)(angle_uint >> 8), 
+ 326              		.loc 1 44 13
+ 327 00f6 87F82030 		strb	r3, [r7, #32]
+  50:User/Hardware/LZ_motor_driver.c ****         (uint8_t)((kd_uint >> 4) & 0xFF),
+ 328              		.loc 1 50 9
+ 329 00fa 3B8D     		ldrh	r3, [r7, #40]
+ 330 00fc 1B09     		lsrs	r3, r3, #4
+ 331 00fe 9BB2     		uxth	r3, r3
+ 332 0100 DBB2     		uxtb	r3, r3
+  44:User/Hardware/LZ_motor_driver.c ****         (uint8_t)(angle_uint >> 8), 
+ 333              		.loc 1 44 13
+ 334 0102 87F82130 		strb	r3, [r7, #33]
+  51:User/Hardware/LZ_motor_driver.c ****         (uint8_t)(((kd_uint & 0x0F) << 4) | ((torque_uint >> 8) & 0x0F)),
+ 335              		.loc 1 51 43
+ 336 0106 3B8D     		ldrh	r3, [r7, #40]	@ movhi
+ 337 0108 5BB2     		sxtb	r3, r3
+ 338 010a 1B01     		lsls	r3, r3, #4
+ 339 010c 5AB2     		sxtb	r2, r3
+ 340              		.loc 1 51 65
+ 341 010e FB8C     		ldrh	r3, [r7, #38]
+ 342 0110 1B0A     		lsrs	r3, r3, #8
+ 343 0112 9BB2     		uxth	r3, r3
+ 344 0114 5BB2     		sxtb	r3, r3
+ 345 0116 03F00F03 		and	r3, r3, #15
+ 346 011a 5BB2     		sxtb	r3, r3
+ 347              		.loc 1 51 43
+ARM GAS  C:\Users\Godwin\AppData\Local\Temp\cchu8T3h.s 			page 8
+
+
+ 348 011c 1343     		orrs	r3, r3, r2
+ 349 011e 5BB2     		sxtb	r3, r3
+ 350              		.loc 1 51 9
+ 351 0120 DBB2     		uxtb	r3, r3
+  44:User/Hardware/LZ_motor_driver.c ****         (uint8_t)(angle_uint >> 8), 
+ 352              		.loc 1 44 13
+ 353 0122 87F82230 		strb	r3, [r7, #34]
+  52:User/Hardware/LZ_motor_driver.c ****         (uint8_t)(torque_uint & 0xFF)
+ 354              		.loc 1 52 9
+ 355 0126 FB8C     		ldrh	r3, [r7, #38]	@ movhi
+ 356 0128 DBB2     		uxtb	r3, r3
+  44:User/Hardware/LZ_motor_driver.c ****         (uint8_t)(angle_uint >> 8), 
+ 357              		.loc 1 44 13
+ 358 012a 87F82330 		strb	r3, [r7, #35]
+  53:User/Hardware/LZ_motor_driver.c ****     };
+  54:User/Hardware/LZ_motor_driver.c ****     lz_send_command(can_bus, motor_id, data);
+ 359              		.loc 1 54 5
+ 360 012e BB7D     		ldrb	r3, [r7, #22]	@ zero_extendqisi2
+ 361 0130 99B2     		uxth	r1, r3
+ 362 0132 07F11C02 		add	r2, r7, #28
+ 363 0136 FB7D     		ldrb	r3, [r7, #23]	@ zero_extendqisi2
+ 364 0138 1846     		mov	r0, r3
+ 365 013a FFF7FEFF 		bl	lz_send_command
+  55:User/Hardware/LZ_motor_driver.c **** }
+ 366              		.loc 1 55 1
+ 367 013e 00BF     		nop
+ 368 0140 3037     		adds	r7, r7, #48
+ 369              	.LCFI18:
+ 370              		.cfi_def_cfa_offset 8
+ 371 0142 BD46     		mov	sp, r7
+ 372              	.LCFI19:
+ 373              		.cfi_def_cfa_register 13
+ 374              		@ sp needed
+ 375 0144 80BD     		pop	{r7, pc}
+ 376              	.L10:
+ 377 0146 00BF     		.align	3
+ 378              	.L9:
+ 379 0148 00000000 		.word	0
+ 380 014c D7232940 		.word	1076437975
+ 381 0150 00000000 		.word	0
+ 382 0154 D72329C0 		.word	-1071045673
+ 383 0158 00000000 		.word	0
+ 384 015c 00804040 		.word	1077968896
+ 385 0160 00000000 		.word	0
+ 386 0164 008040C0 		.word	-1069514752
+ 387 0168 00000000 		.word	0
+ 388 016c 00407F40 		.word	1082081280
+ 389 0170 00000000 		.word	0
+ 390 0174 00000000 		.word	0
+ 391              		.cfi_endproc
+ 392              	.LFE147:
+ 394              		.section	.rodata
+ 395              		.align	2
+ 396              	.LC2:
+ 397 0010 FFFFFFFF 		.ascii	"\377\377\377\377\377\377\377\376"
+ 397      FFFFFFFE 
+ 398              		.section	.text.lz_set_zero,"ax",%progbits
+ARM GAS  C:\Users\Godwin\AppData\Local\Temp\cchu8T3h.s 			page 9
+
+
+ 399              		.align	1
+ 400              		.global	lz_set_zero
+ 401              		.syntax unified
+ 402              		.thumb
+ 403              		.thumb_func
+ 405              	lz_set_zero:
+ 406              	.LFB148:
+  56:User/Hardware/LZ_motor_driver.c **** 
+  57:User/Hardware/LZ_motor_driver.c **** /**
+  58:User/Hardware/LZ_motor_driver.c ****  * @brief 设置零点（指令4）
+  59:User/Hardware/LZ_motor_driver.c ****  */
+  60:User/Hardware/LZ_motor_driver.c **** void lz_set_zero(uint8_t can_bus, uint8_t motor_id) {
+ 407              		.loc 1 60 53
+ 408              		.cfi_startproc
+ 409              		@ args = 0, pretend = 0, frame = 16
+ 410              		@ frame_needed = 1, uses_anonymous_args = 0
+ 411 0000 80B5     		push	{r7, lr}
+ 412              	.LCFI20:
+ 413              		.cfi_def_cfa_offset 8
+ 414              		.cfi_offset 7, -8
+ 415              		.cfi_offset 14, -4
+ 416 0002 84B0     		sub	sp, sp, #16
+ 417              	.LCFI21:
+ 418              		.cfi_def_cfa_offset 24
+ 419 0004 00AF     		add	r7, sp, #0
+ 420              	.LCFI22:
+ 421              		.cfi_def_cfa_register 7
+ 422 0006 0346     		mov	r3, r0
+ 423 0008 0A46     		mov	r2, r1
+ 424 000a FB71     		strb	r3, [r7, #7]
+ 425 000c 1346     		mov	r3, r2
+ 426 000e BB71     		strb	r3, [r7, #6]
+  61:User/Hardware/LZ_motor_driver.c ****     uint8_t data[8] = {0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFE};
+ 427              		.loc 1 61 13
+ 428 0010 094A     		ldr	r2, .L12
+ 429 0012 07F10803 		add	r3, r7, #8
+ 430 0016 92E80300 		ldm	r2, {r0, r1}
+ 431 001a 83E80300 		stm	r3, {r0, r1}
+  62:User/Hardware/LZ_motor_driver.c ****     lz_send_command(can_bus, motor_id, data);
+ 432              		.loc 1 62 5
+ 433 001e BB79     		ldrb	r3, [r7, #6]	@ zero_extendqisi2
+ 434 0020 99B2     		uxth	r1, r3
+ 435 0022 07F10802 		add	r2, r7, #8
+ 436 0026 FB79     		ldrb	r3, [r7, #7]	@ zero_extendqisi2
+ 437 0028 1846     		mov	r0, r3
+ 438 002a FFF7FEFF 		bl	lz_send_command
+  63:User/Hardware/LZ_motor_driver.c **** }
+ 439              		.loc 1 63 1
+ 440 002e 00BF     		nop
+ 441 0030 1037     		adds	r7, r7, #16
+ 442              	.LCFI23:
+ 443              		.cfi_def_cfa_offset 8
+ 444 0032 BD46     		mov	sp, r7
+ 445              	.LCFI24:
+ 446              		.cfi_def_cfa_register 13
+ 447              		@ sp needed
+ 448 0034 80BD     		pop	{r7, pc}
+ARM GAS  C:\Users\Godwin\AppData\Local\Temp\cchu8T3h.s 			page 10
+
+
+ 449              	.L13:
+ 450 0036 00BF     		.align	2
+ 451              	.L12:
+ 452 0038 10000000 		.word	.LC2
+ 453              		.cfi_endproc
+ 454              	.LFE148:
+ 456              		.section	.rodata
+ 457              		.align	2
+ 458              	.LC3:
+ 459 0018 FFFFFFFF 		.ascii	"\377\377\377\377\377\377\377\373"
+ 459      FFFFFFFB 
+ 460              		.section	.text.lz_clear_fault,"ax",%progbits
+ 461              		.align	1
+ 462              		.global	lz_clear_fault
+ 463              		.syntax unified
+ 464              		.thumb
+ 465              		.thumb_func
+ 467              	lz_clear_fault:
+ 468              	.LFB149:
+  64:User/Hardware/LZ_motor_driver.c **** 
+  65:User/Hardware/LZ_motor_driver.c **** /**
+  66:User/Hardware/LZ_motor_driver.c ****  * @brief 清除错误（指令5）
+  67:User/Hardware/LZ_motor_driver.c ****  */
+  68:User/Hardware/LZ_motor_driver.c **** void lz_clear_fault(uint8_t can_bus, uint8_t motor_id) {
+ 469              		.loc 1 68 56
+ 470              		.cfi_startproc
+ 471              		@ args = 0, pretend = 0, frame = 16
+ 472              		@ frame_needed = 1, uses_anonymous_args = 0
+ 473 0000 80B5     		push	{r7, lr}
+ 474              	.LCFI25:
+ 475              		.cfi_def_cfa_offset 8
+ 476              		.cfi_offset 7, -8
+ 477              		.cfi_offset 14, -4
+ 478 0002 84B0     		sub	sp, sp, #16
+ 479              	.LCFI26:
+ 480              		.cfi_def_cfa_offset 24
+ 481 0004 00AF     		add	r7, sp, #0
+ 482              	.LCFI27:
+ 483              		.cfi_def_cfa_register 7
+ 484 0006 0346     		mov	r3, r0
+ 485 0008 0A46     		mov	r2, r1
+ 486 000a FB71     		strb	r3, [r7, #7]
+ 487 000c 1346     		mov	r3, r2
+ 488 000e BB71     		strb	r3, [r7, #6]
+  69:User/Hardware/LZ_motor_driver.c ****     uint8_t data[8] = {0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFB};
+ 489              		.loc 1 69 13
+ 490 0010 094A     		ldr	r2, .L15
+ 491 0012 07F10803 		add	r3, r7, #8
+ 492 0016 92E80300 		ldm	r2, {r0, r1}
+ 493 001a 83E80300 		stm	r3, {r0, r1}
+  70:User/Hardware/LZ_motor_driver.c ****     lz_send_command(can_bus, motor_id, data);
+ 494              		.loc 1 70 5
+ 495 001e BB79     		ldrb	r3, [r7, #6]	@ zero_extendqisi2
+ 496 0020 99B2     		uxth	r1, r3
+ 497 0022 07F10802 		add	r2, r7, #8
+ 498 0026 FB79     		ldrb	r3, [r7, #7]	@ zero_extendqisi2
+ 499 0028 1846     		mov	r0, r3
+ARM GAS  C:\Users\Godwin\AppData\Local\Temp\cchu8T3h.s 			page 11
+
+
+ 500 002a FFF7FEFF 		bl	lz_send_command
+  71:User/Hardware/LZ_motor_driver.c **** }
+ 501              		.loc 1 71 1
+ 502 002e 00BF     		nop
+ 503 0030 1037     		adds	r7, r7, #16
+ 504              	.LCFI28:
+ 505              		.cfi_def_cfa_offset 8
+ 506 0032 BD46     		mov	sp, r7
+ 507              	.LCFI29:
+ 508              		.cfi_def_cfa_register 13
+ 509              		@ sp needed
+ 510 0034 80BD     		pop	{r7, pc}
+ 511              	.L16:
+ 512 0036 00BF     		.align	2
+ 513              	.L15:
+ 514 0038 18000000 		.word	.LC3
+ 515              		.cfi_endproc
+ 516              	.LFE149:
+ 518              		.section	.text.lz_set_mode,"ax",%progbits
+ 519              		.align	1
+ 520              		.global	lz_set_mode
+ 521              		.syntax unified
+ 522              		.thumb
+ 523              		.thumb_func
+ 525              	lz_set_mode:
+ 526              	.LFB150:
+  72:User/Hardware/LZ_motor_driver.c **** 
+  73:User/Hardware/LZ_motor_driver.c **** /**
+  74:User/Hardware/LZ_motor_driver.c ****  * @brief 设置运行模式（指令6）
+  75:User/Hardware/LZ_motor_driver.c ****  */
+  76:User/Hardware/LZ_motor_driver.c **** void lz_set_mode(uint8_t can_bus, uint8_t motor_id, uint8_t mode) {
+ 527              		.loc 1 76 67
+ 528              		.cfi_startproc
+ 529              		@ args = 0, pretend = 0, frame = 16
+ 530              		@ frame_needed = 1, uses_anonymous_args = 0
+ 531 0000 80B5     		push	{r7, lr}
+ 532              	.LCFI30:
+ 533              		.cfi_def_cfa_offset 8
+ 534              		.cfi_offset 7, -8
+ 535              		.cfi_offset 14, -4
+ 536 0002 84B0     		sub	sp, sp, #16
+ 537              	.LCFI31:
+ 538              		.cfi_def_cfa_offset 24
+ 539 0004 00AF     		add	r7, sp, #0
+ 540              	.LCFI32:
+ 541              		.cfi_def_cfa_register 7
+ 542 0006 0346     		mov	r3, r0
+ 543 0008 FB71     		strb	r3, [r7, #7]
+ 544 000a 0B46     		mov	r3, r1
+ 545 000c BB71     		strb	r3, [r7, #6]
+ 546 000e 1346     		mov	r3, r2
+ 547 0010 7B71     		strb	r3, [r7, #5]
+  77:User/Hardware/LZ_motor_driver.c ****     uint8_t data[8] = {0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, mode, 0xFC};
+ 548              		.loc 1 77 13
+ 549 0012 FF23     		movs	r3, #255
+ 550 0014 3B72     		strb	r3, [r7, #8]
+ 551 0016 FF23     		movs	r3, #255
+ARM GAS  C:\Users\Godwin\AppData\Local\Temp\cchu8T3h.s 			page 12
+
+
+ 552 0018 7B72     		strb	r3, [r7, #9]
+ 553 001a FF23     		movs	r3, #255
+ 554 001c BB72     		strb	r3, [r7, #10]
+ 555 001e FF23     		movs	r3, #255
+ 556 0020 FB72     		strb	r3, [r7, #11]
+ 557 0022 FF23     		movs	r3, #255
+ 558 0024 3B73     		strb	r3, [r7, #12]
+ 559 0026 FF23     		movs	r3, #255
+ 560 0028 7B73     		strb	r3, [r7, #13]
+ 561 002a 7B79     		ldrb	r3, [r7, #5]
+ 562 002c BB73     		strb	r3, [r7, #14]
+ 563 002e FC23     		movs	r3, #252
+ 564 0030 FB73     		strb	r3, [r7, #15]
+  78:User/Hardware/LZ_motor_driver.c ****     lz_send_command(can_bus, motor_id, data);
+ 565              		.loc 1 78 5
+ 566 0032 BB79     		ldrb	r3, [r7, #6]	@ zero_extendqisi2
+ 567 0034 99B2     		uxth	r1, r3
+ 568 0036 07F10802 		add	r2, r7, #8
+ 569 003a FB79     		ldrb	r3, [r7, #7]	@ zero_extendqisi2
+ 570 003c 1846     		mov	r0, r3
+ 571 003e FFF7FEFF 		bl	lz_send_command
+  79:User/Hardware/LZ_motor_driver.c **** }
+ 572              		.loc 1 79 1
+ 573 0042 00BF     		nop
+ 574 0044 1037     		adds	r7, r7, #16
+ 575              	.LCFI33:
+ 576              		.cfi_def_cfa_offset 8
+ 577 0046 BD46     		mov	sp, r7
+ 578              	.LCFI34:
+ 579              		.cfi_def_cfa_register 13
+ 580              		@ sp needed
+ 581 0048 80BD     		pop	{r7, pc}
+ 582              		.cfi_endproc
+ 583              	.LFE150:
+ 585              		.section	.text.lz_set_id,"ax",%progbits
+ 586              		.align	1
+ 587              		.global	lz_set_id
+ 588              		.syntax unified
+ 589              		.thumb
+ 590              		.thumb_func
+ 592              	lz_set_id:
+ 593              	.LFB151:
+  80:User/Hardware/LZ_motor_driver.c **** 
+  81:User/Hardware/LZ_motor_driver.c **** /**
+  82:User/Hardware/LZ_motor_driver.c ****  * @brief 修改电机ID（指令7）
+  83:User/Hardware/LZ_motor_driver.c ****  */
+  84:User/Hardware/LZ_motor_driver.c **** void lz_set_id(uint8_t can_bus, uint8_t motor_id, uint8_t new_id) {
+ 594              		.loc 1 84 67
+ 595              		.cfi_startproc
+ 596              		@ args = 0, pretend = 0, frame = 16
+ 597              		@ frame_needed = 1, uses_anonymous_args = 0
+ 598 0000 80B5     		push	{r7, lr}
+ 599              	.LCFI35:
+ 600              		.cfi_def_cfa_offset 8
+ 601              		.cfi_offset 7, -8
+ 602              		.cfi_offset 14, -4
+ 603 0002 84B0     		sub	sp, sp, #16
+ARM GAS  C:\Users\Godwin\AppData\Local\Temp\cchu8T3h.s 			page 13
+
+
+ 604              	.LCFI36:
+ 605              		.cfi_def_cfa_offset 24
+ 606 0004 00AF     		add	r7, sp, #0
+ 607              	.LCFI37:
+ 608              		.cfi_def_cfa_register 7
+ 609 0006 0346     		mov	r3, r0
+ 610 0008 FB71     		strb	r3, [r7, #7]
+ 611 000a 0B46     		mov	r3, r1
+ 612 000c BB71     		strb	r3, [r7, #6]
+ 613 000e 1346     		mov	r3, r2
+ 614 0010 7B71     		strb	r3, [r7, #5]
+  85:User/Hardware/LZ_motor_driver.c ****     uint8_t data[8] = {0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, new_id, 0xFA};
+ 615              		.loc 1 85 13
+ 616 0012 FF23     		movs	r3, #255
+ 617 0014 3B72     		strb	r3, [r7, #8]
+ 618 0016 FF23     		movs	r3, #255
+ 619 0018 7B72     		strb	r3, [r7, #9]
+ 620 001a FF23     		movs	r3, #255
+ 621 001c BB72     		strb	r3, [r7, #10]
+ 622 001e FF23     		movs	r3, #255
+ 623 0020 FB72     		strb	r3, [r7, #11]
+ 624 0022 FF23     		movs	r3, #255
+ 625 0024 3B73     		strb	r3, [r7, #12]
+ 626 0026 FF23     		movs	r3, #255
+ 627 0028 7B73     		strb	r3, [r7, #13]
+ 628 002a 7B79     		ldrb	r3, [r7, #5]
+ 629 002c BB73     		strb	r3, [r7, #14]
+ 630 002e FA23     		movs	r3, #250
+ 631 0030 FB73     		strb	r3, [r7, #15]
+  86:User/Hardware/LZ_motor_driver.c ****     lz_send_command(can_bus, motor_id, data);
+ 632              		.loc 1 86 5
+ 633 0032 BB79     		ldrb	r3, [r7, #6]	@ zero_extendqisi2
+ 634 0034 99B2     		uxth	r1, r3
+ 635 0036 07F10802 		add	r2, r7, #8
+ 636 003a FB79     		ldrb	r3, [r7, #7]	@ zero_extendqisi2
+ 637 003c 1846     		mov	r0, r3
+ 638 003e FFF7FEFF 		bl	lz_send_command
+  87:User/Hardware/LZ_motor_driver.c **** }
+ 639              		.loc 1 87 1
+ 640 0042 00BF     		nop
+ 641 0044 1037     		adds	r7, r7, #16
+ 642              	.LCFI38:
+ 643              		.cfi_def_cfa_offset 8
+ 644 0046 BD46     		mov	sp, r7
+ 645              	.LCFI39:
+ 646              		.cfi_def_cfa_register 13
+ 647              		@ sp needed
+ 648 0048 80BD     		pop	{r7, pc}
+ 649              		.cfi_endproc
+ 650              	.LFE151:
+ 652              		.section	.text.lz_set_protocol,"ax",%progbits
+ 653              		.align	1
+ 654              		.global	lz_set_protocol
+ 655              		.syntax unified
+ 656              		.thumb
+ 657              		.thumb_func
+ 659              	lz_set_protocol:
+ARM GAS  C:\Users\Godwin\AppData\Local\Temp\cchu8T3h.s 			page 14
+
+
+ 660              	.LFB152:
+  88:User/Hardware/LZ_motor_driver.c **** 
+  89:User/Hardware/LZ_motor_driver.c **** /**
+  90:User/Hardware/LZ_motor_driver.c ****  * @brief 修改电机协议（指令8）
+  91:User/Hardware/LZ_motor_driver.c ****  */
+  92:User/Hardware/LZ_motor_driver.c **** void lz_set_protocol(uint8_t can_bus, uint8_t motor_id, uint8_t protocol) {
+ 661              		.loc 1 92 75
+ 662              		.cfi_startproc
+ 663              		@ args = 0, pretend = 0, frame = 16
+ 664              		@ frame_needed = 1, uses_anonymous_args = 0
+ 665 0000 80B5     		push	{r7, lr}
+ 666              	.LCFI40:
+ 667              		.cfi_def_cfa_offset 8
+ 668              		.cfi_offset 7, -8
+ 669              		.cfi_offset 14, -4
+ 670 0002 84B0     		sub	sp, sp, #16
+ 671              	.LCFI41:
+ 672              		.cfi_def_cfa_offset 24
+ 673 0004 00AF     		add	r7, sp, #0
+ 674              	.LCFI42:
+ 675              		.cfi_def_cfa_register 7
+ 676 0006 0346     		mov	r3, r0
+ 677 0008 FB71     		strb	r3, [r7, #7]
+ 678 000a 0B46     		mov	r3, r1
+ 679 000c BB71     		strb	r3, [r7, #6]
+ 680 000e 1346     		mov	r3, r2
+ 681 0010 7B71     		strb	r3, [r7, #5]
+  93:User/Hardware/LZ_motor_driver.c ****     uint8_t data[8] = {0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, protocol, 0xFD};
+ 682              		.loc 1 93 13
+ 683 0012 FF23     		movs	r3, #255
+ 684 0014 3B72     		strb	r3, [r7, #8]
+ 685 0016 FF23     		movs	r3, #255
+ 686 0018 7B72     		strb	r3, [r7, #9]
+ 687 001a FF23     		movs	r3, #255
+ 688 001c BB72     		strb	r3, [r7, #10]
+ 689 001e FF23     		movs	r3, #255
+ 690 0020 FB72     		strb	r3, [r7, #11]
+ 691 0022 FF23     		movs	r3, #255
+ 692 0024 3B73     		strb	r3, [r7, #12]
+ 693 0026 FF23     		movs	r3, #255
+ 694 0028 7B73     		strb	r3, [r7, #13]
+ 695 002a 7B79     		ldrb	r3, [r7, #5]
+ 696 002c BB73     		strb	r3, [r7, #14]
+ 697 002e FD23     		movs	r3, #253
+ 698 0030 FB73     		strb	r3, [r7, #15]
+  94:User/Hardware/LZ_motor_driver.c ****     lz_send_command(can_bus, motor_id, data);
+ 699              		.loc 1 94 5
+ 700 0032 BB79     		ldrb	r3, [r7, #6]	@ zero_extendqisi2
+ 701 0034 99B2     		uxth	r1, r3
+ 702 0036 07F10802 		add	r2, r7, #8
+ 703 003a FB79     		ldrb	r3, [r7, #7]	@ zero_extendqisi2
+ 704 003c 1846     		mov	r0, r3
+ 705 003e FFF7FEFF 		bl	lz_send_command
+  95:User/Hardware/LZ_motor_driver.c **** }
+ 706              		.loc 1 95 1
+ 707 0042 00BF     		nop
+ 708 0044 1037     		adds	r7, r7, #16
+ARM GAS  C:\Users\Godwin\AppData\Local\Temp\cchu8T3h.s 			page 15
+
+
+ 709              	.LCFI43:
+ 710              		.cfi_def_cfa_offset 8
+ 711 0046 BD46     		mov	sp, r7
+ 712              	.LCFI44:
+ 713              		.cfi_def_cfa_register 13
+ 714              		@ sp needed
+ 715 0048 80BD     		pop	{r7, pc}
+ 716              		.cfi_endproc
+ 717              	.LFE152:
+ 719              		.section	.text.lz_set_master_id,"ax",%progbits
+ 720              		.align	1
+ 721              		.global	lz_set_master_id
+ 722              		.syntax unified
+ 723              		.thumb
+ 724              		.thumb_func
+ 726              	lz_set_master_id:
+ 727              	.LFB153:
+  96:User/Hardware/LZ_motor_driver.c **** 
+  97:User/Hardware/LZ_motor_driver.c **** /**
+  98:User/Hardware/LZ_motor_driver.c ****  * @brief 修改主机ID（指令9）
+  99:User/Hardware/LZ_motor_driver.c ****  */
+ 100:User/Hardware/LZ_motor_driver.c **** void lz_set_master_id(uint8_t can_bus, uint8_t motor_id, uint8_t master_id) {
+ 728              		.loc 1 100 77
+ 729              		.cfi_startproc
+ 730              		@ args = 0, pretend = 0, frame = 16
+ 731              		@ frame_needed = 1, uses_anonymous_args = 0
+ 732 0000 80B5     		push	{r7, lr}
+ 733              	.LCFI45:
+ 734              		.cfi_def_cfa_offset 8
+ 735              		.cfi_offset 7, -8
+ 736              		.cfi_offset 14, -4
+ 737 0002 84B0     		sub	sp, sp, #16
+ 738              	.LCFI46:
+ 739              		.cfi_def_cfa_offset 24
+ 740 0004 00AF     		add	r7, sp, #0
+ 741              	.LCFI47:
+ 742              		.cfi_def_cfa_register 7
+ 743 0006 0346     		mov	r3, r0
+ 744 0008 FB71     		strb	r3, [r7, #7]
+ 745 000a 0B46     		mov	r3, r1
+ 746 000c BB71     		strb	r3, [r7, #6]
+ 747 000e 1346     		mov	r3, r2
+ 748 0010 7B71     		strb	r3, [r7, #5]
+ 101:User/Hardware/LZ_motor_driver.c ****     uint8_t data[8] = {0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, master_id, 0x01};
+ 749              		.loc 1 101 13
+ 750 0012 FF23     		movs	r3, #255
+ 751 0014 3B72     		strb	r3, [r7, #8]
+ 752 0016 FF23     		movs	r3, #255
+ 753 0018 7B72     		strb	r3, [r7, #9]
+ 754 001a FF23     		movs	r3, #255
+ 755 001c BB72     		strb	r3, [r7, #10]
+ 756 001e FF23     		movs	r3, #255
+ 757 0020 FB72     		strb	r3, [r7, #11]
+ 758 0022 FF23     		movs	r3, #255
+ 759 0024 3B73     		strb	r3, [r7, #12]
+ 760 0026 FF23     		movs	r3, #255
+ 761 0028 7B73     		strb	r3, [r7, #13]
+ARM GAS  C:\Users\Godwin\AppData\Local\Temp\cchu8T3h.s 			page 16
+
+
+ 762 002a 7B79     		ldrb	r3, [r7, #5]
+ 763 002c BB73     		strb	r3, [r7, #14]
+ 764 002e 0123     		movs	r3, #1
+ 765 0030 FB73     		strb	r3, [r7, #15]
+ 102:User/Hardware/LZ_motor_driver.c ****     lz_send_command(can_bus, motor_id, data);
+ 766              		.loc 1 102 5
+ 767 0032 BB79     		ldrb	r3, [r7, #6]	@ zero_extendqisi2
+ 768 0034 99B2     		uxth	r1, r3
+ 769 0036 07F10802 		add	r2, r7, #8
+ 770 003a FB79     		ldrb	r3, [r7, #7]	@ zero_extendqisi2
+ 771 003c 1846     		mov	r0, r3
+ 772 003e FFF7FEFF 		bl	lz_send_command
+ 103:User/Hardware/LZ_motor_driver.c **** }
+ 773              		.loc 1 103 1
+ 774 0042 00BF     		nop
+ 775 0044 1037     		adds	r7, r7, #16
+ 776              	.LCFI48:
+ 777              		.cfi_def_cfa_offset 8
+ 778 0046 BD46     		mov	sp, r7
+ 779              	.LCFI49:
+ 780              		.cfi_def_cfa_register 13
+ 781              		@ sp needed
+ 782 0048 80BD     		pop	{r7, pc}
+ 783              		.cfi_endproc
+ 784              	.LFE153:
+ 786              		.section	.text.lz_set_position,"ax",%progbits
+ 787              		.align	1
+ 788              		.global	lz_set_position
+ 789              		.syntax unified
+ 790              		.thumb
+ 791              		.thumb_func
+ 793              	lz_set_position:
+ 794              	.LFB154:
+ 104:User/Hardware/LZ_motor_driver.c **** 
+ 105:User/Hardware/LZ_motor_driver.c **** /**
+ 106:User/Hardware/LZ_motor_driver.c ****  * @brief 位置模式控制指令（指令10）
+ 107:User/Hardware/LZ_motor_driver.c ****  */
+ 108:User/Hardware/LZ_motor_driver.c **** void lz_set_position(uint8_t can_bus, uint8_t motor_id, float target_pos, float pos_speed) {
+ 795              		.loc 1 108 92
+ 796              		.cfi_startproc
+ 797              		@ args = 0, pretend = 0, frame = 24
+ 798              		@ frame_needed = 1, uses_anonymous_args = 0
+ 799 0000 80B5     		push	{r7, lr}
+ 800              	.LCFI50:
+ 801              		.cfi_def_cfa_offset 8
+ 802              		.cfi_offset 7, -8
+ 803              		.cfi_offset 14, -4
+ 804 0002 86B0     		sub	sp, sp, #24
+ 805              	.LCFI51:
+ 806              		.cfi_def_cfa_offset 32
+ 807 0004 00AF     		add	r7, sp, #0
+ 808              	.LCFI52:
+ 809              		.cfi_def_cfa_register 7
+ 810 0006 0346     		mov	r3, r0
+ 811 0008 0A46     		mov	r2, r1
+ 812 000a 87ED020A 		vstr.32	s0, [r7, #8]
+ 813 000e C7ED010A 		vstr.32	s1, [r7, #4]
+ARM GAS  C:\Users\Godwin\AppData\Local\Temp\cchu8T3h.s 			page 17
+
+
+ 814 0012 FB73     		strb	r3, [r7, #15]
+ 815 0014 1346     		mov	r3, r2
+ 816 0016 BB73     		strb	r3, [r7, #14]
+ 109:User/Hardware/LZ_motor_driver.c ****     uint8_t data[8];
+ 110:User/Hardware/LZ_motor_driver.c ****     memcpy(&data[0], &target_pos, 4);
+ 817              		.loc 1 110 5
+ 818 0018 BB68     		ldr	r3, [r7, #8]
+ 819 001a 3B61     		str	r3, [r7, #16]
+ 111:User/Hardware/LZ_motor_driver.c ****     memcpy(&data[4], &pos_speed, 4);
+ 820              		.loc 1 111 5
+ 821 001c 7B68     		ldr	r3, [r7, #4]
+ 822 001e 7B61     		str	r3, [r7, #20]
+ 112:User/Hardware/LZ_motor_driver.c ****     lz_send_command(can_bus, motor_id, data);
+ 823              		.loc 1 112 5
+ 824 0020 BB7B     		ldrb	r3, [r7, #14]	@ zero_extendqisi2
+ 825 0022 99B2     		uxth	r1, r3
+ 826 0024 07F11002 		add	r2, r7, #16
+ 827 0028 FB7B     		ldrb	r3, [r7, #15]	@ zero_extendqisi2
+ 828 002a 1846     		mov	r0, r3
+ 829 002c FFF7FEFF 		bl	lz_send_command
+ 113:User/Hardware/LZ_motor_driver.c **** }
+ 830              		.loc 1 113 1
+ 831 0030 00BF     		nop
+ 832 0032 1837     		adds	r7, r7, #24
+ 833              	.LCFI53:
+ 834              		.cfi_def_cfa_offset 8
+ 835 0034 BD46     		mov	sp, r7
+ 836              	.LCFI54:
+ 837              		.cfi_def_cfa_register 13
+ 838              		@ sp needed
+ 839 0036 80BD     		pop	{r7, pc}
+ 840              		.cfi_endproc
+ 841              	.LFE154:
+ 843              		.section	.text.lz_set_velocity,"ax",%progbits
+ 844              		.align	1
+ 845              		.global	lz_set_velocity
+ 846              		.syntax unified
+ 847              		.thumb
+ 848              		.thumb_func
+ 850              	lz_set_velocity:
+ 851              	.LFB155:
+ 114:User/Hardware/LZ_motor_driver.c **** 
+ 115:User/Hardware/LZ_motor_driver.c **** /**
+ 116:User/Hardware/LZ_motor_driver.c ****  * @brief 速度模式控制指令（指令11）
+ 117:User/Hardware/LZ_motor_driver.c ****  */
+ 118:User/Hardware/LZ_motor_driver.c **** void lz_set_velocity(uint8_t can_bus, uint16_t motor_id, float target_vel, float current_limit) {
+ 852              		.loc 1 118 97
+ 853              		.cfi_startproc
+ 854              		@ args = 0, pretend = 0, frame = 24
+ 855              		@ frame_needed = 1, uses_anonymous_args = 0
+ 856 0000 80B5     		push	{r7, lr}
+ 857              	.LCFI55:
+ 858              		.cfi_def_cfa_offset 8
+ 859              		.cfi_offset 7, -8
+ 860              		.cfi_offset 14, -4
+ 861 0002 86B0     		sub	sp, sp, #24
+ 862              	.LCFI56:
+ARM GAS  C:\Users\Godwin\AppData\Local\Temp\cchu8T3h.s 			page 18
+
+
+ 863              		.cfi_def_cfa_offset 32
+ 864 0004 00AF     		add	r7, sp, #0
+ 865              	.LCFI57:
+ 866              		.cfi_def_cfa_register 7
+ 867 0006 0346     		mov	r3, r0
+ 868 0008 0A46     		mov	r2, r1
+ 869 000a 87ED020A 		vstr.32	s0, [r7, #8]
+ 870 000e C7ED010A 		vstr.32	s1, [r7, #4]
+ 871 0012 FB73     		strb	r3, [r7, #15]
+ 872 0014 1346     		mov	r3, r2	@ movhi
+ 873 0016 BB81     		strh	r3, [r7, #12]	@ movhi
+ 119:User/Hardware/LZ_motor_driver.c ****     uint8_t data[8];
+ 120:User/Hardware/LZ_motor_driver.c ****     memcpy(&data[0], &target_vel, 4);
+ 874              		.loc 1 120 5
+ 875 0018 BB68     		ldr	r3, [r7, #8]
+ 876 001a 3B61     		str	r3, [r7, #16]
+ 121:User/Hardware/LZ_motor_driver.c ****     memcpy(&data[4], &current_limit, 4);
+ 877              		.loc 1 121 5
+ 878 001c 7B68     		ldr	r3, [r7, #4]
+ 879 001e 7B61     		str	r3, [r7, #20]
+ 122:User/Hardware/LZ_motor_driver.c ****     lz_send_command(can_bus, motor_id, data);
+ 880              		.loc 1 122 5
+ 881 0020 07F11002 		add	r2, r7, #16
+ 882 0024 B989     		ldrh	r1, [r7, #12]
+ 883 0026 FB7B     		ldrb	r3, [r7, #15]	@ zero_extendqisi2
+ 884 0028 1846     		mov	r0, r3
+ 885 002a FFF7FEFF 		bl	lz_send_command
+ 123:User/Hardware/LZ_motor_driver.c **** }...
+ 886              		.loc 1 123 1
+ 887 002e 00BF     		nop
+ 888 0030 1837     		adds	r7, r7, #24
+ 889              	.LCFI58:
+ 890              		.cfi_def_cfa_offset 8
+ 891 0032 BD46     		mov	sp, r7
+ 892              	.LCFI59:
+ 893              		.cfi_def_cfa_register 13
+ 894              		@ sp needed
+ 895 0034 80BD     		pop	{r7, pc}
+ 896              		.cfi_endproc
+ 897              	.LFE155:
+ 899              		.text
+ 900              	.Letext0:
+ 901              		.file 2 "C:/Users/Godwin/13.2 Rel1/arm-none-eabi/include/machine/_default_types.h"
+ 902              		.file 3 "C:/Users/Godwin/13.2 Rel1/arm-none-eabi/include/sys/_stdint.h"
+ 903              		.file 4 "Drivers/CMSIS/Device/ST/STM32H7xx/Include/stm32h723xx.h"
+ 904              		.file 5 "Drivers/CMSIS/Device/ST/STM32H7xx/Include/stm32h7xx.h"
+ 905              		.file 6 "Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal_def.h"
+ 906              		.file 7 "Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal_fdcan.h"
+ 907              		.file 8 "User/BSP/CAN_receive_send.h"
+ARM GAS  C:\Users\Godwin\AppData\Local\Temp\cchu8T3h.s 			page 19
+
+
+DEFINED SYMBOLS
+                            *ABS*:00000000 LZ_motor_driver.c
+C:\Users\Godwin\AppData\Local\Temp\cchu8T3h.s:20     .text.lz_send_command:00000000 $t
+C:\Users\Godwin\AppData\Local\Temp\cchu8T3h.s:26     .text.lz_send_command:00000000 lz_send_command
+C:\Users\Godwin\AppData\Local\Temp\cchu8T3h.s:73     .rodata:00000000 $d
+C:\Users\Godwin\AppData\Local\Temp\cchu8T3h.s:77     .text.lz_enable_motor:00000000 $t
+C:\Users\Godwin\AppData\Local\Temp\cchu8T3h.s:83     .text.lz_enable_motor:00000000 lz_enable_motor
+C:\Users\Godwin\AppData\Local\Temp\cchu8T3h.s:130    .text.lz_enable_motor:00000038 $d
+C:\Users\Godwin\AppData\Local\Temp\cchu8T3h.s:139    .text.lz_disable_motor:00000000 $t
+C:\Users\Godwin\AppData\Local\Temp\cchu8T3h.s:145    .text.lz_disable_motor:00000000 lz_disable_motor
+C:\Users\Godwin\AppData\Local\Temp\cchu8T3h.s:192    .text.lz_disable_motor:00000038 $d
+C:\Users\Godwin\AppData\Local\Temp\cchu8T3h.s:197    .text.lz_send_mit_params:00000000 $t
+C:\Users\Godwin\AppData\Local\Temp\cchu8T3h.s:203    .text.lz_send_mit_params:00000000 lz_send_mit_params
+C:\Users\Godwin\AppData\Local\Temp\cchu8T3h.s:379    .text.lz_send_mit_params:00000148 $d
+C:\Users\Godwin\AppData\Local\Temp\cchu8T3h.s:399    .text.lz_set_zero:00000000 $t
+C:\Users\Godwin\AppData\Local\Temp\cchu8T3h.s:405    .text.lz_set_zero:00000000 lz_set_zero
+C:\Users\Godwin\AppData\Local\Temp\cchu8T3h.s:452    .text.lz_set_zero:00000038 $d
+C:\Users\Godwin\AppData\Local\Temp\cchu8T3h.s:461    .text.lz_clear_fault:00000000 $t
+C:\Users\Godwin\AppData\Local\Temp\cchu8T3h.s:467    .text.lz_clear_fault:00000000 lz_clear_fault
+C:\Users\Godwin\AppData\Local\Temp\cchu8T3h.s:514    .text.lz_clear_fault:00000038 $d
+C:\Users\Godwin\AppData\Local\Temp\cchu8T3h.s:519    .text.lz_set_mode:00000000 $t
+C:\Users\Godwin\AppData\Local\Temp\cchu8T3h.s:525    .text.lz_set_mode:00000000 lz_set_mode
+C:\Users\Godwin\AppData\Local\Temp\cchu8T3h.s:586    .text.lz_set_id:00000000 $t
+C:\Users\Godwin\AppData\Local\Temp\cchu8T3h.s:592    .text.lz_set_id:00000000 lz_set_id
+C:\Users\Godwin\AppData\Local\Temp\cchu8T3h.s:653    .text.lz_set_protocol:00000000 $t
+C:\Users\Godwin\AppData\Local\Temp\cchu8T3h.s:659    .text.lz_set_protocol:00000000 lz_set_protocol
+C:\Users\Godwin\AppData\Local\Temp\cchu8T3h.s:720    .text.lz_set_master_id:00000000 $t
+C:\Users\Godwin\AppData\Local\Temp\cchu8T3h.s:726    .text.lz_set_master_id:00000000 lz_set_master_id
+C:\Users\Godwin\AppData\Local\Temp\cchu8T3h.s:787    .text.lz_set_position:00000000 $t
+C:\Users\Godwin\AppData\Local\Temp\cchu8T3h.s:793    .text.lz_set_position:00000000 lz_set_position
+C:\Users\Godwin\AppData\Local\Temp\cchu8T3h.s:844    .text.lz_set_velocity:00000000 $t
+C:\Users\Godwin\AppData\Local\Temp\cchu8T3h.s:850    .text.lz_set_velocity:00000000 lz_set_velocity
+
+UNDEFINED SYMBOLS
+Get_CanHandle
+canx_send_data
+float_to_uint
