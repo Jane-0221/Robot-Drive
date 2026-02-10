@@ -1,12 +1,9 @@
 #include "remote_control.h"
 #include "ramp_generator.h"
 #include "IMU_updata.h"
-#include "referee_system.h"
-#include "dm_arm.h"
 #include "Stm32_time.h"
 #include <tim.h>
 #include "pid.h"
-#include "VT13.h"
 #include "UART_data_txrx.h"
 
 int b = 1350;

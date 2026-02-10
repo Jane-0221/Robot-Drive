@@ -10,8 +10,6 @@
  */
 // #include "cover_headerfile_h.h"
 #include "can_receive_send.h"
-#include "motor.h"
-#include "supercup.h"
 #include "dm4310_drv.h"
 #include "string.h"
 /**/
@@ -192,12 +190,9 @@ uint8_t canx_send_ext_data(FDCAN_HandleTypeDef *hcan, uint32_t id, uint8_t *data
 * @details:    	接收数据
 ************************************************************************
 **/
-//因为源代码没用这个函数，所以直接全改了
-int a;
 uint8_t fdcanx_receive(FDCAN_HandleTypeDef *hfdcan,uint32_t RXFIFO,FDCAN_RxHeaderTypeDef *fdcan_RxHeader,uint8_t *buf)
 {	
   if(HAL_FDCAN_GetRxMessage(hfdcan,RXFIFO,fdcan_RxHeader,buf)!=HAL_OK)
-		a = 1;
 		//return 0;//接收数据
   return fdcan_RxHeader->DataLength>>16;	
 }
@@ -231,7 +226,6 @@ void HAL_FDCAN_RxFifo0Callback(FDCAN_HandleTypeDef *hfdcan, uint32_t RxFifo0ITs)
   {
     HAL_FDCAN_GetRxMessage(hfdcan, FDCAN_RX_FIFO0, &rx_header, rx_data);
     //电机帧
-    DJIMotor_decode_candata(hfdcan, rx_header.Identifier, rx_data);
     if(hfdcan->Instance == FDCAN1)
     {    
         fdcanx_receive(hfdcan,FDCAN_RX_FIFO0,&RxHeader1,g_Can1RxData);
@@ -245,11 +239,6 @@ void HAL_FDCAN_RxFifo0Callback(FDCAN_HandleTypeDef *hfdcan, uint32_t RxFifo0ITs)
     if(hfdcan->Instance == FDCAN2)
      	{
         fdcanx_receive(hfdcan,FDCAN_RX_FIFO0,&RxHeader1,g_Can1RxData);
-
-    //     if( rx_header.Identifier==5)
-    //  {
-    // 	  damiao_fbdata(&arm_motor[Motor5],rx_data );   Flag_damiao[5] += 1;
-    //  }
 		    	switch(rx_header.Identifier)
 				{
 					case 2 :damiao_fbdata(&arm_motor[Motor2],rx_data );   Flag_damiao[2] += 1;break;  

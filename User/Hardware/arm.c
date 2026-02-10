@@ -1,9 +1,7 @@
-#include "dm_arm.h"
-#include "motor.h"
+#include "arm.h"
 #include "dm4310_drv.h"
 #include "Robstride04.h"
 #include "pid.h"
-#include "motor.h"
 #include "remote_control.h"
 extern Motor_DM_Status DM_Status[6];
 RobStride_Motor_t motor1;
@@ -61,7 +59,7 @@ void Arm_motor1()
 
 
 
-    RobStride_Motor_CSP_control(&motor1,&hfdcan2, 10.0f, 1.0f);
+    RobStride_Motor_CSP_control(&motor1,&hfdcan2, 20.0f, 1.0f);
 
 
 
@@ -80,19 +78,7 @@ void Arm_motor4()
   //   // CAN_Send_Clear_Error(&hfdcan2,0x04);
   //   CAN_Send_Enter(&hfdcan2, 0x04);
   // }
-  // else
-  // {
-  //   // 电机保持连接
-  //   DM_Status[4] = Motor_DM_Status_ENABLE;
-  // 正常数据发送
-  // if (pos_motor.MT04 >= 3.4f)
-  // {
-  //   pos_motor.MT04 = 3.4f;
-  // }
-  // if (pos_motor.MT04 <= -1.9f)
-  // {
-  //   pos_motor.MT04 = -1.9f;
-  // }
+
   set_DM_mode(Motor4, POS_MODE);
   set_DM_pos_vel(pos_motor.MT04, vel_motor.MT04, Motor4);
   pos_speed_ctrl(&hfdcan2, 0x04, 5,10);
@@ -102,7 +88,6 @@ void Arm_motor4()
 }
 void Arm_motor5()
 {
-
   // // 判断该时间段内是否接收过电机数据
   // if (Flag_damiao[5] == Pre_Flag_damiao[5])
   // {
@@ -114,21 +99,10 @@ void Arm_motor5()
   // }
   // else
   // {
-  //   // 电机保持连接
-  //   DM_Status[5] = Motor_DM_Status_ENABLE;
-  //   // 正常数据发送
-  //     if (pos_motor.MT05 >= 1.9f)
-  //   {
-  //     pos_motor.MT05 = 1.9f;
-  //   }
-  //    if (pos_motor.MT05 <= -1.9f)
-  //   {
-  //     pos_motor.MT05 = -1.9f;
-  //   }
   set_DM_mode(Motor5, POS_MODE);
   set_DM_pos_vel(pos_motor.MT05, vel_motor.MT05, Motor5);
 
-  pos_speed_ctrl(&hfdcan2, 0x05, 100, 20);
+  pos_speed_ctrl(&hfdcan2, 0x05, 10, 1);
 
   Pre_Flag_damiao[5] = Flag_damiao[5];
 }

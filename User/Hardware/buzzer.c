@@ -1,6 +1,6 @@
 #include "buzzer.h"
 #include "cmsis_os2.h"
-
+//·äÃùÆ÷ PWM Çý¶¯³ÌÐò
 void Buzzer_init(){
     __HAL_TIM_ENABLE(&BUZZER_TIM);
 }

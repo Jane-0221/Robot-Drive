@@ -99,8 +99,6 @@ Core/Src/usart.c \
 Drivers/Chip/bmi088/BMI088driver.c \
 Drivers/Chip/bmi088/BMI088Middleware.c \
 Drivers/Chip/ws2812/ws2812.c \
-Drivers/UI/ui_interface.c \
-Drivers/UI/ui_g.c \
 Algorithm/AHRS_middleware.c \
 Algorithm/CRC8_CRC16.c \
 Algorithm/fifo.c \
@@ -112,20 +110,14 @@ Algorithm/ramp_generator.c \
 User/BSP/UART_data_txrx.c \
 User/BSP/CAN_receive_send.c \
 User/BSP/Stm32_time.c \
-User/Hardware/motor.c \
 User/Hardware/dm4310_drv.c \
 User/Hardware/Robstride04.c \
-User/Hardware/dm_arm.c \
-User/Hardware/supercup.c \
+User/Hardware/arm.c \
 User/Hardware/IMU_updata.c \
-User/Hardware/DT7.c \
-User/Hardware/VT13.c \
 User/Hardware/LED.c \
-User/Hardware/referee_system.c \
 User/Hardware/buzzer.c \
 User/Software/remote_control.c \
 User/Software/USB_VirCom.c \
-User/Software/Power_switch.c \
 User/Software/music.c
 
 

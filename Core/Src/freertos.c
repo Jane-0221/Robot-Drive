@@ -28,12 +28,8 @@
 #include "remote_control.h"
 #include "music.h"
 #include "stdio.h"
-#include "referee_system.h"
-#include "motor.h"
-#include "supercup.h"
 #include "LED.h"
 #include <cmsis_os2.h>
-#include "dm_arm.h"
 #include "iwdg.h"
 #include "buzzer.h"
 #include "task.h"

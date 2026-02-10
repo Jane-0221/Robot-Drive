@@ -39,13 +39,8 @@ build/remote_control.o: User/Software/remote_control.c \
  Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal_pcd_ex.h \
  Algorithm/ramp_generator.h User/Hardware/IMU_updata.h \
  Core/Inc/struct_typedef.h Algorithm/Kalman_Filter_c.h \
- User/Hardware/referee_system.h User/Hardware/referee_system_protocol.h \
- Algorithm/fifo.h User/Hardware/dm_arm.h User/BSP/can_receive_send.h \
- Core/Inc/fdcan.h Core/Inc/main.h User/Hardware/dm4310_drv.h \
- User/Hardware/motor.h Algorithm/User_math.h User/BSP/CAN_receive_send.h \
- User/BSP/Stm32_time.h Core/Inc/tim.h Algorithm/pid.h \
- User/Hardware/VT13.h Algorithm/CRC8_CRC16.h User/BSP/UART_data_txrx.h \
- Core/Inc/usart.h
+ User/BSP/Stm32_time.h Core/Inc/tim.h Core/Inc/main.h Algorithm/pid.h \
+ User/BSP/UART_data_txrx.h Core/Inc/usart.h
 User/Software/remote_control.h:
 Core/Inc/main.h:
 Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal.h:
@@ -91,21 +86,9 @@ Algorithm/ramp_generator.h:
 User/Hardware/IMU_updata.h:
 Core/Inc/struct_typedef.h:
 Algorithm/Kalman_Filter_c.h:
-User/Hardware/referee_system.h:
-User/Hardware/referee_system_protocol.h:
-Algorithm/fifo.h:
-User/Hardware/dm_arm.h:
-User/BSP/can_receive_send.h:
-Core/Inc/fdcan.h:
-Core/Inc/main.h:
-User/Hardware/dm4310_drv.h:
-User/Hardware/motor.h:
-Algorithm/User_math.h:
-User/BSP/CAN_receive_send.h:
 User/BSP/Stm32_time.h:
 Core/Inc/tim.h:
+Core/Inc/main.h:
 Algorithm/pid.h:
-User/Hardware/VT13.h:
-Algorithm/CRC8_CRC16.h:
 User/BSP/UART_data_txrx.h:
 Core/Inc/usart.h:

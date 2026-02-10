@@ -53,11 +53,8 @@ build/main.o: Core/Src/main.c Core/Inc/main.h \
  Middlewares/ST/STM32_USB_Device_Library/Core/Inc/usbd_def.h \
  USB_DEVICE/Target/usbd_conf.h Core/Inc/gpio.h User/BSP/UART_data_txrx.h \
  Core/Inc/struct_typedef.h User/BSP/CAN_receive_send.h \
- User/Hardware/motor.h Algorithm/User_math.h User/Hardware/supercup.h \
  User/Hardware/IMU_updata.h Algorithm/Kalman_Filter_c.h \
- User/Hardware/LED.h User/BSP/Power_switch.h \
- User/Hardware/referee_system.h User/Hardware/referee_system_protocol.h \
- Algorithm/fifo.h User/Software/music.h User/Hardware/buzzer.h \
+ User/Hardware/LED.h User/Software/music.h User/Hardware/buzzer.h \
  Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2/cmsis_os2.h
 Core/Inc/main.h:
 Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal.h:
@@ -124,16 +121,9 @@ Core/Inc/gpio.h:
 User/BSP/UART_data_txrx.h:
 Core/Inc/struct_typedef.h:
 User/BSP/CAN_receive_send.h:
-User/Hardware/motor.h:
-Algorithm/User_math.h:
-User/Hardware/supercup.h:
 User/Hardware/IMU_updata.h:
 Algorithm/Kalman_Filter_c.h:
 User/Hardware/LED.h:
-User/BSP/Power_switch.h:
-User/Hardware/referee_system.h:
-User/Hardware/referee_system_protocol.h:
-Algorithm/fifo.h:
 User/Software/music.h:
 User/Hardware/buzzer.h:
 Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2/cmsis_os2.h:

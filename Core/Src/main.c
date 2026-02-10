@@ -32,13 +32,8 @@
 /* USER CODE BEGIN Includes */
 #include "UART_data_txrx.h"
 #include "CAN_receive_send.h"
-
-#include "motor.h"
-#include "supercup.h"
 #include "IMU_updata.h"
 #include "LED.h"
-#include "Power_switch.h"
-#include "referee_system.h"
 #include "music.h"
 /* USER CODE END Includes */
 
@@ -132,8 +127,6 @@ int main(void)
   /*INIT*/
   uart_init();
   can_init();
-  Refree_system_init();
-
   IMU_init();
   Music_init();
   Arm_Init();
