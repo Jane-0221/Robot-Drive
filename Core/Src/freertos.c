@@ -69,51 +69,51 @@ uint32_t color = 0;
 /* Definitions for Remote_control */
 osThreadId_t Remote_controlHandle;
 const osThreadAttr_t Remote_control_attributes = {
-    .name = "Remote_control",
-    .stack_size = 512 * 4,
-    .priority = (osPriority_t)osPriorityNormal1,
+  .name = "Remote_control",
+  .stack_size = 512 * 4,
+  .priority = (osPriority_t) osPriorityNormal1,
 };
 /* Definitions for Eng_arm */
 osThreadId_t Eng_armHandle;
 const osThreadAttr_t Eng_arm_attributes = {
-    .name = "Eng_arm",
-    .stack_size = 512 * 4,
-    .priority = (osPriority_t)osPriorityNormal,
+  .name = "Eng_arm",
+  .stack_size = 512 * 4,
+  .priority = (osPriority_t) osPriorityNormal,
 };
 /* Definitions for Chassis */
 osThreadId_t ChassisHandle;
 const osThreadAttr_t Chassis_attributes = {
-    .name = "Chassis",
-    .stack_size = 512 * 4,
-    .priority = (osPriority_t)osPriorityLow,
+  .name = "Chassis",
+  .stack_size = 512 * 4,
+  .priority = (osPriority_t) osPriorityLow,
 };
 /* Definitions for Motor_control */
 osThreadId_t Motor_controlHandle;
 const osThreadAttr_t Motor_control_attributes = {
-    .name = "Motor_control",
-    .stack_size = 256 * 4,
-    .priority = (osPriority_t)osPriorityLow,
+  .name = "Motor_control",
+  .stack_size = 256 * 4,
+  .priority = (osPriority_t) osPriorityLow,
 };
 /* Definitions for Yaw */
 osThreadId_t YawHandle;
 const osThreadAttr_t Yaw_attributes = {
-    .name = "Yaw",
-    .stack_size = 256 * 4,
-    .priority = (osPriority_t)osPriorityLow,
+  .name = "Yaw",
+  .stack_size = 256 * 4,
+  .priority = (osPriority_t) osPriorityLow,
 };
 /* Definitions for Referee */
 osThreadId_t RefereeHandle;
 const osThreadAttr_t Referee_attributes = {
-    .name = "Referee",
-    .stack_size = 512 * 4,
-    .priority = (osPriority_t)osPriorityLow,
+  .name = "Referee",
+  .stack_size = 512 * 4,
+  .priority = (osPriority_t) osPriorityLow,
 };
 /* Definitions for Log_and_debug */
 osThreadId_t Log_and_debugHandle;
 const osThreadAttr_t Log_and_debug_attributes = {
-    .name = "Log_and_debug",
-    .stack_size = 256 * 4,
-    .priority = (osPriority_t)osPriorityLow,
+  .name = "Log_and_debug",
+  .stack_size = 256 * 4,
+  .priority = (osPriority_t) osPriorityLow,
 };
 
 /* Private function prototypes -----------------------------------------------*/
@@ -151,12 +151,11 @@ void vApplicationIdleHook(void)
 /* USER CODE END 2 */
 
 /**
- * @brief  FreeRTOS initialization
- * @param  None
- * @retval None
- */
-void MX_FREERTOS_Init(void)
-{
+  * @brief  FreeRTOS initialization
+  * @param  None
+  * @retval None
+  */
+void MX_FREERTOS_Init(void) {
   /* USER CODE BEGIN Init */
 
   /* USER CODE END Init */
@@ -206,6 +205,7 @@ void MX_FREERTOS_Init(void)
   /* USER CODE BEGIN RTOS_EVENTS */
   /* add events, ... */
   /* USER CODE END RTOS_EVENTS */
+
 }
 
 /* USER CODE BEGIN Header_Remote_control_Task */
@@ -332,7 +332,7 @@ void Referee_Task(void *argument)
   for (;;)
   {
 
-    Referee_unpack_fifo_data(&referee_fifo, &referee_unpack_obj);             // 閿熸枻鎷烽敓�??
+    Referee_unpack_fifo_data(&referee_fifo, &referee_unpack_obj);             // 閿熸枻鎷烽敓�??
     Referee_unpack_fifo_data(&referee_image_fifo, &referee_image_unpack_obj); // 鍥鹃敓鏂ゆ嫹
     update_limit_filter(&custom_robot_data, &filtered_data);
     unsigned long current_time_ms = HAL_GetTick();
@@ -377,3 +377,4 @@ void Log_and_debug_Task(void *argument)
 /* USER CODE BEGIN Application */
 
 /* USER CODE END Application */
+
