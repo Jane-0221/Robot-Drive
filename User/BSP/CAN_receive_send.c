@@ -130,6 +130,58 @@ uint8_t canx_send_data(FDCAN_HandleTypeDef *hcan, uint16_t id, uint8_t *data, ui
   }
 	 return 0;
 }
+uint8_t canx_send_ext_data(FDCAN_HandleTypeDef *hcan, uint32_t id, uint8_t *data, uint32_t len)
+{
+	FDCAN_TxHeaderTypeDef TxHeader;
+
+	// 核心修改：ID类型设为扩展帧（FDCAN_EXTENDED_ID）
+	TxHeader.Identifier = id;                 // 扩展帧ID（范围0~0x1FFFFFFF，需用uint32_t）
+  TxHeader.IdType =  FDCAN_EXTENDED_ID ;    // 扩展帧类型（29位ID）
+  TxHeader.TxFrameType = FDCAN_DATA_FRAME;  // 数据帧（与原函数一致）
+  
+  // 数据长度逻辑完全复用原函数
+  if(len<=8)	
+	{
+	  TxHeader.DataLength =FDCAN_DLC_BYTES_8;
+	}
+	else  if(len==12)	
+	{
+	   TxHeader.DataLength =FDCAN_DLC_BYTES_12;
+	}
+	else  if(len==16)	
+	{
+	  TxHeader.DataLength =FDCAN_DLC_BYTES_16;
+	}
+  else  if(len==20)
+	{
+		TxHeader.DataLength =FDCAN_DLC_BYTES_20;
+	}		
+	else  if(len==24)	
+	{
+	 TxHeader.DataLength =FDCAN_DLC_BYTES_24;	
+	}else  if(len==48)
+	{
+	 TxHeader.DataLength =FDCAN_DLC_BYTES_48;
+	}else  if(len==64)
+   {
+		 TxHeader.DataLength =FDCAN_DLC_BYTES_64;
+	 }
+											
+	// 其余参数与原函数完全一致
+	TxHeader.ErrorStateIndicator =  FDCAN_ESI_ACTIVE;
+  TxHeader.BitRateSwitch = FDCAN_BRS_OFF;
+  TxHeader.FDFormat =  FDCAN_CLASSIC_CAN;
+  TxHeader.TxEventFifoControl =  FDCAN_NO_TX_EVENTS;  
+  TxHeader.MessageMarker = 0x00;
+
+   // 发送CAN扩展帧
+  if(HAL_FDCAN_AddMessageToTxFifoQ(hcan, &TxHeader, data) != HAL_OK)
+  {
+       Error_Handler();      
+  }
+	 return 0;
+}
+
 
 /**
 ************************************************************************

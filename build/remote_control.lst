@@ -1,4 +1,4 @@
-ARM GAS  C:\Users\Godwin\AppData\Local\Temp\ccdkAVFa.s 			page 1
+ARM GAS  C:\Users\Godwin\AppData\Local\Temp\cc81Rf4h.s 			page 1
 
 
    1              		.cpu cortex-m7
@@ -58,7 +58,7 @@ ARM GAS  C:\Users\Godwin\AppData\Local\Temp\ccdkAVFa.s 			page 1
   59              	delta_angle:
   60 0000 00000000 		.space	4
   61              		.global	wait_time
-ARM GAS  C:\Users\Godwin\AppData\Local\Temp\ccdkAVFa.s 			page 2
+ARM GAS  C:\Users\Godwin\AppData\Local\Temp\cc81Rf4h.s 			page 2
 
 
   62              		.section	.bss.wait_time,"aw",%nobits
@@ -118,7 +118,7 @@ ARM GAS  C:\Users\Godwin\AppData\Local\Temp\ccdkAVFa.s 			page 1
    2:User/Software/remote_control.c **** #include "Global_status.h"
    3:User/Software/remote_control.c **** #include "Chassis.h"
    4:User/Software/remote_control.c **** #include "Gimbal.h"
-ARM GAS  C:\Users\Godwin\AppData\Local\Temp\ccdkAVFa.s 			page 3
+ARM GAS  C:\Users\Godwin\AppData\Local\Temp\cc81Rf4h.s 			page 3
 
 
    5:User/Software/remote_control.c **** #include "ui.h"
@@ -178,7 +178,7 @@ ARM GAS  C:\Users\Godwin\AppData\Local\Temp\ccdkAVFa.s 			page 1
  142 0004 00AF     		add	r7, sp, #0
  143              	.LCFI2:
  144              		.cfi_def_cfa_register 7
-ARM GAS  C:\Users\Godwin\AppData\Local\Temp\ccdkAVFa.s 			page 4
+ARM GAS  C:\Users\Godwin\AppData\Local\Temp\cc81Rf4h.s 			page 4
 
 
  145 0006 0346     		mov	r3, r0
@@ -238,7 +238,7 @@ ARM GAS  C:\Users\Godwin\AppData\Local\Temp\ccdkAVFa.s 			page 1
  187 0042 5DF8047B 		ldr	r7, [sp], #4
  188              	.LCFI5:
  189              		.cfi_restore 7
-ARM GAS  C:\Users\Godwin\AppData\Local\Temp\ccdkAVFa.s 			page 5
+ARM GAS  C:\Users\Godwin\AppData\Local\Temp\cc81Rf4h.s 			page 5
 
 
  190              		.cfi_def_cfa_offset 0
@@ -298,7 +298,7 @@ ARM GAS  C:\Users\Godwin\AppData\Local\Temp\ccdkAVFa.s 			page 1
   68:User/Software/remote_control.c ****     arm_connect_status = ARM_CONNECT_STATUS_DISCONNECTED;
  237              		.loc 1 68 24
  238 0030 094B     		ldr	r3, .L7+16
-ARM GAS  C:\Users\Godwin\AppData\Local\Temp\ccdkAVFa.s 			page 6
+ARM GAS  C:\Users\Godwin\AppData\Local\Temp\cc81Rf4h.s 			page 6
 
 
  239 0032 0022     		movs	r2, #0
@@ -358,7 +358,7 @@ ARM GAS  C:\Users\Godwin\AppData\Local\Temp\ccdkAVFa.s 			page 1
  287 0004 0022     		movs	r2, #0
  288 0006 4FF48041 		mov	r1, #16384
  289 000a 1948     		ldr	r0, .L10
-ARM GAS  C:\Users\Godwin\AppData\Local\Temp\ccdkAVFa.s 			page 7
+ARM GAS  C:\Users\Godwin\AppData\Local\Temp\cc81Rf4h.s 			page 7
 
 
  290 000c FFF7FEFF 		bl	HAL_GPIO_WritePin
@@ -418,7 +418,7 @@ ARM GAS  C:\Users\Godwin\AppData\Local\Temp\ccdkAVFa.s 			page 1
  328 0062 4FF40061 		mov	r1, #2048
  329 0066 0548     		ldr	r0, .L10+12
  330 0068 FFF7FEFF 		bl	HAL_GPIO_WritePin
-ARM GAS  C:\Users\Godwin\AppData\Local\Temp\ccdkAVFa.s 			page 8
+ARM GAS  C:\Users\Godwin\AppData\Local\Temp\cc81Rf4h.s 			page 8
 
 
   93:User/Software/remote_control.c **** }
@@ -478,7 +478,7 @@ ARM GAS  C:\Users\Godwin\AppData\Local\Temp\ccdkAVFa.s 			page 1
  379 001e FFF7FEFF 		bl	HAL_TIM_PWM_Start
  101:User/Software/remote_control.c **** }
  380              		.loc 1 101 1
-ARM GAS  C:\Users\Godwin\AppData\Local\Temp\ccdkAVFa.s 			page 9
+ARM GAS  C:\Users\Godwin\AppData\Local\Temp\cc81Rf4h.s 			page 9
 
 
  381 0022 00BF     		nop
@@ -538,7 +538,7 @@ ARM GAS  C:\Users\Godwin\AppData\Local\Temp\ccdkAVFa.s 			page 1
  430 0030 1BB2     		sxth	r3, r3
  431              		.loc 1 108 5
  432 0032 07EE903A 		vmov	s15, r3	@ int
-ARM GAS  C:\Users\Godwin\AppData\Local\Temp\ccdkAVFa.s 			page 10
+ARM GAS  C:\Users\Godwin\AppData\Local\Temp\cc81Rf4h.s 			page 10
 
 
  433 0036 F8EEE77A 		vcvt.f32.s32	s15, s15
@@ -598,7 +598,7 @@ ARM GAS  C:\Users\Godwin\AppData\Local\Temp\ccdkAVFa.s 			page 1
  481              	.LCFI15:
  482              		.cfi_def_cfa_register 7
  117:User/Software/remote_control.c ****     /////////////////////////Ó³Éä¿ØÖÆµ×ÅÌÒÆ¶¯///////////////////////////////////////
-ARM GAS  C:\Users\Godwin\AppData\Local\Temp\ccdkAVFa.s 			page 11
+ARM GAS  C:\Users\Godwin\AppData\Local\Temp\cc81Rf4h.s 			page 11
 
 
  118:User/Software/remote_control.c ****     if (arm_connect_status == ARM_CONNECT_STATUS_CONNECTED)
@@ -658,7 +658,7 @@ ARM GAS  C:\Users\Godwin\AppData\Local\Temp\ccdkAVFa.s 			page 1
  526              		.loc 1 128 17
  527 0058 002B     		cmp	r3, #0
  528 005a 18D0     		beq	.L24
-ARM GAS  C:\Users\Godwin\AppData\Local\Temp\ccdkAVFa.s 			page 12
+ARM GAS  C:\Users\Godwin\AppData\Local\Temp\cc81Rf4h.s 			page 12
 
 
  129:User/Software/remote_control.c ****         {
@@ -718,7 +718,7 @@ ARM GAS  C:\Users\Godwin\AppData\Local\Temp\ccdkAVFa.s 			page 1
  567 00a4 8A4B     		ldr	r3, .L100+16
  568 00a6 8C4A     		ldr	r2, .L100+24
  569 00a8 5A60     		str	r2, [r3, #4]	@ float
-ARM GAS  C:\Users\Godwin\AppData\Local\Temp\ccdkAVFa.s 			page 13
+ARM GAS  C:\Users\Godwin\AppData\Local\Temp\cc81Rf4h.s 			page 13
 
 
  570 00aa 0FE0     		b	.L19
@@ -778,7 +778,7 @@ ARM GAS  C:\Users\Godwin\AppData\Local\Temp\ccdkAVFa.s 			page 1
  607 00e6 1B89     		ldrh	r3, [r3, #8]	@ unaligned
  608 00e8 9BB2     		uxth	r3, r3
  609 00ea 03F00103 		and	r3, r3, #1
-ARM GAS  C:\Users\Godwin\AppData\Local\Temp\ccdkAVFa.s 			page 14
+ARM GAS  C:\Users\Godwin\AppData\Local\Temp\cc81Rf4h.s 			page 14
 
 
  610              		.loc 1 161 30 discriminator 1
@@ -838,7 +838,7 @@ ARM GAS  C:\Users\Godwin\AppData\Local\Temp\ccdkAVFa.s 			page 1
  655 0140 20D0     		beq	.L36
  656              		.loc 1 168 38 discriminator 1
  657 0142 624B     		ldr	r3, .L100+12
-ARM GAS  C:\Users\Godwin\AppData\Local\Temp\ccdkAVFa.s 			page 15
+ARM GAS  C:\Users\Godwin\AppData\Local\Temp\cc81Rf4h.s 			page 15
 
 
  658 0144 1B89     		ldrh	r3, [r3, #8]	@ unaligned
@@ -898,7 +898,7 @@ ARM GAS  C:\Users\Godwin\AppData\Local\Temp\ccdkAVFa.s 			page 1
  702 0198 03F00203 		and	r3, r3, #2
  703              		.loc 1 176 35 discriminator 1
  704 019c 002B     		cmp	r3, #0
-ARM GAS  C:\Users\Godwin\AppData\Local\Temp\ccdkAVFa.s 			page 16
+ARM GAS  C:\Users\Godwin\AppData\Local\Temp\cc81Rf4h.s 			page 16
 
 
  705 019e 06D0     		beq	.L41
@@ -958,7 +958,7 @@ ARM GAS  C:\Users\Godwin\AppData\Local\Temp\ccdkAVFa.s 			page 1
  750 01f0 364B     		ldr	r3, .L100+12
  751 01f2 1B89     		ldrh	r3, [r3, #8]	@ unaligned
  752 01f4 9BB2     		uxth	r3, r3
-ARM GAS  C:\Users\Godwin\AppData\Local\Temp\ccdkAVFa.s 			page 17
+ARM GAS  C:\Users\Godwin\AppData\Local\Temp\cc81Rf4h.s 			page 17
 
 
  753 01f6 03F01003 		and	r3, r3, #16
@@ -1018,7 +1018,7 @@ ARM GAS  C:\Users\Godwin\AppData\Local\Temp\ccdkAVFa.s 			page 1
  795 0244 54D0     		beq	.L49
  194:User/Software/remote_control.c ****         {
  195:User/Software/remote_control.c ****             if (Global.Chssis.input.x > -3.0f && Global.Chssis.input.x < -0.5f)
-ARM GAS  C:\Users\Godwin\AppData\Local\Temp\ccdkAVFa.s 			page 18
+ARM GAS  C:\Users\Godwin\AppData\Local\Temp\cc81Rf4h.s 			page 18
 
 
  796              		.loc 1 195 36
@@ -1078,7 +1078,7 @@ ARM GAS  C:\Users\Godwin\AppData\Local\Temp\ccdkAVFa.s 			page 1
  844 02b8 5A60     		str	r2, [r3, #4]	@ float
  845 02ba 5BE0     		b	.L29
  846              	.L101:
-ARM GAS  C:\Users\Godwin\AppData\Local\Temp\ccdkAVFa.s 			page 19
+ARM GAS  C:\Users\Godwin\AppData\Local\Temp\cc81Rf4h.s 			page 19
 
 
  847 02bc AFF30080 		.align	3
@@ -1138,7 +1138,7 @@ ARM GAS  C:\Users\Godwin\AppData\Local\Temp\ccdkAVFa.s 			page 1
  895              	.L56:
  208:User/Software/remote_control.c ****             else
  209:User/Software/remote_control.c ****                 Global.Chssis.input.x += 0.01f;
-ARM GAS  C:\Users\Godwin\AppData\Local\Temp\ccdkAVFa.s 			page 20
+ARM GAS  C:\Users\Godwin\AppData\Local\Temp\cc81Rf4h.s 			page 20
 
 
  896              		.loc 1 209 36
@@ -1198,7 +1198,7 @@ ARM GAS  C:\Users\Godwin\AppData\Local\Temp\ccdkAVFa.s 			page 1
  939 038e 20D0     		beq	.L61
  221:User/Software/remote_control.c ****     { // ctrl+z
  222:User/Software/remote_control.c ****         if (arm_connect_status == ARM_CONNECT_STATUS_CONNECTED)
-ARM GAS  C:\Users\Godwin\AppData\Local\Temp\ccdkAVFa.s 			page 21
+ARM GAS  C:\Users\Godwin\AppData\Local\Temp\cc81Rf4h.s 			page 21
 
 
  940              		.loc 1 222 32
@@ -1258,7 +1258,7 @@ ARM GAS  C:\Users\Godwin\AppData\Local\Temp\ccdkAVFa.s 			page 1
  982 03d2 274B     		ldr	r3, .L102
  983 03d4 1B89     		ldrh	r3, [r3, #8]	@ unaligned
  984 03d6 9BB2     		uxth	r3, r3
-ARM GAS  C:\Users\Godwin\AppData\Local\Temp\ccdkAVFa.s 			page 22
+ARM GAS  C:\Users\Godwin\AppData\Local\Temp\cc81Rf4h.s 			page 22
 
 
  985 03d8 03F02003 		and	r3, r3, #32
@@ -1318,7 +1318,7 @@ ARM GAS  C:\Users\Godwin\AppData\Local\Temp\ccdkAVFa.s 			page 1
  1029 041e 9BB2     		uxth	r3, r3
  1030 0420 03F48043 		and	r3, r3, #16384
  1031              		.loc 1 244 8
-ARM GAS  C:\Users\Godwin\AppData\Local\Temp\ccdkAVFa.s 			page 23
+ARM GAS  C:\Users\Godwin\AppData\Local\Temp\cc81Rf4h.s 			page 23
 
 
  1032 0424 002B     		cmp	r3, #0
@@ -1378,7 +1378,7 @@ ARM GAS  C:\Users\Godwin\AppData\Local\Temp\ccdkAVFa.s 			page 1
  257:User/Software/remote_control.c ****         {
  258:User/Software/remote_control.c ****             b = 400;
  1074              		.loc 1 258 15
-ARM GAS  C:\Users\Godwin\AppData\Local\Temp\ccdkAVFa.s 			page 24
+ARM GAS  C:\Users\Godwin\AppData\Local\Temp\cc81Rf4h.s 			page 24
 
 
  1075 0466 0B4B     		ldr	r3, .L102+36
@@ -1438,7 +1438,7 @@ ARM GAS  C:\Users\Godwin\AppData\Local\Temp\ccdkAVFa.s 			page 1
  268:User/Software/remote_control.c ****     }
  269:User/Software/remote_control.c ****     // // ×Ô¶¨Òå¿ØÖÆÆ÷Ó³Éä
  270:User/Software/remote_control.c ****     // if (IF_KEY_PRESSED_CTRL && IF_KEY_PRESSED_R)
-ARM GAS  C:\Users\Godwin\AppData\Local\Temp\ccdkAVFa.s 			page 25
+ARM GAS  C:\Users\Godwin\AppData\Local\Temp\cc81Rf4h.s 			page 25
 
 
  271:User/Software/remote_control.c ****     // { // ctrl+X
@@ -1498,7 +1498,7 @@ ARM GAS  C:\Users\Godwin\AppData\Local\Temp\ccdkAVFa.s 			page 1
  1132 04da 03F48063 		and	r3, r3, #1024
  1133              		.loc 1 312 29 discriminator 1
  1134 04de 002B     		cmp	r3, #0
-ARM GAS  C:\Users\Godwin\AppData\Local\Temp\ccdkAVFa.s 			page 26
+ARM GAS  C:\Users\Godwin\AppData\Local\Temp\cc81Rf4h.s 			page 26
 
 
  1135 04e0 02D0     		beq	.L73
@@ -1558,7 +1558,7 @@ ARM GAS  C:\Users\Godwin\AppData\Local\Temp\ccdkAVFa.s 			page 1
  334:User/Software/remote_control.c ****     {
  335:User/Software/remote_control.c ****         HAL_GPIO_WritePin(GPIOD, GPIO_PIN_14, GPIO_PIN_RESET); // PD14,Æø±Ã1¹Ø±Õ
  1168              		.loc 1 335 9
-ARM GAS  C:\Users\Godwin\AppData\Local\Temp\ccdkAVFa.s 			page 27
+ARM GAS  C:\Users\Godwin\AppData\Local\Temp\cc81Rf4h.s 			page 27
 
 
  1169 0512 0022     		movs	r2, #0
@@ -1618,7 +1618,7 @@ ARM GAS  C:\Users\Godwin\AppData\Local\Temp\ccdkAVFa.s 			page 1
  1210 0562 2C48     		ldr	r0, .L104+28
  1211 0564 FFF7FEFF 		bl	HAL_GPIO_WritePin
  349:User/Software/remote_control.c ****         HAL_GPIO_WritePin(GPIOC, GPIO_PIN_11, GPIO_PIN_RESET); // PC11 £¬µç´Å·§3¹Ø±Õ
-ARM GAS  C:\Users\Godwin\AppData\Local\Temp\ccdkAVFa.s 			page 28
+ARM GAS  C:\Users\Godwin\AppData\Local\Temp\cc81Rf4h.s 			page 28
 
 
  1212              		.loc 1 349 9
@@ -1678,7 +1678,7 @@ ARM GAS  C:\Users\Godwin\AppData\Local\Temp\ccdkAVFa.s 			page 1
  1255 05b8 FFF7FEFF 		bl	HAL_GPIO_WritePin
  361:User/Software/remote_control.c ****         HAL_GPIO_WritePin(GPIOC, GPIO_PIN_11, GPIO_PIN_RESET); // PC11 £¬´¢¿ó2¹Ø±Õ£¬µç´Å·§3¹Ø±Õ
  1256              		.loc 1 361 9
-ARM GAS  C:\Users\Godwin\AppData\Local\Temp\ccdkAVFa.s 			page 29
+ARM GAS  C:\Users\Godwin\AppData\Local\Temp\cc81Rf4h.s 			page 29
 
 
  1257 05bc 0022     		movs	r2, #0
@@ -1738,7 +1738,7 @@ ARM GAS  C:\Users\Godwin\AppData\Local\Temp\ccdkAVFa.s 			page 1
  1304              		.syntax unified
  1305              		.thumb
  1306              		.thumb_func
-ARM GAS  C:\Users\Godwin\AppData\Local\Temp\ccdkAVFa.s 			page 30
+ARM GAS  C:\Users\Godwin\AppData\Local\Temp\cc81Rf4h.s 			page 30
 
 
  1308              	ARM_CONNECT_STATUS_UPDATA:
@@ -1798,7 +1798,7 @@ ARM GAS  C:\Users\Godwin\AppData\Local\Temp\ccdkAVFa.s 			page 1
  1355              	.LCFI21:
  1356              		.cfi_def_cfa_register 7
  379:User/Software/remote_control.c **** 
-ARM GAS  C:\Users\Godwin\AppData\Local\Temp\ccdkAVFa.s 			page 31
+ARM GAS  C:\Users\Godwin\AppData\Local\Temp\cc81Rf4h.s 			page 31
 
 
  380:User/Software/remote_control.c ****     
@@ -1858,7 +1858,7 @@ ARM GAS  C:\Users\Godwin\AppData\Local\Temp\ccdkAVFa.s 			page 1
  1382 0028 114B     		ldr	r3, .L113+4
  1383 002a 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
  1384              		.loc 1 408 8
-ARM GAS  C:\Users\Godwin\AppData\Local\Temp\ccdkAVFa.s 			page 32
+ARM GAS  C:\Users\Godwin\AppData\Local\Temp\cc81Rf4h.s 			page 32
 
 
  1385 002c 012B     		cmp	r3, #1
@@ -1918,7 +1918,7 @@ ARM GAS  C:\Users\Godwin\AppData\Local\Temp\ccdkAVFa.s 			page 1
  1430              		.syntax unified
  1431              		.thumb
  1432              		.thumb_func
-ARM GAS  C:\Users\Godwin\AppData\Local\Temp\ccdkAVFa.s 			page 33
+ARM GAS  C:\Users\Godwin\AppData\Local\Temp\cc81Rf4h.s 			page 33
 
 
  1434              	start:
@@ -1978,7 +1978,7 @@ ARM GAS  C:\Users\Godwin\AppData\Local\Temp\ccdkAVFa.s 			page 1
  1455              	.LCFI25:
  1456              		.cfi_restore 7
  1457              		.cfi_def_cfa_offset 0
-ARM GAS  C:\Users\Godwin\AppData\Local\Temp\ccdkAVFa.s 			page 34
+ARM GAS  C:\Users\Godwin\AppData\Local\Temp\cc81Rf4h.s 			page 34
 
 
  1458 000c 7047     		bx	lr
@@ -2038,7 +2038,7 @@ ARM GAS  C:\Users\Godwin\AppData\Local\Temp\ccdkAVFa.s 			page 1
  1507              		.cfi_startproc
  1508              		@ args = 0, pretend = 0, frame = 0
  1509              		@ frame_needed = 1, uses_anonymous_args = 0
-ARM GAS  C:\Users\Godwin\AppData\Local\Temp\ccdkAVFa.s 			page 35
+ARM GAS  C:\Users\Godwin\AppData\Local\Temp\cc81Rf4h.s 			page 35
 
 
  1510 0000 80B5     		push	{r7, lr}
@@ -2098,7 +2098,7 @@ ARM GAS  C:\Users\Godwin\AppData\Local\Temp\ccdkAVFa.s 			page 1
  1552 0046 FFF7FEFF 		bl	osDelay
  473:User/Software/remote_control.c ****     // µ×ÅÌÊ§ÄÜ
  474:User/Software/remote_control.c ****     Chassis_set_x(0.0f);
-ARM GAS  C:\Users\Godwin\AppData\Local\Temp\ccdkAVFa.s 			page 36
+ARM GAS  C:\Users\Godwin\AppData\Local\Temp\cc81Rf4h.s 			page 36
 
 
  1553              		.loc 1 474 5
@@ -2158,7 +2158,7 @@ ARM GAS  C:\Users\Godwin\AppData\Local\Temp\ccdkAVFa.s 			page 1
  1597 0004 0521     		movs	r1, #5
  1598 0006 1248     		ldr	r0, .L123
  1599 0008 FFF7FEFF 		bl	CAN_Send_Enter
-ARM GAS  C:\Users\Godwin\AppData\Local\Temp\ccdkAVFa.s 			page 37
+ARM GAS  C:\Users\Godwin\AppData\Local\Temp\cc81Rf4h.s 			page 37
 
 
  487:User/Software/remote_control.c ****     osDelay(1);
@@ -2218,7 +2218,7 @@ ARM GAS  C:\Users\Godwin\AppData\Local\Temp\ccdkAVFa.s 			page 1
  1644              		.align	1
  1645              		.global	switch_servos
  1646              		.syntax unified
-ARM GAS  C:\Users\Godwin\AppData\Local\Temp\ccdkAVFa.s 			page 38
+ARM GAS  C:\Users\Godwin\AppData\Local\Temp\cc81Rf4h.s 			page 38
 
 
  1647              		.thumb
@@ -2278,7 +2278,7 @@ ARM GAS  C:\Users\Godwin\AppData\Local\Temp\ccdkAVFa.s 			page 1
  536:User/Software/remote_control.c ****     //     c = 400;
  537:User/Software/remote_control.c ****     // }
  538:User/Software/remote_control.c **** }...
-ARM GAS  C:\Users\Godwin\AppData\Local\Temp\ccdkAVFa.s 			page 39
+ARM GAS  C:\Users\Godwin\AppData\Local\Temp\cc81Rf4h.s 			page 39
 
 
  1664              		.loc 1 538 1
@@ -2321,83 +2321,83 @@ ARM GAS  C:\Users\Godwin\AppData\Local\Temp\ccdkAVFa.s 			page 1
  1702              		.file 24 "User/Hardware/VT13.h"
  1703              		.file 25 "User/Software/ui.h"
  1704              		.file 26 "User/Software/limit_filter.h"
-ARM GAS  C:\Users\Godwin\AppData\Local\Temp\ccdkAVFa.s 			page 40
+ARM GAS  C:\Users\Godwin\AppData\Local\Temp\cc81Rf4h.s 			page 40
 
 
 DEFINED SYMBOLS
                             *ABS*:00000000 remote_control.c
-C:\Users\Godwin\AppData\Local\Temp\ccdkAVFa.s:24     .data.b:00000000 b
-C:\Users\Godwin\AppData\Local\Temp\ccdkAVFa.s:21     .data.b:00000000 $d
-C:\Users\Godwin\AppData\Local\Temp\ccdkAVFa.s:31     .bss.c:00000000 c
-C:\Users\Godwin\AppData\Local\Temp\ccdkAVFa.s:28     .bss.c:00000000 $d
-C:\Users\Godwin\AppData\Local\Temp\ccdkAVFa.s:38     .bss.RC_data:00000000 RC_data
-C:\Users\Godwin\AppData\Local\Temp\ccdkAVFa.s:35     .bss.RC_data:00000000 $d
-C:\Users\Godwin\AppData\Local\Temp\ccdkAVFa.s:45     .bss.AHRS_yaw_set:00000000 AHRS_yaw_set
-C:\Users\Godwin\AppData\Local\Temp\ccdkAVFa.s:42     .bss.AHRS_yaw_set:00000000 $d
-C:\Users\Godwin\AppData\Local\Temp\ccdkAVFa.s:52     .bss.yaw_pid:00000000 yaw_pid
-C:\Users\Godwin\AppData\Local\Temp\ccdkAVFa.s:49     .bss.yaw_pid:00000000 $d
-C:\Users\Godwin\AppData\Local\Temp\ccdkAVFa.s:59     .bss.delta_angle:00000000 delta_angle
-C:\Users\Godwin\AppData\Local\Temp\ccdkAVFa.s:56     .bss.delta_angle:00000000 $d
-C:\Users\Godwin\AppData\Local\Temp\ccdkAVFa.s:66     .bss.wait_time:00000000 wait_time
-C:\Users\Godwin\AppData\Local\Temp\ccdkAVFa.s:63     .bss.wait_time:00000000 $d
-C:\Users\Godwin\AppData\Local\Temp\ccdkAVFa.s:72     .bss.arm_connect_status:00000000 arm_connect_status
-C:\Users\Godwin\AppData\Local\Temp\ccdkAVFa.s:73     .bss.arm_connect_status:00000000 $d
-C:\Users\Godwin\AppData\Local\Temp\ccdkAVFa.s:78     .bss.boom_arm_status:00000000 boom_arm_status
-C:\Users\Godwin\AppData\Local\Temp\ccdkAVFa.s:79     .bss.boom_arm_status:00000000 $d
-C:\Users\Godwin\AppData\Local\Temp\ccdkAVFa.s:84     .bss.boom_storage_status:00000000 boom_storage_status
-C:\Users\Godwin\AppData\Local\Temp\ccdkAVFa.s:85     .bss.boom_storage_status:00000000 $d
-C:\Users\Godwin\AppData\Local\Temp\ccdkAVFa.s:91     .bss.total_angle:00000000 total_angle
-C:\Users\Godwin\AppData\Local\Temp\ccdkAVFa.s:88     .bss.total_angle:00000000 $d
-C:\Users\Godwin\AppData\Local\Temp\ccdkAVFa.s:98     .bss.prev_angle:00000000 prev_angle
-C:\Users\Godwin\AppData\Local\Temp\ccdkAVFa.s:95     .bss.prev_angle:00000000 $d
-C:\Users\Godwin\AppData\Local\Temp\ccdkAVFa.s:105    .bss.current_angle:00000000 current_angle
-C:\Users\Godwin\AppData\Local\Temp\ccdkAVFa.s:102    .bss.current_angle:00000000 $d
-C:\Users\Godwin\AppData\Local\Temp\ccdkAVFa.s:112    .data.angle_range:00000000 angle_range
-C:\Users\Godwin\AppData\Local\Temp\ccdkAVFa.s:109    .data.angle_range:00000000 $d
-C:\Users\Godwin\AppData\Local\Temp\ccdkAVFa.s:119    .bss.sum_arm:00000000 sum_arm
-C:\Users\Godwin\AppData\Local\Temp\ccdkAVFa.s:116    .bss.sum_arm:00000000 $d
-C:\Users\Godwin\AppData\Local\Temp\ccdkAVFa.s:122    .text.Wait:00000000 $t
-C:\Users\Godwin\AppData\Local\Temp\ccdkAVFa.s:128    .text.Wait:00000000 Wait
-C:\Users\Godwin\AppData\Local\Temp\ccdkAVFa.s:195    .text.Wait:00000048 $d
-C:\Users\Godwin\AppData\Local\Temp\ccdkAVFa.s:200    .text.remote_control_init:00000000 $t
-C:\Users\Godwin\AppData\Local\Temp\ccdkAVFa.s:206    .text.remote_control_init:00000000 remote_control_init
-C:\Users\Godwin\AppData\Local\Temp\ccdkAVFa.s:272    .text.GPIO_init:00000000 GPIO_init
-C:\Users\Godwin\AppData\Local\Temp\ccdkAVFa.s:351    .text.PWM_control_init:00000000 PWM_control_init
-C:\Users\Godwin\AppData\Local\Temp\ccdkAVFa.s:255    .text.remote_control_init:00000048 $d
-C:\Users\Godwin\AppData\Local\Temp\ccdkAVFa.s:266    .text.GPIO_init:00000000 $t
-C:\Users\Godwin\AppData\Local\Temp\ccdkAVFa.s:337    .text.GPIO_init:00000070 $d
-C:\Users\Godwin\AppData\Local\Temp\ccdkAVFa.s:345    .text.PWM_control_init:00000000 $t
-C:\Users\Godwin\AppData\Local\Temp\ccdkAVFa.s:386    .text.PWM_control_init:00000028 $d
-C:\Users\Godwin\AppData\Local\Temp\ccdkAVFa.s:392    .text.VT13toRCdata:00000000 $t
-C:\Users\Godwin\AppData\Local\Temp\ccdkAVFa.s:398    .text.VT13toRCdata:00000000 VT13toRCdata
-C:\Users\Godwin\AppData\Local\Temp\ccdkAVFa.s:455    .text.VT13toRCdata:00000070 $d
-C:\Users\Godwin\AppData\Local\Temp\ccdkAVFa.s:463    .text.key_mouse_control:00000000 $t
-C:\Users\Godwin\AppData\Local\Temp\ccdkAVFa.s:469    .text.key_mouse_control:00000000 key_mouse_control
-C:\Users\Godwin\AppData\Local\Temp\ccdkAVFa.s:849    .text.key_mouse_control:000002c0 $d
-C:\Users\Godwin\AppData\Local\Temp\ccdkAVFa.s:863    .text.key_mouse_control:000002f0 $t
-C:\Users\Godwin\AppData\Local\Temp\ccdkAVFa.s:1082   .text.key_mouse_control:00000470 $d
-C:\Users\Godwin\AppData\Local\Temp\ccdkAVFa.s:1096   .text.key_mouse_control:000004a0 $t
-C:\Users\Godwin\AppData\Local\Temp\ccdkAVFa.s:1290   .text.key_mouse_control:000005f8 $d
-C:\Users\Godwin\AppData\Local\Temp\ccdkAVFa.s:1302   .text.ARM_CONNECT_STATUS_UPDATA:00000000 $t
-C:\Users\Godwin\AppData\Local\Temp\ccdkAVFa.s:1308   .text.ARM_CONNECT_STATUS_UPDATA:00000000 ARM_CONNECT_STATUS_UPDATA
-C:\Users\Godwin\AppData\Local\Temp\ccdkAVFa.s:1337   .text.RC_Control:00000000 $t
-ARM GAS  C:\Users\Godwin\AppData\Local\Temp\ccdkAVFa.s 			page 41
+C:\Users\Godwin\AppData\Local\Temp\cc81Rf4h.s:24     .data.b:00000000 b
+C:\Users\Godwin\AppData\Local\Temp\cc81Rf4h.s:21     .data.b:00000000 $d
+C:\Users\Godwin\AppData\Local\Temp\cc81Rf4h.s:31     .bss.c:00000000 c
+C:\Users\Godwin\AppData\Local\Temp\cc81Rf4h.s:28     .bss.c:00000000 $d
+C:\Users\Godwin\AppData\Local\Temp\cc81Rf4h.s:38     .bss.RC_data:00000000 RC_data
+C:\Users\Godwin\AppData\Local\Temp\cc81Rf4h.s:35     .bss.RC_data:00000000 $d
+C:\Users\Godwin\AppData\Local\Temp\cc81Rf4h.s:45     .bss.AHRS_yaw_set:00000000 AHRS_yaw_set
+C:\Users\Godwin\AppData\Local\Temp\cc81Rf4h.s:42     .bss.AHRS_yaw_set:00000000 $d
+C:\Users\Godwin\AppData\Local\Temp\cc81Rf4h.s:52     .bss.yaw_pid:00000000 yaw_pid
+C:\Users\Godwin\AppData\Local\Temp\cc81Rf4h.s:49     .bss.yaw_pid:00000000 $d
+C:\Users\Godwin\AppData\Local\Temp\cc81Rf4h.s:59     .bss.delta_angle:00000000 delta_angle
+C:\Users\Godwin\AppData\Local\Temp\cc81Rf4h.s:56     .bss.delta_angle:00000000 $d
+C:\Users\Godwin\AppData\Local\Temp\cc81Rf4h.s:66     .bss.wait_time:00000000 wait_time
+C:\Users\Godwin\AppData\Local\Temp\cc81Rf4h.s:63     .bss.wait_time:00000000 $d
+C:\Users\Godwin\AppData\Local\Temp\cc81Rf4h.s:72     .bss.arm_connect_status:00000000 arm_connect_status
+C:\Users\Godwin\AppData\Local\Temp\cc81Rf4h.s:73     .bss.arm_connect_status:00000000 $d
+C:\Users\Godwin\AppData\Local\Temp\cc81Rf4h.s:78     .bss.boom_arm_status:00000000 boom_arm_status
+C:\Users\Godwin\AppData\Local\Temp\cc81Rf4h.s:79     .bss.boom_arm_status:00000000 $d
+C:\Users\Godwin\AppData\Local\Temp\cc81Rf4h.s:84     .bss.boom_storage_status:00000000 boom_storage_status
+C:\Users\Godwin\AppData\Local\Temp\cc81Rf4h.s:85     .bss.boom_storage_status:00000000 $d
+C:\Users\Godwin\AppData\Local\Temp\cc81Rf4h.s:91     .bss.total_angle:00000000 total_angle
+C:\Users\Godwin\AppData\Local\Temp\cc81Rf4h.s:88     .bss.total_angle:00000000 $d
+C:\Users\Godwin\AppData\Local\Temp\cc81Rf4h.s:98     .bss.prev_angle:00000000 prev_angle
+C:\Users\Godwin\AppData\Local\Temp\cc81Rf4h.s:95     .bss.prev_angle:00000000 $d
+C:\Users\Godwin\AppData\Local\Temp\cc81Rf4h.s:105    .bss.current_angle:00000000 current_angle
+C:\Users\Godwin\AppData\Local\Temp\cc81Rf4h.s:102    .bss.current_angle:00000000 $d
+C:\Users\Godwin\AppData\Local\Temp\cc81Rf4h.s:112    .data.angle_range:00000000 angle_range
+C:\Users\Godwin\AppData\Local\Temp\cc81Rf4h.s:109    .data.angle_range:00000000 $d
+C:\Users\Godwin\AppData\Local\Temp\cc81Rf4h.s:119    .bss.sum_arm:00000000 sum_arm
+C:\Users\Godwin\AppData\Local\Temp\cc81Rf4h.s:116    .bss.sum_arm:00000000 $d
+C:\Users\Godwin\AppData\Local\Temp\cc81Rf4h.s:122    .text.Wait:00000000 $t
+C:\Users\Godwin\AppData\Local\Temp\cc81Rf4h.s:128    .text.Wait:00000000 Wait
+C:\Users\Godwin\AppData\Local\Temp\cc81Rf4h.s:195    .text.Wait:00000048 $d
+C:\Users\Godwin\AppData\Local\Temp\cc81Rf4h.s:200    .text.remote_control_init:00000000 $t
+C:\Users\Godwin\AppData\Local\Temp\cc81Rf4h.s:206    .text.remote_control_init:00000000 remote_control_init
+C:\Users\Godwin\AppData\Local\Temp\cc81Rf4h.s:272    .text.GPIO_init:00000000 GPIO_init
+C:\Users\Godwin\AppData\Local\Temp\cc81Rf4h.s:351    .text.PWM_control_init:00000000 PWM_control_init
+C:\Users\Godwin\AppData\Local\Temp\cc81Rf4h.s:255    .text.remote_control_init:00000048 $d
+C:\Users\Godwin\AppData\Local\Temp\cc81Rf4h.s:266    .text.GPIO_init:00000000 $t
+C:\Users\Godwin\AppData\Local\Temp\cc81Rf4h.s:337    .text.GPIO_init:00000070 $d
+C:\Users\Godwin\AppData\Local\Temp\cc81Rf4h.s:345    .text.PWM_control_init:00000000 $t
+C:\Users\Godwin\AppData\Local\Temp\cc81Rf4h.s:386    .text.PWM_control_init:00000028 $d
+C:\Users\Godwin\AppData\Local\Temp\cc81Rf4h.s:392    .text.VT13toRCdata:00000000 $t
+C:\Users\Godwin\AppData\Local\Temp\cc81Rf4h.s:398    .text.VT13toRCdata:00000000 VT13toRCdata
+C:\Users\Godwin\AppData\Local\Temp\cc81Rf4h.s:455    .text.VT13toRCdata:00000070 $d
+C:\Users\Godwin\AppData\Local\Temp\cc81Rf4h.s:463    .text.key_mouse_control:00000000 $t
+C:\Users\Godwin\AppData\Local\Temp\cc81Rf4h.s:469    .text.key_mouse_control:00000000 key_mouse_control
+C:\Users\Godwin\AppData\Local\Temp\cc81Rf4h.s:849    .text.key_mouse_control:000002c0 $d
+C:\Users\Godwin\AppData\Local\Temp\cc81Rf4h.s:863    .text.key_mouse_control:000002f0 $t
+C:\Users\Godwin\AppData\Local\Temp\cc81Rf4h.s:1082   .text.key_mouse_control:00000470 $d
+C:\Users\Godwin\AppData\Local\Temp\cc81Rf4h.s:1096   .text.key_mouse_control:000004a0 $t
+C:\Users\Godwin\AppData\Local\Temp\cc81Rf4h.s:1290   .text.key_mouse_control:000005f8 $d
+C:\Users\Godwin\AppData\Local\Temp\cc81Rf4h.s:1302   .text.ARM_CONNECT_STATUS_UPDATA:00000000 $t
+C:\Users\Godwin\AppData\Local\Temp\cc81Rf4h.s:1308   .text.ARM_CONNECT_STATUS_UPDATA:00000000 ARM_CONNECT_STATUS_UPDATA
+C:\Users\Godwin\AppData\Local\Temp\cc81Rf4h.s:1337   .text.RC_Control:00000000 $t
+ARM GAS  C:\Users\Godwin\AppData\Local\Temp\cc81Rf4h.s 			page 41
 
 
-C:\Users\Godwin\AppData\Local\Temp\ccdkAVFa.s:1343   .text.RC_Control:00000000 RC_Control
-C:\Users\Godwin\AppData\Local\Temp\ccdkAVFa.s:1421   .text.RC_Control:0000006c $d
-C:\Users\Godwin\AppData\Local\Temp\ccdkAVFa.s:1428   .text.start:00000000 $t
-C:\Users\Godwin\AppData\Local\Temp\ccdkAVFa.s:1434   .text.start:00000000 start
-C:\Users\Godwin\AppData\Local\Temp\ccdkAVFa.s:1463   .text.YAWFLOW_POS:00000000 $t
-C:\Users\Godwin\AppData\Local\Temp\ccdkAVFa.s:1469   .text.YAWFLOW_POS:00000000 YAWFLOW_POS
-C:\Users\Godwin\AppData\Local\Temp\ccdkAVFa.s:1498   .text.disable_all:00000000 $t
-C:\Users\Godwin\AppData\Local\Temp\ccdkAVFa.s:1504   .text.disable_all:00000000 disable_all
-C:\Users\Godwin\AppData\Local\Temp\ccdkAVFa.s:1569   .text.disable_all:00000068 $d
-C:\Users\Godwin\AppData\Local\Temp\ccdkAVFa.s:1576   .text.enable_all:00000000 $t
-C:\Users\Godwin\AppData\Local\Temp\ccdkAVFa.s:1582   .text.enable_all:00000000 enable_all
-C:\Users\Godwin\AppData\Local\Temp\ccdkAVFa.s:1638   .text.enable_all:00000050 $d
-C:\Users\Godwin\AppData\Local\Temp\ccdkAVFa.s:1644   .text.switch_servos:00000000 $t
-C:\Users\Godwin\AppData\Local\Temp\ccdkAVFa.s:1650   .text.switch_servos:00000000 switch_servos
+C:\Users\Godwin\AppData\Local\Temp\cc81Rf4h.s:1343   .text.RC_Control:00000000 RC_Control
+C:\Users\Godwin\AppData\Local\Temp\cc81Rf4h.s:1421   .text.RC_Control:0000006c $d
+C:\Users\Godwin\AppData\Local\Temp\cc81Rf4h.s:1428   .text.start:00000000 $t
+C:\Users\Godwin\AppData\Local\Temp\cc81Rf4h.s:1434   .text.start:00000000 start
+C:\Users\Godwin\AppData\Local\Temp\cc81Rf4h.s:1463   .text.YAWFLOW_POS:00000000 $t
+C:\Users\Godwin\AppData\Local\Temp\cc81Rf4h.s:1469   .text.YAWFLOW_POS:00000000 YAWFLOW_POS
+C:\Users\Godwin\AppData\Local\Temp\cc81Rf4h.s:1498   .text.disable_all:00000000 $t
+C:\Users\Godwin\AppData\Local\Temp\cc81Rf4h.s:1504   .text.disable_all:00000000 disable_all
+C:\Users\Godwin\AppData\Local\Temp\cc81Rf4h.s:1569   .text.disable_all:00000068 $d
+C:\Users\Godwin\AppData\Local\Temp\cc81Rf4h.s:1576   .text.enable_all:00000000 $t
+C:\Users\Godwin\AppData\Local\Temp\cc81Rf4h.s:1582   .text.enable_all:00000000 enable_all
+C:\Users\Godwin\AppData\Local\Temp\cc81Rf4h.s:1638   .text.enable_all:00000050 $d
+C:\Users\Godwin\AppData\Local\Temp\cc81Rf4h.s:1644   .text.switch_servos:00000000 $t
+C:\Users\Godwin\AppData\Local\Temp\cc81Rf4h.s:1650   .text.switch_servos:00000000 switch_servos
 
 UNDEFINED SYMBOLS
 pid_set

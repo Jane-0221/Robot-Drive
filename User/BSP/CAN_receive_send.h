@@ -42,6 +42,7 @@ typedef FDCAN_HandleTypeDef hcan_t;//
 extern motor_measure_t motor_data[33];
 extern void can_init(void);
 extern uint8_t canx_send_data(FDCAN_HandleTypeDef *hcan, uint16_t id, uint8_t *data, uint32_t len);
+extern uint8_t canx_send_ext_data(FDCAN_HandleTypeDef *hcan, uint32_t id, uint8_t *data, uint32_t len);
 extern uint8_t fdcanx_receive(FDCAN_HandleTypeDef *hfdcan,uint32_t RXFIFO,FDCAN_RxHeaderTypeDef *fdcan_RxHeader,uint8_t *buf);
 extern void get_motor_measure(motor_measure_t *ptr, uint8_t data[]);
 extern void process_motor_data(motor_measure_t *motor_data);
