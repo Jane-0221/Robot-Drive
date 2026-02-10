@@ -7,15 +7,12 @@
 extern Motor_DM_Status DM_Status[6];
 void Arm_Init()
 {
-  arm_motor_init(&arm_motor[Motor1], 0x05, POS_MODE); // 设置ID和控制模式  大yaw
-  arm_motor_init(&arm_motor[Motor2], 0x02, POS_MODE); // 设置ID和控制模式  大pitch
-  arm_motor_init(&arm_motor[Motor3], 0x03, POS_MODE); // 设置ID和控制模式  中yaw
-  arm_motor_init(&arm_motor[Motor4], 0x04, POS_MODE); // 设置ID和控制模式  中row
-  arm_motor_init(&arm_motor[Motor5], 0x05, POS_MODE); // 设置ID和控制模式  末端pitch
 
-  enable_motor_mode(&hfdcan1, 0x05, POS_MODE);
-  enable_motor_mode(&hfdcan2, 0x02, POS_MODE);
-  enable_motor_mode(&hfdcan2, 0x03, POS_MODE);
+
+  arm_motor_init(&arm_motor[Motor4], 0x04, POS_MODE); // 设置ID和控制模式  
+  arm_motor_init(&arm_motor[Motor5], 0x05, POS_MODE); // 设置ID和控制模式  
+  arm_motor_init(&arm_motor[Motor3], 0x06, POS_MODE); // 设置ID和控制模式  
+
   enable_motor_mode(&hfdcan2, 0x04, POS_MODE);
   enable_motor_mode(&hfdcan2, 0x05, POS_MODE);
   enable_motor_mode(&hfdcan2, 0x06, POS_MODE);
