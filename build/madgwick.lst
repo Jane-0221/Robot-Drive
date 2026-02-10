@@ -1,4 +1,4 @@
-ARM GAS  C:\Users\Godwin\AppData\Local\Temp\ccpxVXr2.s 			page 1
+ARM GAS  C:\Users\Godwin\AppData\Local\Temp\ccgrFAVD.s 			page 1
 
 
    1              		.cpu cortex-m7
@@ -58,7 +58,7 @@ ARM GAS  C:\Users\Godwin\AppData\Local\Temp\ccpxVXr2.s 			page 1
   69              		.section	.bss.SEq_2,"aw",%nobits
   70              		.align	2
   73              	SEq_2:
-ARM GAS  C:\Users\Godwin\AppData\Local\Temp\ccpxVXr2.s 			page 2
+ARM GAS  C:\Users\Godwin\AppData\Local\Temp\ccgrFAVD.s 			page 2
 
 
   74 0000 00000000 		.space	4
@@ -118,7 +118,7 @@ ARM GAS  C:\Users\Godwin\AppData\Local\Temp\ccpxVXr2.s 			page 1
   15:Algorithm/madgwick.c **** // Local system variables
   16:Algorithm/madgwick.c **** float norm; // vector norm
   17:Algorithm/madgwick.c **** float SEqDot_omega_1, SEqDot_omega_2, SEqDot_omega_3, SEqDot_omega_4; // quaternion derrivative fro
-ARM GAS  C:\Users\Godwin\AppData\Local\Temp\ccpxVXr2.s 			page 3
+ARM GAS  C:\Users\Godwin\AppData\Local\Temp\ccgrFAVD.s 			page 3
 
 
   18:Algorithm/madgwick.c **** float f_1, f_2, f_3; // objective function elements
@@ -178,7 +178,7 @@ ARM GAS  C:\Users\Godwin\AppData\Local\Temp\ccpxVXr2.s 			page 1
  162              		.loc 1 28 7
  163 0088 77EEA77A 		vadd.f32	s15, s15, s15
  164 008c C7ED197A 		vstr.32	s15, [r7, #100]
-ARM GAS  C:\Users\Godwin\AppData\Local\Temp\ccpxVXr2.s 			page 4
+ARM GAS  C:\Users\Godwin\AppData\Local\Temp\ccgrFAVD.s 			page 4
 
 
   29:Algorithm/madgwick.c **** 
@@ -238,7 +238,7 @@ ARM GAS  C:\Users\Godwin\AppData\Local\Temp\ccpxVXr2.s 			page 1
  211              		.loc 1 36 24
  212 0114 37EE677A 		vsub.f32	s14, s14, s15
  213              		.loc 1 36 5
-ARM GAS  C:\Users\Godwin\AppData\Local\Temp\ccpxVXr2.s 			page 5
+ARM GAS  C:\Users\Godwin\AppData\Local\Temp\ccgrFAVD.s 			page 5
 
 
  214 0118 D7ED027A 		vldr.32	s15, [r7, #8]
@@ -298,7 +298,7 @@ ARM GAS  C:\Users\Godwin\AppData\Local\Temp\ccpxVXr2.s 			page 1
  263 0198 BB64     		str	r3, [r7, #72]	@ float
   42:Algorithm/madgwick.c **** J_14or21 = twoSEq_2;
  264              		.loc 1 42 10
-ARM GAS  C:\Users\Godwin\AppData\Local\Temp\ccpxVXr2.s 			page 6
+ARM GAS  C:\Users\Godwin\AppData\Local\Temp\ccgrFAVD.s 			page 6
 
 
  265 019a BB6E     		ldr	r3, [r7, #104]	@ float
@@ -358,7 +358,7 @@ ARM GAS  C:\Users\Godwin\AppData\Local\Temp\ccpxVXr2.s 			page 1
  313              		.loc 1 48 54
  314 0222 D7ED126A 		vldr.32	s13, [r7, #72]
  315 0226 D7ED177A 		vldr.32	s15, [r7, #92]
-ARM GAS  C:\Users\Godwin\AppData\Local\Temp\ccpxVXr2.s 			page 7
+ARM GAS  C:\Users\Godwin\AppData\Local\Temp\ccgrFAVD.s 			page 7
 
 
  316 022a 66EEA77A 		vmul.f32	s15, s13, s15
@@ -418,7 +418,7 @@ ARM GAS  C:\Users\Godwin\AppData\Local\Temp\ccpxVXr2.s 			page 1
  365 02b2 C6EE877A 		vdiv.f32	s15, s13, s14
  366 02b6 C7ED0D7A 		vstr.32	s15, [r7, #52]
   54:Algorithm/madgwick.c **** SEqHatDot_3 /= norm;
-ARM GAS  C:\Users\Godwin\AppData\Local\Temp\ccpxVXr2.s 			page 8
+ARM GAS  C:\Users\Godwin\AppData\Local\Temp\ccgrFAVD.s 			page 8
 
 
  367              		.loc 1 54 13
@@ -478,7 +478,7 @@ ARM GAS  C:\Users\Godwin\AppData\Local\Temp\ccpxVXr2.s 			page 1
  416 0346 27EE277A 		vmul.f32	s14, s14, s15
  417              		.loc 1 59 46
  418 034a D7ED1E6A 		vldr.32	s13, [r7, #120]
-ARM GAS  C:\Users\Godwin\AppData\Local\Temp\ccpxVXr2.s 			page 9
+ARM GAS  C:\Users\Godwin\AppData\Local\Temp\ccgrFAVD.s 			page 9
 
 
  419 034e D7ED037A 		vldr.32	s15, [r7, #12]
@@ -538,7 +538,7 @@ ARM GAS  C:\Users\Godwin\AppData\Local\Temp\ccpxVXr2.s 			page 1
  470 03d8 544C12B3 		.word	-1290646444
  471 03dc E158B33F 		.word	1068718305
  472 03e0 000000E0 		.word	-536870912
-ARM GAS  C:\Users\Godwin\AppData\Local\Temp\ccpxVXr2.s 			page 10
+ARM GAS  C:\Users\Godwin\AppData\Local\Temp\ccgrFAVD.s 			page 10
 
 
  473 03e4 4D62503F 		.word	1062232653
@@ -598,7 +598,7 @@ ARM GAS  C:\Users\Godwin\AppData\Local\Temp\ccpxVXr2.s 			page 1
  524 0476 D7ED077A 		vldr.32	s15, [r7, #28]
  525 047a B7EEE76A 		vcvt.f64.f32	d6, s15
  526              		.loc 1 65 34
-ARM GAS  C:\Users\Godwin\AppData\Local\Temp\ccpxVXr2.s 			page 11
+ARM GAS  C:\Users\Godwin\AppData\Local\Temp\ccgrFAVD.s 			page 11
 
 
  527 047e D7ED0B7A 		vldr.32	s15, [r7, #44]
@@ -658,7 +658,7 @@ ARM GAS  C:\Users\Godwin\AppData\Local\Temp\ccpxVXr2.s 			page 1
  579              		.loc 1 67 6 discriminator 1
  580 050e F7EEC77B 		vcvt.f32.f64	s15, d7
  581 0512 C7ED187A 		vstr.32	s15, [r7, #96]
-ARM GAS  C:\Users\Godwin\AppData\Local\Temp\ccpxVXr2.s 			page 12
+ARM GAS  C:\Users\Godwin\AppData\Local\Temp\ccgrFAVD.s 			page 12
 
 
   68:Algorithm/madgwick.c **** SEq_1 /= norm;
@@ -718,41 +718,41 @@ ARM GAS  C:\Users\Godwin\AppData\Local\Temp\ccpxVXr2.s 			page 1
  631              		.cfi_endproc
  632              	.LFE0:
  634              		.text
-ARM GAS  C:\Users\Godwin\AppData\Local\Temp\ccpxVXr2.s 			page 13
+ARM GAS  C:\Users\Godwin\AppData\Local\Temp\ccgrFAVD.s 			page 13
 
 
  635              	.Letext0:
  636              		.file 2 "C:/Users/Godwin/13.2 Rel1/arm-none-eabi/include/math.h"
-ARM GAS  C:\Users\Godwin\AppData\Local\Temp\ccpxVXr2.s 			page 14
+ARM GAS  C:\Users\Godwin\AppData\Local\Temp\ccgrFAVD.s 			page 14
 
 
 DEFINED SYMBOLS
                             *ABS*:00000000 madgwick.c
-C:\Users\Godwin\AppData\Local\Temp\ccpxVXr2.s:24     .bss.a_x:00000000 a_x
-C:\Users\Godwin\AppData\Local\Temp\ccpxVXr2.s:21     .bss.a_x:00000000 $d
-C:\Users\Godwin\AppData\Local\Temp\ccpxVXr2.s:31     .bss.a_y:00000000 a_y
-C:\Users\Godwin\AppData\Local\Temp\ccpxVXr2.s:28     .bss.a_y:00000000 $d
-C:\Users\Godwin\AppData\Local\Temp\ccpxVXr2.s:38     .bss.a_z:00000000 a_z
-C:\Users\Godwin\AppData\Local\Temp\ccpxVXr2.s:35     .bss.a_z:00000000 $d
-C:\Users\Godwin\AppData\Local\Temp\ccpxVXr2.s:45     .bss.w_x:00000000 w_x
-C:\Users\Godwin\AppData\Local\Temp\ccpxVXr2.s:42     .bss.w_x:00000000 $d
-C:\Users\Godwin\AppData\Local\Temp\ccpxVXr2.s:52     .bss.w_y:00000000 w_y
-C:\Users\Godwin\AppData\Local\Temp\ccpxVXr2.s:49     .bss.w_y:00000000 $d
-C:\Users\Godwin\AppData\Local\Temp\ccpxVXr2.s:59     .bss.w_z:00000000 w_z
-C:\Users\Godwin\AppData\Local\Temp\ccpxVXr2.s:56     .bss.w_z:00000000 $d
-C:\Users\Godwin\AppData\Local\Temp\ccpxVXr2.s:66     .data.SEq_1:00000000 SEq_1
-C:\Users\Godwin\AppData\Local\Temp\ccpxVXr2.s:63     .data.SEq_1:00000000 $d
-C:\Users\Godwin\AppData\Local\Temp\ccpxVXr2.s:73     .bss.SEq_2:00000000 SEq_2
-C:\Users\Godwin\AppData\Local\Temp\ccpxVXr2.s:70     .bss.SEq_2:00000000 $d
-C:\Users\Godwin\AppData\Local\Temp\ccpxVXr2.s:80     .bss.SEq_3:00000000 SEq_3
-C:\Users\Godwin\AppData\Local\Temp\ccpxVXr2.s:77     .bss.SEq_3:00000000 $d
-C:\Users\Godwin\AppData\Local\Temp\ccpxVXr2.s:87     .bss.SEq_4:00000000 SEq_4
-C:\Users\Godwin\AppData\Local\Temp\ccpxVXr2.s:84     .bss.SEq_4:00000000 $d
-C:\Users\Godwin\AppData\Local\Temp\ccpxVXr2.s:90     .text.madgwickUpdate:00000000 $t
-C:\Users\Godwin\AppData\Local\Temp\ccpxVXr2.s:96     .text.madgwickUpdate:00000000 madgwickUpdate
-C:\Users\Godwin\AppData\Local\Temp\ccpxVXr2.s:470    .text.madgwickUpdate:000003d8 $d
-C:\Users\Godwin\AppData\Local\Temp\ccpxVXr2.s:479    .text.madgwickUpdate:000003f8 $t
-C:\Users\Godwin\AppData\Local\Temp\ccpxVXr2.s:623    .text.madgwickUpdate:00000570 $d
+C:\Users\Godwin\AppData\Local\Temp\ccgrFAVD.s:24     .bss.a_x:00000000 a_x
+C:\Users\Godwin\AppData\Local\Temp\ccgrFAVD.s:21     .bss.a_x:00000000 $d
+C:\Users\Godwin\AppData\Local\Temp\ccgrFAVD.s:31     .bss.a_y:00000000 a_y
+C:\Users\Godwin\AppData\Local\Temp\ccgrFAVD.s:28     .bss.a_y:00000000 $d
+C:\Users\Godwin\AppData\Local\Temp\ccgrFAVD.s:38     .bss.a_z:00000000 a_z
+C:\Users\Godwin\AppData\Local\Temp\ccgrFAVD.s:35     .bss.a_z:00000000 $d
+C:\Users\Godwin\AppData\Local\Temp\ccgrFAVD.s:45     .bss.w_x:00000000 w_x
+C:\Users\Godwin\AppData\Local\Temp\ccgrFAVD.s:42     .bss.w_x:00000000 $d
+C:\Users\Godwin\AppData\Local\Temp\ccgrFAVD.s:52     .bss.w_y:00000000 w_y
+C:\Users\Godwin\AppData\Local\Temp\ccgrFAVD.s:49     .bss.w_y:00000000 $d
+C:\Users\Godwin\AppData\Local\Temp\ccgrFAVD.s:59     .bss.w_z:00000000 w_z
+C:\Users\Godwin\AppData\Local\Temp\ccgrFAVD.s:56     .bss.w_z:00000000 $d
+C:\Users\Godwin\AppData\Local\Temp\ccgrFAVD.s:66     .data.SEq_1:00000000 SEq_1
+C:\Users\Godwin\AppData\Local\Temp\ccgrFAVD.s:63     .data.SEq_1:00000000 $d
+C:\Users\Godwin\AppData\Local\Temp\ccgrFAVD.s:73     .bss.SEq_2:00000000 SEq_2
+C:\Users\Godwin\AppData\Local\Temp\ccgrFAVD.s:70     .bss.SEq_2:00000000 $d
+C:\Users\Godwin\AppData\Local\Temp\ccgrFAVD.s:80     .bss.SEq_3:00000000 SEq_3
+C:\Users\Godwin\AppData\Local\Temp\ccgrFAVD.s:77     .bss.SEq_3:00000000 $d
+C:\Users\Godwin\AppData\Local\Temp\ccgrFAVD.s:87     .bss.SEq_4:00000000 SEq_4
+C:\Users\Godwin\AppData\Local\Temp\ccgrFAVD.s:84     .bss.SEq_4:00000000 $d
+C:\Users\Godwin\AppData\Local\Temp\ccgrFAVD.s:90     .text.madgwickUpdate:00000000 $t
+C:\Users\Godwin\AppData\Local\Temp\ccgrFAVD.s:96     .text.madgwickUpdate:00000000 madgwickUpdate
+C:\Users\Godwin\AppData\Local\Temp\ccgrFAVD.s:470    .text.madgwickUpdate:000003d8 $d
+C:\Users\Godwin\AppData\Local\Temp\ccgrFAVD.s:479    .text.madgwickUpdate:000003f8 $t
+C:\Users\Godwin\AppData\Local\Temp\ccgrFAVD.s:623    .text.madgwickUpdate:00000570 $d
 
 UNDEFINED SYMBOLS
 sqrt

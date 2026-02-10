@@ -60,7 +60,6 @@
   "C_Cpp.errorSquiggles": "enabled",
   "files.associations": {
     "Makefile": "makefile",
-    "gimbal.h": "c",
     "control_setting.h": "c",
     "shoot.h": "c",
     "struct_typedef.h": "c",

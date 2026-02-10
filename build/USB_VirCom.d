@@ -29,7 +29,6 @@ build/USB_VirCom.o: User/BSP/USB_VirCom.c USB_DEVICE/App/usbd_cdc_if.h \
  Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal_i2c.h \
  Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal_i2c_ex.h \
  Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal_iwdg.h \
- Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal_ospi.h \
  Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal_pwr.h \
  Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal_pwr_ex.h \
  Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal_spi.h \
@@ -45,8 +44,7 @@ build/USB_VirCom.o: User/BSP/USB_VirCom.c USB_DEVICE/App/usbd_cdc_if.h \
  Middlewares/ST/STM32_USB_Device_Library/Core/Inc/usbd_ioreq.h \
  Middlewares/ST/STM32_USB_Device_Library/Core/Inc/usbd_ctlreq.h \
  Algorithm/fifo.h User/BSP/USB_VirCom.h Algorithm/crc8_crc16.h \
- User/BSP/Stm32_time.h User/Software/Auto_control.h \
- User/Software/Global_status.h
+ User/BSP/Stm32_time.h
 USB_DEVICE/App/usbd_cdc_if.h:
 Middlewares/ST/STM32_USB_Device_Library/Class/CDC/Inc/usbd_cdc.h:
 Middlewares/ST/STM32_USB_Device_Library/Core/Inc/usbd_ioreq.h:
@@ -81,7 +79,6 @@ Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal_hsem.h:
 Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal_i2c.h:
 Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal_i2c_ex.h:
 Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal_iwdg.h:
-Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal_ospi.h:
 Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal_pwr.h:
 Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal_pwr_ex.h:
 Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal_spi.h:
@@ -100,5 +97,3 @@ Algorithm/fifo.h:
 User/BSP/USB_VirCom.h:
 Algorithm/crc8_crc16.h:
 User/BSP/Stm32_time.h:
-User/Software/Auto_control.h:
-User/Software/Global_status.h:

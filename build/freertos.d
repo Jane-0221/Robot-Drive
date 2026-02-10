@@ -34,7 +34,6 @@ build/freertos.o: Core/Src/freertos.c \
  Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal_i2c.h \
  Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal_i2c_ex.h \
  Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal_iwdg.h \
- Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal_ospi.h \
  Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal_pwr.h \
  Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal_pwr_ex.h \
  Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal_spi.h \
@@ -48,19 +47,13 @@ build/freertos.o: Core/Src/freertos.c \
  Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal_pcd_ex.h \
  Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2/cmsis_os.h \
  Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2/cmsis_os2.h \
- User/Software/remote_control.h User/Software/Chassis.h \
- User/BSP/CAN_receive_send.h Core/Inc/fdcan.h Core/Inc/main.h \
- Algorithm/User_math.h User/Hardware/motor.h User/Software/Gimbal.h \
- User/Software/Global_status.h User/Hardware/VT13.h \
- Algorithm/CRC8_CRC16.h User/Software/Auto_control.h \
- User/Software/shoot.h User/Software/ui.h Drivers/UI/ui_interface.h \
- Drivers/UI/ui_types.h Core/Inc/usart.h Drivers/UI/ui_g.h \
- Drivers/UI/ui_interface.h User/Software/music.h User/Hardware/buzzer.h \
- Core/Inc/tim.h Core/Inc/gpio.h \
+ User/Software/remote_control.h User/Software/music.h \
+ User/Hardware/buzzer.h Core/Inc/tim.h Core/Inc/main.h Core/Inc/gpio.h \
  Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2/cmsis_os2.h \
  User/Hardware/referee_system.h User/Hardware/referee_system_protocol.h \
- Core/Inc/struct_typedef.h Algorithm/fifo.h User/Hardware/supercup.h \
- User/Hardware/LED.h User/Software/limit_filter.h User/Hardware/dm_arm.h \
+ Core/Inc/struct_typedef.h Algorithm/fifo.h User/Hardware/motor.h \
+ Algorithm/User_math.h User/BSP/CAN_receive_send.h Core/Inc/fdcan.h \
+ User/Hardware/supercup.h User/Hardware/LED.h User/Hardware/dm_arm.h \
  User/BSP/can_receive_send.h User/Hardware/dm4310_drv.h \
  User/Hardware/motor.h Core/Inc/iwdg.h
 Middlewares/Third_Party/FreeRTOS/Source/include/FreeRTOS.h:
@@ -101,7 +94,6 @@ Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal_hsem.h:
 Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal_i2c.h:
 Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal_i2c_ex.h:
 Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal_iwdg.h:
-Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal_ospi.h:
 Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal_pwr.h:
 Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal_pwr_ex.h:
 Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal_spi.h:
@@ -116,36 +108,22 @@ Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal_pcd_ex.h:
 Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2/cmsis_os.h:
 Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2/cmsis_os2.h:
 User/Software/remote_control.h:
-User/Software/Chassis.h:
-User/BSP/CAN_receive_send.h:
-Core/Inc/fdcan.h:
-Core/Inc/main.h:
-Algorithm/User_math.h:
-User/Hardware/motor.h:
-User/Software/Gimbal.h:
-User/Software/Global_status.h:
-User/Hardware/VT13.h:
-Algorithm/CRC8_CRC16.h:
-User/Software/Auto_control.h:
-User/Software/shoot.h:
-User/Software/ui.h:
-Drivers/UI/ui_interface.h:
-Drivers/UI/ui_types.h:
-Core/Inc/usart.h:
-Drivers/UI/ui_g.h:
-Drivers/UI/ui_interface.h:
 User/Software/music.h:
 User/Hardware/buzzer.h:
 Core/Inc/tim.h:
+Core/Inc/main.h:
 Core/Inc/gpio.h:
 Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2/cmsis_os2.h:
 User/Hardware/referee_system.h:
 User/Hardware/referee_system_protocol.h:
 Core/Inc/struct_typedef.h:
 Algorithm/fifo.h:
+User/Hardware/motor.h:
+Algorithm/User_math.h:
+User/BSP/CAN_receive_send.h:
+Core/Inc/fdcan.h:
 User/Hardware/supercup.h:
 User/Hardware/LED.h:
-User/Software/limit_filter.h:
 User/Hardware/dm_arm.h:
 User/BSP/can_receive_send.h:
 User/Hardware/dm4310_drv.h:

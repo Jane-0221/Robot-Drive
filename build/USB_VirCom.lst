@@ -1,4 +1,4 @@
-ARM GAS  C:\Users\Godwin\AppData\Local\Temp\ccivO4on.s 			page 1
+ARM GAS  C:\Users\Godwin\AppData\Local\Temp\ccqiNhff.s 			page 1
 
 
    1              		.cpu cortex-m7
@@ -41,13 +41,10 @@ ARM GAS  C:\Users\Godwin\AppData\Local\Temp\ccivO4on.s 			page 1
   12:User/BSP/USB_VirCom.c **** #include "USB_VirCom.h"
   13:User/BSP/USB_VirCom.c **** #include "crc8_crc16.h"
   14:User/BSP/USB_VirCom.c **** #include "Stm32_time.h"
-  15:User/BSP/USB_VirCom.c **** #include "Auto_control.h"
-  16:User/BSP/USB_VirCom.c **** #include "Global_status.h"
-  17:User/BSP/USB_VirCom.c **** #include "fifo.h"
-  18:User/BSP/USB_VirCom.c **** 
-  19:User/BSP/USB_VirCom.c **** void VirCom_send(uint8_t data[], uint16_t len)
-  20:User/BSP/USB_VirCom.c **** {
-  28              		.loc 1 20 1
+  15:User/BSP/USB_VirCom.c **** #include "fifo.h"
+  16:User/BSP/USB_VirCom.c **** void VirCom_send(uint8_t data[], uint16_t len)
+  17:User/BSP/USB_VirCom.c **** {
+  28              		.loc 1 17 1
   29              		.cfi_startproc
   30              		@ args = 0, pretend = 0, frame = 8
   31              		@ frame_needed = 1, uses_anonymous_args = 0
@@ -58,40 +55,40 @@ ARM GAS  C:\Users\Godwin\AppData\Local\Temp\ccivO4on.s 			page 1
   36              		.cfi_offset 14, -4
   37 0002 82B0     		sub	sp, sp, #8
   38              	.LCFI1:
-ARM GAS  C:\Users\Godwin\AppData\Local\Temp\ccivO4on.s 			page 2
-
-
   39              		.cfi_def_cfa_offset 16
   40 0004 00AF     		add	r7, sp, #0
   41              	.LCFI2:
+ARM GAS  C:\Users\Godwin\AppData\Local\Temp\ccqiNhff.s 			page 2
+
+
   42              		.cfi_def_cfa_register 7
   43 0006 7860     		str	r0, [r7, #4]
   44 0008 0B46     		mov	r3, r1
   45 000a 7B80     		strh	r3, [r7, #2]	@ movhi
-  21:User/BSP/USB_VirCom.c ****   if (CDC_Transmit_HS(data, len) == 1) // 判断数据是否发送
-  46              		.loc 1 21 7
+  18:User/BSP/USB_VirCom.c ****   if (CDC_Transmit_HS(data, len) == 1) // 判断数据是否发送
+  46              		.loc 1 18 7
   47 000c 7B88     		ldrh	r3, [r7, #2]
   48 000e 1946     		mov	r1, r3
   49 0010 7868     		ldr	r0, [r7, #4]
   50 0012 FFF7FEFF 		bl	CDC_Transmit_HS
   51 0016 0346     		mov	r3, r0
-  52              		.loc 1 21 6 discriminator 1
+  52              		.loc 1 18 6 discriminator 1
   53 0018 012B     		cmp	r3, #1
   54 001a 05D1     		bne	.L3
-  22:User/BSP/USB_VirCom.c ****   {
-  23:User/BSP/USB_VirCom.c ****     // USB忙碌数据转入缓冲区
-  24:User/BSP/USB_VirCom.c **** 
-  25:User/BSP/USB_VirCom.c ****     fifo_s_puts(&USB_send_fifo, (char *)data, (int)len);
-  55              		.loc 1 25 5
+  19:User/BSP/USB_VirCom.c ****   {
+  20:User/BSP/USB_VirCom.c ****     // USB忙碌数据转入缓冲区
+  21:User/BSP/USB_VirCom.c **** 
+  22:User/BSP/USB_VirCom.c ****     fifo_s_puts(&USB_send_fifo, (char *)data, (int)len);
+  55              		.loc 1 22 5
   56 001c 7B88     		ldrh	r3, [r7, #2]
   57 001e 1A46     		mov	r2, r3
   58 0020 7968     		ldr	r1, [r7, #4]
   59 0022 0348     		ldr	r0, .L4
   60 0024 FFF7FEFF 		bl	fifo_s_puts
   61              	.L3:
-  26:User/BSP/USB_VirCom.c ****   }
-  27:User/BSP/USB_VirCom.c **** }
-  62              		.loc 1 27 1
+  23:User/BSP/USB_VirCom.c ****   }
+  24:User/BSP/USB_VirCom.c **** }
+  62              		.loc 1 24 1
   63 0028 00BF     		nop
   64 002a 0837     		adds	r7, r7, #8
   65              	.LCFI3:
@@ -115,15 +112,15 @@ ARM GAS  C:\Users\Godwin\AppData\Local\Temp\ccivO4on.s 			page 1
   84              		.thumb_func
   86              	VirCom_rev:
   87              	.LFB149:
-  28:User/BSP/USB_VirCom.c **** 
-  29:User/BSP/USB_VirCom.c **** void VirCom_rev(uint8_t data[], uint16_t len)
-  30:User/BSP/USB_VirCom.c **** {
-ARM GAS  C:\Users\Godwin\AppData\Local\Temp\ccivO4on.s 			page 3
-
-
-  88              		.loc 1 30 1
+  25:User/BSP/USB_VirCom.c **** 
+  26:User/BSP/USB_VirCom.c **** void VirCom_rev(uint8_t data[], uint16_t len)
+  27:User/BSP/USB_VirCom.c **** {
+  88              		.loc 1 27 1
   89              		.cfi_startproc
   90              		@ args = 0, pretend = 0, frame = 8
+ARM GAS  C:\Users\Godwin\AppData\Local\Temp\ccqiNhff.s 			page 3
+
+
   91              		@ frame_needed = 1, uses_anonymous_args = 0
   92              		@ link register save eliminated.
   93 0000 80B4     		push	{r7}
@@ -139,13 +136,13 @@ ARM GAS  C:\Users\Godwin\AppData\Local\Temp\ccivO4on.s 			page 1
  103 0006 7860     		str	r0, [r7, #4]
  104 0008 0B46     		mov	r3, r1
  105 000a 7B80     		strh	r3, [r7, #2]	@ movhi
-  31:User/BSP/USB_VirCom.c ****   // if(data[0]==0xA5){
-  32:User/BSP/USB_VirCom.c ****   //   Global.Auto.input.Auto_control_online=100;
-  33:User/BSP/USB_VirCom.c ****   //   decodeMINIPCdata(&fromMINIPC,data,len);
-  34:User/BSP/USB_VirCom.c ****   //   MINIPC_to_STM32();
-  35:User/BSP/USB_VirCom.c ****   // }
-  36:User/BSP/USB_VirCom.c **** }
- 106              		.loc 1 36 1
+  28:User/BSP/USB_VirCom.c ****   // if(data[0]==0xA5){
+  29:User/BSP/USB_VirCom.c ****   //   Global.Auto.input.Auto_control_online=100;
+  30:User/BSP/USB_VirCom.c ****   //   decodeMINIPCdata(&fromMINIPC,data,len);
+  31:User/BSP/USB_VirCom.c ****   //   MINIPC_to_STM32();
+  32:User/BSP/USB_VirCom.c ****   // }
+  33:User/BSP/USB_VirCom.c **** }
+ 106              		.loc 1 33 1
  107 000c 00BF     		nop
  108 000e 0C37     		adds	r7, r7, #12
  109              	.LCFI8:
@@ -169,21 +166,21 @@ ARM GAS  C:\Users\Godwin\AppData\Local\Temp\ccivO4on.s 			page 1
  128              		.thumb_func
  130              	__io_putchar:
  131              	.LFB150:
-  37:User/BSP/USB_VirCom.c **** 
-  38:User/BSP/USB_VirCom.c **** #include "stdio.h"
-  39:User/BSP/USB_VirCom.c **** #ifdef __GNUC__
-  40:User/BSP/USB_VirCom.c **** #define PUTCHAR_PROTOTYPE int __io_putchar(int ch)
-  41:User/BSP/USB_VirCom.c **** #else
-  42:User/BSP/USB_VirCom.c **** #define PUTCHAR_PROTOTYPE int fputc(int ch, FILE *f)
-  43:User/BSP/USB_VirCom.c **** #endif
-  44:User/BSP/USB_VirCom.c **** PUTCHAR_PROTOTYPE
-  45:User/BSP/USB_VirCom.c **** {
-ARM GAS  C:\Users\Godwin\AppData\Local\Temp\ccivO4on.s 			page 4
-
-
- 132              		.loc 1 45 1
+  34:User/BSP/USB_VirCom.c **** 
+  35:User/BSP/USB_VirCom.c **** #include "stdio.h"
+  36:User/BSP/USB_VirCom.c **** #ifdef __GNUC__
+  37:User/BSP/USB_VirCom.c **** #define PUTCHAR_PROTOTYPE int __io_putchar(int ch)
+  38:User/BSP/USB_VirCom.c **** #else
+  39:User/BSP/USB_VirCom.c **** #define PUTCHAR_PROTOTYPE int fputc(int ch, FILE *f)
+  40:User/BSP/USB_VirCom.c **** #endif
+  41:User/BSP/USB_VirCom.c **** PUTCHAR_PROTOTYPE
+  42:User/BSP/USB_VirCom.c **** {
+ 132              		.loc 1 42 1
  133              		.cfi_startproc
  134              		@ args = 0, pretend = 0, frame = 8
+ARM GAS  C:\Users\Godwin\AppData\Local\Temp\ccqiNhff.s 			page 4
+
+
  135              		@ frame_needed = 1, uses_anonymous_args = 0
  136 0000 80B5     		push	{r7, lr}
  137              	.LCFI11:
@@ -197,18 +194,18 @@ ARM GAS  C:\Users\Godwin\AppData\Local\Temp\ccivO4on.s 			page 1
  145              	.LCFI13:
  146              		.cfi_def_cfa_register 7
  147 0006 7860     		str	r0, [r7, #4]
-  46:User/BSP/USB_VirCom.c ****   VirCom_send((uint8_t *)&ch, 1);
- 148              		.loc 1 46 3
+  43:User/BSP/USB_VirCom.c ****   VirCom_send((uint8_t *)&ch, 1);
+ 148              		.loc 1 43 3
  149 0008 3B1D     		adds	r3, r7, #4
  150 000a 0121     		movs	r1, #1
  151 000c 1846     		mov	r0, r3
  152 000e FFF7FEFF 		bl	VirCom_send
-  47:User/BSP/USB_VirCom.c **** 
-  48:User/BSP/USB_VirCom.c ****   return ch;
- 153              		.loc 1 48 10
+  44:User/BSP/USB_VirCom.c **** 
+  45:User/BSP/USB_VirCom.c ****   return ch;
+ 153              		.loc 1 45 10
  154 0012 7B68     		ldr	r3, [r7, #4]
-  49:User/BSP/USB_VirCom.c **** }...
- 155              		.loc 1 49 1
+  46:User/BSP/USB_VirCom.c **** }...
+ 155              		.loc 1 46 1
  156 0014 1846     		mov	r0, r3
  157 0016 0837     		adds	r7, r7, #8
  158              	.LCFI14:
@@ -226,18 +223,18 @@ ARM GAS  C:\Users\Godwin\AppData\Local\Temp\ccivO4on.s 			page 1
  171              		.file 3 "C:/Users/Godwin/13.2 Rel1/arm-none-eabi/include/sys/_stdint.h"
  172              		.file 4 "Algorithm/fifo.h"
  173              		.file 5 "USB_DEVICE/App/usbd_cdc_if.h"
-ARM GAS  C:\Users\Godwin\AppData\Local\Temp\ccivO4on.s 			page 5
+ARM GAS  C:\Users\Godwin\AppData\Local\Temp\ccqiNhff.s 			page 5
 
 
 DEFINED SYMBOLS
                             *ABS*:00000000 USB_VirCom.c
-C:\Users\Godwin\AppData\Local\Temp\ccivO4on.s:20     .text.VirCom_send:00000000 $t
-C:\Users\Godwin\AppData\Local\Temp\ccivO4on.s:26     .text.VirCom_send:00000000 VirCom_send
-C:\Users\Godwin\AppData\Local\Temp\ccivO4on.s:75     .text.VirCom_send:00000030 $d
-C:\Users\Godwin\AppData\Local\Temp\ccivO4on.s:80     .text.VirCom_rev:00000000 $t
-C:\Users\Godwin\AppData\Local\Temp\ccivO4on.s:86     .text.VirCom_rev:00000000 VirCom_rev
-C:\Users\Godwin\AppData\Local\Temp\ccivO4on.s:124    .text.__io_putchar:00000000 $t
-C:\Users\Godwin\AppData\Local\Temp\ccivO4on.s:130    .text.__io_putchar:00000000 __io_putchar
+C:\Users\Godwin\AppData\Local\Temp\ccqiNhff.s:20     .text.VirCom_send:00000000 $t
+C:\Users\Godwin\AppData\Local\Temp\ccqiNhff.s:26     .text.VirCom_send:00000000 VirCom_send
+C:\Users\Godwin\AppData\Local\Temp\ccqiNhff.s:75     .text.VirCom_send:00000030 $d
+C:\Users\Godwin\AppData\Local\Temp\ccqiNhff.s:80     .text.VirCom_rev:00000000 $t
+C:\Users\Godwin\AppData\Local\Temp\ccqiNhff.s:86     .text.VirCom_rev:00000000 VirCom_rev
+C:\Users\Godwin\AppData\Local\Temp\ccqiNhff.s:124    .text.__io_putchar:00000000 $t
+C:\Users\Godwin\AppData\Local\Temp\ccqiNhff.s:130    .text.__io_putchar:00000000 __io_putchar
 
 UNDEFINED SYMBOLS
 CDC_Transmit_HS

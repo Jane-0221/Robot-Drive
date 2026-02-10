@@ -21,7 +21,7 @@ float daibaoshan[3];
 motor_measure_t motor_data[33];
 uint32_t Flag_damiao[10] ={ 0};
 //前一时刻的电机接收flag
-uint32_t Pre_Flag_damiao [6] ={ 0};
+uint32_t Pre_Flag_damiao [10] ={ 0};
 /**/
 // CAN寄存器及控制器
 extern FDCAN_HandleTypeDef hfdcan1;

@@ -12,10 +12,7 @@
 #include "USB_VirCom.h"
 #include "crc8_crc16.h"
 #include "Stm32_time.h"
-#include "Auto_control.h"
-#include "Global_status.h"
 #include "fifo.h"
-
 void VirCom_send(uint8_t data[], uint16_t len)
 {
   if (CDC_Transmit_HS(data, len) == 1) // 判断数据是否发送

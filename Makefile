@@ -99,7 +99,6 @@ Core/Src/usart.c \
 Drivers/Chip/bmi088/BMI088driver.c \
 Drivers/Chip/bmi088/BMI088Middleware.c \
 Drivers/Chip/ws2812/ws2812.c \
-Drivers/Chip/w25q64/w25q64.c \
 Drivers/UI/ui_interface.c \
 Drivers/UI/ui_g.c \
 Algorithm/AHRS_middleware.c \
@@ -125,15 +124,8 @@ User/Hardware/LED.c \
 User/Hardware/referee_system.c \
 User/Hardware/buzzer.c \
 User/Software/remote_control.c \
-User/Software/Chassis.c \
-User/Software/Gimbal.c \
-User/Software/Global_status.c \
 User/Software/USB_VirCom.c \
-User/Software/Auto_control.c \
-User/Software/limit_filter.c \
 User/Software/Power_switch.c \
-User/Software/Shoot.c \
-User/Software/ui.c \
 User/Software/music.c
 
 
@@ -205,7 +197,6 @@ C_INCLUDES =  \
 -IDrivers/CMSIS/Include \
 -IDrivers/Chip/bmi088 \
 -IDrivers/Chip/ws2812 \
--IDrivers/Chip/w25q64 \
 -IDrivers/UI \
 -IUser/Hardware \
 -IUser/Software \
@@ -237,8 +228,7 @@ CFLAGS += -MMD -MP -MF"$(@:%.o=%.d)"
 # LDFLAGS
 #######################################
 # link script
-LDSCRIPT = STM32H723XG_FLASH.ld
-
+LDSCRIPT = stm32h723vgtx_flash.ld
 # libraries
 LIBS = -lc -lm -lnosys 
 LIBDIR = Algorithm/AHRS.lib

@@ -13,14 +13,10 @@
 #include "stdlib.h"
 #include "string.h"
 #include "fifo.h"
-
 #include "UART_data_txrx.h"
-
 #include "DT7.h"
 #include "VT13.h"
 #include "referee_system.h"
-#include "Global_status.h"
-#include "Auto_control.h"
 uint32_t Flag_T13 = 0;
 
 // DMA¿ØÖÆ±äÁ¿
@@ -134,9 +130,7 @@ void HAL_UARTEx_RxEventCallback(UART_HandleTypeDef *huart, uint16_t Size)
   {
     if (UART1_data.rev_data[0] == 0xA5)
     {
-      Global.Auto.input.Auto_control_online = 20;
-      decodeMINIPCdata(&fromMINIPC, UART1_data.rev_data, Size);
-      MINIPC_to_STM32();
+     
     }
     HAL_UARTEx_ReceiveToIdle_DMA(huart, UART1_data.rev_data, UART_BUFFER_SIZE);
     __HAL_DMA_DISABLE_IT(huart->hdmarx, DMA_IT_HT);

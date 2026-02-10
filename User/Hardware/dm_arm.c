@@ -61,7 +61,7 @@ void Arm_motor1()
 
 
 
-    RobStride_Motor_CSP_control(&motor1,&hfdcan2, 0.0f, 1.0f);
+    RobStride_Motor_CSP_control(&motor1,&hfdcan2, 10.0f, 1.0f);
 
 
 
@@ -128,7 +128,7 @@ void Arm_motor5()
   set_DM_mode(Motor5, POS_MODE);
   set_DM_pos_vel(pos_motor.MT05, vel_motor.MT05, Motor5);
 
-  pos_speed_ctrl(&hfdcan2, 0x05, 20, 20);
+  pos_speed_ctrl(&hfdcan2, 0x05, 100, 20);
 
   Pre_Flag_damiao[5] = Flag_damiao[5];
 }

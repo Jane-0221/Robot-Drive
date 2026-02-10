@@ -1,4 +1,4 @@
-ARM GAS  C:\Users\Godwin\AppData\Local\Temp\ccjgQSe2.s 			page 1
+ARM GAS  C:\Users\Godwin\AppData\Local\Temp\ccW6395j.s 			page 1
 
 
    1              		.cpu cortex-m7
@@ -58,7 +58,7 @@ ARM GAS  C:\Users\Godwin\AppData\Local\Temp\ccjgQSe2.s 			page 1
   47              		.section	.text.KalmanCreate,"ax",%progbits
   48              		.align	1
   49              		.global	KalmanCreate
-ARM GAS  C:\Users\Godwin\AppData\Local\Temp\ccjgQSe2.s 			page 2
+ARM GAS  C:\Users\Godwin\AppData\Local\Temp\ccW6395j.s 			page 2
 
 
   50              		.syntax unified
@@ -70,28 +70,31 @@ ARM GAS  C:\Users\Godwin\AppData\Local\Temp\ccjgQSe2.s 			page 1
    2:Algorithm/Kalman_Filter_c.c **** #include "main.h"
    3:Algorithm/Kalman_Filter_c.c **** // #include "USB_VirCom.h"
    4:Algorithm/Kalman_Filter_c.c **** // #include "NUC_communication.h"
-   5:Algorithm/Kalman_Filter_c.c **** KF_t yaw_auto_kf;
-   6:Algorithm/Kalman_Filter_c.c **** KF_t pitch_auto_kf;
-   7:Algorithm/Kalman_Filter_c.c **** /*键鼠*/
-   8:Algorithm/Kalman_Filter_c.c **** KF_t mouse_x_kf_fliter;
-   9:Algorithm/Kalman_Filter_c.c **** KF_t mouse_y_kf_fliter;
-  10:Algorithm/Kalman_Filter_c.c **** 
-  11:Algorithm/Kalman_Filter_c.c **** 
-  12:Algorithm/Kalman_Filter_c.c **** 
-  13:Algorithm/Kalman_Filter_c.c **** /**
-  14:Algorithm/Kalman_Filter_c.c ****   * @name   kalmanCreate
-  15:Algorithm/Kalman_Filter_c.c ****   * @brief  创建一个卡尔曼滤波器
-  16:Algorithm/Kalman_Filter_c.c ****   * @param  p:  滤波器
-  17:Algorithm/Kalman_Filter_c.c ****   *         T_Q:系统噪声协方差
-  18:Algorithm/Kalman_Filter_c.c ****   *         T_R:测量噪声协方差
-  19:Algorithm/Kalman_Filter_c.c ****   *         
-  20:Algorithm/Kalman_Filter_c.c ****   * @retval none,这两个给多大无所谓，只看R/Q的比例来决定预测的参数，建议�
-  21:Algorithm/Kalman_Filter_c.c ****   * @attention R固定，Q越大，代表越信任侧量值，Q无穷代表只用测量值
-  22:Algorithm/Kalman_Filter_c.c ****   *		       	反之，Q越小代表越信任模型预测值，Q为零则是只用模型预测
-  23:Algorithm/Kalman_Filter_c.c ****   */
-  24:Algorithm/Kalman_Filter_c.c **** void KalmanCreate(extKalman_t *p,float T_Q,float T_R)
-  25:Algorithm/Kalman_Filter_c.c **** {
-  56              		.loc 1 25 1
+   5:Algorithm/Kalman_Filter_c.c **** 
+   6:Algorithm/Kalman_Filter_c.c **** // 偏航角（Yaw）自动瞄准卡尔曼滤波器实例
+   7:Algorithm/Kalman_Filter_c.c **** KF_t yaw_auto_kf;
+   8:Algorithm/Kalman_Filter_c.c **** // 俯仰角（Pitch）自动瞄准卡尔曼滤波器实例
+   9:Algorithm/Kalman_Filter_c.c **** KF_t pitch_auto_kf;
+  10:Algorithm/Kalman_Filter_c.c **** /* 鼠标滤波相关 */
+  11:Algorithm/Kalman_Filter_c.c **** // 鼠标X轴卡尔曼滤波器实例
+  12:Algorithm/Kalman_Filter_c.c **** KF_t mouse_x_kf_fliter;
+  13:Algorithm/Kalman_Filter_c.c **** // 鼠标Y轴卡尔曼滤波器实例
+  14:Algorithm/Kalman_Filter_c.c **** KF_t mouse_y_kf_fliter;
+  15:Algorithm/Kalman_Filter_c.c **** 
+  16:Algorithm/Kalman_Filter_c.c **** /**
+  17:Algorithm/Kalman_Filter_c.c ****   * @name   KalmanCreate
+  18:Algorithm/Kalman_Filter_c.c ****   * @brief  创建一个卡尔曼滤波器实例并初始化参数
+  19:Algorithm/Kalman_Filter_c.c ****   * @param  p:   卡尔曼滤波器结构体指针（待初始化）
+  20:Algorithm/Kalman_Filter_c.c ****   *         T_Q: 系统过程噪声协方差（反映模型预测的不确定性）
+  21:Algorithm/Kalman_Filter_c.c ****   *         T_R: 测量噪声协方差（反映传感器测量的不确定性）
+  22:Algorithm/Kalman_Filter_c.c ****   * @retval 无返回值；T_Q和T_R的绝对值大小无绝对标准，需根据R/Q的比值调整
+  23:Algorithm/Kalman_Filter_c.c ****   *         建议先固定其中一个为1，调试另一个参数
+  24:Algorithm/Kalman_Filter_c.c ****   * @attention R越大，代表越信任传感器的测量值，Q无穷大时仅使用测量值；
+  25:Algorithm/Kalman_Filter_c.c ****   *            反之，R越小代表越信任模型预测值，Q为0时仅使用模型预测值
+  26:Algorithm/Kalman_Filter_c.c ****   */
+  27:Algorithm/Kalman_Filter_c.c **** void KalmanCreate(extKalman_t *p,float T_Q,float T_R)
+  28:Algorithm/Kalman_Filter_c.c **** {
+  56              		.loc 1 28 1
   57              		.cfi_startproc
   58              		@ args = 0, pretend = 0, frame = 16
   59              		@ frame_needed = 1, uses_anonymous_args = 0
@@ -109,53 +112,53 @@ ARM GAS  C:\Users\Godwin\AppData\Local\Temp\ccjgQSe2.s 			page 1
   71 0006 F860     		str	r0, [r7, #12]
   72 0008 87ED020A 		vstr.32	s0, [r7, #8]
   73 000c C7ED010A 		vstr.32	s1, [r7, #4]
-  26:Algorithm/Kalman_Filter_c.c ****     p->X_last = (float)0;
-  74              		.loc 1 26 15
+  29:Algorithm/Kalman_Filter_c.c ****     p->X_last = (float)0;
+  74              		.loc 1 29 15
   75 0010 FB68     		ldr	r3, [r7, #12]
   76 0012 4FF00002 		mov	r2, #0
   77 0016 1A60     		str	r2, [r3]	@ float
-  27:Algorithm/Kalman_Filter_c.c ****     p->P_last = 0;
-  78              		.loc 1 27 15
+  30:Algorithm/Kalman_Filter_c.c ****     p->P_last = 0;
+ARM GAS  C:\Users\Godwin\AppData\Local\Temp\ccW6395j.s 			page 3
+
+
+  78              		.loc 1 30 15
   79 0018 FB68     		ldr	r3, [r7, #12]
   80 001a 4FF00002 		mov	r2, #0
-ARM GAS  C:\Users\Godwin\AppData\Local\Temp\ccjgQSe2.s 			page 3
-
-
   81 001e 5A61     		str	r2, [r3, #20]	@ float
-  28:Algorithm/Kalman_Filter_c.c ****     p->Q = T_Q;
-  82              		.loc 1 28 10
+  31:Algorithm/Kalman_Filter_c.c ****     p->Q = T_Q;
+  82              		.loc 1 31 10
   83 0020 FB68     		ldr	r3, [r7, #12]
   84 0022 BA68     		ldr	r2, [r7, #8]	@ float
   85 0024 5A62     		str	r2, [r3, #36]	@ float
-  29:Algorithm/Kalman_Filter_c.c ****     p->R = T_R;
-  86              		.loc 1 29 10
+  32:Algorithm/Kalman_Filter_c.c ****     p->R = T_R;
+  86              		.loc 1 32 10
   87 0026 FB68     		ldr	r3, [r7, #12]
   88 0028 7A68     		ldr	r2, [r7, #4]	@ float
   89 002a 9A62     		str	r2, [r3, #40]	@ float
-  30:Algorithm/Kalman_Filter_c.c ****     p->A = 1;
-  90              		.loc 1 30 10
+  33:Algorithm/Kalman_Filter_c.c ****     p->A = 1;
+  90              		.loc 1 33 10
   91 002c FB68     		ldr	r3, [r7, #12]
   92 002e 4FF07E52 		mov	r2, #1065353216
   93 0032 DA61     		str	r2, [r3, #28]	@ float
-  31:Algorithm/Kalman_Filter_c.c ****     p->B = 0;
-  94              		.loc 1 31 10
+  34:Algorithm/Kalman_Filter_c.c ****     p->B = 0;
+  94              		.loc 1 34 10
   95 0034 FB68     		ldr	r3, [r7, #12]
   96 0036 4FF00002 		mov	r2, #0
   97 003a 1A62     		str	r2, [r3, #32]	@ float
-  32:Algorithm/Kalman_Filter_c.c ****     p->H = 1;
-  98              		.loc 1 32 10
+  35:Algorithm/Kalman_Filter_c.c ****     p->H = 1;
+  98              		.loc 1 35 10
   99 003c FB68     		ldr	r3, [r7, #12]
  100 003e 4FF07E52 		mov	r2, #1065353216
  101 0042 DA62     		str	r2, [r3, #44]	@ float
-  33:Algorithm/Kalman_Filter_c.c ****     p->X_mid = p->X_last;
- 102              		.loc 1 33 17
+  36:Algorithm/Kalman_Filter_c.c ****     p->X_mid = p->X_last;
+ 102              		.loc 1 36 17
  103 0044 FB68     		ldr	r3, [r7, #12]
  104 0046 1A68     		ldr	r2, [r3]	@ float
- 105              		.loc 1 33 14
+ 105              		.loc 1 36 14
  106 0048 FB68     		ldr	r3, [r7, #12]
  107 004a 5A60     		str	r2, [r3, #4]	@ float
-  34:Algorithm/Kalman_Filter_c.c **** }
- 108              		.loc 1 34 1
+  37:Algorithm/Kalman_Filter_c.c **** }
+ 108              		.loc 1 37 1
  109 004c 00BF     		nop
  110 004e 1437     		adds	r7, r7, #20
  111              	.LCFI3:
@@ -175,29 +178,33 @@ ARM GAS  C:\Users\Godwin\AppData\Local\Temp\ccjgQSe2.s 			page 1
  126              		.align	1
  127              		.global	KalmanFilter
  128              		.syntax unified
+ARM GAS  C:\Users\Godwin\AppData\Local\Temp\ccW6395j.s 			page 4
+
+
  129              		.thumb
  130              		.thumb_func
  132              	KalmanFilter:
-ARM GAS  C:\Users\Godwin\AppData\Local\Temp\ccjgQSe2.s 			page 4
-
-
  133              	.LFB145:
-  35:Algorithm/Kalman_Filter_c.c **** 
-  36:Algorithm/Kalman_Filter_c.c **** /**
-  37:Algorithm/Kalman_Filter_c.c ****   * @name   KalmanFilter
-  38:Algorithm/Kalman_Filter_c.c ****   * @brief  卡尔曼滤波器
-  39:Algorithm/Kalman_Filter_c.c ****   * @param  p:  滤波器
-  40:Algorithm/Kalman_Filter_c.c ****   *         dat:待滤波数据
-  41:Algorithm/Kalman_Filter_c.c ****   * @retval 滤波后的数据
-  42:Algorithm/Kalman_Filter_c.c ****   * @attention Z(k)是系统输入,即测量值   X(k|k)是卡尔曼滤波后的值,即最终输出
-  43:Algorithm/Kalman_Filter_c.c ****   *            A=1 B=0 H=1 I=1  W(K)  V(k)是高斯白噪声,叠加在测量值上了,可以不用�
-  44:Algorithm/Kalman_Filter_c.c ****   *            以下是卡尔曼的5个核心公式
-  45:Algorithm/Kalman_Filter_c.c ****   *            一阶H'即为它本身,否则为转置矩阵
-  46:Algorithm/Kalman_Filter_c.c ****   */
-  47:Algorithm/Kalman_Filter_c.c **** 
-  48:Algorithm/Kalman_Filter_c.c **** float KalmanFilter(extKalman_t* p,float dat)
-  49:Algorithm/Kalman_Filter_c.c **** {
- 134              		.loc 1 49 1
+  38:Algorithm/Kalman_Filter_c.c **** 
+  39:Algorithm/Kalman_Filter_c.c **** /**
+  40:Algorithm/Kalman_Filter_c.c ****   * @name   KalmanFilter
+  41:Algorithm/Kalman_Filter_c.c ****   * @brief  卡尔曼滤波核心计算函数（标准一阶卡尔曼实现）
+  42:Algorithm/Kalman_Filter_c.c ****   * @param  p:   已初始化的卡尔曼滤波器结构体指针
+  43:Algorithm/Kalman_Filter_c.c ****   *         dat: 待滤波的原始测量数据（如传感器输入）
+  44:Algorithm/Kalman_Filter_c.c ****   * @retval 滤波后的最优估计值
+  45:Algorithm/Kalman_Filter_c.c ****   * @attention Z(k) 是系统输入（测量值），X(k|k) 是卡尔曼滤波后的输出（最优
+  46:Algorithm/Kalman_Filter_c.c ****   *            A=1、B=0、H=1、I=1 为一阶卡尔曼默认参数；
+  47:Algorithm/Kalman_Filter_c.c ****   *            W(K)、V(k) 是过程/测量高斯白噪声，叠加在测量值上，可忽略；
+  48:Algorithm/Kalman_Filter_c.c ****   *            以下是卡尔曼滤波的5个核心公式（代码对应实现）：
+  49:Algorithm/Kalman_Filter_c.c ****   *            1. 状态预测：x(k|k-1) = A*X(k-1|k-1)+B*U(k)+W(K)
+  50:Algorithm/Kalman_Filter_c.c ****   *            2. 协方差预测：p(k|k-1) = A*p(k-1|k-1)*A'+Q
+  51:Algorithm/Kalman_Filter_c.c ****   *            3. 卡尔曼增益：kg(k) = p(k|k-1)*H'/(H*p(k|k-1)*H'+R)
+  52:Algorithm/Kalman_Filter_c.c ****   *            4. 状态更新：x(k|k) = X(k|k-1)+kg(k)*(Z(k)-H*X(k|k-1))
+  53:Algorithm/Kalman_Filter_c.c ****   *            5. 协方差更新：p(k|k) = (I-kg(k)*H)*P(k|k-1)
+  54:Algorithm/Kalman_Filter_c.c ****   */
+  55:Algorithm/Kalman_Filter_c.c **** float KalmanFilter(extKalman_t* p,float dat)
+  56:Algorithm/Kalman_Filter_c.c **** {
+ 134              		.loc 1 56 1
  135              		.cfi_startproc
  136              		@ args = 0, pretend = 0, frame = 8
  137              		@ frame_needed = 1, uses_anonymous_args = 0
@@ -214,115 +221,115 @@ ARM GAS  C:\Users\Godwin\AppData\Local\Temp\ccjgQSe2.s 			page 1
  148              		.cfi_def_cfa_register 7
  149 0006 7860     		str	r0, [r7, #4]
  150 0008 87ED000A 		vstr.32	s0, [r7]
-  50:Algorithm/Kalman_Filter_c.c ****     p->X_mid =p->A*p->X_last;                     //百度对应公式(1)    x(k|k-1) = A*X(k-1|k-1
- 151              		.loc 1 50 16
+  57:Algorithm/Kalman_Filter_c.c ****     p->X_mid =p->A*p->X_last;                     // 对应公式(1) 状态预测方程
+ 151              		.loc 1 57 16
  152 000c 7B68     		ldr	r3, [r7, #4]
  153 000e 93ED077A 		vldr.32	s14, [r3, #28]
- 154              		.loc 1 50 21
+ 154              		.loc 1 57 21
  155 0012 7B68     		ldr	r3, [r7, #4]
  156 0014 D3ED007A 		vldr.32	s15, [r3]
- 157              		.loc 1 50 19
+ 157              		.loc 1 57 19
  158 0018 67EE277A 		vmul.f32	s15, s14, s15
- 159              		.loc 1 50 14
+ 159              		.loc 1 57 14
  160 001c 7B68     		ldr	r3, [r7, #4]
  161 001e C3ED017A 		vstr.32	s15, [r3, #4]
-  51:Algorithm/Kalman_Filter_c.c ****     p->P_mid = p->A*p->P_last+p->Q;               //百度对应公式(2)    p(k|k-1) = A*p(k-1|k-1
- 162              		.loc 1 51 17
+  58:Algorithm/Kalman_Filter_c.c ****     p->P_mid = p->A*p->P_last+p->Q;               // 对应公式(2) 协方差预测方程
+ 162              		.loc 1 58 17
  163 0022 7B68     		ldr	r3, [r7, #4]
  164 0024 93ED077A 		vldr.32	s14, [r3, #28]
- 165              		.loc 1 51 22
+ 165              		.loc 1 58 22
+ARM GAS  C:\Users\Godwin\AppData\Local\Temp\ccW6395j.s 			page 5
+
+
  166 0028 7B68     		ldr	r3, [r7, #4]
  167 002a D3ED057A 		vldr.32	s15, [r3, #20]
- 168              		.loc 1 51 20
+ 168              		.loc 1 58 20
  169 002e 27EE277A 		vmul.f32	s14, s14, s15
- 170              		.loc 1 51 32
+ 170              		.loc 1 58 32
  171 0032 7B68     		ldr	r3, [r7, #4]
  172 0034 D3ED097A 		vldr.32	s15, [r3, #36]
-ARM GAS  C:\Users\Godwin\AppData\Local\Temp\ccjgQSe2.s 			page 5
-
-
- 173              		.loc 1 51 30
+ 173              		.loc 1 58 30
  174 0038 77EE277A 		vadd.f32	s15, s14, s15
- 175              		.loc 1 51 14
+ 175              		.loc 1 58 14
  176 003c 7B68     		ldr	r3, [r7, #4]
  177 003e C3ED037A 		vstr.32	s15, [r3, #12]
-  52:Algorithm/Kalman_Filter_c.c ****     p->kg = p->P_mid/(p->P_mid+p->R);             //百度对应公式(4)    kg(k) = p(k|k-1)*H'/(H
- 178              		.loc 1 52 14
+  59:Algorithm/Kalman_Filter_c.c ****     p->kg = p->P_mid/(p->P_mid+p->R);             // 对应公式(4) 卡尔曼增益计算
+ 178              		.loc 1 59 14
  179 0042 7B68     		ldr	r3, [r7, #4]
  180 0044 D3ED036A 		vldr.32	s13, [r3, #12]
- 181              		.loc 1 52 24
+ 181              		.loc 1 59 24
  182 0048 7B68     		ldr	r3, [r7, #4]
  183 004a 93ED037A 		vldr.32	s14, [r3, #12]
- 184              		.loc 1 52 33
+ 184              		.loc 1 59 33
  185 004e 7B68     		ldr	r3, [r7, #4]
  186 0050 D3ED0A7A 		vldr.32	s15, [r3, #40]
- 187              		.loc 1 52 31
+ 187              		.loc 1 59 31
  188 0054 37EE277A 		vadd.f32	s14, s14, s15
- 189              		.loc 1 52 21
+ 189              		.loc 1 59 21
  190 0058 C6EE877A 		vdiv.f32	s15, s13, s14
- 191              		.loc 1 52 11
+ 191              		.loc 1 59 11
  192 005c 7B68     		ldr	r3, [r7, #4]
  193 005e C3ED067A 		vstr.32	s15, [r3, #24]
-  53:Algorithm/Kalman_Filter_c.c ****     p->X_now = p->X_mid + p->kg*(dat-p->X_mid);   //百度对应公式(3)    x(k|k) = X(k|k-1)+kg(k
- 194              		.loc 1 53 17
+  60:Algorithm/Kalman_Filter_c.c ****     p->X_now = p->X_mid + p->kg*(dat-p->X_mid);   // 对应公式(3) 状态更新方程
+ 194              		.loc 1 60 17
  195 0062 7B68     		ldr	r3, [r7, #4]
  196 0064 93ED017A 		vldr.32	s14, [r3, #4]
- 197              		.loc 1 53 28
+ 197              		.loc 1 60 28
  198 0068 7B68     		ldr	r3, [r7, #4]
  199 006a D3ED066A 		vldr.32	s13, [r3, #24]
- 200              		.loc 1 53 39
+ 200              		.loc 1 60 39
  201 006e 7B68     		ldr	r3, [r7, #4]
  202 0070 D3ED017A 		vldr.32	s15, [r3, #4]
- 203              		.loc 1 53 37
+ 203              		.loc 1 60 37
  204 0074 97ED006A 		vldr.32	s12, [r7]
  205 0078 76EE677A 		vsub.f32	s15, s12, s15
- 206              		.loc 1 53 32
+ 206              		.loc 1 60 32
  207 007c 66EEA77A 		vmul.f32	s15, s13, s15
- 208              		.loc 1 53 25
+ 208              		.loc 1 60 25
  209 0080 77EE277A 		vadd.f32	s15, s14, s15
- 210              		.loc 1 53 14
+ 210              		.loc 1 60 14
  211 0084 7B68     		ldr	r3, [r7, #4]
  212 0086 C3ED027A 		vstr.32	s15, [r3, #8]
-  54:Algorithm/Kalman_Filter_c.c ****     p->P_now = (1-p->kg)*p->P_mid;                //百度对应公式(5)    p(k|k) = (I-kg(k)*H)*P
- 213              		.loc 1 54 20
+  61:Algorithm/Kalman_Filter_c.c ****     p->P_now = (1-p->kg)*p->P_mid;                // 对应公式(5) 协方差更新方程
+ 213              		.loc 1 61 20
  214 008a 7B68     		ldr	r3, [r7, #4]
  215 008c D3ED067A 		vldr.32	s15, [r3, #24]
- 216              		.loc 1 54 18
+ 216              		.loc 1 61 18
  217 0090 B7EE007A 		vmov.f32	s14, #1.0e+0
  218 0094 37EE677A 		vsub.f32	s14, s14, s15
- 219              		.loc 1 54 27
+ 219              		.loc 1 61 27
+ARM GAS  C:\Users\Godwin\AppData\Local\Temp\ccW6395j.s 			page 6
+
+
  220 0098 7B68     		ldr	r3, [r7, #4]
  221 009a D3ED037A 		vldr.32	s15, [r3, #12]
- 222              		.loc 1 54 25
+ 222              		.loc 1 61 25
  223 009e 67EE277A 		vmul.f32	s15, s14, s15
- 224              		.loc 1 54 14
+ 224              		.loc 1 61 14
  225 00a2 7B68     		ldr	r3, [r7, #4]
  226 00a4 C3ED047A 		vstr.32	s15, [r3, #16]
-ARM GAS  C:\Users\Godwin\AppData\Local\Temp\ccjgQSe2.s 			page 6
-
-
-  55:Algorithm/Kalman_Filter_c.c ****     p->P_last = p->P_now;                         //状态更新
- 227              		.loc 1 55 18
+  62:Algorithm/Kalman_Filter_c.c ****     p->P_last = p->P_now;                         // 更新协方差，供下次迭代使用
+ 227              		.loc 1 62 18
  228 00a8 7B68     		ldr	r3, [r7, #4]
  229 00aa 1A69     		ldr	r2, [r3, #16]	@ float
- 230              		.loc 1 55 15
+ 230              		.loc 1 62 15
  231 00ac 7B68     		ldr	r3, [r7, #4]
  232 00ae 5A61     		str	r2, [r3, #20]	@ float
-  56:Algorithm/Kalman_Filter_c.c ****     p->X_last = p->X_now;
- 233              		.loc 1 56 18
+  63:Algorithm/Kalman_Filter_c.c ****     p->X_last = p->X_now;                         // 更新状态值，供下次迭代使用
+ 233              		.loc 1 63 18
  234 00b0 7B68     		ldr	r3, [r7, #4]
  235 00b2 9A68     		ldr	r2, [r3, #8]	@ float
- 236              		.loc 1 56 15
+ 236              		.loc 1 63 15
  237 00b4 7B68     		ldr	r3, [r7, #4]
  238 00b6 1A60     		str	r2, [r3]	@ float
-  57:Algorithm/Kalman_Filter_c.c ****     return p->X_now;							  //输出预测结果x(k|k)
- 239              		.loc 1 57 13
+  64:Algorithm/Kalman_Filter_c.c ****     return p->X_now;							  // 输出最优估计值x(k|k)
+ 239              		.loc 1 64 13
  240 00b8 7B68     		ldr	r3, [r7, #4]
  241 00ba 9B68     		ldr	r3, [r3, #8]	@ float
- 242              		.loc 1 57 13 is_stmt 0 discriminator 1
+ 242              		.loc 1 64 13 is_stmt 0 discriminator 1
  243 00bc 07EE903A 		vmov	s15, r3
-  58:Algorithm/Kalman_Filter_c.c **** }
- 244              		.loc 1 58 1 is_stmt 1
+  65:Algorithm/Kalman_Filter_c.c **** }
+ 244              		.loc 1 65 1 is_stmt 1
  245 00c0 B0EE670A 		vmov.f32	s0, s15
  246 00c4 0C37     		adds	r7, r7, #12
  247              	.LCFI9:
@@ -346,9 +353,21 @@ ARM GAS  C:\Users\Godwin\AppData\Local\Temp\ccjgQSe2.s 			page 1
  266              		.thumb_func
  268              	Kalman_Init:
  269              	.LFB146:
-  59:Algorithm/Kalman_Filter_c.c **** void Kalman_Init(void)
-  60:Algorithm/Kalman_Filter_c.c **** {
- 270              		.loc 1 60 1
+  66:Algorithm/Kalman_Filter_c.c **** 
+  67:Algorithm/Kalman_Filter_c.c **** /**
+  68:Algorithm/Kalman_Filter_c.c ****   * @name   Kalman_Init
+  69:Algorithm/Kalman_Filter_c.c ****   * @brief  卡尔曼滤波器全局初始化函数
+  70:Algorithm/Kalman_Filter_c.c ****   * @param  无
+ARM GAS  C:\Users\Godwin\AppData\Local\Temp\ccW6395j.s 			page 7
+
+
+  71:Algorithm/Kalman_Filter_c.c ****   * @retval 无
+  72:Algorithm/Kalman_Filter_c.c ****   * @attention 初始化偏航角、俯仰角的卡尔曼滤波器参数（Q=1，R=1）；
+  73:Algorithm/Kalman_Filter_c.c ****   *            鼠标滤波相关初始化暂注释，可根据需求启用
+  74:Algorithm/Kalman_Filter_c.c ****   */
+  75:Algorithm/Kalman_Filter_c.c **** void Kalman_Init(void)
+  76:Algorithm/Kalman_Filter_c.c **** {
+ 270              		.loc 1 76 1
  271              		.cfi_startproc
  272              		@ args = 0, pretend = 0, frame = 0
  273              		@ frame_needed = 1, uses_anonymous_args = 0
@@ -358,28 +377,27 @@ ARM GAS  C:\Users\Godwin\AppData\Local\Temp\ccjgQSe2.s 			page 1
  277              		.cfi_offset 7, -8
  278              		.cfi_offset 14, -4
  279 0002 00AF     		add	r7, sp, #0
-ARM GAS  C:\Users\Godwin\AppData\Local\Temp\ccjgQSe2.s 			page 7
-
-
  280              	.LCFI13:
  281              		.cfi_def_cfa_register 7
-  61:Algorithm/Kalman_Filter_c.c ****     //自瞄
-  62:Algorithm/Kalman_Filter_c.c ****     KalmanCreate(&yaw_auto_kf.Angle_KF , 1,1);
- 282              		.loc 1 62 5
+  77:Algorithm/Kalman_Filter_c.c ****     // 初始化偏航角自动瞄准卡尔曼滤波器（Q=1，R=1）
+  78:Algorithm/Kalman_Filter_c.c ****     KalmanCreate(&yaw_auto_kf.Angle_KF , 1,1);
+ 282              		.loc 1 78 5
  283 0004 F7EE000A 		vmov.f32	s1, #1.0e+0
  284 0008 B7EE000A 		vmov.f32	s0, #1.0e+0
  285 000c 0548     		ldr	r0, .L5
  286 000e FFF7FEFF 		bl	KalmanCreate
-  63:Algorithm/Kalman_Filter_c.c ****     KalmanCreate(&pitch_auto_kf.Angle_KF , 1,1);
- 287              		.loc 1 63 5
+  79:Algorithm/Kalman_Filter_c.c ****     // 初始化俯仰角自动瞄准卡尔曼滤波器（Q=1，R=1）
+  80:Algorithm/Kalman_Filter_c.c ****     KalmanCreate(&pitch_auto_kf.Angle_KF , 1,1);
+ 287              		.loc 1 80 5
  288 0012 F7EE000A 		vmov.f32	s1, #1.0e+0
  289 0016 B7EE000A 		vmov.f32	s0, #1.0e+0
  290 001a 0348     		ldr	r0, .L5+4
  291 001c FFF7FEFF 		bl	KalmanCreate
-  64:Algorithm/Kalman_Filter_c.c **** //	KalmanCreate(&mouse_x_kf_fliter.Angle_KF, 1,10);//键鼠卡尔曼滤波
-  65:Algorithm/Kalman_Filter_c.c **** //	KalmanCreate(&mouse_y_kf_fliter.Angle_KF, 1,10);	
-  66:Algorithm/Kalman_Filter_c.c **** }
- 292              		.loc 1 66 1
+  81:Algorithm/Kalman_Filter_c.c ****     // 初始化鼠标X轴卡尔曼滤波器（Q=1，R=10），暂注释
+  82:Algorithm/Kalman_Filter_c.c **** //	KalmanCreate(&mouse_x_kf_fliter.Angle_KF, 1,10);// 鼠标X轴卡尔曼滤波
+  83:Algorithm/Kalman_Filter_c.c **** //	KalmanCreate(&mouse_y_kf_fliter.Angle_KF, 1,10);// 鼠标Y轴卡尔曼滤波
+  84:Algorithm/Kalman_Filter_c.c **** }
+ 292              		.loc 1 84 1
  293 0020 00BF     		nop
  294 0022 80BD     		pop	{r7, pc}
  295              	.L6:
@@ -397,9 +415,20 @@ ARM GAS  C:\Users\Godwin\AppData\Local\Temp\ccjgQSe2.s 			page 1
  308              		.thumb_func
  310              	AutoAim_Algorithm:
  311              	.LFB147:
-  67:Algorithm/Kalman_Filter_c.c **** float AutoAim_Algorithm(KF_t *str,float input)//yaw
-  68:Algorithm/Kalman_Filter_c.c **** {
- 312              		.loc 1 68 1
+  85:Algorithm/Kalman_Filter_c.c **** 
+  86:Algorithm/Kalman_Filter_c.c **** /**
+  87:Algorithm/Kalman_Filter_c.c ****   * @name   AutoAim_Algorithm
+ARM GAS  C:\Users\Godwin\AppData\Local\Temp\ccW6395j.s 			page 8
+
+
+  88:Algorithm/Kalman_Filter_c.c ****   * @brief  自动瞄准卡尔曼滤波算法（偏航角/Yaw专用）
+  89:Algorithm/Kalman_Filter_c.c ****   * @param  str: 卡尔曼滤波器结构体指针（对应目标轴的滤波器实例）
+  90:Algorithm/Kalman_Filter_c.c ****   *         input: 原始测量输入值（如传感器采集的偏航角）
+  91:Algorithm/Kalman_Filter_c.c ****   * @retval 滤波后的最优估计值（当前仅对角度进行卡尔曼预测）
+  92:Algorithm/Kalman_Filter_c.c ****   */
+  93:Algorithm/Kalman_Filter_c.c **** float AutoAim_Algorithm(KF_t *str,float input)//yaw
+  94:Algorithm/Kalman_Filter_c.c **** {
+ 312              		.loc 1 94 1
  313              		.cfi_startproc
  314              		@ args = 0, pretend = 0, frame = 16
  315              		@ frame_needed = 1, uses_anonymous_args = 0
@@ -416,42 +445,42 @@ ARM GAS  C:\Users\Godwin\AppData\Local\Temp\ccjgQSe2.s 			page 1
  326              		.cfi_def_cfa_register 7
  327 0006 7860     		str	r0, [r7, #4]
  328 0008 87ED000A 		vstr.32	s0, [r7]
-  69:Algorithm/Kalman_Filter_c.c **** 		float res;
-  70:Algorithm/Kalman_Filter_c.c **** 		str->Angle =KalmanFilter(&str->Angle_KF,input);
-ARM GAS  C:\Users\Godwin\AppData\Local\Temp\ccjgQSe2.s 			page 8
-
-
- 329              		.loc 1 70 15
+  95:Algorithm/Kalman_Filter_c.c **** 		float res;
+  96:Algorithm/Kalman_Filter_c.c **** 		str->Angle =KalmanFilter(&str->Angle_KF,input);
+ 329              		.loc 1 96 15
  330 000c 7B68     		ldr	r3, [r7, #4]
  331 000e 97ED000A 		vldr.32	s0, [r7]
  332 0012 1846     		mov	r0, r3
  333 0014 FFF7FEFF 		bl	KalmanFilter
  334 0018 F0EE407A 		vmov.f32	s15, s0
- 335              		.loc 1 70 14 discriminator 1
+ 335              		.loc 1 96 14 discriminator 1
  336 001c 7B68     		ldr	r3, [r7, #4]
  337 001e C3ED187A 		vstr.32	s15, [r3, #96]
-  71:Algorithm/Kalman_Filter_c.c **** 		str->Out = str->Angle;
- 338              		.loc 1 71 17
+  97:Algorithm/Kalman_Filter_c.c **** 		str->Out = str->Angle;
+ 338              		.loc 1 97 17
  339 0022 7B68     		ldr	r3, [r7, #4]
  340 0024 1A6E     		ldr	r2, [r3, #96]	@ float
- 341              		.loc 1 71 12
+ 341              		.loc 1 97 12
  342 0026 7B68     		ldr	r3, [r7, #4]
  343 0028 5A66     		str	r2, [r3, #100]	@ float
-  72:Algorithm/Kalman_Filter_c.c **** 		res = str->Out;//现在只对角度进行预测
- 344              		.loc 1 72 7
+  98:Algorithm/Kalman_Filter_c.c **** 		res = str->Out;// 当前仅对角度值进行卡尔曼预测
+ 344              		.loc 1 98 7
  345 002a 7B68     		ldr	r3, [r7, #4]
  346 002c 5B6E     		ldr	r3, [r3, #100]	@ float
  347 002e FB60     		str	r3, [r7, #12]	@ float
-  73:Algorithm/Kalman_Filter_c.c **** 	return res;
- 348              		.loc 1 73 9
+  99:Algorithm/Kalman_Filter_c.c **** 	return res;
+ 348              		.loc 1 99 9
  349 0030 FB68     		ldr	r3, [r7, #12]	@ float
- 350              		.loc 1 73 9 is_stmt 0 discriminator 1
+ 350              		.loc 1 99 9 is_stmt 0 discriminator 1
  351 0032 07EE903A 		vmov	s15, r3
-  74:Algorithm/Kalman_Filter_c.c **** }
- 352              		.loc 1 74 1 is_stmt 1
+ 100:Algorithm/Kalman_Filter_c.c **** }
+ 352              		.loc 1 100 1 is_stmt 1
  353 0036 B0EE670A 		vmov.f32	s0, s15
  354 003a 1037     		adds	r7, r7, #16
  355              	.LCFI17:
+ARM GAS  C:\Users\Godwin\AppData\Local\Temp\ccW6395j.s 			page 9
+
+
  356              		.cfi_def_cfa_offset 8
  357 003c BD46     		mov	sp, r7
  358              	.LCFI18:
@@ -463,27 +492,27 @@ ARM GAS  C:\Users\Godwin\AppData\Local\Temp\ccjgQSe2.s 			page 1
  365              		.text
  366              	.Letext0:
  367              		.file 2 "Algorithm/Kalman_Filter_c.h"
-ARM GAS  C:\Users\Godwin\AppData\Local\Temp\ccjgQSe2.s 			page 9
+ARM GAS  C:\Users\Godwin\AppData\Local\Temp\ccW6395j.s 			page 10
 
 
 DEFINED SYMBOLS
                             *ABS*:00000000 Kalman_Filter_c.c
-C:\Users\Godwin\AppData\Local\Temp\ccjgQSe2.s:24     .bss.yaw_auto_kf:00000000 yaw_auto_kf
-C:\Users\Godwin\AppData\Local\Temp\ccjgQSe2.s:21     .bss.yaw_auto_kf:00000000 $d
-C:\Users\Godwin\AppData\Local\Temp\ccjgQSe2.s:31     .bss.pitch_auto_kf:00000000 pitch_auto_kf
-C:\Users\Godwin\AppData\Local\Temp\ccjgQSe2.s:28     .bss.pitch_auto_kf:00000000 $d
-C:\Users\Godwin\AppData\Local\Temp\ccjgQSe2.s:38     .bss.mouse_x_kf_fliter:00000000 mouse_x_kf_fliter
-C:\Users\Godwin\AppData\Local\Temp\ccjgQSe2.s:35     .bss.mouse_x_kf_fliter:00000000 $d
-C:\Users\Godwin\AppData\Local\Temp\ccjgQSe2.s:45     .bss.mouse_y_kf_fliter:00000000 mouse_y_kf_fliter
-C:\Users\Godwin\AppData\Local\Temp\ccjgQSe2.s:42     .bss.mouse_y_kf_fliter:00000000 $d
-C:\Users\Godwin\AppData\Local\Temp\ccjgQSe2.s:48     .text.KalmanCreate:00000000 $t
-C:\Users\Godwin\AppData\Local\Temp\ccjgQSe2.s:54     .text.KalmanCreate:00000000 KalmanCreate
-C:\Users\Godwin\AppData\Local\Temp\ccjgQSe2.s:126    .text.KalmanFilter:00000000 $t
-C:\Users\Godwin\AppData\Local\Temp\ccjgQSe2.s:132    .text.KalmanFilter:00000000 KalmanFilter
-C:\Users\Godwin\AppData\Local\Temp\ccjgQSe2.s:262    .text.Kalman_Init:00000000 $t
-C:\Users\Godwin\AppData\Local\Temp\ccjgQSe2.s:268    .text.Kalman_Init:00000000 Kalman_Init
-C:\Users\Godwin\AppData\Local\Temp\ccjgQSe2.s:298    .text.Kalman_Init:00000024 $d
-C:\Users\Godwin\AppData\Local\Temp\ccjgQSe2.s:304    .text.AutoAim_Algorithm:00000000 $t
-C:\Users\Godwin\AppData\Local\Temp\ccjgQSe2.s:310    .text.AutoAim_Algorithm:00000000 AutoAim_Algorithm
+C:\Users\Godwin\AppData\Local\Temp\ccW6395j.s:24     .bss.yaw_auto_kf:00000000 yaw_auto_kf
+C:\Users\Godwin\AppData\Local\Temp\ccW6395j.s:21     .bss.yaw_auto_kf:00000000 $d
+C:\Users\Godwin\AppData\Local\Temp\ccW6395j.s:31     .bss.pitch_auto_kf:00000000 pitch_auto_kf
+C:\Users\Godwin\AppData\Local\Temp\ccW6395j.s:28     .bss.pitch_auto_kf:00000000 $d
+C:\Users\Godwin\AppData\Local\Temp\ccW6395j.s:38     .bss.mouse_x_kf_fliter:00000000 mouse_x_kf_fliter
+C:\Users\Godwin\AppData\Local\Temp\ccW6395j.s:35     .bss.mouse_x_kf_fliter:00000000 $d
+C:\Users\Godwin\AppData\Local\Temp\ccW6395j.s:45     .bss.mouse_y_kf_fliter:00000000 mouse_y_kf_fliter
+C:\Users\Godwin\AppData\Local\Temp\ccW6395j.s:42     .bss.mouse_y_kf_fliter:00000000 $d
+C:\Users\Godwin\AppData\Local\Temp\ccW6395j.s:48     .text.KalmanCreate:00000000 $t
+C:\Users\Godwin\AppData\Local\Temp\ccW6395j.s:54     .text.KalmanCreate:00000000 KalmanCreate
+C:\Users\Godwin\AppData\Local\Temp\ccW6395j.s:126    .text.KalmanFilter:00000000 $t
+C:\Users\Godwin\AppData\Local\Temp\ccW6395j.s:132    .text.KalmanFilter:00000000 KalmanFilter
+C:\Users\Godwin\AppData\Local\Temp\ccW6395j.s:262    .text.Kalman_Init:00000000 $t
+C:\Users\Godwin\AppData\Local\Temp\ccW6395j.s:268    .text.Kalman_Init:00000000 Kalman_Init
+C:\Users\Godwin\AppData\Local\Temp\ccW6395j.s:298    .text.Kalman_Init:00000024 $d
+C:\Users\Godwin\AppData\Local\Temp\ccW6395j.s:304    .text.AutoAim_Algorithm:00000000 $t
+C:\Users\Godwin\AppData\Local\Temp\ccW6395j.s:310    .text.AutoAim_Algorithm:00000000 AutoAim_Algorithm
 
 NO UNDEFINED SYMBOLS

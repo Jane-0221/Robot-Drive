@@ -25,7 +25,6 @@ build/main.o: Core/Src/main.c Core/Inc/main.h \
  Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal_i2c.h \
  Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal_i2c_ex.h \
  Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal_iwdg.h \
- Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal_ospi.h \
  Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal_pwr.h \
  Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal_pwr_ex.h \
  Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal_spi.h \
@@ -49,8 +48,8 @@ build/main.o: Core/Src/main.c Core/Inc/main.h \
  Middlewares/Third_Party/FreeRTOS/Source/include/list.h \
  Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2/cmsis_os2.h \
  Core/Inc/dma.h Core/Inc/main.h Core/Inc/fdcan.h Core/Inc/iwdg.h \
- Core/Inc/memorymap.h Core/Inc/octospi.h Core/Inc/spi.h Core/Inc/tim.h \
- Core/Inc/usart.h USB_DEVICE/App/usb_device.h \
+ Core/Inc/spi.h Core/Inc/tim.h Core/Inc/usart.h \
+ USB_DEVICE/App/usb_device.h \
  Middlewares/ST/STM32_USB_Device_Library/Core/Inc/usbd_def.h \
  USB_DEVICE/Target/usbd_conf.h Core/Inc/gpio.h User/BSP/UART_data_txrx.h \
  Core/Inc/struct_typedef.h User/BSP/CAN_receive_send.h \
@@ -58,12 +57,8 @@ build/main.o: Core/Src/main.c Core/Inc/main.h \
  User/Hardware/IMU_updata.h Algorithm/Kalman_Filter_c.h \
  User/Hardware/LED.h User/BSP/Power_switch.h \
  User/Hardware/referee_system.h User/Hardware/referee_system_protocol.h \
- Algorithm/fifo.h User/Software/ui.h Drivers/UI/ui_interface.h \
- Drivers/UI/ui_types.h Drivers/UI/ui_g.h Drivers/UI/ui_interface.h \
- User/Software/music.h User/Hardware/buzzer.h \
- Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2/cmsis_os2.h \
- User/Software/Chassis.h User/Software/Gimbal.h User/Software/shoot.h \
- User/Software/Auto_control.h User/Software/Global_status.h
+ Algorithm/fifo.h User/Software/music.h User/Hardware/buzzer.h \
+ Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2/cmsis_os2.h
 Core/Inc/main.h:
 Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal.h:
 Core/Inc/stm32h7xx_hal_conf.h:
@@ -93,7 +88,6 @@ Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal_hsem.h:
 Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal_i2c.h:
 Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal_i2c_ex.h:
 Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal_iwdg.h:
-Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal_ospi.h:
 Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal_pwr.h:
 Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal_pwr_ex.h:
 Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal_spi.h:
@@ -120,8 +114,6 @@ Core/Inc/dma.h:
 Core/Inc/main.h:
 Core/Inc/fdcan.h:
 Core/Inc/iwdg.h:
-Core/Inc/memorymap.h:
-Core/Inc/octospi.h:
 Core/Inc/spi.h:
 Core/Inc/tim.h:
 Core/Inc/usart.h:
@@ -142,16 +134,6 @@ User/BSP/Power_switch.h:
 User/Hardware/referee_system.h:
 User/Hardware/referee_system_protocol.h:
 Algorithm/fifo.h:
-User/Software/ui.h:
-Drivers/UI/ui_interface.h:
-Drivers/UI/ui_types.h:
-Drivers/UI/ui_g.h:
-Drivers/UI/ui_interface.h:
 User/Software/music.h:
 User/Hardware/buzzer.h:
 Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2/cmsis_os2.h:
-User/Software/Chassis.h:
-User/Software/Gimbal.h:
-User/Software/shoot.h:
-User/Software/Auto_control.h:
-User/Software/Global_status.h:
