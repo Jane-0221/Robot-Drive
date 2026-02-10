@@ -9,6 +9,9 @@ extern "C" {
 #include <stdbool.h>
 #include "fdcan.h"
 #include "can_receive_send.h"
+
+
+
 // 各种控制模式
 #define move_control_mode  0  // 运控模式
 #define Pos_control_mode   1  // PP位置模式
@@ -124,7 +127,7 @@ extern const uint16_t Index_List[];
 extern uint32_t Mailbox;
 
 // 参数转换函数
-float uint16_to_float(uint16_t x, float x_min, float x_max, uint8_t bits);
+float uint16_to_float_lz(uint16_t x, float x_min, float x_max, uint8_t bits);
 uint16_t float_to_uint_lz(float x, float x_min, float x_max, uint8_t bits);
 float Byte_to_float(uint8_t* bytedata);
 uint8_t mapFaults(uint16_t fault16);
@@ -134,38 +137,38 @@ void RobStride_Motor_Init(RobStride_Motor_t* motor, uint8_t CAN_Id, bool MIT_mod
 void RobStride_Motor_Init_Offset(RobStride_Motor_t* motor, uint8_t CAN_Id, bool MIT_mode);
 
 // 电机控制函数
-void RobStride_Get_CAN_ID(RobStride_Motor_t* motor);
+void RobStride_Get_CAN_ID(RobStride_Motor_t* motor, hcan_t* hcan); // 修改：增加hcan参数
 void RobStride_Motor_Analysis(RobStride_Motor_t* motor, uint8_t* DataFrame, uint32_t ID_ExtId);
-void RobStride_Motor_move_control(RobStride_Motor_t* motor, float Torque, float Angle, float Speed, float Kp, float Kd);
-void RobStride_Motor_Pos_control(RobStride_Motor_t* motor, float Speed, float Angle);
-void RobStride_Motor_CSP_control(RobStride_Motor_t* motor, float Angle, float limit_spd);
-void RobStride_Motor_Speed_control(RobStride_Motor_t* motor, float Speed, float limit_cur);
-void RobStride_Motor_current_control(RobStride_Motor_t* motor, float current);
-void RobStride_Motor_Set_Zero_control(RobStride_Motor_t* motor);
-void Enable_Motor(RobStride_Motor_t* motor);
-void Disenable_Motor(RobStride_Motor_t* motor, uint8_t clear_error);
-void Set_CAN_ID(RobStride_Motor_t* motor, uint8_t Set_CAN_ID);
-void Set_ZeroPos(RobStride_Motor_t* motor);
-void Set_RobStride_Motor_parameter(RobStride_Motor_t* motor, uint16_t Index, float Value, char Value_mode);
-void Get_RobStride_Motor_parameter(RobStride_Motor_t* motor, uint16_t Index);
+void RobStride_Motor_move_control(RobStride_Motor_t* motor, hcan_t* hcan, float Torque, float Angle, float Speed, float Kp, float Kd); // 修改：增加hcan参数
+void RobStride_Motor_Pos_control(RobStride_Motor_t* motor, hcan_t* hcan, float Speed, float Angle); // 修改：增加hcan参数
+void RobStride_Motor_CSP_control(RobStride_Motor_t* motor, hcan_t* hcan, float Angle, float limit_spd); // 修改：增加hcan参数
+void RobStride_Motor_Speed_control(RobStride_Motor_t* motor, hcan_t* hcan, float Speed, float limit_cur); // 修改：增加hcan参数
+void RobStride_Motor_current_control(RobStride_Motor_t* motor, hcan_t* hcan, float current); // 修改：增加hcan参数
+void RobStride_Motor_Set_Zero_control(RobStride_Motor_t* motor, hcan_t* hcan); // 修改：增加hcan参数
+void Enable_Motor(RobStride_Motor_t* motor, hcan_t* hcan); // 修改：增加hcan参数
+void Disenable_Motor(RobStride_Motor_t* motor, hcan_t* hcan, uint8_t clear_error); // 修改：增加hcan参数
+void Set_CAN_ID(RobStride_Motor_t* motor, hcan_t* hcan, uint8_t Set_CAN_ID); // 修改：增加hcan参数
+void Set_ZeroPos(RobStride_Motor_t* motor, hcan_t* hcan); // 修改：增加hcan参数
+void Set_RobStride_Motor_parameter(RobStride_Motor_t* motor, hcan_t* hcan, uint16_t Index, float Value, char Value_mode); // 修改：增加hcan参数
+void Get_RobStride_Motor_parameter(RobStride_Motor_t* motor, hcan_t* hcan, uint16_t Index); // 修改：增加hcan参数
 
 // MIT协议相关函数
-void RobStride_Motor_MIT_Enable(RobStride_Motor_t* motor);
-void RobStride_Motor_MIT_Disable(RobStride_Motor_t* motor);
-void RobStride_Motor_MIT_Control(RobStride_Motor_t* motor, float Angle, float Speed, float Kp, float Kd, float Torque);
-void RobStride_Motor_MIT_PositionControl(RobStride_Motor_t* motor, float position_rad, float speed_rad_per_s);
-void RobStride_Motor_MIT_SpeedControl(RobStride_Motor_t* motor, float speed_rad_per_s, float current_limit);
-void RobStride_Motor_MIT_SetZeroPos(RobStride_Motor_t* motor);
-void RobStride_Motor_MIT_ClearOrCheckError(RobStride_Motor_t* motor, uint8_t F_CMD);
-void RobStride_Motor_MIT_SetMotorType(RobStride_Motor_t* motor, uint8_t F_CMD);
-void RobStride_Motor_MIT_SetMotorId(RobStride_Motor_t* motor, uint8_t F_CMD);
-void RobStride_Motor_MIT_SetProtocol(RobStride_Motor_t* motor, uint8_t protocol_type);
+void RobStride_Motor_MIT_Enable(RobStride_Motor_t* motor, hcan_t* hcan); // 修改：增加hcan参数
+void RobStride_Motor_MIT_Disable(RobStride_Motor_t* motor, hcan_t* hcan); // 修改：增加hcan参数
+void RobStride_Motor_MIT_Control(RobStride_Motor_t* motor, hcan_t* hcan, float Angle, float Speed, float Kp, float Kd, float Torque); // 修改：增加hcan参数
+void RobStride_Motor_MIT_PositionControl(RobStride_Motor_t* motor, hcan_t* hcan, float position_rad, float speed_rad_per_s); // 修改：增加hcan参数
+void RobStride_Motor_MIT_SpeedControl(RobStride_Motor_t* motor, hcan_t* hcan, float speed_rad_per_s, float current_limit); // 修改：增加hcan参数
+void RobStride_Motor_MIT_SetZeroPos(RobStride_Motor_t* motor, hcan_t* hcan); // 修改：增加hcan参数
+void RobStride_Motor_MIT_ClearOrCheckError(RobStride_Motor_t* motor, hcan_t* hcan, uint8_t F_CMD); // 修改：增加hcan参数
+void RobStride_Motor_MIT_SetMotorType(RobStride_Motor_t* motor, hcan_t* hcan, uint8_t F_CMD); // 修改：增加hcan参数
+void RobStride_Motor_MIT_SetMotorId(RobStride_Motor_t* motor, hcan_t* hcan, uint8_t F_CMD); // 修改：增加hcan参数
+void RobStride_Motor_MIT_SetProtocol(RobStride_Motor_t* motor, hcan_t* hcan, uint8_t protocol_type); // 修改：增加hcan参数
 
 // 通用功能函数
-void RobStride_Motor_MotorDataSave(RobStride_Motor_t* motor);
-void RobStride_Motor_BaudRateChange(RobStride_Motor_t* motor, uint8_t F_CMD);
-void RobStride_Motor_ProactiveEscalationSet(RobStride_Motor_t* motor, uint8_t F_CMD);
-void RobStride_Motor_MotorModeSet(RobStride_Motor_t* motor, uint8_t F_CMD);
+void RobStride_Motor_MotorDataSave(RobStride_Motor_t* motor, hcan_t* hcan); // 修改：增加hcan参数
+void RobStride_Motor_BaudRateChange(RobStride_Motor_t* motor, hcan_t* hcan, uint8_t F_CMD); // 修改：增加hcan参数
+void RobStride_Motor_ProactiveEscalationSet(RobStride_Motor_t* motor, hcan_t* hcan, uint8_t F_CMD); // 修改：增加hcan参数
+void RobStride_Motor_MotorModeSet(RobStride_Motor_t* motor, hcan_t* hcan, uint8_t F_CMD); // 修改：增加hcan参数
 
 // 获取函数
 bool Get_MIT_Mode(RobStride_Motor_t* motor);

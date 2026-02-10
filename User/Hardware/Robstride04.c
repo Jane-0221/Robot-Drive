@@ -2,8 +2,7 @@
 #include <string.h>
 #include "fdcan.h"
 
-// 外部CAN句柄声明
-extern FDCAN_HandleTypeDef hfdcan2;  // 假设使用FDCAN1
+// 外部CAN句柄声明（保留原有硬件句柄命名，仅修改函数参数）
 
 // RS04电机参数范围
 #define P_MIN -12.57f      // RS04: -12.57rad
@@ -23,7 +22,6 @@ uint32_t Mailbox; // 邮箱变量
 
 // 如果没有定义CAN相关类型，定义它们
 #ifndef CAN_TxHeaderTypeDef
-// 这里定义基本的CAN类型，实际使用时应该包含STM32 HAL头文件
 typedef struct {
     uint32_t StdId;
     uint32_t ExtId;
@@ -48,7 +46,7 @@ typedef struct {
 /*******************************************************************************
 * 函数功能  : uint16_t型转float型浮点数
 *******************************************************************************/
-float uint16_to_float(uint16_t x, float x_min, float x_max, uint8_t bits)
+float uint16_to_float_lz(uint16_t x, float x_min, float x_max, uint8_t bits)
 {
     uint32_t span = (1 << bits) - 1;
     x &= span;
@@ -139,15 +137,15 @@ void RobStride_Motor_Analysis(RobStride_Motor_t* motor, uint8_t* DataFrame, uint
             else
             {
                 // 正常数据帧解析
-                motor->Pos_Info.Angle = uint16_to_float((uint16_t)(DataFrame[1] << 8) | DataFrame[2], P_MIN, P_MAX, 16);
+                motor->Pos_Info.Angle = uint16_to_float_lz((uint16_t)(DataFrame[1] << 8) | DataFrame[2], P_MIN, P_MAX, 16);
                 
                 // 速度：12位
                 uint16_t speed_raw = (uint16_t)(DataFrame[3] << 4) | (DataFrame[4] >> 4);
-                motor->Pos_Info.Speed = uint16_to_float(speed_raw, V_MIN, V_MAX, 12);
+                motor->Pos_Info.Speed = uint16_to_float_lz(speed_raw, V_MIN, V_MAX, 12);
                 
                 // 力矩：12位
                 uint16_t torque_raw = (uint16_t)((DataFrame[4] & 0x0F) << 8) | DataFrame[5];
-                motor->Pos_Info.Torque = uint16_to_float(torque_raw, T_MIN, T_MAX, 12);
+                motor->Pos_Info.Torque = uint16_to_float_lz(torque_raw, T_MIN, T_MAX, 12);
                 
                 motor->Pos_Info.Temp = (float)((uint16_t)(DataFrame[6] << 8) | DataFrame[7]) * 0.1f;
             }
@@ -168,9 +166,9 @@ void RobStride_Motor_Analysis(RobStride_Motor_t* motor, uint8_t* DataFrame, uint
             if (communication_type == 2)
             {
                 // 通信类型2：电机反馈数据
-                motor->Pos_Info.Angle = uint16_to_float((uint16_t)(DataFrame[0] << 8) | DataFrame[1], P_MIN, P_MAX, 16);
-                motor->Pos_Info.Speed = uint16_to_float((uint16_t)(DataFrame[2] << 8) | DataFrame[3], V_MIN, V_MAX, 16);
-                motor->Pos_Info.Torque = uint16_to_float((uint16_t)(DataFrame[4] << 8) | DataFrame[5], T_MIN, T_MAX, 16);
+                motor->Pos_Info.Angle = uint16_to_float_lz((uint16_t)(DataFrame[0] << 8) | DataFrame[1], P_MIN, P_MAX, 16);
+                motor->Pos_Info.Speed = uint16_to_float_lz((uint16_t)(DataFrame[2] << 8) | DataFrame[3], V_MIN, V_MAX, 16);
+                motor->Pos_Info.Torque = uint16_to_float_lz((uint16_t)(DataFrame[4] << 8) | DataFrame[5], T_MIN, T_MAX, 16);
                 motor->Pos_Info.Temp = (float)((uint16_t)(DataFrame[6] << 8) | DataFrame[7]) * 0.1f;
                 
                 motor->error_code = (uint8_t)((ID_ExtId >> 16) & 0x3F);
@@ -246,8 +244,9 @@ void RobStride_Motor_Analysis(RobStride_Motor_t* motor, uint8_t* DataFrame, uint
 
 /*******************************************************************************
 * 函数功能  : RobStride电机获取设备ID和MCU
+* 修改点：参数改为hcan_t* hcan
 *******************************************************************************/
-void RobStride_Get_CAN_ID(RobStride_Motor_t* motor)
+void RobStride_Get_CAN_ID(RobStride_Motor_t* motor, hcan_t* hcan)
 {
     uint8_t txdata[8] = {0};
     CAN_TxHeaderTypeDef TxMessage;
@@ -257,14 +256,15 @@ void RobStride_Get_CAN_ID(RobStride_Motor_t* motor)
     TxMessage.DLC = 8;
     TxMessage.ExtId = Communication_Type_Get_ID << 24 | (uint32_t)motor->Master_CAN_ID << 8 | motor->CAN_ID;
     
-    // 使用扩展帧发送函数
-    canx_send_ext_data(&hfdcan2, TxMessage.ExtId, txdata, TxMessage.DLC);
+    // 替换为hcan参数
+    canx_send_ext_data(hcan, TxMessage.ExtId, txdata, TxMessage.DLC);
 }
 
 /*******************************************************************************
 * 函数功能  : RobStride电机运控模式
+* 修改点：参数改为hcan_t* hcan
 *******************************************************************************/
-void RobStride_Motor_move_control(RobStride_Motor_t* motor, float Torque, float Angle, float Speed, float Kp, float Kd)
+void RobStride_Motor_move_control(RobStride_Motor_t* motor, hcan_t* hcan, float Torque, float Angle, float Speed, float Kp, float Kd)
 {
     uint8_t txdata[8] = {0};
     CAN_TxHeaderTypeDef TxMessage;
@@ -277,15 +277,15 @@ void RobStride_Motor_move_control(RobStride_Motor_t* motor, float Torque, float 
     
     if (motor->drw.run_mode.data != 0)
     {
-        Set_RobStride_Motor_parameter(motor, 0X7005, move_control_mode, 'j');
-        Get_RobStride_Motor_parameter(motor, 0x7005);
-        Enable_Motor(motor);
+        Set_RobStride_Motor_parameter(motor, hcan, 0X7005, move_control_mode, 'j');
+        Get_RobStride_Motor_parameter(motor, hcan, 0x7005);
+        Enable_Motor(motor, hcan);
         motor->Motor_Set_All.set_motor_mode = move_control_mode;
     }
     
     if (motor->Pos_Info.pattern != 2)
     {
-        Enable_Motor(motor);
+        Enable_Motor(motor, hcan);
     }
     
     TxMessage.IDE = CAN_ID_EXT;
@@ -309,14 +309,15 @@ void RobStride_Motor_move_control(RobStride_Motor_t* motor, float Torque, float 
     txdata[6] = (uint8_t)(kd_uint >> 8);
     txdata[7] = (uint8_t)(kd_uint & 0xFF);
     
-    // 使用扩展帧发送函数
-    canx_send_ext_data(&hfdcan2, TxMessage.ExtId, txdata, TxMessage.DLC);
+    // 替换为hcan参数
+    canx_send_ext_data(hcan, TxMessage.ExtId, txdata, TxMessage.DLC);
 }
 
 /*******************************************************************************
 * 函数功能  : RS04 MIT模式使能
+* 修改点：参数改为hcan_t* hcan
 *******************************************************************************/
-void RobStride_Motor_MIT_Enable(RobStride_Motor_t* motor)
+void RobStride_Motor_MIT_Enable(RobStride_Motor_t* motor, hcan_t* hcan)
 {
     uint8_t txdata[8] = {0};
     CAN_TxHeaderTypeDef txMsg;
@@ -335,14 +336,15 @@ void RobStride_Motor_MIT_Enable(RobStride_Motor_t* motor)
     txdata[6] = 0xFF;
     txdata[7] = MIT_CMD_ENABLE;
     
-    // 使用标准帧发送函数
-    canx_send_data(&hfdcan2, (uint16_t)txMsg.StdId, txdata, txMsg.DLC);
+    // 替换为hcan参数
+    canx_send_data(hcan, (uint16_t)txMsg.StdId, txdata, txMsg.DLC);
 }
 
 /*******************************************************************************
 * 函数功能  : RS04 MIT模式失能
+* 修改点：参数改为hcan_t* hcan
 *******************************************************************************/
-void RobStride_Motor_MIT_Disable(RobStride_Motor_t* motor)
+void RobStride_Motor_MIT_Disable(RobStride_Motor_t* motor, hcan_t* hcan)
 {
     uint8_t txdata[8] = {0};
     CAN_TxHeaderTypeDef txMsg;
@@ -361,14 +363,15 @@ void RobStride_Motor_MIT_Disable(RobStride_Motor_t* motor)
     txdata[6] = 0xFF;
     txdata[7] = MIT_CMD_DISABLE;
     
-    // 使用标准帧发送函数
-    canx_send_data(&hfdcan2, (uint16_t)txMsg.StdId, txdata, txMsg.DLC);
+    // 替换为hcan参数
+    canx_send_data(hcan, (uint16_t)txMsg.StdId, txdata, txMsg.DLC);
 }
 
 /*******************************************************************************
 * 函数功能  : RS04 MIT模式清除或检查错误
+* 修改点：参数改为hcan_t* hcan
 *******************************************************************************/
-void RobStride_Motor_MIT_ClearOrCheckError(RobStride_Motor_t* motor, uint8_t F_CMD)
+void RobStride_Motor_MIT_ClearOrCheckError(RobStride_Motor_t* motor, hcan_t* hcan, uint8_t F_CMD)
 {
     uint8_t txdata[8] = {0};
     CAN_TxHeaderTypeDef txMsg;
@@ -387,14 +390,15 @@ void RobStride_Motor_MIT_ClearOrCheckError(RobStride_Motor_t* motor, uint8_t F_C
     txdata[6] = F_CMD;
     txdata[7] = MIT_CMD_CLEAR_ERR;
     
-    // 使用标准帧发送函数
-    canx_send_data(&hfdcan2, (uint16_t)txMsg.StdId, txdata, txMsg.DLC);
+    // 替换为hcan参数
+    canx_send_data(hcan, (uint16_t)txMsg.StdId, txdata, txMsg.DLC);
 }
 
 /*******************************************************************************
 * 函数功能  : RS04 MIT设置电机运行模式
+* 修改点：参数改为hcan_t* hcan
 *******************************************************************************/
-void RobStride_Motor_MIT_SetMotorType(RobStride_Motor_t* motor, uint8_t F_CMD)
+void RobStride_Motor_MIT_SetMotorType(RobStride_Motor_t* motor, hcan_t* hcan, uint8_t F_CMD)
 {
     uint8_t txdata[8] = {0};
     CAN_TxHeaderTypeDef txMsg;
@@ -413,14 +417,15 @@ void RobStride_Motor_MIT_SetMotorType(RobStride_Motor_t* motor, uint8_t F_CMD)
     txdata[6] = F_CMD;
     txdata[7] = MIT_CMD_SET_MODE;
     
-    // 使用标准帧发送函数
-    canx_send_data(&hfdcan2, (uint16_t)txMsg.StdId, txdata, txMsg.DLC);
+    // 替换为hcan参数
+    canx_send_data(hcan, (uint16_t)txMsg.StdId, txdata, txMsg.DLC);
 }
 
 /*******************************************************************************
 * 函数功能  : RS04 MIT设置电机ID
+* 修改点：参数改为hcan_t* hcan
 *******************************************************************************/
-void RobStride_Motor_MIT_SetMotorId(RobStride_Motor_t* motor, uint8_t F_CMD)
+void RobStride_Motor_MIT_SetMotorId(RobStride_Motor_t* motor, hcan_t* hcan, uint8_t F_CMD)
 {
     uint8_t txdata[8] = {0};
     CAN_TxHeaderTypeDef txMsg;
@@ -439,14 +444,15 @@ void RobStride_Motor_MIT_SetMotorId(RobStride_Motor_t* motor, uint8_t F_CMD)
     txdata[6] = F_CMD;
     txdata[7] = 0xFA; // 设置ID命令
     
-    // 使用标准帧发送函数
-    canx_send_data(&hfdcan2, (uint16_t)txMsg.StdId, txdata, txMsg.DLC);
+    // 替换为hcan参数
+    canx_send_data(hcan, (uint16_t)txMsg.StdId, txdata, txMsg.DLC);
 }
 
 /*******************************************************************************
 * 函数功能  : RS04 MIT运控模式控制指令
+* 修改点：参数改为hcan_t* hcan
 *******************************************************************************/
-void RobStride_Motor_MIT_Control(RobStride_Motor_t* motor, float Angle, float Speed, float Kp, float Kd, float Torque)
+void RobStride_Motor_MIT_Control(RobStride_Motor_t* motor, hcan_t* hcan, float Angle, float Speed, float Kp, float Kd, float Torque)
 {
     uint8_t txdata[8] = {0};
     CAN_TxHeaderTypeDef txMsg;
@@ -474,14 +480,15 @@ void RobStride_Motor_MIT_Control(RobStride_Motor_t* motor, float Angle, float Sp
     uint16_t torque_uint = float_to_uint_lz(Torque, T_MIN, T_MAX, 12);
     txdata[7] = (uint8_t)(torque_uint & 0xFF);
     
-    // 使用标准帧发送函数
-    canx_send_data(&hfdcan2, (uint16_t)txMsg.StdId, txdata, txMsg.DLC);
+    // 替换为hcan参数
+    canx_send_data(hcan, (uint16_t)txMsg.StdId, txdata, txMsg.DLC);
 }
 
 /*******************************************************************************
 * 函数功能  : RS04 MIT位置模式控制指令
+* 修改点：参数改为hcan_t* hcan
 *******************************************************************************/
-void RobStride_Motor_MIT_PositionControl(RobStride_Motor_t* motor, float position_rad, float speed_rad_per_s)
+void RobStride_Motor_MIT_PositionControl(RobStride_Motor_t* motor, hcan_t* hcan, float position_rad, float speed_rad_per_s)
 {
     uint8_t txdata[8] = {0};
     CAN_TxHeaderTypeDef txMsg;
@@ -494,14 +501,15 @@ void RobStride_Motor_MIT_PositionControl(RobStride_Motor_t* motor, float positio
     memcpy(&txdata[0], &position_rad, 4);
     memcpy(&txdata[4], &speed_rad_per_s, 4);
     
-    // 使用标准帧发送函数
-    canx_send_data(&hfdcan2, (uint16_t)txMsg.StdId, txdata, txMsg.DLC);
+    // 替换为hcan参数
+    canx_send_data(hcan, (uint16_t)txMsg.StdId, txdata, txMsg.DLC);
 }
 
 /*******************************************************************************
 * 函数功能  : RS04 MIT速度模式控制指令
+* 修改点：参数改为hcan_t* hcan
 *******************************************************************************/
-void RobStride_Motor_MIT_SpeedControl(RobStride_Motor_t* motor, float speed_rad_per_s, float current_limit)
+void RobStride_Motor_MIT_SpeedControl(RobStride_Motor_t* motor, hcan_t* hcan, float speed_rad_per_s, float current_limit)
 {
     uint8_t txdata[8] = {0};
     CAN_TxHeaderTypeDef txMsg;
@@ -514,14 +522,15 @@ void RobStride_Motor_MIT_SpeedControl(RobStride_Motor_t* motor, float speed_rad_
     memcpy(&txdata[0], &speed_rad_per_s, 4);
     memcpy(&txdata[4], &current_limit, 4);
     
-    // 使用标准帧发送函数
-    canx_send_data(&hfdcan2, (uint16_t)txMsg.StdId, txdata, txMsg.DLC);
+    // 替换为hcan参数
+    canx_send_data(hcan, (uint16_t)txMsg.StdId, txdata, txMsg.DLC);
 }
 
 /*******************************************************************************
 * 函数功能  : RS04 MIT零点设置模式
+* 修改点：参数改为hcan_t* hcan
 *******************************************************************************/
-void RobStride_Motor_MIT_SetZeroPos(RobStride_Motor_t* motor)
+void RobStride_Motor_MIT_SetZeroPos(RobStride_Motor_t* motor, hcan_t* hcan)
 {
     uint8_t txdata[8] = {0};
     CAN_TxHeaderTypeDef txMsg;
@@ -540,14 +549,15 @@ void RobStride_Motor_MIT_SetZeroPos(RobStride_Motor_t* motor)
     txdata[6] = 0xFF;
     txdata[7] = MIT_CMD_SET_ZERO;
     
-    // 使用标准帧发送函数
-    canx_send_data(&hfdcan2, (uint16_t)txMsg.StdId, txdata, txMsg.DLC);
+    // 替换为hcan参数
+    canx_send_data(hcan, (uint16_t)txMsg.StdId, txdata, txMsg.DLC);
 }
 
 /*******************************************************************************
 * 函数功能  : RS04 MIT设置协议类型
+* 修改点：参数改为hcan_t* hcan
 *******************************************************************************/
-void RobStride_Motor_MIT_SetProtocol(RobStride_Motor_t* motor, uint8_t protocol_type)
+void RobStride_Motor_MIT_SetProtocol(RobStride_Motor_t* motor, hcan_t* hcan, uint8_t protocol_type)
 {
     uint8_t txdata[8] = {0};
     CAN_TxHeaderTypeDef txMsg;
@@ -566,44 +576,44 @@ void RobStride_Motor_MIT_SetProtocol(RobStride_Motor_t* motor, uint8_t protocol_
     txdata[6] = protocol_type;
     txdata[7] = MIT_CMD_SET_PROTOCOL;
     
-    // 使用标准帧发送函数
-    canx_send_data(&hfdcan2, (uint16_t)txMsg.StdId, txdata, txMsg.DLC);
+    // 替换为hcan参数
+    canx_send_data(hcan, (uint16_t)txMsg.StdId, txdata, txMsg.DLC);
 }
 
 /*******************************************************************************
 * 函数功能  : RobStride电机位置模式(PP插补位置模式控制)
+* 修改点：参数改为hcan_t* hcan
 *******************************************************************************/
-void RobStride_Motor_Pos_control(RobStride_Motor_t* motor, float Speed, float Angle)
+void RobStride_Motor_Pos_control(RobStride_Motor_t* motor, hcan_t* hcan, float Speed, float Angle)
 {
     motor->Motor_Set_All.set_speed = Speed;
     motor->Motor_Set_All.set_angle = Angle;
     
     if (motor->drw.run_mode.data != 1)
     {
-        Set_RobStride_Motor_parameter(motor, 0X7005, Pos_control_mode, 'j');
-        Get_RobStride_Motor_parameter(motor, 0x7005);
+        Set_RobStride_Motor_parameter(motor, hcan, 0X7005, Pos_control_mode, 'j');
+        Get_RobStride_Motor_parameter(motor, hcan, 0x7005);
         motor->Motor_Set_All.set_motor_mode = Pos_control_mode;
-        Enable_Motor(motor);
-        Set_RobStride_Motor_parameter(motor, 0X7024, motor->Motor_Set_All.set_limit_speed, 'p');
-        Set_RobStride_Motor_parameter(motor, 0X7025, motor->Motor_Set_All.set_acceleration, 'p');
+        Enable_Motor(motor, hcan);
+        Set_RobStride_Motor_parameter(motor, hcan, 0X7024, motor->Motor_Set_All.set_limit_speed, 'p');
+        Set_RobStride_Motor_parameter(motor, hcan, 0X7025, motor->Motor_Set_All.set_acceleration, 'p');
     }
     
-    // 注意：HAL_Delay需要STM32 HAL库支持
-    // HAL_Delay(1);
-    // 如果不在STM32环境中，可以用其他延时方式
-    for(uint32_t i = 0; i < 10000; i++); // 简单延时
+    // 简单延时
+    for(uint32_t i = 0; i < 10000; i++); 
     
-    Set_RobStride_Motor_parameter(motor, 0X7016, motor->Motor_Set_All.set_angle, 'p');
+    Set_RobStride_Motor_parameter(motor, hcan, 0X7016, motor->Motor_Set_All.set_angle, 'p');
 }
 
 /*******************************************************************************
 * 函数功能  : RobStride电机位置模式(CSP位置模式控制)
+* 修改点：参数改为hcan_t* hcan
 *******************************************************************************/
-void RobStride_Motor_CSP_control(RobStride_Motor_t* motor, float Angle, float limit_spd)
+void RobStride_Motor_CSP_control(RobStride_Motor_t* motor, hcan_t* hcan, float Angle, float limit_spd)
 {
     if (motor->MIT_Mode)
     {
-        RobStride_Motor_MIT_PositionControl(motor, Angle, limit_spd);
+        RobStride_Motor_MIT_PositionControl(motor, hcan, Angle, limit_spd);
     }
     else
     {
@@ -612,77 +622,79 @@ void RobStride_Motor_CSP_control(RobStride_Motor_t* motor, float Angle, float li
         
         if (motor->drw.run_mode.data != 1)
         {
-            Set_RobStride_Motor_parameter(motor, 0X7005, CSP_control_mode, 'j');
-            Get_RobStride_Motor_parameter(motor, 0x7005);
-            Enable_Motor(motor);
-            Set_RobStride_Motor_parameter(motor, 0X7017, motor->Motor_Set_All.set_limit_speed, 'p');
+            Set_RobStride_Motor_parameter(motor, hcan, 0X7005, CSP_control_mode, 'j');
+            Get_RobStride_Motor_parameter(motor, hcan, 0x7005);
+            Enable_Motor(motor, hcan);
+            Set_RobStride_Motor_parameter(motor, hcan, 0X7017, motor->Motor_Set_All.set_limit_speed, 'p');
         }
         
-        // 注意：HAL_Delay需要STM32 HAL库支持
-        // HAL_Delay(1);
-        // 如果不在STM32环境中，可以用其他延时方式
-        for(uint32_t i = 0; i < 10000; i++); // 简单延时
+        // 简单延时
+        for(uint32_t i = 0; i < 10000; i++); 
         
-        Set_RobStride_Motor_parameter(motor, 0X7016, motor->Motor_Set_All.set_angle, 'p');
+        Set_RobStride_Motor_parameter(motor, hcan, 0X7016, motor->Motor_Set_All.set_angle, 'p');
     }
 }
 
 /*******************************************************************************
 * 函数功能  : RobStride电机速度模式
+* 修改点：参数改为hcan_t* hcan
 *******************************************************************************/
-void RobStride_Motor_Speed_control(RobStride_Motor_t* motor, float Speed, float limit_cur)
+void RobStride_Motor_Speed_control(RobStride_Motor_t* motor, hcan_t* hcan, float Speed, float limit_cur)
 {
     motor->Motor_Set_All.set_speed = Speed;
     motor->Motor_Set_All.set_limit_cur = limit_cur;
     
     if (motor->drw.run_mode.data != 2)
     {
-        Set_RobStride_Motor_parameter(motor, 0X7005, Speed_control_mode, 'j');
-        Get_RobStride_Motor_parameter(motor, 0x7005);
-        Enable_Motor(motor);
+        Set_RobStride_Motor_parameter(motor, hcan, 0X7005, Speed_control_mode, 'j');
+        Get_RobStride_Motor_parameter(motor, hcan, 0x7005);
+        Enable_Motor(motor, hcan);
         motor->Motor_Set_All.set_motor_mode = Speed_control_mode;
-        Set_RobStride_Motor_parameter(motor, 0X7018, motor->Motor_Set_All.set_limit_cur, 'p');
-        Set_RobStride_Motor_parameter(motor, 0X7022, 10, 'p');
+        Set_RobStride_Motor_parameter(motor, hcan, 0X7018, motor->Motor_Set_All.set_limit_cur, 'p');
+        Set_RobStride_Motor_parameter(motor, hcan, 0X7022, 10, 'p');
     }
     
-    Set_RobStride_Motor_parameter(motor, 0X700A, motor->Motor_Set_All.set_speed, 'p');
+    Set_RobStride_Motor_parameter(motor, hcan, 0X700A, motor->Motor_Set_All.set_speed, 'p');
 }
 
 /*******************************************************************************
 * 函数功能  : RobStride电机电流模式
+* 修改点：参数改为hcan_t* hcan
 *******************************************************************************/
-void RobStride_Motor_current_control(RobStride_Motor_t* motor, float current)
+void RobStride_Motor_current_control(RobStride_Motor_t* motor, hcan_t* hcan, float current)
 {
     motor->Motor_Set_All.set_current = current;
     motor->output = motor->Motor_Set_All.set_current;
     
     if (motor->Motor_Set_All.set_motor_mode != 3)
     {
-        Set_RobStride_Motor_parameter(motor, 0X7005, Elect_control_mode, 'j');
-        Get_RobStride_Motor_parameter(motor, 0x7005);
+        Set_RobStride_Motor_parameter(motor, hcan, 0X7005, Elect_control_mode, 'j');
+        Get_RobStride_Motor_parameter(motor, hcan, 0x7005);
         motor->Motor_Set_All.set_motor_mode = Elect_control_mode;
-        Enable_Motor(motor);
+        Enable_Motor(motor, hcan);
     }
     
-    Set_RobStride_Motor_parameter(motor, 0X7006, motor->Motor_Set_All.set_current, 'p');
+    Set_RobStride_Motor_parameter(motor, hcan, 0X7006, motor->Motor_Set_All.set_current, 'p');
 }
 
 /*******************************************************************************
 * 函数功能  : RobStride电机零点模式
+* 修改点：参数改为hcan_t* hcan
 *******************************************************************************/
-void RobStride_Motor_Set_Zero_control(RobStride_Motor_t* motor)
+void RobStride_Motor_Set_Zero_control(RobStride_Motor_t* motor, hcan_t* hcan)
 {
-    Set_RobStride_Motor_parameter(motor, 0X7005, Set_Zero_mode, 'j');
+    Set_RobStride_Motor_parameter(motor, hcan, 0X7005, Set_Zero_mode, 'j');
 }
 
 /*******************************************************************************
 * 函数功能  : RobStride电机使能
+* 修改点：参数改为hcan_t* hcan
 *******************************************************************************/
-void Enable_Motor(RobStride_Motor_t* motor)
+void Enable_Motor(RobStride_Motor_t* motor, hcan_t* hcan)
 {
     if (motor->MIT_Mode)
     {
-        RobStride_Motor_MIT_Enable(motor);
+        RobStride_Motor_MIT_Enable(motor, hcan);
     }
     else
     {
@@ -696,19 +708,20 @@ void Enable_Motor(RobStride_Motor_t* motor)
                           (uint32_t)motor->Master_CAN_ID << 8 | 
                           motor->CAN_ID;
         
-        // 使用扩展帧发送函数
-        canx_send_ext_data(&hfdcan2, TxMessage.ExtId, txdata, TxMessage.DLC);
+        // 替换为hcan参数
+        canx_send_ext_data(hcan, TxMessage.ExtId, txdata, TxMessage.DLC);
     }
 }
 
 /*******************************************************************************
 * 函数功能  : RobStride电机失能
+* 修改点：参数改为hcan_t* hcan
 *******************************************************************************/
-void Disenable_Motor(RobStride_Motor_t* motor, uint8_t clear_error)
+void Disenable_Motor(RobStride_Motor_t* motor, hcan_t* hcan, uint8_t clear_error)
 {
     if (motor->MIT_Mode)
     {
-        RobStride_Motor_MIT_Disable(motor);
+        RobStride_Motor_MIT_Disable(motor, hcan);
     }
     else
     {
@@ -723,16 +736,17 @@ void Disenable_Motor(RobStride_Motor_t* motor, uint8_t clear_error)
                           (uint32_t)motor->Master_CAN_ID << 8 | 
                           motor->CAN_ID;
         
-        // 使用扩展帧发送函数
-        canx_send_ext_data(&hfdcan2, TxMessage.ExtId, txdata, TxMessage.DLC);
-        Set_RobStride_Motor_parameter(motor, 0X7005, move_control_mode, 'j');
+        // 替换为hcan参数
+        canx_send_ext_data(hcan, TxMessage.ExtId, txdata, TxMessage.DLC);
+        Set_RobStride_Motor_parameter(motor, hcan, 0X7005, move_control_mode, 'j');
     }
 }
 
 /*******************************************************************************
 * 函数功能  : RobStride电机写入参数
+* 修改点：参数改为hcan_t* hcan
 *******************************************************************************/
-void Set_RobStride_Motor_parameter(RobStride_Motor_t* motor, uint16_t Index, float Value, char Value_mode)
+void Set_RobStride_Motor_parameter(RobStride_Motor_t* motor, hcan_t* hcan, uint16_t Index, float Value, char Value_mode)
 {
     uint8_t txdata[8] = {0};
     CAN_TxHeaderTypeDef TxMessage;
@@ -762,14 +776,15 @@ void Set_RobStride_Motor_parameter(RobStride_Motor_t* motor, uint16_t Index, flo
         txdata[7] = 0x00;
     }
     
-    // 使用扩展帧发送函数
-    canx_send_ext_data(&hfdcan2, TxMessage.ExtId, txdata, TxMessage.DLC);
+    // 替换为hcan参数
+    canx_send_ext_data(hcan, TxMessage.ExtId, txdata, TxMessage.DLC);
 }
 
 /*******************************************************************************
 * 函数功能  : RobStride电机单个参数读取
+* 修改点：参数改为hcan_t* hcan
 *******************************************************************************/
-void Get_RobStride_Motor_parameter(RobStride_Motor_t* motor, uint16_t Index)
+void Get_RobStride_Motor_parameter(RobStride_Motor_t* motor, hcan_t* hcan, uint16_t Index)
 {
     uint8_t txdata[8] = {0};
     CAN_TxHeaderTypeDef TxMessage;
@@ -784,16 +799,17 @@ void Get_RobStride_Motor_parameter(RobStride_Motor_t* motor, uint16_t Index)
                       (uint32_t)motor->Master_CAN_ID << 8 | 
                       motor->CAN_ID;
     
-    // 使用扩展帧发送函数
-    canx_send_ext_data(&hfdcan2, TxMessage.ExtId, txdata, TxMessage.DLC);
+    // 替换为hcan参数
+    canx_send_ext_data(hcan, TxMessage.ExtId, txdata, TxMessage.DLC);
 }
 
 /*******************************************************************************
 * 函数功能  : RobStride电机设置CAN_ID
+* 修改点：参数改为hcan_t* hcan
 *******************************************************************************/
-void Set_CAN_ID(RobStride_Motor_t* motor, uint8_t Set_CAN_ID)
+void Set_CAN_ID(RobStride_Motor_t* motor, hcan_t* hcan, uint8_t Set_CAN_ID)
 {
-    Disenable_Motor(motor, 0);
+    Disenable_Motor(motor, hcan, 0);
     
     uint8_t txdata[8] = {0};
     CAN_TxHeaderTypeDef TxMessage;
@@ -806,16 +822,17 @@ void Set_CAN_ID(RobStride_Motor_t* motor, uint8_t Set_CAN_ID)
                       (uint32_t)motor->Master_CAN_ID << 8 | 
                       motor->CAN_ID;
     
-    // 使用扩展帧发送函数
-    canx_send_ext_data(&hfdcan2, TxMessage.ExtId, txdata, TxMessage.DLC);
+    // 替换为hcan参数
+    canx_send_ext_data(hcan, TxMessage.ExtId, txdata, TxMessage.DLC);
 }
 
 /*******************************************************************************
 * 函数功能  : RobStride电机设置机械零点
+* 修改点：参数改为hcan_t* hcan
 *******************************************************************************/
-void Set_ZeroPos(RobStride_Motor_t* motor)
+void Set_ZeroPos(RobStride_Motor_t* motor, hcan_t* hcan)
 {
-    Disenable_Motor(motor, 0);
+    Disenable_Motor(motor, hcan, 0);
     
     uint8_t txdata[8] = {0};
     CAN_TxHeaderTypeDef TxMessage;
@@ -828,16 +845,17 @@ void Set_ZeroPos(RobStride_Motor_t* motor)
                       motor->CAN_ID;
     
     txdata[0] = 1;
-    // 使用扩展帧发送函数
-    canx_send_ext_data(&hfdcan2, TxMessage.ExtId, txdata, TxMessage.DLC);
+    // 替换为hcan参数
+    canx_send_ext_data(hcan, TxMessage.ExtId, txdata, TxMessage.DLC);
     
-    Enable_Motor(motor);
+    Enable_Motor(motor, hcan);
 }
 
 /*******************************************************************************
 * 函数功能  : RobStride电机数据保存
+* 修改点：参数改为hcan_t* hcan
 *******************************************************************************/
-void RobStride_Motor_MotorDataSave(RobStride_Motor_t* motor)
+void RobStride_Motor_MotorDataSave(RobStride_Motor_t* motor, hcan_t* hcan)
 {
     uint8_t txdata[8] = {0};
     CAN_TxHeaderTypeDef TxMessage;
@@ -858,14 +876,15 @@ void RobStride_Motor_MotorDataSave(RobStride_Motor_t* motor)
     txdata[6] = 0x07;
     txdata[7] = 0x08;
     
-    // 使用扩展帧发送函数
-    canx_send_ext_data(&hfdcan2, TxMessage.ExtId, txdata, TxMessage.DLC);
+    // 替换为hcan参数
+    canx_send_ext_data(hcan, TxMessage.ExtId, txdata, TxMessage.DLC);
 }
 
 /*******************************************************************************
 * 函数功能  : RobStride电机波特率修改
+* 修改点：参数改为hcan_t* hcan
 *******************************************************************************/
-void RobStride_Motor_BaudRateChange(RobStride_Motor_t* motor, uint8_t F_CMD)
+void RobStride_Motor_BaudRateChange(RobStride_Motor_t* motor, hcan_t* hcan, uint8_t F_CMD)
 {
     uint8_t txdata[8] = {0};
     CAN_TxHeaderTypeDef TxMessage;
@@ -886,14 +905,15 @@ void RobStride_Motor_BaudRateChange(RobStride_Motor_t* motor, uint8_t F_CMD)
     txdata[6] = F_CMD;
     txdata[7] = 0x08;
     
-    // 使用扩展帧发送函数
-    canx_send_ext_data(&hfdcan2, TxMessage.ExtId, txdata, TxMessage.DLC);
+    // 替换为hcan参数
+    canx_send_ext_data(hcan, TxMessage.ExtId, txdata, TxMessage.DLC);
 }
 
 /*******************************************************************************
 * 函数功能  : RobStride电机主动上报设置
+* 修改点：参数改为hcan_t* hcan
 *******************************************************************************/
-void RobStride_Motor_ProactiveEscalationSet(RobStride_Motor_t* motor, uint8_t F_CMD)
+void RobStride_Motor_ProactiveEscalationSet(RobStride_Motor_t* motor, hcan_t* hcan, uint8_t F_CMD)
 {
     uint8_t txdata[8] = {0};
     CAN_TxHeaderTypeDef TxMessage;
@@ -914,14 +934,15 @@ void RobStride_Motor_ProactiveEscalationSet(RobStride_Motor_t* motor, uint8_t F_
     txdata[6] = F_CMD;
     txdata[7] = 0x08;
     
-    // 使用扩展帧发送函数
-    canx_send_ext_data(&hfdcan2, TxMessage.ExtId, txdata, TxMessage.DLC);
+    // 替换为hcan参数
+    canx_send_ext_data(hcan, TxMessage.ExtId, txdata, TxMessage.DLC);
 }
 
 /*******************************************************************************
 * 函数功能  : RobStride电机协议修改
+* 修改点：参数改为hcan_t* hcan
 *******************************************************************************/
-void RobStride_Motor_MotorModeSet(RobStride_Motor_t* motor, uint8_t F_CMD)
+void RobStride_Motor_MotorModeSet(RobStride_Motor_t* motor, hcan_t* hcan, uint8_t F_CMD)
 {
     uint8_t txdata[8] = {0};
     CAN_TxHeaderTypeDef TxMessage;
@@ -942,8 +963,8 @@ void RobStride_Motor_MotorModeSet(RobStride_Motor_t* motor, uint8_t F_CMD)
     txdata[6] = F_CMD;
     txdata[7] = 0x08;
     
-    // 使用扩展帧发送函数
-    canx_send_ext_data(&hfdcan2, TxMessage.ExtId, txdata, TxMessage.DLC);
+    // 替换为hcan参数
+    canx_send_ext_data(hcan, TxMessage.ExtId, txdata, TxMessage.DLC);
 }
 
 /*******************************************************************************

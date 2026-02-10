@@ -151,8 +151,7 @@ int main(void)
   Shoot_init();
   HAL_IWDG_Refresh(&hiwdg1);
    remote_control_init();
-  // OSPI_W25Qxx_Init(); // 锟斤拷始锟斤拷OSPI锟斤拷W25Q64
-  // OSPI_W25Qxx_Test(); // Flash锟斤拷写锟斤拷锟斤拷
+
 
   /* USER CODE END 2 */
 
@@ -326,7 +325,7 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
     static uint8_t i;
     IMU_updata();
     if (i >= 5 )
-    { // 降频至200hz
+    { // 降频�?200hz
       STM32_to_MINIPC();
       i = 0;
     }

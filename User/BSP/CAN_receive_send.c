@@ -19,7 +19,7 @@ FDCAN_RxHeaderTypeDef RxHeader1;
 uint8_t g_Can1RxData[64];
 float daibaoshan[3];
 motor_measure_t motor_data[33];
-uint32_t Flag_damiao[6] ={ 0};
+uint32_t Flag_damiao[10] ={ 0};
 //前一时刻的电机接收flag
 uint32_t Pre_Flag_damiao [6] ={ 0};
 /**/
@@ -256,37 +256,10 @@ void HAL_FDCAN_RxFifo0Callback(FDCAN_HandleTypeDef *hfdcan, uint32_t RxFifo0ITs)
 					case 3 :damiao_fbdata(&arm_motor[Motor3],rx_data );   Flag_damiao[3] += 1;break;
 					case 4 :damiao_fbdata(&arm_motor[Motor4],rx_data );   Flag_damiao[4] += 1;break;
 					case 5 :damiao_fbdata(&arm_motor[Motor5],rx_data );   Flag_damiao[5] += 1;break;
-					// case 0x206 :get_motor_measure(&motor_data[11+RxHeader1.Identifier - CAN_ID1], g_Can1RxData);
-					// 					process_motor_data(&motor_data[11+RxHeader1.Identifier - CAN_ID1]);break;
+				  case 6 :damiao_fbdata(&arm_motor[Motor6],rx_data );   Flag_damiao[6] += 1;break;
 					default:break;
 				}		
     }
-
-
-//达妙
-//  if(hfdcan->Instance == FDCAN2)
-// 		{
-// 			memset(g_Can1RxData, 0, sizeof(g_Can1RxData));
-// 			fdcanx_receive(hfdcan,FDCAN_RX_FIFO0,&RxHeader1,g_Can1RxData);							
-			
-//     	switch(RxHeader1.Identifier)
-// 				{
-// 					case 2 :dm10010l_fbdata(&arm_motor[Motor2], g_Can1RxData,RxHeader1.DataLength); Flag_damiao[2] += 1;break;     
-// 					case 3 :dm4310_fbdata(&arm_motor[Motor3], g_Can1RxData,RxHeader1.DataLength);   Flag_damiao[3] += 1;break;
-// 					case 4 :dm4310_fbdata(&arm_motor[Motor4], g_Can1RxData,RxHeader1.DataLength);   Flag_damiao[4] += 1;break;
-// 					case 5 :	damiao_fbdata(&arm_motor[Motor5],rx_data );   Flag_damiao[5] += 1;break;
-// 					case 0x206 :get_motor_measure(&motor_data[11+RxHeader1.Identifier - CAN_ID1], g_Can1RxData);
-// 										process_motor_data(&motor_data[11+RxHeader1.Identifier - CAN_ID1]);break;
-// 					default:break;
-// 				}				
-// 		}
-// 		      else if(hfdcan->Instance == FDCAN3)
-// 		{
-// 			memset(g_Can1RxData, 0, sizeof(g_Can1RxData));
-// 			fdcanx_receive(hfdcan,FDCAN_RX_FIFO0,&RxHeader1,g_Can1RxData);							
-// 			get_motor_measure(&motor_data[22+RxHeader1.Identifier - CAN_ID1], g_Can1RxData);
-// 			process_motor_data(&motor_data[22+RxHeader1.Identifier - CAN_ID1]);
-// 		}
   }
 
 
