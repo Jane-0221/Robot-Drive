@@ -1,4 +1,4 @@
-ARM GAS  C:\Users\Godwin\AppData\Local\Temp\ccM1ZfTX.s 			page 1
+ARM GAS  C:\Users\Godwin\AppData\Local\Temp\ccPjrEWN.s 			page 1
 
 
    1              		.cpu cortex-m7
@@ -58,7 +58,7 @@ ARM GAS  C:\Users\Godwin\AppData\Local\Temp\ccM1ZfTX.s 			page 1
    2:Core/Src/fdcan.c **** /**
    3:Core/Src/fdcan.c ****   ******************************************************************************
    4:Core/Src/fdcan.c ****   * @file    fdcan.c
-ARM GAS  C:\Users\Godwin\AppData\Local\Temp\ccM1ZfTX.s 			page 2
+ARM GAS  C:\Users\Godwin\AppData\Local\Temp\ccPjrEWN.s 			page 2
 
 
    5:Core/Src/fdcan.c ****   * @brief   This file provides code for the configuration
@@ -92,16 +92,19 @@ ARM GAS  C:\Users\Godwin\AppData\Local\Temp\ccM1ZfTX.s 			page 1
   33:Core/Src/fdcan.c **** {
   49              		.loc 1 33 1
   50              		.cfi_startproc
-  51              		@ args = 0, pretend = 0, frame = 0
+  51              		@ args = 0, pretend = 0, frame = 32
   52              		@ frame_needed = 1, uses_anonymous_args = 0
   53 0000 80B5     		push	{r7, lr}
   54              	.LCFI0:
   55              		.cfi_def_cfa_offset 8
   56              		.cfi_offset 7, -8
   57              		.cfi_offset 14, -4
-  58 0002 00AF     		add	r7, sp, #0
+  58 0002 88B0     		sub	sp, sp, #32
   59              	.LCFI1:
-  60              		.cfi_def_cfa_register 7
+  60              		.cfi_def_cfa_offset 40
+  61 0004 00AF     		add	r7, sp, #0
+  62              	.LCFI2:
+  63              		.cfi_def_cfa_register 7
   34:Core/Src/fdcan.c **** 
   35:Core/Src/fdcan.c ****   /* USER CODE BEGIN FDCAN1_Init 0 */
   36:Core/Src/fdcan.c **** 
@@ -111,1500 +114,1911 @@ ARM GAS  C:\Users\Godwin\AppData\Local\Temp\ccM1ZfTX.s 			page 1
   40:Core/Src/fdcan.c **** 
   41:Core/Src/fdcan.c ****   /* USER CODE END FDCAN1_Init 1 */
   42:Core/Src/fdcan.c ****   hfdcan1.Instance = FDCAN1;
-  61              		.loc 1 42 20
-  62 0004 2E4B     		ldr	r3, .L4
-  63 0006 2F4A     		ldr	r2, .L4+4
-  64 0008 1A60     		str	r2, [r3]
+  64              		.loc 1 42 20
+  65 0006 4F4B     		ldr	r3, .L8
+  66 0008 4F4A     		ldr	r2, .L8+4
+  67 000a 1A60     		str	r2, [r3]
+ARM GAS  C:\Users\Godwin\AppData\Local\Temp\ccPjrEWN.s 			page 3
+
+
   43:Core/Src/fdcan.c ****   hfdcan1.Init.FrameFormat = FDCAN_FRAME_CLASSIC;
-  65              		.loc 1 43 28
-  66 000a 2D4B     		ldr	r3, .L4
-ARM GAS  C:\Users\Godwin\AppData\Local\Temp\ccM1ZfTX.s 			page 3
-
-
-  67 000c 0022     		movs	r2, #0
-  68 000e 9A60     		str	r2, [r3, #8]
+  68              		.loc 1 43 28
+  69 000c 4D4B     		ldr	r3, .L8
+  70 000e 0022     		movs	r2, #0
+  71 0010 9A60     		str	r2, [r3, #8]
   44:Core/Src/fdcan.c ****   hfdcan1.Init.Mode = FDCAN_MODE_NORMAL;
-  69              		.loc 1 44 21
-  70 0010 2B4B     		ldr	r3, .L4
-  71 0012 0022     		movs	r2, #0
-  72 0014 DA60     		str	r2, [r3, #12]
+  72              		.loc 1 44 21
+  73 0012 4C4B     		ldr	r3, .L8
+  74 0014 0022     		movs	r2, #0
+  75 0016 DA60     		str	r2, [r3, #12]
   45:Core/Src/fdcan.c ****   hfdcan1.Init.AutoRetransmission = DISABLE;
-  73              		.loc 1 45 35
-  74 0016 2A4B     		ldr	r3, .L4
-  75 0018 0022     		movs	r2, #0
-  76 001a 1A74     		strb	r2, [r3, #16]
+  76              		.loc 1 45 35
+  77 0018 4A4B     		ldr	r3, .L8
+  78 001a 0022     		movs	r2, #0
+  79 001c 1A74     		strb	r2, [r3, #16]
   46:Core/Src/fdcan.c ****   hfdcan1.Init.TransmitPause = DISABLE;
-  77              		.loc 1 46 30
-  78 001c 284B     		ldr	r3, .L4
-  79 001e 0022     		movs	r2, #0
-  80 0020 5A74     		strb	r2, [r3, #17]
+  80              		.loc 1 46 30
+  81 001e 494B     		ldr	r3, .L8
+  82 0020 0022     		movs	r2, #0
+  83 0022 5A74     		strb	r2, [r3, #17]
   47:Core/Src/fdcan.c ****   hfdcan1.Init.ProtocolException = DISABLE;
-  81              		.loc 1 47 34
-  82 0022 274B     		ldr	r3, .L4
-  83 0024 0022     		movs	r2, #0
-  84 0026 9A74     		strb	r2, [r3, #18]
+  84              		.loc 1 47 34
+  85 0024 474B     		ldr	r3, .L8
+  86 0026 0022     		movs	r2, #0
+  87 0028 9A74     		strb	r2, [r3, #18]
   48:Core/Src/fdcan.c ****   hfdcan1.Init.NominalPrescaler = 3;
-  85              		.loc 1 48 33
-  86 0028 254B     		ldr	r3, .L4
-  87 002a 0322     		movs	r2, #3
-  88 002c 5A61     		str	r2, [r3, #20]
+  88              		.loc 1 48 33
+  89 002a 464B     		ldr	r3, .L8
+  90 002c 0322     		movs	r2, #3
+  91 002e 5A61     		str	r2, [r3, #20]
   49:Core/Src/fdcan.c ****   hfdcan1.Init.NominalSyncJumpWidth = 10;
-  89              		.loc 1 49 37
-  90 002e 244B     		ldr	r3, .L4
-  91 0030 0A22     		movs	r2, #10
-  92 0032 9A61     		str	r2, [r3, #24]
+  92              		.loc 1 49 37
+  93 0030 444B     		ldr	r3, .L8
+  94 0032 0A22     		movs	r2, #10
+  95 0034 9A61     		str	r2, [r3, #24]
   50:Core/Src/fdcan.c ****   hfdcan1.Init.NominalTimeSeg1 = 29;
-  93              		.loc 1 50 32
-  94 0034 224B     		ldr	r3, .L4
-  95 0036 1D22     		movs	r2, #29
-  96 0038 DA61     		str	r2, [r3, #28]
+  96              		.loc 1 50 32
+  97 0036 434B     		ldr	r3, .L8
+  98 0038 1D22     		movs	r2, #29
+  99 003a DA61     		str	r2, [r3, #28]
   51:Core/Src/fdcan.c ****   hfdcan1.Init.NominalTimeSeg2 = 10;
-  97              		.loc 1 51 32
-  98 003a 214B     		ldr	r3, .L4
-  99 003c 0A22     		movs	r2, #10
- 100 003e 1A62     		str	r2, [r3, #32]
+ 100              		.loc 1 51 32
+ 101 003c 414B     		ldr	r3, .L8
+ 102 003e 0A22     		movs	r2, #10
+ 103 0040 1A62     		str	r2, [r3, #32]
   52:Core/Src/fdcan.c ****   hfdcan1.Init.DataPrescaler = 3;
- 101              		.loc 1 52 30
- 102 0040 1F4B     		ldr	r3, .L4
- 103 0042 0322     		movs	r2, #3
- 104 0044 5A62     		str	r2, [r3, #36]
+ 104              		.loc 1 52 30
+ 105 0042 404B     		ldr	r3, .L8
+ 106 0044 0322     		movs	r2, #3
+ 107 0046 5A62     		str	r2, [r3, #36]
   53:Core/Src/fdcan.c ****   hfdcan1.Init.DataSyncJumpWidth = 10;
- 105              		.loc 1 53 34
- 106 0046 1E4B     		ldr	r3, .L4
- 107 0048 0A22     		movs	r2, #10
- 108 004a 9A62     		str	r2, [r3, #40]
+ 108              		.loc 1 53 34
+ 109 0048 3E4B     		ldr	r3, .L8
+ 110 004a 0A22     		movs	r2, #10
+ 111 004c 9A62     		str	r2, [r3, #40]
   54:Core/Src/fdcan.c ****   hfdcan1.Init.DataTimeSeg1 = 29;
- 109              		.loc 1 54 29
- 110 004c 1C4B     		ldr	r3, .L4
- 111 004e 1D22     		movs	r2, #29
- 112 0050 DA62     		str	r2, [r3, #44]
-ARM GAS  C:\Users\Godwin\AppData\Local\Temp\ccM1ZfTX.s 			page 4
+ 112              		.loc 1 54 29
+ARM GAS  C:\Users\Godwin\AppData\Local\Temp\ccPjrEWN.s 			page 4
 
 
+ 113 004e 3D4B     		ldr	r3, .L8
+ 114 0050 1D22     		movs	r2, #29
+ 115 0052 DA62     		str	r2, [r3, #44]
   55:Core/Src/fdcan.c ****   hfdcan1.Init.DataTimeSeg2 = 10;
- 113              		.loc 1 55 29
- 114 0052 1B4B     		ldr	r3, .L4
- 115 0054 0A22     		movs	r2, #10
- 116 0056 1A63     		str	r2, [r3, #48]
+ 116              		.loc 1 55 29
+ 117 0054 3B4B     		ldr	r3, .L8
+ 118 0056 0A22     		movs	r2, #10
+ 119 0058 1A63     		str	r2, [r3, #48]
   56:Core/Src/fdcan.c ****   hfdcan1.Init.MessageRAMOffset = 0;
- 117              		.loc 1 56 33
- 118 0058 194B     		ldr	r3, .L4
- 119 005a 0022     		movs	r2, #0
- 120 005c 5A63     		str	r2, [r3, #52]
-  57:Core/Src/fdcan.c ****   hfdcan1.Init.StdFiltersNbr = 1;
- 121              		.loc 1 57 30
- 122 005e 184B     		ldr	r3, .L4
- 123 0060 0122     		movs	r2, #1
- 124 0062 9A63     		str	r2, [r3, #56]
-  58:Core/Src/fdcan.c ****   hfdcan1.Init.ExtFiltersNbr = 1;
- 125              		.loc 1 58 30
- 126 0064 164B     		ldr	r3, .L4
- 127 0066 0122     		movs	r2, #1
- 128 0068 DA63     		str	r2, [r3, #60]
+ 120              		.loc 1 56 33
+ 121 005a 3A4B     		ldr	r3, .L8
+ 122 005c 0022     		movs	r2, #0
+ 123 005e 5A63     		str	r2, [r3, #52]
+  57:Core/Src/fdcan.c ****   hfdcan1.Init.StdFiltersNbr = 1;    // 1个标准帧过滤器
+ 124              		.loc 1 57 30
+ 125 0060 384B     		ldr	r3, .L8
+ 126 0062 0122     		movs	r2, #1
+ 127 0064 9A63     		str	r2, [r3, #56]
+  58:Core/Src/fdcan.c ****   hfdcan1.Init.ExtFiltersNbr = 1;    // 1个扩展帧过滤器
+ 128              		.loc 1 58 30
+ 129 0066 374B     		ldr	r3, .L8
+ 130 0068 0122     		movs	r2, #1
+ 131 006a DA63     		str	r2, [r3, #60]
   59:Core/Src/fdcan.c ****   hfdcan1.Init.RxFifo0ElmtsNbr = 4;
- 129              		.loc 1 59 32
- 130 006a 154B     		ldr	r3, .L4
- 131 006c 0422     		movs	r2, #4
- 132 006e 1A64     		str	r2, [r3, #64]
+ 132              		.loc 1 59 32
+ 133 006c 354B     		ldr	r3, .L8
+ 134 006e 0422     		movs	r2, #4
+ 135 0070 1A64     		str	r2, [r3, #64]
   60:Core/Src/fdcan.c ****   hfdcan1.Init.RxFifo0ElmtSize = FDCAN_DATA_BYTES_8;
- 133              		.loc 1 60 32
- 134 0070 134B     		ldr	r3, .L4
- 135 0072 0422     		movs	r2, #4
- 136 0074 5A64     		str	r2, [r3, #68]
+ 136              		.loc 1 60 32
+ 137 0072 344B     		ldr	r3, .L8
+ 138 0074 0422     		movs	r2, #4
+ 139 0076 5A64     		str	r2, [r3, #68]
   61:Core/Src/fdcan.c ****   hfdcan1.Init.RxFifo1ElmtsNbr = 0;
- 137              		.loc 1 61 32
- 138 0076 124B     		ldr	r3, .L4
- 139 0078 0022     		movs	r2, #0
- 140 007a 9A64     		str	r2, [r3, #72]
+ 140              		.loc 1 61 32
+ 141 0078 324B     		ldr	r3, .L8
+ 142 007a 0022     		movs	r2, #0
+ 143 007c 9A64     		str	r2, [r3, #72]
   62:Core/Src/fdcan.c ****   hfdcan1.Init.RxFifo1ElmtSize = FDCAN_DATA_BYTES_8;
- 141              		.loc 1 62 32
- 142 007c 104B     		ldr	r3, .L4
- 143 007e 0422     		movs	r2, #4
- 144 0080 DA64     		str	r2, [r3, #76]
+ 144              		.loc 1 62 32
+ 145 007e 314B     		ldr	r3, .L8
+ 146 0080 0422     		movs	r2, #4
+ 147 0082 DA64     		str	r2, [r3, #76]
   63:Core/Src/fdcan.c ****   hfdcan1.Init.RxBuffersNbr = 0;
- 145              		.loc 1 63 29
- 146 0082 0F4B     		ldr	r3, .L4
- 147 0084 0022     		movs	r2, #0
- 148 0086 1A65     		str	r2, [r3, #80]
+ 148              		.loc 1 63 29
+ 149 0084 2F4B     		ldr	r3, .L8
+ 150 0086 0022     		movs	r2, #0
+ 151 0088 1A65     		str	r2, [r3, #80]
   64:Core/Src/fdcan.c ****   hfdcan1.Init.RxBufferSize = FDCAN_DATA_BYTES_8;
- 149              		.loc 1 64 29
- 150 0088 0D4B     		ldr	r3, .L4
- 151 008a 0422     		movs	r2, #4
- 152 008c 5A65     		str	r2, [r3, #84]
+ 152              		.loc 1 64 29
+ 153 008a 2E4B     		ldr	r3, .L8
+ 154 008c 0422     		movs	r2, #4
+ 155 008e 5A65     		str	r2, [r3, #84]
   65:Core/Src/fdcan.c ****   hfdcan1.Init.TxEventsNbr = 0;
- 153              		.loc 1 65 28
- 154 008e 0C4B     		ldr	r3, .L4
- 155 0090 0022     		movs	r2, #0
- 156 0092 9A65     		str	r2, [r3, #88]
+ 156              		.loc 1 65 28
+ 157 0090 2C4B     		ldr	r3, .L8
+ 158 0092 0022     		movs	r2, #0
+ARM GAS  C:\Users\Godwin\AppData\Local\Temp\ccPjrEWN.s 			page 5
+
+
+ 159 0094 9A65     		str	r2, [r3, #88]
   66:Core/Src/fdcan.c ****   hfdcan1.Init.TxBuffersNbr = 0;
- 157              		.loc 1 66 29
-ARM GAS  C:\Users\Godwin\AppData\Local\Temp\ccM1ZfTX.s 			page 5
-
-
- 158 0094 0A4B     		ldr	r3, .L4
- 159 0096 0022     		movs	r2, #0
- 160 0098 DA65     		str	r2, [r3, #92]
+ 160              		.loc 1 66 29
+ 161 0096 2B4B     		ldr	r3, .L8
+ 162 0098 0022     		movs	r2, #0
+ 163 009a DA65     		str	r2, [r3, #92]
   67:Core/Src/fdcan.c ****   hfdcan1.Init.TxFifoQueueElmtsNbr = 32;
- 161              		.loc 1 67 36
- 162 009a 094B     		ldr	r3, .L4
- 163 009c 2022     		movs	r2, #32
- 164 009e 1A66     		str	r2, [r3, #96]
+ 164              		.loc 1 67 36
+ 165 009c 294B     		ldr	r3, .L8
+ 166 009e 2022     		movs	r2, #32
+ 167 00a0 1A66     		str	r2, [r3, #96]
   68:Core/Src/fdcan.c ****   hfdcan1.Init.TxFifoQueueMode = FDCAN_TX_FIFO_OPERATION;
- 165              		.loc 1 68 32
- 166 00a0 074B     		ldr	r3, .L4
- 167 00a2 0022     		movs	r2, #0
- 168 00a4 5A66     		str	r2, [r3, #100]
+ 168              		.loc 1 68 32
+ 169 00a2 284B     		ldr	r3, .L8
+ 170 00a4 0022     		movs	r2, #0
+ 171 00a6 5A66     		str	r2, [r3, #100]
   69:Core/Src/fdcan.c ****   hfdcan1.Init.TxElmtSize = FDCAN_DATA_BYTES_8;
- 169              		.loc 1 69 27
- 170 00a6 064B     		ldr	r3, .L4
- 171 00a8 0422     		movs	r2, #4
- 172 00aa 9A66     		str	r2, [r3, #104]
+ 172              		.loc 1 69 27
+ 173 00a8 264B     		ldr	r3, .L8
+ 174 00aa 0422     		movs	r2, #4
+ 175 00ac 9A66     		str	r2, [r3, #104]
   70:Core/Src/fdcan.c ****   if (HAL_FDCAN_Init(&hfdcan1) != HAL_OK)
- 173              		.loc 1 70 7
- 174 00ac 0448     		ldr	r0, .L4
- 175 00ae FFF7FEFF 		bl	HAL_FDCAN_Init
- 176 00b2 0346     		mov	r3, r0
- 177              		.loc 1 70 6 discriminator 1
- 178 00b4 002B     		cmp	r3, #0
- 179 00b6 01D0     		beq	.L3
+ 176              		.loc 1 70 7
+ 177 00ae 2548     		ldr	r0, .L8
+ 178 00b0 FFF7FEFF 		bl	HAL_FDCAN_Init
+ 179 00b4 0346     		mov	r3, r0
+ 180              		.loc 1 70 6 discriminator 1
+ 181 00b6 002B     		cmp	r3, #0
+ 182 00b8 01D0     		beq	.L2
   71:Core/Src/fdcan.c ****   {
   72:Core/Src/fdcan.c ****     Error_Handler();
- 180              		.loc 1 72 5
- 181 00b8 FFF7FEFF 		bl	Error_Handler
- 182              	.L3:
+ 183              		.loc 1 72 5
+ 184 00ba FFF7FEFF 		bl	Error_Handler
+ 185              	.L2:
   73:Core/Src/fdcan.c ****   }
   74:Core/Src/fdcan.c ****   /* USER CODE BEGIN FDCAN1_Init 2 */
-  75:Core/Src/fdcan.c **** 
-  76:Core/Src/fdcan.c ****   /* USER CODE END FDCAN1_Init 2 */
-  77:Core/Src/fdcan.c **** 
-  78:Core/Src/fdcan.c **** }
- 183              		.loc 1 78 1
- 184 00bc 00BF     		nop
- 185 00be 80BD     		pop	{r7, pc}
- 186              	.L5:
- 187              		.align	2
- 188              	.L4:
- 189 00c0 00000000 		.word	hfdcan1
- 190 00c4 00A00040 		.word	1073782784
- 191              		.cfi_endproc
- 192              	.LFE144:
- 194              		.section	.text.MX_FDCAN2_Init,"ax",%progbits
- 195              		.align	1
- 196              		.global	MX_FDCAN2_Init
- 197              		.syntax unified
- 198              		.thumb
- 199              		.thumb_func
- 201              	MX_FDCAN2_Init:
- 202              	.LFB145:
-  79:Core/Src/fdcan.c **** /* FDCAN2 init function */
-  80:Core/Src/fdcan.c **** void MX_FDCAN2_Init(void)
-ARM GAS  C:\Users\Godwin\AppData\Local\Temp\ccM1ZfTX.s 			page 6
+  75:Core/Src/fdcan.c ****   FDCAN_FilterTypeDef sFilterConfig;
+  76:Core/Src/fdcan.c ****   
+  77:Core/Src/fdcan.c ****   // -------------------------- 配置FDCAN1标准帧过滤器（接收所有标准帧） --------------------------
+  78:Core/Src/fdcan.c ****   sFilterConfig.IdType = FDCAN_STANDARD_ID;          // 针对标准帧（11位ID）
+ 186              		.loc 1 78 24
+ 187 00be 0023     		movs	r3, #0
+ 188 00c0 3B60     		str	r3, [r7]
+  79:Core/Src/fdcan.c ****   sFilterConfig.FilterIndex = 0;                     // 使用第0个标准帧过滤器
+ 189              		.loc 1 79 29
+ 190 00c2 0023     		movs	r3, #0
+ 191 00c4 7B60     		str	r3, [r7, #4]
+  80:Core/Src/fdcan.c ****   sFilterConfig.FilterType = FDCAN_FILTER_MASK;      // 掩码过滤模式
+ 192              		.loc 1 80 28
+ 193 00c6 0223     		movs	r3, #2
+ 194 00c8 BB60     		str	r3, [r7, #8]
+  81:Core/Src/fdcan.c ****   sFilterConfig.FilterConfig = FDCAN_FILTER_TO_RXFIFO0; // 匹配帧存入RX FIFO0
+ 195              		.loc 1 81 30
+ 196 00ca 0123     		movs	r3, #1
+ 197 00cc FB60     		str	r3, [r7, #12]
+  82:Core/Src/fdcan.c ****   sFilterConfig.FilterID1 = 0x000;                   // 标准帧ID（设为0）
+ 198              		.loc 1 82 27
+ARM GAS  C:\Users\Godwin\AppData\Local\Temp\ccPjrEWN.s 			page 6
 
 
-  81:Core/Src/fdcan.c **** {
- 203              		.loc 1 81 1
- 204              		.cfi_startproc
- 205              		@ args = 0, pretend = 0, frame = 0
- 206              		@ frame_needed = 1, uses_anonymous_args = 0
- 207 0000 80B5     		push	{r7, lr}
- 208              	.LCFI2:
- 209              		.cfi_def_cfa_offset 8
- 210              		.cfi_offset 7, -8
- 211              		.cfi_offset 14, -4
- 212 0002 00AF     		add	r7, sp, #0
- 213              	.LCFI3:
- 214              		.cfi_def_cfa_register 7
-  82:Core/Src/fdcan.c **** 
-  83:Core/Src/fdcan.c ****   /* USER CODE BEGIN FDCAN2_Init 0 */
-  84:Core/Src/fdcan.c **** 
-  85:Core/Src/fdcan.c ****   /* USER CODE END FDCAN2_Init 0 */
-  86:Core/Src/fdcan.c **** 
-  87:Core/Src/fdcan.c ****   /* USER CODE BEGIN FDCAN2_Init 1 */
-  88:Core/Src/fdcan.c **** 
-  89:Core/Src/fdcan.c ****   /* USER CODE END FDCAN2_Init 1 */
-  90:Core/Src/fdcan.c ****   hfdcan2.Instance = FDCAN2;
- 215              		.loc 1 90 20
- 216 0004 2F4B     		ldr	r3, .L9
- 217 0006 304A     		ldr	r2, .L9+4
- 218 0008 1A60     		str	r2, [r3]
-  91:Core/Src/fdcan.c ****   hfdcan2.Init.FrameFormat = FDCAN_FRAME_CLASSIC;
- 219              		.loc 1 91 28
- 220 000a 2E4B     		ldr	r3, .L9
- 221 000c 0022     		movs	r2, #0
- 222 000e 9A60     		str	r2, [r3, #8]
-  92:Core/Src/fdcan.c ****   hfdcan2.Init.Mode = FDCAN_MODE_NORMAL;
- 223              		.loc 1 92 21
- 224 0010 2C4B     		ldr	r3, .L9
- 225 0012 0022     		movs	r2, #0
- 226 0014 DA60     		str	r2, [r3, #12]
-  93:Core/Src/fdcan.c ****   hfdcan2.Init.AutoRetransmission = DISABLE;
- 227              		.loc 1 93 35
- 228 0016 2B4B     		ldr	r3, .L9
- 229 0018 0022     		movs	r2, #0
- 230 001a 1A74     		strb	r2, [r3, #16]
-  94:Core/Src/fdcan.c ****   hfdcan2.Init.TransmitPause = DISABLE;
- 231              		.loc 1 94 30
- 232 001c 294B     		ldr	r3, .L9
- 233 001e 0022     		movs	r2, #0
- 234 0020 5A74     		strb	r2, [r3, #17]
-  95:Core/Src/fdcan.c ****   hfdcan2.Init.ProtocolException = DISABLE;
- 235              		.loc 1 95 34
- 236 0022 284B     		ldr	r3, .L9
- 237 0024 0022     		movs	r2, #0
- 238 0026 9A74     		strb	r2, [r3, #18]
-  96:Core/Src/fdcan.c ****   hfdcan2.Init.NominalPrescaler = 3;
- 239              		.loc 1 96 33
- 240 0028 264B     		ldr	r3, .L9
- 241 002a 0322     		movs	r2, #3
- 242 002c 5A61     		str	r2, [r3, #20]
-  97:Core/Src/fdcan.c ****   hfdcan2.Init.NominalSyncJumpWidth = 10;
-ARM GAS  C:\Users\Godwin\AppData\Local\Temp\ccM1ZfTX.s 			page 7
+ 199 00ce 0023     		movs	r3, #0
+ 200 00d0 3B61     		str	r3, [r7, #16]
+  83:Core/Src/fdcan.c ****   sFilterConfig.FilterID2 = 0x000;                   // 掩码设为0 → 接收所有标准帧
+ 201              		.loc 1 83 27
+ 202 00d2 0023     		movs	r3, #0
+ 203 00d4 7B61     		str	r3, [r7, #20]
+  84:Core/Src/fdcan.c ****   
+  85:Core/Src/fdcan.c ****   if (HAL_FDCAN_ConfigFilter(&hfdcan1, &sFilterConfig) != HAL_OK)
+ 204              		.loc 1 85 7
+ 205 00d6 3B46     		mov	r3, r7
+ 206 00d8 1946     		mov	r1, r3
+ 207 00da 1A48     		ldr	r0, .L8
+ 208 00dc FFF7FEFF 		bl	HAL_FDCAN_ConfigFilter
+ 209 00e0 0346     		mov	r3, r0
+ 210              		.loc 1 85 6 discriminator 1
+ 211 00e2 002B     		cmp	r3, #0
+ 212 00e4 01D0     		beq	.L3
+  86:Core/Src/fdcan.c ****   {
+  87:Core/Src/fdcan.c ****     Error_Handler();
+ 213              		.loc 1 87 5
+ 214 00e6 FFF7FEFF 		bl	Error_Handler
+ 215              	.L3:
+  88:Core/Src/fdcan.c ****   }
+  89:Core/Src/fdcan.c ****   
+  90:Core/Src/fdcan.c ****   // -------------------------- 配置FDCAN1扩展帧过滤器（接收所有扩展帧） --------------------------
+  91:Core/Src/fdcan.c ****   sFilterConfig.IdType = FDCAN_EXTENDED_ID;          // 针对扩展帧（29位ID）
+ 216              		.loc 1 91 24
+ 217 00ea 4FF08043 		mov	r3, #1073741824
+ 218 00ee 3B60     		str	r3, [r7]
+  92:Core/Src/fdcan.c ****   sFilterConfig.FilterIndex = 0;                     // 使用第0个扩展帧过滤器
+ 219              		.loc 1 92 29
+ 220 00f0 0023     		movs	r3, #0
+ 221 00f2 7B60     		str	r3, [r7, #4]
+  93:Core/Src/fdcan.c ****   sFilterConfig.FilterType = FDCAN_FILTER_MASK;      // 掩码过滤模式
+ 222              		.loc 1 93 28
+ 223 00f4 0223     		movs	r3, #2
+ 224 00f6 BB60     		str	r3, [r7, #8]
+  94:Core/Src/fdcan.c ****   sFilterConfig.FilterConfig = FDCAN_FILTER_TO_RXFIFO0; // 匹配帧存入RX FIFO0
+ 225              		.loc 1 94 30
+ 226 00f8 0123     		movs	r3, #1
+ 227 00fa FB60     		str	r3, [r7, #12]
+  95:Core/Src/fdcan.c ****   sFilterConfig.FilterID1 = 0x00000000;              // 扩展帧ID（设为0）
+ 228              		.loc 1 95 27
+ 229 00fc 0023     		movs	r3, #0
+ 230 00fe 3B61     		str	r3, [r7, #16]
+  96:Core/Src/fdcan.c ****   sFilterConfig.FilterID2 = 0x00000000;              // 掩码设为0 → 接收所有扩展帧
+ 231              		.loc 1 96 27
+ 232 0100 0023     		movs	r3, #0
+ 233 0102 7B61     		str	r3, [r7, #20]
+  97:Core/Src/fdcan.c ****   
+  98:Core/Src/fdcan.c ****   if (HAL_FDCAN_ConfigFilter(&hfdcan1, &sFilterConfig) != HAL_OK)
+ 234              		.loc 1 98 7
+ 235 0104 3B46     		mov	r3, r7
+ 236 0106 1946     		mov	r1, r3
+ 237 0108 0E48     		ldr	r0, .L8
+ 238 010a FFF7FEFF 		bl	HAL_FDCAN_ConfigFilter
+ 239 010e 0346     		mov	r3, r0
+ARM GAS  C:\Users\Godwin\AppData\Local\Temp\ccPjrEWN.s 			page 7
 
 
- 243              		.loc 1 97 37
- 244 002e 254B     		ldr	r3, .L9
- 245 0030 0A22     		movs	r2, #10
- 246 0032 9A61     		str	r2, [r3, #24]
-  98:Core/Src/fdcan.c ****   hfdcan2.Init.NominalTimeSeg1 = 29;
- 247              		.loc 1 98 32
- 248 0034 234B     		ldr	r3, .L9
- 249 0036 1D22     		movs	r2, #29
- 250 0038 DA61     		str	r2, [r3, #28]
-  99:Core/Src/fdcan.c ****   hfdcan2.Init.NominalTimeSeg2 = 10;
- 251              		.loc 1 99 32
- 252 003a 224B     		ldr	r3, .L9
- 253 003c 0A22     		movs	r2, #10
- 254 003e 1A62     		str	r2, [r3, #32]
- 100:Core/Src/fdcan.c ****   hfdcan2.Init.DataPrescaler = 3;
- 255              		.loc 1 100 30
- 256 0040 204B     		ldr	r3, .L9
- 257 0042 0322     		movs	r2, #3
- 258 0044 5A62     		str	r2, [r3, #36]
- 101:Core/Src/fdcan.c ****   hfdcan2.Init.DataSyncJumpWidth = 10;
- 259              		.loc 1 101 34
- 260 0046 1F4B     		ldr	r3, .L9
- 261 0048 0A22     		movs	r2, #10
- 262 004a 9A62     		str	r2, [r3, #40]
- 102:Core/Src/fdcan.c ****   hfdcan2.Init.DataTimeSeg1 = 29;
- 263              		.loc 1 102 29
- 264 004c 1D4B     		ldr	r3, .L9
- 265 004e 1D22     		movs	r2, #29
- 266 0050 DA62     		str	r2, [r3, #44]
- 103:Core/Src/fdcan.c ****   hfdcan2.Init.DataTimeSeg2 = 10;
- 267              		.loc 1 103 29
- 268 0052 1C4B     		ldr	r3, .L9
- 269 0054 0A22     		movs	r2, #10
- 270 0056 1A63     		str	r2, [r3, #48]
- 104:Core/Src/fdcan.c ****   hfdcan2.Init.MessageRAMOffset = 0x406;
- 271              		.loc 1 104 33
- 272 0058 1A4B     		ldr	r3, .L9
- 273 005a 40F20642 		movw	r2, #1030
- 274 005e 5A63     		str	r2, [r3, #52]
- 105:Core/Src/fdcan.c ****   hfdcan2.Init.StdFiltersNbr = 1;
- 275              		.loc 1 105 30
- 276 0060 184B     		ldr	r3, .L9
- 277 0062 0122     		movs	r2, #1
- 278 0064 9A63     		str	r2, [r3, #56]
- 106:Core/Src/fdcan.c ****   hfdcan2.Init.ExtFiltersNbr = 1;
- 279              		.loc 1 106 30
- 280 0066 174B     		ldr	r3, .L9
- 281 0068 0122     		movs	r2, #1
- 282 006a DA63     		str	r2, [r3, #60]
- 107:Core/Src/fdcan.c ****   hfdcan2.Init.RxFifo0ElmtsNbr = 4;
- 283              		.loc 1 107 32
- 284 006c 154B     		ldr	r3, .L9
- 285 006e 0422     		movs	r2, #4
- 286 0070 1A64     		str	r2, [r3, #64]
- 108:Core/Src/fdcan.c ****   hfdcan2.Init.RxFifo0ElmtSize = FDCAN_DATA_BYTES_8;
- 287              		.loc 1 108 32
- 288 0072 144B     		ldr	r3, .L9
-ARM GAS  C:\Users\Godwin\AppData\Local\Temp\ccM1ZfTX.s 			page 8
+ 240              		.loc 1 98 6 discriminator 1
+ 241 0110 002B     		cmp	r3, #0
+ 242 0112 01D0     		beq	.L4
+  99:Core/Src/fdcan.c ****   {
+ 100:Core/Src/fdcan.c ****     Error_Handler();
+ 243              		.loc 1 100 5
+ 244 0114 FFF7FEFF 		bl	Error_Handler
+ 245              	.L4:
+ 101:Core/Src/fdcan.c ****   }
+ 102:Core/Src/fdcan.c ****   
+ 103:Core/Src/fdcan.c ****   // 启用RX FIFO0新消息通知（可选，中断方式接收需启用）
+ 104:Core/Src/fdcan.c ****   if (HAL_FDCAN_ActivateNotification(&hfdcan1, FDCAN_IT_RX_FIFO0_NEW_MESSAGE, 0) != HAL_OK)
+ 246              		.loc 1 104 7
+ 247 0118 0022     		movs	r2, #0
+ 248 011a 0121     		movs	r1, #1
+ 249 011c 0948     		ldr	r0, .L8
+ 250 011e FFF7FEFF 		bl	HAL_FDCAN_ActivateNotification
+ 251 0122 0346     		mov	r3, r0
+ 252              		.loc 1 104 6 discriminator 1
+ 253 0124 002B     		cmp	r3, #0
+ 254 0126 01D0     		beq	.L5
+ 105:Core/Src/fdcan.c ****   {
+ 106:Core/Src/fdcan.c ****     Error_Handler();
+ 255              		.loc 1 106 5
+ 256 0128 FFF7FEFF 		bl	Error_Handler
+ 257              	.L5:
+ 107:Core/Src/fdcan.c ****   }
+ 108:Core/Src/fdcan.c ****   
+ 109:Core/Src/fdcan.c ****   // 启动FDCAN1外设（必须启动才能收发）
+ 110:Core/Src/fdcan.c ****   if (HAL_FDCAN_Start(&hfdcan1) != HAL_OK)
+ 258              		.loc 1 110 7
+ 259 012c 0548     		ldr	r0, .L8
+ 260 012e FFF7FEFF 		bl	HAL_FDCAN_Start
+ 261 0132 0346     		mov	r3, r0
+ 262              		.loc 1 110 6 discriminator 1
+ 263 0134 002B     		cmp	r3, #0
+ 264 0136 01D0     		beq	.L7
+ 111:Core/Src/fdcan.c ****   {
+ 112:Core/Src/fdcan.c ****     Error_Handler();
+ 265              		.loc 1 112 5
+ 266 0138 FFF7FEFF 		bl	Error_Handler
+ 267              	.L7:
+ 113:Core/Src/fdcan.c ****   }
+ 114:Core/Src/fdcan.c ****   /* USER CODE END FDCAN1_Init 2 */
+ 115:Core/Src/fdcan.c **** 
+ 116:Core/Src/fdcan.c **** }
+ 268              		.loc 1 116 1
+ 269 013c 00BF     		nop
+ 270 013e 2037     		adds	r7, r7, #32
+ 271              	.LCFI3:
+ 272              		.cfi_def_cfa_offset 8
+ 273 0140 BD46     		mov	sp, r7
+ 274              	.LCFI4:
+ 275              		.cfi_def_cfa_register 13
+ 276              		@ sp needed
+ 277 0142 80BD     		pop	{r7, pc}
+ 278              	.L9:
+ARM GAS  C:\Users\Godwin\AppData\Local\Temp\ccPjrEWN.s 			page 8
 
 
- 289 0074 0422     		movs	r2, #4
- 290 0076 5A64     		str	r2, [r3, #68]
- 109:Core/Src/fdcan.c ****   hfdcan2.Init.RxFifo1ElmtsNbr = 0;
- 291              		.loc 1 109 32
- 292 0078 124B     		ldr	r3, .L9
- 293 007a 0022     		movs	r2, #0
- 294 007c 9A64     		str	r2, [r3, #72]
- 110:Core/Src/fdcan.c ****   hfdcan2.Init.RxFifo1ElmtSize = FDCAN_DATA_BYTES_8;
- 295              		.loc 1 110 32
- 296 007e 114B     		ldr	r3, .L9
- 297 0080 0422     		movs	r2, #4
- 298 0082 DA64     		str	r2, [r3, #76]
- 111:Core/Src/fdcan.c ****   hfdcan2.Init.RxBuffersNbr = 0;
- 299              		.loc 1 111 29
- 300 0084 0F4B     		ldr	r3, .L9
- 301 0086 0022     		movs	r2, #0
- 302 0088 1A65     		str	r2, [r3, #80]
- 112:Core/Src/fdcan.c ****   hfdcan2.Init.RxBufferSize = FDCAN_DATA_BYTES_8;
- 303              		.loc 1 112 29
- 304 008a 0E4B     		ldr	r3, .L9
- 305 008c 0422     		movs	r2, #4
- 306 008e 5A65     		str	r2, [r3, #84]
- 113:Core/Src/fdcan.c ****   hfdcan2.Init.TxEventsNbr = 0;
- 307              		.loc 1 113 28
- 308 0090 0C4B     		ldr	r3, .L9
- 309 0092 0022     		movs	r2, #0
- 310 0094 9A65     		str	r2, [r3, #88]
- 114:Core/Src/fdcan.c ****   hfdcan2.Init.TxBuffersNbr = 0;
- 311              		.loc 1 114 29
- 312 0096 0B4B     		ldr	r3, .L9
- 313 0098 0022     		movs	r2, #0
- 314 009a DA65     		str	r2, [r3, #92]
- 115:Core/Src/fdcan.c ****   hfdcan2.Init.TxFifoQueueElmtsNbr = 32;
- 315              		.loc 1 115 36
- 316 009c 094B     		ldr	r3, .L9
- 317 009e 2022     		movs	r2, #32
- 318 00a0 1A66     		str	r2, [r3, #96]
- 116:Core/Src/fdcan.c ****   hfdcan2.Init.TxFifoQueueMode = FDCAN_TX_FIFO_OPERATION;
- 319              		.loc 1 116 32
- 320 00a2 084B     		ldr	r3, .L9
- 321 00a4 0022     		movs	r2, #0
- 322 00a6 5A66     		str	r2, [r3, #100]
- 117:Core/Src/fdcan.c ****   hfdcan2.Init.TxElmtSize = FDCAN_DATA_BYTES_8;
- 323              		.loc 1 117 27
- 324 00a8 064B     		ldr	r3, .L9
- 325 00aa 0422     		movs	r2, #4
- 326 00ac 9A66     		str	r2, [r3, #104]
- 118:Core/Src/fdcan.c ****   if (HAL_FDCAN_Init(&hfdcan2) != HAL_OK)
- 327              		.loc 1 118 7
- 328 00ae 0548     		ldr	r0, .L9
- 329 00b0 FFF7FEFF 		bl	HAL_FDCAN_Init
- 330 00b4 0346     		mov	r3, r0
- 331              		.loc 1 118 6 discriminator 1
- 332 00b6 002B     		cmp	r3, #0
- 333 00b8 01D0     		beq	.L8
- 119:Core/Src/fdcan.c ****   {
- 120:Core/Src/fdcan.c ****     Error_Handler();
-ARM GAS  C:\Users\Godwin\AppData\Local\Temp\ccM1ZfTX.s 			page 9
+ 279              		.align	2
+ 280              	.L8:
+ 281 0144 00000000 		.word	hfdcan1
+ 282 0148 00A00040 		.word	1073782784
+ 283              		.cfi_endproc
+ 284              	.LFE144:
+ 286              		.section	.text.MX_FDCAN2_Init,"ax",%progbits
+ 287              		.align	1
+ 288              		.global	MX_FDCAN2_Init
+ 289              		.syntax unified
+ 290              		.thumb
+ 291              		.thumb_func
+ 293              	MX_FDCAN2_Init:
+ 294              	.LFB145:
+ 117:Core/Src/fdcan.c **** /* FDCAN2 init function */
+ 118:Core/Src/fdcan.c **** void MX_FDCAN2_Init(void)
+ 119:Core/Src/fdcan.c **** {
+ 295              		.loc 1 119 1
+ 296              		.cfi_startproc
+ 297              		@ args = 0, pretend = 0, frame = 32
+ 298              		@ frame_needed = 1, uses_anonymous_args = 0
+ 299 0000 80B5     		push	{r7, lr}
+ 300              	.LCFI5:
+ 301              		.cfi_def_cfa_offset 8
+ 302              		.cfi_offset 7, -8
+ 303              		.cfi_offset 14, -4
+ 304 0002 88B0     		sub	sp, sp, #32
+ 305              	.LCFI6:
+ 306              		.cfi_def_cfa_offset 40
+ 307 0004 00AF     		add	r7, sp, #0
+ 308              	.LCFI7:
+ 309              		.cfi_def_cfa_register 7
+ 120:Core/Src/fdcan.c **** 
+ 121:Core/Src/fdcan.c ****   /* USER CODE BEGIN FDCAN2_Init 0 */
+ 122:Core/Src/fdcan.c **** 
+ 123:Core/Src/fdcan.c ****   /* USER CODE END FDCAN2_Init 0 */
+ 124:Core/Src/fdcan.c **** 
+ 125:Core/Src/fdcan.c ****   /* USER CODE BEGIN FDCAN2_Init 1 */
+ 126:Core/Src/fdcan.c **** 
+ 127:Core/Src/fdcan.c ****   /* USER CODE END FDCAN2_Init 1 */
+ 128:Core/Src/fdcan.c ****   hfdcan2.Instance = FDCAN2;
+ 310              		.loc 1 128 20
+ 311 0006 504B     		ldr	r3, .L17
+ 312 0008 504A     		ldr	r2, .L17+4
+ 313 000a 1A60     		str	r2, [r3]
+ 129:Core/Src/fdcan.c ****   hfdcan2.Init.FrameFormat = FDCAN_FRAME_CLASSIC;
+ 314              		.loc 1 129 28
+ 315 000c 4E4B     		ldr	r3, .L17
+ 316 000e 0022     		movs	r2, #0
+ 317 0010 9A60     		str	r2, [r3, #8]
+ 130:Core/Src/fdcan.c ****   hfdcan2.Init.Mode = FDCAN_MODE_NORMAL;
+ 318              		.loc 1 130 21
+ 319 0012 4D4B     		ldr	r3, .L17
+ 320 0014 0022     		movs	r2, #0
+ 321 0016 DA60     		str	r2, [r3, #12]
+ 131:Core/Src/fdcan.c ****   hfdcan2.Init.AutoRetransmission = DISABLE;
+ 322              		.loc 1 131 35
+ARM GAS  C:\Users\Godwin\AppData\Local\Temp\ccPjrEWN.s 			page 9
 
 
- 334              		.loc 1 120 5
- 335 00ba FFF7FEFF 		bl	Error_Handler
- 336              	.L8:
- 121:Core/Src/fdcan.c ****   }
- 122:Core/Src/fdcan.c ****   /* USER CODE BEGIN FDCAN2_Init 2 */
- 123:Core/Src/fdcan.c **** 
- 124:Core/Src/fdcan.c ****   /* USER CODE END FDCAN2_Init 2 */
- 125:Core/Src/fdcan.c **** 
- 126:Core/Src/fdcan.c **** }
- 337              		.loc 1 126 1
- 338 00be 00BF     		nop
- 339 00c0 80BD     		pop	{r7, pc}
- 340              	.L10:
- 341 00c2 00BF     		.align	2
- 342              	.L9:
- 343 00c4 00000000 		.word	hfdcan2
- 344 00c8 00A40040 		.word	1073783808
- 345              		.cfi_endproc
- 346              	.LFE145:
- 348              		.section	.text.MX_FDCAN3_Init,"ax",%progbits
- 349              		.align	1
- 350              		.global	MX_FDCAN3_Init
- 351              		.syntax unified
- 352              		.thumb
- 353              		.thumb_func
- 355              	MX_FDCAN3_Init:
- 356              	.LFB146:
- 127:Core/Src/fdcan.c **** /* FDCAN3 init function */
- 128:Core/Src/fdcan.c **** void MX_FDCAN3_Init(void)
- 129:Core/Src/fdcan.c **** {
- 357              		.loc 1 129 1
- 358              		.cfi_startproc
- 359              		@ args = 0, pretend = 0, frame = 0
- 360              		@ frame_needed = 1, uses_anonymous_args = 0
- 361 0000 80B5     		push	{r7, lr}
- 362              	.LCFI4:
- 363              		.cfi_def_cfa_offset 8
- 364              		.cfi_offset 7, -8
- 365              		.cfi_offset 14, -4
- 366 0002 00AF     		add	r7, sp, #0
- 367              	.LCFI5:
- 368              		.cfi_def_cfa_register 7
- 130:Core/Src/fdcan.c **** 
- 131:Core/Src/fdcan.c ****   /* USER CODE BEGIN FDCAN3_Init 0 */
- 132:Core/Src/fdcan.c **** 
- 133:Core/Src/fdcan.c ****   /* USER CODE END FDCAN3_Init 0 */
- 134:Core/Src/fdcan.c **** 
- 135:Core/Src/fdcan.c ****   /* USER CODE BEGIN FDCAN3_Init 1 */
- 136:Core/Src/fdcan.c **** 
- 137:Core/Src/fdcan.c ****   /* USER CODE END FDCAN3_Init 1 */
- 138:Core/Src/fdcan.c ****   hfdcan3.Instance = FDCAN3;
- 369              		.loc 1 138 20
- 370 0004 2F4B     		ldr	r3, .L14
- 371 0006 304A     		ldr	r2, .L14+4
- 372 0008 1A60     		str	r2, [r3]
- 139:Core/Src/fdcan.c ****   hfdcan3.Init.FrameFormat = FDCAN_FRAME_CLASSIC;
- 373              		.loc 1 139 28
-ARM GAS  C:\Users\Godwin\AppData\Local\Temp\ccM1ZfTX.s 			page 10
+ 323 0018 4B4B     		ldr	r3, .L17
+ 324 001a 0022     		movs	r2, #0
+ 325 001c 1A74     		strb	r2, [r3, #16]
+ 132:Core/Src/fdcan.c ****   hfdcan2.Init.TransmitPause = DISABLE;
+ 326              		.loc 1 132 30
+ 327 001e 4A4B     		ldr	r3, .L17
+ 328 0020 0022     		movs	r2, #0
+ 329 0022 5A74     		strb	r2, [r3, #17]
+ 133:Core/Src/fdcan.c ****   hfdcan2.Init.ProtocolException = DISABLE;
+ 330              		.loc 1 133 34
+ 331 0024 484B     		ldr	r3, .L17
+ 332 0026 0022     		movs	r2, #0
+ 333 0028 9A74     		strb	r2, [r3, #18]
+ 134:Core/Src/fdcan.c ****   hfdcan2.Init.NominalPrescaler = 3;
+ 334              		.loc 1 134 33
+ 335 002a 474B     		ldr	r3, .L17
+ 336 002c 0322     		movs	r2, #3
+ 337 002e 5A61     		str	r2, [r3, #20]
+ 135:Core/Src/fdcan.c ****   hfdcan2.Init.NominalSyncJumpWidth = 10;
+ 338              		.loc 1 135 37
+ 339 0030 454B     		ldr	r3, .L17
+ 340 0032 0A22     		movs	r2, #10
+ 341 0034 9A61     		str	r2, [r3, #24]
+ 136:Core/Src/fdcan.c ****   hfdcan2.Init.NominalTimeSeg1 = 29;
+ 342              		.loc 1 136 32
+ 343 0036 444B     		ldr	r3, .L17
+ 344 0038 1D22     		movs	r2, #29
+ 345 003a DA61     		str	r2, [r3, #28]
+ 137:Core/Src/fdcan.c ****   hfdcan2.Init.NominalTimeSeg2 = 10;
+ 346              		.loc 1 137 32
+ 347 003c 424B     		ldr	r3, .L17
+ 348 003e 0A22     		movs	r2, #10
+ 349 0040 1A62     		str	r2, [r3, #32]
+ 138:Core/Src/fdcan.c ****   hfdcan2.Init.DataPrescaler = 3;
+ 350              		.loc 1 138 30
+ 351 0042 414B     		ldr	r3, .L17
+ 352 0044 0322     		movs	r2, #3
+ 353 0046 5A62     		str	r2, [r3, #36]
+ 139:Core/Src/fdcan.c ****   hfdcan2.Init.DataSyncJumpWidth = 10;
+ 354              		.loc 1 139 34
+ 355 0048 3F4B     		ldr	r3, .L17
+ 356 004a 0A22     		movs	r2, #10
+ 357 004c 9A62     		str	r2, [r3, #40]
+ 140:Core/Src/fdcan.c ****   hfdcan2.Init.DataTimeSeg1 = 29;
+ 358              		.loc 1 140 29
+ 359 004e 3E4B     		ldr	r3, .L17
+ 360 0050 1D22     		movs	r2, #29
+ 361 0052 DA62     		str	r2, [r3, #44]
+ 141:Core/Src/fdcan.c ****   hfdcan2.Init.DataTimeSeg2 = 10;
+ 362              		.loc 1 141 29
+ 363 0054 3C4B     		ldr	r3, .L17
+ 364 0056 0A22     		movs	r2, #10
+ 365 0058 1A63     		str	r2, [r3, #48]
+ 142:Core/Src/fdcan.c ****   hfdcan2.Init.MessageRAMOffset = 0x406;
+ 366              		.loc 1 142 33
+ 367 005a 3B4B     		ldr	r3, .L17
+ 368 005c 40F20642 		movw	r2, #1030
+ARM GAS  C:\Users\Godwin\AppData\Local\Temp\ccPjrEWN.s 			page 10
 
 
- 374 000a 2E4B     		ldr	r3, .L14
- 375 000c 0022     		movs	r2, #0
- 376 000e 9A60     		str	r2, [r3, #8]
- 140:Core/Src/fdcan.c ****   hfdcan3.Init.Mode = FDCAN_MODE_NORMAL;
- 377              		.loc 1 140 21
- 378 0010 2C4B     		ldr	r3, .L14
- 379 0012 0022     		movs	r2, #0
- 380 0014 DA60     		str	r2, [r3, #12]
- 141:Core/Src/fdcan.c ****   hfdcan3.Init.AutoRetransmission = DISABLE;
- 381              		.loc 1 141 35
- 382 0016 2B4B     		ldr	r3, .L14
- 383 0018 0022     		movs	r2, #0
- 384 001a 1A74     		strb	r2, [r3, #16]
- 142:Core/Src/fdcan.c ****   hfdcan3.Init.TransmitPause = DISABLE;
- 385              		.loc 1 142 30
- 386 001c 294B     		ldr	r3, .L14
- 387 001e 0022     		movs	r2, #0
- 388 0020 5A74     		strb	r2, [r3, #17]
- 143:Core/Src/fdcan.c ****   hfdcan3.Init.ProtocolException = DISABLE;
- 389              		.loc 1 143 34
- 390 0022 284B     		ldr	r3, .L14
- 391 0024 0022     		movs	r2, #0
- 392 0026 9A74     		strb	r2, [r3, #18]
- 144:Core/Src/fdcan.c ****   hfdcan3.Init.NominalPrescaler = 3;
- 393              		.loc 1 144 33
- 394 0028 264B     		ldr	r3, .L14
- 395 002a 0322     		movs	r2, #3
- 396 002c 5A61     		str	r2, [r3, #20]
- 145:Core/Src/fdcan.c ****   hfdcan3.Init.NominalSyncJumpWidth = 10;
- 397              		.loc 1 145 37
- 398 002e 254B     		ldr	r3, .L14
- 399 0030 0A22     		movs	r2, #10
- 400 0032 9A61     		str	r2, [r3, #24]
- 146:Core/Src/fdcan.c ****   hfdcan3.Init.NominalTimeSeg1 = 29;
- 401              		.loc 1 146 32
- 402 0034 234B     		ldr	r3, .L14
- 403 0036 1D22     		movs	r2, #29
- 404 0038 DA61     		str	r2, [r3, #28]
- 147:Core/Src/fdcan.c ****   hfdcan3.Init.NominalTimeSeg2 = 10;
- 405              		.loc 1 147 32
- 406 003a 224B     		ldr	r3, .L14
- 407 003c 0A22     		movs	r2, #10
- 408 003e 1A62     		str	r2, [r3, #32]
- 148:Core/Src/fdcan.c ****   hfdcan3.Init.DataPrescaler = 3;
- 409              		.loc 1 148 30
- 410 0040 204B     		ldr	r3, .L14
- 411 0042 0322     		movs	r2, #3
- 412 0044 5A62     		str	r2, [r3, #36]
- 149:Core/Src/fdcan.c ****   hfdcan3.Init.DataSyncJumpWidth = 10;
- 413              		.loc 1 149 34
- 414 0046 1F4B     		ldr	r3, .L14
- 415 0048 0A22     		movs	r2, #10
- 416 004a 9A62     		str	r2, [r3, #40]
- 150:Core/Src/fdcan.c ****   hfdcan3.Init.DataTimeSeg1 = 29;
- 417              		.loc 1 150 29
- 418 004c 1D4B     		ldr	r3, .L14
- 419 004e 1D22     		movs	r2, #29
-ARM GAS  C:\Users\Godwin\AppData\Local\Temp\ccM1ZfTX.s 			page 11
+ 369 0060 5A63     		str	r2, [r3, #52]
+ 143:Core/Src/fdcan.c ****   hfdcan2.Init.StdFiltersNbr = 1;    // 1个标准帧过滤器
+ 370              		.loc 1 143 30
+ 371 0062 394B     		ldr	r3, .L17
+ 372 0064 0122     		movs	r2, #1
+ 373 0066 9A63     		str	r2, [r3, #56]
+ 144:Core/Src/fdcan.c ****   hfdcan2.Init.ExtFiltersNbr = 1;    // 1个扩展帧过滤器
+ 374              		.loc 1 144 30
+ 375 0068 374B     		ldr	r3, .L17
+ 376 006a 0122     		movs	r2, #1
+ 377 006c DA63     		str	r2, [r3, #60]
+ 145:Core/Src/fdcan.c ****   hfdcan2.Init.RxFifo0ElmtsNbr = 4;
+ 378              		.loc 1 145 32
+ 379 006e 364B     		ldr	r3, .L17
+ 380 0070 0422     		movs	r2, #4
+ 381 0072 1A64     		str	r2, [r3, #64]
+ 146:Core/Src/fdcan.c ****   hfdcan2.Init.RxFifo0ElmtSize = FDCAN_DATA_BYTES_8;
+ 382              		.loc 1 146 32
+ 383 0074 344B     		ldr	r3, .L17
+ 384 0076 0422     		movs	r2, #4
+ 385 0078 5A64     		str	r2, [r3, #68]
+ 147:Core/Src/fdcan.c ****   hfdcan2.Init.RxFifo1ElmtsNbr = 0;
+ 386              		.loc 1 147 32
+ 387 007a 334B     		ldr	r3, .L17
+ 388 007c 0022     		movs	r2, #0
+ 389 007e 9A64     		str	r2, [r3, #72]
+ 148:Core/Src/fdcan.c ****   hfdcan2.Init.RxFifo1ElmtSize = FDCAN_DATA_BYTES_8;
+ 390              		.loc 1 148 32
+ 391 0080 314B     		ldr	r3, .L17
+ 392 0082 0422     		movs	r2, #4
+ 393 0084 DA64     		str	r2, [r3, #76]
+ 149:Core/Src/fdcan.c ****   hfdcan2.Init.RxBuffersNbr = 0;
+ 394              		.loc 1 149 29
+ 395 0086 304B     		ldr	r3, .L17
+ 396 0088 0022     		movs	r2, #0
+ 397 008a 1A65     		str	r2, [r3, #80]
+ 150:Core/Src/fdcan.c ****   hfdcan2.Init.RxBufferSize = FDCAN_DATA_BYTES_8;
+ 398              		.loc 1 150 29
+ 399 008c 2E4B     		ldr	r3, .L17
+ 400 008e 0422     		movs	r2, #4
+ 401 0090 5A65     		str	r2, [r3, #84]
+ 151:Core/Src/fdcan.c ****   hfdcan2.Init.TxEventsNbr = 0;
+ 402              		.loc 1 151 28
+ 403 0092 2D4B     		ldr	r3, .L17
+ 404 0094 0022     		movs	r2, #0
+ 405 0096 9A65     		str	r2, [r3, #88]
+ 152:Core/Src/fdcan.c ****   hfdcan2.Init.TxBuffersNbr = 0;
+ 406              		.loc 1 152 29
+ 407 0098 2B4B     		ldr	r3, .L17
+ 408 009a 0022     		movs	r2, #0
+ 409 009c DA65     		str	r2, [r3, #92]
+ 153:Core/Src/fdcan.c ****   hfdcan2.Init.TxFifoQueueElmtsNbr = 32;
+ 410              		.loc 1 153 36
+ 411 009e 2A4B     		ldr	r3, .L17
+ 412 00a0 2022     		movs	r2, #32
+ 413 00a2 1A66     		str	r2, [r3, #96]
+ 154:Core/Src/fdcan.c ****   hfdcan2.Init.TxFifoQueueMode = FDCAN_TX_FIFO_OPERATION;
+ARM GAS  C:\Users\Godwin\AppData\Local\Temp\ccPjrEWN.s 			page 11
 
 
- 420 0050 DA62     		str	r2, [r3, #44]
- 151:Core/Src/fdcan.c ****   hfdcan3.Init.DataTimeSeg2 = 10;
- 421              		.loc 1 151 29
- 422 0052 1C4B     		ldr	r3, .L14
- 423 0054 0A22     		movs	r2, #10
- 424 0056 1A63     		str	r2, [r3, #48]
- 152:Core/Src/fdcan.c ****   hfdcan3.Init.MessageRAMOffset = 0x812;
- 425              		.loc 1 152 33
- 426 0058 1A4B     		ldr	r3, .L14
- 427 005a 40F61202 		movw	r2, #2066
- 428 005e 5A63     		str	r2, [r3, #52]
- 153:Core/Src/fdcan.c ****   hfdcan3.Init.StdFiltersNbr = 1;
- 429              		.loc 1 153 30
- 430 0060 184B     		ldr	r3, .L14
- 431 0062 0122     		movs	r2, #1
- 432 0064 9A63     		str	r2, [r3, #56]
- 154:Core/Src/fdcan.c ****   hfdcan3.Init.ExtFiltersNbr = 1;
- 433              		.loc 1 154 30
- 434 0066 174B     		ldr	r3, .L14
- 435 0068 0122     		movs	r2, #1
- 436 006a DA63     		str	r2, [r3, #60]
- 155:Core/Src/fdcan.c ****   hfdcan3.Init.RxFifo0ElmtsNbr = 4;
- 437              		.loc 1 155 32
- 438 006c 154B     		ldr	r3, .L14
- 439 006e 0422     		movs	r2, #4
- 440 0070 1A64     		str	r2, [r3, #64]
- 156:Core/Src/fdcan.c ****   hfdcan3.Init.RxFifo0ElmtSize = FDCAN_DATA_BYTES_8;
- 441              		.loc 1 156 32
- 442 0072 144B     		ldr	r3, .L14
- 443 0074 0422     		movs	r2, #4
- 444 0076 5A64     		str	r2, [r3, #68]
- 157:Core/Src/fdcan.c ****   hfdcan3.Init.RxFifo1ElmtsNbr = 0;
- 445              		.loc 1 157 32
- 446 0078 124B     		ldr	r3, .L14
- 447 007a 0022     		movs	r2, #0
- 448 007c 9A64     		str	r2, [r3, #72]
- 158:Core/Src/fdcan.c ****   hfdcan3.Init.RxFifo1ElmtSize = FDCAN_DATA_BYTES_8;
- 449              		.loc 1 158 32
- 450 007e 114B     		ldr	r3, .L14
- 451 0080 0422     		movs	r2, #4
- 452 0082 DA64     		str	r2, [r3, #76]
- 159:Core/Src/fdcan.c ****   hfdcan3.Init.RxBuffersNbr = 0;
- 453              		.loc 1 159 29
- 454 0084 0F4B     		ldr	r3, .L14
- 455 0086 0022     		movs	r2, #0
- 456 0088 1A65     		str	r2, [r3, #80]
- 160:Core/Src/fdcan.c ****   hfdcan3.Init.RxBufferSize = FDCAN_DATA_BYTES_8;
- 457              		.loc 1 160 29
- 458 008a 0E4B     		ldr	r3, .L14
- 459 008c 0422     		movs	r2, #4
- 460 008e 5A65     		str	r2, [r3, #84]
- 161:Core/Src/fdcan.c ****   hfdcan3.Init.TxEventsNbr = 0;
- 461              		.loc 1 161 28
- 462 0090 0C4B     		ldr	r3, .L14
- 463 0092 0022     		movs	r2, #0
- 464 0094 9A65     		str	r2, [r3, #88]
- 162:Core/Src/fdcan.c ****   hfdcan3.Init.TxBuffersNbr = 0;
-ARM GAS  C:\Users\Godwin\AppData\Local\Temp\ccM1ZfTX.s 			page 12
+ 414              		.loc 1 154 32
+ 415 00a4 284B     		ldr	r3, .L17
+ 416 00a6 0022     		movs	r2, #0
+ 417 00a8 5A66     		str	r2, [r3, #100]
+ 155:Core/Src/fdcan.c ****   hfdcan2.Init.TxElmtSize = FDCAN_DATA_BYTES_8;
+ 418              		.loc 1 155 27
+ 419 00aa 274B     		ldr	r3, .L17
+ 420 00ac 0422     		movs	r2, #4
+ 421 00ae 9A66     		str	r2, [r3, #104]
+ 156:Core/Src/fdcan.c ****   if (HAL_FDCAN_Init(&hfdcan2) != HAL_OK)
+ 422              		.loc 1 156 7
+ 423 00b0 2548     		ldr	r0, .L17
+ 424 00b2 FFF7FEFF 		bl	HAL_FDCAN_Init
+ 425 00b6 0346     		mov	r3, r0
+ 426              		.loc 1 156 6 discriminator 1
+ 427 00b8 002B     		cmp	r3, #0
+ 428 00ba 01D0     		beq	.L11
+ 157:Core/Src/fdcan.c ****   {
+ 158:Core/Src/fdcan.c ****     Error_Handler();
+ 429              		.loc 1 158 5
+ 430 00bc FFF7FEFF 		bl	Error_Handler
+ 431              	.L11:
+ 159:Core/Src/fdcan.c ****   }
+ 160:Core/Src/fdcan.c ****   /* USER CODE BEGIN FDCAN2_Init 2 */
+ 161:Core/Src/fdcan.c ****   FDCAN_FilterTypeDef sFilterConfig;
+ 162:Core/Src/fdcan.c ****   
+ 163:Core/Src/fdcan.c ****   // -------------------------- 配置FDCAN2标准帧过滤器（接收所有标准帧） --------------------------
+ 164:Core/Src/fdcan.c ****   sFilterConfig.IdType = FDCAN_STANDARD_ID;          // 针对标准帧（11位ID）
+ 432              		.loc 1 164 24
+ 433 00c0 0023     		movs	r3, #0
+ 434 00c2 3B60     		str	r3, [r7]
+ 165:Core/Src/fdcan.c ****   sFilterConfig.FilterIndex = 0;                     // 使用第0个标准帧过滤器
+ 435              		.loc 1 165 29
+ 436 00c4 0023     		movs	r3, #0
+ 437 00c6 7B60     		str	r3, [r7, #4]
+ 166:Core/Src/fdcan.c ****   sFilterConfig.FilterType = FDCAN_FILTER_MASK;      // 掩码过滤模式
+ 438              		.loc 1 166 28
+ 439 00c8 0223     		movs	r3, #2
+ 440 00ca BB60     		str	r3, [r7, #8]
+ 167:Core/Src/fdcan.c ****   sFilterConfig.FilterConfig = FDCAN_FILTER_TO_RXFIFO0; // 匹配帧存入RX FIFO0
+ 441              		.loc 1 167 30
+ 442 00cc 0123     		movs	r3, #1
+ 443 00ce FB60     		str	r3, [r7, #12]
+ 168:Core/Src/fdcan.c ****   sFilterConfig.FilterID1 = 0x000;                   // 标准帧ID（设为0）
+ 444              		.loc 1 168 27
+ 445 00d0 0023     		movs	r3, #0
+ 446 00d2 3B61     		str	r3, [r7, #16]
+ 169:Core/Src/fdcan.c ****   sFilterConfig.FilterID2 = 0x000;                   // 掩码设为0 → 接收所有标准帧
+ 447              		.loc 1 169 27
+ 448 00d4 0023     		movs	r3, #0
+ 449 00d6 7B61     		str	r3, [r7, #20]
+ 170:Core/Src/fdcan.c ****   
+ 171:Core/Src/fdcan.c ****   if (HAL_FDCAN_ConfigFilter(&hfdcan2, &sFilterConfig) != HAL_OK)
+ 450              		.loc 1 171 7
+ 451 00d8 3B46     		mov	r3, r7
+ 452 00da 1946     		mov	r1, r3
+ 453 00dc 1A48     		ldr	r0, .L17
+ARM GAS  C:\Users\Godwin\AppData\Local\Temp\ccPjrEWN.s 			page 12
 
 
- 465              		.loc 1 162 29
- 466 0096 0B4B     		ldr	r3, .L14
- 467 0098 0022     		movs	r2, #0
- 468 009a DA65     		str	r2, [r3, #92]
- 163:Core/Src/fdcan.c ****   hfdcan3.Init.TxFifoQueueElmtsNbr = 32;
- 469              		.loc 1 163 36
- 470 009c 094B     		ldr	r3, .L14
- 471 009e 2022     		movs	r2, #32
- 472 00a0 1A66     		str	r2, [r3, #96]
- 164:Core/Src/fdcan.c ****   hfdcan3.Init.TxFifoQueueMode = FDCAN_TX_FIFO_OPERATION;
- 473              		.loc 1 164 32
- 474 00a2 084B     		ldr	r3, .L14
- 475 00a4 0022     		movs	r2, #0
- 476 00a6 5A66     		str	r2, [r3, #100]
- 165:Core/Src/fdcan.c ****   hfdcan3.Init.TxElmtSize = FDCAN_DATA_BYTES_8;
- 477              		.loc 1 165 27
- 478 00a8 064B     		ldr	r3, .L14
- 479 00aa 0422     		movs	r2, #4
- 480 00ac 9A66     		str	r2, [r3, #104]
- 166:Core/Src/fdcan.c ****   if (HAL_FDCAN_Init(&hfdcan3) != HAL_OK)
- 481              		.loc 1 166 7
- 482 00ae 0548     		ldr	r0, .L14
- 483 00b0 FFF7FEFF 		bl	HAL_FDCAN_Init
- 484 00b4 0346     		mov	r3, r0
- 485              		.loc 1 166 6 discriminator 1
- 486 00b6 002B     		cmp	r3, #0
- 487 00b8 01D0     		beq	.L13
- 167:Core/Src/fdcan.c ****   {
- 168:Core/Src/fdcan.c ****     Error_Handler();
- 488              		.loc 1 168 5
- 489 00ba FFF7FEFF 		bl	Error_Handler
- 490              	.L13:
- 169:Core/Src/fdcan.c ****   }
- 170:Core/Src/fdcan.c ****   /* USER CODE BEGIN FDCAN3_Init 2 */
- 171:Core/Src/fdcan.c **** 
- 172:Core/Src/fdcan.c ****   /* USER CODE END FDCAN3_Init 2 */
- 173:Core/Src/fdcan.c **** 
- 174:Core/Src/fdcan.c **** }
- 491              		.loc 1 174 1
- 492 00be 00BF     		nop
- 493 00c0 80BD     		pop	{r7, pc}
- 494              	.L15:
- 495 00c2 00BF     		.align	2
- 496              	.L14:
- 497 00c4 00000000 		.word	hfdcan3
- 498 00c8 00D40040 		.word	1073796096
- 499              		.cfi_endproc
- 500              	.LFE146:
- 502              		.section	.bss.HAL_RCC_FDCAN_CLK_ENABLED,"aw",%nobits
- 503              		.align	2
- 506              	HAL_RCC_FDCAN_CLK_ENABLED:
- 507 0000 00000000 		.space	4
- 508              		.section	.text.HAL_FDCAN_MspInit,"ax",%progbits
- 509              		.align	1
- 510              		.global	HAL_FDCAN_MspInit
- 511              		.syntax unified
- 512              		.thumb
-ARM GAS  C:\Users\Godwin\AppData\Local\Temp\ccM1ZfTX.s 			page 13
+ 454 00de FFF7FEFF 		bl	HAL_FDCAN_ConfigFilter
+ 455 00e2 0346     		mov	r3, r0
+ 456              		.loc 1 171 6 discriminator 1
+ 457 00e4 002B     		cmp	r3, #0
+ 458 00e6 01D0     		beq	.L12
+ 172:Core/Src/fdcan.c ****   {
+ 173:Core/Src/fdcan.c ****     Error_Handler();
+ 459              		.loc 1 173 5
+ 460 00e8 FFF7FEFF 		bl	Error_Handler
+ 461              	.L12:
+ 174:Core/Src/fdcan.c ****   }
+ 175:Core/Src/fdcan.c ****   
+ 176:Core/Src/fdcan.c ****   // -------------------------- 配置FDCAN2扩展帧过滤器（接收所有扩展帧） --------------------------
+ 177:Core/Src/fdcan.c ****   sFilterConfig.IdType = FDCAN_EXTENDED_ID;          // 针对扩展帧（29位ID）
+ 462              		.loc 1 177 24
+ 463 00ec 4FF08043 		mov	r3, #1073741824
+ 464 00f0 3B60     		str	r3, [r7]
+ 178:Core/Src/fdcan.c ****   sFilterConfig.FilterIndex = 0;                     // 使用第0个扩展帧过滤器
+ 465              		.loc 1 178 29
+ 466 00f2 0023     		movs	r3, #0
+ 467 00f4 7B60     		str	r3, [r7, #4]
+ 179:Core/Src/fdcan.c ****   sFilterConfig.FilterType = FDCAN_FILTER_MASK;      // 掩码过滤模式
+ 468              		.loc 1 179 28
+ 469 00f6 0223     		movs	r3, #2
+ 470 00f8 BB60     		str	r3, [r7, #8]
+ 180:Core/Src/fdcan.c ****   sFilterConfig.FilterConfig = FDCAN_FILTER_TO_RXFIFO0; // 匹配帧存入RX FIFO0
+ 471              		.loc 1 180 30
+ 472 00fa 0123     		movs	r3, #1
+ 473 00fc FB60     		str	r3, [r7, #12]
+ 181:Core/Src/fdcan.c ****   sFilterConfig.FilterID1 = 0x00000000;              // 扩展帧ID（设为0）
+ 474              		.loc 1 181 27
+ 475 00fe 0023     		movs	r3, #0
+ 476 0100 3B61     		str	r3, [r7, #16]
+ 182:Core/Src/fdcan.c ****   sFilterConfig.FilterID2 = 0x00000000;              // 掩码设为0 → 接收所有扩展帧
+ 477              		.loc 1 182 27
+ 478 0102 0023     		movs	r3, #0
+ 479 0104 7B61     		str	r3, [r7, #20]
+ 183:Core/Src/fdcan.c ****   
+ 184:Core/Src/fdcan.c ****   if (HAL_FDCAN_ConfigFilter(&hfdcan2, &sFilterConfig) != HAL_OK)
+ 480              		.loc 1 184 7
+ 481 0106 3B46     		mov	r3, r7
+ 482 0108 1946     		mov	r1, r3
+ 483 010a 0F48     		ldr	r0, .L17
+ 484 010c FFF7FEFF 		bl	HAL_FDCAN_ConfigFilter
+ 485 0110 0346     		mov	r3, r0
+ 486              		.loc 1 184 6 discriminator 1
+ 487 0112 002B     		cmp	r3, #0
+ 488 0114 01D0     		beq	.L13
+ 185:Core/Src/fdcan.c ****   {
+ 186:Core/Src/fdcan.c ****     Error_Handler();
+ 489              		.loc 1 186 5
+ 490 0116 FFF7FEFF 		bl	Error_Handler
+ 491              	.L13:
+ 187:Core/Src/fdcan.c ****   }
+ 188:Core/Src/fdcan.c ****   
+ 189:Core/Src/fdcan.c ****   // 启用RX FIFO0新消息通知
+ 190:Core/Src/fdcan.c ****   if (HAL_FDCAN_ActivateNotification(&hfdcan2, FDCAN_IT_RX_FIFO0_NEW_MESSAGE, 0) != HAL_OK)
+ARM GAS  C:\Users\Godwin\AppData\Local\Temp\ccPjrEWN.s 			page 13
 
 
- 513              		.thumb_func
- 515              	HAL_FDCAN_MspInit:
- 516              	.LFB147:
- 175:Core/Src/fdcan.c **** 
- 176:Core/Src/fdcan.c **** static uint32_t HAL_RCC_FDCAN_CLK_ENABLED=0;
- 177:Core/Src/fdcan.c **** 
- 178:Core/Src/fdcan.c **** void HAL_FDCAN_MspInit(FDCAN_HandleTypeDef* fdcanHandle)
- 179:Core/Src/fdcan.c **** {
- 517              		.loc 1 179 1
- 518              		.cfi_startproc
- 519              		@ args = 0, pretend = 0, frame = 240
- 520              		@ frame_needed = 1, uses_anonymous_args = 0
- 521 0000 80B5     		push	{r7, lr}
- 522              	.LCFI6:
- 523              		.cfi_def_cfa_offset 8
- 524              		.cfi_offset 7, -8
- 525              		.cfi_offset 14, -4
- 526 0002 BCB0     		sub	sp, sp, #240
- 527              	.LCFI7:
- 528              		.cfi_def_cfa_offset 248
- 529 0004 00AF     		add	r7, sp, #0
- 530              	.LCFI8:
- 531              		.cfi_def_cfa_register 7
- 532 0006 7860     		str	r0, [r7, #4]
- 180:Core/Src/fdcan.c **** 
- 181:Core/Src/fdcan.c ****   GPIO_InitTypeDef GPIO_InitStruct = {0};
- 533              		.loc 1 181 20
- 534 0008 07F1DC03 		add	r3, r7, #220
- 535 000c 0022     		movs	r2, #0
- 536 000e 1A60     		str	r2, [r3]
- 537 0010 5A60     		str	r2, [r3, #4]
- 538 0012 9A60     		str	r2, [r3, #8]
- 539 0014 DA60     		str	r2, [r3, #12]
- 540 0016 1A61     		str	r2, [r3, #16]
- 182:Core/Src/fdcan.c ****   RCC_PeriphCLKInitTypeDef PeriphClkInitStruct = {0};
- 541              		.loc 1 182 28
- 542 0018 07F12003 		add	r3, r7, #32
- 543 001c B822     		movs	r2, #184
- 544 001e 0021     		movs	r1, #0
- 545 0020 1846     		mov	r0, r3
- 546 0022 FFF7FEFF 		bl	memset
- 183:Core/Src/fdcan.c ****   if(fdcanHandle->Instance==FDCAN1)
- 547              		.loc 1 183 17
- 548 0026 7B68     		ldr	r3, [r7, #4]
- 549 0028 1B68     		ldr	r3, [r3]
- 550              		.loc 1 183 5
- 551 002a 9A4A     		ldr	r2, .L27
- 552 002c 9342     		cmp	r3, r2
- 553 002e 60D1     		bne	.L17
- 184:Core/Src/fdcan.c ****   {
- 185:Core/Src/fdcan.c ****   /* USER CODE BEGIN FDCAN1_MspInit 0 */
- 186:Core/Src/fdcan.c **** 
- 187:Core/Src/fdcan.c ****   /* USER CODE END FDCAN1_MspInit 0 */
- 188:Core/Src/fdcan.c **** 
- 189:Core/Src/fdcan.c ****   /** Initializes the peripherals clock
- 190:Core/Src/fdcan.c ****   */
- 191:Core/Src/fdcan.c ****     PeriphClkInitStruct.PeriphClockSelection = RCC_PERIPHCLK_FDCAN;
-ARM GAS  C:\Users\Godwin\AppData\Local\Temp\ccM1ZfTX.s 			page 14
+ 492              		.loc 1 190 7
+ 493 011a 0022     		movs	r2, #0
+ 494 011c 0121     		movs	r1, #1
+ 495 011e 0A48     		ldr	r0, .L17
+ 496 0120 FFF7FEFF 		bl	HAL_FDCAN_ActivateNotification
+ 497 0124 0346     		mov	r3, r0
+ 498              		.loc 1 190 6 discriminator 1
+ 499 0126 002B     		cmp	r3, #0
+ 500 0128 01D0     		beq	.L14
+ 191:Core/Src/fdcan.c ****   {
+ 192:Core/Src/fdcan.c ****     Error_Handler();
+ 501              		.loc 1 192 5
+ 502 012a FFF7FEFF 		bl	Error_Handler
+ 503              	.L14:
+ 193:Core/Src/fdcan.c ****   }
+ 194:Core/Src/fdcan.c ****   
+ 195:Core/Src/fdcan.c ****   // 启动FDCAN2外设
+ 196:Core/Src/fdcan.c ****   if (HAL_FDCAN_Start(&hfdcan2) != HAL_OK)
+ 504              		.loc 1 196 7
+ 505 012e 0648     		ldr	r0, .L17
+ 506 0130 FFF7FEFF 		bl	HAL_FDCAN_Start
+ 507 0134 0346     		mov	r3, r0
+ 508              		.loc 1 196 6 discriminator 1
+ 509 0136 002B     		cmp	r3, #0
+ 510 0138 01D0     		beq	.L16
+ 197:Core/Src/fdcan.c ****   {
+ 198:Core/Src/fdcan.c ****     Error_Handler();
+ 511              		.loc 1 198 5
+ 512 013a FFF7FEFF 		bl	Error_Handler
+ 513              	.L16:
+ 199:Core/Src/fdcan.c ****   }
+ 200:Core/Src/fdcan.c ****   /* USER CODE END FDCAN2_Init 2 */
+ 201:Core/Src/fdcan.c **** 
+ 202:Core/Src/fdcan.c **** }
+ 514              		.loc 1 202 1
+ 515 013e 00BF     		nop
+ 516 0140 2037     		adds	r7, r7, #32
+ 517              	.LCFI8:
+ 518              		.cfi_def_cfa_offset 8
+ 519 0142 BD46     		mov	sp, r7
+ 520              	.LCFI9:
+ 521              		.cfi_def_cfa_register 13
+ 522              		@ sp needed
+ 523 0144 80BD     		pop	{r7, pc}
+ 524              	.L18:
+ 525 0146 00BF     		.align	2
+ 526              	.L17:
+ 527 0148 00000000 		.word	hfdcan2
+ 528 014c 00A40040 		.word	1073783808
+ 529              		.cfi_endproc
+ 530              	.LFE145:
+ 532              		.section	.text.MX_FDCAN3_Init,"ax",%progbits
+ 533              		.align	1
+ 534              		.global	MX_FDCAN3_Init
+ 535              		.syntax unified
+ 536              		.thumb
+ 537              		.thumb_func
+ARM GAS  C:\Users\Godwin\AppData\Local\Temp\ccPjrEWN.s 			page 14
 
 
- 554              		.loc 1 191 46
- 555 0030 4FF40042 		mov	r2, #32768
- 556 0034 4FF00003 		mov	r3, #0
- 557 0038 C7E90823 		strd	r2, [r7, #32]
- 192:Core/Src/fdcan.c ****     PeriphClkInitStruct.FdcanClockSelection = RCC_FDCANCLKSOURCE_PLL;
- 558              		.loc 1 192 45
- 559 003c 4FF08053 		mov	r3, #268435456
- 560 0040 C7F88C30 		str	r3, [r7, #140]
- 193:Core/Src/fdcan.c ****     if (HAL_RCCEx_PeriphCLKConfig(&PeriphClkInitStruct) != HAL_OK)
- 561              		.loc 1 193 9
- 562 0044 07F12003 		add	r3, r7, #32
- 563 0048 1846     		mov	r0, r3
- 564 004a FFF7FEFF 		bl	HAL_RCCEx_PeriphCLKConfig
- 565 004e 0346     		mov	r3, r0
- 566              		.loc 1 193 8 discriminator 1
- 567 0050 002B     		cmp	r3, #0
- 568 0052 01D0     		beq	.L18
- 194:Core/Src/fdcan.c ****     {
- 195:Core/Src/fdcan.c ****       Error_Handler();
- 569              		.loc 1 195 7
- 570 0054 FFF7FEFF 		bl	Error_Handler
- 571              	.L18:
- 196:Core/Src/fdcan.c ****     }
- 197:Core/Src/fdcan.c **** 
- 198:Core/Src/fdcan.c ****     /* FDCAN1 clock enable */
- 199:Core/Src/fdcan.c ****     HAL_RCC_FDCAN_CLK_ENABLED++;
- 572              		.loc 1 199 30
- 573 0058 8F4B     		ldr	r3, .L27+4
- 574 005a 1B68     		ldr	r3, [r3]
- 575 005c 0133     		adds	r3, r3, #1
- 576 005e 8E4A     		ldr	r2, .L27+4
- 577 0060 1360     		str	r3, [r2]
- 200:Core/Src/fdcan.c ****     if(HAL_RCC_FDCAN_CLK_ENABLED==1){
- 578              		.loc 1 200 33
- 579 0062 8D4B     		ldr	r3, .L27+4
- 580 0064 1B68     		ldr	r3, [r3]
- 581              		.loc 1 200 7
- 582 0066 012B     		cmp	r3, #1
- 583 0068 0ED1     		bne	.L19
- 584              	.LBB2:
- 201:Core/Src/fdcan.c ****       __HAL_RCC_FDCAN_CLK_ENABLE();
- 585              		.loc 1 201 7
- 586 006a 8C4B     		ldr	r3, .L27+8
- 587 006c D3F8EC30 		ldr	r3, [r3, #236]
- 588 0070 8A4A     		ldr	r2, .L27+8
- 589 0072 43F48073 		orr	r3, r3, #256
- 590 0076 C2F8EC30 		str	r3, [r2, #236]
- 591 007a 884B     		ldr	r3, .L27+8
- 592 007c D3F8EC30 		ldr	r3, [r3, #236]
- 593 0080 03F48073 		and	r3, r3, #256
- 594 0084 FB61     		str	r3, [r7, #28]
- 595 0086 FB69     		ldr	r3, [r7, #28]
- 596              	.L19:
- 597              	.LBE2:
- 598              	.LBB3:
- 202:Core/Src/fdcan.c ****     }
- 203:Core/Src/fdcan.c **** 
-ARM GAS  C:\Users\Godwin\AppData\Local\Temp\ccM1ZfTX.s 			page 15
+ 539              	MX_FDCAN3_Init:
+ 540              	.LFB146:
+ 203:Core/Src/fdcan.c **** /* FDCAN3 init function */
+ 204:Core/Src/fdcan.c **** void MX_FDCAN3_Init(void)
+ 205:Core/Src/fdcan.c **** {
+ 541              		.loc 1 205 1
+ 542              		.cfi_startproc
+ 543              		@ args = 0, pretend = 0, frame = 32
+ 544              		@ frame_needed = 1, uses_anonymous_args = 0
+ 545 0000 80B5     		push	{r7, lr}
+ 546              	.LCFI10:
+ 547              		.cfi_def_cfa_offset 8
+ 548              		.cfi_offset 7, -8
+ 549              		.cfi_offset 14, -4
+ 550 0002 88B0     		sub	sp, sp, #32
+ 551              	.LCFI11:
+ 552              		.cfi_def_cfa_offset 40
+ 553 0004 00AF     		add	r7, sp, #0
+ 554              	.LCFI12:
+ 555              		.cfi_def_cfa_register 7
+ 206:Core/Src/fdcan.c **** 
+ 207:Core/Src/fdcan.c ****   /* USER CODE BEGIN FDCAN3_Init 0 */
+ 208:Core/Src/fdcan.c **** 
+ 209:Core/Src/fdcan.c ****   /* USER CODE END FDCAN3_Init 0 */
+ 210:Core/Src/fdcan.c **** 
+ 211:Core/Src/fdcan.c ****   /* USER CODE BEGIN FDCAN3_Init 1 */
+ 212:Core/Src/fdcan.c **** 
+ 213:Core/Src/fdcan.c ****   /* USER CODE END FDCAN3_Init 1 */
+ 214:Core/Src/fdcan.c ****   hfdcan3.Instance = FDCAN3;
+ 556              		.loc 1 214 20
+ 557 0006 504B     		ldr	r3, .L26
+ 558 0008 504A     		ldr	r2, .L26+4
+ 559 000a 1A60     		str	r2, [r3]
+ 215:Core/Src/fdcan.c ****   hfdcan3.Init.FrameFormat = FDCAN_FRAME_CLASSIC;
+ 560              		.loc 1 215 28
+ 561 000c 4E4B     		ldr	r3, .L26
+ 562 000e 0022     		movs	r2, #0
+ 563 0010 9A60     		str	r2, [r3, #8]
+ 216:Core/Src/fdcan.c ****   hfdcan3.Init.Mode = FDCAN_MODE_NORMAL;
+ 564              		.loc 1 216 21
+ 565 0012 4D4B     		ldr	r3, .L26
+ 566 0014 0022     		movs	r2, #0
+ 567 0016 DA60     		str	r2, [r3, #12]
+ 217:Core/Src/fdcan.c ****   hfdcan3.Init.AutoRetransmission = DISABLE;
+ 568              		.loc 1 217 35
+ 569 0018 4B4B     		ldr	r3, .L26
+ 570 001a 0022     		movs	r2, #0
+ 571 001c 1A74     		strb	r2, [r3, #16]
+ 218:Core/Src/fdcan.c ****   hfdcan3.Init.TransmitPause = DISABLE;
+ 572              		.loc 1 218 30
+ 573 001e 4A4B     		ldr	r3, .L26
+ 574 0020 0022     		movs	r2, #0
+ 575 0022 5A74     		strb	r2, [r3, #17]
+ 219:Core/Src/fdcan.c ****   hfdcan3.Init.ProtocolException = DISABLE;
+ 576              		.loc 1 219 34
+ 577 0024 484B     		ldr	r3, .L26
+ 578 0026 0022     		movs	r2, #0
+ARM GAS  C:\Users\Godwin\AppData\Local\Temp\ccPjrEWN.s 			page 15
 
 
- 204:Core/Src/fdcan.c ****     __HAL_RCC_GPIOD_CLK_ENABLE();
- 599              		.loc 1 204 5
- 600 0088 844B     		ldr	r3, .L27+8
- 601 008a D3F8E030 		ldr	r3, [r3, #224]
- 602 008e 834A     		ldr	r2, .L27+8
- 603 0090 43F00803 		orr	r3, r3, #8
- 604 0094 C2F8E030 		str	r3, [r2, #224]
- 605 0098 804B     		ldr	r3, .L27+8
- 606 009a D3F8E030 		ldr	r3, [r3, #224]
- 607 009e 03F00803 		and	r3, r3, #8
- 608 00a2 BB61     		str	r3, [r7, #24]
- 609 00a4 BB69     		ldr	r3, [r7, #24]
- 610              	.LBE3:
- 205:Core/Src/fdcan.c ****     /**FDCAN1 GPIO Configuration
- 206:Core/Src/fdcan.c ****     PD0     ------> FDCAN1_RX
- 207:Core/Src/fdcan.c ****     PD1     ------> FDCAN1_TX
- 208:Core/Src/fdcan.c ****     */
- 209:Core/Src/fdcan.c ****     GPIO_InitStruct.Pin = GPIO_PIN_0|GPIO_PIN_1;
- 611              		.loc 1 209 25
- 612 00a6 0323     		movs	r3, #3
- 613 00a8 C7F8DC30 		str	r3, [r7, #220]
- 210:Core/Src/fdcan.c ****     GPIO_InitStruct.Mode = GPIO_MODE_AF_PP;
- 614              		.loc 1 210 26
- 615 00ac 0223     		movs	r3, #2
- 616 00ae C7F8E030 		str	r3, [r7, #224]
- 211:Core/Src/fdcan.c ****     GPIO_InitStruct.Pull = GPIO_NOPULL;
- 617              		.loc 1 211 26
- 618 00b2 0023     		movs	r3, #0
- 619 00b4 C7F8E430 		str	r3, [r7, #228]
- 212:Core/Src/fdcan.c ****     GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
- 620              		.loc 1 212 27
- 621 00b8 0023     		movs	r3, #0
- 622 00ba C7F8E830 		str	r3, [r7, #232]
- 213:Core/Src/fdcan.c ****     GPIO_InitStruct.Alternate = GPIO_AF9_FDCAN1;
- 623              		.loc 1 213 31
- 624 00be 0923     		movs	r3, #9
- 625 00c0 C7F8EC30 		str	r3, [r7, #236]
- 214:Core/Src/fdcan.c ****     HAL_GPIO_Init(GPIOD, &GPIO_InitStruct);
- 626              		.loc 1 214 5
- 627 00c4 07F1DC03 		add	r3, r7, #220
- 628 00c8 1946     		mov	r1, r3
- 629 00ca 7548     		ldr	r0, .L27+12
- 630 00cc FFF7FEFF 		bl	HAL_GPIO_Init
- 215:Core/Src/fdcan.c **** 
- 216:Core/Src/fdcan.c ****     /* FDCAN1 interrupt Init */
- 217:Core/Src/fdcan.c ****     HAL_NVIC_SetPriority(FDCAN1_IT0_IRQn, 5, 0);
- 631              		.loc 1 217 5
- 632 00d0 0022     		movs	r2, #0
- 633 00d2 0521     		movs	r1, #5
- 634 00d4 1320     		movs	r0, #19
- 635 00d6 FFF7FEFF 		bl	HAL_NVIC_SetPriority
- 218:Core/Src/fdcan.c ****     HAL_NVIC_EnableIRQ(FDCAN1_IT0_IRQn);
- 636              		.loc 1 218 5
- 637 00da 1320     		movs	r0, #19
- 638 00dc FFF7FEFF 		bl	HAL_NVIC_EnableIRQ
- 219:Core/Src/fdcan.c ****     HAL_NVIC_SetPriority(FDCAN1_IT1_IRQn, 5, 0);
- 639              		.loc 1 219 5
-ARM GAS  C:\Users\Godwin\AppData\Local\Temp\ccM1ZfTX.s 			page 16
+ 579 0028 9A74     		strb	r2, [r3, #18]
+ 220:Core/Src/fdcan.c ****   hfdcan3.Init.NominalPrescaler = 3;
+ 580              		.loc 1 220 33
+ 581 002a 474B     		ldr	r3, .L26
+ 582 002c 0322     		movs	r2, #3
+ 583 002e 5A61     		str	r2, [r3, #20]
+ 221:Core/Src/fdcan.c ****   hfdcan3.Init.NominalSyncJumpWidth = 10;
+ 584              		.loc 1 221 37
+ 585 0030 454B     		ldr	r3, .L26
+ 586 0032 0A22     		movs	r2, #10
+ 587 0034 9A61     		str	r2, [r3, #24]
+ 222:Core/Src/fdcan.c ****   hfdcan3.Init.NominalTimeSeg1 = 29;
+ 588              		.loc 1 222 32
+ 589 0036 444B     		ldr	r3, .L26
+ 590 0038 1D22     		movs	r2, #29
+ 591 003a DA61     		str	r2, [r3, #28]
+ 223:Core/Src/fdcan.c ****   hfdcan3.Init.NominalTimeSeg2 = 10;
+ 592              		.loc 1 223 32
+ 593 003c 424B     		ldr	r3, .L26
+ 594 003e 0A22     		movs	r2, #10
+ 595 0040 1A62     		str	r2, [r3, #32]
+ 224:Core/Src/fdcan.c ****   hfdcan3.Init.DataPrescaler = 3;
+ 596              		.loc 1 224 30
+ 597 0042 414B     		ldr	r3, .L26
+ 598 0044 0322     		movs	r2, #3
+ 599 0046 5A62     		str	r2, [r3, #36]
+ 225:Core/Src/fdcan.c ****   hfdcan3.Init.DataSyncJumpWidth = 10;
+ 600              		.loc 1 225 34
+ 601 0048 3F4B     		ldr	r3, .L26
+ 602 004a 0A22     		movs	r2, #10
+ 603 004c 9A62     		str	r2, [r3, #40]
+ 226:Core/Src/fdcan.c ****   hfdcan3.Init.DataTimeSeg1 = 29;
+ 604              		.loc 1 226 29
+ 605 004e 3E4B     		ldr	r3, .L26
+ 606 0050 1D22     		movs	r2, #29
+ 607 0052 DA62     		str	r2, [r3, #44]
+ 227:Core/Src/fdcan.c ****   hfdcan3.Init.DataTimeSeg2 = 10;
+ 608              		.loc 1 227 29
+ 609 0054 3C4B     		ldr	r3, .L26
+ 610 0056 0A22     		movs	r2, #10
+ 611 0058 1A63     		str	r2, [r3, #48]
+ 228:Core/Src/fdcan.c ****   hfdcan3.Init.MessageRAMOffset = 0x812;
+ 612              		.loc 1 228 33
+ 613 005a 3B4B     		ldr	r3, .L26
+ 614 005c 40F61202 		movw	r2, #2066
+ 615 0060 5A63     		str	r2, [r3, #52]
+ 229:Core/Src/fdcan.c ****   hfdcan3.Init.StdFiltersNbr = 1;    // 1个标准帧过滤器
+ 616              		.loc 1 229 30
+ 617 0062 394B     		ldr	r3, .L26
+ 618 0064 0122     		movs	r2, #1
+ 619 0066 9A63     		str	r2, [r3, #56]
+ 230:Core/Src/fdcan.c ****   hfdcan3.Init.ExtFiltersNbr = 1;    // 1个扩展帧过滤器
+ 620              		.loc 1 230 30
+ 621 0068 374B     		ldr	r3, .L26
+ 622 006a 0122     		movs	r2, #1
+ 623 006c DA63     		str	r2, [r3, #60]
+ 231:Core/Src/fdcan.c ****   hfdcan3.Init.RxFifo0ElmtsNbr = 4;
+ARM GAS  C:\Users\Godwin\AppData\Local\Temp\ccPjrEWN.s 			page 16
 
 
- 640 00e0 0022     		movs	r2, #0
- 641 00e2 0521     		movs	r1, #5
- 642 00e4 1520     		movs	r0, #21
- 643 00e6 FFF7FEFF 		bl	HAL_NVIC_SetPriority
- 220:Core/Src/fdcan.c ****     HAL_NVIC_EnableIRQ(FDCAN1_IT1_IRQn);
- 644              		.loc 1 220 5
- 645 00ea 1520     		movs	r0, #21
- 646 00ec FFF7FEFF 		bl	HAL_NVIC_EnableIRQ
- 221:Core/Src/fdcan.c ****   /* USER CODE BEGIN FDCAN1_MspInit 1 */
- 222:Core/Src/fdcan.c **** 
- 223:Core/Src/fdcan.c ****   /* USER CODE END FDCAN1_MspInit 1 */
- 224:Core/Src/fdcan.c ****   }
- 225:Core/Src/fdcan.c ****   else if(fdcanHandle->Instance==FDCAN2)
- 226:Core/Src/fdcan.c ****   {
- 227:Core/Src/fdcan.c ****   /* USER CODE BEGIN FDCAN2_MspInit 0 */
- 228:Core/Src/fdcan.c **** 
- 229:Core/Src/fdcan.c ****   /* USER CODE END FDCAN2_MspInit 0 */
- 230:Core/Src/fdcan.c **** 
- 231:Core/Src/fdcan.c ****   /** Initializes the peripherals clock
- 232:Core/Src/fdcan.c ****   */
- 233:Core/Src/fdcan.c ****     PeriphClkInitStruct.PeriphClockSelection = RCC_PERIPHCLK_FDCAN;
- 234:Core/Src/fdcan.c ****     PeriphClkInitStruct.FdcanClockSelection = RCC_FDCANCLKSOURCE_PLL;
- 235:Core/Src/fdcan.c ****     if (HAL_RCCEx_PeriphCLKConfig(&PeriphClkInitStruct) != HAL_OK)
- 236:Core/Src/fdcan.c ****     {
- 237:Core/Src/fdcan.c ****       Error_Handler();
- 238:Core/Src/fdcan.c ****     }
- 239:Core/Src/fdcan.c **** 
- 240:Core/Src/fdcan.c ****     /* FDCAN2 clock enable */
- 241:Core/Src/fdcan.c ****     HAL_RCC_FDCAN_CLK_ENABLED++;
- 242:Core/Src/fdcan.c ****     if(HAL_RCC_FDCAN_CLK_ENABLED==1){
- 243:Core/Src/fdcan.c ****       __HAL_RCC_FDCAN_CLK_ENABLE();
- 244:Core/Src/fdcan.c ****     }
- 245:Core/Src/fdcan.c **** 
- 246:Core/Src/fdcan.c ****     __HAL_RCC_GPIOB_CLK_ENABLE();
- 247:Core/Src/fdcan.c ****     /**FDCAN2 GPIO Configuration
- 248:Core/Src/fdcan.c ****     PB5     ------> FDCAN2_RX
- 249:Core/Src/fdcan.c ****     PB6     ------> FDCAN2_TX
- 250:Core/Src/fdcan.c ****     */
- 251:Core/Src/fdcan.c ****     GPIO_InitStruct.Pin = GPIO_PIN_5|GPIO_PIN_6;
- 252:Core/Src/fdcan.c ****     GPIO_InitStruct.Mode = GPIO_MODE_AF_PP;
- 253:Core/Src/fdcan.c ****     GPIO_InitStruct.Pull = GPIO_NOPULL;
- 254:Core/Src/fdcan.c ****     GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
- 255:Core/Src/fdcan.c ****     GPIO_InitStruct.Alternate = GPIO_AF9_FDCAN2;
- 256:Core/Src/fdcan.c ****     HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
- 257:Core/Src/fdcan.c **** 
- 258:Core/Src/fdcan.c ****     /* FDCAN2 interrupt Init */
- 259:Core/Src/fdcan.c ****     HAL_NVIC_SetPriority(FDCAN2_IT0_IRQn, 5, 0);
- 260:Core/Src/fdcan.c ****     HAL_NVIC_EnableIRQ(FDCAN2_IT0_IRQn);
- 261:Core/Src/fdcan.c ****     HAL_NVIC_SetPriority(FDCAN2_IT1_IRQn, 5, 0);
- 262:Core/Src/fdcan.c ****     HAL_NVIC_EnableIRQ(FDCAN2_IT1_IRQn);
- 263:Core/Src/fdcan.c ****   /* USER CODE BEGIN FDCAN2_MspInit 1 */
- 264:Core/Src/fdcan.c **** 
- 265:Core/Src/fdcan.c ****   /* USER CODE END FDCAN2_MspInit 1 */
- 266:Core/Src/fdcan.c ****   }
- 267:Core/Src/fdcan.c ****   else if(fdcanHandle->Instance==FDCAN3)
- 268:Core/Src/fdcan.c ****   {
- 269:Core/Src/fdcan.c ****   /* USER CODE BEGIN FDCAN3_MspInit 0 */
-ARM GAS  C:\Users\Godwin\AppData\Local\Temp\ccM1ZfTX.s 			page 17
+ 624              		.loc 1 231 32
+ 625 006e 364B     		ldr	r3, .L26
+ 626 0070 0422     		movs	r2, #4
+ 627 0072 1A64     		str	r2, [r3, #64]
+ 232:Core/Src/fdcan.c ****   hfdcan3.Init.RxFifo0ElmtSize = FDCAN_DATA_BYTES_8;
+ 628              		.loc 1 232 32
+ 629 0074 344B     		ldr	r3, .L26
+ 630 0076 0422     		movs	r2, #4
+ 631 0078 5A64     		str	r2, [r3, #68]
+ 233:Core/Src/fdcan.c ****   hfdcan3.Init.RxFifo1ElmtsNbr = 0;
+ 632              		.loc 1 233 32
+ 633 007a 334B     		ldr	r3, .L26
+ 634 007c 0022     		movs	r2, #0
+ 635 007e 9A64     		str	r2, [r3, #72]
+ 234:Core/Src/fdcan.c ****   hfdcan3.Init.RxFifo1ElmtSize = FDCAN_DATA_BYTES_8;
+ 636              		.loc 1 234 32
+ 637 0080 314B     		ldr	r3, .L26
+ 638 0082 0422     		movs	r2, #4
+ 639 0084 DA64     		str	r2, [r3, #76]
+ 235:Core/Src/fdcan.c ****   hfdcan3.Init.RxBuffersNbr = 0;
+ 640              		.loc 1 235 29
+ 641 0086 304B     		ldr	r3, .L26
+ 642 0088 0022     		movs	r2, #0
+ 643 008a 1A65     		str	r2, [r3, #80]
+ 236:Core/Src/fdcan.c ****   hfdcan3.Init.RxBufferSize = FDCAN_DATA_BYTES_8;
+ 644              		.loc 1 236 29
+ 645 008c 2E4B     		ldr	r3, .L26
+ 646 008e 0422     		movs	r2, #4
+ 647 0090 5A65     		str	r2, [r3, #84]
+ 237:Core/Src/fdcan.c ****   hfdcan3.Init.TxEventsNbr = 0;
+ 648              		.loc 1 237 28
+ 649 0092 2D4B     		ldr	r3, .L26
+ 650 0094 0022     		movs	r2, #0
+ 651 0096 9A65     		str	r2, [r3, #88]
+ 238:Core/Src/fdcan.c ****   hfdcan3.Init.TxBuffersNbr = 0;
+ 652              		.loc 1 238 29
+ 653 0098 2B4B     		ldr	r3, .L26
+ 654 009a 0022     		movs	r2, #0
+ 655 009c DA65     		str	r2, [r3, #92]
+ 239:Core/Src/fdcan.c ****   hfdcan3.Init.TxFifoQueueElmtsNbr = 32;
+ 656              		.loc 1 239 36
+ 657 009e 2A4B     		ldr	r3, .L26
+ 658 00a0 2022     		movs	r2, #32
+ 659 00a2 1A66     		str	r2, [r3, #96]
+ 240:Core/Src/fdcan.c ****   hfdcan3.Init.TxFifoQueueMode = FDCAN_TX_FIFO_OPERATION;
+ 660              		.loc 1 240 32
+ 661 00a4 284B     		ldr	r3, .L26
+ 662 00a6 0022     		movs	r2, #0
+ 663 00a8 5A66     		str	r2, [r3, #100]
+ 241:Core/Src/fdcan.c ****   hfdcan3.Init.TxElmtSize = FDCAN_DATA_BYTES_8;
+ 664              		.loc 1 241 27
+ 665 00aa 274B     		ldr	r3, .L26
+ 666 00ac 0422     		movs	r2, #4
+ 667 00ae 9A66     		str	r2, [r3, #104]
+ 242:Core/Src/fdcan.c ****   if (HAL_FDCAN_Init(&hfdcan3) != HAL_OK)
+ 668              		.loc 1 242 7
+ 669 00b0 2548     		ldr	r0, .L26
+ARM GAS  C:\Users\Godwin\AppData\Local\Temp\ccPjrEWN.s 			page 17
 
 
- 270:Core/Src/fdcan.c **** 
- 271:Core/Src/fdcan.c ****   /* USER CODE END FDCAN3_MspInit 0 */
- 272:Core/Src/fdcan.c **** 
- 273:Core/Src/fdcan.c ****   /** Initializes the peripherals clock
- 274:Core/Src/fdcan.c ****   */
- 275:Core/Src/fdcan.c ****     PeriphClkInitStruct.PeriphClockSelection = RCC_PERIPHCLK_FDCAN;
- 276:Core/Src/fdcan.c ****     PeriphClkInitStruct.FdcanClockSelection = RCC_FDCANCLKSOURCE_PLL;
- 277:Core/Src/fdcan.c ****     if (HAL_RCCEx_PeriphCLKConfig(&PeriphClkInitStruct) != HAL_OK)
- 278:Core/Src/fdcan.c ****     {
- 279:Core/Src/fdcan.c ****       Error_Handler();
- 280:Core/Src/fdcan.c ****     }
- 281:Core/Src/fdcan.c **** 
- 282:Core/Src/fdcan.c ****     /* FDCAN3 clock enable */
- 283:Core/Src/fdcan.c ****     HAL_RCC_FDCAN_CLK_ENABLED++;
- 284:Core/Src/fdcan.c ****     if(HAL_RCC_FDCAN_CLK_ENABLED==1){
- 285:Core/Src/fdcan.c ****       __HAL_RCC_FDCAN_CLK_ENABLE();
- 286:Core/Src/fdcan.c ****     }
+ 670 00b2 FFF7FEFF 		bl	HAL_FDCAN_Init
+ 671 00b6 0346     		mov	r3, r0
+ 672              		.loc 1 242 6 discriminator 1
+ 673 00b8 002B     		cmp	r3, #0
+ 674 00ba 01D0     		beq	.L20
+ 243:Core/Src/fdcan.c ****   {
+ 244:Core/Src/fdcan.c ****     Error_Handler();
+ 675              		.loc 1 244 5
+ 676 00bc FFF7FEFF 		bl	Error_Handler
+ 677              	.L20:
+ 245:Core/Src/fdcan.c ****   }
+ 246:Core/Src/fdcan.c ****   /* USER CODE BEGIN FDCAN3_Init 2 */
+ 247:Core/Src/fdcan.c ****   FDCAN_FilterTypeDef sFilterConfig;
+ 248:Core/Src/fdcan.c ****   
+ 249:Core/Src/fdcan.c ****   // -------------------------- 配置FDCAN3标准帧过滤器（接收所有标准帧） --------------------------
+ 250:Core/Src/fdcan.c ****   sFilterConfig.IdType = FDCAN_STANDARD_ID;          // 针对标准帧（11位ID）
+ 678              		.loc 1 250 24
+ 679 00c0 0023     		movs	r3, #0
+ 680 00c2 3B60     		str	r3, [r7]
+ 251:Core/Src/fdcan.c ****   sFilterConfig.FilterIndex = 0;                     // 使用第0个标准帧过滤器
+ 681              		.loc 1 251 29
+ 682 00c4 0023     		movs	r3, #0
+ 683 00c6 7B60     		str	r3, [r7, #4]
+ 252:Core/Src/fdcan.c ****   sFilterConfig.FilterType = FDCAN_FILTER_MASK;      // 掩码过滤模式
+ 684              		.loc 1 252 28
+ 685 00c8 0223     		movs	r3, #2
+ 686 00ca BB60     		str	r3, [r7, #8]
+ 253:Core/Src/fdcan.c ****   sFilterConfig.FilterConfig = FDCAN_FILTER_TO_RXFIFO0; // 匹配帧存入RX FIFO0
+ 687              		.loc 1 253 30
+ 688 00cc 0123     		movs	r3, #1
+ 689 00ce FB60     		str	r3, [r7, #12]
+ 254:Core/Src/fdcan.c ****   sFilterConfig.FilterID1 = 0x000;                   // 标准帧ID（设为0）
+ 690              		.loc 1 254 27
+ 691 00d0 0023     		movs	r3, #0
+ 692 00d2 3B61     		str	r3, [r7, #16]
+ 255:Core/Src/fdcan.c ****   sFilterConfig.FilterID2 = 0x000;                   // 掩码设为0 → 接收所有标准帧
+ 693              		.loc 1 255 27
+ 694 00d4 0023     		movs	r3, #0
+ 695 00d6 7B61     		str	r3, [r7, #20]
+ 256:Core/Src/fdcan.c ****   
+ 257:Core/Src/fdcan.c ****   if (HAL_FDCAN_ConfigFilter(&hfdcan3, &sFilterConfig) != HAL_OK)
+ 696              		.loc 1 257 7
+ 697 00d8 3B46     		mov	r3, r7
+ 698 00da 1946     		mov	r1, r3
+ 699 00dc 1A48     		ldr	r0, .L26
+ 700 00de FFF7FEFF 		bl	HAL_FDCAN_ConfigFilter
+ 701 00e2 0346     		mov	r3, r0
+ 702              		.loc 1 257 6 discriminator 1
+ 703 00e4 002B     		cmp	r3, #0
+ 704 00e6 01D0     		beq	.L21
+ 258:Core/Src/fdcan.c ****   {
+ 259:Core/Src/fdcan.c ****     Error_Handler();
+ 705              		.loc 1 259 5
+ 706 00e8 FFF7FEFF 		bl	Error_Handler
+ 707              	.L21:
+ 260:Core/Src/fdcan.c ****   }
+ 261:Core/Src/fdcan.c ****   
+ARM GAS  C:\Users\Godwin\AppData\Local\Temp\ccPjrEWN.s 			page 18
+
+
+ 262:Core/Src/fdcan.c ****   // -------------------------- 配置FDCAN3扩展帧过滤器（接收所有扩展帧） --------------------------
+ 263:Core/Src/fdcan.c ****   sFilterConfig.IdType = FDCAN_EXTENDED_ID;          // 针对扩展帧（29位ID）
+ 708              		.loc 1 263 24
+ 709 00ec 4FF08043 		mov	r3, #1073741824
+ 710 00f0 3B60     		str	r3, [r7]
+ 264:Core/Src/fdcan.c ****   sFilterConfig.FilterIndex = 0;                     // 使用第0个扩展帧过滤器
+ 711              		.loc 1 264 29
+ 712 00f2 0023     		movs	r3, #0
+ 713 00f4 7B60     		str	r3, [r7, #4]
+ 265:Core/Src/fdcan.c ****   sFilterConfig.FilterType = FDCAN_FILTER_MASK;      // 掩码过滤模式
+ 714              		.loc 1 265 28
+ 715 00f6 0223     		movs	r3, #2
+ 716 00f8 BB60     		str	r3, [r7, #8]
+ 266:Core/Src/fdcan.c ****   sFilterConfig.FilterConfig = FDCAN_FILTER_TO_RXFIFO0; // 匹配帧存入RX FIFO0
+ 717              		.loc 1 266 30
+ 718 00fa 0123     		movs	r3, #1
+ 719 00fc FB60     		str	r3, [r7, #12]
+ 267:Core/Src/fdcan.c ****   sFilterConfig.FilterID1 = 0x00000000;              // 扩展帧ID（设为0）
+ 720              		.loc 1 267 27
+ 721 00fe 0023     		movs	r3, #0
+ 722 0100 3B61     		str	r3, [r7, #16]
+ 268:Core/Src/fdcan.c ****   sFilterConfig.FilterID2 = 0x00000000;              // 掩码设为0 → 接收所有扩展帧
+ 723              		.loc 1 268 27
+ 724 0102 0023     		movs	r3, #0
+ 725 0104 7B61     		str	r3, [r7, #20]
+ 269:Core/Src/fdcan.c ****   
+ 270:Core/Src/fdcan.c ****   if (HAL_FDCAN_ConfigFilter(&hfdcan3, &sFilterConfig) != HAL_OK)
+ 726              		.loc 1 270 7
+ 727 0106 3B46     		mov	r3, r7
+ 728 0108 1946     		mov	r1, r3
+ 729 010a 0F48     		ldr	r0, .L26
+ 730 010c FFF7FEFF 		bl	HAL_FDCAN_ConfigFilter
+ 731 0110 0346     		mov	r3, r0
+ 732              		.loc 1 270 6 discriminator 1
+ 733 0112 002B     		cmp	r3, #0
+ 734 0114 01D0     		beq	.L22
+ 271:Core/Src/fdcan.c ****   {
+ 272:Core/Src/fdcan.c ****     Error_Handler();
+ 735              		.loc 1 272 5
+ 736 0116 FFF7FEFF 		bl	Error_Handler
+ 737              	.L22:
+ 273:Core/Src/fdcan.c ****   }
+ 274:Core/Src/fdcan.c ****   
+ 275:Core/Src/fdcan.c ****   // 启用RX FIFO0新消息通知
+ 276:Core/Src/fdcan.c ****   if (HAL_FDCAN_ActivateNotification(&hfdcan3, FDCAN_IT_RX_FIFO0_NEW_MESSAGE, 0) != HAL_OK)
+ 738              		.loc 1 276 7
+ 739 011a 0022     		movs	r2, #0
+ 740 011c 0121     		movs	r1, #1
+ 741 011e 0A48     		ldr	r0, .L26
+ 742 0120 FFF7FEFF 		bl	HAL_FDCAN_ActivateNotification
+ 743 0124 0346     		mov	r3, r0
+ 744              		.loc 1 276 6 discriminator 1
+ 745 0126 002B     		cmp	r3, #0
+ 746 0128 01D0     		beq	.L23
+ 277:Core/Src/fdcan.c ****   {
+ 278:Core/Src/fdcan.c ****     Error_Handler();
+ 747              		.loc 1 278 5
+ARM GAS  C:\Users\Godwin\AppData\Local\Temp\ccPjrEWN.s 			page 19
+
+
+ 748 012a FFF7FEFF 		bl	Error_Handler
+ 749              	.L23:
+ 279:Core/Src/fdcan.c ****   }
+ 280:Core/Src/fdcan.c ****   
+ 281:Core/Src/fdcan.c ****   // 启动FDCAN3外设
+ 282:Core/Src/fdcan.c ****   if (HAL_FDCAN_Start(&hfdcan3) != HAL_OK)
+ 750              		.loc 1 282 7
+ 751 012e 0648     		ldr	r0, .L26
+ 752 0130 FFF7FEFF 		bl	HAL_FDCAN_Start
+ 753 0134 0346     		mov	r3, r0
+ 754              		.loc 1 282 6 discriminator 1
+ 755 0136 002B     		cmp	r3, #0
+ 756 0138 01D0     		beq	.L25
+ 283:Core/Src/fdcan.c ****   {
+ 284:Core/Src/fdcan.c ****     Error_Handler();
+ 757              		.loc 1 284 5
+ 758 013a FFF7FEFF 		bl	Error_Handler
+ 759              	.L25:
+ 285:Core/Src/fdcan.c ****   }
+ 286:Core/Src/fdcan.c ****   /* USER CODE END FDCAN3_Init 2 */
  287:Core/Src/fdcan.c **** 
- 288:Core/Src/fdcan.c ****     __HAL_RCC_GPIOD_CLK_ENABLE();
- 289:Core/Src/fdcan.c ****     /**FDCAN3 GPIO Configuration
- 290:Core/Src/fdcan.c ****     PD12     ------> FDCAN3_RX
- 291:Core/Src/fdcan.c ****     PD13     ------> FDCAN3_TX
- 292:Core/Src/fdcan.c ****     */
- 293:Core/Src/fdcan.c ****     GPIO_InitStruct.Pin = GPIO_PIN_12|GPIO_PIN_13;
- 294:Core/Src/fdcan.c ****     GPIO_InitStruct.Mode = GPIO_MODE_AF_PP;
- 295:Core/Src/fdcan.c ****     GPIO_InitStruct.Pull = GPIO_NOPULL;
- 296:Core/Src/fdcan.c ****     GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
- 297:Core/Src/fdcan.c ****     GPIO_InitStruct.Alternate = GPIO_AF5_FDCAN3;
- 298:Core/Src/fdcan.c ****     HAL_GPIO_Init(GPIOD, &GPIO_InitStruct);
- 299:Core/Src/fdcan.c **** 
- 300:Core/Src/fdcan.c ****     /* FDCAN3 interrupt Init */
- 301:Core/Src/fdcan.c ****     HAL_NVIC_SetPriority(FDCAN3_IT0_IRQn, 5, 0);
- 302:Core/Src/fdcan.c ****     HAL_NVIC_EnableIRQ(FDCAN3_IT0_IRQn);
- 303:Core/Src/fdcan.c ****     HAL_NVIC_SetPriority(FDCAN3_IT1_IRQn, 5, 0);
- 304:Core/Src/fdcan.c ****     HAL_NVIC_EnableIRQ(FDCAN3_IT1_IRQn);
- 305:Core/Src/fdcan.c ****   /* USER CODE BEGIN FDCAN3_MspInit 1 */
- 306:Core/Src/fdcan.c **** 
- 307:Core/Src/fdcan.c ****   /* USER CODE END FDCAN3_MspInit 1 */
- 308:Core/Src/fdcan.c ****   }
- 309:Core/Src/fdcan.c **** }
- 647              		.loc 1 309 1
- 648 00f0 CBE0     		b	.L26
- 649              	.L17:
- 225:Core/Src/fdcan.c ****   {
- 650              		.loc 1 225 22
- 651 00f2 7B68     		ldr	r3, [r7, #4]
- 652 00f4 1B68     		ldr	r3, [r3]
- 225:Core/Src/fdcan.c ****   {
- 653              		.loc 1 225 10
- 654 00f6 6B4A     		ldr	r2, .L27+16
- 655 00f8 9342     		cmp	r3, r2
- 656 00fa 60D1     		bne	.L21
- 233:Core/Src/fdcan.c ****     PeriphClkInitStruct.FdcanClockSelection = RCC_FDCANCLKSOURCE_PLL;
- 657              		.loc 1 233 46
- 658 00fc 4FF40042 		mov	r2, #32768
- 659 0100 4FF00003 		mov	r3, #0
- 660 0104 C7E90823 		strd	r2, [r7, #32]
-ARM GAS  C:\Users\Godwin\AppData\Local\Temp\ccM1ZfTX.s 			page 18
+ 288:Core/Src/fdcan.c **** }
+ 760              		.loc 1 288 1
+ 761 013e 00BF     		nop
+ 762 0140 2037     		adds	r7, r7, #32
+ 763              	.LCFI13:
+ 764              		.cfi_def_cfa_offset 8
+ 765 0142 BD46     		mov	sp, r7
+ 766              	.LCFI14:
+ 767              		.cfi_def_cfa_register 13
+ 768              		@ sp needed
+ 769 0144 80BD     		pop	{r7, pc}
+ 770              	.L27:
+ 771 0146 00BF     		.align	2
+ 772              	.L26:
+ 773 0148 00000000 		.word	hfdcan3
+ 774 014c 00D40040 		.word	1073796096
+ 775              		.cfi_endproc
+ 776              	.LFE146:
+ 778              		.section	.bss.HAL_RCC_FDCAN_CLK_ENABLED,"aw",%nobits
+ 779              		.align	2
+ 782              	HAL_RCC_FDCAN_CLK_ENABLED:
+ 783 0000 00000000 		.space	4
+ 784              		.section	.text.HAL_FDCAN_MspInit,"ax",%progbits
+ 785              		.align	1
+ 786              		.global	HAL_FDCAN_MspInit
+ 787              		.syntax unified
+ 788              		.thumb
+ 789              		.thumb_func
+ 791              	HAL_FDCAN_MspInit:
+ 792              	.LFB147:
+ 289:Core/Src/fdcan.c **** 
+ 290:Core/Src/fdcan.c **** static uint32_t HAL_RCC_FDCAN_CLK_ENABLED=0;
+ 291:Core/Src/fdcan.c **** 
+ 292:Core/Src/fdcan.c **** void HAL_FDCAN_MspInit(FDCAN_HandleTypeDef* fdcanHandle)
+ 293:Core/Src/fdcan.c **** {
+ 793              		.loc 1 293 1
+ARM GAS  C:\Users\Godwin\AppData\Local\Temp\ccPjrEWN.s 			page 20
 
 
- 234:Core/Src/fdcan.c ****     if (HAL_RCCEx_PeriphCLKConfig(&PeriphClkInitStruct) != HAL_OK)
- 661              		.loc 1 234 45
- 662 0108 4FF08053 		mov	r3, #268435456
- 663 010c C7F88C30 		str	r3, [r7, #140]
- 235:Core/Src/fdcan.c ****     {
- 664              		.loc 1 235 9
- 665 0110 07F12003 		add	r3, r7, #32
- 666 0114 1846     		mov	r0, r3
- 667 0116 FFF7FEFF 		bl	HAL_RCCEx_PeriphCLKConfig
- 668 011a 0346     		mov	r3, r0
- 235:Core/Src/fdcan.c ****     {
- 669              		.loc 1 235 8 discriminator 1
- 670 011c 002B     		cmp	r3, #0
- 671 011e 01D0     		beq	.L22
- 237:Core/Src/fdcan.c ****     }
- 672              		.loc 1 237 7
- 673 0120 FFF7FEFF 		bl	Error_Handler
- 674              	.L22:
- 241:Core/Src/fdcan.c ****     if(HAL_RCC_FDCAN_CLK_ENABLED==1){
- 675              		.loc 1 241 30
- 676 0124 5C4B     		ldr	r3, .L27+4
- 677 0126 1B68     		ldr	r3, [r3]
- 678 0128 0133     		adds	r3, r3, #1
- 679 012a 5B4A     		ldr	r2, .L27+4
- 680 012c 1360     		str	r3, [r2]
- 242:Core/Src/fdcan.c ****       __HAL_RCC_FDCAN_CLK_ENABLE();
- 681              		.loc 1 242 33
- 682 012e 5A4B     		ldr	r3, .L27+4
- 683 0130 1B68     		ldr	r3, [r3]
- 242:Core/Src/fdcan.c ****       __HAL_RCC_FDCAN_CLK_ENABLE();
- 684              		.loc 1 242 7
- 685 0132 012B     		cmp	r3, #1
- 686 0134 0ED1     		bne	.L23
- 687              	.LBB4:
- 243:Core/Src/fdcan.c ****     }
- 688              		.loc 1 243 7
- 689 0136 594B     		ldr	r3, .L27+8
- 690 0138 D3F8EC30 		ldr	r3, [r3, #236]
- 691 013c 574A     		ldr	r2, .L27+8
- 692 013e 43F48073 		orr	r3, r3, #256
- 693 0142 C2F8EC30 		str	r3, [r2, #236]
- 694 0146 554B     		ldr	r3, .L27+8
- 695 0148 D3F8EC30 		ldr	r3, [r3, #236]
- 696 014c 03F48073 		and	r3, r3, #256
- 697 0150 7B61     		str	r3, [r7, #20]
- 698 0152 7B69     		ldr	r3, [r7, #20]
- 699              	.L23:
- 700              	.LBE4:
- 701              	.LBB5:
- 246:Core/Src/fdcan.c ****     /**FDCAN2 GPIO Configuration
- 702              		.loc 1 246 5
- 703 0154 514B     		ldr	r3, .L27+8
- 704 0156 D3F8E030 		ldr	r3, [r3, #224]
- 705 015a 504A     		ldr	r2, .L27+8
- 706 015c 43F00203 		orr	r3, r3, #2
- 707 0160 C2F8E030 		str	r3, [r2, #224]
- 708 0164 4D4B     		ldr	r3, .L27+8
-ARM GAS  C:\Users\Godwin\AppData\Local\Temp\ccM1ZfTX.s 			page 19
+ 794              		.cfi_startproc
+ 795              		@ args = 0, pretend = 0, frame = 240
+ 796              		@ frame_needed = 1, uses_anonymous_args = 0
+ 797 0000 80B5     		push	{r7, lr}
+ 798              	.LCFI15:
+ 799              		.cfi_def_cfa_offset 8
+ 800              		.cfi_offset 7, -8
+ 801              		.cfi_offset 14, -4
+ 802 0002 BCB0     		sub	sp, sp, #240
+ 803              	.LCFI16:
+ 804              		.cfi_def_cfa_offset 248
+ 805 0004 00AF     		add	r7, sp, #0
+ 806              	.LCFI17:
+ 807              		.cfi_def_cfa_register 7
+ 808 0006 7860     		str	r0, [r7, #4]
+ 294:Core/Src/fdcan.c **** 
+ 295:Core/Src/fdcan.c ****   GPIO_InitTypeDef GPIO_InitStruct = {0};
+ 809              		.loc 1 295 20
+ 810 0008 07F1DC03 		add	r3, r7, #220
+ 811 000c 0022     		movs	r2, #0
+ 812 000e 1A60     		str	r2, [r3]
+ 813 0010 5A60     		str	r2, [r3, #4]
+ 814 0012 9A60     		str	r2, [r3, #8]
+ 815 0014 DA60     		str	r2, [r3, #12]
+ 816 0016 1A61     		str	r2, [r3, #16]
+ 296:Core/Src/fdcan.c ****   RCC_PeriphCLKInitTypeDef PeriphClkInitStruct = {0};
+ 817              		.loc 1 296 28
+ 818 0018 07F12003 		add	r3, r7, #32
+ 819 001c B822     		movs	r2, #184
+ 820 001e 0021     		movs	r1, #0
+ 821 0020 1846     		mov	r0, r3
+ 822 0022 FFF7FEFF 		bl	memset
+ 297:Core/Src/fdcan.c ****   if(fdcanHandle->Instance==FDCAN1)
+ 823              		.loc 1 297 17
+ 824 0026 7B68     		ldr	r3, [r7, #4]
+ 825 0028 1B68     		ldr	r3, [r3]
+ 826              		.loc 1 297 5
+ 827 002a 9A4A     		ldr	r2, .L39
+ 828 002c 9342     		cmp	r3, r2
+ 829 002e 60D1     		bne	.L29
+ 298:Core/Src/fdcan.c ****   {
+ 299:Core/Src/fdcan.c ****   /* USER CODE BEGIN FDCAN1_MspInit 0 */
+ 300:Core/Src/fdcan.c **** 
+ 301:Core/Src/fdcan.c ****   /* USER CODE END FDCAN1_MspInit 0 */
+ 302:Core/Src/fdcan.c **** 
+ 303:Core/Src/fdcan.c ****   /** Initializes the peripherals clock
+ 304:Core/Src/fdcan.c ****   */
+ 305:Core/Src/fdcan.c ****     PeriphClkInitStruct.PeriphClockSelection = RCC_PERIPHCLK_FDCAN;
+ 830              		.loc 1 305 46
+ 831 0030 4FF40042 		mov	r2, #32768
+ 832 0034 4FF00003 		mov	r3, #0
+ 833 0038 C7E90823 		strd	r2, [r7, #32]
+ 306:Core/Src/fdcan.c ****     PeriphClkInitStruct.FdcanClockSelection = RCC_FDCANCLKSOURCE_PLL;
+ 834              		.loc 1 306 45
+ 835 003c 4FF08053 		mov	r3, #268435456
+ 836 0040 C7F88C30 		str	r3, [r7, #140]
+ 307:Core/Src/fdcan.c ****     if (HAL_RCCEx_PeriphCLKConfig(&PeriphClkInitStruct) != HAL_OK)
+ARM GAS  C:\Users\Godwin\AppData\Local\Temp\ccPjrEWN.s 			page 21
 
 
- 709 0166 D3F8E030 		ldr	r3, [r3, #224]
- 710 016a 03F00203 		and	r3, r3, #2
- 711 016e 3B61     		str	r3, [r7, #16]
- 712 0170 3B69     		ldr	r3, [r7, #16]
- 713              	.LBE5:
- 251:Core/Src/fdcan.c ****     GPIO_InitStruct.Mode = GPIO_MODE_AF_PP;
- 714              		.loc 1 251 25
- 715 0172 6023     		movs	r3, #96
- 716 0174 C7F8DC30 		str	r3, [r7, #220]
- 252:Core/Src/fdcan.c ****     GPIO_InitStruct.Pull = GPIO_NOPULL;
- 717              		.loc 1 252 26
- 718 0178 0223     		movs	r3, #2
- 719 017a C7F8E030 		str	r3, [r7, #224]
- 253:Core/Src/fdcan.c ****     GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
- 720              		.loc 1 253 26
- 721 017e 0023     		movs	r3, #0
- 722 0180 C7F8E430 		str	r3, [r7, #228]
- 254:Core/Src/fdcan.c ****     GPIO_InitStruct.Alternate = GPIO_AF9_FDCAN2;
- 723              		.loc 1 254 27
- 724 0184 0023     		movs	r3, #0
- 725 0186 C7F8E830 		str	r3, [r7, #232]
- 255:Core/Src/fdcan.c ****     HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
- 726              		.loc 1 255 31
- 727 018a 0923     		movs	r3, #9
- 728 018c C7F8EC30 		str	r3, [r7, #236]
- 256:Core/Src/fdcan.c **** 
- 729              		.loc 1 256 5
- 730 0190 07F1DC03 		add	r3, r7, #220
- 731 0194 1946     		mov	r1, r3
- 732 0196 4448     		ldr	r0, .L27+20
- 733 0198 FFF7FEFF 		bl	HAL_GPIO_Init
- 259:Core/Src/fdcan.c ****     HAL_NVIC_EnableIRQ(FDCAN2_IT0_IRQn);
- 734              		.loc 1 259 5
- 735 019c 0022     		movs	r2, #0
- 736 019e 0521     		movs	r1, #5
- 737 01a0 1420     		movs	r0, #20
- 738 01a2 FFF7FEFF 		bl	HAL_NVIC_SetPriority
- 260:Core/Src/fdcan.c ****     HAL_NVIC_SetPriority(FDCAN2_IT1_IRQn, 5, 0);
- 739              		.loc 1 260 5
- 740 01a6 1420     		movs	r0, #20
- 741 01a8 FFF7FEFF 		bl	HAL_NVIC_EnableIRQ
- 261:Core/Src/fdcan.c ****     HAL_NVIC_EnableIRQ(FDCAN2_IT1_IRQn);
- 742              		.loc 1 261 5
- 743 01ac 0022     		movs	r2, #0
- 744 01ae 0521     		movs	r1, #5
- 745 01b0 1620     		movs	r0, #22
- 746 01b2 FFF7FEFF 		bl	HAL_NVIC_SetPriority
- 262:Core/Src/fdcan.c ****   /* USER CODE BEGIN FDCAN2_MspInit 1 */
- 747              		.loc 1 262 5
- 748 01b6 1620     		movs	r0, #22
- 749 01b8 FFF7FEFF 		bl	HAL_NVIC_EnableIRQ
- 750              		.loc 1 309 1
- 751 01bc 65E0     		b	.L26
- 752              	.L21:
- 267:Core/Src/fdcan.c ****   {
- 753              		.loc 1 267 22
- 754 01be 7B68     		ldr	r3, [r7, #4]
-ARM GAS  C:\Users\Godwin\AppData\Local\Temp\ccM1ZfTX.s 			page 20
-
-
- 755 01c0 1B68     		ldr	r3, [r3]
- 267:Core/Src/fdcan.c ****   {
- 756              		.loc 1 267 10
- 757 01c2 3A4A     		ldr	r2, .L27+24
- 758 01c4 9342     		cmp	r3, r2
- 759 01c6 60D1     		bne	.L26
- 275:Core/Src/fdcan.c ****     PeriphClkInitStruct.FdcanClockSelection = RCC_FDCANCLKSOURCE_PLL;
- 760              		.loc 1 275 46
- 761 01c8 4FF40042 		mov	r2, #32768
- 762 01cc 4FF00003 		mov	r3, #0
- 763 01d0 C7E90823 		strd	r2, [r7, #32]
- 276:Core/Src/fdcan.c ****     if (HAL_RCCEx_PeriphCLKConfig(&PeriphClkInitStruct) != HAL_OK)
- 764              		.loc 1 276 45
- 765 01d4 4FF08053 		mov	r3, #268435456
- 766 01d8 C7F88C30 		str	r3, [r7, #140]
- 277:Core/Src/fdcan.c ****     {
- 767              		.loc 1 277 9
- 768 01dc 07F12003 		add	r3, r7, #32
- 769 01e0 1846     		mov	r0, r3
- 770 01e2 FFF7FEFF 		bl	HAL_RCCEx_PeriphCLKConfig
- 771 01e6 0346     		mov	r3, r0
- 277:Core/Src/fdcan.c ****     {
- 772              		.loc 1 277 8 discriminator 1
- 773 01e8 002B     		cmp	r3, #0
- 774 01ea 01D0     		beq	.L24
- 279:Core/Src/fdcan.c ****     }
- 775              		.loc 1 279 7
- 776 01ec FFF7FEFF 		bl	Error_Handler
- 777              	.L24:
- 283:Core/Src/fdcan.c ****     if(HAL_RCC_FDCAN_CLK_ENABLED==1){
- 778              		.loc 1 283 30
- 779 01f0 294B     		ldr	r3, .L27+4
- 780 01f2 1B68     		ldr	r3, [r3]
- 781 01f4 0133     		adds	r3, r3, #1
- 782 01f6 284A     		ldr	r2, .L27+4
- 783 01f8 1360     		str	r3, [r2]
- 284:Core/Src/fdcan.c ****       __HAL_RCC_FDCAN_CLK_ENABLE();
- 784              		.loc 1 284 33
- 785 01fa 274B     		ldr	r3, .L27+4
- 786 01fc 1B68     		ldr	r3, [r3]
- 284:Core/Src/fdcan.c ****       __HAL_RCC_FDCAN_CLK_ENABLE();
- 787              		.loc 1 284 7
- 788 01fe 012B     		cmp	r3, #1
- 789 0200 0ED1     		bne	.L25
- 790              	.LBB6:
- 285:Core/Src/fdcan.c ****     }
- 791              		.loc 1 285 7
- 792 0202 264B     		ldr	r3, .L27+8
- 793 0204 D3F8EC30 		ldr	r3, [r3, #236]
- 794 0208 244A     		ldr	r2, .L27+8
- 795 020a 43F48073 		orr	r3, r3, #256
- 796 020e C2F8EC30 		str	r3, [r2, #236]
- 797 0212 224B     		ldr	r3, .L27+8
- 798 0214 D3F8EC30 		ldr	r3, [r3, #236]
- 799 0218 03F48073 		and	r3, r3, #256
- 800 021c FB60     		str	r3, [r7, #12]
- 801 021e FB68     		ldr	r3, [r7, #12]
-ARM GAS  C:\Users\Godwin\AppData\Local\Temp\ccM1ZfTX.s 			page 21
-
-
- 802              	.L25:
- 803              	.LBE6:
- 804              	.LBB7:
- 288:Core/Src/fdcan.c ****     /**FDCAN3 GPIO Configuration
- 805              		.loc 1 288 5
- 806 0220 1E4B     		ldr	r3, .L27+8
- 807 0222 D3F8E030 		ldr	r3, [r3, #224]
- 808 0226 1D4A     		ldr	r2, .L27+8
- 809 0228 43F00803 		orr	r3, r3, #8
- 810 022c C2F8E030 		str	r3, [r2, #224]
- 811 0230 1A4B     		ldr	r3, .L27+8
- 812 0232 D3F8E030 		ldr	r3, [r3, #224]
- 813 0236 03F00803 		and	r3, r3, #8
- 814 023a BB60     		str	r3, [r7, #8]
- 815 023c BB68     		ldr	r3, [r7, #8]
- 816              	.LBE7:
- 293:Core/Src/fdcan.c ****     GPIO_InitStruct.Mode = GPIO_MODE_AF_PP;
- 817              		.loc 1 293 25
- 818 023e 4FF44053 		mov	r3, #12288
- 819 0242 C7F8DC30 		str	r3, [r7, #220]
- 294:Core/Src/fdcan.c ****     GPIO_InitStruct.Pull = GPIO_NOPULL;
- 820              		.loc 1 294 26
- 821 0246 0223     		movs	r3, #2
- 822 0248 C7F8E030 		str	r3, [r7, #224]
- 295:Core/Src/fdcan.c ****     GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
- 823              		.loc 1 295 26
- 824 024c 0023     		movs	r3, #0
- 825 024e C7F8E430 		str	r3, [r7, #228]
- 296:Core/Src/fdcan.c ****     GPIO_InitStruct.Alternate = GPIO_AF5_FDCAN3;
- 826              		.loc 1 296 27
- 827 0252 0023     		movs	r3, #0
- 828 0254 C7F8E830 		str	r3, [r7, #232]
- 297:Core/Src/fdcan.c ****     HAL_GPIO_Init(GPIOD, &GPIO_InitStruct);
- 829              		.loc 1 297 31
- 830 0258 0523     		movs	r3, #5
- 831 025a C7F8EC30 		str	r3, [r7, #236]
- 298:Core/Src/fdcan.c **** 
- 832              		.loc 1 298 5
- 833 025e 07F1DC03 		add	r3, r7, #220
- 834 0262 1946     		mov	r1, r3
- 835 0264 0E48     		ldr	r0, .L27+12
- 836 0266 FFF7FEFF 		bl	HAL_GPIO_Init
- 301:Core/Src/fdcan.c ****     HAL_NVIC_EnableIRQ(FDCAN3_IT0_IRQn);
- 837              		.loc 1 301 5
- 838 026a 0022     		movs	r2, #0
- 839 026c 0521     		movs	r1, #5
- 840 026e 9F20     		movs	r0, #159
- 841 0270 FFF7FEFF 		bl	HAL_NVIC_SetPriority
- 302:Core/Src/fdcan.c ****     HAL_NVIC_SetPriority(FDCAN3_IT1_IRQn, 5, 0);
- 842              		.loc 1 302 5
- 843 0274 9F20     		movs	r0, #159
- 844 0276 FFF7FEFF 		bl	HAL_NVIC_EnableIRQ
- 303:Core/Src/fdcan.c ****     HAL_NVIC_EnableIRQ(FDCAN3_IT1_IRQn);
- 845              		.loc 1 303 5
- 846 027a 0022     		movs	r2, #0
- 847 027c 0521     		movs	r1, #5
- 848 027e A020     		movs	r0, #160
-ARM GAS  C:\Users\Godwin\AppData\Local\Temp\ccM1ZfTX.s 			page 22
-
-
- 849 0280 FFF7FEFF 		bl	HAL_NVIC_SetPriority
- 304:Core/Src/fdcan.c ****   /* USER CODE BEGIN FDCAN3_MspInit 1 */
- 850              		.loc 1 304 5
- 851 0284 A020     		movs	r0, #160
- 852 0286 FFF7FEFF 		bl	HAL_NVIC_EnableIRQ
- 853              	.L26:
- 854              		.loc 1 309 1
- 855 028a 00BF     		nop
- 856 028c F037     		adds	r7, r7, #240
- 857              	.LCFI9:
- 858              		.cfi_def_cfa_offset 8
- 859 028e BD46     		mov	sp, r7
- 860              	.LCFI10:
- 861              		.cfi_def_cfa_register 13
- 862              		@ sp needed
- 863 0290 80BD     		pop	{r7, pc}
- 864              	.L28:
- 865 0292 00BF     		.align	2
- 866              	.L27:
- 867 0294 00A00040 		.word	1073782784
- 868 0298 00000000 		.word	HAL_RCC_FDCAN_CLK_ENABLED
- 869 029c 00440258 		.word	1476543488
- 870 02a0 000C0258 		.word	1476529152
- 871 02a4 00A40040 		.word	1073783808
- 872 02a8 00040258 		.word	1476527104
- 873 02ac 00D40040 		.word	1073796096
- 874              		.cfi_endproc
- 875              	.LFE147:
- 877              		.section	.text.HAL_FDCAN_MspDeInit,"ax",%progbits
- 878              		.align	1
- 879              		.global	HAL_FDCAN_MspDeInit
- 880              		.syntax unified
- 881              		.thumb
- 882              		.thumb_func
- 884              	HAL_FDCAN_MspDeInit:
- 885              	.LFB148:
- 310:Core/Src/fdcan.c **** 
- 311:Core/Src/fdcan.c **** void HAL_FDCAN_MspDeInit(FDCAN_HandleTypeDef* fdcanHandle)
- 312:Core/Src/fdcan.c **** {
- 886              		.loc 1 312 1
- 887              		.cfi_startproc
- 888              		@ args = 0, pretend = 0, frame = 8
- 889              		@ frame_needed = 1, uses_anonymous_args = 0
- 890 0000 80B5     		push	{r7, lr}
- 891              	.LCFI11:
- 892              		.cfi_def_cfa_offset 8
- 893              		.cfi_offset 7, -8
- 894              		.cfi_offset 14, -4
- 895 0002 82B0     		sub	sp, sp, #8
- 896              	.LCFI12:
- 897              		.cfi_def_cfa_offset 16
- 898 0004 00AF     		add	r7, sp, #0
- 899              	.LCFI13:
- 900              		.cfi_def_cfa_register 7
- 901 0006 7860     		str	r0, [r7, #4]
- 313:Core/Src/fdcan.c **** 
- 314:Core/Src/fdcan.c ****   if(fdcanHandle->Instance==FDCAN1)
-ARM GAS  C:\Users\Godwin\AppData\Local\Temp\ccM1ZfTX.s 			page 23
-
-
- 902              		.loc 1 314 17
- 903 0008 7B68     		ldr	r3, [r7, #4]
- 904 000a 1B68     		ldr	r3, [r3]
- 905              		.loc 1 314 5
- 906 000c 324A     		ldr	r2, .L37
- 907 000e 9342     		cmp	r3, r2
- 908 0010 1BD1     		bne	.L30
- 315:Core/Src/fdcan.c ****   {
- 316:Core/Src/fdcan.c ****   /* USER CODE BEGIN FDCAN1_MspDeInit 0 */
+ 837              		.loc 1 307 9
+ 838 0044 07F12003 		add	r3, r7, #32
+ 839 0048 1846     		mov	r0, r3
+ 840 004a FFF7FEFF 		bl	HAL_RCCEx_PeriphCLKConfig
+ 841 004e 0346     		mov	r3, r0
+ 842              		.loc 1 307 8 discriminator 1
+ 843 0050 002B     		cmp	r3, #0
+ 844 0052 01D0     		beq	.L30
+ 308:Core/Src/fdcan.c ****     {
+ 309:Core/Src/fdcan.c ****       Error_Handler();
+ 845              		.loc 1 309 7
+ 846 0054 FFF7FEFF 		bl	Error_Handler
+ 847              	.L30:
+ 310:Core/Src/fdcan.c ****     }
+ 311:Core/Src/fdcan.c **** 
+ 312:Core/Src/fdcan.c ****     /* FDCAN1 clock enable */
+ 313:Core/Src/fdcan.c ****     HAL_RCC_FDCAN_CLK_ENABLED++;
+ 848              		.loc 1 313 30
+ 849 0058 8F4B     		ldr	r3, .L39+4
+ 850 005a 1B68     		ldr	r3, [r3]
+ 851 005c 0133     		adds	r3, r3, #1
+ 852 005e 8E4A     		ldr	r2, .L39+4
+ 853 0060 1360     		str	r3, [r2]
+ 314:Core/Src/fdcan.c ****     if(HAL_RCC_FDCAN_CLK_ENABLED==1){
+ 854              		.loc 1 314 33
+ 855 0062 8D4B     		ldr	r3, .L39+4
+ 856 0064 1B68     		ldr	r3, [r3]
+ 857              		.loc 1 314 7
+ 858 0066 012B     		cmp	r3, #1
+ 859 0068 0ED1     		bne	.L31
+ 860              	.LBB2:
+ 315:Core/Src/fdcan.c ****       __HAL_RCC_FDCAN_CLK_ENABLE();
+ 861              		.loc 1 315 7
+ 862 006a 8C4B     		ldr	r3, .L39+8
+ 863 006c D3F8EC30 		ldr	r3, [r3, #236]
+ 864 0070 8A4A     		ldr	r2, .L39+8
+ 865 0072 43F48073 		orr	r3, r3, #256
+ 866 0076 C2F8EC30 		str	r3, [r2, #236]
+ 867 007a 884B     		ldr	r3, .L39+8
+ 868 007c D3F8EC30 		ldr	r3, [r3, #236]
+ 869 0080 03F48073 		and	r3, r3, #256
+ 870 0084 FB61     		str	r3, [r7, #28]
+ 871 0086 FB69     		ldr	r3, [r7, #28]
+ 872              	.L31:
+ 873              	.LBE2:
+ 874              	.LBB3:
+ 316:Core/Src/fdcan.c ****     }
  317:Core/Src/fdcan.c **** 
- 318:Core/Src/fdcan.c ****   /* USER CODE END FDCAN1_MspDeInit 0 */
- 319:Core/Src/fdcan.c ****     /* Peripheral clock disable */
- 320:Core/Src/fdcan.c ****     HAL_RCC_FDCAN_CLK_ENABLED--;
- 909              		.loc 1 320 30
- 910 0012 324B     		ldr	r3, .L37+4
- 911 0014 1B68     		ldr	r3, [r3]
- 912 0016 013B     		subs	r3, r3, #1
- 913 0018 304A     		ldr	r2, .L37+4
- 914 001a 1360     		str	r3, [r2]
- 321:Core/Src/fdcan.c ****     if(HAL_RCC_FDCAN_CLK_ENABLED==0){
- 915              		.loc 1 321 33
- 916 001c 2F4B     		ldr	r3, .L37+4
- 917 001e 1B68     		ldr	r3, [r3]
- 918              		.loc 1 321 7
- 919 0020 002B     		cmp	r3, #0
- 920 0022 07D1     		bne	.L31
- 322:Core/Src/fdcan.c ****       __HAL_RCC_FDCAN_CLK_DISABLE();
- 921              		.loc 1 322 7
- 922 0024 2E4B     		ldr	r3, .L37+8
- 923 0026 D3F8EC30 		ldr	r3, [r3, #236]
- 924 002a 2D4A     		ldr	r2, .L37+8
- 925 002c 23F48073 		bic	r3, r3, #256
- 926 0030 C2F8EC30 		str	r3, [r2, #236]
- 927              	.L31:
- 323:Core/Src/fdcan.c ****     }
- 324:Core/Src/fdcan.c **** 
- 325:Core/Src/fdcan.c ****     /**FDCAN1 GPIO Configuration
- 326:Core/Src/fdcan.c ****     PD0     ------> FDCAN1_RX
- 327:Core/Src/fdcan.c ****     PD1     ------> FDCAN1_TX
- 328:Core/Src/fdcan.c ****     */
- 329:Core/Src/fdcan.c ****     HAL_GPIO_DeInit(GPIOD, GPIO_PIN_0|GPIO_PIN_1);
- 928              		.loc 1 329 5
- 929 0034 0321     		movs	r1, #3
- 930 0036 2B48     		ldr	r0, .L37+12
- 931 0038 FFF7FEFF 		bl	HAL_GPIO_DeInit
- 330:Core/Src/fdcan.c **** 
- 331:Core/Src/fdcan.c ****     /* FDCAN1 interrupt Deinit */
- 332:Core/Src/fdcan.c ****     HAL_NVIC_DisableIRQ(FDCAN1_IT0_IRQn);
- 932              		.loc 1 332 5
- 933 003c 1320     		movs	r0, #19
- 934 003e FFF7FEFF 		bl	HAL_NVIC_DisableIRQ
- 333:Core/Src/fdcan.c ****     HAL_NVIC_DisableIRQ(FDCAN1_IT1_IRQn);
- 935              		.loc 1 333 5
- 936 0042 1520     		movs	r0, #21
- 937 0044 FFF7FEFF 		bl	HAL_NVIC_DisableIRQ
- 334:Core/Src/fdcan.c ****   /* USER CODE BEGIN FDCAN1_MspDeInit 1 */
- 335:Core/Src/fdcan.c **** 
-ARM GAS  C:\Users\Godwin\AppData\Local\Temp\ccM1ZfTX.s 			page 24
+ 318:Core/Src/fdcan.c ****     __HAL_RCC_GPIOD_CLK_ENABLE();
+ 875              		.loc 1 318 5
+ 876 0088 844B     		ldr	r3, .L39+8
+ 877 008a D3F8E030 		ldr	r3, [r3, #224]
+ 878 008e 834A     		ldr	r2, .L39+8
+ 879 0090 43F00803 		orr	r3, r3, #8
+ 880 0094 C2F8E030 		str	r3, [r2, #224]
+ 881 0098 804B     		ldr	r3, .L39+8
+ 882 009a D3F8E030 		ldr	r3, [r3, #224]
+ARM GAS  C:\Users\Godwin\AppData\Local\Temp\ccPjrEWN.s 			page 22
 
 
- 336:Core/Src/fdcan.c ****   /* USER CODE END FDCAN1_MspDeInit 1 */
- 337:Core/Src/fdcan.c ****   }
- 338:Core/Src/fdcan.c ****   else if(fdcanHandle->Instance==FDCAN2)
- 339:Core/Src/fdcan.c ****   {
- 340:Core/Src/fdcan.c ****   /* USER CODE BEGIN FDCAN2_MspDeInit 0 */
- 341:Core/Src/fdcan.c **** 
- 342:Core/Src/fdcan.c ****   /* USER CODE END FDCAN2_MspDeInit 0 */
- 343:Core/Src/fdcan.c ****     /* Peripheral clock disable */
- 344:Core/Src/fdcan.c ****     HAL_RCC_FDCAN_CLK_ENABLED--;
- 345:Core/Src/fdcan.c ****     if(HAL_RCC_FDCAN_CLK_ENABLED==0){
- 346:Core/Src/fdcan.c ****       __HAL_RCC_FDCAN_CLK_DISABLE();
- 347:Core/Src/fdcan.c ****     }
- 348:Core/Src/fdcan.c **** 
- 349:Core/Src/fdcan.c ****     /**FDCAN2 GPIO Configuration
- 350:Core/Src/fdcan.c ****     PB5     ------> FDCAN2_RX
- 351:Core/Src/fdcan.c ****     PB6     ------> FDCAN2_TX
- 352:Core/Src/fdcan.c ****     */
- 353:Core/Src/fdcan.c ****     HAL_GPIO_DeInit(GPIOB, GPIO_PIN_5|GPIO_PIN_6);
- 354:Core/Src/fdcan.c **** 
- 355:Core/Src/fdcan.c ****     /* FDCAN2 interrupt Deinit */
- 356:Core/Src/fdcan.c ****     HAL_NVIC_DisableIRQ(FDCAN2_IT0_IRQn);
- 357:Core/Src/fdcan.c ****     HAL_NVIC_DisableIRQ(FDCAN2_IT1_IRQn);
- 358:Core/Src/fdcan.c ****   /* USER CODE BEGIN FDCAN2_MspDeInit 1 */
- 359:Core/Src/fdcan.c **** 
- 360:Core/Src/fdcan.c ****   /* USER CODE END FDCAN2_MspDeInit 1 */
- 361:Core/Src/fdcan.c ****   }
- 362:Core/Src/fdcan.c ****   else if(fdcanHandle->Instance==FDCAN3)
- 363:Core/Src/fdcan.c ****   {
- 364:Core/Src/fdcan.c ****   /* USER CODE BEGIN FDCAN3_MspDeInit 0 */
- 365:Core/Src/fdcan.c **** 
- 366:Core/Src/fdcan.c ****   /* USER CODE END FDCAN3_MspDeInit 0 */
- 367:Core/Src/fdcan.c ****     /* Peripheral clock disable */
- 368:Core/Src/fdcan.c ****     HAL_RCC_FDCAN_CLK_ENABLED--;
- 369:Core/Src/fdcan.c ****     if(HAL_RCC_FDCAN_CLK_ENABLED==0){
- 370:Core/Src/fdcan.c ****       __HAL_RCC_FDCAN_CLK_DISABLE();
- 371:Core/Src/fdcan.c ****     }
- 372:Core/Src/fdcan.c **** 
- 373:Core/Src/fdcan.c ****     /**FDCAN3 GPIO Configuration
- 374:Core/Src/fdcan.c ****     PD12     ------> FDCAN3_RX
- 375:Core/Src/fdcan.c ****     PD13     ------> FDCAN3_TX
- 376:Core/Src/fdcan.c ****     */
- 377:Core/Src/fdcan.c ****     HAL_GPIO_DeInit(GPIOD, GPIO_PIN_12|GPIO_PIN_13);
- 378:Core/Src/fdcan.c **** 
- 379:Core/Src/fdcan.c ****     /* FDCAN3 interrupt Deinit */
- 380:Core/Src/fdcan.c ****     HAL_NVIC_DisableIRQ(FDCAN3_IT0_IRQn);
- 381:Core/Src/fdcan.c ****     HAL_NVIC_DisableIRQ(FDCAN3_IT1_IRQn);
- 382:Core/Src/fdcan.c ****   /* USER CODE BEGIN FDCAN3_MspDeInit 1 */
- 383:Core/Src/fdcan.c **** 
- 384:Core/Src/fdcan.c ****   /* USER CODE END FDCAN3_MspDeInit 1 */
- 385:Core/Src/fdcan.c ****   }
- 386:Core/Src/fdcan.c **** }
- 938              		.loc 1 386 1
- 939 0048 41E0     		b	.L36
- 940              	.L30:
- 338:Core/Src/fdcan.c ****   {
- 941              		.loc 1 338 22
- 942 004a 7B68     		ldr	r3, [r7, #4]
-ARM GAS  C:\Users\Godwin\AppData\Local\Temp\ccM1ZfTX.s 			page 25
+ 883 009e 03F00803 		and	r3, r3, #8
+ 884 00a2 BB61     		str	r3, [r7, #24]
+ 885 00a4 BB69     		ldr	r3, [r7, #24]
+ 886              	.LBE3:
+ 319:Core/Src/fdcan.c ****     /**FDCAN1 GPIO Configuration
+ 320:Core/Src/fdcan.c ****     PD0     ------> FDCAN1_RX
+ 321:Core/Src/fdcan.c ****     PD1     ------> FDCAN1_TX
+ 322:Core/Src/fdcan.c ****     */
+ 323:Core/Src/fdcan.c ****     GPIO_InitStruct.Pin = GPIO_PIN_0|GPIO_PIN_1;
+ 887              		.loc 1 323 25
+ 888 00a6 0323     		movs	r3, #3
+ 889 00a8 C7F8DC30 		str	r3, [r7, #220]
+ 324:Core/Src/fdcan.c ****     GPIO_InitStruct.Mode = GPIO_MODE_AF_PP;
+ 890              		.loc 1 324 26
+ 891 00ac 0223     		movs	r3, #2
+ 892 00ae C7F8E030 		str	r3, [r7, #224]
+ 325:Core/Src/fdcan.c ****     GPIO_InitStruct.Pull = GPIO_NOPULL;
+ 893              		.loc 1 325 26
+ 894 00b2 0023     		movs	r3, #0
+ 895 00b4 C7F8E430 		str	r3, [r7, #228]
+ 326:Core/Src/fdcan.c ****     GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
+ 896              		.loc 1 326 27
+ 897 00b8 0023     		movs	r3, #0
+ 898 00ba C7F8E830 		str	r3, [r7, #232]
+ 327:Core/Src/fdcan.c ****     GPIO_InitStruct.Alternate = GPIO_AF9_FDCAN1;
+ 899              		.loc 1 327 31
+ 900 00be 0923     		movs	r3, #9
+ 901 00c0 C7F8EC30 		str	r3, [r7, #236]
+ 328:Core/Src/fdcan.c ****     HAL_GPIO_Init(GPIOD, &GPIO_InitStruct);
+ 902              		.loc 1 328 5
+ 903 00c4 07F1DC03 		add	r3, r7, #220
+ 904 00c8 1946     		mov	r1, r3
+ 905 00ca 7548     		ldr	r0, .L39+12
+ 906 00cc FFF7FEFF 		bl	HAL_GPIO_Init
+ 329:Core/Src/fdcan.c **** 
+ 330:Core/Src/fdcan.c ****     /* FDCAN1 interrupt Init */
+ 331:Core/Src/fdcan.c ****     HAL_NVIC_SetPriority(FDCAN1_IT0_IRQn, 5, 0);
+ 907              		.loc 1 331 5
+ 908 00d0 0022     		movs	r2, #0
+ 909 00d2 0521     		movs	r1, #5
+ 910 00d4 1320     		movs	r0, #19
+ 911 00d6 FFF7FEFF 		bl	HAL_NVIC_SetPriority
+ 332:Core/Src/fdcan.c ****     HAL_NVIC_EnableIRQ(FDCAN1_IT0_IRQn);
+ 912              		.loc 1 332 5
+ 913 00da 1320     		movs	r0, #19
+ 914 00dc FFF7FEFF 		bl	HAL_NVIC_EnableIRQ
+ 333:Core/Src/fdcan.c ****     HAL_NVIC_SetPriority(FDCAN1_IT1_IRQn, 5, 0);
+ 915              		.loc 1 333 5
+ 916 00e0 0022     		movs	r2, #0
+ 917 00e2 0521     		movs	r1, #5
+ 918 00e4 1520     		movs	r0, #21
+ 919 00e6 FFF7FEFF 		bl	HAL_NVIC_SetPriority
+ 334:Core/Src/fdcan.c ****     HAL_NVIC_EnableIRQ(FDCAN1_IT1_IRQn);
+ 920              		.loc 1 334 5
+ 921 00ea 1520     		movs	r0, #21
+ 922 00ec FFF7FEFF 		bl	HAL_NVIC_EnableIRQ
+ 335:Core/Src/fdcan.c ****   /* USER CODE BEGIN FDCAN1_MspInit 1 */
+ARM GAS  C:\Users\Godwin\AppData\Local\Temp\ccPjrEWN.s 			page 23
 
 
- 943 004c 1B68     		ldr	r3, [r3]
- 338:Core/Src/fdcan.c ****   {
- 944              		.loc 1 338 10
- 945 004e 264A     		ldr	r2, .L37+16
- 946 0050 9342     		cmp	r3, r2
- 947 0052 1BD1     		bne	.L33
- 344:Core/Src/fdcan.c ****     if(HAL_RCC_FDCAN_CLK_ENABLED==0){
- 948              		.loc 1 344 30
- 949 0054 214B     		ldr	r3, .L37+4
- 950 0056 1B68     		ldr	r3, [r3]
- 951 0058 013B     		subs	r3, r3, #1
- 952 005a 204A     		ldr	r2, .L37+4
- 953 005c 1360     		str	r3, [r2]
- 345:Core/Src/fdcan.c ****       __HAL_RCC_FDCAN_CLK_DISABLE();
- 954              		.loc 1 345 33
- 955 005e 1F4B     		ldr	r3, .L37+4
- 956 0060 1B68     		ldr	r3, [r3]
- 345:Core/Src/fdcan.c ****       __HAL_RCC_FDCAN_CLK_DISABLE();
- 957              		.loc 1 345 7
- 958 0062 002B     		cmp	r3, #0
- 959 0064 07D1     		bne	.L34
- 346:Core/Src/fdcan.c ****     }
- 960              		.loc 1 346 7
- 961 0066 1E4B     		ldr	r3, .L37+8
- 962 0068 D3F8EC30 		ldr	r3, [r3, #236]
- 963 006c 1C4A     		ldr	r2, .L37+8
- 964 006e 23F48073 		bic	r3, r3, #256
- 965 0072 C2F8EC30 		str	r3, [r2, #236]
- 966              	.L34:
+ 336:Core/Src/fdcan.c **** 
+ 337:Core/Src/fdcan.c ****   /* USER CODE END FDCAN1_MspInit 1 */
+ 338:Core/Src/fdcan.c ****   }
+ 339:Core/Src/fdcan.c ****   else if(fdcanHandle->Instance==FDCAN2)
+ 340:Core/Src/fdcan.c ****   {
+ 341:Core/Src/fdcan.c ****   /* USER CODE BEGIN FDCAN2_MspInit 0 */
+ 342:Core/Src/fdcan.c **** 
+ 343:Core/Src/fdcan.c ****   /* USER CODE END FDCAN2_MspInit 0 */
+ 344:Core/Src/fdcan.c **** 
+ 345:Core/Src/fdcan.c ****   /** Initializes the peripherals clock
+ 346:Core/Src/fdcan.c ****   */
+ 347:Core/Src/fdcan.c ****     PeriphClkInitStruct.PeriphClockSelection = RCC_PERIPHCLK_FDCAN;
+ 348:Core/Src/fdcan.c ****     PeriphClkInitStruct.FdcanClockSelection = RCC_FDCANCLKSOURCE_PLL;
+ 349:Core/Src/fdcan.c ****     if (HAL_RCCEx_PeriphCLKConfig(&PeriphClkInitStruct) != HAL_OK)
+ 350:Core/Src/fdcan.c ****     {
+ 351:Core/Src/fdcan.c ****       Error_Handler();
+ 352:Core/Src/fdcan.c ****     }
  353:Core/Src/fdcan.c **** 
- 967              		.loc 1 353 5
- 968 0076 6021     		movs	r1, #96
- 969 0078 1C48     		ldr	r0, .L37+20
- 970 007a FFF7FEFF 		bl	HAL_GPIO_DeInit
- 356:Core/Src/fdcan.c ****     HAL_NVIC_DisableIRQ(FDCAN2_IT1_IRQn);
- 971              		.loc 1 356 5
- 972 007e 1420     		movs	r0, #20
- 973 0080 FFF7FEFF 		bl	HAL_NVIC_DisableIRQ
- 357:Core/Src/fdcan.c ****   /* USER CODE BEGIN FDCAN2_MspDeInit 1 */
- 974              		.loc 1 357 5
- 975 0084 1620     		movs	r0, #22
- 976 0086 FFF7FEFF 		bl	HAL_NVIC_DisableIRQ
- 977              		.loc 1 386 1
- 978 008a 20E0     		b	.L36
- 979              	.L33:
- 362:Core/Src/fdcan.c ****   {
- 980              		.loc 1 362 22
- 981 008c 7B68     		ldr	r3, [r7, #4]
- 982 008e 1B68     		ldr	r3, [r3]
- 362:Core/Src/fdcan.c ****   {
- 983              		.loc 1 362 10
- 984 0090 174A     		ldr	r2, .L37+24
- 985 0092 9342     		cmp	r3, r2
- 986 0094 1BD1     		bne	.L36
- 368:Core/Src/fdcan.c ****     if(HAL_RCC_FDCAN_CLK_ENABLED==0){
- 987              		.loc 1 368 30
- 988 0096 114B     		ldr	r3, .L37+4
-ARM GAS  C:\Users\Godwin\AppData\Local\Temp\ccM1ZfTX.s 			page 26
+ 354:Core/Src/fdcan.c ****     /* FDCAN2 clock enable */
+ 355:Core/Src/fdcan.c ****     HAL_RCC_FDCAN_CLK_ENABLED++;
+ 356:Core/Src/fdcan.c ****     if(HAL_RCC_FDCAN_CLK_ENABLED==1){
+ 357:Core/Src/fdcan.c ****       __HAL_RCC_FDCAN_CLK_ENABLE();
+ 358:Core/Src/fdcan.c ****     }
+ 359:Core/Src/fdcan.c **** 
+ 360:Core/Src/fdcan.c ****     __HAL_RCC_GPIOB_CLK_ENABLE();
+ 361:Core/Src/fdcan.c ****     /**FDCAN2 GPIO Configuration
+ 362:Core/Src/fdcan.c ****     PB5     ------> FDCAN2_RX
+ 363:Core/Src/fdcan.c ****     PB6     ------> FDCAN2_TX
+ 364:Core/Src/fdcan.c ****     */
+ 365:Core/Src/fdcan.c ****     GPIO_InitStruct.Pin = GPIO_PIN_5|GPIO_PIN_6;
+ 366:Core/Src/fdcan.c ****     GPIO_InitStruct.Mode = GPIO_MODE_AF_PP;
+ 367:Core/Src/fdcan.c ****     GPIO_InitStruct.Pull = GPIO_NOPULL;
+ 368:Core/Src/fdcan.c ****     GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
+ 369:Core/Src/fdcan.c ****     GPIO_InitStruct.Alternate = GPIO_AF9_FDCAN2;
+ 370:Core/Src/fdcan.c ****     HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
+ 371:Core/Src/fdcan.c **** 
+ 372:Core/Src/fdcan.c ****     /* FDCAN2 interrupt Init */
+ 373:Core/Src/fdcan.c ****     HAL_NVIC_SetPriority(FDCAN2_IT0_IRQn, 5, 0);
+ 374:Core/Src/fdcan.c ****     HAL_NVIC_EnableIRQ(FDCAN2_IT0_IRQn);
+ 375:Core/Src/fdcan.c ****     HAL_NVIC_SetPriority(FDCAN2_IT1_IRQn, 5, 0);
+ 376:Core/Src/fdcan.c ****     HAL_NVIC_EnableIRQ(FDCAN2_IT1_IRQn);
+ 377:Core/Src/fdcan.c ****   /* USER CODE BEGIN FDCAN2_MspInit 1 */
+ 378:Core/Src/fdcan.c **** 
+ 379:Core/Src/fdcan.c ****   /* USER CODE END FDCAN2_MspInit 1 */
+ 380:Core/Src/fdcan.c ****   }
+ 381:Core/Src/fdcan.c ****   else if(fdcanHandle->Instance==FDCAN3)
+ 382:Core/Src/fdcan.c ****   {
+ 383:Core/Src/fdcan.c ****   /* USER CODE BEGIN FDCAN3_MspInit 0 */
+ 384:Core/Src/fdcan.c **** 
+ 385:Core/Src/fdcan.c ****   /* USER CODE END FDCAN3_MspInit 0 */
+ 386:Core/Src/fdcan.c **** 
+ 387:Core/Src/fdcan.c ****   /** Initializes the peripherals clock
+ 388:Core/Src/fdcan.c ****   */
+ 389:Core/Src/fdcan.c ****     PeriphClkInitStruct.PeriphClockSelection = RCC_PERIPHCLK_FDCAN;
+ 390:Core/Src/fdcan.c ****     PeriphClkInitStruct.FdcanClockSelection = RCC_FDCANCLKSOURCE_PLL;
+ 391:Core/Src/fdcan.c ****     if (HAL_RCCEx_PeriphCLKConfig(&PeriphClkInitStruct) != HAL_OK)
+ 392:Core/Src/fdcan.c ****     {
+ARM GAS  C:\Users\Godwin\AppData\Local\Temp\ccPjrEWN.s 			page 24
 
 
- 989 0098 1B68     		ldr	r3, [r3]
- 990 009a 013B     		subs	r3, r3, #1
- 991 009c 0F4A     		ldr	r2, .L37+4
- 992 009e 1360     		str	r3, [r2]
- 369:Core/Src/fdcan.c ****       __HAL_RCC_FDCAN_CLK_DISABLE();
- 993              		.loc 1 369 33
- 994 00a0 0E4B     		ldr	r3, .L37+4
- 995 00a2 1B68     		ldr	r3, [r3]
- 369:Core/Src/fdcan.c ****       __HAL_RCC_FDCAN_CLK_DISABLE();
- 996              		.loc 1 369 7
- 997 00a4 002B     		cmp	r3, #0
- 998 00a6 07D1     		bne	.L35
- 370:Core/Src/fdcan.c ****     }
- 999              		.loc 1 370 7
- 1000 00a8 0D4B     		ldr	r3, .L37+8
- 1001 00aa D3F8EC30 		ldr	r3, [r3, #236]
- 1002 00ae 0C4A     		ldr	r2, .L37+8
- 1003 00b0 23F48073 		bic	r3, r3, #256
- 1004 00b4 C2F8EC30 		str	r3, [r2, #236]
- 1005              	.L35:
- 377:Core/Src/fdcan.c **** 
- 1006              		.loc 1 377 5
- 1007 00b8 4FF44051 		mov	r1, #12288
- 1008 00bc 0948     		ldr	r0, .L37+12
- 1009 00be FFF7FEFF 		bl	HAL_GPIO_DeInit
- 380:Core/Src/fdcan.c ****     HAL_NVIC_DisableIRQ(FDCAN3_IT1_IRQn);
- 1010              		.loc 1 380 5
- 1011 00c2 9F20     		movs	r0, #159
- 1012 00c4 FFF7FEFF 		bl	HAL_NVIC_DisableIRQ
- 381:Core/Src/fdcan.c ****   /* USER CODE BEGIN FDCAN3_MspDeInit 1 */
- 1013              		.loc 1 381 5
- 1014 00c8 A020     		movs	r0, #160
- 1015 00ca FFF7FEFF 		bl	HAL_NVIC_DisableIRQ
- 1016              	.L36:
- 1017              		.loc 1 386 1
- 1018 00ce 00BF     		nop
- 1019 00d0 0837     		adds	r7, r7, #8
- 1020              	.LCFI14:
- 1021              		.cfi_def_cfa_offset 8
- 1022 00d2 BD46     		mov	sp, r7
- 1023              	.LCFI15:
- 1024              		.cfi_def_cfa_register 13
- 1025              		@ sp needed
- 1026 00d4 80BD     		pop	{r7, pc}
- 1027              	.L38:
- 1028 00d6 00BF     		.align	2
- 1029              	.L37:
- 1030 00d8 00A00040 		.word	1073782784
- 1031 00dc 00000000 		.word	HAL_RCC_FDCAN_CLK_ENABLED
- 1032 00e0 00440258 		.word	1476543488
- 1033 00e4 000C0258 		.word	1476529152
- 1034 00e8 00A40040 		.word	1073783808
- 1035 00ec 00040258 		.word	1476527104
- 1036 00f0 00D40040 		.word	1073796096
- 1037              		.cfi_endproc
- 1038              	.LFE148:
- 1040              		.text
-ARM GAS  C:\Users\Godwin\AppData\Local\Temp\ccM1ZfTX.s 			page 27
+ 393:Core/Src/fdcan.c ****       Error_Handler();
+ 394:Core/Src/fdcan.c ****     }
+ 395:Core/Src/fdcan.c **** 
+ 396:Core/Src/fdcan.c ****     /* FDCAN3 clock enable */
+ 397:Core/Src/fdcan.c ****     HAL_RCC_FDCAN_CLK_ENABLED++;
+ 398:Core/Src/fdcan.c ****     if(HAL_RCC_FDCAN_CLK_ENABLED==1){
+ 399:Core/Src/fdcan.c ****       __HAL_RCC_FDCAN_CLK_ENABLE();
+ 400:Core/Src/fdcan.c ****     }
+ 401:Core/Src/fdcan.c **** 
+ 402:Core/Src/fdcan.c ****     __HAL_RCC_GPIOD_CLK_ENABLE();
+ 403:Core/Src/fdcan.c ****     /**FDCAN3 GPIO Configuration
+ 404:Core/Src/fdcan.c ****     PD12     ------> FDCAN3_RX
+ 405:Core/Src/fdcan.c ****     PD13     ------> FDCAN3_TX
+ 406:Core/Src/fdcan.c ****     */
+ 407:Core/Src/fdcan.c ****     GPIO_InitStruct.Pin = GPIO_PIN_12|GPIO_PIN_13;
+ 408:Core/Src/fdcan.c ****     GPIO_InitStruct.Mode = GPIO_MODE_AF_PP;
+ 409:Core/Src/fdcan.c ****     GPIO_InitStruct.Pull = GPIO_NOPULL;
+ 410:Core/Src/fdcan.c ****     GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
+ 411:Core/Src/fdcan.c ****     GPIO_InitStruct.Alternate = GPIO_AF5_FDCAN3;
+ 412:Core/Src/fdcan.c ****     HAL_GPIO_Init(GPIOD, &GPIO_InitStruct);
+ 413:Core/Src/fdcan.c **** 
+ 414:Core/Src/fdcan.c ****     /* FDCAN3 interrupt Init */
+ 415:Core/Src/fdcan.c ****     HAL_NVIC_SetPriority(FDCAN3_IT0_IRQn, 5, 0);
+ 416:Core/Src/fdcan.c ****     HAL_NVIC_EnableIRQ(FDCAN3_IT0_IRQn);
+ 417:Core/Src/fdcan.c ****     HAL_NVIC_SetPriority(FDCAN3_IT1_IRQn, 5, 0);
+ 418:Core/Src/fdcan.c ****     HAL_NVIC_EnableIRQ(FDCAN3_IT1_IRQn);
+ 419:Core/Src/fdcan.c ****   /* USER CODE BEGIN FDCAN3_MspInit 1 */
+ 420:Core/Src/fdcan.c **** 
+ 421:Core/Src/fdcan.c ****   /* USER CODE END FDCAN3_MspInit 1 */
+ 422:Core/Src/fdcan.c ****   }
+ 423:Core/Src/fdcan.c **** }
+ 923              		.loc 1 423 1
+ 924 00f0 CBE0     		b	.L38
+ 925              	.L29:
+ 339:Core/Src/fdcan.c ****   {
+ 926              		.loc 1 339 22
+ 927 00f2 7B68     		ldr	r3, [r7, #4]
+ 928 00f4 1B68     		ldr	r3, [r3]
+ 339:Core/Src/fdcan.c ****   {
+ 929              		.loc 1 339 10
+ 930 00f6 6B4A     		ldr	r2, .L39+16
+ 931 00f8 9342     		cmp	r3, r2
+ 932 00fa 60D1     		bne	.L33
+ 347:Core/Src/fdcan.c ****     PeriphClkInitStruct.FdcanClockSelection = RCC_FDCANCLKSOURCE_PLL;
+ 933              		.loc 1 347 46
+ 934 00fc 4FF40042 		mov	r2, #32768
+ 935 0100 4FF00003 		mov	r3, #0
+ 936 0104 C7E90823 		strd	r2, [r7, #32]
+ 348:Core/Src/fdcan.c ****     if (HAL_RCCEx_PeriphCLKConfig(&PeriphClkInitStruct) != HAL_OK)
+ 937              		.loc 1 348 45
+ 938 0108 4FF08053 		mov	r3, #268435456
+ 939 010c C7F88C30 		str	r3, [r7, #140]
+ 349:Core/Src/fdcan.c ****     {
+ 940              		.loc 1 349 9
+ 941 0110 07F12003 		add	r3, r7, #32
+ 942 0114 1846     		mov	r0, r3
+ 943 0116 FFF7FEFF 		bl	HAL_RCCEx_PeriphCLKConfig
+ARM GAS  C:\Users\Godwin\AppData\Local\Temp\ccPjrEWN.s 			page 25
 
 
- 1041              	.Letext0:
- 1042              		.file 2 "Drivers/CMSIS/Device/ST/STM32H7xx/Include/stm32h723xx.h"
- 1043              		.file 3 "C:/Users/Godwin/13.2 Rel1/arm-none-eabi/include/machine/_default_types.h"
- 1044              		.file 4 "C:/Users/Godwin/13.2 Rel1/arm-none-eabi/include/sys/_stdint.h"
- 1045              		.file 5 "Drivers/CMSIS/Device/ST/STM32H7xx/Include/stm32h7xx.h"
- 1046              		.file 6 "Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal_def.h"
- 1047              		.file 7 "Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal_rcc_ex.h"
- 1048              		.file 8 "Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal_gpio.h"
- 1049              		.file 9 "Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal_fdcan.h"
- 1050              		.file 10 "Core/Inc/fdcan.h"
- 1051              		.file 11 "Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal_cortex.h"
- 1052              		.file 12 "Core/Inc/main.h"
-ARM GAS  C:\Users\Godwin\AppData\Local\Temp\ccM1ZfTX.s 			page 28
+ 944 011a 0346     		mov	r3, r0
+ 349:Core/Src/fdcan.c ****     {
+ 945              		.loc 1 349 8 discriminator 1
+ 946 011c 002B     		cmp	r3, #0
+ 947 011e 01D0     		beq	.L34
+ 351:Core/Src/fdcan.c ****     }
+ 948              		.loc 1 351 7
+ 949 0120 FFF7FEFF 		bl	Error_Handler
+ 950              	.L34:
+ 355:Core/Src/fdcan.c ****     if(HAL_RCC_FDCAN_CLK_ENABLED==1){
+ 951              		.loc 1 355 30
+ 952 0124 5C4B     		ldr	r3, .L39+4
+ 953 0126 1B68     		ldr	r3, [r3]
+ 954 0128 0133     		adds	r3, r3, #1
+ 955 012a 5B4A     		ldr	r2, .L39+4
+ 956 012c 1360     		str	r3, [r2]
+ 356:Core/Src/fdcan.c ****       __HAL_RCC_FDCAN_CLK_ENABLE();
+ 957              		.loc 1 356 33
+ 958 012e 5A4B     		ldr	r3, .L39+4
+ 959 0130 1B68     		ldr	r3, [r3]
+ 356:Core/Src/fdcan.c ****       __HAL_RCC_FDCAN_CLK_ENABLE();
+ 960              		.loc 1 356 7
+ 961 0132 012B     		cmp	r3, #1
+ 962 0134 0ED1     		bne	.L35
+ 963              	.LBB4:
+ 357:Core/Src/fdcan.c ****     }
+ 964              		.loc 1 357 7
+ 965 0136 594B     		ldr	r3, .L39+8
+ 966 0138 D3F8EC30 		ldr	r3, [r3, #236]
+ 967 013c 574A     		ldr	r2, .L39+8
+ 968 013e 43F48073 		orr	r3, r3, #256
+ 969 0142 C2F8EC30 		str	r3, [r2, #236]
+ 970 0146 554B     		ldr	r3, .L39+8
+ 971 0148 D3F8EC30 		ldr	r3, [r3, #236]
+ 972 014c 03F48073 		and	r3, r3, #256
+ 973 0150 7B61     		str	r3, [r7, #20]
+ 974 0152 7B69     		ldr	r3, [r7, #20]
+ 975              	.L35:
+ 976              	.LBE4:
+ 977              	.LBB5:
+ 360:Core/Src/fdcan.c ****     /**FDCAN2 GPIO Configuration
+ 978              		.loc 1 360 5
+ 979 0154 514B     		ldr	r3, .L39+8
+ 980 0156 D3F8E030 		ldr	r3, [r3, #224]
+ 981 015a 504A     		ldr	r2, .L39+8
+ 982 015c 43F00203 		orr	r3, r3, #2
+ 983 0160 C2F8E030 		str	r3, [r2, #224]
+ 984 0164 4D4B     		ldr	r3, .L39+8
+ 985 0166 D3F8E030 		ldr	r3, [r3, #224]
+ 986 016a 03F00203 		and	r3, r3, #2
+ 987 016e 3B61     		str	r3, [r7, #16]
+ 988 0170 3B69     		ldr	r3, [r7, #16]
+ 989              	.LBE5:
+ 365:Core/Src/fdcan.c ****     GPIO_InitStruct.Mode = GPIO_MODE_AF_PP;
+ 990              		.loc 1 365 25
+ 991 0172 6023     		movs	r3, #96
+ 992 0174 C7F8DC30 		str	r3, [r7, #220]
+ARM GAS  C:\Users\Godwin\AppData\Local\Temp\ccPjrEWN.s 			page 26
+
+
+ 366:Core/Src/fdcan.c ****     GPIO_InitStruct.Pull = GPIO_NOPULL;
+ 993              		.loc 1 366 26
+ 994 0178 0223     		movs	r3, #2
+ 995 017a C7F8E030 		str	r3, [r7, #224]
+ 367:Core/Src/fdcan.c ****     GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
+ 996              		.loc 1 367 26
+ 997 017e 0023     		movs	r3, #0
+ 998 0180 C7F8E430 		str	r3, [r7, #228]
+ 368:Core/Src/fdcan.c ****     GPIO_InitStruct.Alternate = GPIO_AF9_FDCAN2;
+ 999              		.loc 1 368 27
+ 1000 0184 0023     		movs	r3, #0
+ 1001 0186 C7F8E830 		str	r3, [r7, #232]
+ 369:Core/Src/fdcan.c ****     HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
+ 1002              		.loc 1 369 31
+ 1003 018a 0923     		movs	r3, #9
+ 1004 018c C7F8EC30 		str	r3, [r7, #236]
+ 370:Core/Src/fdcan.c **** 
+ 1005              		.loc 1 370 5
+ 1006 0190 07F1DC03 		add	r3, r7, #220
+ 1007 0194 1946     		mov	r1, r3
+ 1008 0196 4448     		ldr	r0, .L39+20
+ 1009 0198 FFF7FEFF 		bl	HAL_GPIO_Init
+ 373:Core/Src/fdcan.c ****     HAL_NVIC_EnableIRQ(FDCAN2_IT0_IRQn);
+ 1010              		.loc 1 373 5
+ 1011 019c 0022     		movs	r2, #0
+ 1012 019e 0521     		movs	r1, #5
+ 1013 01a0 1420     		movs	r0, #20
+ 1014 01a2 FFF7FEFF 		bl	HAL_NVIC_SetPriority
+ 374:Core/Src/fdcan.c ****     HAL_NVIC_SetPriority(FDCAN2_IT1_IRQn, 5, 0);
+ 1015              		.loc 1 374 5
+ 1016 01a6 1420     		movs	r0, #20
+ 1017 01a8 FFF7FEFF 		bl	HAL_NVIC_EnableIRQ
+ 375:Core/Src/fdcan.c ****     HAL_NVIC_EnableIRQ(FDCAN2_IT1_IRQn);
+ 1018              		.loc 1 375 5
+ 1019 01ac 0022     		movs	r2, #0
+ 1020 01ae 0521     		movs	r1, #5
+ 1021 01b0 1620     		movs	r0, #22
+ 1022 01b2 FFF7FEFF 		bl	HAL_NVIC_SetPriority
+ 376:Core/Src/fdcan.c ****   /* USER CODE BEGIN FDCAN2_MspInit 1 */
+ 1023              		.loc 1 376 5
+ 1024 01b6 1620     		movs	r0, #22
+ 1025 01b8 FFF7FEFF 		bl	HAL_NVIC_EnableIRQ
+ 1026              		.loc 1 423 1
+ 1027 01bc 65E0     		b	.L38
+ 1028              	.L33:
+ 381:Core/Src/fdcan.c ****   {
+ 1029              		.loc 1 381 22
+ 1030 01be 7B68     		ldr	r3, [r7, #4]
+ 1031 01c0 1B68     		ldr	r3, [r3]
+ 381:Core/Src/fdcan.c ****   {
+ 1032              		.loc 1 381 10
+ 1033 01c2 3A4A     		ldr	r2, .L39+24
+ 1034 01c4 9342     		cmp	r3, r2
+ 1035 01c6 60D1     		bne	.L38
+ 389:Core/Src/fdcan.c ****     PeriphClkInitStruct.FdcanClockSelection = RCC_FDCANCLKSOURCE_PLL;
+ 1036              		.loc 1 389 46
+ 1037 01c8 4FF40042 		mov	r2, #32768
+ARM GAS  C:\Users\Godwin\AppData\Local\Temp\ccPjrEWN.s 			page 27
+
+
+ 1038 01cc 4FF00003 		mov	r3, #0
+ 1039 01d0 C7E90823 		strd	r2, [r7, #32]
+ 390:Core/Src/fdcan.c ****     if (HAL_RCCEx_PeriphCLKConfig(&PeriphClkInitStruct) != HAL_OK)
+ 1040              		.loc 1 390 45
+ 1041 01d4 4FF08053 		mov	r3, #268435456
+ 1042 01d8 C7F88C30 		str	r3, [r7, #140]
+ 391:Core/Src/fdcan.c ****     {
+ 1043              		.loc 1 391 9
+ 1044 01dc 07F12003 		add	r3, r7, #32
+ 1045 01e0 1846     		mov	r0, r3
+ 1046 01e2 FFF7FEFF 		bl	HAL_RCCEx_PeriphCLKConfig
+ 1047 01e6 0346     		mov	r3, r0
+ 391:Core/Src/fdcan.c ****     {
+ 1048              		.loc 1 391 8 discriminator 1
+ 1049 01e8 002B     		cmp	r3, #0
+ 1050 01ea 01D0     		beq	.L36
+ 393:Core/Src/fdcan.c ****     }
+ 1051              		.loc 1 393 7
+ 1052 01ec FFF7FEFF 		bl	Error_Handler
+ 1053              	.L36:
+ 397:Core/Src/fdcan.c ****     if(HAL_RCC_FDCAN_CLK_ENABLED==1){
+ 1054              		.loc 1 397 30
+ 1055 01f0 294B     		ldr	r3, .L39+4
+ 1056 01f2 1B68     		ldr	r3, [r3]
+ 1057 01f4 0133     		adds	r3, r3, #1
+ 1058 01f6 284A     		ldr	r2, .L39+4
+ 1059 01f8 1360     		str	r3, [r2]
+ 398:Core/Src/fdcan.c ****       __HAL_RCC_FDCAN_CLK_ENABLE();
+ 1060              		.loc 1 398 33
+ 1061 01fa 274B     		ldr	r3, .L39+4
+ 1062 01fc 1B68     		ldr	r3, [r3]
+ 398:Core/Src/fdcan.c ****       __HAL_RCC_FDCAN_CLK_ENABLE();
+ 1063              		.loc 1 398 7
+ 1064 01fe 012B     		cmp	r3, #1
+ 1065 0200 0ED1     		bne	.L37
+ 1066              	.LBB6:
+ 399:Core/Src/fdcan.c ****     }
+ 1067              		.loc 1 399 7
+ 1068 0202 264B     		ldr	r3, .L39+8
+ 1069 0204 D3F8EC30 		ldr	r3, [r3, #236]
+ 1070 0208 244A     		ldr	r2, .L39+8
+ 1071 020a 43F48073 		orr	r3, r3, #256
+ 1072 020e C2F8EC30 		str	r3, [r2, #236]
+ 1073 0212 224B     		ldr	r3, .L39+8
+ 1074 0214 D3F8EC30 		ldr	r3, [r3, #236]
+ 1075 0218 03F48073 		and	r3, r3, #256
+ 1076 021c FB60     		str	r3, [r7, #12]
+ 1077 021e FB68     		ldr	r3, [r7, #12]
+ 1078              	.L37:
+ 1079              	.LBE6:
+ 1080              	.LBB7:
+ 402:Core/Src/fdcan.c ****     /**FDCAN3 GPIO Configuration
+ 1081              		.loc 1 402 5
+ 1082 0220 1E4B     		ldr	r3, .L39+8
+ 1083 0222 D3F8E030 		ldr	r3, [r3, #224]
+ 1084 0226 1D4A     		ldr	r2, .L39+8
+ 1085 0228 43F00803 		orr	r3, r3, #8
+ARM GAS  C:\Users\Godwin\AppData\Local\Temp\ccPjrEWN.s 			page 28
+
+
+ 1086 022c C2F8E030 		str	r3, [r2, #224]
+ 1087 0230 1A4B     		ldr	r3, .L39+8
+ 1088 0232 D3F8E030 		ldr	r3, [r3, #224]
+ 1089 0236 03F00803 		and	r3, r3, #8
+ 1090 023a BB60     		str	r3, [r7, #8]
+ 1091 023c BB68     		ldr	r3, [r7, #8]
+ 1092              	.LBE7:
+ 407:Core/Src/fdcan.c ****     GPIO_InitStruct.Mode = GPIO_MODE_AF_PP;
+ 1093              		.loc 1 407 25
+ 1094 023e 4FF44053 		mov	r3, #12288
+ 1095 0242 C7F8DC30 		str	r3, [r7, #220]
+ 408:Core/Src/fdcan.c ****     GPIO_InitStruct.Pull = GPIO_NOPULL;
+ 1096              		.loc 1 408 26
+ 1097 0246 0223     		movs	r3, #2
+ 1098 0248 C7F8E030 		str	r3, [r7, #224]
+ 409:Core/Src/fdcan.c ****     GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
+ 1099              		.loc 1 409 26
+ 1100 024c 0023     		movs	r3, #0
+ 1101 024e C7F8E430 		str	r3, [r7, #228]
+ 410:Core/Src/fdcan.c ****     GPIO_InitStruct.Alternate = GPIO_AF5_FDCAN3;
+ 1102              		.loc 1 410 27
+ 1103 0252 0023     		movs	r3, #0
+ 1104 0254 C7F8E830 		str	r3, [r7, #232]
+ 411:Core/Src/fdcan.c ****     HAL_GPIO_Init(GPIOD, &GPIO_InitStruct);
+ 1105              		.loc 1 411 31
+ 1106 0258 0523     		movs	r3, #5
+ 1107 025a C7F8EC30 		str	r3, [r7, #236]
+ 412:Core/Src/fdcan.c **** 
+ 1108              		.loc 1 412 5
+ 1109 025e 07F1DC03 		add	r3, r7, #220
+ 1110 0262 1946     		mov	r1, r3
+ 1111 0264 0E48     		ldr	r0, .L39+12
+ 1112 0266 FFF7FEFF 		bl	HAL_GPIO_Init
+ 415:Core/Src/fdcan.c ****     HAL_NVIC_EnableIRQ(FDCAN3_IT0_IRQn);
+ 1113              		.loc 1 415 5
+ 1114 026a 0022     		movs	r2, #0
+ 1115 026c 0521     		movs	r1, #5
+ 1116 026e 9F20     		movs	r0, #159
+ 1117 0270 FFF7FEFF 		bl	HAL_NVIC_SetPriority
+ 416:Core/Src/fdcan.c ****     HAL_NVIC_SetPriority(FDCAN3_IT1_IRQn, 5, 0);
+ 1118              		.loc 1 416 5
+ 1119 0274 9F20     		movs	r0, #159
+ 1120 0276 FFF7FEFF 		bl	HAL_NVIC_EnableIRQ
+ 417:Core/Src/fdcan.c ****     HAL_NVIC_EnableIRQ(FDCAN3_IT1_IRQn);
+ 1121              		.loc 1 417 5
+ 1122 027a 0022     		movs	r2, #0
+ 1123 027c 0521     		movs	r1, #5
+ 1124 027e A020     		movs	r0, #160
+ 1125 0280 FFF7FEFF 		bl	HAL_NVIC_SetPriority
+ 418:Core/Src/fdcan.c ****   /* USER CODE BEGIN FDCAN3_MspInit 1 */
+ 1126              		.loc 1 418 5
+ 1127 0284 A020     		movs	r0, #160
+ 1128 0286 FFF7FEFF 		bl	HAL_NVIC_EnableIRQ
+ 1129              	.L38:
+ 1130              		.loc 1 423 1
+ 1131 028a 00BF     		nop
+ 1132 028c F037     		adds	r7, r7, #240
+ARM GAS  C:\Users\Godwin\AppData\Local\Temp\ccPjrEWN.s 			page 29
+
+
+ 1133              	.LCFI18:
+ 1134              		.cfi_def_cfa_offset 8
+ 1135 028e BD46     		mov	sp, r7
+ 1136              	.LCFI19:
+ 1137              		.cfi_def_cfa_register 13
+ 1138              		@ sp needed
+ 1139 0290 80BD     		pop	{r7, pc}
+ 1140              	.L40:
+ 1141 0292 00BF     		.align	2
+ 1142              	.L39:
+ 1143 0294 00A00040 		.word	1073782784
+ 1144 0298 00000000 		.word	HAL_RCC_FDCAN_CLK_ENABLED
+ 1145 029c 00440258 		.word	1476543488
+ 1146 02a0 000C0258 		.word	1476529152
+ 1147 02a4 00A40040 		.word	1073783808
+ 1148 02a8 00040258 		.word	1476527104
+ 1149 02ac 00D40040 		.word	1073796096
+ 1150              		.cfi_endproc
+ 1151              	.LFE147:
+ 1153              		.section	.text.HAL_FDCAN_MspDeInit,"ax",%progbits
+ 1154              		.align	1
+ 1155              		.global	HAL_FDCAN_MspDeInit
+ 1156              		.syntax unified
+ 1157              		.thumb
+ 1158              		.thumb_func
+ 1160              	HAL_FDCAN_MspDeInit:
+ 1161              	.LFB148:
+ 424:Core/Src/fdcan.c **** 
+ 425:Core/Src/fdcan.c **** void HAL_FDCAN_MspDeInit(FDCAN_HandleTypeDef* fdcanHandle)
+ 426:Core/Src/fdcan.c **** {
+ 1162              		.loc 1 426 1
+ 1163              		.cfi_startproc
+ 1164              		@ args = 0, pretend = 0, frame = 8
+ 1165              		@ frame_needed = 1, uses_anonymous_args = 0
+ 1166 0000 80B5     		push	{r7, lr}
+ 1167              	.LCFI20:
+ 1168              		.cfi_def_cfa_offset 8
+ 1169              		.cfi_offset 7, -8
+ 1170              		.cfi_offset 14, -4
+ 1171 0002 82B0     		sub	sp, sp, #8
+ 1172              	.LCFI21:
+ 1173              		.cfi_def_cfa_offset 16
+ 1174 0004 00AF     		add	r7, sp, #0
+ 1175              	.LCFI22:
+ 1176              		.cfi_def_cfa_register 7
+ 1177 0006 7860     		str	r0, [r7, #4]
+ 427:Core/Src/fdcan.c **** 
+ 428:Core/Src/fdcan.c ****   if(fdcanHandle->Instance==FDCAN1)
+ 1178              		.loc 1 428 17
+ 1179 0008 7B68     		ldr	r3, [r7, #4]
+ 1180 000a 1B68     		ldr	r3, [r3]
+ 1181              		.loc 1 428 5
+ 1182 000c 324A     		ldr	r2, .L49
+ 1183 000e 9342     		cmp	r3, r2
+ 1184 0010 1BD1     		bne	.L42
+ 429:Core/Src/fdcan.c ****   {
+ 430:Core/Src/fdcan.c ****   /* USER CODE BEGIN FDCAN1_MspDeInit 0 */
+ARM GAS  C:\Users\Godwin\AppData\Local\Temp\ccPjrEWN.s 			page 30
+
+
+ 431:Core/Src/fdcan.c **** 
+ 432:Core/Src/fdcan.c ****   /* USER CODE END FDCAN1_MspDeInit 0 */
+ 433:Core/Src/fdcan.c ****     /* Peripheral clock disable */
+ 434:Core/Src/fdcan.c ****     HAL_RCC_FDCAN_CLK_ENABLED--;
+ 1185              		.loc 1 434 30
+ 1186 0012 324B     		ldr	r3, .L49+4
+ 1187 0014 1B68     		ldr	r3, [r3]
+ 1188 0016 013B     		subs	r3, r3, #1
+ 1189 0018 304A     		ldr	r2, .L49+4
+ 1190 001a 1360     		str	r3, [r2]
+ 435:Core/Src/fdcan.c ****     if(HAL_RCC_FDCAN_CLK_ENABLED==0){
+ 1191              		.loc 1 435 33
+ 1192 001c 2F4B     		ldr	r3, .L49+4
+ 1193 001e 1B68     		ldr	r3, [r3]
+ 1194              		.loc 1 435 7
+ 1195 0020 002B     		cmp	r3, #0
+ 1196 0022 07D1     		bne	.L43
+ 436:Core/Src/fdcan.c ****       __HAL_RCC_FDCAN_CLK_DISABLE();
+ 1197              		.loc 1 436 7
+ 1198 0024 2E4B     		ldr	r3, .L49+8
+ 1199 0026 D3F8EC30 		ldr	r3, [r3, #236]
+ 1200 002a 2D4A     		ldr	r2, .L49+8
+ 1201 002c 23F48073 		bic	r3, r3, #256
+ 1202 0030 C2F8EC30 		str	r3, [r2, #236]
+ 1203              	.L43:
+ 437:Core/Src/fdcan.c ****     }
+ 438:Core/Src/fdcan.c **** 
+ 439:Core/Src/fdcan.c ****     /**FDCAN1 GPIO Configuration
+ 440:Core/Src/fdcan.c ****     PD0     ------> FDCAN1_RX
+ 441:Core/Src/fdcan.c ****     PD1     ------> FDCAN1_TX
+ 442:Core/Src/fdcan.c ****     */
+ 443:Core/Src/fdcan.c ****     HAL_GPIO_DeInit(GPIOD, GPIO_PIN_0|GPIO_PIN_1);
+ 1204              		.loc 1 443 5
+ 1205 0034 0321     		movs	r1, #3
+ 1206 0036 2B48     		ldr	r0, .L49+12
+ 1207 0038 FFF7FEFF 		bl	HAL_GPIO_DeInit
+ 444:Core/Src/fdcan.c **** 
+ 445:Core/Src/fdcan.c ****     /* FDCAN1 interrupt Deinit */
+ 446:Core/Src/fdcan.c ****     HAL_NVIC_DisableIRQ(FDCAN1_IT0_IRQn);
+ 1208              		.loc 1 446 5
+ 1209 003c 1320     		movs	r0, #19
+ 1210 003e FFF7FEFF 		bl	HAL_NVIC_DisableIRQ
+ 447:Core/Src/fdcan.c ****     HAL_NVIC_DisableIRQ(FDCAN1_IT1_IRQn);
+ 1211              		.loc 1 447 5
+ 1212 0042 1520     		movs	r0, #21
+ 1213 0044 FFF7FEFF 		bl	HAL_NVIC_DisableIRQ
+ 448:Core/Src/fdcan.c ****   /* USER CODE BEGIN FDCAN1_MspDeInit 1 */
+ 449:Core/Src/fdcan.c **** 
+ 450:Core/Src/fdcan.c ****   /* USER CODE END FDCAN1_MspDeInit 1 */
+ 451:Core/Src/fdcan.c ****   }
+ 452:Core/Src/fdcan.c ****   else if(fdcanHandle->Instance==FDCAN2)
+ 453:Core/Src/fdcan.c ****   {
+ 454:Core/Src/fdcan.c ****   /* USER CODE BEGIN FDCAN2_MspDeInit 0 */
+ 455:Core/Src/fdcan.c **** 
+ 456:Core/Src/fdcan.c ****   /* USER CODE END FDCAN2_MspDeInit 0 */
+ 457:Core/Src/fdcan.c ****     /* Peripheral clock disable */
+ 458:Core/Src/fdcan.c ****     HAL_RCC_FDCAN_CLK_ENABLED--;
+ARM GAS  C:\Users\Godwin\AppData\Local\Temp\ccPjrEWN.s 			page 31
+
+
+ 459:Core/Src/fdcan.c ****     if(HAL_RCC_FDCAN_CLK_ENABLED==0){
+ 460:Core/Src/fdcan.c ****       __HAL_RCC_FDCAN_CLK_DISABLE();
+ 461:Core/Src/fdcan.c ****     }
+ 462:Core/Src/fdcan.c **** 
+ 463:Core/Src/fdcan.c ****     /**FDCAN2 GPIO Configuration
+ 464:Core/Src/fdcan.c ****     PB5     ------> FDCAN2_RX
+ 465:Core/Src/fdcan.c ****     PB6     ------> FDCAN2_TX
+ 466:Core/Src/fdcan.c ****     */
+ 467:Core/Src/fdcan.c ****     HAL_GPIO_DeInit(GPIOB, GPIO_PIN_5|GPIO_PIN_6);
+ 468:Core/Src/fdcan.c **** 
+ 469:Core/Src/fdcan.c ****     /* FDCAN2 interrupt Deinit */
+ 470:Core/Src/fdcan.c ****     HAL_NVIC_DisableIRQ(FDCAN2_IT0_IRQn);
+ 471:Core/Src/fdcan.c ****     HAL_NVIC_DisableIRQ(FDCAN2_IT1_IRQn);
+ 472:Core/Src/fdcan.c ****   /* USER CODE BEGIN FDCAN2_MspDeInit 1 */
+ 473:Core/Src/fdcan.c **** 
+ 474:Core/Src/fdcan.c ****   /* USER CODE END FDCAN2_MspDeInit 1 */
+ 475:Core/Src/fdcan.c ****   }
+ 476:Core/Src/fdcan.c ****   else if(fdcanHandle->Instance==FDCAN3)
+ 477:Core/Src/fdcan.c ****   {
+ 478:Core/Src/fdcan.c ****   /* USER CODE BEGIN FDCAN3_MspDeInit 0 */
+ 479:Core/Src/fdcan.c **** 
+ 480:Core/Src/fdcan.c ****   /* USER CODE END FDCAN3_MspDeInit 0 */
+ 481:Core/Src/fdcan.c ****     /* Peripheral clock disable */
+ 482:Core/Src/fdcan.c ****     HAL_RCC_FDCAN_CLK_ENABLED--;
+ 483:Core/Src/fdcan.c ****     if(HAL_RCC_FDCAN_CLK_ENABLED==0){
+ 484:Core/Src/fdcan.c ****       __HAL_RCC_FDCAN_CLK_DISABLE();
+ 485:Core/Src/fdcan.c ****     }
+ 486:Core/Src/fdcan.c **** 
+ 487:Core/Src/fdcan.c ****     /**FDCAN3 GPIO Configuration
+ 488:Core/Src/fdcan.c ****     PD12     ------> FDCAN3_RX
+ 489:Core/Src/fdcan.c ****     PD13     ------> FDCAN3_TX
+ 490:Core/Src/fdcan.c ****     */
+ 491:Core/Src/fdcan.c ****     HAL_GPIO_DeInit(GPIOD, GPIO_PIN_12|GPIO_PIN_13);
+ 492:Core/Src/fdcan.c **** 
+ 493:Core/Src/fdcan.c ****     /* FDCAN3 interrupt Deinit */
+ 494:Core/Src/fdcan.c ****     HAL_NVIC_DisableIRQ(FDCAN3_IT0_IRQn);
+ 495:Core/Src/fdcan.c ****     HAL_NVIC_DisableIRQ(FDCAN3_IT1_IRQn);
+ 496:Core/Src/fdcan.c ****   /* USER CODE BEGIN FDCAN3_MspDeInit 1 */
+ 497:Core/Src/fdcan.c **** 
+ 498:Core/Src/fdcan.c ****   /* USER CODE END FDCAN3_MspDeInit 1 */
+ 499:Core/Src/fdcan.c ****   }
+ 500:Core/Src/fdcan.c **** }
+ 1214              		.loc 1 500 1
+ 1215 0048 41E0     		b	.L48
+ 1216              	.L42:
+ 452:Core/Src/fdcan.c ****   {
+ 1217              		.loc 1 452 22
+ 1218 004a 7B68     		ldr	r3, [r7, #4]
+ 1219 004c 1B68     		ldr	r3, [r3]
+ 452:Core/Src/fdcan.c ****   {
+ 1220              		.loc 1 452 10
+ 1221 004e 264A     		ldr	r2, .L49+16
+ 1222 0050 9342     		cmp	r3, r2
+ 1223 0052 1BD1     		bne	.L45
+ 458:Core/Src/fdcan.c ****     if(HAL_RCC_FDCAN_CLK_ENABLED==0){
+ 1224              		.loc 1 458 30
+ 1225 0054 214B     		ldr	r3, .L49+4
+ARM GAS  C:\Users\Godwin\AppData\Local\Temp\ccPjrEWN.s 			page 32
+
+
+ 1226 0056 1B68     		ldr	r3, [r3]
+ 1227 0058 013B     		subs	r3, r3, #1
+ 1228 005a 204A     		ldr	r2, .L49+4
+ 1229 005c 1360     		str	r3, [r2]
+ 459:Core/Src/fdcan.c ****       __HAL_RCC_FDCAN_CLK_DISABLE();
+ 1230              		.loc 1 459 33
+ 1231 005e 1F4B     		ldr	r3, .L49+4
+ 1232 0060 1B68     		ldr	r3, [r3]
+ 459:Core/Src/fdcan.c ****       __HAL_RCC_FDCAN_CLK_DISABLE();
+ 1233              		.loc 1 459 7
+ 1234 0062 002B     		cmp	r3, #0
+ 1235 0064 07D1     		bne	.L46
+ 460:Core/Src/fdcan.c ****     }
+ 1236              		.loc 1 460 7
+ 1237 0066 1E4B     		ldr	r3, .L49+8
+ 1238 0068 D3F8EC30 		ldr	r3, [r3, #236]
+ 1239 006c 1C4A     		ldr	r2, .L49+8
+ 1240 006e 23F48073 		bic	r3, r3, #256
+ 1241 0072 C2F8EC30 		str	r3, [r2, #236]
+ 1242              	.L46:
+ 467:Core/Src/fdcan.c **** 
+ 1243              		.loc 1 467 5
+ 1244 0076 6021     		movs	r1, #96
+ 1245 0078 1C48     		ldr	r0, .L49+20
+ 1246 007a FFF7FEFF 		bl	HAL_GPIO_DeInit
+ 470:Core/Src/fdcan.c ****     HAL_NVIC_DisableIRQ(FDCAN2_IT1_IRQn);
+ 1247              		.loc 1 470 5
+ 1248 007e 1420     		movs	r0, #20
+ 1249 0080 FFF7FEFF 		bl	HAL_NVIC_DisableIRQ
+ 471:Core/Src/fdcan.c ****   /* USER CODE BEGIN FDCAN2_MspDeInit 1 */
+ 1250              		.loc 1 471 5
+ 1251 0084 1620     		movs	r0, #22
+ 1252 0086 FFF7FEFF 		bl	HAL_NVIC_DisableIRQ
+ 1253              		.loc 1 500 1
+ 1254 008a 20E0     		b	.L48
+ 1255              	.L45:
+ 476:Core/Src/fdcan.c ****   {
+ 1256              		.loc 1 476 22
+ 1257 008c 7B68     		ldr	r3, [r7, #4]
+ 1258 008e 1B68     		ldr	r3, [r3]
+ 476:Core/Src/fdcan.c ****   {
+ 1259              		.loc 1 476 10
+ 1260 0090 174A     		ldr	r2, .L49+24
+ 1261 0092 9342     		cmp	r3, r2
+ 1262 0094 1BD1     		bne	.L48
+ 482:Core/Src/fdcan.c ****     if(HAL_RCC_FDCAN_CLK_ENABLED==0){
+ 1263              		.loc 1 482 30
+ 1264 0096 114B     		ldr	r3, .L49+4
+ 1265 0098 1B68     		ldr	r3, [r3]
+ 1266 009a 013B     		subs	r3, r3, #1
+ 1267 009c 0F4A     		ldr	r2, .L49+4
+ 1268 009e 1360     		str	r3, [r2]
+ 483:Core/Src/fdcan.c ****       __HAL_RCC_FDCAN_CLK_DISABLE();
+ 1269              		.loc 1 483 33
+ 1270 00a0 0E4B     		ldr	r3, .L49+4
+ 1271 00a2 1B68     		ldr	r3, [r3]
+ 483:Core/Src/fdcan.c ****       __HAL_RCC_FDCAN_CLK_DISABLE();
+ARM GAS  C:\Users\Godwin\AppData\Local\Temp\ccPjrEWN.s 			page 33
+
+
+ 1272              		.loc 1 483 7
+ 1273 00a4 002B     		cmp	r3, #0
+ 1274 00a6 07D1     		bne	.L47
+ 484:Core/Src/fdcan.c ****     }
+ 1275              		.loc 1 484 7
+ 1276 00a8 0D4B     		ldr	r3, .L49+8
+ 1277 00aa D3F8EC30 		ldr	r3, [r3, #236]
+ 1278 00ae 0C4A     		ldr	r2, .L49+8
+ 1279 00b0 23F48073 		bic	r3, r3, #256
+ 1280 00b4 C2F8EC30 		str	r3, [r2, #236]
+ 1281              	.L47:
+ 491:Core/Src/fdcan.c **** 
+ 1282              		.loc 1 491 5
+ 1283 00b8 4FF44051 		mov	r1, #12288
+ 1284 00bc 0948     		ldr	r0, .L49+12
+ 1285 00be FFF7FEFF 		bl	HAL_GPIO_DeInit
+ 494:Core/Src/fdcan.c ****     HAL_NVIC_DisableIRQ(FDCAN3_IT1_IRQn);
+ 1286              		.loc 1 494 5
+ 1287 00c2 9F20     		movs	r0, #159
+ 1288 00c4 FFF7FEFF 		bl	HAL_NVIC_DisableIRQ
+ 495:Core/Src/fdcan.c ****   /* USER CODE BEGIN FDCAN3_MspDeInit 1 */
+ 1289              		.loc 1 495 5
+ 1290 00c8 A020     		movs	r0, #160
+ 1291 00ca FFF7FEFF 		bl	HAL_NVIC_DisableIRQ
+ 1292              	.L48:
+ 1293              		.loc 1 500 1
+ 1294 00ce 00BF     		nop
+ 1295 00d0 0837     		adds	r7, r7, #8
+ 1296              	.LCFI23:
+ 1297              		.cfi_def_cfa_offset 8
+ 1298 00d2 BD46     		mov	sp, r7
+ 1299              	.LCFI24:
+ 1300              		.cfi_def_cfa_register 13
+ 1301              		@ sp needed
+ 1302 00d4 80BD     		pop	{r7, pc}
+ 1303              	.L50:
+ 1304 00d6 00BF     		.align	2
+ 1305              	.L49:
+ 1306 00d8 00A00040 		.word	1073782784
+ 1307 00dc 00000000 		.word	HAL_RCC_FDCAN_CLK_ENABLED
+ 1308 00e0 00440258 		.word	1476543488
+ 1309 00e4 000C0258 		.word	1476529152
+ 1310 00e8 00A40040 		.word	1073783808
+ 1311 00ec 00040258 		.word	1476527104
+ 1312 00f0 00D40040 		.word	1073796096
+ 1313              		.cfi_endproc
+ 1314              	.LFE148:
+ 1316              		.text
+ 1317              	.Letext0:
+ 1318              		.file 2 "Drivers/CMSIS/Device/ST/STM32H7xx/Include/stm32h723xx.h"
+ 1319              		.file 3 "C:/Users/Godwin/13.2 Rel1/arm-none-eabi/include/machine/_default_types.h"
+ 1320              		.file 4 "C:/Users/Godwin/13.2 Rel1/arm-none-eabi/include/sys/_stdint.h"
+ 1321              		.file 5 "Drivers/CMSIS/Device/ST/STM32H7xx/Include/stm32h7xx.h"
+ 1322              		.file 6 "Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal_def.h"
+ 1323              		.file 7 "Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal_rcc_ex.h"
+ 1324              		.file 8 "Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal_gpio.h"
+ 1325              		.file 9 "Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal_fdcan.h"
+ARM GAS  C:\Users\Godwin\AppData\Local\Temp\ccPjrEWN.s 			page 34
+
+
+ 1326              		.file 10 "Core/Inc/fdcan.h"
+ 1327              		.file 11 "Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal_cortex.h"
+ 1328              		.file 12 "Core/Inc/main.h"
+ARM GAS  C:\Users\Godwin\AppData\Local\Temp\ccPjrEWN.s 			page 35
 
 
 DEFINED SYMBOLS
                             *ABS*:00000000 fdcan.c
-C:\Users\Godwin\AppData\Local\Temp\ccM1ZfTX.s:24     .bss.hfdcan1:00000000 hfdcan1
-C:\Users\Godwin\AppData\Local\Temp\ccM1ZfTX.s:21     .bss.hfdcan1:00000000 $d
-C:\Users\Godwin\AppData\Local\Temp\ccM1ZfTX.s:31     .bss.hfdcan2:00000000 hfdcan2
-C:\Users\Godwin\AppData\Local\Temp\ccM1ZfTX.s:28     .bss.hfdcan2:00000000 $d
-C:\Users\Godwin\AppData\Local\Temp\ccM1ZfTX.s:38     .bss.hfdcan3:00000000 hfdcan3
-C:\Users\Godwin\AppData\Local\Temp\ccM1ZfTX.s:35     .bss.hfdcan3:00000000 $d
-C:\Users\Godwin\AppData\Local\Temp\ccM1ZfTX.s:41     .text.MX_FDCAN1_Init:00000000 $t
-C:\Users\Godwin\AppData\Local\Temp\ccM1ZfTX.s:47     .text.MX_FDCAN1_Init:00000000 MX_FDCAN1_Init
-C:\Users\Godwin\AppData\Local\Temp\ccM1ZfTX.s:189    .text.MX_FDCAN1_Init:000000c0 $d
-C:\Users\Godwin\AppData\Local\Temp\ccM1ZfTX.s:195    .text.MX_FDCAN2_Init:00000000 $t
-C:\Users\Godwin\AppData\Local\Temp\ccM1ZfTX.s:201    .text.MX_FDCAN2_Init:00000000 MX_FDCAN2_Init
-C:\Users\Godwin\AppData\Local\Temp\ccM1ZfTX.s:343    .text.MX_FDCAN2_Init:000000c4 $d
-C:\Users\Godwin\AppData\Local\Temp\ccM1ZfTX.s:349    .text.MX_FDCAN3_Init:00000000 $t
-C:\Users\Godwin\AppData\Local\Temp\ccM1ZfTX.s:355    .text.MX_FDCAN3_Init:00000000 MX_FDCAN3_Init
-C:\Users\Godwin\AppData\Local\Temp\ccM1ZfTX.s:497    .text.MX_FDCAN3_Init:000000c4 $d
-C:\Users\Godwin\AppData\Local\Temp\ccM1ZfTX.s:503    .bss.HAL_RCC_FDCAN_CLK_ENABLED:00000000 $d
-C:\Users\Godwin\AppData\Local\Temp\ccM1ZfTX.s:506    .bss.HAL_RCC_FDCAN_CLK_ENABLED:00000000 HAL_RCC_FDCAN_CLK_ENABLED
-C:\Users\Godwin\AppData\Local\Temp\ccM1ZfTX.s:509    .text.HAL_FDCAN_MspInit:00000000 $t
-C:\Users\Godwin\AppData\Local\Temp\ccM1ZfTX.s:515    .text.HAL_FDCAN_MspInit:00000000 HAL_FDCAN_MspInit
-C:\Users\Godwin\AppData\Local\Temp\ccM1ZfTX.s:867    .text.HAL_FDCAN_MspInit:00000294 $d
-C:\Users\Godwin\AppData\Local\Temp\ccM1ZfTX.s:878    .text.HAL_FDCAN_MspDeInit:00000000 $t
-C:\Users\Godwin\AppData\Local\Temp\ccM1ZfTX.s:884    .text.HAL_FDCAN_MspDeInit:00000000 HAL_FDCAN_MspDeInit
-C:\Users\Godwin\AppData\Local\Temp\ccM1ZfTX.s:1030   .text.HAL_FDCAN_MspDeInit:000000d8 $d
+C:\Users\Godwin\AppData\Local\Temp\ccPjrEWN.s:24     .bss.hfdcan1:00000000 hfdcan1
+C:\Users\Godwin\AppData\Local\Temp\ccPjrEWN.s:21     .bss.hfdcan1:00000000 $d
+C:\Users\Godwin\AppData\Local\Temp\ccPjrEWN.s:31     .bss.hfdcan2:00000000 hfdcan2
+C:\Users\Godwin\AppData\Local\Temp\ccPjrEWN.s:28     .bss.hfdcan2:00000000 $d
+C:\Users\Godwin\AppData\Local\Temp\ccPjrEWN.s:38     .bss.hfdcan3:00000000 hfdcan3
+C:\Users\Godwin\AppData\Local\Temp\ccPjrEWN.s:35     .bss.hfdcan3:00000000 $d
+C:\Users\Godwin\AppData\Local\Temp\ccPjrEWN.s:41     .text.MX_FDCAN1_Init:00000000 $t
+C:\Users\Godwin\AppData\Local\Temp\ccPjrEWN.s:47     .text.MX_FDCAN1_Init:00000000 MX_FDCAN1_Init
+C:\Users\Godwin\AppData\Local\Temp\ccPjrEWN.s:281    .text.MX_FDCAN1_Init:00000144 $d
+C:\Users\Godwin\AppData\Local\Temp\ccPjrEWN.s:287    .text.MX_FDCAN2_Init:00000000 $t
+C:\Users\Godwin\AppData\Local\Temp\ccPjrEWN.s:293    .text.MX_FDCAN2_Init:00000000 MX_FDCAN2_Init
+C:\Users\Godwin\AppData\Local\Temp\ccPjrEWN.s:527    .text.MX_FDCAN2_Init:00000148 $d
+C:\Users\Godwin\AppData\Local\Temp\ccPjrEWN.s:533    .text.MX_FDCAN3_Init:00000000 $t
+C:\Users\Godwin\AppData\Local\Temp\ccPjrEWN.s:539    .text.MX_FDCAN3_Init:00000000 MX_FDCAN3_Init
+C:\Users\Godwin\AppData\Local\Temp\ccPjrEWN.s:773    .text.MX_FDCAN3_Init:00000148 $d
+C:\Users\Godwin\AppData\Local\Temp\ccPjrEWN.s:779    .bss.HAL_RCC_FDCAN_CLK_ENABLED:00000000 $d
+C:\Users\Godwin\AppData\Local\Temp\ccPjrEWN.s:782    .bss.HAL_RCC_FDCAN_CLK_ENABLED:00000000 HAL_RCC_FDCAN_CLK_ENABLED
+C:\Users\Godwin\AppData\Local\Temp\ccPjrEWN.s:785    .text.HAL_FDCAN_MspInit:00000000 $t
+C:\Users\Godwin\AppData\Local\Temp\ccPjrEWN.s:791    .text.HAL_FDCAN_MspInit:00000000 HAL_FDCAN_MspInit
+C:\Users\Godwin\AppData\Local\Temp\ccPjrEWN.s:1143   .text.HAL_FDCAN_MspInit:00000294 $d
+C:\Users\Godwin\AppData\Local\Temp\ccPjrEWN.s:1154   .text.HAL_FDCAN_MspDeInit:00000000 $t
+C:\Users\Godwin\AppData\Local\Temp\ccPjrEWN.s:1160   .text.HAL_FDCAN_MspDeInit:00000000 HAL_FDCAN_MspDeInit
+C:\Users\Godwin\AppData\Local\Temp\ccPjrEWN.s:1306   .text.HAL_FDCAN_MspDeInit:000000d8 $d
 
 UNDEFINED SYMBOLS
 HAL_FDCAN_Init
 Error_Handler
+HAL_FDCAN_ConfigFilter
+HAL_FDCAN_ActivateNotification
+HAL_FDCAN_Start
 memset
 HAL_RCCEx_PeriphCLKConfig
 HAL_GPIO_Init

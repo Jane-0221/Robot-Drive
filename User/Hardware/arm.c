@@ -4,7 +4,7 @@
 #include "pid.h"
 #include "remote_control.h"
 extern Motor_DM_Status DM_Status[6];
-RobStride_Motor_t motor1;
+ RobStride_Motor_t motor1;  // ID为1的电机对象
 void Arm_Init()
 {
 /*                                        灵足                                                  */

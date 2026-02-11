@@ -1,4 +1,4 @@
-ARM GAS  C:\Users\Godwin\AppData\Local\Temp\cc3tq6Gh.s 			page 1
+ARM GAS  C:\Users\Godwin\AppData\Local\Temp\cc5mFd9M.s 			page 1
 
 
    1              		.cpu cortex-m7
@@ -42,7 +42,7 @@ ARM GAS  C:\Users\Godwin\AppData\Local\Temp\cc3tq6Gh.s 			page 1
    4:User/Hardware/arm.c **** #include "pid.h"
    5:User/Hardware/arm.c **** #include "remote_control.h"
    6:User/Hardware/arm.c **** extern Motor_DM_Status DM_Status[6];
-   7:User/Hardware/arm.c **** RobStride_Motor_t motor1;
+   7:User/Hardware/arm.c ****  RobStride_Motor_t motor1;  // ID为1的电机对象
    8:User/Hardware/arm.c **** void Arm_Init()
    9:User/Hardware/arm.c **** {
   35              		.loc 1 9 1
@@ -58,7 +58,7 @@ ARM GAS  C:\Users\Godwin\AppData\Local\Temp\cc3tq6Gh.s 			page 1
   45              	.LCFI1:
   46              		.cfi_def_cfa_register 7
   10:User/Hardware/arm.c **** /*                                        灵足                                                  */
-ARM GAS  C:\Users\Godwin\AppData\Local\Temp\cc3tq6Gh.s 			page 2
+ARM GAS  C:\Users\Godwin\AppData\Local\Temp\cc5mFd9M.s 			page 2
 
 
   11:User/Hardware/arm.c **** // 1. 初始化电机（使用私有协议，非MIT模式）
@@ -118,7 +118,7 @@ ARM GAS  C:\Users\Godwin\AppData\Local\Temp\cc3tq6Gh.s 			page 1
   79 004c 0A20     		movs	r0, #10
   80 004e FFF7FEFF 		bl	HAL_Delay
   33:User/Hardware/arm.c **** /*                                        灵足电机                                                 
-ARM GAS  C:\Users\Godwin\AppData\Local\Temp\cc3tq6Gh.s 			page 3
+ARM GAS  C:\Users\Godwin\AppData\Local\Temp\cc5mFd9M.s 			page 3
 
 
   34:User/Hardware/arm.c **** 
@@ -178,7 +178,7 @@ ARM GAS  C:\Users\Godwin\AppData\Local\Temp\cc3tq6Gh.s 			page 1
  115              		.loc 1 53 18
  116 00a0 094B     		ldr	r3, .L2+28
  117 00a2 4FF00002 		mov	r2, #0
-ARM GAS  C:\Users\Godwin\AppData\Local\Temp\cc3tq6Gh.s 			page 4
+ARM GAS  C:\Users\Godwin\AppData\Local\Temp\cc5mFd9M.s 			page 4
 
 
  118 00a6 1A60     		str	r2, [r3]	@ float
@@ -238,7 +238,7 @@ ARM GAS  C:\Users\Godwin\AppData\Local\Temp\cc3tq6Gh.s 			page 1
   65:User/Hardware/arm.c **** 
   66:User/Hardware/arm.c **** 
   67:User/Hardware/arm.c **** }
-ARM GAS  C:\Users\Godwin\AppData\Local\Temp\cc3tq6Gh.s 			page 5
+ARM GAS  C:\Users\Godwin\AppData\Local\Temp\cc5mFd9M.s 			page 5
 
 
  163              		.loc 1 67 1
@@ -298,7 +298,7 @@ ARM GAS  C:\Users\Godwin\AppData\Local\Temp\cc3tq6Gh.s 			page 1
  203 0016 93ED007A 		vldr.32	s14, [r3]
  204 001a 0320     		movs	r0, #3
  205 001c F0EE470A 		vmov.f32	s1, s14
-ARM GAS  C:\Users\Godwin\AppData\Local\Temp\cc3tq6Gh.s 			page 6
+ARM GAS  C:\Users\Godwin\AppData\Local\Temp\cc5mFd9M.s 			page 6
 
 
  206 0020 B0EE670A 		vmov.f32	s0, s15
@@ -358,7 +358,7 @@ ARM GAS  C:\Users\Godwin\AppData\Local\Temp\cc3tq6Gh.s 			page 1
  255              		.cfi_offset 7, -8
  256              		.cfi_offset 14, -4
  257 0002 00AF     		add	r7, sp, #0
-ARM GAS  C:\Users\Godwin\AppData\Local\Temp\cc3tq6Gh.s 			page 7
+ARM GAS  C:\Users\Godwin\AppData\Local\Temp\cc5mFd9M.s 			page 7
 
 
  258              	.LCFI7:
@@ -418,7 +418,7 @@ ARM GAS  C:\Users\Godwin\AppData\Local\Temp\cc3tq6Gh.s 			page 1
  294 0050 00000000 		.word	Flag_damiao
  295 0054 00000000 		.word	Pre_Flag_damiao
  296              		.cfi_endproc
-ARM GAS  C:\Users\Godwin\AppData\Local\Temp\cc3tq6Gh.s 			page 8
+ARM GAS  C:\Users\Godwin\AppData\Local\Temp\cc5mFd9M.s 			page 8
 
 
  297              	.LFE147:
@@ -478,7 +478,7 @@ ARM GAS  C:\Users\Godwin\AppData\Local\Temp\cc3tq6Gh.s 			page 1
  326 0010 D3ED027A 		vldr.32	s15, [r3, #8]
  327 0014 194B     		ldr	r3, .L14+12
  328 0016 93ED027A 		vldr.32	s14, [r3, #8]
-ARM GAS  C:\Users\Godwin\AppData\Local\Temp\cc3tq6Gh.s 			page 9
+ARM GAS  C:\Users\Godwin\AppData\Local\Temp\cc5mFd9M.s 			page 9
 
 
  329 001a 0520     		movs	r0, #5
@@ -538,7 +538,7 @@ ARM GAS  C:\Users\Godwin\AppData\Local\Temp\cc3tq6Gh.s 			page 1
  378              		.file 3 "C:/Users/Godwin/13.2 Rel1/arm-none-eabi/include/sys/_stdint.h"
  379              		.file 4 "Drivers/CMSIS/Device/ST/STM32H7xx/Include/stm32h723xx.h"
  380              		.file 5 "Drivers/CMSIS/Device/ST/STM32H7xx/Include/stm32h7xx.h"
-ARM GAS  C:\Users\Godwin\AppData\Local\Temp\cc3tq6Gh.s 			page 10
+ARM GAS  C:\Users\Godwin\AppData\Local\Temp\cc5mFd9M.s 			page 10
 
 
  381              		.file 6 "Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal_def.h"
@@ -547,29 +547,30 @@ ARM GAS  C:\Users\Godwin\AppData\Local\Temp\cc3tq6Gh.s 			page 1
  384              		.file 9 "Core/Inc/fdcan.h"
  385              		.file 10 "User/Hardware/dm4310_drv.h"
  386              		.file 11 "User/Hardware/Robstride04.h"
- 387              		.file 12 "Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal.h"
-ARM GAS  C:\Users\Godwin\AppData\Local\Temp\cc3tq6Gh.s 			page 11
+ 387              		.file 12 "User/Hardware/arm.h"
+ 388              		.file 13 "Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal.h"
+ARM GAS  C:\Users\Godwin\AppData\Local\Temp\cc5mFd9M.s 			page 11
 
 
 DEFINED SYMBOLS
                             *ABS*:00000000 arm.c
-C:\Users\Godwin\AppData\Local\Temp\cc3tq6Gh.s:24     .bss.motor1:00000000 motor1
-C:\Users\Godwin\AppData\Local\Temp\cc3tq6Gh.s:21     .bss.motor1:00000000 $d
-C:\Users\Godwin\AppData\Local\Temp\cc3tq6Gh.s:27     .text.Arm_Init:00000000 $t
-C:\Users\Godwin\AppData\Local\Temp\cc3tq6Gh.s:33     .text.Arm_Init:00000000 Arm_Init
-C:\Users\Godwin\AppData\Local\Temp\cc3tq6Gh.s:125    .text.Arm_Init:000000ac $d
-C:\Users\Godwin\AppData\Local\Temp\cc3tq6Gh.s:137    .text.Arm_motor1:00000000 $t
-C:\Users\Godwin\AppData\Local\Temp\cc3tq6Gh.s:143    .text.Arm_motor1:00000000 Arm_motor1
-C:\Users\Godwin\AppData\Local\Temp\cc3tq6Gh.s:169    .text.Arm_motor1:00000018 $d
-C:\Users\Godwin\AppData\Local\Temp\cc3tq6Gh.s:175    .text.Arm_motor4:00000000 $t
-C:\Users\Godwin\AppData\Local\Temp\cc3tq6Gh.s:181    .text.Arm_motor4:00000000 Arm_motor4
-C:\Users\Godwin\AppData\Local\Temp\cc3tq6Gh.s:230    .text.Arm_motor4:0000004c $d
-C:\Users\Godwin\AppData\Local\Temp\cc3tq6Gh.s:240    .text.Arm_motor5:00000000 $t
-C:\Users\Godwin\AppData\Local\Temp\cc3tq6Gh.s:246    .text.Arm_motor5:00000000 Arm_motor5
-C:\Users\Godwin\AppData\Local\Temp\cc3tq6Gh.s:291    .text.Arm_motor5:00000044 $d
-C:\Users\Godwin\AppData\Local\Temp\cc3tq6Gh.s:300    .text.Arm_motor6:00000000 $t
-C:\Users\Godwin\AppData\Local\Temp\cc3tq6Gh.s:306    .text.Arm_motor6:00000000 Arm_motor6
-C:\Users\Godwin\AppData\Local\Temp\cc3tq6Gh.s:364    .text.Arm_motor6:00000070 $d
+C:\Users\Godwin\AppData\Local\Temp\cc5mFd9M.s:24     .bss.motor1:00000000 motor1
+C:\Users\Godwin\AppData\Local\Temp\cc5mFd9M.s:21     .bss.motor1:00000000 $d
+C:\Users\Godwin\AppData\Local\Temp\cc5mFd9M.s:27     .text.Arm_Init:00000000 $t
+C:\Users\Godwin\AppData\Local\Temp\cc5mFd9M.s:33     .text.Arm_Init:00000000 Arm_Init
+C:\Users\Godwin\AppData\Local\Temp\cc5mFd9M.s:125    .text.Arm_Init:000000ac $d
+C:\Users\Godwin\AppData\Local\Temp\cc5mFd9M.s:137    .text.Arm_motor1:00000000 $t
+C:\Users\Godwin\AppData\Local\Temp\cc5mFd9M.s:143    .text.Arm_motor1:00000000 Arm_motor1
+C:\Users\Godwin\AppData\Local\Temp\cc5mFd9M.s:169    .text.Arm_motor1:00000018 $d
+C:\Users\Godwin\AppData\Local\Temp\cc5mFd9M.s:175    .text.Arm_motor4:00000000 $t
+C:\Users\Godwin\AppData\Local\Temp\cc5mFd9M.s:181    .text.Arm_motor4:00000000 Arm_motor4
+C:\Users\Godwin\AppData\Local\Temp\cc5mFd9M.s:230    .text.Arm_motor4:0000004c $d
+C:\Users\Godwin\AppData\Local\Temp\cc5mFd9M.s:240    .text.Arm_motor5:00000000 $t
+C:\Users\Godwin\AppData\Local\Temp\cc5mFd9M.s:246    .text.Arm_motor5:00000000 Arm_motor5
+C:\Users\Godwin\AppData\Local\Temp\cc5mFd9M.s:291    .text.Arm_motor5:00000044 $d
+C:\Users\Godwin\AppData\Local\Temp\cc5mFd9M.s:300    .text.Arm_motor6:00000000 $t
+C:\Users\Godwin\AppData\Local\Temp\cc5mFd9M.s:306    .text.Arm_motor6:00000000 Arm_motor6
+C:\Users\Godwin\AppData\Local\Temp\cc5mFd9M.s:364    .text.Arm_motor6:00000070 $d
 
 UNDEFINED SYMBOLS
 RobStride_Motor_Init

@@ -3,6 +3,13 @@
 
 #include "can_receive_send.h"
 #include "dm4310_drv.h"
+#include "Robstride04.h"
+
+// 在合适的地方定义全局变量
+extern RobStride_Motor_t motor1;  // ID为1的电机对象
+
+
+
 typedef enum Enum_Motor_DM_Status
 {
     Motor_DM_Status_DISABLE = 0,

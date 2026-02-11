@@ -46,13 +46,9 @@ void MX_FDCAN1_Init(void);
 void MX_FDCAN2_Init(void);
 void MX_FDCAN3_Init(void);
 
-/* USER CODE BEGIN Prototypes */
-
-/* USER CODE END Prototypes */
 
 #ifdef __cplusplus
 }
 #endif
 
 #endif /* __FDCAN_H__ */
-

@@ -37,7 +37,24 @@ build/CAN_receive_send.o: User/BSP/CAN_receive_send.c \
  Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal_pcd.h \
  Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_ll_usb.h \
  Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal_pcd_ex.h \
- User/Hardware/dm4310_drv.h Core/Inc/main.h User/BSP/can_receive_send.h
+ User/Hardware/dm4310_drv.h Core/Inc/main.h User/BSP/can_receive_send.h \
+ User/Hardware/Robstride04.h User/Hardware/arm.h \
+ User/Hardware/dm4310_drv.h User/Hardware/Robstride04.h \
+ Middlewares/Third_Party/FreeRTOS/Source/include/FreeRTOS.h \
+ Core/Inc/FreeRTOSConfig.h \
+ Middlewares/Third_Party/FreeRTOS/Source/include/projdefs.h \
+ Middlewares/Third_Party/FreeRTOS/Source/include/portable.h \
+ Middlewares/Third_Party/FreeRTOS/Source/include/deprecated_definitions.h \
+ Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/portmacro.h \
+ Middlewares/Third_Party/FreeRTOS/Source/include/mpu_wrappers.h \
+ Middlewares/Third_Party/FreeRTOS/Source/include/task.h \
+ Middlewares/Third_Party/FreeRTOS/Source/include/list.h \
+ Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2/cmsis_os.h \
+ Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2/cmsis_os2.h \
+ User/Software/remote_control.h User/Software/music.h \
+ User/Hardware/buzzer.h Core/Inc/tim.h Core/Inc/gpio.h \
+ Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2/cmsis_os2.h \
+ User/Hardware/LED.h Core/Inc/iwdg.h
 User/BSP/can_receive_send.h:
 Core/Inc/fdcan.h:
 Core/Inc/main.h:
@@ -83,3 +100,26 @@ Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal_pcd_ex.h:
 User/Hardware/dm4310_drv.h:
 Core/Inc/main.h:
 User/BSP/can_receive_send.h:
+User/Hardware/Robstride04.h:
+User/Hardware/arm.h:
+User/Hardware/dm4310_drv.h:
+User/Hardware/Robstride04.h:
+Middlewares/Third_Party/FreeRTOS/Source/include/FreeRTOS.h:
+Core/Inc/FreeRTOSConfig.h:
+Middlewares/Third_Party/FreeRTOS/Source/include/projdefs.h:
+Middlewares/Third_Party/FreeRTOS/Source/include/portable.h:
+Middlewares/Third_Party/FreeRTOS/Source/include/deprecated_definitions.h:
+Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/portmacro.h:
+Middlewares/Third_Party/FreeRTOS/Source/include/mpu_wrappers.h:
+Middlewares/Third_Party/FreeRTOS/Source/include/task.h:
+Middlewares/Third_Party/FreeRTOS/Source/include/list.h:
+Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2/cmsis_os.h:
+Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2/cmsis_os2.h:
+User/Software/remote_control.h:
+User/Software/music.h:
+User/Hardware/buzzer.h:
+Core/Inc/tim.h:
+Core/Inc/gpio.h:
+Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2/cmsis_os2.h:
+User/Hardware/LED.h:
+Core/Inc/iwdg.h:

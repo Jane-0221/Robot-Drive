@@ -12,6 +12,24 @@
 #include "can_receive_send.h"
 #include "dm4310_drv.h"
 #include "string.h"
+#include "Robstride04.h"
+#include "arm.h"
+#include "stdio.h"
+#include "FreeRTOS.h"
+#include "task.h"
+#include "main.h"
+#include "cmsis_os.h"
+
+/* Private includes ----------------------------------------------------------*/
+/* USER CODE BEGIN Includes */
+#include "remote_control.h"
+#include "music.h"
+#include "stdio.h"
+#include "LED.h"
+#include <cmsis_os2.h>
+#include "iwdg.h"
+#include "buzzer.h"
+#include "task.h"
 /**/
 FDCAN_RxHeaderTypeDef RxHeader1;
 uint8_t g_Can1RxData[64];
@@ -78,7 +96,6 @@ void get_motor_measure(motor_measure_t *ptr, uint8_t data[])
 * @details:    	发送数据
 ************************************************************************
 **/
-//原来的没有用，所有改了
 uint8_t canx_send_data(FDCAN_HandleTypeDef *hcan, uint16_t id, uint8_t *data, uint32_t len)
 {
 	FDCAN_TxHeaderTypeDef TxHeader;
@@ -218,41 +235,95 @@ void process_motor_data(motor_measure_t *motor_data)
 //can接收回调  
 void HAL_FDCAN_RxFifo0Callback(FDCAN_HandleTypeDef *hfdcan, uint32_t RxFifo0ITs)
 {
+    printf("9\n");
+    FDCAN_RxHeaderTypeDef rx_header; // CAN 数据指针
+    uint8_t rx_data[8];              // 获取到的数据
 
-  FDCAN_RxHeaderTypeDef rx_header; // CAN 数据指针
-  uint8_t rx_data[8];              // 获取到的数据
+    if ((RxFifo0ITs & FDCAN_IT_RX_FIFO0_NEW_MESSAGE) != RESET)
+    {
+        HAL_FDCAN_GetRxMessage(hfdcan, FDCAN_RX_FIFO0, &rx_header, rx_data);
+        
+        // 电机帧
+        if(hfdcan->Instance == FDCAN1)
+        {    
+            fdcanx_receive(hfdcan, FDCAN_RX_FIFO0, &RxHeader1, g_Can1RxData);
+            switch(rx_header.Identifier)
+            {
+                case 5:
+                    damiao_fbdata(&arm_motor[Motor1], rx_data);
+                    Flag_damiao[1] += 1;
+                    break; 
+                default:
+                    break;
+            }
+        }
+        
+        if(hfdcan->Instance == FDCAN2)
+        {
+            // 保留原有标准帧处理逻辑
+            fdcanx_receive(hfdcan, FDCAN_RX_FIFO0, &RxHeader1, g_Can1RxData);
+            
+            // 先处理标准帧（原有逻辑）
+            if(rx_header.IdType == FDCAN_STANDARD_ID)
+            {          
+                switch(rx_header.Identifier)
+                {
+                    case 1:  // 注意：ID=1的标准帧可能是RobStride电机！
+                        // 尝试用RobStride解析
+                        RobStride_Motor_Analysis(&motor1, rx_data, rx_header.Identifier);
+                        Flag_damiao[1] += 1;
+                        break;
+                        
+                    case 2:
+                        damiao_fbdata(&arm_motor[Motor2], rx_data);
+                        Flag_damiao[2] += 1;
+                        break;  
+                    case 3:
+                        damiao_fbdata(&arm_motor[Motor3], rx_data);
+                        Flag_damiao[3] += 1;
+                        break;
+                    case 4:
+                        damiao_fbdata(&arm_motor[Motor4], rx_data);
+                        Flag_damiao[4] += 1;
+                        break;
+                    case 5:
+                        damiao_fbdata(&arm_motor[Motor5], rx_data);
+                        Flag_damiao[5] += 1;
+                        break;
+                    case 6:
+                        damiao_fbdata(&arm_motor[Motor6], rx_data);
+                        Flag_damiao[6] += 1;
+                        break;
+                    default:
+                        printf("Unknown STD ID: 0x%lX\n", rx_header.Identifier);
+                        break;
+                }
+            }
+            // 处理扩展帧
+            else if(rx_header.IdType == FDCAN_EXTENDED_ID)
+            {
+                // 调试：打印扩展帧信息
 
-  if ((RxFifo0ITs & FDCAN_IT_RX_FIFO0_NEW_MESSAGE) != RESET)
-  {
-    HAL_FDCAN_GetRxMessage(hfdcan, FDCAN_RX_FIFO0, &rx_header, rx_data);
-    //电机帧
-    if(hfdcan->Instance == FDCAN1)
-    {    
-        fdcanx_receive(hfdcan,FDCAN_RX_FIFO0,&RxHeader1,g_Can1RxData);
-      switch(rx_header.Identifier)
-      {
-        case 5 :damiao_fbdata(&arm_motor[Motor1],rx_data );   Flag_damiao[1] += 1;break; 
-        default:break;
-      }
 
+                // 从扩展ID中提取目标ID
+                uint8_t target_id = (uint8_t)((rx_header.Identifier >> 8) & 0xFF);
+                uint8_t comm_type = (uint8_t)((rx_header.Identifier >> 24) & 0x3F);
+                
+
+                
+                // 检查是否为ID=1的电机数据
+                if(target_id == 0x01)  // 电机ID=1
+                {
+                    // 直接解析数据到motor1结构体
+                    RobStride_Motor_Analysis(&motor1, rx_data, rx_header.Identifier);
+                }
+            }
+        }
     }
-    if(hfdcan->Instance == FDCAN2)
-     	{
-        fdcanx_receive(hfdcan,FDCAN_RX_FIFO0,&RxHeader1,g_Can1RxData);
-		    	switch(rx_header.Identifier)
-				{
-					case 2 :damiao_fbdata(&arm_motor[Motor2],rx_data );   Flag_damiao[2] += 1;break;  
-					case 3 :damiao_fbdata(&arm_motor[Motor3],rx_data );   Flag_damiao[3] += 1;break;
-					case 4 :damiao_fbdata(&arm_motor[Motor4],rx_data );   Flag_damiao[4] += 1;break;
-					case 5 :damiao_fbdata(&arm_motor[Motor5],rx_data );   Flag_damiao[5] += 1;break;
-				  case 6 :damiao_fbdata(&arm_motor[Motor6],rx_data );   Flag_damiao[6] += 1;break;
-					default:break;
-				}		
-    }
-  }
-
-
 }
+
+
+
 
 /**
  * @brief CAN错误处理回调函数，重启相关设备
