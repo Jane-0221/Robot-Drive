@@ -116,6 +116,8 @@ User/Hardware/arm.c \
 User/Hardware/IMU_updata.c \
 User/Hardware/LED.c \
 User/Hardware/buzzer.c \
+User/Hardware/Unitree/crc_ccitt.c \
+User/Hardware/Unitree/gom_protocol.c \
 User/Software/remote_control.c \
 User/Software/USB_VirCom.c \
 User/Software/music.c
@@ -191,6 +193,7 @@ C_INCLUDES =  \
 -IDrivers/Chip/ws2812 \
 -IDrivers/UI \
 -IUser/Hardware \
+-IUser/Hardware/Unitree \
 -IUser/Software \
 -IUser/BSP \
 -IDrivers/CMSIS/Include \
