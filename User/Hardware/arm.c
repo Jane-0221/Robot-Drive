@@ -7,11 +7,6 @@
 #include "gom_protocol.h"
 #include "usart.h"
 
-#define RS485_REDE_Pin GPIO_PIN_14
-#define RS485_REDE_GPIO_Port GPIOB
-
-#define RS485_RxMode() (HAL_GPIO_WritePin(RS485_REDE_GPIO_Port, RS485_REDE_Pin, GPIO_PIN_RESET))
-#define RS485_TxMode() (HAL_GPIO_WritePin(RS485_REDE_GPIO_Port, RS485_REDE_Pin, GPIO_PIN_SET))
 
 // 宇树
 // #define RS485_RxMode() (HAL_GPIO_WritePin(RS485_REDE_GPIO_Port, RS485_REDE_Pin, GPIO_PIN_RESET))
@@ -60,7 +55,7 @@ void Arm_Init()
   cmd.mode = 1;    // FOC闭环模式（需电机支持）
   cmd.K_P = 0.02f; // 刚度系数（0~25.599，建议先设5.0）
   cmd.K_W = 0.0f;  // 阻尼系数（0~25.599，建议先设5.0）
-  cmd.Pos = 20.0f; // 目标位置（rad，先设小值1rad，避免电机动作过大）
+  cmd.Pos = 0.0f; // 目标位置（rad，先设小值1rad，避免电机动作过大）
   cmd.W = 0.0f;    // 目标速度（rad/s，先设0）
   cmd.T = 0.0f;    // 目标扭矩（Nm，先设0，靠位置环驱动）
                    /*                                        宇树                                                  */
@@ -90,10 +85,8 @@ void Arm_motor1()
 void Arm_motor3()
 {
 
-   RS485_TxMode();
-  HAL_Delay(10);
   modify_data(&cmd);
-  HAL_UART_Transmit(&huart3, (uint8_t *)&cmd.motor_send_data, sizeof(cmd.motor_send_data), 0xFFFF);
+  HAL_UART_Transmit(&huart3, (uint8_t *)&cmd.motor_send_data, sizeof(cmd.motor_send_data), 1);
   // modify_data(&cmd);
 
   // RS485_TxMode();
