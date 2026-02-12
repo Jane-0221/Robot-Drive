@@ -4,23 +4,33 @@
 #include "can_receive_send.h"
 #include "dm4310_drv.h"
 #include "Robstride04.h"
+#include "crc_ccitt.h"
+
+
 
 // 在合适的地方定义全局变量
+//灵足初始化声明
 extern RobStride_Motor_t motor1;  // ID为1的电机对象
 
+//宇树初始化
 
 
+
+
+
+//达妙电机连接状态
 typedef enum Enum_Motor_DM_Status
 {
     Motor_DM_Status_DISABLE = 0,
     Motor_DM_Status_ENABLE,
 } Motor_DM_Status;
 extern Motor_DM_Status DM_Status[6];
-// damiao
+
+// 
 void Arm_Init(void);
 void Arm_motor1(void);
 // void Arm_motor2(void);
-// void Arm_motor3(void);
+void Arm_motor3(void);
 void Arm_motor4(void);
 void Arm_motor5(void);
 void Arm_motor6(void);

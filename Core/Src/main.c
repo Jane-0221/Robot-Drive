@@ -133,6 +133,9 @@ int main(void)
   HAL_IWDG_Refresh(&hiwdg1);
   remote_control_init();
 
+
+
+
   /* USER CODE END 2 */
 
   /* Init scheduler */
@@ -302,7 +305,7 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
     static uint8_t i;
     IMU_updata();
     if (i >= 5)
-    { // 降频�??200hz
+    { // 降频�???200hz
    
       i = 0;
     }

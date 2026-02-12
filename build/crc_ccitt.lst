@@ -1,0 +1,516 @@
+ARM GAS  C:\Users\Godwin\AppData\Local\Temp\ccCRBiid.s 			page 1
+
+
+   1              		.cpu cortex-m7
+   2              		.arch armv7e-m
+   3              		.fpu fpv5-d16
+   4              		.eabi_attribute 28, 1
+   5              		.eabi_attribute 20, 1
+   6              		.eabi_attribute 21, 1
+   7              		.eabi_attribute 23, 3
+   8              		.eabi_attribute 24, 1
+   9              		.eabi_attribute 25, 1
+  10              		.eabi_attribute 26, 1
+  11              		.eabi_attribute 30, 6
+  12              		.eabi_attribute 34, 1
+  13              		.eabi_attribute 18, 4
+  14              		.file	"crc_ccitt.c"
+  15              		.text
+  16              	.Ltext0:
+  17              		.cfi_sections	.debug_frame
+  18              		.file 1 "User/Hardware/Unitree/crc_ccitt.c"
+  19              		.global	crc_ccitt_table
+  20              		.section	.rodata.crc_ccitt_table,"a"
+  21              		.align	2
+  24              	crc_ccitt_table:
+  25 0000 0000     		.short	0
+  26 0002 8911     		.short	4489
+  27 0004 1223     		.short	8978
+  28 0006 9B32     		.short	12955
+  29 0008 2446     		.short	17956
+  30 000a AD57     		.short	22445
+  31 000c 3665     		.short	25910
+  32 000e BF74     		.short	29887
+  33 0010 488C     		.short	-29624
+  34 0012 C19D     		.short	-25151
+  35 0014 5AAF     		.short	-20646
+  36 0016 D3BE     		.short	-16685
+  37 0018 6CCA     		.short	-13716
+  38 001a E5DB     		.short	-9243
+  39 001c 7EE9     		.short	-5762
+  40 001e F7F8     		.short	-1801
+  41 0020 8110     		.short	4225
+  42 0022 0801     		.short	264
+  43 0024 9333     		.short	13203
+  44 0026 1A22     		.short	8730
+  45 0028 A556     		.short	22181
+  46 002a 2C47     		.short	18220
+  47 002c B775     		.short	30135
+  48 002e 3E64     		.short	25662
+  49 0030 C99C     		.short	-25399
+  50 0032 408D     		.short	-29376
+  51 0034 DBBF     		.short	-16421
+  52 0036 52AE     		.short	-20910
+  53 0038 EDDA     		.short	-9491
+  54 003a 64CB     		.short	-13468
+  55 003c FFF9     		.short	-1537
+  56 003e 76E8     		.short	-6026
+  57 0040 0221     		.short	8450
+  58 0042 8B30     		.short	12427
+  59 0044 1002     		.short	528
+ARM GAS  C:\Users\Godwin\AppData\Local\Temp\ccCRBiid.s 			page 2
+
+
+  60 0046 9913     		.short	5017
+  61 0048 2667     		.short	26406
+  62 004a AF76     		.short	30383
+  63 004c 3444     		.short	17460
+  64 004e BD55     		.short	21949
+  65 0050 4AAD     		.short	-21174
+  66 0052 C3BC     		.short	-17213
+  67 0054 588E     		.short	-29096
+  68 0056 D19F     		.short	-24623
+  69 0058 6EEB     		.short	-5266
+  70 005a E7FA     		.short	-1305
+  71 005c 7CC8     		.short	-14212
+  72 005e F5D9     		.short	-9739
+  73 0060 8331     		.short	12675
+  74 0062 0A20     		.short	8202
+  75 0064 9112     		.short	4753
+  76 0066 1803     		.short	792
+  77 0068 A777     		.short	30631
+  78 006a 2E66     		.short	26158
+  79 006c B554     		.short	21685
+  80 006e 3C45     		.short	17724
+  81 0070 CBBD     		.short	-16949
+  82 0072 42AC     		.short	-21438
+  83 0074 D99E     		.short	-24871
+  84 0076 508F     		.short	-28848
+  85 0078 EFFB     		.short	-1041
+  86 007a 66EA     		.short	-5530
+  87 007c FDD8     		.short	-9987
+  88 007e 74C9     		.short	-13964
+  89 0080 0442     		.short	16900
+  90 0082 8D53     		.short	21389
+  91 0084 1661     		.short	24854
+  92 0086 9F70     		.short	28831
+  93 0088 2004     		.short	1056
+  94 008a A915     		.short	5545
+  95 008c 3227     		.short	10034
+  96 008e BB36     		.short	14011
+  97 0090 4CCE     		.short	-12724
+  98 0092 C5DF     		.short	-8251
+  99 0094 5EED     		.short	-4770
+ 100 0096 D7FC     		.short	-809
+ 101 0098 6888     		.short	-30616
+ 102 009a E199     		.short	-26143
+ 103 009c 7AAB     		.short	-21638
+ 104 009e F3BA     		.short	-17677
+ 105 00a0 8552     		.short	21125
+ 106 00a2 0C43     		.short	17164
+ 107 00a4 9771     		.short	29079
+ 108 00a6 1E60     		.short	24606
+ 109 00a8 A114     		.short	5281
+ 110 00aa 2805     		.short	1320
+ 111 00ac B337     		.short	14259
+ 112 00ae 3A26     		.short	9786
+ 113 00b0 CDDE     		.short	-8499
+ 114 00b2 44CF     		.short	-12476
+ 115 00b4 DFFD     		.short	-545
+ 116 00b6 56EC     		.short	-5034
+ARM GAS  C:\Users\Godwin\AppData\Local\Temp\ccCRBiid.s 			page 3
+
+
+ 117 00b8 E998     		.short	-26391
+ 118 00ba 6089     		.short	-30368
+ 119 00bc FBBB     		.short	-17413
+ 120 00be 72AA     		.short	-21902
+ 121 00c0 0663     		.short	25350
+ 122 00c2 8F72     		.short	29327
+ 123 00c4 1440     		.short	16404
+ 124 00c6 9D51     		.short	20893
+ 125 00c8 2225     		.short	9506
+ 126 00ca AB34     		.short	13483
+ 127 00cc 3006     		.short	1584
+ 128 00ce B917     		.short	6073
+ 129 00d0 4EEF     		.short	-4274
+ 130 00d2 C7FE     		.short	-313
+ 131 00d4 5CCC     		.short	-13220
+ 132 00d6 D5DD     		.short	-8747
+ 133 00d8 6AA9     		.short	-22166
+ 134 00da E3B8     		.short	-18205
+ 135 00dc 788A     		.short	-30088
+ 136 00de F19B     		.short	-25615
+ 137 00e0 8773     		.short	29575
+ 138 00e2 0E62     		.short	25102
+ 139 00e4 9550     		.short	20629
+ 140 00e6 1C41     		.short	16668
+ 141 00e8 A335     		.short	13731
+ 142 00ea 2A24     		.short	9258
+ 143 00ec B116     		.short	5809
+ 144 00ee 3807     		.short	1848
+ 145 00f0 CFFF     		.short	-49
+ 146 00f2 46EE     		.short	-4538
+ 147 00f4 DDDC     		.short	-8995
+ 148 00f6 54CD     		.short	-12972
+ 149 00f8 EBB9     		.short	-17941
+ 150 00fa 62A8     		.short	-22430
+ 151 00fc F99A     		.short	-25863
+ 152 00fe 708B     		.short	-29840
+ 153 0100 0884     		.short	-31736
+ 154 0102 8195     		.short	-27263
+ 155 0104 1AA7     		.short	-22758
+ 156 0106 93B6     		.short	-18797
+ 157 0108 2CC2     		.short	-15828
+ 158 010a A5D3     		.short	-11355
+ 159 010c 3EE1     		.short	-7874
+ 160 010e B7F0     		.short	-3913
+ 161 0110 4008     		.short	2112
+ 162 0112 C919     		.short	6601
+ 163 0114 522B     		.short	11090
+ 164 0116 DB3A     		.short	15067
+ 165 0118 644E     		.short	20068
+ 166 011a ED5F     		.short	24557
+ 167 011c 766D     		.short	28022
+ 168 011e FF7C     		.short	31999
+ 169 0120 8994     		.short	-27511
+ 170 0122 0085     		.short	-31488
+ 171 0124 9BB7     		.short	-18533
+ 172 0126 12A6     		.short	-23022
+ 173 0128 ADD2     		.short	-11603
+ARM GAS  C:\Users\Godwin\AppData\Local\Temp\ccCRBiid.s 			page 4
+
+
+ 174 012a 24C3     		.short	-15580
+ 175 012c BFF1     		.short	-3649
+ 176 012e 36E0     		.short	-8138
+ 177 0130 C118     		.short	6337
+ 178 0132 4809     		.short	2376
+ 179 0134 D33B     		.short	15315
+ 180 0136 5A2A     		.short	10842
+ 181 0138 E55E     		.short	24293
+ 182 013a 6C4F     		.short	20332
+ 183 013c F77D     		.short	32247
+ 184 013e 7E6C     		.short	27774
+ 185 0140 0AA5     		.short	-23286
+ 186 0142 83B4     		.short	-19325
+ 187 0144 1886     		.short	-31208
+ 188 0146 9197     		.short	-26735
+ 189 0148 2EE3     		.short	-7378
+ 190 014a A7F2     		.short	-3417
+ 191 014c 3CC0     		.short	-16324
+ 192 014e B5D1     		.short	-11851
+ 193 0150 4229     		.short	10562
+ 194 0152 CB38     		.short	14539
+ 195 0154 500A     		.short	2640
+ 196 0156 D91B     		.short	7129
+ 197 0158 666F     		.short	28518
+ 198 015a EF7E     		.short	32495
+ 199 015c 744C     		.short	19572
+ 200 015e FD5D     		.short	24061
+ 201 0160 8BB5     		.short	-19061
+ 202 0162 02A4     		.short	-23550
+ 203 0164 9996     		.short	-26983
+ 204 0166 1087     		.short	-30960
+ 205 0168 AFF3     		.short	-3153
+ 206 016a 26E2     		.short	-7642
+ 207 016c BDD0     		.short	-12099
+ 208 016e 34C1     		.short	-16076
+ 209 0170 C339     		.short	14787
+ 210 0172 4A28     		.short	10314
+ 211 0174 D11A     		.short	6865
+ 212 0176 580B     		.short	2904
+ 213 0178 E77F     		.short	32743
+ 214 017a 6E6E     		.short	28270
+ 215 017c F55C     		.short	23797
+ 216 017e 7C4D     		.short	19836
+ 217 0180 0CC6     		.short	-14836
+ 218 0182 85D7     		.short	-10363
+ 219 0184 1EE5     		.short	-6882
+ 220 0186 97F4     		.short	-2921
+ 221 0188 2880     		.short	-32728
+ 222 018a A191     		.short	-28255
+ 223 018c 3AA3     		.short	-23750
+ 224 018e B3B2     		.short	-19789
+ 225 0190 444A     		.short	19012
+ 226 0192 CD5B     		.short	23501
+ 227 0194 5669     		.short	26966
+ 228 0196 DF78     		.short	30943
+ 229 0198 600C     		.short	3168
+ 230 019a E91D     		.short	7657
+ARM GAS  C:\Users\Godwin\AppData\Local\Temp\ccCRBiid.s 			page 5
+
+
+ 231 019c 722F     		.short	12146
+ 232 019e FB3E     		.short	16123
+ 233 01a0 8DD6     		.short	-10611
+ 234 01a2 04C7     		.short	-14588
+ 235 01a4 9FF5     		.short	-2657
+ 236 01a6 16E4     		.short	-7146
+ 237 01a8 A990     		.short	-28503
+ 238 01aa 2081     		.short	-32480
+ 239 01ac BBB3     		.short	-19525
+ 240 01ae 32A2     		.short	-24014
+ 241 01b0 C55A     		.short	23237
+ 242 01b2 4C4B     		.short	19276
+ 243 01b4 D779     		.short	31191
+ 244 01b6 5E68     		.short	26718
+ 245 01b8 E11C     		.short	7393
+ 246 01ba 680D     		.short	3432
+ 247 01bc F33F     		.short	16371
+ 248 01be 7A2E     		.short	11898
+ 249 01c0 0EE7     		.short	-6386
+ 250 01c2 87F6     		.short	-2425
+ 251 01c4 1CC4     		.short	-15332
+ 252 01c6 95D5     		.short	-10859
+ 253 01c8 2AA1     		.short	-24278
+ 254 01ca A3B0     		.short	-20317
+ 255 01cc 3882     		.short	-32200
+ 256 01ce B193     		.short	-27727
+ 257 01d0 466B     		.short	27462
+ 258 01d2 CF7A     		.short	31439
+ 259 01d4 5448     		.short	18516
+ 260 01d6 DD59     		.short	23005
+ 261 01d8 622D     		.short	11618
+ 262 01da EB3C     		.short	15595
+ 263 01dc 700E     		.short	3696
+ 264 01de F91F     		.short	8185
+ 265 01e0 8FF7     		.short	-2161
+ 266 01e2 06E6     		.short	-6650
+ 267 01e4 9DD4     		.short	-11107
+ 268 01e6 14C5     		.short	-15084
+ 269 01e8 ABB1     		.short	-20053
+ 270 01ea 22A0     		.short	-24542
+ 271 01ec B992     		.short	-27975
+ 272 01ee 3083     		.short	-31952
+ 273 01f0 C77B     		.short	31687
+ 274 01f2 4E6A     		.short	27214
+ 275 01f4 D558     		.short	22741
+ 276 01f6 5C49     		.short	18780
+ 277 01f8 E33D     		.short	15843
+ 278 01fa 6A2C     		.short	11370
+ 279 01fc F11E     		.short	7921
+ 280 01fe 780F     		.short	3960
+ 281              		.section	.text.crc_ccitt_byte,"ax",%progbits
+ 282              		.align	1
+ 283              		.global	crc_ccitt_byte
+ 284              		.syntax unified
+ 285              		.thumb
+ 286              		.thumb_func
+ 288              	crc_ccitt_byte:
+ARM GAS  C:\Users\Godwin\AppData\Local\Temp\ccCRBiid.s 			page 6
+
+
+ 289              	.LFB0:
+   1:User/Hardware/Unitree/crc_ccitt.c **** #include "crc_ccitt.h"
+   2:User/Hardware/Unitree/crc_ccitt.c **** 
+   3:User/Hardware/Unitree/crc_ccitt.c **** /*
+   4:User/Hardware/Unitree/crc_ccitt.c ****  * This mysterious table is just the CRC of each possible byte. It can be
+   5:User/Hardware/Unitree/crc_ccitt.c ****  * computed using the standard bit-at-a-time methods. The polynomial can
+   6:User/Hardware/Unitree/crc_ccitt.c ****  * be seen in entry 128, 0x8408. This corresponds to x^0 + x^5 + x^12.
+   7:User/Hardware/Unitree/crc_ccitt.c ****  * Add the implicit x^16, and you have the standard CRC-CCITT.
+   8:User/Hardware/Unitree/crc_ccitt.c ****  * https://github.com/torvalds/linux/blob/5bfc75d92efd494db37f5c4c173d3639d4772966/lib/crc-ccitt.c
+   9:User/Hardware/Unitree/crc_ccitt.c ****  */
+  10:User/Hardware/Unitree/crc_ccitt.c **** const uint16_t crc_ccitt_table[256] = {
+  11:User/Hardware/Unitree/crc_ccitt.c **** 	0x0000, 0x1189, 0x2312, 0x329b, 0x4624, 0x57ad, 0x6536, 0x74bf,
+  12:User/Hardware/Unitree/crc_ccitt.c **** 	0x8c48, 0x9dc1, 0xaf5a, 0xbed3, 0xca6c, 0xdbe5, 0xe97e, 0xf8f7,
+  13:User/Hardware/Unitree/crc_ccitt.c **** 	0x1081, 0x0108, 0x3393, 0x221a, 0x56a5, 0x472c, 0x75b7, 0x643e,
+  14:User/Hardware/Unitree/crc_ccitt.c **** 	0x9cc9, 0x8d40, 0xbfdb, 0xae52, 0xdaed, 0xcb64, 0xf9ff, 0xe876,
+  15:User/Hardware/Unitree/crc_ccitt.c **** 	0x2102, 0x308b, 0x0210, 0x1399, 0x6726, 0x76af, 0x4434, 0x55bd,
+  16:User/Hardware/Unitree/crc_ccitt.c **** 	0xad4a, 0xbcc3, 0x8e58, 0x9fd1, 0xeb6e, 0xfae7, 0xc87c, 0xd9f5,
+  17:User/Hardware/Unitree/crc_ccitt.c **** 	0x3183, 0x200a, 0x1291, 0x0318, 0x77a7, 0x662e, 0x54b5, 0x453c,
+  18:User/Hardware/Unitree/crc_ccitt.c **** 	0xbdcb, 0xac42, 0x9ed9, 0x8f50, 0xfbef, 0xea66, 0xd8fd, 0xc974,
+  19:User/Hardware/Unitree/crc_ccitt.c **** 	0x4204, 0x538d, 0x6116, 0x709f, 0x0420, 0x15a9, 0x2732, 0x36bb,
+  20:User/Hardware/Unitree/crc_ccitt.c **** 	0xce4c, 0xdfc5, 0xed5e, 0xfcd7, 0x8868, 0x99e1, 0xab7a, 0xbaf3,
+  21:User/Hardware/Unitree/crc_ccitt.c **** 	0x5285, 0x430c, 0x7197, 0x601e, 0x14a1, 0x0528, 0x37b3, 0x263a,
+  22:User/Hardware/Unitree/crc_ccitt.c **** 	0xdecd, 0xcf44, 0xfddf, 0xec56, 0x98e9, 0x8960, 0xbbfb, 0xaa72,
+  23:User/Hardware/Unitree/crc_ccitt.c **** 	0x6306, 0x728f, 0x4014, 0x519d, 0x2522, 0x34ab, 0x0630, 0x17b9,
+  24:User/Hardware/Unitree/crc_ccitt.c **** 	0xef4e, 0xfec7, 0xcc5c, 0xddd5, 0xa96a, 0xb8e3, 0x8a78, 0x9bf1,
+  25:User/Hardware/Unitree/crc_ccitt.c **** 	0x7387, 0x620e, 0x5095, 0x411c, 0x35a3, 0x242a, 0x16b1, 0x0738,
+  26:User/Hardware/Unitree/crc_ccitt.c **** 	0xffcf, 0xee46, 0xdcdd, 0xcd54, 0xb9eb, 0xa862, 0x9af9, 0x8b70,
+  27:User/Hardware/Unitree/crc_ccitt.c **** 	0x8408, 0x9581, 0xa71a, 0xb693, 0xc22c, 0xd3a5, 0xe13e, 0xf0b7,
+  28:User/Hardware/Unitree/crc_ccitt.c **** 	0x0840, 0x19c9, 0x2b52, 0x3adb, 0x4e64, 0x5fed, 0x6d76, 0x7cff,
+  29:User/Hardware/Unitree/crc_ccitt.c **** 	0x9489, 0x8500, 0xb79b, 0xa612, 0xd2ad, 0xc324, 0xf1bf, 0xe036,
+  30:User/Hardware/Unitree/crc_ccitt.c **** 	0x18c1, 0x0948, 0x3bd3, 0x2a5a, 0x5ee5, 0x4f6c, 0x7df7, 0x6c7e,
+  31:User/Hardware/Unitree/crc_ccitt.c **** 	0xa50a, 0xb483, 0x8618, 0x9791, 0xe32e, 0xf2a7, 0xc03c, 0xd1b5,
+  32:User/Hardware/Unitree/crc_ccitt.c **** 	0x2942, 0x38cb, 0x0a50, 0x1bd9, 0x6f66, 0x7eef, 0x4c74, 0x5dfd,
+  33:User/Hardware/Unitree/crc_ccitt.c **** 	0xb58b, 0xa402, 0x9699, 0x8710, 0xf3af, 0xe226, 0xd0bd, 0xc134,
+  34:User/Hardware/Unitree/crc_ccitt.c **** 	0x39c3, 0x284a, 0x1ad1, 0x0b58, 0x7fe7, 0x6e6e, 0x5cf5, 0x4d7c,
+  35:User/Hardware/Unitree/crc_ccitt.c **** 	0xc60c, 0xd785, 0xe51e, 0xf497, 0x8028, 0x91a1, 0xa33a, 0xb2b3,
+  36:User/Hardware/Unitree/crc_ccitt.c **** 	0x4a44, 0x5bcd, 0x6956, 0x78df, 0x0c60, 0x1de9, 0x2f72, 0x3efb,
+  37:User/Hardware/Unitree/crc_ccitt.c **** 	0xd68d, 0xc704, 0xf59f, 0xe416, 0x90a9, 0x8120, 0xb3bb, 0xa232,
+  38:User/Hardware/Unitree/crc_ccitt.c **** 	0x5ac5, 0x4b4c, 0x79d7, 0x685e, 0x1ce1, 0x0d68, 0x3ff3, 0x2e7a,
+  39:User/Hardware/Unitree/crc_ccitt.c **** 	0xe70e, 0xf687, 0xc41c, 0xd595, 0xa12a, 0xb0a3, 0x8238, 0x93b1,
+  40:User/Hardware/Unitree/crc_ccitt.c **** 	0x6b46, 0x7acf, 0x4854, 0x59dd, 0x2d62, 0x3ceb, 0x0e70, 0x1ff9,
+  41:User/Hardware/Unitree/crc_ccitt.c **** 	0xf78f, 0xe606, 0xd49d, 0xc514, 0xb1ab, 0xa022, 0x92b9, 0x8330,
+  42:User/Hardware/Unitree/crc_ccitt.c **** 	0x7bc7, 0x6a4e, 0x58d5, 0x495c, 0x3de3, 0x2c6a, 0x1ef1, 0x0f78
+  43:User/Hardware/Unitree/crc_ccitt.c **** };
+  44:User/Hardware/Unitree/crc_ccitt.c **** 
+  45:User/Hardware/Unitree/crc_ccitt.c **** uint16_t crc_ccitt_byte(uint16_t crc, const uint8_t c)
+  46:User/Hardware/Unitree/crc_ccitt.c **** {
+ 290              		.loc 1 46 1
+ 291              		.cfi_startproc
+ 292              		@ args = 0, pretend = 0, frame = 8
+ 293              		@ frame_needed = 1, uses_anonymous_args = 0
+ 294              		@ link register save eliminated.
+ 295 0000 80B4     		push	{r7}
+ 296              	.LCFI0:
+ 297              		.cfi_def_cfa_offset 4
+ 298              		.cfi_offset 7, -4
+ 299 0002 83B0     		sub	sp, sp, #12
+ARM GAS  C:\Users\Godwin\AppData\Local\Temp\ccCRBiid.s 			page 7
+
+
+ 300              	.LCFI1:
+ 301              		.cfi_def_cfa_offset 16
+ 302 0004 00AF     		add	r7, sp, #0
+ 303              	.LCFI2:
+ 304              		.cfi_def_cfa_register 7
+ 305 0006 0346     		mov	r3, r0
+ 306 0008 0A46     		mov	r2, r1
+ 307 000a FB80     		strh	r3, [r7, #6]	@ movhi
+ 308 000c 1346     		mov	r3, r2
+ 309 000e 7B71     		strb	r3, [r7, #5]
+  47:User/Hardware/Unitree/crc_ccitt.c **** 	return (crc >> 8) ^ crc_ccitt_table[(crc ^ c) & 0xff];
+ 310              		.loc 1 47 20
+ 311 0010 FB88     		ldrh	r3, [r7, #6]
+ 312 0012 1B0A     		lsrs	r3, r3, #8
+ 313 0014 9AB2     		uxth	r2, r3
+ 314              		.loc 1 47 43
+ 315 0016 F988     		ldrh	r1, [r7, #6]
+ 316 0018 7B79     		ldrb	r3, [r7, #5]	@ zero_extendqisi2
+ 317 001a 4B40     		eors	r3, r3, r1
+ 318              		.loc 1 47 48
+ 319 001c DBB2     		uxtb	r3, r3
+ 320              		.loc 1 47 37
+ 321 001e 0549     		ldr	r1, .L3
+ 322 0020 31F81330 		ldrh	r3, [r1, r3, lsl #1]
+ 323              		.loc 1 47 20
+ 324 0024 5340     		eors	r3, r3, r2
+ 325 0026 9BB2     		uxth	r3, r3
+  48:User/Hardware/Unitree/crc_ccitt.c **** }
+ 326              		.loc 1 48 1
+ 327 0028 1846     		mov	r0, r3
+ 328 002a 0C37     		adds	r7, r7, #12
+ 329              	.LCFI3:
+ 330              		.cfi_def_cfa_offset 4
+ 331 002c BD46     		mov	sp, r7
+ 332              	.LCFI4:
+ 333              		.cfi_def_cfa_register 13
+ 334              		@ sp needed
+ 335 002e 5DF8047B 		ldr	r7, [sp], #4
+ 336              	.LCFI5:
+ 337              		.cfi_restore 7
+ 338              		.cfi_def_cfa_offset 0
+ 339 0032 7047     		bx	lr
+ 340              	.L4:
+ 341              		.align	2
+ 342              	.L3:
+ 343 0034 00000000 		.word	crc_ccitt_table
+ 344              		.cfi_endproc
+ 345              	.LFE0:
+ 347              		.section	.text.crc_ccitt,"ax",%progbits
+ 348              		.align	1
+ 349              		.global	crc_ccitt
+ 350              		.syntax unified
+ 351              		.thumb
+ 352              		.thumb_func
+ 354              	crc_ccitt:
+ 355              	.LFB1:
+  49:User/Hardware/Unitree/crc_ccitt.c **** 
+ARM GAS  C:\Users\Godwin\AppData\Local\Temp\ccCRBiid.s 			page 8
+
+
+  50:User/Hardware/Unitree/crc_ccitt.c **** /**
+  51:User/Hardware/Unitree/crc_ccitt.c ****  *	crc_ccitt - recompute the CRC (CRC-CCITT variant) for the data
+  52:User/Hardware/Unitree/crc_ccitt.c ****  *	buffer
+  53:User/Hardware/Unitree/crc_ccitt.c ****  *	@crc: previous CRC value
+  54:User/Hardware/Unitree/crc_ccitt.c ****  *	@buffer: data pointer
+  55:User/Hardware/Unitree/crc_ccitt.c ****  *	@len: number of bytes in the buffer
+  56:User/Hardware/Unitree/crc_ccitt.c ****  */
+  57:User/Hardware/Unitree/crc_ccitt.c **** uint16_t crc_ccitt(uint16_t crc, uint8_t const *buffer, size_t len)
+  58:User/Hardware/Unitree/crc_ccitt.c **** {
+ 356              		.loc 1 58 1
+ 357              		.cfi_startproc
+ 358              		@ args = 0, pretend = 0, frame = 16
+ 359              		@ frame_needed = 1, uses_anonymous_args = 0
+ 360 0000 80B5     		push	{r7, lr}
+ 361              	.LCFI6:
+ 362              		.cfi_def_cfa_offset 8
+ 363              		.cfi_offset 7, -8
+ 364              		.cfi_offset 14, -4
+ 365 0002 84B0     		sub	sp, sp, #16
+ 366              	.LCFI7:
+ 367              		.cfi_def_cfa_offset 24
+ 368 0004 00AF     		add	r7, sp, #0
+ 369              	.LCFI8:
+ 370              		.cfi_def_cfa_register 7
+ 371 0006 0346     		mov	r3, r0
+ 372 0008 B960     		str	r1, [r7, #8]
+ 373 000a 7A60     		str	r2, [r7, #4]
+ 374 000c FB81     		strh	r3, [r7, #14]	@ movhi
+  59:User/Hardware/Unitree/crc_ccitt.c **** 	while (len--)
+ 375              		.loc 1 59 8
+ 376 000e 0AE0     		b	.L6
+ 377              	.L7:
+  60:User/Hardware/Unitree/crc_ccitt.c **** 		crc = crc_ccitt_byte(crc, *buffer++);
+ 378              		.loc 1 60 36
+ 379 0010 BB68     		ldr	r3, [r7, #8]
+ 380 0012 5A1C     		adds	r2, r3, #1
+ 381 0014 BA60     		str	r2, [r7, #8]
+ 382              		.loc 1 60 9
+ 383 0016 1A78     		ldrb	r2, [r3]	@ zero_extendqisi2
+ 384 0018 FB89     		ldrh	r3, [r7, #14]
+ 385 001a 1146     		mov	r1, r2
+ 386 001c 1846     		mov	r0, r3
+ 387 001e FFF7FEFF 		bl	crc_ccitt_byte
+ 388 0022 0346     		mov	r3, r0
+ 389 0024 FB81     		strh	r3, [r7, #14]	@ movhi
+ 390              	.L6:
+  59:User/Hardware/Unitree/crc_ccitt.c **** 	while (len--)
+ 391              		.loc 1 59 12
+ 392 0026 7B68     		ldr	r3, [r7, #4]
+ 393 0028 5A1E     		subs	r2, r3, #1
+ 394 002a 7A60     		str	r2, [r7, #4]
+  59:User/Hardware/Unitree/crc_ccitt.c **** 	while (len--)
+ 395              		.loc 1 59 9
+ 396 002c 002B     		cmp	r3, #0
+ 397 002e EFD1     		bne	.L7
+  61:User/Hardware/Unitree/crc_ccitt.c **** 	return crc;
+ 398              		.loc 1 61 9
+ARM GAS  C:\Users\Godwin\AppData\Local\Temp\ccCRBiid.s 			page 9
+
+
+ 399 0030 FB89     		ldrh	r3, [r7, #14]
+  62:User/Hardware/Unitree/crc_ccitt.c **** }
+ 400              		.loc 1 62 1
+ 401 0032 1846     		mov	r0, r3
+ 402 0034 1037     		adds	r7, r7, #16
+ 403              	.LCFI9:
+ 404              		.cfi_def_cfa_offset 8
+ 405 0036 BD46     		mov	sp, r7
+ 406              	.LCFI10:
+ 407              		.cfi_def_cfa_register 13
+ 408              		@ sp needed
+ 409 0038 80BD     		pop	{r7, pc}
+ 410              		.cfi_endproc
+ 411              	.LFE1:
+ 413              		.text
+ 414              	.Letext0:
+ 415              		.file 2 "C:/Users/Godwin/13.2 Rel1/arm-none-eabi/include/machine/_default_types.h"
+ 416              		.file 3 "C:/Users/Godwin/13.2 Rel1/arm-none-eabi/include/sys/_stdint.h"
+ 417              		.file 4 "C:/Users/Godwin/13.2 Rel1/lib/gcc/arm-none-eabi/13.2.1/include/stddef.h"
+ARM GAS  C:\Users\Godwin\AppData\Local\Temp\ccCRBiid.s 			page 10
+
+
+DEFINED SYMBOLS
+                            *ABS*:00000000 crc_ccitt.c
+C:\Users\Godwin\AppData\Local\Temp\ccCRBiid.s:24     .rodata.crc_ccitt_table:00000000 crc_ccitt_table
+C:\Users\Godwin\AppData\Local\Temp\ccCRBiid.s:21     .rodata.crc_ccitt_table:00000000 $d
+C:\Users\Godwin\AppData\Local\Temp\ccCRBiid.s:282    .text.crc_ccitt_byte:00000000 $t
+C:\Users\Godwin\AppData\Local\Temp\ccCRBiid.s:288    .text.crc_ccitt_byte:00000000 crc_ccitt_byte
+C:\Users\Godwin\AppData\Local\Temp\ccCRBiid.s:343    .text.crc_ccitt_byte:00000034 $d
+C:\Users\Godwin\AppData\Local\Temp\ccCRBiid.s:348    .text.crc_ccitt:00000000 $t
+C:\Users\Godwin\AppData\Local\Temp\ccCRBiid.s:354    .text.crc_ccitt:00000000 crc_ccitt
+
+NO UNDEFINED SYMBOLS

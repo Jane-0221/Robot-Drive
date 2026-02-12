@@ -232,8 +232,8 @@ void Eng_arm_Task(void *argument)
     Arm_motor1();
     osDelay(1);
     // Arm_motor2();
-    // osDelay(1);
-    // Arm_motor3();
+    osDelay(1);
+    Arm_motor3();
     // osDelay(1);
     // Arm_motor4();
     osDelay(1);

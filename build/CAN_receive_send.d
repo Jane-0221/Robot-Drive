@@ -40,6 +40,7 @@ build/CAN_receive_send.o: User/BSP/CAN_receive_send.c \
  User/Hardware/dm4310_drv.h Core/Inc/main.h User/BSP/can_receive_send.h \
  User/Hardware/Robstride04.h User/Hardware/arm.h \
  User/Hardware/dm4310_drv.h User/Hardware/Robstride04.h \
+ User/Hardware/Unitree/crc_ccitt.h \
  Middlewares/Third_Party/FreeRTOS/Source/include/FreeRTOS.h \
  Core/Inc/FreeRTOSConfig.h \
  Middlewares/Third_Party/FreeRTOS/Source/include/projdefs.h \
@@ -104,6 +105,7 @@ User/Hardware/Robstride04.h:
 User/Hardware/arm.h:
 User/Hardware/dm4310_drv.h:
 User/Hardware/Robstride04.h:
+User/Hardware/Unitree/crc_ccitt.h:
 Middlewares/Third_Party/FreeRTOS/Source/include/FreeRTOS.h:
 Core/Inc/FreeRTOSConfig.h:
 Middlewares/Third_Party/FreeRTOS/Source/include/projdefs.h:
