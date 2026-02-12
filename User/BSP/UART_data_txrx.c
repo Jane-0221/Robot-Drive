@@ -14,6 +14,7 @@
 #include "string.h"
 #include "fifo.h"
 #include "UART_data_txrx.h"
+#include "gom_protocol.h"
 uint32_t Flag_T13 = 0;
 
 // DMA¿ØÖÆ±äÁ¿
@@ -129,8 +130,8 @@ void HAL_UARTEx_RxEventCallback(UART_HandleTypeDef *huart, uint16_t Size)
   }
   else if (huart == &huart3)
   {
-    HAL_UARTEx_ReceiveToIdle_DMA(huart, UART3_data.rev_data, UART_BUFFER_SIZE);
-    __HAL_DMA_DISABLE_IT(huart->hdmarx, DMA_IT_HT);
+  //  HAL_UART_Receive(&huart1, (uint8_t *)&data.motor_recv_data, sizeof(data.motor_recv_data), 1);
+  //      __HAL_DMA_DISABLE_IT(huart->hdmarx, DMA_IT_HT);
   }
 }
 
