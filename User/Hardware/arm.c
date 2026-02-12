@@ -7,15 +7,13 @@
 #include "gom_protocol.h"
 #include "usart.h"
 
-
 // 宇树
-MotorData_t data = {0};
-// #define RS485_RxMode() (HAL_GPIO_WritePin(RS485_REDE_GPIO_Port, RS485_REDE_Pin, GPIO_PIN_RESET))
-// #define RS485_TxMode() (HAL_GPIO_WritePin(RS485_REDE_GPIO_Port, RS485_REDE_Pin, GPIO_PIN_SET))
-MotorCmd_t cmd = {0};
+MotorData_t YS_8010_data[2] = {0};
+MotorCmd_t YS_8010_cmd[2] = {0};
 HAL_StatusTypeDef tx_res;
 HAL_StatusTypeDef rx_res;
 
+// 达妙
 extern Motor_DM_Status DM_Status[6];
 RobStride_Motor_t motor1; // ID为1的电机对象
 
@@ -50,15 +48,31 @@ void Arm_Init()
   /*                                        宇树                                                  */
 
   // RS485_RxMode();
+
+
+  
   // 1. 初始化指令参数（确保参数在电机允许范围）
-  cmd.id = 3;      // 目标电机ID=3
-  cmd.mode = 1;    // FOC闭环模式（需电机支持）
-  cmd.K_P = 0.02f; // 刚度系数（0~25.599，建议先设5.0）
-  cmd.K_W = 0.0f;  // 阻尼系数（0~25.599，建议先设5.0）
-  cmd.Pos = 100.0f; // 目标位置（rad，先设小值1rad，避免电机动作过大）
-  cmd.W = 0.0f;    // 目标速度（rad/s，先设0）
-  cmd.T = 0.0f;    // 目标扭矩（Nm，先设0，靠位置环驱动）
-                   /*                                        宇树                                                  */
+  YS_8010_cmd[0].id = 2;       // 目标电机ID=3
+  YS_8010_cmd[0].mode = 1;     // FOC闭环模式（需电机支持）
+  YS_8010_cmd[0].K_P = 0.02f;  // 刚度系数（0~25.599，建议先设5.0）
+  YS_8010_cmd[0].K_W = 0.0f;   // 阻尼系数（0~25.599，建议先设5.0）
+  YS_8010_cmd[0].Pos = 100.0f; // 目标位置（rad，先设小值1rad，避免电机动作过大）
+  YS_8010_cmd[0].W = 0.0f;     // 目标速度（rad/s，先设0）
+  YS_8010_cmd[0].T = 0.0f;     // 目标扭矩（Nm，先设0，靠位置环驱动）
+
+  YS_8010_cmd[1].id = 3;       // 目标电机ID=3
+  YS_8010_cmd[1].mode = 1;     // FOC闭环模式（需电机支持）
+  YS_8010_cmd[1].K_P = 0.02f;  // 刚度系数（0~25.599，建议先设5.0）
+  YS_8010_cmd[1].K_W = 0.0f;   // 阻尼系数（0~25.599，建议先设5.0）
+  YS_8010_cmd[1].Pos = 100.0f; // 目标位置（rad，先设小值1rad，避免电机动作过大）
+  YS_8010_cmd[1].W = 0.0f;     // 目标速度（rad/s，先设0）
+  YS_8010_cmd[1].T = 0.0f;     // 目标扭矩（Nm，先设0，靠位置环驱动）
+
+
+
+
+
+  /*                                        宇树                                                  */
 
   /////                                          达妙电机                                     ///////
 
@@ -77,6 +91,8 @@ void Arm_Init()
   pos_motor.MT04 = 0;
   // pos_motor.MT05 = 3;
   /////                                          达妙电机                                     ///////
+
+
 }
 void Arm_motor1()
 {
@@ -84,11 +100,18 @@ void Arm_motor1()
 }
 void Arm_motor3()
 {
+  modify_data(&YS_8010_cmd[0]);
+  HAL_UART_Transmit(&huart3, (uint8_t *)&YS_8010_cmd[0].motor_send_data, sizeof(YS_8010_cmd[0].motor_send_data), 1);
+  // 数据更新
+  HAL_UART_Receive(&huart3, (uint8_t *)&YS_8010_data[0].motor_recv_data, sizeof(YS_8010_data[0].motor_recv_data), 1);
 
-  modify_data(&cmd);
-  HAL_UART_Transmit(&huart3, (uint8_t *)&cmd.motor_send_data, sizeof(cmd.motor_send_data), 1);
-//数据更新
- HAL_UART_Receive(&huart3, (uint8_t *)&data.motor_recv_data, sizeof(data.motor_recv_data), 1);
+
+
+
+  modify_data(&YS_8010_cmd[1]);
+  HAL_UART_Transmit(&huart3, (uint8_t *)&YS_8010_cmd[1].motor_send_data, sizeof(YS_8010_cmd[1].motor_send_data), 1);
+  // 数据更新
+  HAL_UART_Receive(&huart3, (uint8_t *)&YS_8010_data[1].motor_recv_data, sizeof(YS_8010_data[1].motor_recv_data), 1);
 
   // modify_data(&cmd);
 
