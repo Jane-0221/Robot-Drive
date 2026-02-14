@@ -1,4 +1,4 @@
-ARM GAS  C:\Users\Godwin\AppData\Local\Temp\cchKJkZ4.s 			page 1
+ARM GAS  C:\Users\Godwin\AppData\Local\Temp\cc6uamfn.s 			page 1
 
 
    1              		.cpu cortex-m7
@@ -58,7 +58,7 @@ ARM GAS  C:\Users\Godwin\AppData\Local\Temp\cchKJkZ4.s 			page 1
   29:Core/Src/dma.c **** /* Configure DMA                                                              */
   30:Core/Src/dma.c **** /*----------------------------------------------------------------------------*/
   31:Core/Src/dma.c **** 
-ARM GAS  C:\Users\Godwin\AppData\Local\Temp\cchKJkZ4.s 			page 2
+ARM GAS  C:\Users\Godwin\AppData\Local\Temp\cc6uamfn.s 			page 2
 
 
   32:Core/Src/dma.c **** /* USER CODE BEGIN 1 */
@@ -90,12 +90,12 @@ ARM GAS  C:\Users\Godwin\AppData\Local\Temp\cchKJkZ4.s 			page 1
   42:Core/Src/dma.c ****   /* DMA controller clock enable */
   43:Core/Src/dma.c ****   __HAL_RCC_DMA1_CLK_ENABLE();
   44              		.loc 1 43 3
-  45 0006 454B     		ldr	r3, .L2
+  45 0006 3D4B     		ldr	r3, .L2
   46 0008 D3F8D830 		ldr	r3, [r3, #216]
-  47 000c 434A     		ldr	r2, .L2
+  47 000c 3B4A     		ldr	r2, .L2
   48 000e 43F00103 		orr	r3, r3, #1
   49 0012 C2F8D830 		str	r3, [r2, #216]
-  50 0016 414B     		ldr	r3, .L2
+  50 0016 394B     		ldr	r3, .L2
   51 0018 D3F8D830 		ldr	r3, [r3, #216]
   52 001c 03F00103 		and	r3, r3, #1
   53 0020 7B60     		str	r3, [r7, #4]
@@ -104,12 +104,12 @@ ARM GAS  C:\Users\Godwin\AppData\Local\Temp\cchKJkZ4.s 			page 1
   56              	.LBB3:
   44:Core/Src/dma.c ****   __HAL_RCC_DMA2_CLK_ENABLE();
   57              		.loc 1 44 3
-  58 0024 3D4B     		ldr	r3, .L2
+  58 0024 354B     		ldr	r3, .L2
   59 0026 D3F8D830 		ldr	r3, [r3, #216]
-  60 002a 3C4A     		ldr	r2, .L2
+  60 002a 344A     		ldr	r2, .L2
   61 002c 43F00203 		orr	r3, r3, #2
   62 0030 C2F8D830 		str	r3, [r2, #216]
-  63 0034 394B     		ldr	r3, .L2
+  63 0034 314B     		ldr	r3, .L2
   64 0036 D3F8D830 		ldr	r3, [r3, #216]
   65 003a 03F00203 		and	r3, r3, #2
   66 003e 3B60     		str	r3, [r7]
@@ -118,7 +118,7 @@ ARM GAS  C:\Users\Godwin\AppData\Local\Temp\cchKJkZ4.s 			page 1
   45:Core/Src/dma.c **** 
   46:Core/Src/dma.c ****   /* DMA interrupt init */
   47:Core/Src/dma.c ****   /* DMA1_Stream0_IRQn interrupt configuration */
-ARM GAS  C:\Users\Godwin\AppData\Local\Temp\cchKJkZ4.s 			page 3
+ARM GAS  C:\Users\Godwin\AppData\Local\Temp\cc6uamfn.s 			page 3
 
 
   48:Core/Src/dma.c ****   HAL_NVIC_SetPriority(DMA1_Stream0_IRQn, 5, 0);
@@ -178,7 +178,7 @@ ARM GAS  C:\Users\Godwin\AppData\Local\Temp\cchKJkZ4.s 			page 1
   62:Core/Src/dma.c ****   /* DMA1_Stream5_IRQn interrupt configuration */
   63:Core/Src/dma.c ****   HAL_NVIC_SetPriority(DMA1_Stream5_IRQn, 5, 0);
  109              		.loc 1 63 3
-ARM GAS  C:\Users\Godwin\AppData\Local\Temp\cchKJkZ4.s 			page 4
+ARM GAS  C:\Users\Godwin\AppData\Local\Temp\cc6uamfn.s 			page 4
 
 
  110 0092 0022     		movs	r2, #0
@@ -222,85 +222,63 @@ ARM GAS  C:\Users\Godwin\AppData\Local\Temp\cchKJkZ4.s 			page 1
  138              		.loc 1 73 3
  139 00cc 3820     		movs	r0, #56
  140 00ce FFF7FEFF 		bl	HAL_NVIC_EnableIRQ
-  74:Core/Src/dma.c ****   /* DMA2_Stream1_IRQn interrupt configuration */
-  75:Core/Src/dma.c ****   HAL_NVIC_SetPriority(DMA2_Stream1_IRQn, 5, 0);
+  74:Core/Src/dma.c ****   /* DMA2_Stream3_IRQn interrupt configuration */
+  75:Core/Src/dma.c ****   HAL_NVIC_SetPriority(DMA2_Stream3_IRQn, 5, 0);
  141              		.loc 1 75 3
  142 00d2 0022     		movs	r2, #0
  143 00d4 0521     		movs	r1, #5
- 144 00d6 3920     		movs	r0, #57
+ 144 00d6 3B20     		movs	r0, #59
  145 00d8 FFF7FEFF 		bl	HAL_NVIC_SetPriority
-  76:Core/Src/dma.c ****   HAL_NVIC_EnableIRQ(DMA2_Stream1_IRQn);
+  76:Core/Src/dma.c ****   HAL_NVIC_EnableIRQ(DMA2_Stream3_IRQn);
  146              		.loc 1 76 3
- 147 00dc 3920     		movs	r0, #57
+ 147 00dc 3B20     		movs	r0, #59
  148 00de FFF7FEFF 		bl	HAL_NVIC_EnableIRQ
-  77:Core/Src/dma.c ****   /* DMA2_Stream2_IRQn interrupt configuration */
-  78:Core/Src/dma.c ****   HAL_NVIC_SetPriority(DMA2_Stream2_IRQn, 5, 0);
+  77:Core/Src/dma.c ****   /* DMA2_Stream4_IRQn interrupt configuration */
+  78:Core/Src/dma.c ****   HAL_NVIC_SetPriority(DMA2_Stream4_IRQn, 5, 0);
  149              		.loc 1 78 3
  150 00e2 0022     		movs	r2, #0
  151 00e4 0521     		movs	r1, #5
-ARM GAS  C:\Users\Godwin\AppData\Local\Temp\cchKJkZ4.s 			page 5
+ARM GAS  C:\Users\Godwin\AppData\Local\Temp\cc6uamfn.s 			page 5
 
 
- 152 00e6 3A20     		movs	r0, #58
+ 152 00e6 3C20     		movs	r0, #60
  153 00e8 FFF7FEFF 		bl	HAL_NVIC_SetPriority
-  79:Core/Src/dma.c ****   HAL_NVIC_EnableIRQ(DMA2_Stream2_IRQn);
+  79:Core/Src/dma.c ****   HAL_NVIC_EnableIRQ(DMA2_Stream4_IRQn);
  154              		.loc 1 79 3
- 155 00ec 3A20     		movs	r0, #58
+ 155 00ec 3C20     		movs	r0, #60
  156 00ee FFF7FEFF 		bl	HAL_NVIC_EnableIRQ
-  80:Core/Src/dma.c ****   /* DMA2_Stream3_IRQn interrupt configuration */
-  81:Core/Src/dma.c ****   HAL_NVIC_SetPriority(DMA2_Stream3_IRQn, 5, 0);
- 157              		.loc 1 81 3
- 158 00f2 0022     		movs	r2, #0
- 159 00f4 0521     		movs	r1, #5
- 160 00f6 3B20     		movs	r0, #59
- 161 00f8 FFF7FEFF 		bl	HAL_NVIC_SetPriority
-  82:Core/Src/dma.c ****   HAL_NVIC_EnableIRQ(DMA2_Stream3_IRQn);
- 162              		.loc 1 82 3
- 163 00fc 3B20     		movs	r0, #59
- 164 00fe FFF7FEFF 		bl	HAL_NVIC_EnableIRQ
-  83:Core/Src/dma.c ****   /* DMA2_Stream4_IRQn interrupt configuration */
-  84:Core/Src/dma.c ****   HAL_NVIC_SetPriority(DMA2_Stream4_IRQn, 5, 0);
- 165              		.loc 1 84 3
- 166 0102 0022     		movs	r2, #0
- 167 0104 0521     		movs	r1, #5
- 168 0106 3C20     		movs	r0, #60
- 169 0108 FFF7FEFF 		bl	HAL_NVIC_SetPriority
-  85:Core/Src/dma.c ****   HAL_NVIC_EnableIRQ(DMA2_Stream4_IRQn);
- 170              		.loc 1 85 3
- 171 010c 3C20     		movs	r0, #60
- 172 010e FFF7FEFF 		bl	HAL_NVIC_EnableIRQ
-  86:Core/Src/dma.c **** 
-  87:Core/Src/dma.c **** }
- 173              		.loc 1 87 1
- 174 0112 00BF     		nop
- 175 0114 0837     		adds	r7, r7, #8
- 176              	.LCFI3:
- 177              		.cfi_def_cfa_offset 8
- 178 0116 BD46     		mov	sp, r7
- 179              	.LCFI4:
- 180              		.cfi_def_cfa_register 13
- 181              		@ sp needed
- 182 0118 80BD     		pop	{r7, pc}
- 183              	.L3:
- 184 011a 00BF     		.align	2
- 185              	.L2:
- 186 011c 00440258 		.word	1476543488
- 187              		.cfi_endproc
- 188              	.LFE144:
- 190              		.text
- 191              	.Letext0:
- 192              		.file 2 "Drivers/CMSIS/Device/ST/STM32H7xx/Include/stm32h723xx.h"
- 193              		.file 3 "C:/Users/Godwin/13.2 Rel1/arm-none-eabi/include/machine/_default_types.h"
- 194              		.file 4 "C:/Users/Godwin/13.2 Rel1/arm-none-eabi/include/sys/_stdint.h"
- 195              		.file 5 "Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal_cortex.h"
-ARM GAS  C:\Users\Godwin\AppData\Local\Temp\cchKJkZ4.s 			page 6
+  80:Core/Src/dma.c **** 
+  81:Core/Src/dma.c **** }
+ 157              		.loc 1 81 1
+ 158 00f2 00BF     		nop
+ 159 00f4 0837     		adds	r7, r7, #8
+ 160              	.LCFI3:
+ 161              		.cfi_def_cfa_offset 8
+ 162 00f6 BD46     		mov	sp, r7
+ 163              	.LCFI4:
+ 164              		.cfi_def_cfa_register 13
+ 165              		@ sp needed
+ 166 00f8 80BD     		pop	{r7, pc}
+ 167              	.L3:
+ 168 00fa 00BF     		.align	2
+ 169              	.L2:
+ 170 00fc 00440258 		.word	1476543488
+ 171              		.cfi_endproc
+ 172              	.LFE144:
+ 174              		.text
+ 175              	.Letext0:
+ 176              		.file 2 "Drivers/CMSIS/Device/ST/STM32H7xx/Include/stm32h723xx.h"
+ 177              		.file 3 "C:/Users/Godwin/13.2 Rel1/arm-none-eabi/include/machine/_default_types.h"
+ 178              		.file 4 "C:/Users/Godwin/13.2 Rel1/arm-none-eabi/include/sys/_stdint.h"
+ 179              		.file 5 "Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal_cortex.h"
+ARM GAS  C:\Users\Godwin\AppData\Local\Temp\cc6uamfn.s 			page 6
 
 
 DEFINED SYMBOLS
                             *ABS*:00000000 dma.c
-C:\Users\Godwin\AppData\Local\Temp\cchKJkZ4.s:20     .text.MX_DMA_Init:00000000 $t
-C:\Users\Godwin\AppData\Local\Temp\cchKJkZ4.s:26     .text.MX_DMA_Init:00000000 MX_DMA_Init
-C:\Users\Godwin\AppData\Local\Temp\cchKJkZ4.s:186    .text.MX_DMA_Init:0000011c $d
+C:\Users\Godwin\AppData\Local\Temp\cc6uamfn.s:20     .text.MX_DMA_Init:00000000 $t
+C:\Users\Godwin\AppData\Local\Temp\cc6uamfn.s:26     .text.MX_DMA_Init:00000000 MX_DMA_Init
+C:\Users\Godwin\AppData\Local\Temp\cc6uamfn.s:170    .text.MX_DMA_Init:000000fc $d
 
 UNDEFINED SYMBOLS
 HAL_NVIC_SetPriority

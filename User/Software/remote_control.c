@@ -6,6 +6,17 @@
 #include "pid.h"
 #include "UART_data_txrx.h"
 
+
+#define RELAY1_PIN    GPIO_PIN_0
+#define RELAY1_PORT   GPIOA
+#define RELAY2_PIN    GPIO_PIN_2
+#define RELAY2_PORT   GPIOA
+
+// 继电器电平定义：低电平触发吸合，高电平断开
+#define RELAY_ON      GPIO_PIN_RESET  // 继电器吸合（低电平）
+#define RELAY_OFF     GPIO_PIN_SET    // 继电器断开（高电平）
+
+
 int b = 1350;
 int c = 0;
 RC_ctrl_t RC_data;
@@ -26,6 +37,54 @@ float prev_angle = 0.0;                 // 前一次读取的角度
 float current_angle = 0.0;
 float angle_range = 360.0; // 编码器量程
 int sum_arm = 0;
+
+/**
+ * @brief  控制电机正转
+ * @note   IN1(PA0)=低电平（吸合）、IN2(PA1)=高电平（断开）
+ *         电机A端接24V+，B端接24V-，正向转动
+ * @param  无
+ * @retval 无
+ */
+void Motor_Forward(void)
+{
+    // 第一路继电器吸合（低电平）
+    HAL_GPIO_WritePin(RELAY1_PORT, RELAY1_PIN, RELAY_ON);
+    // 第二路继电器断开（高电平）
+    HAL_GPIO_WritePin(RELAY2_PORT, RELAY2_PIN, RELAY_OFF);
+}
+
+/**
+ * @brief  控制电机反转
+ * @note   IN1(PA0)=高电平（断开）、IN2(PA1)=低电平（吸合）
+ *         电机A端接24V-，B端接24V+，反向转动
+ * @param  无
+ * @retval 无
+ */
+void Motor_Reverse(void)
+{
+    // 第一路继电器断开（高电平）
+    HAL_GPIO_WritePin(RELAY1_PORT, RELAY1_PIN, RELAY_OFF);
+    // 第二路继电器吸合（低电平）
+    HAL_GPIO_WritePin(RELAY2_PORT, RELAY2_PIN, RELAY_ON);
+}
+
+
+/**
+ * @brief  控制电机停止
+ * @note   IN1和IN2都为高电平，两路继电器都断开，电机两端悬空，停止转动
+ * @param  无
+ * @retval 无
+ */
+void Motor_Stop(void)
+{
+    // 两路继电器都断开（高电平）
+    HAL_GPIO_WritePin(RELAY1_PORT, RELAY1_PIN, RELAY_OFF);
+    HAL_GPIO_WritePin(RELAY2_PORT, RELAY2_PIN, RELAY_OFF);
+}
+
+
+
+
 
 /**
  * @brief 统一消抖
@@ -64,6 +123,9 @@ void GPIO_init() // 电子开关初始化
     HAL_GPIO_WritePin(GPIOC, GPIO_PIN_10, GPIO_PIN_RESET); // PC10 气泵
 
     HAL_GPIO_WritePin(GPIOC, GPIO_PIN_11, GPIO_PIN_RESET); // PC11，右储矿
+
+    HAL_GPIO_WritePin (GPIOA,GPIO_PIN_0,GPIO_PIN_RESET);
+    HAL_GPIO_WritePin (GPIOA,GPIO_PIN_1,GPIO_PIN_RESET);
 }
 
 void PWM_control_init() // 舵机云台初始化

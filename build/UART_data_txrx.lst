@@ -1,4 +1,4 @@
-ARM GAS  C:\Users\Godwin\AppData\Local\Temp\ccL9eMOI.s 			page 1
+ARM GAS  C:\Users\Godwin\AppData\Local\Temp\ccFuaJ59.s 			page 1
 
 
    1              		.cpu cortex-m7
@@ -58,7 +58,7 @@ ARM GAS  C:\Users\Godwin\AppData\Local\Temp\ccL9eMOI.s 			page 1
   53 0000 00000000 		.space	269
   53      00000000 
   53      00000000 
-ARM GAS  C:\Users\Godwin\AppData\Local\Temp\ccL9eMOI.s 			page 2
+ARM GAS  C:\Users\Godwin\AppData\Local\Temp\ccFuaJ59.s 			page 2
 
 
   53      00000000 
@@ -118,7 +118,7 @@ ARM GAS  C:\Users\Godwin\AppData\Local\Temp\ccL9eMOI.s 			page 1
   27:User/BSP/UART_data_txrx.c **** extern DMA_HandleTypeDef hdma_usart1_tx;
   28:User/BSP/UART_data_txrx.c **** extern DMA_HandleTypeDef hdma_usart2_rx;
   29:User/BSP/UART_data_txrx.c **** extern DMA_HandleTypeDef hdma_usart2_tx;
-ARM GAS  C:\Users\Godwin\AppData\Local\Temp\ccL9eMOI.s 			page 3
+ARM GAS  C:\Users\Godwin\AppData\Local\Temp\ccFuaJ59.s 			page 3
 
 
   30:User/BSP/UART_data_txrx.c **** extern DMA_HandleTypeDef hdma_usart3_rx;
@@ -161,335 +161,326 @@ ARM GAS  C:\Users\Godwin\AppData\Local\Temp\ccL9eMOI.s 			page 1
   88              		.cfi_def_cfa_register 7
   56:User/BSP/UART_data_txrx.c ****   UART_DMA_rxtx_start(&UART1_data, &huart1, &hdma_usart1_rx, &hdma_usart1_rx);
   89              		.loc 1 56 3
-  90 0004 124B     		ldr	r3, .L2
-  91 0006 124A     		ldr	r2, .L2
-  92 0008 1249     		ldr	r1, .L2+4
-  93 000a 1348     		ldr	r0, .L2+8
+  90 0004 0F4B     		ldr	r3, .L2
+  91 0006 0F4A     		ldr	r2, .L2
+  92 0008 0F49     		ldr	r1, .L2+4
+  93 000a 1048     		ldr	r0, .L2+8
   94 000c FFF7FEFF 		bl	UART_DMA_rxtx_start
-  57:User/BSP/UART_data_txrx.c ****   UART_DMA_rxtx_start(&UART2_data, &huart2, &hdma_usart2_rx, &hdma_usart2_rx);
-  95              		.loc 1 57 3
-  96 0010 124B     		ldr	r3, .L2+12
-  97 0012 124A     		ldr	r2, .L2+12
-  98 0014 1249     		ldr	r1, .L2+16
-  99 0016 1348     		ldr	r0, .L2+20
- 100 0018 FFF7FEFF 		bl	UART_DMA_rxtx_start
+  57:User/BSP/UART_data_txrx.c ****  // UART_DMA_rxtx_start(&UART2_data, &huart2, &hdma_usart2_rx, &hdma_usart2_rx);
   58:User/BSP/UART_data_txrx.c ****   UART_DMA_rxtx_start(&UART3_data, &huart3, &hdma_usart3_rx, &hdma_usart3_rx);
- 101              		.loc 1 58 3
- 102 001c 124B     		ldr	r3, .L2+24
- 103 001e 124A     		ldr	r2, .L2+24
- 104 0020 1249     		ldr	r1, .L2+28
-ARM GAS  C:\Users\Godwin\AppData\Local\Temp\ccL9eMOI.s 			page 4
-
-
- 105 0022 1348     		ldr	r0, .L2+32
- 106 0024 FFF7FEFF 		bl	UART_DMA_rxtx_start
+  95              		.loc 1 58 3
+  96 0010 0F4B     		ldr	r3, .L2+12
+  97 0012 0F4A     		ldr	r2, .L2+12
+  98 0014 0F49     		ldr	r1, .L2+16
+  99 0016 1048     		ldr	r0, .L2+20
+ 100 0018 FFF7FEFF 		bl	UART_DMA_rxtx_start
   59:User/BSP/UART_data_txrx.c ****   UART_DMA_rxtx_start(&UART5_data, &huart5, &hdma_uart5_rx, &hdma_uart5_rx);
- 107              		.loc 1 59 3
- 108 0028 124B     		ldr	r3, .L2+36
- 109 002a 124A     		ldr	r2, .L2+36
- 110 002c 1249     		ldr	r1, .L2+40
- 111 002e 1348     		ldr	r0, .L2+44
- 112 0030 FFF7FEFF 		bl	UART_DMA_rxtx_start
+ 101              		.loc 1 59 3
+ 102 001c 0F4B     		ldr	r3, .L2+24
+ 103 001e 0F4A     		ldr	r2, .L2+24
+ARM GAS  C:\Users\Godwin\AppData\Local\Temp\ccFuaJ59.s 			page 4
+
+
+ 104 0020 0F49     		ldr	r1, .L2+28
+ 105 0022 1048     		ldr	r0, .L2+32
+ 106 0024 FFF7FEFF 		bl	UART_DMA_rxtx_start
   60:User/BSP/UART_data_txrx.c ****   UART_DMA_rxtx_start(&UART7_data, &huart7, &hdma_uart7_rx, &hdma_uart7_tx);
- 113              		.loc 1 60 3
- 114 0034 124B     		ldr	r3, .L2+48
- 115 0036 134A     		ldr	r2, .L2+52
- 116 0038 1349     		ldr	r1, .L2+56
- 117 003a 1448     		ldr	r0, .L2+60
- 118 003c FFF7FEFF 		bl	UART_DMA_rxtx_start
+ 107              		.loc 1 60 3
+ 108 0028 0F4B     		ldr	r3, .L2+36
+ 109 002a 104A     		ldr	r2, .L2+40
+ 110 002c 1049     		ldr	r1, .L2+44
+ 111 002e 1148     		ldr	r0, .L2+48
+ 112 0030 FFF7FEFF 		bl	UART_DMA_rxtx_start
   61:User/BSP/UART_data_txrx.c ****   UART_DMA_rxtx_start(&UART10_data, &huart10, &hdma_usart10_rx, &hdma_usart10_tx);
- 119              		.loc 1 61 3
- 120 0040 134B     		ldr	r3, .L2+64
- 121 0042 144A     		ldr	r2, .L2+68
- 122 0044 1449     		ldr	r1, .L2+72
- 123 0046 1548     		ldr	r0, .L2+76
- 124 0048 FFF7FEFF 		bl	UART_DMA_rxtx_start
+ 113              		.loc 1 61 3
+ 114 0034 104B     		ldr	r3, .L2+52
+ 115 0036 114A     		ldr	r2, .L2+56
+ 116 0038 1149     		ldr	r1, .L2+60
+ 117 003a 1248     		ldr	r0, .L2+64
+ 118 003c FFF7FEFF 		bl	UART_DMA_rxtx_start
   62:User/BSP/UART_data_txrx.c **** }
- 125              		.loc 1 62 1
- 126 004c 00BF     		nop
- 127 004e 80BD     		pop	{r7, pc}
- 128              	.L3:
- 129              		.align	2
- 130              	.L2:
- 131 0050 00000000 		.word	hdma_usart1_rx
- 132 0054 00000000 		.word	huart1
- 133 0058 00000000 		.word	UART1_data
- 134 005c 00000000 		.word	hdma_usart2_rx
- 135 0060 00000000 		.word	huart2
- 136 0064 00000000 		.word	UART2_data
- 137 0068 00000000 		.word	hdma_usart3_rx
- 138 006c 00000000 		.word	huart3
- 139 0070 00000000 		.word	UART3_data
- 140 0074 00000000 		.word	hdma_uart5_rx
- 141 0078 00000000 		.word	huart5
- 142 007c 00000000 		.word	UART5_data
- 143 0080 00000000 		.word	hdma_uart7_tx
- 144 0084 00000000 		.word	hdma_uart7_rx
- 145 0088 00000000 		.word	huart7
- 146 008c 00000000 		.word	UART7_data
- 147 0090 00000000 		.word	hdma_usart10_tx
- 148 0094 00000000 		.word	hdma_usart10_rx
- 149 0098 00000000 		.word	huart10
- 150 009c 00000000 		.word	UART10_data
- 151              		.cfi_endproc
- 152              	.LFE147:
- 154              		.section	.text.UART_DMA_rxtx_start,"ax",%progbits
- 155              		.align	1
- 156              		.global	UART_DMA_rxtx_start
- 157              		.syntax unified
- 158              		.thumb
-ARM GAS  C:\Users\Godwin\AppData\Local\Temp\ccL9eMOI.s 			page 5
-
-
- 159              		.thumb_func
- 161              	UART_DMA_rxtx_start:
- 162              	.LFB148:
+ 119              		.loc 1 62 1
+ 120 0040 00BF     		nop
+ 121 0042 80BD     		pop	{r7, pc}
+ 122              	.L3:
+ 123              		.align	2
+ 124              	.L2:
+ 125 0044 00000000 		.word	hdma_usart1_rx
+ 126 0048 00000000 		.word	huart1
+ 127 004c 00000000 		.word	UART1_data
+ 128 0050 00000000 		.word	hdma_usart3_rx
+ 129 0054 00000000 		.word	huart3
+ 130 0058 00000000 		.word	UART3_data
+ 131 005c 00000000 		.word	hdma_uart5_rx
+ 132 0060 00000000 		.word	huart5
+ 133 0064 00000000 		.word	UART5_data
+ 134 0068 00000000 		.word	hdma_uart7_tx
+ 135 006c 00000000 		.word	hdma_uart7_rx
+ 136 0070 00000000 		.word	huart7
+ 137 0074 00000000 		.word	UART7_data
+ 138 0078 00000000 		.word	hdma_usart10_tx
+ 139 007c 00000000 		.word	hdma_usart10_rx
+ 140 0080 00000000 		.word	huart10
+ 141 0084 00000000 		.word	UART10_data
+ 142              		.cfi_endproc
+ 143              	.LFE147:
+ 145              		.section	.text.UART_DMA_rxtx_start,"ax",%progbits
+ 146              		.align	1
+ 147              		.global	UART_DMA_rxtx_start
+ 148              		.syntax unified
+ 149              		.thumb
+ 150              		.thumb_func
+ 152              	UART_DMA_rxtx_start:
+ 153              	.LFB148:
   63:User/BSP/UART_data_txrx.c **** 
   64:User/BSP/UART_data_txrx.c **** /**
   65:User/BSP/UART_data_txrx.c ****  * @brief DMA，串口中断启动，ヾ(?ω?`)o温馨提示，可以在头文件里用宏自定义串口缓冲区大小，
   66:User/BSP/UART_data_txrx.c ****  * @param data 串口整合包指针
   67:User/BSP/UART_data_txrx.c ****  * @param huart 串口指针
   68:User/BSP/UART_data_txrx.c ****  * @param hdma_usart_rx 串口接受dma指针
+ARM GAS  C:\Users\Godwin\AppData\Local\Temp\ccFuaJ59.s 			page 5
+
+
   69:User/BSP/UART_data_txrx.c ****  * @param hdma_usart_tx 串口发送dma指针
   70:User/BSP/UART_data_txrx.c ****  */
   71:User/BSP/UART_data_txrx.c **** void UART_DMA_rxtx_start(transmit_data *data, UART_HandleTypeDef *huart, DMA_HandleTypeDef *hdma_us
   72:User/BSP/UART_data_txrx.c **** {
- 163              		.loc 1 72 1
- 164              		.cfi_startproc
- 165              		@ args = 0, pretend = 0, frame = 16
- 166              		@ frame_needed = 1, uses_anonymous_args = 0
- 167 0000 80B5     		push	{r7, lr}
- 168              	.LCFI2:
- 169              		.cfi_def_cfa_offset 8
- 170              		.cfi_offset 7, -8
- 171              		.cfi_offset 14, -4
- 172 0002 84B0     		sub	sp, sp, #16
- 173              	.LCFI3:
- 174              		.cfi_def_cfa_offset 24
- 175 0004 00AF     		add	r7, sp, #0
- 176              	.LCFI4:
- 177              		.cfi_def_cfa_register 7
- 178 0006 F860     		str	r0, [r7, #12]
- 179 0008 B960     		str	r1, [r7, #8]
- 180 000a 7A60     		str	r2, [r7, #4]
- 181 000c 3B60     		str	r3, [r7]
+ 154              		.loc 1 72 1
+ 155              		.cfi_startproc
+ 156              		@ args = 0, pretend = 0, frame = 16
+ 157              		@ frame_needed = 1, uses_anonymous_args = 0
+ 158 0000 80B5     		push	{r7, lr}
+ 159              	.LCFI2:
+ 160              		.cfi_def_cfa_offset 8
+ 161              		.cfi_offset 7, -8
+ 162              		.cfi_offset 14, -4
+ 163 0002 84B0     		sub	sp, sp, #16
+ 164              	.LCFI3:
+ 165              		.cfi_def_cfa_offset 24
+ 166 0004 00AF     		add	r7, sp, #0
+ 167              	.LCFI4:
+ 168              		.cfi_def_cfa_register 7
+ 169 0006 F860     		str	r0, [r7, #12]
+ 170 0008 B960     		str	r1, [r7, #8]
+ 171 000a 7A60     		str	r2, [r7, #4]
+ 172 000c 3B60     		str	r3, [r7]
   73:User/BSP/UART_data_txrx.c ****   data->huart = huart;                 // 串口控制变量
- 182              		.loc 1 73 15
- 183 000e FB68     		ldr	r3, [r7, #12]
- 184 0010 BA68     		ldr	r2, [r7, #8]
- 185 0012 1A60     		str	r2, [r3]	@ unaligned
+ 173              		.loc 1 73 15
+ 174 000e FB68     		ldr	r3, [r7, #12]
+ 175 0010 BA68     		ldr	r2, [r7, #8]
+ 176 0012 1A60     		str	r2, [r3]	@ unaligned
   74:User/BSP/UART_data_txrx.c ****   data->hdma_usart_rx = hdma_usart_rx; // DMA接收缓冲
- 186              		.loc 1 74 23
- 187 0014 FB68     		ldr	r3, [r7, #12]
- 188 0016 7A68     		ldr	r2, [r7, #4]
- 189 0018 5A60     		str	r2, [r3, #4]	@ unaligned
+ 177              		.loc 1 74 23
+ 178 0014 FB68     		ldr	r3, [r7, #12]
+ 179 0016 7A68     		ldr	r2, [r7, #4]
+ 180 0018 5A60     		str	r2, [r3, #4]	@ unaligned
   75:User/BSP/UART_data_txrx.c ****   data->hdma_usart_tx = hdma_usart_tx; // DMA发送缓冲
- 190              		.loc 1 75 23
- 191 001a FB68     		ldr	r3, [r7, #12]
- 192 001c 3A68     		ldr	r2, [r7]
- 193 001e 9A60     		str	r2, [r3, #8]	@ unaligned
+ 181              		.loc 1 75 23
+ 182 001a FB68     		ldr	r3, [r7, #12]
+ 183 001c 3A68     		ldr	r2, [r7]
+ 184 001e 9A60     		str	r2, [r3, #8]	@ unaligned
   76:User/BSP/UART_data_txrx.c **** 
   77:User/BSP/UART_data_txrx.c ****   HAL_UARTEx_ReceiveToIdle_DMA(huart, data->rev_data, UART_BUFFER_SIZE); // 开启DMA批量数据接受
- 194              		.loc 1 77 43
- 195 0020 FB68     		ldr	r3, [r7, #12]
- 196 0022 0C33     		adds	r3, r3, #12
- 197              		.loc 1 77 3
- 198 0024 4FF48072 		mov	r2, #256
- 199 0028 1946     		mov	r1, r3
- 200 002a B868     		ldr	r0, [r7, #8]
- 201 002c FFF7FEFF 		bl	HAL_UARTEx_ReceiveToIdle_DMA
-ARM GAS  C:\Users\Godwin\AppData\Local\Temp\ccL9eMOI.s 			page 6
-
-
+ 185              		.loc 1 77 43
+ 186 0020 FB68     		ldr	r3, [r7, #12]
+ 187 0022 0C33     		adds	r3, r3, #12
+ 188              		.loc 1 77 3
+ 189 0024 4FF48072 		mov	r2, #256
+ 190 0028 1946     		mov	r1, r3
+ 191 002a B868     		ldr	r0, [r7, #8]
+ 192 002c FFF7FEFF 		bl	HAL_UARTEx_ReceiveToIdle_DMA
   78:User/BSP/UART_data_txrx.c ****   __HAL_DMA_DISABLE_IT(huart->hdmarx, DMA_IT_HT);                        // 关闭接受过半中断
- 202              		.loc 1 78 3
- 203 0030 BB68     		ldr	r3, [r7, #8]
- 204 0032 D3F88030 		ldr	r3, [r3, #128]
- 205 0036 1B68     		ldr	r3, [r3]
- 206 0038 444A     		ldr	r2, .L8
- 207 003a 9342     		cmp	r3, r2
- 208 003c 68D0     		beq	.L5
- 209              		.loc 1 78 3 is_stmt 0 discriminator 2
- 210 003e BB68     		ldr	r3, [r7, #8]
- 211 0040 D3F88030 		ldr	r3, [r3, #128]
- 212 0044 1B68     		ldr	r3, [r3]
- 213 0046 424A     		ldr	r2, .L8+4
- 214 0048 9342     		cmp	r3, r2
- 215 004a 61D0     		beq	.L5
- 216              		.loc 1 78 3 discriminator 4
- 217 004c BB68     		ldr	r3, [r7, #8]
- 218 004e D3F88030 		ldr	r3, [r3, #128]
- 219 0052 1B68     		ldr	r3, [r3]
- 220 0054 3F4A     		ldr	r2, .L8+8
- 221 0056 9342     		cmp	r3, r2
- 222 0058 5AD0     		beq	.L5
- 223              		.loc 1 78 3 discriminator 6
- 224 005a BB68     		ldr	r3, [r7, #8]
- 225 005c D3F88030 		ldr	r3, [r3, #128]
- 226 0060 1B68     		ldr	r3, [r3]
- 227 0062 3D4A     		ldr	r2, .L8+12
- 228 0064 9342     		cmp	r3, r2
- 229 0066 53D0     		beq	.L5
- 230              		.loc 1 78 3 discriminator 8
- 231 0068 BB68     		ldr	r3, [r7, #8]
- 232 006a D3F88030 		ldr	r3, [r3, #128]
- 233 006e 1B68     		ldr	r3, [r3]
- 234 0070 3A4A     		ldr	r2, .L8+16
- 235 0072 9342     		cmp	r3, r2
- 236 0074 4CD0     		beq	.L5
- 237              		.loc 1 78 3 discriminator 10
- 238 0076 BB68     		ldr	r3, [r7, #8]
- 239 0078 D3F88030 		ldr	r3, [r3, #128]
- 240 007c 1B68     		ldr	r3, [r3]
- 241 007e 384A     		ldr	r2, .L8+20
- 242 0080 9342     		cmp	r3, r2
- 243 0082 45D0     		beq	.L5
- 244              		.loc 1 78 3 discriminator 12
- 245 0084 BB68     		ldr	r3, [r7, #8]
- 246 0086 D3F88030 		ldr	r3, [r3, #128]
- 247 008a 1B68     		ldr	r3, [r3]
- 248 008c 354A     		ldr	r2, .L8+24
- 249 008e 9342     		cmp	r3, r2
- 250 0090 3ED0     		beq	.L5
- 251              		.loc 1 78 3 discriminator 14
- 252 0092 BB68     		ldr	r3, [r7, #8]
- 253 0094 D3F88030 		ldr	r3, [r3, #128]
- 254 0098 1B68     		ldr	r3, [r3]
- 255 009a 334A     		ldr	r2, .L8+28
- 256 009c 9342     		cmp	r3, r2
- 257 009e 37D0     		beq	.L5
-ARM GAS  C:\Users\Godwin\AppData\Local\Temp\ccL9eMOI.s 			page 7
+ 193              		.loc 1 78 3
+ 194 0030 BB68     		ldr	r3, [r7, #8]
+ 195 0032 D3F88030 		ldr	r3, [r3, #128]
+ 196 0036 1B68     		ldr	r3, [r3]
+ 197 0038 444A     		ldr	r2, .L8
+ 198 003a 9342     		cmp	r3, r2
+ 199 003c 68D0     		beq	.L5
+ 200              		.loc 1 78 3 is_stmt 0 discriminator 2
+ARM GAS  C:\Users\Godwin\AppData\Local\Temp\ccFuaJ59.s 			page 6
 
 
- 258              		.loc 1 78 3 discriminator 16
- 259 00a0 BB68     		ldr	r3, [r7, #8]
- 260 00a2 D3F88030 		ldr	r3, [r3, #128]
- 261 00a6 1B68     		ldr	r3, [r3]
- 262 00a8 304A     		ldr	r2, .L8+32
- 263 00aa 9342     		cmp	r3, r2
- 264 00ac 30D0     		beq	.L5
- 265              		.loc 1 78 3 discriminator 18
- 266 00ae BB68     		ldr	r3, [r7, #8]
- 267 00b0 D3F88030 		ldr	r3, [r3, #128]
- 268 00b4 1B68     		ldr	r3, [r3]
- 269 00b6 2E4A     		ldr	r2, .L8+36
- 270 00b8 9342     		cmp	r3, r2
- 271 00ba 29D0     		beq	.L5
- 272              		.loc 1 78 3 discriminator 20
- 273 00bc BB68     		ldr	r3, [r7, #8]
- 274 00be D3F88030 		ldr	r3, [r3, #128]
- 275 00c2 1B68     		ldr	r3, [r3]
- 276 00c4 2B4A     		ldr	r2, .L8+40
- 277 00c6 9342     		cmp	r3, r2
- 278 00c8 22D0     		beq	.L5
- 279              		.loc 1 78 3 discriminator 22
- 280 00ca BB68     		ldr	r3, [r7, #8]
- 281 00cc D3F88030 		ldr	r3, [r3, #128]
- 282 00d0 1B68     		ldr	r3, [r3]
- 283 00d2 294A     		ldr	r2, .L8+44
- 284 00d4 9342     		cmp	r3, r2
- 285 00d6 1BD0     		beq	.L5
- 286              		.loc 1 78 3 discriminator 24
- 287 00d8 BB68     		ldr	r3, [r7, #8]
- 288 00da D3F88030 		ldr	r3, [r3, #128]
- 289 00de 1B68     		ldr	r3, [r3]
- 290 00e0 264A     		ldr	r2, .L8+48
- 291 00e2 9342     		cmp	r3, r2
- 292 00e4 14D0     		beq	.L5
- 293              		.loc 1 78 3 discriminator 26
- 294 00e6 BB68     		ldr	r3, [r7, #8]
- 295 00e8 D3F88030 		ldr	r3, [r3, #128]
- 296 00ec 1B68     		ldr	r3, [r3]
- 297 00ee 244A     		ldr	r2, .L8+52
- 298 00f0 9342     		cmp	r3, r2
- 299 00f2 0DD0     		beq	.L5
- 300              		.loc 1 78 3 discriminator 28
- 301 00f4 BB68     		ldr	r3, [r7, #8]
- 302 00f6 D3F88030 		ldr	r3, [r3, #128]
- 303 00fa 1B68     		ldr	r3, [r3]
- 304 00fc 214A     		ldr	r2, .L8+56
- 305 00fe 9342     		cmp	r3, r2
- 306 0100 06D0     		beq	.L5
- 307              		.loc 1 78 3 discriminator 30
- 308 0102 BB68     		ldr	r3, [r7, #8]
- 309 0104 D3F88030 		ldr	r3, [r3, #128]
- 310 0108 1B68     		ldr	r3, [r3]
- 311 010a 1F4A     		ldr	r2, .L8+60
- 312 010c 9342     		cmp	r3, r2
- 313 010e 0CD1     		bne	.L6
- 314              	.L5:
-ARM GAS  C:\Users\Godwin\AppData\Local\Temp\ccL9eMOI.s 			page 8
+ 201 003e BB68     		ldr	r3, [r7, #8]
+ 202 0040 D3F88030 		ldr	r3, [r3, #128]
+ 203 0044 1B68     		ldr	r3, [r3]
+ 204 0046 424A     		ldr	r2, .L8+4
+ 205 0048 9342     		cmp	r3, r2
+ 206 004a 61D0     		beq	.L5
+ 207              		.loc 1 78 3 discriminator 4
+ 208 004c BB68     		ldr	r3, [r7, #8]
+ 209 004e D3F88030 		ldr	r3, [r3, #128]
+ 210 0052 1B68     		ldr	r3, [r3]
+ 211 0054 3F4A     		ldr	r2, .L8+8
+ 212 0056 9342     		cmp	r3, r2
+ 213 0058 5AD0     		beq	.L5
+ 214              		.loc 1 78 3 discriminator 6
+ 215 005a BB68     		ldr	r3, [r7, #8]
+ 216 005c D3F88030 		ldr	r3, [r3, #128]
+ 217 0060 1B68     		ldr	r3, [r3]
+ 218 0062 3D4A     		ldr	r2, .L8+12
+ 219 0064 9342     		cmp	r3, r2
+ 220 0066 53D0     		beq	.L5
+ 221              		.loc 1 78 3 discriminator 8
+ 222 0068 BB68     		ldr	r3, [r7, #8]
+ 223 006a D3F88030 		ldr	r3, [r3, #128]
+ 224 006e 1B68     		ldr	r3, [r3]
+ 225 0070 3A4A     		ldr	r2, .L8+16
+ 226 0072 9342     		cmp	r3, r2
+ 227 0074 4CD0     		beq	.L5
+ 228              		.loc 1 78 3 discriminator 10
+ 229 0076 BB68     		ldr	r3, [r7, #8]
+ 230 0078 D3F88030 		ldr	r3, [r3, #128]
+ 231 007c 1B68     		ldr	r3, [r3]
+ 232 007e 384A     		ldr	r2, .L8+20
+ 233 0080 9342     		cmp	r3, r2
+ 234 0082 45D0     		beq	.L5
+ 235              		.loc 1 78 3 discriminator 12
+ 236 0084 BB68     		ldr	r3, [r7, #8]
+ 237 0086 D3F88030 		ldr	r3, [r3, #128]
+ 238 008a 1B68     		ldr	r3, [r3]
+ 239 008c 354A     		ldr	r2, .L8+24
+ 240 008e 9342     		cmp	r3, r2
+ 241 0090 3ED0     		beq	.L5
+ 242              		.loc 1 78 3 discriminator 14
+ 243 0092 BB68     		ldr	r3, [r7, #8]
+ 244 0094 D3F88030 		ldr	r3, [r3, #128]
+ 245 0098 1B68     		ldr	r3, [r3]
+ 246 009a 334A     		ldr	r2, .L8+28
+ 247 009c 9342     		cmp	r3, r2
+ 248 009e 37D0     		beq	.L5
+ 249              		.loc 1 78 3 discriminator 16
+ 250 00a0 BB68     		ldr	r3, [r7, #8]
+ 251 00a2 D3F88030 		ldr	r3, [r3, #128]
+ 252 00a6 1B68     		ldr	r3, [r3]
+ 253 00a8 304A     		ldr	r2, .L8+32
+ 254 00aa 9342     		cmp	r3, r2
+ 255 00ac 30D0     		beq	.L5
+ 256              		.loc 1 78 3 discriminator 18
+ 257 00ae BB68     		ldr	r3, [r7, #8]
+ARM GAS  C:\Users\Godwin\AppData\Local\Temp\ccFuaJ59.s 			page 7
 
 
- 315              		.loc 1 78 3 discriminator 31
- 316 0110 BB68     		ldr	r3, [r7, #8]
- 317 0112 D3F88030 		ldr	r3, [r3, #128]
- 318 0116 1B68     		ldr	r3, [r3]
- 319 0118 1A68     		ldr	r2, [r3]
- 320 011a BB68     		ldr	r3, [r7, #8]
- 321 011c D3F88030 		ldr	r3, [r3, #128]
- 322 0120 1B68     		ldr	r3, [r3]
- 323 0122 22F00802 		bic	r2, r2, #8
- 324 0126 1A60     		str	r2, [r3]
- 325              		.loc 1 78 3
- 326 0128 0CE0     		b	.L7
- 327              	.L6:
- 328              		.loc 1 78 3 discriminator 32
- 329 012a BB68     		ldr	r3, [r7, #8]
- 330 012c D3F88030 		ldr	r3, [r3, #128]
- 331 0130 1B68     		ldr	r3, [r3]
- 332 0132 1A68     		ldr	r2, [r3]
- 333 0134 BB68     		ldr	r3, [r7, #8]
- 334 0136 D3F88030 		ldr	r3, [r3, #128]
- 335 013a 1B68     		ldr	r3, [r3]
- 336 013c 22F00402 		bic	r2, r2, #4
- 337 0140 1A60     		str	r2, [r3]
+ 258 00b0 D3F88030 		ldr	r3, [r3, #128]
+ 259 00b4 1B68     		ldr	r3, [r3]
+ 260 00b6 2E4A     		ldr	r2, .L8+36
+ 261 00b8 9342     		cmp	r3, r2
+ 262 00ba 29D0     		beq	.L5
+ 263              		.loc 1 78 3 discriminator 20
+ 264 00bc BB68     		ldr	r3, [r7, #8]
+ 265 00be D3F88030 		ldr	r3, [r3, #128]
+ 266 00c2 1B68     		ldr	r3, [r3]
+ 267 00c4 2B4A     		ldr	r2, .L8+40
+ 268 00c6 9342     		cmp	r3, r2
+ 269 00c8 22D0     		beq	.L5
+ 270              		.loc 1 78 3 discriminator 22
+ 271 00ca BB68     		ldr	r3, [r7, #8]
+ 272 00cc D3F88030 		ldr	r3, [r3, #128]
+ 273 00d0 1B68     		ldr	r3, [r3]
+ 274 00d2 294A     		ldr	r2, .L8+44
+ 275 00d4 9342     		cmp	r3, r2
+ 276 00d6 1BD0     		beq	.L5
+ 277              		.loc 1 78 3 discriminator 24
+ 278 00d8 BB68     		ldr	r3, [r7, #8]
+ 279 00da D3F88030 		ldr	r3, [r3, #128]
+ 280 00de 1B68     		ldr	r3, [r3]
+ 281 00e0 264A     		ldr	r2, .L8+48
+ 282 00e2 9342     		cmp	r3, r2
+ 283 00e4 14D0     		beq	.L5
+ 284              		.loc 1 78 3 discriminator 26
+ 285 00e6 BB68     		ldr	r3, [r7, #8]
+ 286 00e8 D3F88030 		ldr	r3, [r3, #128]
+ 287 00ec 1B68     		ldr	r3, [r3]
+ 288 00ee 244A     		ldr	r2, .L8+52
+ 289 00f0 9342     		cmp	r3, r2
+ 290 00f2 0DD0     		beq	.L5
+ 291              		.loc 1 78 3 discriminator 28
+ 292 00f4 BB68     		ldr	r3, [r7, #8]
+ 293 00f6 D3F88030 		ldr	r3, [r3, #128]
+ 294 00fa 1B68     		ldr	r3, [r3]
+ 295 00fc 214A     		ldr	r2, .L8+56
+ 296 00fe 9342     		cmp	r3, r2
+ 297 0100 06D0     		beq	.L5
+ 298              		.loc 1 78 3 discriminator 30
+ 299 0102 BB68     		ldr	r3, [r7, #8]
+ 300 0104 D3F88030 		ldr	r3, [r3, #128]
+ 301 0108 1B68     		ldr	r3, [r3]
+ 302 010a 1F4A     		ldr	r2, .L8+60
+ 303 010c 9342     		cmp	r3, r2
+ 304 010e 0CD1     		bne	.L6
+ 305              	.L5:
+ 306              		.loc 1 78 3 discriminator 31
+ 307 0110 BB68     		ldr	r3, [r7, #8]
+ 308 0112 D3F88030 		ldr	r3, [r3, #128]
+ 309 0116 1B68     		ldr	r3, [r3]
+ 310 0118 1A68     		ldr	r2, [r3]
+ 311 011a BB68     		ldr	r3, [r7, #8]
+ 312 011c D3F88030 		ldr	r3, [r3, #128]
+ 313 0120 1B68     		ldr	r3, [r3]
+ 314 0122 22F00802 		bic	r2, r2, #8
+ARM GAS  C:\Users\Godwin\AppData\Local\Temp\ccFuaJ59.s 			page 8
+
+
+ 315 0126 1A60     		str	r2, [r3]
+ 316              		.loc 1 78 3
+ 317 0128 0CE0     		b	.L7
+ 318              	.L6:
+ 319              		.loc 1 78 3 discriminator 32
+ 320 012a BB68     		ldr	r3, [r7, #8]
+ 321 012c D3F88030 		ldr	r3, [r3, #128]
+ 322 0130 1B68     		ldr	r3, [r3]
+ 323 0132 1A68     		ldr	r2, [r3]
+ 324 0134 BB68     		ldr	r3, [r7, #8]
+ 325 0136 D3F88030 		ldr	r3, [r3, #128]
+ 326 013a 1B68     		ldr	r3, [r3]
+ 327 013c 22F00402 		bic	r2, r2, #4
+ 328 0140 1A60     		str	r2, [r3]
   79:User/BSP/UART_data_txrx.c **** }
- 338              		.loc 1 79 1 is_stmt 1
- 339 0142 00BF     		nop
- 340              	.L7:
- 341 0144 00BF     		nop
- 342 0146 1037     		adds	r7, r7, #16
- 343              	.LCFI5:
- 344              		.cfi_def_cfa_offset 8
- 345 0148 BD46     		mov	sp, r7
- 346              	.LCFI6:
- 347              		.cfi_def_cfa_register 13
- 348              		@ sp needed
- 349 014a 80BD     		pop	{r7, pc}
- 350              	.L9:
- 351              		.align	2
- 352              	.L8:
- 353 014c 10000240 		.word	1073872912
- 354 0150 28000240 		.word	1073872936
- 355 0154 40000240 		.word	1073872960
- 356 0158 58000240 		.word	1073872984
- 357 015c 70000240 		.word	1073873008
- 358 0160 88000240 		.word	1073873032
- 359 0164 A0000240 		.word	1073873056
- 360 0168 B8000240 		.word	1073873080
- 361 016c 10040240 		.word	1073873936
- 362 0170 28040240 		.word	1073873960
- 363 0174 40040240 		.word	1073873984
- 364 0178 58040240 		.word	1073874008
- 365 017c 70040240 		.word	1073874032
- 366 0180 88040240 		.word	1073874056
- 367 0184 A0040240 		.word	1073874080
- 368 0188 B8040240 		.word	1073874104
- 369              		.cfi_endproc
- 370              	.LFE148:
-ARM GAS  C:\Users\Godwin\AppData\Local\Temp\ccL9eMOI.s 			page 9
-
-
- 372              		.section	.text.UART_send_data,"ax",%progbits
- 373              		.align	1
- 374              		.global	UART_send_data
- 375              		.syntax unified
- 376              		.thumb
- 377              		.thumb_func
- 379              	UART_send_data:
- 380              	.LFB149:
+ 329              		.loc 1 79 1 is_stmt 1
+ 330 0142 00BF     		nop
+ 331              	.L7:
+ 332 0144 00BF     		nop
+ 333 0146 1037     		adds	r7, r7, #16
+ 334              	.LCFI5:
+ 335              		.cfi_def_cfa_offset 8
+ 336 0148 BD46     		mov	sp, r7
+ 337              	.LCFI6:
+ 338              		.cfi_def_cfa_register 13
+ 339              		@ sp needed
+ 340 014a 80BD     		pop	{r7, pc}
+ 341              	.L9:
+ 342              		.align	2
+ 343              	.L8:
+ 344 014c 10000240 		.word	1073872912
+ 345 0150 28000240 		.word	1073872936
+ 346 0154 40000240 		.word	1073872960
+ 347 0158 58000240 		.word	1073872984
+ 348 015c 70000240 		.word	1073873008
+ 349 0160 88000240 		.word	1073873032
+ 350 0164 A0000240 		.word	1073873056
+ 351 0168 B8000240 		.word	1073873080
+ 352 016c 10040240 		.word	1073873936
+ 353 0170 28040240 		.word	1073873960
+ 354 0174 40040240 		.word	1073873984
+ 355 0178 58040240 		.word	1073874008
+ 356 017c 70040240 		.word	1073874032
+ 357 0180 88040240 		.word	1073874056
+ 358 0184 A0040240 		.word	1073874080
+ 359 0188 B8040240 		.word	1073874104
+ 360              		.cfi_endproc
+ 361              	.LFE148:
+ 363              		.section	.text.UART_send_data,"ax",%progbits
+ 364              		.align	1
+ 365              		.global	UART_send_data
+ 366              		.syntax unified
+ 367              		.thumb
+ 368              		.thumb_func
+ 370              	UART_send_data:
+ 371              	.LFB149:
   80:User/BSP/UART_data_txrx.c **** 
+ARM GAS  C:\Users\Godwin\AppData\Local\Temp\ccFuaJ59.s 			page 9
+
+
   81:User/BSP/UART_data_txrx.c **** /**
   82:User/BSP/UART_data_txrx.c ****  * @brief 串口发送数据
   83:User/BSP/UART_data_txrx.c ****  *
@@ -499,60 +490,60 @@ ARM GAS  C:\Users\Godwin\AppData\Local\Temp\ccL9eMOI.s 			page 1
   87:User/BSP/UART_data_txrx.c ****  */
   88:User/BSP/UART_data_txrx.c **** void UART_send_data(transmit_data uart, uint8_t data[], uint16_t size)
   89:User/BSP/UART_data_txrx.c **** {
- 381              		.loc 1 89 1
- 382              		.cfi_startproc
- 383              		@ args = 280, pretend = 16, frame = 0
- 384              		@ frame_needed = 1, uses_anonymous_args = 0
- 385 0000 84B0     		sub	sp, sp, #16
- 386              	.LCFI7:
- 387              		.cfi_def_cfa_offset 16
- 388 0002 80B5     		push	{r7, lr}
- 389              	.LCFI8:
- 390              		.cfi_def_cfa_offset 24
- 391              		.cfi_offset 7, -24
- 392              		.cfi_offset 14, -20
- 393 0004 00AF     		add	r7, sp, #0
- 394              	.LCFI9:
- 395              		.cfi_def_cfa_register 7
- 396 0006 07F1080C 		add	ip, r7, #8
- 397 000a 8CE80F00 		stm	ip, {r0, r1, r2, r3}
+ 372              		.loc 1 89 1
+ 373              		.cfi_startproc
+ 374              		@ args = 280, pretend = 16, frame = 0
+ 375              		@ frame_needed = 1, uses_anonymous_args = 0
+ 376 0000 84B0     		sub	sp, sp, #16
+ 377              	.LCFI7:
+ 378              		.cfi_def_cfa_offset 16
+ 379 0002 80B5     		push	{r7, lr}
+ 380              	.LCFI8:
+ 381              		.cfi_def_cfa_offset 24
+ 382              		.cfi_offset 7, -24
+ 383              		.cfi_offset 14, -20
+ 384 0004 00AF     		add	r7, sp, #0
+ 385              	.LCFI9:
+ 386              		.cfi_def_cfa_register 7
+ 387 0006 07F1080C 		add	ip, r7, #8
+ 388 000a 8CE80F00 		stm	ip, {r0, r1, r2, r3}
   90:User/BSP/UART_data_txrx.c ****   //+++++++++++++++//while(HAL_DMA_GetState(UART6_data.hdma_usart_tx) != HAL_DMA_STATE_READY)
   91:User/BSP/UART_data_txrx.c ****   HAL_UART_Transmit_DMA(uart.huart, data, size); // 套娃ヾ(?ω?`)o
- 398              		.loc 1 91 3
- 399 000e BB68     		ldr	r3, [r7, #8]
- 400 0010 B7F81C21 		ldrh	r2, [r7, #284]
- 401 0014 D7F81811 		ldr	r1, [r7, #280]
- 402 0018 1846     		mov	r0, r3
- 403 001a FFF7FEFF 		bl	HAL_UART_Transmit_DMA
+ 389              		.loc 1 91 3
+ 390 000e BB68     		ldr	r3, [r7, #8]
+ 391 0010 B7F81C21 		ldrh	r2, [r7, #284]
+ 392 0014 D7F81811 		ldr	r1, [r7, #280]
+ 393 0018 1846     		mov	r0, r3
+ 394 001a FFF7FEFF 		bl	HAL_UART_Transmit_DMA
   92:User/BSP/UART_data_txrx.c **** }
- 404              		.loc 1 92 1
- 405 001e 00BF     		nop
- 406 0020 BD46     		mov	sp, r7
- 407              	.LCFI10:
- 408              		.cfi_def_cfa_register 13
- 409              		@ sp needed
- 410 0022 BDE88040 		pop	{r7, lr}
- 411              	.LCFI11:
- 412              		.cfi_restore 14
- 413              		.cfi_restore 7
- 414              		.cfi_def_cfa_offset 16
- 415 0026 04B0     		add	sp, sp, #16
- 416              	.LCFI12:
-ARM GAS  C:\Users\Godwin\AppData\Local\Temp\ccL9eMOI.s 			page 10
+ 395              		.loc 1 92 1
+ 396 001e 00BF     		nop
+ 397 0020 BD46     		mov	sp, r7
+ 398              	.LCFI10:
+ 399              		.cfi_def_cfa_register 13
+ 400              		@ sp needed
+ 401 0022 BDE88040 		pop	{r7, lr}
+ 402              	.LCFI11:
+ 403              		.cfi_restore 14
+ 404              		.cfi_restore 7
+ 405              		.cfi_def_cfa_offset 16
+ 406 0026 04B0     		add	sp, sp, #16
+ 407              	.LCFI12:
+ 408              		.cfi_def_cfa_offset 0
+ 409 0028 7047     		bx	lr
+ 410              		.cfi_endproc
+ 411              	.LFE149:
+ 413              		.section	.text.HAL_UARTEx_RxEventCallback,"ax",%progbits
+ 414              		.align	1
+ 415              		.global	HAL_UARTEx_RxEventCallback
+ 416              		.syntax unified
+ 417              		.thumb
+ARM GAS  C:\Users\Godwin\AppData\Local\Temp\ccFuaJ59.s 			page 10
 
 
- 417              		.cfi_def_cfa_offset 0
- 418 0028 7047     		bx	lr
- 419              		.cfi_endproc
- 420              	.LFE149:
- 422              		.section	.text.HAL_UARTEx_RxEventCallback,"ax",%progbits
- 423              		.align	1
- 424              		.global	HAL_UARTEx_RxEventCallback
- 425              		.syntax unified
- 426              		.thumb
- 427              		.thumb_func
- 429              	HAL_UARTEx_RxEventCallback:
- 430              	.LFB150:
+ 418              		.thumb_func
+ 420              	HAL_UARTEx_RxEventCallback:
+ 421              	.LFB150:
   93:User/BSP/UART_data_txrx.c **** 
   94:User/BSP/UART_data_txrx.c **** /**
   95:User/BSP/UART_data_txrx.c ****  * @brief 串口接受空回调函数，用于接受不定长数据，放置数据处理函数
@@ -562,30 +553,30 @@ ARM GAS  C:\Users\Godwin\AppData\Local\Temp\ccL9eMOI.s 			page 1
   99:User/BSP/UART_data_txrx.c ****  */
  100:User/BSP/UART_data_txrx.c **** void HAL_UARTEx_RxEventCallback(UART_HandleTypeDef *huart, uint16_t Size)
  101:User/BSP/UART_data_txrx.c **** {
- 431              		.loc 1 101 1
- 432              		.cfi_startproc
- 433              		@ args = 0, pretend = 0, frame = 8
- 434              		@ frame_needed = 1, uses_anonymous_args = 0
- 435 0000 80B5     		push	{r7, lr}
- 436              	.LCFI13:
- 437              		.cfi_def_cfa_offset 8
- 438              		.cfi_offset 7, -8
- 439              		.cfi_offset 14, -4
- 440 0002 82B0     		sub	sp, sp, #8
- 441              	.LCFI14:
- 442              		.cfi_def_cfa_offset 16
- 443 0004 00AF     		add	r7, sp, #0
- 444              	.LCFI15:
- 445              		.cfi_def_cfa_register 7
- 446 0006 7860     		str	r0, [r7, #4]
- 447 0008 0B46     		mov	r3, r1
- 448 000a 7B80     		strh	r3, [r7, #2]	@ movhi
+ 422              		.loc 1 101 1
+ 423              		.cfi_startproc
+ 424              		@ args = 0, pretend = 0, frame = 8
+ 425              		@ frame_needed = 1, uses_anonymous_args = 0
+ 426 0000 80B5     		push	{r7, lr}
+ 427              	.LCFI13:
+ 428              		.cfi_def_cfa_offset 8
+ 429              		.cfi_offset 7, -8
+ 430              		.cfi_offset 14, -4
+ 431 0002 82B0     		sub	sp, sp, #8
+ 432              	.LCFI14:
+ 433              		.cfi_def_cfa_offset 16
+ 434 0004 00AF     		add	r7, sp, #0
+ 435              	.LCFI15:
+ 436              		.cfi_def_cfa_register 7
+ 437 0006 7860     		str	r0, [r7, #4]
+ 438 0008 0B46     		mov	r3, r1
+ 439 000a 7B80     		strh	r3, [r7, #2]	@ movhi
  102:User/BSP/UART_data_txrx.c ****   if (huart == &huart5) // 遥控器
- 449              		.loc 1 102 6
- 450 000c 7B68     		ldr	r3, [r7, #4]
- 451 000e 954A     		ldr	r2, .L21
- 452 0010 9342     		cmp	r3, r2
- 453 0012 00F06281 		beq	.L20
+ 440              		.loc 1 102 6
+ 441 000c 7B68     		ldr	r3, [r7, #4]
+ 442 000e 534A     		ldr	r2, .L17
+ 443 0010 9342     		cmp	r3, r2
+ 444 0012 00F09E80 		beq	.L16
  103:User/BSP/UART_data_txrx.c ****   {
  104:User/BSP/UART_data_txrx.c ****     // // DT7_decode_data(UART5_data.rev_data);
  105:User/BSP/UART_data_txrx.c ****     // update_sbus(UART5_data.rev_data, &SBUS_CH);
@@ -593,660 +584,478 @@ ARM GAS  C:\Users\Godwin\AppData\Local\Temp\ccL9eMOI.s 			page 1
  107:User/BSP/UART_data_txrx.c ****     // __HAL_DMA_DISABLE_IT(huart->hdmarx, DMA_IT_HT);
  108:User/BSP/UART_data_txrx.c ****   }
  109:User/BSP/UART_data_txrx.c ****   else if (huart == &huart7) // 电管裁判系统
- 454              		.loc 1 109 11
- 455 0016 7B68     		ldr	r3, [r7, #4]
- 456 0018 934A     		ldr	r2, .L21+4
- 457 001a 9342     		cmp	r3, r2
- 458 001c 00F05D81 		beq	.L20
-ARM GAS  C:\Users\Godwin\AppData\Local\Temp\ccL9eMOI.s 			page 11
-
-
+ 445              		.loc 1 109 11
+ 446 0016 7B68     		ldr	r3, [r7, #4]
+ 447 0018 514A     		ldr	r2, .L17+4
+ 448 001a 9342     		cmp	r3, r2
+ 449 001c 00F09980 		beq	.L16
  110:User/BSP/UART_data_txrx.c ****   {
  111:User/BSP/UART_data_txrx.c ****  
  112:User/BSP/UART_data_txrx.c ****   }
  113:User/BSP/UART_data_txrx.c ****   else if (huart == &huart10) // 图传链路裁判系统
- 459              		.loc 1 113 11
- 460 0020 7B68     		ldr	r3, [r7, #4]
- 461 0022 924A     		ldr	r2, .L21+8
- 462 0024 9342     		cmp	r3, r2
- 463 0026 00F05881 		beq	.L20
+ 450              		.loc 1 113 11
+ 451 0020 7B68     		ldr	r3, [r7, #4]
+ 452 0022 504A     		ldr	r2, .L17+8
+ 453 0024 9342     		cmp	r3, r2
+ 454 0026 00F09480 		beq	.L16
+ARM GAS  C:\Users\Godwin\AppData\Local\Temp\ccFuaJ59.s 			page 11
+
+
  114:User/BSP/UART_data_txrx.c ****   {
  115:User/BSP/UART_data_txrx.c **** 
  116:User/BSP/UART_data_txrx.c ****   }
  117:User/BSP/UART_data_txrx.c ****   else if (huart == &huart1)
- 464              		.loc 1 117 11
- 465 002a 7B68     		ldr	r3, [r7, #4]
- 466 002c 904A     		ldr	r2, .L21+12
- 467 002e 9342     		cmp	r3, r2
- 468 0030 40F09080 		bne	.L13
+ 455              		.loc 1 117 11
+ 456 002a 7B68     		ldr	r3, [r7, #4]
+ 457 002c 4E4A     		ldr	r2, .L17+12
+ 458 002e 9342     		cmp	r3, r2
+ 459 0030 40F08F80 		bne	.L16
  118:User/BSP/UART_data_txrx.c ****   {
  119:User/BSP/UART_data_txrx.c ****     if (UART1_data.rev_data[0] == 0xA5)
  120:User/BSP/UART_data_txrx.c ****     {
  121:User/BSP/UART_data_txrx.c ****      
  122:User/BSP/UART_data_txrx.c ****     }
  123:User/BSP/UART_data_txrx.c ****     HAL_UARTEx_ReceiveToIdle_DMA(huart, UART1_data.rev_data, UART_BUFFER_SIZE);
- 469              		.loc 1 123 5
- 470 0034 4FF48072 		mov	r2, #256
- 471 0038 8E49     		ldr	r1, .L21+16
- 472 003a 7868     		ldr	r0, [r7, #4]
- 473 003c FFF7FEFF 		bl	HAL_UARTEx_ReceiveToIdle_DMA
+ 460              		.loc 1 123 5
+ 461 0034 4FF48072 		mov	r2, #256
+ 462 0038 4C49     		ldr	r1, .L17+16
+ 463 003a 7868     		ldr	r0, [r7, #4]
+ 464 003c FFF7FEFF 		bl	HAL_UARTEx_ReceiveToIdle_DMA
  124:User/BSP/UART_data_txrx.c ****     __HAL_DMA_DISABLE_IT(huart->hdmarx, DMA_IT_HT);
- 474              		.loc 1 124 5
- 475 0040 7B68     		ldr	r3, [r7, #4]
- 476 0042 D3F88030 		ldr	r3, [r3, #128]
- 477 0046 1B68     		ldr	r3, [r3]
- 478 0048 8B4A     		ldr	r2, .L21+20
- 479 004a 9342     		cmp	r3, r2
- 480 004c 68D0     		beq	.L14
- 481              		.loc 1 124 5 is_stmt 0 discriminator 2
- 482 004e 7B68     		ldr	r3, [r7, #4]
- 483 0050 D3F88030 		ldr	r3, [r3, #128]
- 484 0054 1B68     		ldr	r3, [r3]
- 485 0056 894A     		ldr	r2, .L21+24
- 486 0058 9342     		cmp	r3, r2
- 487 005a 61D0     		beq	.L14
- 488              		.loc 1 124 5 discriminator 4
- 489 005c 7B68     		ldr	r3, [r7, #4]
- 490 005e D3F88030 		ldr	r3, [r3, #128]
- 491 0062 1B68     		ldr	r3, [r3]
- 492 0064 864A     		ldr	r2, .L21+28
- 493 0066 9342     		cmp	r3, r2
- 494 0068 5AD0     		beq	.L14
- 495              		.loc 1 124 5 discriminator 6
- 496 006a 7B68     		ldr	r3, [r7, #4]
- 497 006c D3F88030 		ldr	r3, [r3, #128]
- 498 0070 1B68     		ldr	r3, [r3]
- 499 0072 844A     		ldr	r2, .L21+32
- 500 0074 9342     		cmp	r3, r2
-ARM GAS  C:\Users\Godwin\AppData\Local\Temp\ccL9eMOI.s 			page 12
+ 465              		.loc 1 124 5
+ 466 0040 7B68     		ldr	r3, [r7, #4]
+ 467 0042 D3F88030 		ldr	r3, [r3, #128]
+ 468 0046 1B68     		ldr	r3, [r3]
+ 469 0048 494A     		ldr	r2, .L17+20
+ 470 004a 9342     		cmp	r3, r2
+ 471 004c 68D0     		beq	.L13
+ 472              		.loc 1 124 5 is_stmt 0 discriminator 2
+ 473 004e 7B68     		ldr	r3, [r7, #4]
+ 474 0050 D3F88030 		ldr	r3, [r3, #128]
+ 475 0054 1B68     		ldr	r3, [r3]
+ 476 0056 474A     		ldr	r2, .L17+24
+ 477 0058 9342     		cmp	r3, r2
+ 478 005a 61D0     		beq	.L13
+ 479              		.loc 1 124 5 discriminator 4
+ 480 005c 7B68     		ldr	r3, [r7, #4]
+ 481 005e D3F88030 		ldr	r3, [r3, #128]
+ 482 0062 1B68     		ldr	r3, [r3]
+ 483 0064 444A     		ldr	r2, .L17+28
+ 484 0066 9342     		cmp	r3, r2
+ 485 0068 5AD0     		beq	.L13
+ 486              		.loc 1 124 5 discriminator 6
+ 487 006a 7B68     		ldr	r3, [r7, #4]
+ 488 006c D3F88030 		ldr	r3, [r3, #128]
+ 489 0070 1B68     		ldr	r3, [r3]
+ 490 0072 424A     		ldr	r2, .L17+32
+ 491 0074 9342     		cmp	r3, r2
+ 492 0076 53D0     		beq	.L13
+ 493              		.loc 1 124 5 discriminator 8
+ 494 0078 7B68     		ldr	r3, [r7, #4]
+ 495 007a D3F88030 		ldr	r3, [r3, #128]
+ 496 007e 1B68     		ldr	r3, [r3]
+ 497 0080 3F4A     		ldr	r2, .L17+36
+ 498 0082 9342     		cmp	r3, r2
+ 499 0084 4CD0     		beq	.L13
+ 500              		.loc 1 124 5 discriminator 10
+ARM GAS  C:\Users\Godwin\AppData\Local\Temp\ccFuaJ59.s 			page 12
 
 
- 501 0076 53D0     		beq	.L14
- 502              		.loc 1 124 5 discriminator 8
- 503 0078 7B68     		ldr	r3, [r7, #4]
- 504 007a D3F88030 		ldr	r3, [r3, #128]
- 505 007e 1B68     		ldr	r3, [r3]
- 506 0080 814A     		ldr	r2, .L21+36
- 507 0082 9342     		cmp	r3, r2
- 508 0084 4CD0     		beq	.L14
- 509              		.loc 1 124 5 discriminator 10
- 510 0086 7B68     		ldr	r3, [r7, #4]
- 511 0088 D3F88030 		ldr	r3, [r3, #128]
- 512 008c 1B68     		ldr	r3, [r3]
- 513 008e 7F4A     		ldr	r2, .L21+40
- 514 0090 9342     		cmp	r3, r2
- 515 0092 45D0     		beq	.L14
- 516              		.loc 1 124 5 discriminator 12
- 517 0094 7B68     		ldr	r3, [r7, #4]
- 518 0096 D3F88030 		ldr	r3, [r3, #128]
- 519 009a 1B68     		ldr	r3, [r3]
- 520 009c 7C4A     		ldr	r2, .L21+44
- 521 009e 9342     		cmp	r3, r2
- 522 00a0 3ED0     		beq	.L14
- 523              		.loc 1 124 5 discriminator 14
- 524 00a2 7B68     		ldr	r3, [r7, #4]
- 525 00a4 D3F88030 		ldr	r3, [r3, #128]
- 526 00a8 1B68     		ldr	r3, [r3]
- 527 00aa 7A4A     		ldr	r2, .L21+48
- 528 00ac 9342     		cmp	r3, r2
- 529 00ae 37D0     		beq	.L14
- 530              		.loc 1 124 5 discriminator 16
- 531 00b0 7B68     		ldr	r3, [r7, #4]
- 532 00b2 D3F88030 		ldr	r3, [r3, #128]
- 533 00b6 1B68     		ldr	r3, [r3]
- 534 00b8 774A     		ldr	r2, .L21+52
- 535 00ba 9342     		cmp	r3, r2
- 536 00bc 30D0     		beq	.L14
- 537              		.loc 1 124 5 discriminator 18
- 538 00be 7B68     		ldr	r3, [r7, #4]
- 539 00c0 D3F88030 		ldr	r3, [r3, #128]
- 540 00c4 1B68     		ldr	r3, [r3]
- 541 00c6 754A     		ldr	r2, .L21+56
- 542 00c8 9342     		cmp	r3, r2
- 543 00ca 29D0     		beq	.L14
- 544              		.loc 1 124 5 discriminator 20
- 545 00cc 7B68     		ldr	r3, [r7, #4]
- 546 00ce D3F88030 		ldr	r3, [r3, #128]
- 547 00d2 1B68     		ldr	r3, [r3]
- 548 00d4 724A     		ldr	r2, .L21+60
- 549 00d6 9342     		cmp	r3, r2
- 550 00d8 22D0     		beq	.L14
- 551              		.loc 1 124 5 discriminator 22
- 552 00da 7B68     		ldr	r3, [r7, #4]
- 553 00dc D3F88030 		ldr	r3, [r3, #128]
- 554 00e0 1B68     		ldr	r3, [r3]
- 555 00e2 704A     		ldr	r2, .L21+64
- 556 00e4 9342     		cmp	r3, r2
- 557 00e6 1BD0     		beq	.L14
-ARM GAS  C:\Users\Godwin\AppData\Local\Temp\ccL9eMOI.s 			page 13
+ 501 0086 7B68     		ldr	r3, [r7, #4]
+ 502 0088 D3F88030 		ldr	r3, [r3, #128]
+ 503 008c 1B68     		ldr	r3, [r3]
+ 504 008e 3D4A     		ldr	r2, .L17+40
+ 505 0090 9342     		cmp	r3, r2
+ 506 0092 45D0     		beq	.L13
+ 507              		.loc 1 124 5 discriminator 12
+ 508 0094 7B68     		ldr	r3, [r7, #4]
+ 509 0096 D3F88030 		ldr	r3, [r3, #128]
+ 510 009a 1B68     		ldr	r3, [r3]
+ 511 009c 3A4A     		ldr	r2, .L17+44
+ 512 009e 9342     		cmp	r3, r2
+ 513 00a0 3ED0     		beq	.L13
+ 514              		.loc 1 124 5 discriminator 14
+ 515 00a2 7B68     		ldr	r3, [r7, #4]
+ 516 00a4 D3F88030 		ldr	r3, [r3, #128]
+ 517 00a8 1B68     		ldr	r3, [r3]
+ 518 00aa 384A     		ldr	r2, .L17+48
+ 519 00ac 9342     		cmp	r3, r2
+ 520 00ae 37D0     		beq	.L13
+ 521              		.loc 1 124 5 discriminator 16
+ 522 00b0 7B68     		ldr	r3, [r7, #4]
+ 523 00b2 D3F88030 		ldr	r3, [r3, #128]
+ 524 00b6 1B68     		ldr	r3, [r3]
+ 525 00b8 354A     		ldr	r2, .L17+52
+ 526 00ba 9342     		cmp	r3, r2
+ 527 00bc 30D0     		beq	.L13
+ 528              		.loc 1 124 5 discriminator 18
+ 529 00be 7B68     		ldr	r3, [r7, #4]
+ 530 00c0 D3F88030 		ldr	r3, [r3, #128]
+ 531 00c4 1B68     		ldr	r3, [r3]
+ 532 00c6 334A     		ldr	r2, .L17+56
+ 533 00c8 9342     		cmp	r3, r2
+ 534 00ca 29D0     		beq	.L13
+ 535              		.loc 1 124 5 discriminator 20
+ 536 00cc 7B68     		ldr	r3, [r7, #4]
+ 537 00ce D3F88030 		ldr	r3, [r3, #128]
+ 538 00d2 1B68     		ldr	r3, [r3]
+ 539 00d4 304A     		ldr	r2, .L17+60
+ 540 00d6 9342     		cmp	r3, r2
+ 541 00d8 22D0     		beq	.L13
+ 542              		.loc 1 124 5 discriminator 22
+ 543 00da 7B68     		ldr	r3, [r7, #4]
+ 544 00dc D3F88030 		ldr	r3, [r3, #128]
+ 545 00e0 1B68     		ldr	r3, [r3]
+ 546 00e2 2E4A     		ldr	r2, .L17+64
+ 547 00e4 9342     		cmp	r3, r2
+ 548 00e6 1BD0     		beq	.L13
+ 549              		.loc 1 124 5 discriminator 24
+ 550 00e8 7B68     		ldr	r3, [r7, #4]
+ 551 00ea D3F88030 		ldr	r3, [r3, #128]
+ 552 00ee 1B68     		ldr	r3, [r3]
+ 553 00f0 2B4A     		ldr	r2, .L17+68
+ 554 00f2 9342     		cmp	r3, r2
+ 555 00f4 14D0     		beq	.L13
+ 556              		.loc 1 124 5 discriminator 26
+ 557 00f6 7B68     		ldr	r3, [r7, #4]
+ARM GAS  C:\Users\Godwin\AppData\Local\Temp\ccFuaJ59.s 			page 13
 
 
- 558              		.loc 1 124 5 discriminator 24
- 559 00e8 7B68     		ldr	r3, [r7, #4]
- 560 00ea D3F88030 		ldr	r3, [r3, #128]
- 561 00ee 1B68     		ldr	r3, [r3]
- 562 00f0 6D4A     		ldr	r2, .L21+68
- 563 00f2 9342     		cmp	r3, r2
- 564 00f4 14D0     		beq	.L14
- 565              		.loc 1 124 5 discriminator 26
- 566 00f6 7B68     		ldr	r3, [r7, #4]
- 567 00f8 D3F88030 		ldr	r3, [r3, #128]
- 568 00fc 1B68     		ldr	r3, [r3]
- 569 00fe 6B4A     		ldr	r2, .L21+72
- 570 0100 9342     		cmp	r3, r2
- 571 0102 0DD0     		beq	.L14
- 572              		.loc 1 124 5 discriminator 28
- 573 0104 7B68     		ldr	r3, [r7, #4]
- 574 0106 D3F88030 		ldr	r3, [r3, #128]
- 575 010a 1B68     		ldr	r3, [r3]
- 576 010c 684A     		ldr	r2, .L21+76
- 577 010e 9342     		cmp	r3, r2
- 578 0110 06D0     		beq	.L14
- 579              		.loc 1 124 5 discriminator 30
- 580 0112 7B68     		ldr	r3, [r7, #4]
- 581 0114 D3F88030 		ldr	r3, [r3, #128]
- 582 0118 1B68     		ldr	r3, [r3]
- 583 011a 664A     		ldr	r2, .L21+80
- 584 011c 9342     		cmp	r3, r2
- 585 011e 0CD1     		bne	.L15
- 586              	.L14:
- 587              		.loc 1 124 5 discriminator 31
- 588 0120 7B68     		ldr	r3, [r7, #4]
- 589 0122 D3F88030 		ldr	r3, [r3, #128]
- 590 0126 1B68     		ldr	r3, [r3]
- 591 0128 1A68     		ldr	r2, [r3]
- 592 012a 7B68     		ldr	r3, [r7, #4]
- 593 012c D3F88030 		ldr	r3, [r3, #128]
- 594 0130 1B68     		ldr	r3, [r3]
- 595 0132 22F00802 		bic	r2, r2, #8
- 596 0136 1A60     		str	r2, [r3]
- 597              		.loc 1 124 5
- 598 0138 CFE0     		b	.L12
- 599              	.L15:
- 600              		.loc 1 124 5 discriminator 32
- 601 013a 7B68     		ldr	r3, [r7, #4]
- 602 013c D3F88030 		ldr	r3, [r3, #128]
- 603 0140 1B68     		ldr	r3, [r3]
- 604 0142 1A68     		ldr	r2, [r3]
- 605 0144 7B68     		ldr	r3, [r7, #4]
- 606 0146 D3F88030 		ldr	r3, [r3, #128]
- 607 014a 1B68     		ldr	r3, [r3]
- 608 014c 22F00402 		bic	r2, r2, #4
- 609 0150 1A60     		str	r2, [r3]
+ 558 00f8 D3F88030 		ldr	r3, [r3, #128]
+ 559 00fc 1B68     		ldr	r3, [r3]
+ 560 00fe 294A     		ldr	r2, .L17+72
+ 561 0100 9342     		cmp	r3, r2
+ 562 0102 0DD0     		beq	.L13
+ 563              		.loc 1 124 5 discriminator 28
+ 564 0104 7B68     		ldr	r3, [r7, #4]
+ 565 0106 D3F88030 		ldr	r3, [r3, #128]
+ 566 010a 1B68     		ldr	r3, [r3]
+ 567 010c 264A     		ldr	r2, .L17+76
+ 568 010e 9342     		cmp	r3, r2
+ 569 0110 06D0     		beq	.L13
+ 570              		.loc 1 124 5 discriminator 30
+ 571 0112 7B68     		ldr	r3, [r7, #4]
+ 572 0114 D3F88030 		ldr	r3, [r3, #128]
+ 573 0118 1B68     		ldr	r3, [r3]
+ 574 011a 244A     		ldr	r2, .L17+80
+ 575 011c 9342     		cmp	r3, r2
+ 576 011e 0CD1     		bne	.L14
+ 577              	.L13:
+ 578              		.loc 1 124 5 discriminator 31
+ 579 0120 7B68     		ldr	r3, [r7, #4]
+ 580 0122 D3F88030 		ldr	r3, [r3, #128]
+ 581 0126 1B68     		ldr	r3, [r3]
+ 582 0128 1A68     		ldr	r2, [r3]
+ 583 012a 7B68     		ldr	r3, [r7, #4]
+ 584 012c D3F88030 		ldr	r3, [r3, #128]
+ 585 0130 1B68     		ldr	r3, [r3]
+ 586 0132 22F00802 		bic	r2, r2, #8
+ 587 0136 1A60     		str	r2, [r3]
  125:User/BSP/UART_data_txrx.c ****   }
- 126:User/BSP/UART_data_txrx.c ****   else if (huart == &huart2)
- 127:User/BSP/UART_data_txrx.c ****   {
- 128:User/BSP/UART_data_txrx.c ****     HAL_UARTEx_ReceiveToIdle_DMA(huart, UART2_data.rev_data, UART_BUFFER_SIZE);
- 129:User/BSP/UART_data_txrx.c ****     __HAL_DMA_DISABLE_IT(huart->hdmarx, DMA_IT_HT);
-ARM GAS  C:\Users\Godwin\AppData\Local\Temp\ccL9eMOI.s 			page 14
-
-
- 130:User/BSP/UART_data_txrx.c ****   }
+ 126:User/BSP/UART_data_txrx.c ****   // else if (huart == &huart2)
+ 127:User/BSP/UART_data_txrx.c ****   // {
+ 128:User/BSP/UART_data_txrx.c ****   //   HAL_UARTEx_ReceiveToIdle_DMA(huart, UART2_data.rev_data, UART_BUFFER_SIZE);
+ 129:User/BSP/UART_data_txrx.c ****   //   __HAL_DMA_DISABLE_IT(huart->hdmarx, DMA_IT_HT);
+ 130:User/BSP/UART_data_txrx.c ****   // }
  131:User/BSP/UART_data_txrx.c ****   else if (huart == &huart3)
  132:User/BSP/UART_data_txrx.c ****   {
  133:User/BSP/UART_data_txrx.c ****   //  HAL_UART_Receive(&huart1, (uint8_t *)&data.motor_recv_data, sizeof(data.motor_recv_data), 1);
  134:User/BSP/UART_data_txrx.c ****   //      __HAL_DMA_DISABLE_IT(huart->hdmarx, DMA_IT_HT);
  135:User/BSP/UART_data_txrx.c ****   }
  136:User/BSP/UART_data_txrx.c **** }
- 610              		.loc 1 136 1 is_stmt 1
- 611 0152 C2E0     		b	.L20
- 612              	.L13:
- 126:User/BSP/UART_data_txrx.c ****   {
- 613              		.loc 1 126 11
- 614 0154 7B68     		ldr	r3, [r7, #4]
- 615 0156 584A     		ldr	r2, .L21+84
- 616 0158 9342     		cmp	r3, r2
- 617 015a 40F0BE80 		bne	.L20
- 128:User/BSP/UART_data_txrx.c ****     __HAL_DMA_DISABLE_IT(huart->hdmarx, DMA_IT_HT);
- 618              		.loc 1 128 5
- 619 015e 4FF48072 		mov	r2, #256
- 620 0162 5649     		ldr	r1, .L21+88
- 621 0164 7868     		ldr	r0, [r7, #4]
- 622 0166 FFF7FEFF 		bl	HAL_UARTEx_ReceiveToIdle_DMA
- 129:User/BSP/UART_data_txrx.c ****   }
- 623              		.loc 1 129 5
- 624 016a 7B68     		ldr	r3, [r7, #4]
- 625 016c D3F88030 		ldr	r3, [r3, #128]
- 626 0170 1B68     		ldr	r3, [r3]
- 627 0172 414A     		ldr	r2, .L21+20
- 628 0174 9342     		cmp	r3, r2
- 629 0176 68D0     		beq	.L17
- 129:User/BSP/UART_data_txrx.c ****   }
- 630              		.loc 1 129 5 is_stmt 0 discriminator 2
- 631 0178 7B68     		ldr	r3, [r7, #4]
- 632 017a D3F88030 		ldr	r3, [r3, #128]
- 633 017e 1B68     		ldr	r3, [r3]
- 634 0180 3E4A     		ldr	r2, .L21+24
- 635 0182 9342     		cmp	r3, r2
- 636 0184 61D0     		beq	.L17
- 129:User/BSP/UART_data_txrx.c ****   }
- 637              		.loc 1 129 5 discriminator 4
- 638 0186 7B68     		ldr	r3, [r7, #4]
- 639 0188 D3F88030 		ldr	r3, [r3, #128]
- 640 018c 1B68     		ldr	r3, [r3]
- 641 018e 3C4A     		ldr	r2, .L21+28
- 642 0190 9342     		cmp	r3, r2
- 643 0192 5AD0     		beq	.L17
- 129:User/BSP/UART_data_txrx.c ****   }
- 644              		.loc 1 129 5 discriminator 6
- 645 0194 7B68     		ldr	r3, [r7, #4]
- 646 0196 D3F88030 		ldr	r3, [r3, #128]
- 647 019a 1B68     		ldr	r3, [r3]
- 648 019c 394A     		ldr	r2, .L21+32
- 649 019e 9342     		cmp	r3, r2
- 650 01a0 53D0     		beq	.L17
- 129:User/BSP/UART_data_txrx.c ****   }
- 651              		.loc 1 129 5 discriminator 8
- 652 01a2 7B68     		ldr	r3, [r7, #4]
-ARM GAS  C:\Users\Godwin\AppData\Local\Temp\ccL9eMOI.s 			page 15
+ 588              		.loc 1 136 1 is_stmt 1
+ 589 0138 0BE0     		b	.L16
+ 590              	.L14:
+ 124:User/BSP/UART_data_txrx.c ****     __HAL_DMA_DISABLE_IT(huart->hdmarx, DMA_IT_HT);
+ 591              		.loc 1 124 5 discriminator 32
+ 592 013a 7B68     		ldr	r3, [r7, #4]
+ 593 013c D3F88030 		ldr	r3, [r3, #128]
+ 594 0140 1B68     		ldr	r3, [r3]
+ 595 0142 1A68     		ldr	r2, [r3]
+ 596 0144 7B68     		ldr	r3, [r7, #4]
+ 597 0146 D3F88030 		ldr	r3, [r3, #128]
+ 598 014a 1B68     		ldr	r3, [r3]
+ 599 014c 22F00402 		bic	r2, r2, #4
+ 600 0150 1A60     		str	r2, [r3]
+ 601              	.L16:
+ARM GAS  C:\Users\Godwin\AppData\Local\Temp\ccFuaJ59.s 			page 14
 
 
- 653 01a4 D3F88030 		ldr	r3, [r3, #128]
- 654 01a8 1B68     		ldr	r3, [r3]
- 655 01aa 374A     		ldr	r2, .L21+36
- 656 01ac 9342     		cmp	r3, r2
- 657 01ae 4CD0     		beq	.L17
- 129:User/BSP/UART_data_txrx.c ****   }
- 658              		.loc 1 129 5 discriminator 10
- 659 01b0 7B68     		ldr	r3, [r7, #4]
- 660 01b2 D3F88030 		ldr	r3, [r3, #128]
- 661 01b6 1B68     		ldr	r3, [r3]
- 662 01b8 344A     		ldr	r2, .L21+40
- 663 01ba 9342     		cmp	r3, r2
- 664 01bc 45D0     		beq	.L17
- 129:User/BSP/UART_data_txrx.c ****   }
- 665              		.loc 1 129 5 discriminator 12
- 666 01be 7B68     		ldr	r3, [r7, #4]
- 667 01c0 D3F88030 		ldr	r3, [r3, #128]
- 668 01c4 1B68     		ldr	r3, [r3]
- 669 01c6 324A     		ldr	r2, .L21+44
- 670 01c8 9342     		cmp	r3, r2
- 671 01ca 3ED0     		beq	.L17
- 129:User/BSP/UART_data_txrx.c ****   }
- 672              		.loc 1 129 5 discriminator 14
- 673 01cc 7B68     		ldr	r3, [r7, #4]
- 674 01ce D3F88030 		ldr	r3, [r3, #128]
- 675 01d2 1B68     		ldr	r3, [r3]
- 676 01d4 2F4A     		ldr	r2, .L21+48
- 677 01d6 9342     		cmp	r3, r2
- 678 01d8 37D0     		beq	.L17
- 129:User/BSP/UART_data_txrx.c ****   }
- 679              		.loc 1 129 5 discriminator 16
- 680 01da 7B68     		ldr	r3, [r7, #4]
- 681 01dc D3F88030 		ldr	r3, [r3, #128]
- 682 01e0 1B68     		ldr	r3, [r3]
- 683 01e2 2D4A     		ldr	r2, .L21+52
- 684 01e4 9342     		cmp	r3, r2
- 685 01e6 30D0     		beq	.L17
- 129:User/BSP/UART_data_txrx.c ****   }
- 686              		.loc 1 129 5 discriminator 18
- 687 01e8 7B68     		ldr	r3, [r7, #4]
- 688 01ea D3F88030 		ldr	r3, [r3, #128]
- 689 01ee 1B68     		ldr	r3, [r3]
- 690 01f0 2A4A     		ldr	r2, .L21+56
- 691 01f2 9342     		cmp	r3, r2
- 692 01f4 29D0     		beq	.L17
- 129:User/BSP/UART_data_txrx.c ****   }
- 693              		.loc 1 129 5 discriminator 20
- 694 01f6 7B68     		ldr	r3, [r7, #4]
- 695 01f8 D3F88030 		ldr	r3, [r3, #128]
- 696 01fc 1B68     		ldr	r3, [r3]
- 697 01fe 284A     		ldr	r2, .L21+60
- 698 0200 9342     		cmp	r3, r2
- 699 0202 22D0     		beq	.L17
- 129:User/BSP/UART_data_txrx.c ****   }
- 700              		.loc 1 129 5 discriminator 22
- 701 0204 7B68     		ldr	r3, [r7, #4]
- 702 0206 D3F88030 		ldr	r3, [r3, #128]
-ARM GAS  C:\Users\Godwin\AppData\Local\Temp\ccL9eMOI.s 			page 16
-
-
- 703 020a 1B68     		ldr	r3, [r3]
- 704 020c 254A     		ldr	r2, .L21+64
- 705 020e 9342     		cmp	r3, r2
- 706 0210 1BD0     		beq	.L17
- 129:User/BSP/UART_data_txrx.c ****   }
- 707              		.loc 1 129 5 discriminator 24
- 708 0212 7B68     		ldr	r3, [r7, #4]
- 709 0214 D3F88030 		ldr	r3, [r3, #128]
- 710 0218 1B68     		ldr	r3, [r3]
- 711 021a 234A     		ldr	r2, .L21+68
- 712 021c 9342     		cmp	r3, r2
- 713 021e 14D0     		beq	.L17
- 129:User/BSP/UART_data_txrx.c ****   }
- 714              		.loc 1 129 5 discriminator 26
- 715 0220 7B68     		ldr	r3, [r7, #4]
- 716 0222 D3F88030 		ldr	r3, [r3, #128]
- 717 0226 1B68     		ldr	r3, [r3]
- 718 0228 204A     		ldr	r2, .L21+72
- 719 022a 9342     		cmp	r3, r2
- 720 022c 0DD0     		beq	.L17
- 129:User/BSP/UART_data_txrx.c ****   }
- 721              		.loc 1 129 5 discriminator 28
- 722 022e 7B68     		ldr	r3, [r7, #4]
- 723 0230 D3F88030 		ldr	r3, [r3, #128]
- 724 0234 1B68     		ldr	r3, [r3]
- 725 0236 1E4A     		ldr	r2, .L21+76
- 726 0238 9342     		cmp	r3, r2
- 727 023a 06D0     		beq	.L17
- 129:User/BSP/UART_data_txrx.c ****   }
- 728              		.loc 1 129 5 discriminator 30
- 729 023c 7B68     		ldr	r3, [r7, #4]
- 730 023e D3F88030 		ldr	r3, [r3, #128]
- 731 0242 1B68     		ldr	r3, [r3]
- 732 0244 1B4A     		ldr	r2, .L21+80
- 733 0246 9342     		cmp	r3, r2
- 734 0248 3AD1     		bne	.L18
- 735              	.L17:
- 129:User/BSP/UART_data_txrx.c ****   }
- 736              		.loc 1 129 5 discriminator 31
- 737 024a 7B68     		ldr	r3, [r7, #4]
- 738 024c D3F88030 		ldr	r3, [r3, #128]
- 739 0250 1B68     		ldr	r3, [r3]
- 740 0252 1A68     		ldr	r2, [r3]
- 741 0254 7B68     		ldr	r3, [r7, #4]
- 742 0256 D3F88030 		ldr	r3, [r3, #128]
- 743 025a 1B68     		ldr	r3, [r3]
- 744 025c 22F00802 		bic	r2, r2, #8
- 745 0260 1A60     		str	r2, [r3]
- 129:User/BSP/UART_data_txrx.c ****   }
- 746              		.loc 1 129 5
- 747 0262 3AE0     		b	.L12
- 748              	.L22:
- 749              		.align	2
- 750              	.L21:
- 751 0264 00000000 		.word	huart5
- 752 0268 00000000 		.word	huart7
- 753 026c 00000000 		.word	huart10
-ARM GAS  C:\Users\Godwin\AppData\Local\Temp\ccL9eMOI.s 			page 17
-
-
- 754 0270 00000000 		.word	huart1
- 755 0274 0C000000 		.word	UART1_data+12
- 756 0278 10000240 		.word	1073872912
- 757 027c 28000240 		.word	1073872936
- 758 0280 40000240 		.word	1073872960
- 759 0284 58000240 		.word	1073872984
- 760 0288 70000240 		.word	1073873008
- 761 028c 88000240 		.word	1073873032
- 762 0290 A0000240 		.word	1073873056
- 763 0294 B8000240 		.word	1073873080
- 764 0298 10040240 		.word	1073873936
- 765 029c 28040240 		.word	1073873960
- 766 02a0 40040240 		.word	1073873984
- 767 02a4 58040240 		.word	1073874008
- 768 02a8 70040240 		.word	1073874032
- 769 02ac 88040240 		.word	1073874056
- 770 02b0 A0040240 		.word	1073874080
- 771 02b4 B8040240 		.word	1073874104
- 772 02b8 00000000 		.word	huart2
- 773 02bc 0C000000 		.word	UART2_data+12
- 774              	.L18:
- 129:User/BSP/UART_data_txrx.c ****   }
- 775              		.loc 1 129 5 discriminator 32
- 776 02c0 7B68     		ldr	r3, [r7, #4]
- 777 02c2 D3F88030 		ldr	r3, [r3, #128]
- 778 02c6 1B68     		ldr	r3, [r3]
- 779 02c8 1A68     		ldr	r2, [r3]
- 780 02ca 7B68     		ldr	r3, [r7, #4]
- 781 02cc D3F88030 		ldr	r3, [r3, #128]
- 782 02d0 1B68     		ldr	r3, [r3]
- 783 02d2 22F00402 		bic	r2, r2, #4
- 784 02d6 1A60     		str	r2, [r3]
- 785              		.loc 1 136 1 is_stmt 1
- 786 02d8 FFE7     		b	.L20
- 787              	.L12:
- 788              	.L20:
- 789 02da 00BF     		nop
- 790 02dc 0837     		adds	r7, r7, #8
- 791              	.LCFI16:
- 792              		.cfi_def_cfa_offset 8
- 793 02de BD46     		mov	sp, r7
- 794              	.LCFI17:
- 795              		.cfi_def_cfa_register 13
- 796              		@ sp needed
- 797 02e0 80BD     		pop	{r7, pc}
- 798              		.cfi_endproc
- 799              	.LFE150:
- 801 02e2 00BF     		.section	.text.HAL_UART_RxCpltCallback,"ax",%progbits
- 802              		.align	1
- 803              		.global	HAL_UART_RxCpltCallback
- 804              		.syntax unified
- 805              		.thumb
- 806              		.thumb_func
- 808              	HAL_UART_RxCpltCallback:
- 809              	.LFB151:
+ 602              		.loc 1 136 1
+ 603 0152 00BF     		nop
+ 604 0154 0837     		adds	r7, r7, #8
+ 605              	.LCFI16:
+ 606              		.cfi_def_cfa_offset 8
+ 607 0156 BD46     		mov	sp, r7
+ 608              	.LCFI17:
+ 609              		.cfi_def_cfa_register 13
+ 610              		@ sp needed
+ 611 0158 80BD     		pop	{r7, pc}
+ 612              	.L18:
+ 613 015a 00BF     		.align	2
+ 614              	.L17:
+ 615 015c 00000000 		.word	huart5
+ 616 0160 00000000 		.word	huart7
+ 617 0164 00000000 		.word	huart10
+ 618 0168 00000000 		.word	huart1
+ 619 016c 0C000000 		.word	UART1_data+12
+ 620 0170 10000240 		.word	1073872912
+ 621 0174 28000240 		.word	1073872936
+ 622 0178 40000240 		.word	1073872960
+ 623 017c 58000240 		.word	1073872984
+ 624 0180 70000240 		.word	1073873008
+ 625 0184 88000240 		.word	1073873032
+ 626 0188 A0000240 		.word	1073873056
+ 627 018c B8000240 		.word	1073873080
+ 628 0190 10040240 		.word	1073873936
+ 629 0194 28040240 		.word	1073873960
+ 630 0198 40040240 		.word	1073873984
+ 631 019c 58040240 		.word	1073874008
+ 632 01a0 70040240 		.word	1073874032
+ 633 01a4 88040240 		.word	1073874056
+ 634 01a8 A0040240 		.word	1073874080
+ 635 01ac B8040240 		.word	1073874104
+ 636              		.cfi_endproc
+ 637              	.LFE150:
+ 639              		.section	.text.HAL_UART_RxCpltCallback,"ax",%progbits
+ 640              		.align	1
+ 641              		.global	HAL_UART_RxCpltCallback
+ 642              		.syntax unified
+ 643              		.thumb
+ 644              		.thumb_func
+ 646              	HAL_UART_RxCpltCallback:
+ 647              	.LFB151:
  137:User/BSP/UART_data_txrx.c **** 
  138:User/BSP/UART_data_txrx.c **** /**
-ARM GAS  C:\Users\Godwin\AppData\Local\Temp\ccL9eMOI.s 			page 18
-
-
  139:User/BSP/UART_data_txrx.c ****  * @brief 串口接受完成中断回调函数，用于接受定长数据
  140:User/BSP/UART_data_txrx.c ****  *
  141:User/BSP/UART_data_txrx.c ****  * @param huart 接受串口号
  142:User/BSP/UART_data_txrx.c ****  */
  143:User/BSP/UART_data_txrx.c **** void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
  144:User/BSP/UART_data_txrx.c **** {
- 810              		.loc 1 144 1
- 811              		.cfi_startproc
- 812              		@ args = 0, pretend = 0, frame = 8
- 813              		@ frame_needed = 1, uses_anonymous_args = 0
- 814              		@ link register save eliminated.
- 815 0000 80B4     		push	{r7}
- 816              	.LCFI18:
- 817              		.cfi_def_cfa_offset 4
- 818              		.cfi_offset 7, -4
- 819 0002 83B0     		sub	sp, sp, #12
- 820              	.LCFI19:
- 821              		.cfi_def_cfa_offset 16
- 822 0004 00AF     		add	r7, sp, #0
- 823              	.LCFI20:
- 824              		.cfi_def_cfa_register 7
- 825 0006 7860     		str	r0, [r7, #4]
+ 648              		.loc 1 144 1
+ 649              		.cfi_startproc
+ 650              		@ args = 0, pretend = 0, frame = 8
+ 651              		@ frame_needed = 1, uses_anonymous_args = 0
+ 652              		@ link register save eliminated.
+ARM GAS  C:\Users\Godwin\AppData\Local\Temp\ccFuaJ59.s 			page 15
+
+
+ 653 0000 80B4     		push	{r7}
+ 654              	.LCFI18:
+ 655              		.cfi_def_cfa_offset 4
+ 656              		.cfi_offset 7, -4
+ 657 0002 83B0     		sub	sp, sp, #12
+ 658              	.LCFI19:
+ 659              		.cfi_def_cfa_offset 16
+ 660 0004 00AF     		add	r7, sp, #0
+ 661              	.LCFI20:
+ 662              		.cfi_def_cfa_register 7
+ 663 0006 7860     		str	r0, [r7, #4]
  145:User/BSP/UART_data_txrx.c **** }
- 826              		.loc 1 145 1
- 827 0008 00BF     		nop
- 828 000a 0C37     		adds	r7, r7, #12
- 829              	.LCFI21:
- 830              		.cfi_def_cfa_offset 4
- 831 000c BD46     		mov	sp, r7
- 832              	.LCFI22:
- 833              		.cfi_def_cfa_register 13
- 834              		@ sp needed
- 835 000e 5DF8047B 		ldr	r7, [sp], #4
- 836              	.LCFI23:
- 837              		.cfi_restore 7
- 838              		.cfi_def_cfa_offset 0
- 839 0012 7047     		bx	lr
- 840              		.cfi_endproc
- 841              	.LFE151:
- 843              		.section	.text.HAL_UART_ErrorCallback,"ax",%progbits
- 844              		.align	1
- 845              		.global	HAL_UART_ErrorCallback
- 846              		.syntax unified
- 847              		.thumb
- 848              		.thumb_func
- 850              	HAL_UART_ErrorCallback:
- 851              	.LFB152:
+ 664              		.loc 1 145 1
+ 665 0008 00BF     		nop
+ 666 000a 0C37     		adds	r7, r7, #12
+ 667              	.LCFI21:
+ 668              		.cfi_def_cfa_offset 4
+ 669 000c BD46     		mov	sp, r7
+ 670              	.LCFI22:
+ 671              		.cfi_def_cfa_register 13
+ 672              		@ sp needed
+ 673 000e 5DF8047B 		ldr	r7, [sp], #4
+ 674              	.LCFI23:
+ 675              		.cfi_restore 7
+ 676              		.cfi_def_cfa_offset 0
+ 677 0012 7047     		bx	lr
+ 678              		.cfi_endproc
+ 679              	.LFE151:
+ 681              		.section	.text.HAL_UART_ErrorCallback,"ax",%progbits
+ 682              		.align	1
+ 683              		.global	HAL_UART_ErrorCallback
+ 684              		.syntax unified
+ 685              		.thumb
+ 686              		.thumb_func
+ 688              	HAL_UART_ErrorCallback:
+ 689              	.LFB152:
  146:User/BSP/UART_data_txrx.c **** 
  147:User/BSP/UART_data_txrx.c **** // 发生错误重启串口
  148:User/BSP/UART_data_txrx.c **** void HAL_UART_ErrorCallback(UART_HandleTypeDef *huart)
  149:User/BSP/UART_data_txrx.c **** {
- 852              		.loc 1 149 1
- 853              		.cfi_startproc
- 854              		@ args = 0, pretend = 0, frame = 8
- 855              		@ frame_needed = 1, uses_anonymous_args = 0
- 856 0000 80B5     		push	{r7, lr}
- 857              	.LCFI24:
-ARM GAS  C:\Users\Godwin\AppData\Local\Temp\ccL9eMOI.s 			page 19
-
-
- 858              		.cfi_def_cfa_offset 8
- 859              		.cfi_offset 7, -8
- 860              		.cfi_offset 14, -4
- 861 0002 82B0     		sub	sp, sp, #8
- 862              	.LCFI25:
- 863              		.cfi_def_cfa_offset 16
- 864 0004 00AF     		add	r7, sp, #0
- 865              	.LCFI26:
- 866              		.cfi_def_cfa_register 7
- 867 0006 7860     		str	r0, [r7, #4]
+ 690              		.loc 1 149 1
+ 691              		.cfi_startproc
+ 692              		@ args = 0, pretend = 0, frame = 8
+ 693              		@ frame_needed = 1, uses_anonymous_args = 0
+ 694 0000 80B5     		push	{r7, lr}
+ 695              	.LCFI24:
+ 696              		.cfi_def_cfa_offset 8
+ 697              		.cfi_offset 7, -8
+ 698              		.cfi_offset 14, -4
+ 699 0002 82B0     		sub	sp, sp, #8
+ 700              	.LCFI25:
+ 701              		.cfi_def_cfa_offset 16
+ 702 0004 00AF     		add	r7, sp, #0
+ 703              	.LCFI26:
+ 704              		.cfi_def_cfa_register 7
+ 705 0006 7860     		str	r0, [r7, #4]
  150:User/BSP/UART_data_txrx.c ****   if (huart == &huart7)
- 868              		.loc 1 150 6
- 869 0008 7B68     		ldr	r3, [r7, #4]
- 870 000a 944A     		ldr	r2, .L41
- 871 000c 9342     		cmp	r3, r2
- 872 000e 40F09080 		bne	.L25
+ARM GAS  C:\Users\Godwin\AppData\Local\Temp\ccFuaJ59.s 			page 16
+
+
+ 706              		.loc 1 150 6
+ 707 0008 7B68     		ldr	r3, [r7, #4]
+ 708 000a 944A     		ldr	r2, .L37
+ 709 000c 9342     		cmp	r3, r2
+ 710 000e 40F09080 		bne	.L21
  151:User/BSP/UART_data_txrx.c ****   {
  152:User/BSP/UART_data_txrx.c ****     HAL_UARTEx_ReceiveToIdle_DMA(&huart7, UART7_data.rev_data, UART_BUFFER_SIZE);
- 873              		.loc 1 152 5
- 874 0012 4FF48072 		mov	r2, #256
- 875 0016 9249     		ldr	r1, .L41+4
- 876 0018 9048     		ldr	r0, .L41
- 877 001a FFF7FEFF 		bl	HAL_UARTEx_ReceiveToIdle_DMA
+ 711              		.loc 1 152 5
+ 712 0012 4FF48072 		mov	r2, #256
+ 713 0016 9249     		ldr	r1, .L37+4
+ 714 0018 9048     		ldr	r0, .L37
+ 715 001a FFF7FEFF 		bl	HAL_UARTEx_ReceiveToIdle_DMA
  153:User/BSP/UART_data_txrx.c ****     __HAL_DMA_DISABLE_IT(huart->hdmarx, DMA_IT_HT);
- 878              		.loc 1 153 5
- 879 001e 7B68     		ldr	r3, [r7, #4]
- 880 0020 D3F88030 		ldr	r3, [r3, #128]
- 881 0024 1B68     		ldr	r3, [r3]
- 882 0026 8F4A     		ldr	r2, .L41+8
- 883 0028 9342     		cmp	r3, r2
- 884 002a 68D0     		beq	.L26
- 885              		.loc 1 153 5 is_stmt 0 discriminator 2
- 886 002c 7B68     		ldr	r3, [r7, #4]
- 887 002e D3F88030 		ldr	r3, [r3, #128]
- 888 0032 1B68     		ldr	r3, [r3]
- 889 0034 8C4A     		ldr	r2, .L41+12
- 890 0036 9342     		cmp	r3, r2
- 891 0038 61D0     		beq	.L26
- 892              		.loc 1 153 5 discriminator 4
- 893 003a 7B68     		ldr	r3, [r7, #4]
- 894 003c D3F88030 		ldr	r3, [r3, #128]
- 895 0040 1B68     		ldr	r3, [r3]
- 896 0042 8A4A     		ldr	r2, .L41+16
- 897 0044 9342     		cmp	r3, r2
- 898 0046 5AD0     		beq	.L26
- 899              		.loc 1 153 5 discriminator 6
- 900 0048 7B68     		ldr	r3, [r7, #4]
- 901 004a D3F88030 		ldr	r3, [r3, #128]
- 902 004e 1B68     		ldr	r3, [r3]
- 903 0050 874A     		ldr	r2, .L41+20
- 904 0052 9342     		cmp	r3, r2
- 905 0054 53D0     		beq	.L26
- 906              		.loc 1 153 5 discriminator 8
- 907 0056 7B68     		ldr	r3, [r7, #4]
- 908 0058 D3F88030 		ldr	r3, [r3, #128]
- 909 005c 1B68     		ldr	r3, [r3]
- 910 005e 854A     		ldr	r2, .L41+24
-ARM GAS  C:\Users\Godwin\AppData\Local\Temp\ccL9eMOI.s 			page 20
+ 716              		.loc 1 153 5
+ 717 001e 7B68     		ldr	r3, [r7, #4]
+ 718 0020 D3F88030 		ldr	r3, [r3, #128]
+ 719 0024 1B68     		ldr	r3, [r3]
+ 720 0026 8F4A     		ldr	r2, .L37+8
+ 721 0028 9342     		cmp	r3, r2
+ 722 002a 68D0     		beq	.L22
+ 723              		.loc 1 153 5 is_stmt 0 discriminator 2
+ 724 002c 7B68     		ldr	r3, [r7, #4]
+ 725 002e D3F88030 		ldr	r3, [r3, #128]
+ 726 0032 1B68     		ldr	r3, [r3]
+ 727 0034 8C4A     		ldr	r2, .L37+12
+ 728 0036 9342     		cmp	r3, r2
+ 729 0038 61D0     		beq	.L22
+ 730              		.loc 1 153 5 discriminator 4
+ 731 003a 7B68     		ldr	r3, [r7, #4]
+ 732 003c D3F88030 		ldr	r3, [r3, #128]
+ 733 0040 1B68     		ldr	r3, [r3]
+ 734 0042 8A4A     		ldr	r2, .L37+16
+ 735 0044 9342     		cmp	r3, r2
+ 736 0046 5AD0     		beq	.L22
+ 737              		.loc 1 153 5 discriminator 6
+ 738 0048 7B68     		ldr	r3, [r7, #4]
+ 739 004a D3F88030 		ldr	r3, [r3, #128]
+ 740 004e 1B68     		ldr	r3, [r3]
+ 741 0050 874A     		ldr	r2, .L37+20
+ 742 0052 9342     		cmp	r3, r2
+ 743 0054 53D0     		beq	.L22
+ 744              		.loc 1 153 5 discriminator 8
+ 745 0056 7B68     		ldr	r3, [r7, #4]
+ 746 0058 D3F88030 		ldr	r3, [r3, #128]
+ 747 005c 1B68     		ldr	r3, [r3]
+ 748 005e 854A     		ldr	r2, .L37+24
+ 749 0060 9342     		cmp	r3, r2
+ 750 0062 4CD0     		beq	.L22
+ 751              		.loc 1 153 5 discriminator 10
+ 752 0064 7B68     		ldr	r3, [r7, #4]
+ 753 0066 D3F88030 		ldr	r3, [r3, #128]
+ 754 006a 1B68     		ldr	r3, [r3]
+ 755 006c 824A     		ldr	r2, .L37+28
+ 756 006e 9342     		cmp	r3, r2
+ 757 0070 45D0     		beq	.L22
+ 758              		.loc 1 153 5 discriminator 12
+ 759 0072 7B68     		ldr	r3, [r7, #4]
+ARM GAS  C:\Users\Godwin\AppData\Local\Temp\ccFuaJ59.s 			page 17
 
 
- 911 0060 9342     		cmp	r3, r2
- 912 0062 4CD0     		beq	.L26
- 913              		.loc 1 153 5 discriminator 10
- 914 0064 7B68     		ldr	r3, [r7, #4]
- 915 0066 D3F88030 		ldr	r3, [r3, #128]
- 916 006a 1B68     		ldr	r3, [r3]
- 917 006c 824A     		ldr	r2, .L41+28
- 918 006e 9342     		cmp	r3, r2
- 919 0070 45D0     		beq	.L26
- 920              		.loc 1 153 5 discriminator 12
- 921 0072 7B68     		ldr	r3, [r7, #4]
- 922 0074 D3F88030 		ldr	r3, [r3, #128]
- 923 0078 1B68     		ldr	r3, [r3]
- 924 007a 804A     		ldr	r2, .L41+32
- 925 007c 9342     		cmp	r3, r2
- 926 007e 3ED0     		beq	.L26
- 927              		.loc 1 153 5 discriminator 14
- 928 0080 7B68     		ldr	r3, [r7, #4]
- 929 0082 D3F88030 		ldr	r3, [r3, #128]
- 930 0086 1B68     		ldr	r3, [r3]
- 931 0088 7D4A     		ldr	r2, .L41+36
- 932 008a 9342     		cmp	r3, r2
- 933 008c 37D0     		beq	.L26
- 934              		.loc 1 153 5 discriminator 16
- 935 008e 7B68     		ldr	r3, [r7, #4]
- 936 0090 D3F88030 		ldr	r3, [r3, #128]
- 937 0094 1B68     		ldr	r3, [r3]
- 938 0096 7B4A     		ldr	r2, .L41+40
- 939 0098 9342     		cmp	r3, r2
- 940 009a 30D0     		beq	.L26
- 941              		.loc 1 153 5 discriminator 18
- 942 009c 7B68     		ldr	r3, [r7, #4]
- 943 009e D3F88030 		ldr	r3, [r3, #128]
- 944 00a2 1B68     		ldr	r3, [r3]
- 945 00a4 784A     		ldr	r2, .L41+44
- 946 00a6 9342     		cmp	r3, r2
- 947 00a8 29D0     		beq	.L26
- 948              		.loc 1 153 5 discriminator 20
- 949 00aa 7B68     		ldr	r3, [r7, #4]
- 950 00ac D3F88030 		ldr	r3, [r3, #128]
- 951 00b0 1B68     		ldr	r3, [r3]
- 952 00b2 764A     		ldr	r2, .L41+48
- 953 00b4 9342     		cmp	r3, r2
- 954 00b6 22D0     		beq	.L26
- 955              		.loc 1 153 5 discriminator 22
- 956 00b8 7B68     		ldr	r3, [r7, #4]
- 957 00ba D3F88030 		ldr	r3, [r3, #128]
- 958 00be 1B68     		ldr	r3, [r3]
- 959 00c0 734A     		ldr	r2, .L41+52
- 960 00c2 9342     		cmp	r3, r2
- 961 00c4 1BD0     		beq	.L26
- 962              		.loc 1 153 5 discriminator 24
- 963 00c6 7B68     		ldr	r3, [r7, #4]
- 964 00c8 D3F88030 		ldr	r3, [r3, #128]
- 965 00cc 1B68     		ldr	r3, [r3]
- 966 00ce 714A     		ldr	r2, .L41+56
- 967 00d0 9342     		cmp	r3, r2
-ARM GAS  C:\Users\Godwin\AppData\Local\Temp\ccL9eMOI.s 			page 21
+ 760 0074 D3F88030 		ldr	r3, [r3, #128]
+ 761 0078 1B68     		ldr	r3, [r3]
+ 762 007a 804A     		ldr	r2, .L37+32
+ 763 007c 9342     		cmp	r3, r2
+ 764 007e 3ED0     		beq	.L22
+ 765              		.loc 1 153 5 discriminator 14
+ 766 0080 7B68     		ldr	r3, [r7, #4]
+ 767 0082 D3F88030 		ldr	r3, [r3, #128]
+ 768 0086 1B68     		ldr	r3, [r3]
+ 769 0088 7D4A     		ldr	r2, .L37+36
+ 770 008a 9342     		cmp	r3, r2
+ 771 008c 37D0     		beq	.L22
+ 772              		.loc 1 153 5 discriminator 16
+ 773 008e 7B68     		ldr	r3, [r7, #4]
+ 774 0090 D3F88030 		ldr	r3, [r3, #128]
+ 775 0094 1B68     		ldr	r3, [r3]
+ 776 0096 7B4A     		ldr	r2, .L37+40
+ 777 0098 9342     		cmp	r3, r2
+ 778 009a 30D0     		beq	.L22
+ 779              		.loc 1 153 5 discriminator 18
+ 780 009c 7B68     		ldr	r3, [r7, #4]
+ 781 009e D3F88030 		ldr	r3, [r3, #128]
+ 782 00a2 1B68     		ldr	r3, [r3]
+ 783 00a4 784A     		ldr	r2, .L37+44
+ 784 00a6 9342     		cmp	r3, r2
+ 785 00a8 29D0     		beq	.L22
+ 786              		.loc 1 153 5 discriminator 20
+ 787 00aa 7B68     		ldr	r3, [r7, #4]
+ 788 00ac D3F88030 		ldr	r3, [r3, #128]
+ 789 00b0 1B68     		ldr	r3, [r3]
+ 790 00b2 764A     		ldr	r2, .L37+48
+ 791 00b4 9342     		cmp	r3, r2
+ 792 00b6 22D0     		beq	.L22
+ 793              		.loc 1 153 5 discriminator 22
+ 794 00b8 7B68     		ldr	r3, [r7, #4]
+ 795 00ba D3F88030 		ldr	r3, [r3, #128]
+ 796 00be 1B68     		ldr	r3, [r3]
+ 797 00c0 734A     		ldr	r2, .L37+52
+ 798 00c2 9342     		cmp	r3, r2
+ 799 00c4 1BD0     		beq	.L22
+ 800              		.loc 1 153 5 discriminator 24
+ 801 00c6 7B68     		ldr	r3, [r7, #4]
+ 802 00c8 D3F88030 		ldr	r3, [r3, #128]
+ 803 00cc 1B68     		ldr	r3, [r3]
+ 804 00ce 714A     		ldr	r2, .L37+56
+ 805 00d0 9342     		cmp	r3, r2
+ 806 00d2 14D0     		beq	.L22
+ 807              		.loc 1 153 5 discriminator 26
+ 808 00d4 7B68     		ldr	r3, [r7, #4]
+ 809 00d6 D3F88030 		ldr	r3, [r3, #128]
+ 810 00da 1B68     		ldr	r3, [r3]
+ 811 00dc 6E4A     		ldr	r2, .L37+60
+ 812 00de 9342     		cmp	r3, r2
+ 813 00e0 0DD0     		beq	.L22
+ 814              		.loc 1 153 5 discriminator 28
+ 815 00e2 7B68     		ldr	r3, [r7, #4]
+ 816 00e4 D3F88030 		ldr	r3, [r3, #128]
+ARM GAS  C:\Users\Godwin\AppData\Local\Temp\ccFuaJ59.s 			page 18
 
 
- 968 00d2 14D0     		beq	.L26
- 969              		.loc 1 153 5 discriminator 26
- 970 00d4 7B68     		ldr	r3, [r7, #4]
- 971 00d6 D3F88030 		ldr	r3, [r3, #128]
- 972 00da 1B68     		ldr	r3, [r3]
- 973 00dc 6E4A     		ldr	r2, .L41+60
- 974 00de 9342     		cmp	r3, r2
- 975 00e0 0DD0     		beq	.L26
- 976              		.loc 1 153 5 discriminator 28
- 977 00e2 7B68     		ldr	r3, [r7, #4]
- 978 00e4 D3F88030 		ldr	r3, [r3, #128]
- 979 00e8 1B68     		ldr	r3, [r3]
- 980 00ea 6C4A     		ldr	r2, .L41+64
- 981 00ec 9342     		cmp	r3, r2
- 982 00ee 06D0     		beq	.L26
- 983              		.loc 1 153 5 discriminator 30
- 984 00f0 7B68     		ldr	r3, [r7, #4]
- 985 00f2 D3F88030 		ldr	r3, [r3, #128]
- 986 00f6 1B68     		ldr	r3, [r3]
- 987 00f8 694A     		ldr	r2, .L41+68
- 988 00fa 9342     		cmp	r3, r2
- 989 00fc 0CD1     		bne	.L27
- 990              	.L26:
- 991              		.loc 1 153 5 discriminator 31
- 992 00fe 7B68     		ldr	r3, [r7, #4]
- 993 0100 D3F88030 		ldr	r3, [r3, #128]
- 994 0104 1B68     		ldr	r3, [r3]
- 995 0106 1A68     		ldr	r2, [r3]
- 996 0108 7B68     		ldr	r3, [r7, #4]
- 997 010a D3F88030 		ldr	r3, [r3, #128]
- 998 010e 1B68     		ldr	r3, [r3]
- 999 0110 22F00802 		bic	r2, r2, #8
- 1000 0114 1A60     		str	r2, [r3]
- 1001              		.loc 1 153 5
- 1002 0116 F3E1     		b	.L29
- 1003              	.L27:
- 1004              		.loc 1 153 5 discriminator 32
- 1005 0118 7B68     		ldr	r3, [r7, #4]
- 1006 011a D3F88030 		ldr	r3, [r3, #128]
- 1007 011e 1B68     		ldr	r3, [r3]
- 1008 0120 1A68     		ldr	r2, [r3]
- 1009 0122 7B68     		ldr	r3, [r7, #4]
- 1010 0124 D3F88030 		ldr	r3, [r3, #128]
- 1011 0128 1B68     		ldr	r3, [r3]
- 1012 012a 22F00402 		bic	r2, r2, #4
- 1013 012e 1A60     		str	r2, [r3]
+ 817 00e8 1B68     		ldr	r3, [r3]
+ 818 00ea 6C4A     		ldr	r2, .L37+64
+ 819 00ec 9342     		cmp	r3, r2
+ 820 00ee 06D0     		beq	.L22
+ 821              		.loc 1 153 5 discriminator 30
+ 822 00f0 7B68     		ldr	r3, [r7, #4]
+ 823 00f2 D3F88030 		ldr	r3, [r3, #128]
+ 824 00f6 1B68     		ldr	r3, [r3]
+ 825 00f8 694A     		ldr	r2, .L37+68
+ 826 00fa 9342     		cmp	r3, r2
+ 827 00fc 0CD1     		bne	.L23
+ 828              	.L22:
+ 829              		.loc 1 153 5 discriminator 31
+ 830 00fe 7B68     		ldr	r3, [r7, #4]
+ 831 0100 D3F88030 		ldr	r3, [r3, #128]
+ 832 0104 1B68     		ldr	r3, [r3]
+ 833 0106 1A68     		ldr	r2, [r3]
+ 834 0108 7B68     		ldr	r3, [r7, #4]
+ 835 010a D3F88030 		ldr	r3, [r3, #128]
+ 836 010e 1B68     		ldr	r3, [r3]
+ 837 0110 22F00802 		bic	r2, r2, #8
+ 838 0114 1A60     		str	r2, [r3]
+ 839              		.loc 1 153 5
+ 840 0116 F3E1     		b	.L25
+ 841              	.L23:
+ 842              		.loc 1 153 5 discriminator 32
+ 843 0118 7B68     		ldr	r3, [r7, #4]
+ 844 011a D3F88030 		ldr	r3, [r3, #128]
+ 845 011e 1B68     		ldr	r3, [r3]
+ 846 0120 1A68     		ldr	r2, [r3]
+ 847 0122 7B68     		ldr	r3, [r7, #4]
+ 848 0124 D3F88030 		ldr	r3, [r3, #128]
+ 849 0128 1B68     		ldr	r3, [r3]
+ 850 012a 22F00402 		bic	r2, r2, #4
+ 851 012e 1A60     		str	r2, [r3]
  154:User/BSP/UART_data_txrx.c ****   }
  155:User/BSP/UART_data_txrx.c ****   else if (huart == &huart10)
  156:User/BSP/UART_data_txrx.c ****   {
@@ -1258,671 +1067,668 @@ ARM GAS  C:\Users\Godwin\AppData\Local\Temp\ccL9eMOI.s 			page 1
  162:User/BSP/UART_data_txrx.c ****     HAL_UARTEx_ReceiveToIdle_DMA(&huart5, UART5_data.rev_data, UART_BUFFER_SIZE);
  163:User/BSP/UART_data_txrx.c ****     __HAL_DMA_DISABLE_IT(huart->hdmarx, DMA_IT_HT);
  164:User/BSP/UART_data_txrx.c ****   }
-ARM GAS  C:\Users\Godwin\AppData\Local\Temp\ccL9eMOI.s 			page 22
-
-
  165:User/BSP/UART_data_txrx.c ****   else if (huart == &huart1)
  166:User/BSP/UART_data_txrx.c ****   {
  167:User/BSP/UART_data_txrx.c ****     HAL_UARTEx_ReceiveToIdle_DMA(&huart1, UART1_data.rev_data, UART_BUFFER_SIZE);
  168:User/BSP/UART_data_txrx.c ****     __HAL_DMA_DISABLE_IT(huart->hdmarx, DMA_IT_HT);
  169:User/BSP/UART_data_txrx.c ****   }
  170:User/BSP/UART_data_txrx.c **** }
- 1014              		.loc 1 170 1 is_stmt 1
- 1015 0130 E6E1     		b	.L40
- 1016              	.L25:
+ 852              		.loc 1 170 1 is_stmt 1
+ 853 0130 E6E1     		b	.L36
+ 854              	.L21:
  155:User/BSP/UART_data_txrx.c ****   {
- 1017              		.loc 1 155 11
- 1018 0132 7B68     		ldr	r3, [r7, #4]
- 1019 0134 5B4A     		ldr	r2, .L41+72
- 1020 0136 9342     		cmp	r3, r2
- 1021 0138 40F0B880 		bne	.L30
+ 855              		.loc 1 155 11
+ARM GAS  C:\Users\Godwin\AppData\Local\Temp\ccFuaJ59.s 			page 19
+
+
+ 856 0132 7B68     		ldr	r3, [r7, #4]
+ 857 0134 5B4A     		ldr	r2, .L37+72
+ 858 0136 9342     		cmp	r3, r2
+ 859 0138 40F0B880 		bne	.L26
  157:User/BSP/UART_data_txrx.c ****     __HAL_DMA_DISABLE_IT(huart->hdmarx, DMA_IT_HT);
- 1022              		.loc 1 157 5
- 1023 013c 4FF48072 		mov	r2, #256
- 1024 0140 5949     		ldr	r1, .L41+76
- 1025 0142 5848     		ldr	r0, .L41+72
- 1026 0144 FFF7FEFF 		bl	HAL_UARTEx_ReceiveToIdle_DMA
+ 860              		.loc 1 157 5
+ 861 013c 4FF48072 		mov	r2, #256
+ 862 0140 5949     		ldr	r1, .L37+76
+ 863 0142 5848     		ldr	r0, .L37+72
+ 864 0144 FFF7FEFF 		bl	HAL_UARTEx_ReceiveToIdle_DMA
  158:User/BSP/UART_data_txrx.c ****   }
- 1027              		.loc 1 158 5
- 1028 0148 7B68     		ldr	r3, [r7, #4]
- 1029 014a D3F88030 		ldr	r3, [r3, #128]
- 1030 014e 1B68     		ldr	r3, [r3]
- 1031 0150 444A     		ldr	r2, .L41+8
- 1032 0152 9342     		cmp	r3, r2
- 1033 0154 68D0     		beq	.L31
+ 865              		.loc 1 158 5
+ 866 0148 7B68     		ldr	r3, [r7, #4]
+ 867 014a D3F88030 		ldr	r3, [r3, #128]
+ 868 014e 1B68     		ldr	r3, [r3]
+ 869 0150 444A     		ldr	r2, .L37+8
+ 870 0152 9342     		cmp	r3, r2
+ 871 0154 68D0     		beq	.L27
  158:User/BSP/UART_data_txrx.c ****   }
- 1034              		.loc 1 158 5 is_stmt 0 discriminator 2
- 1035 0156 7B68     		ldr	r3, [r7, #4]
- 1036 0158 D3F88030 		ldr	r3, [r3, #128]
- 1037 015c 1B68     		ldr	r3, [r3]
- 1038 015e 424A     		ldr	r2, .L41+12
- 1039 0160 9342     		cmp	r3, r2
- 1040 0162 61D0     		beq	.L31
+ 872              		.loc 1 158 5 is_stmt 0 discriminator 2
+ 873 0156 7B68     		ldr	r3, [r7, #4]
+ 874 0158 D3F88030 		ldr	r3, [r3, #128]
+ 875 015c 1B68     		ldr	r3, [r3]
+ 876 015e 424A     		ldr	r2, .L37+12
+ 877 0160 9342     		cmp	r3, r2
+ 878 0162 61D0     		beq	.L27
  158:User/BSP/UART_data_txrx.c ****   }
- 1041              		.loc 1 158 5 discriminator 4
- 1042 0164 7B68     		ldr	r3, [r7, #4]
- 1043 0166 D3F88030 		ldr	r3, [r3, #128]
- 1044 016a 1B68     		ldr	r3, [r3]
- 1045 016c 3F4A     		ldr	r2, .L41+16
- 1046 016e 9342     		cmp	r3, r2
- 1047 0170 5AD0     		beq	.L31
+ 879              		.loc 1 158 5 discriminator 4
+ 880 0164 7B68     		ldr	r3, [r7, #4]
+ 881 0166 D3F88030 		ldr	r3, [r3, #128]
+ 882 016a 1B68     		ldr	r3, [r3]
+ 883 016c 3F4A     		ldr	r2, .L37+16
+ 884 016e 9342     		cmp	r3, r2
+ 885 0170 5AD0     		beq	.L27
  158:User/BSP/UART_data_txrx.c ****   }
- 1048              		.loc 1 158 5 discriminator 6
- 1049 0172 7B68     		ldr	r3, [r7, #4]
- 1050 0174 D3F88030 		ldr	r3, [r3, #128]
- 1051 0178 1B68     		ldr	r3, [r3]
- 1052 017a 3D4A     		ldr	r2, .L41+20
- 1053 017c 9342     		cmp	r3, r2
- 1054 017e 53D0     		beq	.L31
+ 886              		.loc 1 158 5 discriminator 6
+ 887 0172 7B68     		ldr	r3, [r7, #4]
+ 888 0174 D3F88030 		ldr	r3, [r3, #128]
+ 889 0178 1B68     		ldr	r3, [r3]
+ 890 017a 3D4A     		ldr	r2, .L37+20
+ 891 017c 9342     		cmp	r3, r2
+ 892 017e 53D0     		beq	.L27
  158:User/BSP/UART_data_txrx.c ****   }
- 1055              		.loc 1 158 5 discriminator 8
- 1056 0180 7B68     		ldr	r3, [r7, #4]
- 1057 0182 D3F88030 		ldr	r3, [r3, #128]
-ARM GAS  C:\Users\Godwin\AppData\Local\Temp\ccL9eMOI.s 			page 23
+ 893              		.loc 1 158 5 discriminator 8
+ 894 0180 7B68     		ldr	r3, [r7, #4]
+ 895 0182 D3F88030 		ldr	r3, [r3, #128]
+ 896 0186 1B68     		ldr	r3, [r3]
+ 897 0188 3A4A     		ldr	r2, .L37+24
+ 898 018a 9342     		cmp	r3, r2
+ 899 018c 4CD0     		beq	.L27
+ 158:User/BSP/UART_data_txrx.c ****   }
+ 900              		.loc 1 158 5 discriminator 10
+ 901 018e 7B68     		ldr	r3, [r7, #4]
+ 902 0190 D3F88030 		ldr	r3, [r3, #128]
+ 903 0194 1B68     		ldr	r3, [r3]
+ 904 0196 384A     		ldr	r2, .L37+28
+ 905 0198 9342     		cmp	r3, r2
+ARM GAS  C:\Users\Godwin\AppData\Local\Temp\ccFuaJ59.s 			page 20
 
 
- 1058 0186 1B68     		ldr	r3, [r3]
- 1059 0188 3A4A     		ldr	r2, .L41+24
- 1060 018a 9342     		cmp	r3, r2
- 1061 018c 4CD0     		beq	.L31
+ 906 019a 45D0     		beq	.L27
  158:User/BSP/UART_data_txrx.c ****   }
- 1062              		.loc 1 158 5 discriminator 10
- 1063 018e 7B68     		ldr	r3, [r7, #4]
- 1064 0190 D3F88030 		ldr	r3, [r3, #128]
- 1065 0194 1B68     		ldr	r3, [r3]
- 1066 0196 384A     		ldr	r2, .L41+28
- 1067 0198 9342     		cmp	r3, r2
- 1068 019a 45D0     		beq	.L31
+ 907              		.loc 1 158 5 discriminator 12
+ 908 019c 7B68     		ldr	r3, [r7, #4]
+ 909 019e D3F88030 		ldr	r3, [r3, #128]
+ 910 01a2 1B68     		ldr	r3, [r3]
+ 911 01a4 354A     		ldr	r2, .L37+32
+ 912 01a6 9342     		cmp	r3, r2
+ 913 01a8 3ED0     		beq	.L27
  158:User/BSP/UART_data_txrx.c ****   }
- 1069              		.loc 1 158 5 discriminator 12
- 1070 019c 7B68     		ldr	r3, [r7, #4]
- 1071 019e D3F88030 		ldr	r3, [r3, #128]
- 1072 01a2 1B68     		ldr	r3, [r3]
- 1073 01a4 354A     		ldr	r2, .L41+32
- 1074 01a6 9342     		cmp	r3, r2
- 1075 01a8 3ED0     		beq	.L31
+ 914              		.loc 1 158 5 discriminator 14
+ 915 01aa 7B68     		ldr	r3, [r7, #4]
+ 916 01ac D3F88030 		ldr	r3, [r3, #128]
+ 917 01b0 1B68     		ldr	r3, [r3]
+ 918 01b2 334A     		ldr	r2, .L37+36
+ 919 01b4 9342     		cmp	r3, r2
+ 920 01b6 37D0     		beq	.L27
  158:User/BSP/UART_data_txrx.c ****   }
- 1076              		.loc 1 158 5 discriminator 14
- 1077 01aa 7B68     		ldr	r3, [r7, #4]
- 1078 01ac D3F88030 		ldr	r3, [r3, #128]
- 1079 01b0 1B68     		ldr	r3, [r3]
- 1080 01b2 334A     		ldr	r2, .L41+36
- 1081 01b4 9342     		cmp	r3, r2
- 1082 01b6 37D0     		beq	.L31
+ 921              		.loc 1 158 5 discriminator 16
+ 922 01b8 7B68     		ldr	r3, [r7, #4]
+ 923 01ba D3F88030 		ldr	r3, [r3, #128]
+ 924 01be 1B68     		ldr	r3, [r3]
+ 925 01c0 304A     		ldr	r2, .L37+40
+ 926 01c2 9342     		cmp	r3, r2
+ 927 01c4 30D0     		beq	.L27
  158:User/BSP/UART_data_txrx.c ****   }
- 1083              		.loc 1 158 5 discriminator 16
- 1084 01b8 7B68     		ldr	r3, [r7, #4]
- 1085 01ba D3F88030 		ldr	r3, [r3, #128]
- 1086 01be 1B68     		ldr	r3, [r3]
- 1087 01c0 304A     		ldr	r2, .L41+40
- 1088 01c2 9342     		cmp	r3, r2
- 1089 01c4 30D0     		beq	.L31
+ 928              		.loc 1 158 5 discriminator 18
+ 929 01c6 7B68     		ldr	r3, [r7, #4]
+ 930 01c8 D3F88030 		ldr	r3, [r3, #128]
+ 931 01cc 1B68     		ldr	r3, [r3]
+ 932 01ce 2E4A     		ldr	r2, .L37+44
+ 933 01d0 9342     		cmp	r3, r2
+ 934 01d2 29D0     		beq	.L27
  158:User/BSP/UART_data_txrx.c ****   }
- 1090              		.loc 1 158 5 discriminator 18
- 1091 01c6 7B68     		ldr	r3, [r7, #4]
- 1092 01c8 D3F88030 		ldr	r3, [r3, #128]
- 1093 01cc 1B68     		ldr	r3, [r3]
- 1094 01ce 2E4A     		ldr	r2, .L41+44
- 1095 01d0 9342     		cmp	r3, r2
- 1096 01d2 29D0     		beq	.L31
+ 935              		.loc 1 158 5 discriminator 20
+ 936 01d4 7B68     		ldr	r3, [r7, #4]
+ 937 01d6 D3F88030 		ldr	r3, [r3, #128]
+ 938 01da 1B68     		ldr	r3, [r3]
+ 939 01dc 2B4A     		ldr	r2, .L37+48
+ 940 01de 9342     		cmp	r3, r2
+ 941 01e0 22D0     		beq	.L27
  158:User/BSP/UART_data_txrx.c ****   }
- 1097              		.loc 1 158 5 discriminator 20
- 1098 01d4 7B68     		ldr	r3, [r7, #4]
- 1099 01d6 D3F88030 		ldr	r3, [r3, #128]
- 1100 01da 1B68     		ldr	r3, [r3]
- 1101 01dc 2B4A     		ldr	r2, .L41+48
- 1102 01de 9342     		cmp	r3, r2
- 1103 01e0 22D0     		beq	.L31
+ 942              		.loc 1 158 5 discriminator 22
+ 943 01e2 7B68     		ldr	r3, [r7, #4]
+ 944 01e4 D3F88030 		ldr	r3, [r3, #128]
+ 945 01e8 1B68     		ldr	r3, [r3]
+ 946 01ea 294A     		ldr	r2, .L37+52
+ 947 01ec 9342     		cmp	r3, r2
+ 948 01ee 1BD0     		beq	.L27
  158:User/BSP/UART_data_txrx.c ****   }
- 1104              		.loc 1 158 5 discriminator 22
- 1105 01e2 7B68     		ldr	r3, [r7, #4]
- 1106 01e4 D3F88030 		ldr	r3, [r3, #128]
- 1107 01e8 1B68     		ldr	r3, [r3]
-ARM GAS  C:\Users\Godwin\AppData\Local\Temp\ccL9eMOI.s 			page 24
+ 949              		.loc 1 158 5 discriminator 24
+ 950 01f0 7B68     		ldr	r3, [r7, #4]
+ 951 01f2 D3F88030 		ldr	r3, [r3, #128]
+ 952 01f6 1B68     		ldr	r3, [r3]
+ 953 01f8 264A     		ldr	r2, .L37+56
+ 954 01fa 9342     		cmp	r3, r2
+ 955 01fc 14D0     		beq	.L27
+ARM GAS  C:\Users\Godwin\AppData\Local\Temp\ccFuaJ59.s 			page 21
 
 
- 1108 01ea 294A     		ldr	r2, .L41+52
- 1109 01ec 9342     		cmp	r3, r2
- 1110 01ee 1BD0     		beq	.L31
  158:User/BSP/UART_data_txrx.c ****   }
- 1111              		.loc 1 158 5 discriminator 24
- 1112 01f0 7B68     		ldr	r3, [r7, #4]
- 1113 01f2 D3F88030 		ldr	r3, [r3, #128]
- 1114 01f6 1B68     		ldr	r3, [r3]
- 1115 01f8 264A     		ldr	r2, .L41+56
- 1116 01fa 9342     		cmp	r3, r2
- 1117 01fc 14D0     		beq	.L31
+ 956              		.loc 1 158 5 discriminator 26
+ 957 01fe 7B68     		ldr	r3, [r7, #4]
+ 958 0200 D3F88030 		ldr	r3, [r3, #128]
+ 959 0204 1B68     		ldr	r3, [r3]
+ 960 0206 244A     		ldr	r2, .L37+60
+ 961 0208 9342     		cmp	r3, r2
+ 962 020a 0DD0     		beq	.L27
  158:User/BSP/UART_data_txrx.c ****   }
- 1118              		.loc 1 158 5 discriminator 26
- 1119 01fe 7B68     		ldr	r3, [r7, #4]
- 1120 0200 D3F88030 		ldr	r3, [r3, #128]
- 1121 0204 1B68     		ldr	r3, [r3]
- 1122 0206 244A     		ldr	r2, .L41+60
- 1123 0208 9342     		cmp	r3, r2
- 1124 020a 0DD0     		beq	.L31
+ 963              		.loc 1 158 5 discriminator 28
+ 964 020c 7B68     		ldr	r3, [r7, #4]
+ 965 020e D3F88030 		ldr	r3, [r3, #128]
+ 966 0212 1B68     		ldr	r3, [r3]
+ 967 0214 214A     		ldr	r2, .L37+64
+ 968 0216 9342     		cmp	r3, r2
+ 969 0218 06D0     		beq	.L27
  158:User/BSP/UART_data_txrx.c ****   }
- 1125              		.loc 1 158 5 discriminator 28
- 1126 020c 7B68     		ldr	r3, [r7, #4]
- 1127 020e D3F88030 		ldr	r3, [r3, #128]
- 1128 0212 1B68     		ldr	r3, [r3]
- 1129 0214 214A     		ldr	r2, .L41+64
- 1130 0216 9342     		cmp	r3, r2
- 1131 0218 06D0     		beq	.L31
+ 970              		.loc 1 158 5 discriminator 30
+ 971 021a 7B68     		ldr	r3, [r7, #4]
+ 972 021c D3F88030 		ldr	r3, [r3, #128]
+ 973 0220 1B68     		ldr	r3, [r3]
+ 974 0222 1F4A     		ldr	r2, .L37+68
+ 975 0224 9342     		cmp	r3, r2
+ 976 0226 0CD1     		bne	.L28
+ 977              	.L27:
  158:User/BSP/UART_data_txrx.c ****   }
- 1132              		.loc 1 158 5 discriminator 30
- 1133 021a 7B68     		ldr	r3, [r7, #4]
- 1134 021c D3F88030 		ldr	r3, [r3, #128]
- 1135 0220 1B68     		ldr	r3, [r3]
- 1136 0222 1F4A     		ldr	r2, .L41+68
- 1137 0224 9342     		cmp	r3, r2
- 1138 0226 0CD1     		bne	.L32
- 1139              	.L31:
+ 978              		.loc 1 158 5 discriminator 31
+ 979 0228 7B68     		ldr	r3, [r7, #4]
+ 980 022a D3F88030 		ldr	r3, [r3, #128]
+ 981 022e 1B68     		ldr	r3, [r3]
+ 982 0230 1A68     		ldr	r2, [r3]
+ 983 0232 7B68     		ldr	r3, [r7, #4]
+ 984 0234 D3F88030 		ldr	r3, [r3, #128]
+ 985 0238 1B68     		ldr	r3, [r3]
+ 986 023a 22F00802 		bic	r2, r2, #8
+ 987 023e 1A60     		str	r2, [r3]
  158:User/BSP/UART_data_txrx.c ****   }
- 1140              		.loc 1 158 5 discriminator 31
- 1141 0228 7B68     		ldr	r3, [r7, #4]
- 1142 022a D3F88030 		ldr	r3, [r3, #128]
- 1143 022e 1B68     		ldr	r3, [r3]
- 1144 0230 1A68     		ldr	r2, [r3]
- 1145 0232 7B68     		ldr	r3, [r7, #4]
- 1146 0234 D3F88030 		ldr	r3, [r3, #128]
- 1147 0238 1B68     		ldr	r3, [r3]
- 1148 023a 22F00802 		bic	r2, r2, #8
- 1149 023e 1A60     		str	r2, [r3]
+ 988              		.loc 1 158 5
+ 989 0240 5EE1     		b	.L25
+ 990              	.L28:
  158:User/BSP/UART_data_txrx.c ****   }
- 1150              		.loc 1 158 5
- 1151 0240 5EE1     		b	.L29
- 1152              	.L32:
- 158:User/BSP/UART_data_txrx.c ****   }
- 1153              		.loc 1 158 5 discriminator 32
- 1154 0242 7B68     		ldr	r3, [r7, #4]
- 1155 0244 D3F88030 		ldr	r3, [r3, #128]
- 1156 0248 1B68     		ldr	r3, [r3]
- 1157 024a 1A68     		ldr	r2, [r3]
-ARM GAS  C:\Users\Godwin\AppData\Local\Temp\ccL9eMOI.s 			page 25
+ 991              		.loc 1 158 5 discriminator 32
+ 992 0242 7B68     		ldr	r3, [r7, #4]
+ 993 0244 D3F88030 		ldr	r3, [r3, #128]
+ 994 0248 1B68     		ldr	r3, [r3]
+ 995 024a 1A68     		ldr	r2, [r3]
+ 996 024c 7B68     		ldr	r3, [r7, #4]
+ 997 024e D3F88030 		ldr	r3, [r3, #128]
+ 998 0252 1B68     		ldr	r3, [r3]
+ 999 0254 22F00402 		bic	r2, r2, #4
+ 1000 0258 1A60     		str	r2, [r3]
+ 1001              		.loc 1 170 1 is_stmt 1
+ 1002 025a 51E1     		b	.L36
+ 1003              	.L38:
+ 1004              		.align	2
+ 1005              	.L37:
+ 1006 025c 00000000 		.word	huart7
+ARM GAS  C:\Users\Godwin\AppData\Local\Temp\ccFuaJ59.s 			page 22
 
 
- 1158 024c 7B68     		ldr	r3, [r7, #4]
- 1159 024e D3F88030 		ldr	r3, [r3, #128]
- 1160 0252 1B68     		ldr	r3, [r3]
- 1161 0254 22F00402 		bic	r2, r2, #4
- 1162 0258 1A60     		str	r2, [r3]
- 1163              		.loc 1 170 1 is_stmt 1
- 1164 025a 51E1     		b	.L40
- 1165              	.L42:
- 1166              		.align	2
- 1167              	.L41:
- 1168 025c 00000000 		.word	huart7
- 1169 0260 0C000000 		.word	UART7_data+12
- 1170 0264 10000240 		.word	1073872912
- 1171 0268 28000240 		.word	1073872936
- 1172 026c 40000240 		.word	1073872960
- 1173 0270 58000240 		.word	1073872984
- 1174 0274 70000240 		.word	1073873008
- 1175 0278 88000240 		.word	1073873032
- 1176 027c A0000240 		.word	1073873056
- 1177 0280 B8000240 		.word	1073873080
- 1178 0284 10040240 		.word	1073873936
- 1179 0288 28040240 		.word	1073873960
- 1180 028c 40040240 		.word	1073873984
- 1181 0290 58040240 		.word	1073874008
- 1182 0294 70040240 		.word	1073874032
- 1183 0298 88040240 		.word	1073874056
- 1184 029c A0040240 		.word	1073874080
- 1185 02a0 B8040240 		.word	1073874104
- 1186 02a4 00000000 		.word	huart10
- 1187 02a8 0C000000 		.word	UART10_data+12
- 1188              	.L30:
+ 1007 0260 0C000000 		.word	UART7_data+12
+ 1008 0264 10000240 		.word	1073872912
+ 1009 0268 28000240 		.word	1073872936
+ 1010 026c 40000240 		.word	1073872960
+ 1011 0270 58000240 		.word	1073872984
+ 1012 0274 70000240 		.word	1073873008
+ 1013 0278 88000240 		.word	1073873032
+ 1014 027c A0000240 		.word	1073873056
+ 1015 0280 B8000240 		.word	1073873080
+ 1016 0284 10040240 		.word	1073873936
+ 1017 0288 28040240 		.word	1073873960
+ 1018 028c 40040240 		.word	1073873984
+ 1019 0290 58040240 		.word	1073874008
+ 1020 0294 70040240 		.word	1073874032
+ 1021 0298 88040240 		.word	1073874056
+ 1022 029c A0040240 		.word	1073874080
+ 1023 02a0 B8040240 		.word	1073874104
+ 1024 02a4 00000000 		.word	huart10
+ 1025 02a8 0C000000 		.word	UART10_data+12
+ 1026              	.L26:
  160:User/BSP/UART_data_txrx.c ****   {
- 1189              		.loc 1 160 11
- 1190 02ac 7B68     		ldr	r3, [r7, #4]
- 1191 02ae 964A     		ldr	r2, .L43
- 1192 02b0 9342     		cmp	r3, r2
- 1193 02b2 40F09080 		bne	.L34
+ 1027              		.loc 1 160 11
+ 1028 02ac 7B68     		ldr	r3, [r7, #4]
+ 1029 02ae 964A     		ldr	r2, .L39
+ 1030 02b0 9342     		cmp	r3, r2
+ 1031 02b2 40F09080 		bne	.L30
  162:User/BSP/UART_data_txrx.c ****     __HAL_DMA_DISABLE_IT(huart->hdmarx, DMA_IT_HT);
- 1194              		.loc 1 162 5
- 1195 02b6 4FF48072 		mov	r2, #256
- 1196 02ba 9449     		ldr	r1, .L43+4
- 1197 02bc 9248     		ldr	r0, .L43
- 1198 02be FFF7FEFF 		bl	HAL_UARTEx_ReceiveToIdle_DMA
+ 1032              		.loc 1 162 5
+ 1033 02b6 4FF48072 		mov	r2, #256
+ 1034 02ba 9449     		ldr	r1, .L39+4
+ 1035 02bc 9248     		ldr	r0, .L39
+ 1036 02be FFF7FEFF 		bl	HAL_UARTEx_ReceiveToIdle_DMA
  163:User/BSP/UART_data_txrx.c ****   }
- 1199              		.loc 1 163 5
- 1200 02c2 7B68     		ldr	r3, [r7, #4]
- 1201 02c4 D3F88030 		ldr	r3, [r3, #128]
- 1202 02c8 1B68     		ldr	r3, [r3]
- 1203 02ca 914A     		ldr	r2, .L43+8
- 1204 02cc 9342     		cmp	r3, r2
- 1205 02ce 68D0     		beq	.L35
+ 1037              		.loc 1 163 5
+ 1038 02c2 7B68     		ldr	r3, [r7, #4]
+ 1039 02c4 D3F88030 		ldr	r3, [r3, #128]
+ 1040 02c8 1B68     		ldr	r3, [r3]
+ 1041 02ca 914A     		ldr	r2, .L39+8
+ 1042 02cc 9342     		cmp	r3, r2
+ 1043 02ce 68D0     		beq	.L31
  163:User/BSP/UART_data_txrx.c ****   }
- 1206              		.loc 1 163 5 is_stmt 0 discriminator 2
- 1207 02d0 7B68     		ldr	r3, [r7, #4]
- 1208 02d2 D3F88030 		ldr	r3, [r3, #128]
- 1209 02d6 1B68     		ldr	r3, [r3]
- 1210 02d8 8E4A     		ldr	r2, .L43+12
-ARM GAS  C:\Users\Godwin\AppData\Local\Temp\ccL9eMOI.s 			page 26
+ 1044              		.loc 1 163 5 is_stmt 0 discriminator 2
+ 1045 02d0 7B68     		ldr	r3, [r7, #4]
+ 1046 02d2 D3F88030 		ldr	r3, [r3, #128]
+ 1047 02d6 1B68     		ldr	r3, [r3]
+ 1048 02d8 8E4A     		ldr	r2, .L39+12
+ 1049 02da 9342     		cmp	r3, r2
+ 1050 02dc 61D0     		beq	.L31
+ 163:User/BSP/UART_data_txrx.c ****   }
+ 1051              		.loc 1 163 5 discriminator 4
+ 1052 02de 7B68     		ldr	r3, [r7, #4]
+ 1053 02e0 D3F88030 		ldr	r3, [r3, #128]
+ 1054 02e4 1B68     		ldr	r3, [r3]
+ 1055 02e6 8C4A     		ldr	r2, .L39+16
+ 1056 02e8 9342     		cmp	r3, r2
+ 1057 02ea 5AD0     		beq	.L31
+ 163:User/BSP/UART_data_txrx.c ****   }
+ARM GAS  C:\Users\Godwin\AppData\Local\Temp\ccFuaJ59.s 			page 23
 
 
- 1211 02da 9342     		cmp	r3, r2
- 1212 02dc 61D0     		beq	.L35
+ 1058              		.loc 1 163 5 discriminator 6
+ 1059 02ec 7B68     		ldr	r3, [r7, #4]
+ 1060 02ee D3F88030 		ldr	r3, [r3, #128]
+ 1061 02f2 1B68     		ldr	r3, [r3]
+ 1062 02f4 894A     		ldr	r2, .L39+20
+ 1063 02f6 9342     		cmp	r3, r2
+ 1064 02f8 53D0     		beq	.L31
  163:User/BSP/UART_data_txrx.c ****   }
- 1213              		.loc 1 163 5 discriminator 4
- 1214 02de 7B68     		ldr	r3, [r7, #4]
- 1215 02e0 D3F88030 		ldr	r3, [r3, #128]
- 1216 02e4 1B68     		ldr	r3, [r3]
- 1217 02e6 8C4A     		ldr	r2, .L43+16
- 1218 02e8 9342     		cmp	r3, r2
- 1219 02ea 5AD0     		beq	.L35
+ 1065              		.loc 1 163 5 discriminator 8
+ 1066 02fa 7B68     		ldr	r3, [r7, #4]
+ 1067 02fc D3F88030 		ldr	r3, [r3, #128]
+ 1068 0300 1B68     		ldr	r3, [r3]
+ 1069 0302 874A     		ldr	r2, .L39+24
+ 1070 0304 9342     		cmp	r3, r2
+ 1071 0306 4CD0     		beq	.L31
  163:User/BSP/UART_data_txrx.c ****   }
- 1220              		.loc 1 163 5 discriminator 6
- 1221 02ec 7B68     		ldr	r3, [r7, #4]
- 1222 02ee D3F88030 		ldr	r3, [r3, #128]
- 1223 02f2 1B68     		ldr	r3, [r3]
- 1224 02f4 894A     		ldr	r2, .L43+20
- 1225 02f6 9342     		cmp	r3, r2
- 1226 02f8 53D0     		beq	.L35
+ 1072              		.loc 1 163 5 discriminator 10
+ 1073 0308 7B68     		ldr	r3, [r7, #4]
+ 1074 030a D3F88030 		ldr	r3, [r3, #128]
+ 1075 030e 1B68     		ldr	r3, [r3]
+ 1076 0310 844A     		ldr	r2, .L39+28
+ 1077 0312 9342     		cmp	r3, r2
+ 1078 0314 45D0     		beq	.L31
  163:User/BSP/UART_data_txrx.c ****   }
- 1227              		.loc 1 163 5 discriminator 8
- 1228 02fa 7B68     		ldr	r3, [r7, #4]
- 1229 02fc D3F88030 		ldr	r3, [r3, #128]
- 1230 0300 1B68     		ldr	r3, [r3]
- 1231 0302 874A     		ldr	r2, .L43+24
- 1232 0304 9342     		cmp	r3, r2
- 1233 0306 4CD0     		beq	.L35
+ 1079              		.loc 1 163 5 discriminator 12
+ 1080 0316 7B68     		ldr	r3, [r7, #4]
+ 1081 0318 D3F88030 		ldr	r3, [r3, #128]
+ 1082 031c 1B68     		ldr	r3, [r3]
+ 1083 031e 824A     		ldr	r2, .L39+32
+ 1084 0320 9342     		cmp	r3, r2
+ 1085 0322 3ED0     		beq	.L31
  163:User/BSP/UART_data_txrx.c ****   }
- 1234              		.loc 1 163 5 discriminator 10
- 1235 0308 7B68     		ldr	r3, [r7, #4]
- 1236 030a D3F88030 		ldr	r3, [r3, #128]
- 1237 030e 1B68     		ldr	r3, [r3]
- 1238 0310 844A     		ldr	r2, .L43+28
- 1239 0312 9342     		cmp	r3, r2
- 1240 0314 45D0     		beq	.L35
+ 1086              		.loc 1 163 5 discriminator 14
+ 1087 0324 7B68     		ldr	r3, [r7, #4]
+ 1088 0326 D3F88030 		ldr	r3, [r3, #128]
+ 1089 032a 1B68     		ldr	r3, [r3]
+ 1090 032c 7F4A     		ldr	r2, .L39+36
+ 1091 032e 9342     		cmp	r3, r2
+ 1092 0330 37D0     		beq	.L31
  163:User/BSP/UART_data_txrx.c ****   }
- 1241              		.loc 1 163 5 discriminator 12
- 1242 0316 7B68     		ldr	r3, [r7, #4]
- 1243 0318 D3F88030 		ldr	r3, [r3, #128]
- 1244 031c 1B68     		ldr	r3, [r3]
- 1245 031e 824A     		ldr	r2, .L43+32
- 1246 0320 9342     		cmp	r3, r2
- 1247 0322 3ED0     		beq	.L35
+ 1093              		.loc 1 163 5 discriminator 16
+ 1094 0332 7B68     		ldr	r3, [r7, #4]
+ 1095 0334 D3F88030 		ldr	r3, [r3, #128]
+ 1096 0338 1B68     		ldr	r3, [r3]
+ 1097 033a 7D4A     		ldr	r2, .L39+40
+ 1098 033c 9342     		cmp	r3, r2
+ 1099 033e 30D0     		beq	.L31
  163:User/BSP/UART_data_txrx.c ****   }
- 1248              		.loc 1 163 5 discriminator 14
- 1249 0324 7B68     		ldr	r3, [r7, #4]
- 1250 0326 D3F88030 		ldr	r3, [r3, #128]
- 1251 032a 1B68     		ldr	r3, [r3]
- 1252 032c 7F4A     		ldr	r2, .L43+36
- 1253 032e 9342     		cmp	r3, r2
- 1254 0330 37D0     		beq	.L35
+ 1100              		.loc 1 163 5 discriminator 18
+ 1101 0340 7B68     		ldr	r3, [r7, #4]
+ 1102 0342 D3F88030 		ldr	r3, [r3, #128]
+ 1103 0346 1B68     		ldr	r3, [r3]
+ 1104 0348 7A4A     		ldr	r2, .L39+44
+ 1105 034a 9342     		cmp	r3, r2
+ 1106 034c 29D0     		beq	.L31
  163:User/BSP/UART_data_txrx.c ****   }
- 1255              		.loc 1 163 5 discriminator 16
- 1256 0332 7B68     		ldr	r3, [r7, #4]
- 1257 0334 D3F88030 		ldr	r3, [r3, #128]
- 1258 0338 1B68     		ldr	r3, [r3]
- 1259 033a 7D4A     		ldr	r2, .L43+40
- 1260 033c 9342     		cmp	r3, r2
-ARM GAS  C:\Users\Godwin\AppData\Local\Temp\ccL9eMOI.s 			page 27
+ 1107              		.loc 1 163 5 discriminator 20
+ARM GAS  C:\Users\Godwin\AppData\Local\Temp\ccFuaJ59.s 			page 24
 
 
- 1261 033e 30D0     		beq	.L35
+ 1108 034e 7B68     		ldr	r3, [r7, #4]
+ 1109 0350 D3F88030 		ldr	r3, [r3, #128]
+ 1110 0354 1B68     		ldr	r3, [r3]
+ 1111 0356 784A     		ldr	r2, .L39+48
+ 1112 0358 9342     		cmp	r3, r2
+ 1113 035a 22D0     		beq	.L31
  163:User/BSP/UART_data_txrx.c ****   }
- 1262              		.loc 1 163 5 discriminator 18
- 1263 0340 7B68     		ldr	r3, [r7, #4]
- 1264 0342 D3F88030 		ldr	r3, [r3, #128]
- 1265 0346 1B68     		ldr	r3, [r3]
- 1266 0348 7A4A     		ldr	r2, .L43+44
- 1267 034a 9342     		cmp	r3, r2
- 1268 034c 29D0     		beq	.L35
+ 1114              		.loc 1 163 5 discriminator 22
+ 1115 035c 7B68     		ldr	r3, [r7, #4]
+ 1116 035e D3F88030 		ldr	r3, [r3, #128]
+ 1117 0362 1B68     		ldr	r3, [r3]
+ 1118 0364 754A     		ldr	r2, .L39+52
+ 1119 0366 9342     		cmp	r3, r2
+ 1120 0368 1BD0     		beq	.L31
  163:User/BSP/UART_data_txrx.c ****   }
- 1269              		.loc 1 163 5 discriminator 20
- 1270 034e 7B68     		ldr	r3, [r7, #4]
- 1271 0350 D3F88030 		ldr	r3, [r3, #128]
- 1272 0354 1B68     		ldr	r3, [r3]
- 1273 0356 784A     		ldr	r2, .L43+48
- 1274 0358 9342     		cmp	r3, r2
- 1275 035a 22D0     		beq	.L35
+ 1121              		.loc 1 163 5 discriminator 24
+ 1122 036a 7B68     		ldr	r3, [r7, #4]
+ 1123 036c D3F88030 		ldr	r3, [r3, #128]
+ 1124 0370 1B68     		ldr	r3, [r3]
+ 1125 0372 734A     		ldr	r2, .L39+56
+ 1126 0374 9342     		cmp	r3, r2
+ 1127 0376 14D0     		beq	.L31
  163:User/BSP/UART_data_txrx.c ****   }
- 1276              		.loc 1 163 5 discriminator 22
- 1277 035c 7B68     		ldr	r3, [r7, #4]
- 1278 035e D3F88030 		ldr	r3, [r3, #128]
- 1279 0362 1B68     		ldr	r3, [r3]
- 1280 0364 754A     		ldr	r2, .L43+52
- 1281 0366 9342     		cmp	r3, r2
- 1282 0368 1BD0     		beq	.L35
+ 1128              		.loc 1 163 5 discriminator 26
+ 1129 0378 7B68     		ldr	r3, [r7, #4]
+ 1130 037a D3F88030 		ldr	r3, [r3, #128]
+ 1131 037e 1B68     		ldr	r3, [r3]
+ 1132 0380 704A     		ldr	r2, .L39+60
+ 1133 0382 9342     		cmp	r3, r2
+ 1134 0384 0DD0     		beq	.L31
  163:User/BSP/UART_data_txrx.c ****   }
- 1283              		.loc 1 163 5 discriminator 24
- 1284 036a 7B68     		ldr	r3, [r7, #4]
- 1285 036c D3F88030 		ldr	r3, [r3, #128]
- 1286 0370 1B68     		ldr	r3, [r3]
- 1287 0372 734A     		ldr	r2, .L43+56
- 1288 0374 9342     		cmp	r3, r2
- 1289 0376 14D0     		beq	.L35
+ 1135              		.loc 1 163 5 discriminator 28
+ 1136 0386 7B68     		ldr	r3, [r7, #4]
+ 1137 0388 D3F88030 		ldr	r3, [r3, #128]
+ 1138 038c 1B68     		ldr	r3, [r3]
+ 1139 038e 6E4A     		ldr	r2, .L39+64
+ 1140 0390 9342     		cmp	r3, r2
+ 1141 0392 06D0     		beq	.L31
  163:User/BSP/UART_data_txrx.c ****   }
- 1290              		.loc 1 163 5 discriminator 26
- 1291 0378 7B68     		ldr	r3, [r7, #4]
- 1292 037a D3F88030 		ldr	r3, [r3, #128]
- 1293 037e 1B68     		ldr	r3, [r3]
- 1294 0380 704A     		ldr	r2, .L43+60
- 1295 0382 9342     		cmp	r3, r2
- 1296 0384 0DD0     		beq	.L35
+ 1142              		.loc 1 163 5 discriminator 30
+ 1143 0394 7B68     		ldr	r3, [r7, #4]
+ 1144 0396 D3F88030 		ldr	r3, [r3, #128]
+ 1145 039a 1B68     		ldr	r3, [r3]
+ 1146 039c 6B4A     		ldr	r2, .L39+68
+ 1147 039e 9342     		cmp	r3, r2
+ 1148 03a0 0CD1     		bne	.L32
+ 1149              	.L31:
  163:User/BSP/UART_data_txrx.c ****   }
- 1297              		.loc 1 163 5 discriminator 28
- 1298 0386 7B68     		ldr	r3, [r7, #4]
- 1299 0388 D3F88030 		ldr	r3, [r3, #128]
- 1300 038c 1B68     		ldr	r3, [r3]
- 1301 038e 6E4A     		ldr	r2, .L43+64
- 1302 0390 9342     		cmp	r3, r2
- 1303 0392 06D0     		beq	.L35
- 163:User/BSP/UART_data_txrx.c ****   }
- 1304              		.loc 1 163 5 discriminator 30
- 1305 0394 7B68     		ldr	r3, [r7, #4]
- 1306 0396 D3F88030 		ldr	r3, [r3, #128]
- 1307 039a 1B68     		ldr	r3, [r3]
- 1308 039c 6B4A     		ldr	r2, .L43+68
- 1309 039e 9342     		cmp	r3, r2
- 1310 03a0 0CD1     		bne	.L36
-ARM GAS  C:\Users\Godwin\AppData\Local\Temp\ccL9eMOI.s 			page 28
+ 1150              		.loc 1 163 5 discriminator 31
+ 1151 03a2 7B68     		ldr	r3, [r7, #4]
+ 1152 03a4 D3F88030 		ldr	r3, [r3, #128]
+ 1153 03a8 1B68     		ldr	r3, [r3]
+ 1154 03aa 1A68     		ldr	r2, [r3]
+ 1155 03ac 7B68     		ldr	r3, [r7, #4]
+ 1156 03ae D3F88030 		ldr	r3, [r3, #128]
+ 1157 03b2 1B68     		ldr	r3, [r3]
+ 1158 03b4 22F00802 		bic	r2, r2, #8
+ARM GAS  C:\Users\Godwin\AppData\Local\Temp\ccFuaJ59.s 			page 25
 
 
- 1311              	.L35:
+ 1159 03b8 1A60     		str	r2, [r3]
  163:User/BSP/UART_data_txrx.c ****   }
- 1312              		.loc 1 163 5 discriminator 31
- 1313 03a2 7B68     		ldr	r3, [r7, #4]
- 1314 03a4 D3F88030 		ldr	r3, [r3, #128]
- 1315 03a8 1B68     		ldr	r3, [r3]
- 1316 03aa 1A68     		ldr	r2, [r3]
- 1317 03ac 7B68     		ldr	r3, [r7, #4]
- 1318 03ae D3F88030 		ldr	r3, [r3, #128]
- 1319 03b2 1B68     		ldr	r3, [r3]
- 1320 03b4 22F00802 		bic	r2, r2, #8
- 1321 03b8 1A60     		str	r2, [r3]
+ 1160              		.loc 1 163 5
+ 1161 03ba A1E0     		b	.L25
+ 1162              	.L32:
  163:User/BSP/UART_data_txrx.c ****   }
- 1322              		.loc 1 163 5
- 1323 03ba A1E0     		b	.L29
- 1324              	.L36:
- 163:User/BSP/UART_data_txrx.c ****   }
- 1325              		.loc 1 163 5 discriminator 32
- 1326 03bc 7B68     		ldr	r3, [r7, #4]
- 1327 03be D3F88030 		ldr	r3, [r3, #128]
- 1328 03c2 1B68     		ldr	r3, [r3]
- 1329 03c4 1A68     		ldr	r2, [r3]
- 1330 03c6 7B68     		ldr	r3, [r7, #4]
- 1331 03c8 D3F88030 		ldr	r3, [r3, #128]
- 1332 03cc 1B68     		ldr	r3, [r3]
- 1333 03ce 22F00402 		bic	r2, r2, #4
- 1334 03d2 1A60     		str	r2, [r3]
- 1335              		.loc 1 170 1 is_stmt 1
- 1336 03d4 94E0     		b	.L40
- 1337              	.L34:
+ 1163              		.loc 1 163 5 discriminator 32
+ 1164 03bc 7B68     		ldr	r3, [r7, #4]
+ 1165 03be D3F88030 		ldr	r3, [r3, #128]
+ 1166 03c2 1B68     		ldr	r3, [r3]
+ 1167 03c4 1A68     		ldr	r2, [r3]
+ 1168 03c6 7B68     		ldr	r3, [r7, #4]
+ 1169 03c8 D3F88030 		ldr	r3, [r3, #128]
+ 1170 03cc 1B68     		ldr	r3, [r3]
+ 1171 03ce 22F00402 		bic	r2, r2, #4
+ 1172 03d2 1A60     		str	r2, [r3]
+ 1173              		.loc 1 170 1 is_stmt 1
+ 1174 03d4 94E0     		b	.L36
+ 1175              	.L30:
  165:User/BSP/UART_data_txrx.c ****   {
- 1338              		.loc 1 165 11
- 1339 03d6 7B68     		ldr	r3, [r7, #4]
- 1340 03d8 5D4A     		ldr	r2, .L43+72
- 1341 03da 9342     		cmp	r3, r2
- 1342 03dc 40F09080 		bne	.L40
+ 1176              		.loc 1 165 11
+ 1177 03d6 7B68     		ldr	r3, [r7, #4]
+ 1178 03d8 5D4A     		ldr	r2, .L39+72
+ 1179 03da 9342     		cmp	r3, r2
+ 1180 03dc 40F09080 		bne	.L36
  167:User/BSP/UART_data_txrx.c ****     __HAL_DMA_DISABLE_IT(huart->hdmarx, DMA_IT_HT);
- 1343              		.loc 1 167 5
- 1344 03e0 4FF48072 		mov	r2, #256
- 1345 03e4 5B49     		ldr	r1, .L43+76
- 1346 03e6 5A48     		ldr	r0, .L43+72
- 1347 03e8 FFF7FEFF 		bl	HAL_UARTEx_ReceiveToIdle_DMA
+ 1181              		.loc 1 167 5
+ 1182 03e0 4FF48072 		mov	r2, #256
+ 1183 03e4 5B49     		ldr	r1, .L39+76
+ 1184 03e6 5A48     		ldr	r0, .L39+72
+ 1185 03e8 FFF7FEFF 		bl	HAL_UARTEx_ReceiveToIdle_DMA
  168:User/BSP/UART_data_txrx.c ****   }
- 1348              		.loc 1 168 5
- 1349 03ec 7B68     		ldr	r3, [r7, #4]
- 1350 03ee D3F88030 		ldr	r3, [r3, #128]
- 1351 03f2 1B68     		ldr	r3, [r3]
- 1352 03f4 464A     		ldr	r2, .L43+8
- 1353 03f6 9342     		cmp	r3, r2
- 1354 03f8 68D0     		beq	.L38
+ 1186              		.loc 1 168 5
+ 1187 03ec 7B68     		ldr	r3, [r7, #4]
+ 1188 03ee D3F88030 		ldr	r3, [r3, #128]
+ 1189 03f2 1B68     		ldr	r3, [r3]
+ 1190 03f4 464A     		ldr	r2, .L39+8
+ 1191 03f6 9342     		cmp	r3, r2
+ 1192 03f8 68D0     		beq	.L34
  168:User/BSP/UART_data_txrx.c ****   }
- 1355              		.loc 1 168 5 is_stmt 0 discriminator 2
- 1356 03fa 7B68     		ldr	r3, [r7, #4]
- 1357 03fc D3F88030 		ldr	r3, [r3, #128]
- 1358 0400 1B68     		ldr	r3, [r3]
- 1359 0402 444A     		ldr	r2, .L43+12
- 1360 0404 9342     		cmp	r3, r2
-ARM GAS  C:\Users\Godwin\AppData\Local\Temp\ccL9eMOI.s 			page 29
+ 1193              		.loc 1 168 5 is_stmt 0 discriminator 2
+ 1194 03fa 7B68     		ldr	r3, [r7, #4]
+ 1195 03fc D3F88030 		ldr	r3, [r3, #128]
+ 1196 0400 1B68     		ldr	r3, [r3]
+ 1197 0402 444A     		ldr	r2, .L39+12
+ 1198 0404 9342     		cmp	r3, r2
+ 1199 0406 61D0     		beq	.L34
+ 168:User/BSP/UART_data_txrx.c ****   }
+ 1200              		.loc 1 168 5 discriminator 4
+ 1201 0408 7B68     		ldr	r3, [r7, #4]
+ 1202 040a D3F88030 		ldr	r3, [r3, #128]
+ 1203 040e 1B68     		ldr	r3, [r3]
+ 1204 0410 414A     		ldr	r2, .L39+16
+ 1205 0412 9342     		cmp	r3, r2
+ 1206 0414 5AD0     		beq	.L34
+ 168:User/BSP/UART_data_txrx.c ****   }
+ 1207              		.loc 1 168 5 discriminator 6
+ARM GAS  C:\Users\Godwin\AppData\Local\Temp\ccFuaJ59.s 			page 26
 
 
- 1361 0406 61D0     		beq	.L38
+ 1208 0416 7B68     		ldr	r3, [r7, #4]
+ 1209 0418 D3F88030 		ldr	r3, [r3, #128]
+ 1210 041c 1B68     		ldr	r3, [r3]
+ 1211 041e 3F4A     		ldr	r2, .L39+20
+ 1212 0420 9342     		cmp	r3, r2
+ 1213 0422 53D0     		beq	.L34
  168:User/BSP/UART_data_txrx.c ****   }
- 1362              		.loc 1 168 5 discriminator 4
- 1363 0408 7B68     		ldr	r3, [r7, #4]
- 1364 040a D3F88030 		ldr	r3, [r3, #128]
- 1365 040e 1B68     		ldr	r3, [r3]
- 1366 0410 414A     		ldr	r2, .L43+16
- 1367 0412 9342     		cmp	r3, r2
- 1368 0414 5AD0     		beq	.L38
+ 1214              		.loc 1 168 5 discriminator 8
+ 1215 0424 7B68     		ldr	r3, [r7, #4]
+ 1216 0426 D3F88030 		ldr	r3, [r3, #128]
+ 1217 042a 1B68     		ldr	r3, [r3]
+ 1218 042c 3C4A     		ldr	r2, .L39+24
+ 1219 042e 9342     		cmp	r3, r2
+ 1220 0430 4CD0     		beq	.L34
  168:User/BSP/UART_data_txrx.c ****   }
- 1369              		.loc 1 168 5 discriminator 6
- 1370 0416 7B68     		ldr	r3, [r7, #4]
- 1371 0418 D3F88030 		ldr	r3, [r3, #128]
- 1372 041c 1B68     		ldr	r3, [r3]
- 1373 041e 3F4A     		ldr	r2, .L43+20
- 1374 0420 9342     		cmp	r3, r2
- 1375 0422 53D0     		beq	.L38
+ 1221              		.loc 1 168 5 discriminator 10
+ 1222 0432 7B68     		ldr	r3, [r7, #4]
+ 1223 0434 D3F88030 		ldr	r3, [r3, #128]
+ 1224 0438 1B68     		ldr	r3, [r3]
+ 1225 043a 3A4A     		ldr	r2, .L39+28
+ 1226 043c 9342     		cmp	r3, r2
+ 1227 043e 45D0     		beq	.L34
  168:User/BSP/UART_data_txrx.c ****   }
- 1376              		.loc 1 168 5 discriminator 8
- 1377 0424 7B68     		ldr	r3, [r7, #4]
- 1378 0426 D3F88030 		ldr	r3, [r3, #128]
- 1379 042a 1B68     		ldr	r3, [r3]
- 1380 042c 3C4A     		ldr	r2, .L43+24
- 1381 042e 9342     		cmp	r3, r2
- 1382 0430 4CD0     		beq	.L38
+ 1228              		.loc 1 168 5 discriminator 12
+ 1229 0440 7B68     		ldr	r3, [r7, #4]
+ 1230 0442 D3F88030 		ldr	r3, [r3, #128]
+ 1231 0446 1B68     		ldr	r3, [r3]
+ 1232 0448 374A     		ldr	r2, .L39+32
+ 1233 044a 9342     		cmp	r3, r2
+ 1234 044c 3ED0     		beq	.L34
  168:User/BSP/UART_data_txrx.c ****   }
- 1383              		.loc 1 168 5 discriminator 10
- 1384 0432 7B68     		ldr	r3, [r7, #4]
- 1385 0434 D3F88030 		ldr	r3, [r3, #128]
- 1386 0438 1B68     		ldr	r3, [r3]
- 1387 043a 3A4A     		ldr	r2, .L43+28
- 1388 043c 9342     		cmp	r3, r2
- 1389 043e 45D0     		beq	.L38
+ 1235              		.loc 1 168 5 discriminator 14
+ 1236 044e 7B68     		ldr	r3, [r7, #4]
+ 1237 0450 D3F88030 		ldr	r3, [r3, #128]
+ 1238 0454 1B68     		ldr	r3, [r3]
+ 1239 0456 354A     		ldr	r2, .L39+36
+ 1240 0458 9342     		cmp	r3, r2
+ 1241 045a 37D0     		beq	.L34
  168:User/BSP/UART_data_txrx.c ****   }
- 1390              		.loc 1 168 5 discriminator 12
- 1391 0440 7B68     		ldr	r3, [r7, #4]
- 1392 0442 D3F88030 		ldr	r3, [r3, #128]
- 1393 0446 1B68     		ldr	r3, [r3]
- 1394 0448 374A     		ldr	r2, .L43+32
- 1395 044a 9342     		cmp	r3, r2
- 1396 044c 3ED0     		beq	.L38
+ 1242              		.loc 1 168 5 discriminator 16
+ 1243 045c 7B68     		ldr	r3, [r7, #4]
+ 1244 045e D3F88030 		ldr	r3, [r3, #128]
+ 1245 0462 1B68     		ldr	r3, [r3]
+ 1246 0464 324A     		ldr	r2, .L39+40
+ 1247 0466 9342     		cmp	r3, r2
+ 1248 0468 30D0     		beq	.L34
  168:User/BSP/UART_data_txrx.c ****   }
- 1397              		.loc 1 168 5 discriminator 14
- 1398 044e 7B68     		ldr	r3, [r7, #4]
- 1399 0450 D3F88030 		ldr	r3, [r3, #128]
- 1400 0454 1B68     		ldr	r3, [r3]
- 1401 0456 354A     		ldr	r2, .L43+36
- 1402 0458 9342     		cmp	r3, r2
- 1403 045a 37D0     		beq	.L38
+ 1249              		.loc 1 168 5 discriminator 18
+ 1250 046a 7B68     		ldr	r3, [r7, #4]
+ 1251 046c D3F88030 		ldr	r3, [r3, #128]
+ 1252 0470 1B68     		ldr	r3, [r3]
+ 1253 0472 304A     		ldr	r2, .L39+44
+ 1254 0474 9342     		cmp	r3, r2
+ 1255 0476 29D0     		beq	.L34
  168:User/BSP/UART_data_txrx.c ****   }
- 1404              		.loc 1 168 5 discriminator 16
- 1405 045c 7B68     		ldr	r3, [r7, #4]
- 1406 045e D3F88030 		ldr	r3, [r3, #128]
- 1407 0462 1B68     		ldr	r3, [r3]
- 1408 0464 324A     		ldr	r2, .L43+40
- 1409 0466 9342     		cmp	r3, r2
- 1410 0468 30D0     		beq	.L38
-ARM GAS  C:\Users\Godwin\AppData\Local\Temp\ccL9eMOI.s 			page 30
+ 1256              		.loc 1 168 5 discriminator 20
+ 1257 0478 7B68     		ldr	r3, [r7, #4]
+ARM GAS  C:\Users\Godwin\AppData\Local\Temp\ccFuaJ59.s 			page 27
+
+
+ 1258 047a D3F88030 		ldr	r3, [r3, #128]
+ 1259 047e 1B68     		ldr	r3, [r3]
+ 1260 0480 2D4A     		ldr	r2, .L39+48
+ 1261 0482 9342     		cmp	r3, r2
+ 1262 0484 22D0     		beq	.L34
+ 168:User/BSP/UART_data_txrx.c ****   }
+ 1263              		.loc 1 168 5 discriminator 22
+ 1264 0486 7B68     		ldr	r3, [r7, #4]
+ 1265 0488 D3F88030 		ldr	r3, [r3, #128]
+ 1266 048c 1B68     		ldr	r3, [r3]
+ 1267 048e 2B4A     		ldr	r2, .L39+52
+ 1268 0490 9342     		cmp	r3, r2
+ 1269 0492 1BD0     		beq	.L34
+ 168:User/BSP/UART_data_txrx.c ****   }
+ 1270              		.loc 1 168 5 discriminator 24
+ 1271 0494 7B68     		ldr	r3, [r7, #4]
+ 1272 0496 D3F88030 		ldr	r3, [r3, #128]
+ 1273 049a 1B68     		ldr	r3, [r3]
+ 1274 049c 284A     		ldr	r2, .L39+56
+ 1275 049e 9342     		cmp	r3, r2
+ 1276 04a0 14D0     		beq	.L34
+ 168:User/BSP/UART_data_txrx.c ****   }
+ 1277              		.loc 1 168 5 discriminator 26
+ 1278 04a2 7B68     		ldr	r3, [r7, #4]
+ 1279 04a4 D3F88030 		ldr	r3, [r3, #128]
+ 1280 04a8 1B68     		ldr	r3, [r3]
+ 1281 04aa 264A     		ldr	r2, .L39+60
+ 1282 04ac 9342     		cmp	r3, r2
+ 1283 04ae 0DD0     		beq	.L34
+ 168:User/BSP/UART_data_txrx.c ****   }
+ 1284              		.loc 1 168 5 discriminator 28
+ 1285 04b0 7B68     		ldr	r3, [r7, #4]
+ 1286 04b2 D3F88030 		ldr	r3, [r3, #128]
+ 1287 04b6 1B68     		ldr	r3, [r3]
+ 1288 04b8 234A     		ldr	r2, .L39+64
+ 1289 04ba 9342     		cmp	r3, r2
+ 1290 04bc 06D0     		beq	.L34
+ 168:User/BSP/UART_data_txrx.c ****   }
+ 1291              		.loc 1 168 5 discriminator 30
+ 1292 04be 7B68     		ldr	r3, [r7, #4]
+ 1293 04c0 D3F88030 		ldr	r3, [r3, #128]
+ 1294 04c4 1B68     		ldr	r3, [r3]
+ 1295 04c6 214A     		ldr	r2, .L39+68
+ 1296 04c8 9342     		cmp	r3, r2
+ 1297 04ca 0CD1     		bne	.L35
+ 1298              	.L34:
+ 168:User/BSP/UART_data_txrx.c ****   }
+ 1299              		.loc 1 168 5 discriminator 31
+ 1300 04cc 7B68     		ldr	r3, [r7, #4]
+ 1301 04ce D3F88030 		ldr	r3, [r3, #128]
+ 1302 04d2 1B68     		ldr	r3, [r3]
+ 1303 04d4 1A68     		ldr	r2, [r3]
+ 1304 04d6 7B68     		ldr	r3, [r7, #4]
+ 1305 04d8 D3F88030 		ldr	r3, [r3, #128]
+ 1306 04dc 1B68     		ldr	r3, [r3]
+ 1307 04de 22F00802 		bic	r2, r2, #8
+ 1308 04e2 1A60     		str	r2, [r3]
+ARM GAS  C:\Users\Godwin\AppData\Local\Temp\ccFuaJ59.s 			page 28
 
 
  168:User/BSP/UART_data_txrx.c ****   }
- 1411              		.loc 1 168 5 discriminator 18
- 1412 046a 7B68     		ldr	r3, [r7, #4]
- 1413 046c D3F88030 		ldr	r3, [r3, #128]
- 1414 0470 1B68     		ldr	r3, [r3]
- 1415 0472 304A     		ldr	r2, .L43+44
- 1416 0474 9342     		cmp	r3, r2
- 1417 0476 29D0     		beq	.L38
+ 1309              		.loc 1 168 5
+ 1310 04e4 0CE0     		b	.L25
+ 1311              	.L35:
  168:User/BSP/UART_data_txrx.c ****   }
- 1418              		.loc 1 168 5 discriminator 20
- 1419 0478 7B68     		ldr	r3, [r7, #4]
- 1420 047a D3F88030 		ldr	r3, [r3, #128]
- 1421 047e 1B68     		ldr	r3, [r3]
- 1422 0480 2D4A     		ldr	r2, .L43+48
- 1423 0482 9342     		cmp	r3, r2
- 1424 0484 22D0     		beq	.L38
- 168:User/BSP/UART_data_txrx.c ****   }
- 1425              		.loc 1 168 5 discriminator 22
- 1426 0486 7B68     		ldr	r3, [r7, #4]
- 1427 0488 D3F88030 		ldr	r3, [r3, #128]
- 1428 048c 1B68     		ldr	r3, [r3]
- 1429 048e 2B4A     		ldr	r2, .L43+52
- 1430 0490 9342     		cmp	r3, r2
- 1431 0492 1BD0     		beq	.L38
- 168:User/BSP/UART_data_txrx.c ****   }
- 1432              		.loc 1 168 5 discriminator 24
- 1433 0494 7B68     		ldr	r3, [r7, #4]
- 1434 0496 D3F88030 		ldr	r3, [r3, #128]
- 1435 049a 1B68     		ldr	r3, [r3]
- 1436 049c 284A     		ldr	r2, .L43+56
- 1437 049e 9342     		cmp	r3, r2
- 1438 04a0 14D0     		beq	.L38
- 168:User/BSP/UART_data_txrx.c ****   }
- 1439              		.loc 1 168 5 discriminator 26
- 1440 04a2 7B68     		ldr	r3, [r7, #4]
- 1441 04a4 D3F88030 		ldr	r3, [r3, #128]
- 1442 04a8 1B68     		ldr	r3, [r3]
- 1443 04aa 264A     		ldr	r2, .L43+60
- 1444 04ac 9342     		cmp	r3, r2
- 1445 04ae 0DD0     		beq	.L38
- 168:User/BSP/UART_data_txrx.c ****   }
- 1446              		.loc 1 168 5 discriminator 28
- 1447 04b0 7B68     		ldr	r3, [r7, #4]
- 1448 04b2 D3F88030 		ldr	r3, [r3, #128]
- 1449 04b6 1B68     		ldr	r3, [r3]
- 1450 04b8 234A     		ldr	r2, .L43+64
- 1451 04ba 9342     		cmp	r3, r2
- 1452 04bc 06D0     		beq	.L38
- 168:User/BSP/UART_data_txrx.c ****   }
- 1453              		.loc 1 168 5 discriminator 30
- 1454 04be 7B68     		ldr	r3, [r7, #4]
- 1455 04c0 D3F88030 		ldr	r3, [r3, #128]
- 1456 04c4 1B68     		ldr	r3, [r3]
- 1457 04c6 214A     		ldr	r2, .L43+68
- 1458 04c8 9342     		cmp	r3, r2
- 1459 04ca 0CD1     		bne	.L39
- 1460              	.L38:
-ARM GAS  C:\Users\Godwin\AppData\Local\Temp\ccL9eMOI.s 			page 31
+ 1312              		.loc 1 168 5 discriminator 32
+ 1313 04e6 7B68     		ldr	r3, [r7, #4]
+ 1314 04e8 D3F88030 		ldr	r3, [r3, #128]
+ 1315 04ec 1B68     		ldr	r3, [r3]
+ 1316 04ee 1A68     		ldr	r2, [r3]
+ 1317 04f0 7B68     		ldr	r3, [r7, #4]
+ 1318 04f2 D3F88030 		ldr	r3, [r3, #128]
+ 1319 04f6 1B68     		ldr	r3, [r3]
+ 1320 04f8 22F00402 		bic	r2, r2, #4
+ 1321 04fc 1A60     		str	r2, [r3]
+ 1322              		.loc 1 170 1 is_stmt 1
+ 1323 04fe FFE7     		b	.L36
+ 1324              	.L25:
+ 1325              	.L36:
+ 1326 0500 00BF     		nop
+ 1327 0502 0837     		adds	r7, r7, #8
+ 1328              	.LCFI27:
+ 1329              		.cfi_def_cfa_offset 8
+ 1330 0504 BD46     		mov	sp, r7
+ 1331              	.LCFI28:
+ 1332              		.cfi_def_cfa_register 13
+ 1333              		@ sp needed
+ 1334 0506 80BD     		pop	{r7, pc}
+ 1335              	.L40:
+ 1336              		.align	2
+ 1337              	.L39:
+ 1338 0508 00000000 		.word	huart5
+ 1339 050c 0C000000 		.word	UART5_data+12
+ 1340 0510 10000240 		.word	1073872912
+ 1341 0514 28000240 		.word	1073872936
+ 1342 0518 40000240 		.word	1073872960
+ 1343 051c 58000240 		.word	1073872984
+ 1344 0520 70000240 		.word	1073873008
+ 1345 0524 88000240 		.word	1073873032
+ 1346 0528 A0000240 		.word	1073873056
+ 1347 052c B8000240 		.word	1073873080
+ 1348 0530 10040240 		.word	1073873936
+ 1349 0534 28040240 		.word	1073873960
+ 1350 0538 40040240 		.word	1073873984
+ 1351 053c 58040240 		.word	1073874008
+ 1352 0540 70040240 		.word	1073874032
+ 1353 0544 88040240 		.word	1073874056
+ 1354 0548 A0040240 		.word	1073874080
+ 1355 054c B8040240 		.word	1073874104
+ 1356 0550 00000000 		.word	huart1
+ 1357 0554 0C000000 		.word	UART1_data+12
+ 1358              		.cfi_endproc
+ 1359              	.LFE152:
+ 1361              		.text
+ 1362              	.Letext0:
+ 1363              		.file 2 "C:/Users/Godwin/13.2 Rel1/arm-none-eabi/include/machine/_default_types.h"
+ 1364              		.file 3 "C:/Users/Godwin/13.2 Rel1/arm-none-eabi/include/sys/_stdint.h"
+ARM GAS  C:\Users\Godwin\AppData\Local\Temp\ccFuaJ59.s 			page 29
 
 
- 168:User/BSP/UART_data_txrx.c ****   }
- 1461              		.loc 1 168 5 discriminator 31
- 1462 04cc 7B68     		ldr	r3, [r7, #4]
- 1463 04ce D3F88030 		ldr	r3, [r3, #128]
- 1464 04d2 1B68     		ldr	r3, [r3]
- 1465 04d4 1A68     		ldr	r2, [r3]
- 1466 04d6 7B68     		ldr	r3, [r7, #4]
- 1467 04d8 D3F88030 		ldr	r3, [r3, #128]
- 1468 04dc 1B68     		ldr	r3, [r3]
- 1469 04de 22F00802 		bic	r2, r2, #8
- 1470 04e2 1A60     		str	r2, [r3]
- 168:User/BSP/UART_data_txrx.c ****   }
- 1471              		.loc 1 168 5
- 1472 04e4 0CE0     		b	.L29
- 1473              	.L39:
- 168:User/BSP/UART_data_txrx.c ****   }
- 1474              		.loc 1 168 5 discriminator 32
- 1475 04e6 7B68     		ldr	r3, [r7, #4]
- 1476 04e8 D3F88030 		ldr	r3, [r3, #128]
- 1477 04ec 1B68     		ldr	r3, [r3]
- 1478 04ee 1A68     		ldr	r2, [r3]
- 1479 04f0 7B68     		ldr	r3, [r7, #4]
- 1480 04f2 D3F88030 		ldr	r3, [r3, #128]
- 1481 04f6 1B68     		ldr	r3, [r3]
- 1482 04f8 22F00402 		bic	r2, r2, #4
- 1483 04fc 1A60     		str	r2, [r3]
- 1484              		.loc 1 170 1 is_stmt 1
- 1485 04fe FFE7     		b	.L40
- 1486              	.L29:
- 1487              	.L40:
- 1488 0500 00BF     		nop
- 1489 0502 0837     		adds	r7, r7, #8
- 1490              	.LCFI27:
- 1491              		.cfi_def_cfa_offset 8
- 1492 0504 BD46     		mov	sp, r7
- 1493              	.LCFI28:
- 1494              		.cfi_def_cfa_register 13
- 1495              		@ sp needed
- 1496 0506 80BD     		pop	{r7, pc}
- 1497              	.L44:
- 1498              		.align	2
- 1499              	.L43:
- 1500 0508 00000000 		.word	huart5
- 1501 050c 0C000000 		.word	UART5_data+12
- 1502 0510 10000240 		.word	1073872912
- 1503 0514 28000240 		.word	1073872936
- 1504 0518 40000240 		.word	1073872960
- 1505 051c 58000240 		.word	1073872984
- 1506 0520 70000240 		.word	1073873008
- 1507 0524 88000240 		.word	1073873032
- 1508 0528 A0000240 		.word	1073873056
- 1509 052c B8000240 		.word	1073873080
- 1510 0530 10040240 		.word	1073873936
- 1511 0534 28040240 		.word	1073873960
- 1512 0538 40040240 		.word	1073873984
- 1513 053c 58040240 		.word	1073874008
- 1514 0540 70040240 		.word	1073874032
-ARM GAS  C:\Users\Godwin\AppData\Local\Temp\ccL9eMOI.s 			page 32
-
-
- 1515 0544 88040240 		.word	1073874056
- 1516 0548 A0040240 		.word	1073874080
- 1517 054c B8040240 		.word	1073874104
- 1518 0550 00000000 		.word	huart1
- 1519 0554 0C000000 		.word	UART1_data+12
- 1520              		.cfi_endproc
- 1521              	.LFE152:
- 1523              		.text
- 1524              	.Letext0:
- 1525              		.file 2 "C:/Users/Godwin/13.2 Rel1/arm-none-eabi/include/machine/_default_types.h"
- 1526              		.file 3 "C:/Users/Godwin/13.2 Rel1/arm-none-eabi/include/sys/_stdint.h"
- 1527              		.file 4 "Drivers/CMSIS/Device/ST/STM32H7xx/Include/stm32h723xx.h"
- 1528              		.file 5 "Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal_def.h"
- 1529              		.file 6 "Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal_dma.h"
- 1530              		.file 7 "Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal_uart.h"
- 1531              		.file 8 "Core/Inc/usart.h"
- 1532              		.file 9 "User/BSP/UART_data_txrx.h"
- 1533              		.file 10 "Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal_uart_ex.h"
-ARM GAS  C:\Users\Godwin\AppData\Local\Temp\ccL9eMOI.s 			page 33
+ 1365              		.file 4 "Drivers/CMSIS/Device/ST/STM32H7xx/Include/stm32h723xx.h"
+ 1366              		.file 5 "Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal_def.h"
+ 1367              		.file 6 "Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal_dma.h"
+ 1368              		.file 7 "Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal_uart.h"
+ 1369              		.file 8 "Core/Inc/usart.h"
+ 1370              		.file 9 "User/BSP/UART_data_txrx.h"
+ 1371              		.file 10 "Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal_uart_ex.h"
+ARM GAS  C:\Users\Godwin\AppData\Local\Temp\ccFuaJ59.s 			page 30
 
 
 DEFINED SYMBOLS
                             *ABS*:00000000 UART_data_txrx.c
-C:\Users\Godwin\AppData\Local\Temp\ccL9eMOI.s:24     .bss.Flag_T13:00000000 Flag_T13
-C:\Users\Godwin\AppData\Local\Temp\ccL9eMOI.s:21     .bss.Flag_T13:00000000 $d
-C:\Users\Godwin\AppData\Local\Temp\ccL9eMOI.s:31     .bss.UART1_data:00000000 UART1_data
-C:\Users\Godwin\AppData\Local\Temp\ccL9eMOI.s:28     .bss.UART1_data:00000000 $d
-C:\Users\Godwin\AppData\Local\Temp\ccL9eMOI.s:38     .bss.UART2_data:00000000 UART2_data
-C:\Users\Godwin\AppData\Local\Temp\ccL9eMOI.s:35     .bss.UART2_data:00000000 $d
-C:\Users\Godwin\AppData\Local\Temp\ccL9eMOI.s:45     .bss.UART3_data:00000000 UART3_data
-C:\Users\Godwin\AppData\Local\Temp\ccL9eMOI.s:42     .bss.UART3_data:00000000 $d
-C:\Users\Godwin\AppData\Local\Temp\ccL9eMOI.s:52     .bss.UART5_data:00000000 UART5_data
-C:\Users\Godwin\AppData\Local\Temp\ccL9eMOI.s:49     .bss.UART5_data:00000000 $d
-C:\Users\Godwin\AppData\Local\Temp\ccL9eMOI.s:59     .bss.UART7_data:00000000 UART7_data
-C:\Users\Godwin\AppData\Local\Temp\ccL9eMOI.s:56     .bss.UART7_data:00000000 $d
-C:\Users\Godwin\AppData\Local\Temp\ccL9eMOI.s:66     .bss.UART10_data:00000000 UART10_data
-C:\Users\Godwin\AppData\Local\Temp\ccL9eMOI.s:63     .bss.UART10_data:00000000 $d
-C:\Users\Godwin\AppData\Local\Temp\ccL9eMOI.s:69     .text.uart_init:00000000 $t
-C:\Users\Godwin\AppData\Local\Temp\ccL9eMOI.s:75     .text.uart_init:00000000 uart_init
-C:\Users\Godwin\AppData\Local\Temp\ccL9eMOI.s:161    .text.UART_DMA_rxtx_start:00000000 UART_DMA_rxtx_start
-C:\Users\Godwin\AppData\Local\Temp\ccL9eMOI.s:131    .text.uart_init:00000050 $d
-C:\Users\Godwin\AppData\Local\Temp\ccL9eMOI.s:155    .text.UART_DMA_rxtx_start:00000000 $t
-C:\Users\Godwin\AppData\Local\Temp\ccL9eMOI.s:353    .text.UART_DMA_rxtx_start:0000014c $d
-C:\Users\Godwin\AppData\Local\Temp\ccL9eMOI.s:373    .text.UART_send_data:00000000 $t
-C:\Users\Godwin\AppData\Local\Temp\ccL9eMOI.s:379    .text.UART_send_data:00000000 UART_send_data
-C:\Users\Godwin\AppData\Local\Temp\ccL9eMOI.s:423    .text.HAL_UARTEx_RxEventCallback:00000000 $t
-C:\Users\Godwin\AppData\Local\Temp\ccL9eMOI.s:429    .text.HAL_UARTEx_RxEventCallback:00000000 HAL_UARTEx_RxEventCallback
-C:\Users\Godwin\AppData\Local\Temp\ccL9eMOI.s:751    .text.HAL_UARTEx_RxEventCallback:00000264 $d
-C:\Users\Godwin\AppData\Local\Temp\ccL9eMOI.s:776    .text.HAL_UARTEx_RxEventCallback:000002c0 $t
-C:\Users\Godwin\AppData\Local\Temp\ccL9eMOI.s:802    .text.HAL_UART_RxCpltCallback:00000000 $t
-C:\Users\Godwin\AppData\Local\Temp\ccL9eMOI.s:808    .text.HAL_UART_RxCpltCallback:00000000 HAL_UART_RxCpltCallback
-C:\Users\Godwin\AppData\Local\Temp\ccL9eMOI.s:844    .text.HAL_UART_ErrorCallback:00000000 $t
-C:\Users\Godwin\AppData\Local\Temp\ccL9eMOI.s:850    .text.HAL_UART_ErrorCallback:00000000 HAL_UART_ErrorCallback
-C:\Users\Godwin\AppData\Local\Temp\ccL9eMOI.s:1168   .text.HAL_UART_ErrorCallback:0000025c $d
-C:\Users\Godwin\AppData\Local\Temp\ccL9eMOI.s:1190   .text.HAL_UART_ErrorCallback:000002ac $t
-C:\Users\Godwin\AppData\Local\Temp\ccL9eMOI.s:1500   .text.HAL_UART_ErrorCallback:00000508 $d
+C:\Users\Godwin\AppData\Local\Temp\ccFuaJ59.s:24     .bss.Flag_T13:00000000 Flag_T13
+C:\Users\Godwin\AppData\Local\Temp\ccFuaJ59.s:21     .bss.Flag_T13:00000000 $d
+C:\Users\Godwin\AppData\Local\Temp\ccFuaJ59.s:31     .bss.UART1_data:00000000 UART1_data
+C:\Users\Godwin\AppData\Local\Temp\ccFuaJ59.s:28     .bss.UART1_data:00000000 $d
+C:\Users\Godwin\AppData\Local\Temp\ccFuaJ59.s:38     .bss.UART2_data:00000000 UART2_data
+C:\Users\Godwin\AppData\Local\Temp\ccFuaJ59.s:35     .bss.UART2_data:00000000 $d
+C:\Users\Godwin\AppData\Local\Temp\ccFuaJ59.s:45     .bss.UART3_data:00000000 UART3_data
+C:\Users\Godwin\AppData\Local\Temp\ccFuaJ59.s:42     .bss.UART3_data:00000000 $d
+C:\Users\Godwin\AppData\Local\Temp\ccFuaJ59.s:52     .bss.UART5_data:00000000 UART5_data
+C:\Users\Godwin\AppData\Local\Temp\ccFuaJ59.s:49     .bss.UART5_data:00000000 $d
+C:\Users\Godwin\AppData\Local\Temp\ccFuaJ59.s:59     .bss.UART7_data:00000000 UART7_data
+C:\Users\Godwin\AppData\Local\Temp\ccFuaJ59.s:56     .bss.UART7_data:00000000 $d
+C:\Users\Godwin\AppData\Local\Temp\ccFuaJ59.s:66     .bss.UART10_data:00000000 UART10_data
+C:\Users\Godwin\AppData\Local\Temp\ccFuaJ59.s:63     .bss.UART10_data:00000000 $d
+C:\Users\Godwin\AppData\Local\Temp\ccFuaJ59.s:69     .text.uart_init:00000000 $t
+C:\Users\Godwin\AppData\Local\Temp\ccFuaJ59.s:75     .text.uart_init:00000000 uart_init
+C:\Users\Godwin\AppData\Local\Temp\ccFuaJ59.s:152    .text.UART_DMA_rxtx_start:00000000 UART_DMA_rxtx_start
+C:\Users\Godwin\AppData\Local\Temp\ccFuaJ59.s:125    .text.uart_init:00000044 $d
+C:\Users\Godwin\AppData\Local\Temp\ccFuaJ59.s:146    .text.UART_DMA_rxtx_start:00000000 $t
+C:\Users\Godwin\AppData\Local\Temp\ccFuaJ59.s:344    .text.UART_DMA_rxtx_start:0000014c $d
+C:\Users\Godwin\AppData\Local\Temp\ccFuaJ59.s:364    .text.UART_send_data:00000000 $t
+C:\Users\Godwin\AppData\Local\Temp\ccFuaJ59.s:370    .text.UART_send_data:00000000 UART_send_data
+C:\Users\Godwin\AppData\Local\Temp\ccFuaJ59.s:414    .text.HAL_UARTEx_RxEventCallback:00000000 $t
+C:\Users\Godwin\AppData\Local\Temp\ccFuaJ59.s:420    .text.HAL_UARTEx_RxEventCallback:00000000 HAL_UARTEx_RxEventCallback
+C:\Users\Godwin\AppData\Local\Temp\ccFuaJ59.s:615    .text.HAL_UARTEx_RxEventCallback:0000015c $d
+C:\Users\Godwin\AppData\Local\Temp\ccFuaJ59.s:640    .text.HAL_UART_RxCpltCallback:00000000 $t
+C:\Users\Godwin\AppData\Local\Temp\ccFuaJ59.s:646    .text.HAL_UART_RxCpltCallback:00000000 HAL_UART_RxCpltCallback
+C:\Users\Godwin\AppData\Local\Temp\ccFuaJ59.s:682    .text.HAL_UART_ErrorCallback:00000000 $t
+C:\Users\Godwin\AppData\Local\Temp\ccFuaJ59.s:688    .text.HAL_UART_ErrorCallback:00000000 HAL_UART_ErrorCallback
+C:\Users\Godwin\AppData\Local\Temp\ccFuaJ59.s:1006   .text.HAL_UART_ErrorCallback:0000025c $d
+C:\Users\Godwin\AppData\Local\Temp\ccFuaJ59.s:1028   .text.HAL_UART_ErrorCallback:000002ac $t
+C:\Users\Godwin\AppData\Local\Temp\ccFuaJ59.s:1338   .text.HAL_UART_ErrorCallback:00000508 $d
 
 UNDEFINED SYMBOLS
 hdma_usart1_rx
 huart1
-hdma_usart2_rx
-huart2
 hdma_usart3_rx
 huart3
 hdma_uart5_rx

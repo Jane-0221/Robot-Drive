@@ -314,7 +314,9 @@ void Referee_Task(void *argument)
   /* Infinite loop */
   for (;;)
   {
-
+     //Motor_Stop();
+      Motor_Reverse();
+     //Motor_Forward();
     osDelay(1);
   }
   /* USER CODE END Referee_Task */
@@ -334,12 +336,12 @@ void Log_and_debug_Task(void *argument)
   /* Infinite loop */
   for (;;)
   {
-    LEDshowcolor(RED);
-    osDelay(500);
-    LEDshowcolor(BLUE);
-    osDelay(500);
-    LEDshowcolor(GREEN);
-    osDelay(500);
+    // LEDshowcolor(RED);
+    // osDelay(500);
+    // LEDshowcolor(BLUE);
+    // osDelay(500);
+    // LEDshowcolor(GREEN);
+    // osDelay(500);
     // Music_play(melody);
     //  printf("hello\n");
     osDelay(1);

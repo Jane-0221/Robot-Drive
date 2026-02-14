@@ -75,6 +75,13 @@ extern BOOM_STORAGE_Stats boom_storage_status;
 extern float total_angle;
 extern int sum_arm;
 /*外部函数调用*/
+void Motor_Forward(void);
+void Motor_Reverse(void);
+void Motor_Stop(void);
+
+
+
+
 
 void remote_control_init(void);
 void key_mouse_control(void);

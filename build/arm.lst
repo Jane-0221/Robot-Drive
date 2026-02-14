@@ -1,4 +1,4 @@
-ARM GAS  C:\Users\Godwin\AppData\Local\Temp\cc3QXO8Y.s 			page 1
+ARM GAS  C:\Users\Godwin\AppData\Local\Temp\ccAwo1DS.s 			page 1
 
 
    1              		.cpu cortex-m7
@@ -58,7 +58,7 @@ ARM GAS  C:\Users\Godwin\AppData\Local\Temp\cc3QXO8Y.s 			page 1
   53              		.align	1
   54              		.global	Arm_Init
   55              		.syntax unified
-ARM GAS  C:\Users\Godwin\AppData\Local\Temp\cc3QXO8Y.s 			page 2
+ARM GAS  C:\Users\Godwin\AppData\Local\Temp\ccAwo1DS.s 			page 2
 
 
   56              		.thumb
@@ -118,7 +118,7 @@ ARM GAS  C:\Users\Godwin\AppData\Local\Temp\cc3QXO8Y.s 			page 1
   81 0014 3D48     		ldr	r0, .L2
   82 0016 FFF7FEFF 		bl	Get_RobStride_Motor_parameter
   31:User/Hardware/arm.c **** 
-ARM GAS  C:\Users\Godwin\AppData\Local\Temp\cc3QXO8Y.s 			page 3
+ARM GAS  C:\Users\Godwin\AppData\Local\Temp\ccAwo1DS.s 			page 3
 
 
   32:User/Hardware/arm.c ****   // 等待一小段时间让电机响应（实际应用中应该使用更可靠的通信机制）
@@ -178,7 +178,7 @@ ARM GAS  C:\Users\Godwin\AppData\Local\Temp\cc3QXO8Y.s 			page 1
  112 0058 2E4B     		ldr	r3, .L2+8
  113 005a 0122     		movs	r2, #1
  114 005c 5A80     		strh	r2, [r3, #2]	@ movhi
-ARM GAS  C:\Users\Godwin\AppData\Local\Temp\cc3QXO8Y.s 			page 4
+ARM GAS  C:\Users\Godwin\AppData\Local\Temp\ccAwo1DS.s 			page 4
 
 
   57:User/Hardware/arm.c ****   YS_8010_cmd[0].K_P = 0.02f;  // 刚度系数（0~25.599，建议先设5.0）
@@ -238,7 +238,7 @@ ARM GAS  C:\Users\Godwin\AppData\Local\Temp\cc3QXO8Y.s 			page 1
  157 00a4 4FF00002 		mov	r2, #0
  158 00a8 5A63     		str	r2, [r3, #52]	@ float
   69:User/Hardware/arm.c ****   YS_8010_cmd[1].T = 0.0f;     // 目标扭矩（Nm，先设0，靠位置环驱动）
-ARM GAS  C:\Users\Godwin\AppData\Local\Temp\cc3QXO8Y.s 			page 5
+ARM GAS  C:\Users\Godwin\AppData\Local\Temp\ccAwo1DS.s 			page 5
 
 
  159              		.loc 1 69 20
@@ -298,7 +298,7 @@ ARM GAS  C:\Users\Godwin\AppData\Local\Temp\cc3QXO8Y.s 			page 1
  194 00fa 0C4B     		ldr	r3, .L2+32
  195 00fc 0C4A     		ldr	r2, .L2+36
  196 00fe 1A60     		str	r2, [r3]	@ float
-ARM GAS  C:\Users\Godwin\AppData\Local\Temp\cc3QXO8Y.s 			page 6
+ARM GAS  C:\Users\Godwin\AppData\Local\Temp\ccAwo1DS.s 			page 6
 
 
   89:User/Hardware/arm.c ****   // 位置
@@ -358,7 +358,7 @@ ARM GAS  C:\Users\Godwin\AppData\Local\Temp\cc3QXO8Y.s 			page 1
  242              		.loc 1 99 3
  243 0004 F7EE000A 		vmov.f32	s1, #1.0e+0
  244 0008 B3EE040A 		vmov.f32	s0, #2.0e+1
-ARM GAS  C:\Users\Godwin\AppData\Local\Temp\cc3QXO8Y.s 			page 7
+ARM GAS  C:\Users\Godwin\AppData\Local\Temp\ccAwo1DS.s 			page 7
 
 
  245 000c 0249     		ldr	r1, .L5
@@ -418,7 +418,7 @@ ARM GAS  C:\Users\Godwin\AppData\Local\Temp\cc3QXO8Y.s 			page 1
  294 001e FFF7FEFF 		bl	HAL_UART_Receive
  107:User/Hardware/arm.c **** 
  108:User/Hardware/arm.c **** 
-ARM GAS  C:\Users\Godwin\AppData\Local\Temp\cc3QXO8Y.s 			page 8
+ARM GAS  C:\Users\Godwin\AppData\Local\Temp\ccAwo1DS.s 			page 8
 
 
  109:User/Hardware/arm.c **** 
@@ -478,7 +478,7 @@ ARM GAS  C:\Users\Godwin\AppData\Local\Temp\cc3QXO8Y.s 			page 1
  320 0054 2C000000 		.word	YS_8010_cmd+44
  321 0058 44000000 		.word	YS_8010_cmd+68
  322 005c 68000000 		.word	YS_8010_data+104
-ARM GAS  C:\Users\Godwin\AppData\Local\Temp\cc3QXO8Y.s 			page 9
+ARM GAS  C:\Users\Godwin\AppData\Local\Temp\ccAwo1DS.s 			page 9
 
 
  323              		.cfi_endproc
@@ -538,7 +538,7 @@ ARM GAS  C:\Users\Godwin\AppData\Local\Temp\cc3QXO8Y.s 			page 1
  363 0030 0421     		movs	r1, #4
  364 0032 0848     		ldr	r0, .L11+8
  365 0034 FFF7FEFF 		bl	pos_speed_ctrl
-ARM GAS  C:\Users\Godwin\AppData\Local\Temp\cc3QXO8Y.s 			page 10
+ARM GAS  C:\Users\Godwin\AppData\Local\Temp\ccAwo1DS.s 			page 10
 
 
  154:User/Hardware/arm.c **** 
@@ -598,7 +598,7 @@ ARM GAS  C:\Users\Godwin\AppData\Local\Temp\cc3QXO8Y.s 			page 1
  164:User/Hardware/arm.c ****   //   DM_Status[5] = Motor_DM_Status_DISABLE;
  165:User/Hardware/arm.c ****   //   // 错误清除，重新使能
  166:User/Hardware/arm.c ****   //   //	CAN_Send_Clear_Error(&hfdcan2,0x05);
-ARM GAS  C:\Users\Godwin\AppData\Local\Temp\cc3QXO8Y.s 			page 11
+ARM GAS  C:\Users\Godwin\AppData\Local\Temp\ccAwo1DS.s 			page 11
 
 
  167:User/Hardware/arm.c ****   //   CAN_Send_Enter(&hfdcan2, 0x05);
@@ -658,7 +658,7 @@ ARM GAS  C:\Users\Godwin\AppData\Local\Temp\cc3QXO8Y.s 			page 1
  456              		.thumb_func
  458              	Arm_motor6:
  459              	.LFB149:
-ARM GAS  C:\Users\Godwin\AppData\Local\Temp\cc3QXO8Y.s 			page 12
+ARM GAS  C:\Users\Godwin\AppData\Local\Temp\ccAwo1DS.s 			page 12
 
 
  178:User/Hardware/arm.c **** void Arm_motor6()
@@ -718,7 +718,7 @@ ARM GAS  C:\Users\Godwin\AppData\Local\Temp\cc3QXO8Y.s 			page 1
  486 0028 134B     		ldr	r3, .L17+8
  487 002a D3ED027A 		vldr.32	s15, [r3, #8]
  488 002e B7EEE77A 		vcvt.f64.f32	d7, s15
-ARM GAS  C:\Users\Godwin\AppData\Local\Temp\cc3QXO8Y.s 			page 13
+ARM GAS  C:\Users\Godwin\AppData\Local\Temp\ccAwo1DS.s 			page 13
 
 
  489              		.loc 1 205 18
@@ -778,45 +778,45 @@ ARM GAS  C:\Users\Godwin\AppData\Local\Temp\cc3QXO8Y.s 			page 1
  539              		.file 12 "User/Hardware/dm4310_drv.h"
  540              		.file 13 "User/Hardware/Robstride04.h"
  541              		.file 14 "User/Hardware/arm.h"
-ARM GAS  C:\Users\Godwin\AppData\Local\Temp\cc3QXO8Y.s 			page 14
+ARM GAS  C:\Users\Godwin\AppData\Local\Temp\ccAwo1DS.s 			page 14
 
 
  542              		.file 15 "User/Hardware/Unitree/gom_protocol.h"
  543              		.file 16 "Core/Inc/usart.h"
  544              		.file 17 "Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal.h"
-ARM GAS  C:\Users\Godwin\AppData\Local\Temp\cc3QXO8Y.s 			page 15
+ARM GAS  C:\Users\Godwin\AppData\Local\Temp\ccAwo1DS.s 			page 15
 
 
 DEFINED SYMBOLS
                             *ABS*:00000000 arm.c
-C:\Users\Godwin\AppData\Local\Temp\cc3QXO8Y.s:24     .bss.YS_8010_data:00000000 YS_8010_data
-C:\Users\Godwin\AppData\Local\Temp\cc3QXO8Y.s:21     .bss.YS_8010_data:00000000 $d
-C:\Users\Godwin\AppData\Local\Temp\cc3QXO8Y.s:31     .bss.YS_8010_cmd:00000000 YS_8010_cmd
-C:\Users\Godwin\AppData\Local\Temp\cc3QXO8Y.s:28     .bss.YS_8010_cmd:00000000 $d
-C:\Users\Godwin\AppData\Local\Temp\cc3QXO8Y.s:37     .bss.tx_res:00000000 tx_res
-C:\Users\Godwin\AppData\Local\Temp\cc3QXO8Y.s:38     .bss.tx_res:00000000 $d
-C:\Users\Godwin\AppData\Local\Temp\cc3QXO8Y.s:43     .bss.rx_res:00000000 rx_res
-C:\Users\Godwin\AppData\Local\Temp\cc3QXO8Y.s:44     .bss.rx_res:00000000 $d
-C:\Users\Godwin\AppData\Local\Temp\cc3QXO8Y.s:50     .bss.motor1:00000000 motor1
-C:\Users\Godwin\AppData\Local\Temp\cc3QXO8Y.s:47     .bss.motor1:00000000 $d
-C:\Users\Godwin\AppData\Local\Temp\cc3QXO8Y.s:53     .text.Arm_Init:00000000 $t
-C:\Users\Godwin\AppData\Local\Temp\cc3QXO8Y.s:59     .text.Arm_Init:00000000 Arm_Init
-C:\Users\Godwin\AppData\Local\Temp\cc3QXO8Y.s:207    .text.Arm_Init:0000010c $d
-C:\Users\Godwin\AppData\Local\Temp\cc3QXO8Y.s:222    .text.Arm_motor1:00000000 $t
-C:\Users\Godwin\AppData\Local\Temp\cc3QXO8Y.s:228    .text.Arm_motor1:00000000 Arm_motor1
-C:\Users\Godwin\AppData\Local\Temp\cc3QXO8Y.s:254    .text.Arm_motor1:00000018 $d
-C:\Users\Godwin\AppData\Local\Temp\cc3QXO8Y.s:260    .text.Arm_motor3:00000000 $t
-C:\Users\Godwin\AppData\Local\Temp\cc3QXO8Y.s:266    .text.Arm_motor3:00000000 Arm_motor3
-C:\Users\Godwin\AppData\Local\Temp\cc3QXO8Y.s:316    .text.Arm_motor3:00000044 $d
-C:\Users\Godwin\AppData\Local\Temp\cc3QXO8Y.s:327    .text.Arm_motor4:00000000 $t
-C:\Users\Godwin\AppData\Local\Temp\cc3QXO8Y.s:333    .text.Arm_motor4:00000000 Arm_motor4
-C:\Users\Godwin\AppData\Local\Temp\cc3QXO8Y.s:382    .text.Arm_motor4:0000004c $d
-C:\Users\Godwin\AppData\Local\Temp\cc3QXO8Y.s:392    .text.Arm_motor5:00000000 $t
-C:\Users\Godwin\AppData\Local\Temp\cc3QXO8Y.s:398    .text.Arm_motor5:00000000 Arm_motor5
-C:\Users\Godwin\AppData\Local\Temp\cc3QXO8Y.s:443    .text.Arm_motor5:00000044 $d
-C:\Users\Godwin\AppData\Local\Temp\cc3QXO8Y.s:452    .text.Arm_motor6:00000000 $t
-C:\Users\Godwin\AppData\Local\Temp\cc3QXO8Y.s:458    .text.Arm_motor6:00000000 Arm_motor6
-C:\Users\Godwin\AppData\Local\Temp\cc3QXO8Y.s:516    .text.Arm_motor6:00000070 $d
+C:\Users\Godwin\AppData\Local\Temp\ccAwo1DS.s:24     .bss.YS_8010_data:00000000 YS_8010_data
+C:\Users\Godwin\AppData\Local\Temp\ccAwo1DS.s:21     .bss.YS_8010_data:00000000 $d
+C:\Users\Godwin\AppData\Local\Temp\ccAwo1DS.s:31     .bss.YS_8010_cmd:00000000 YS_8010_cmd
+C:\Users\Godwin\AppData\Local\Temp\ccAwo1DS.s:28     .bss.YS_8010_cmd:00000000 $d
+C:\Users\Godwin\AppData\Local\Temp\ccAwo1DS.s:37     .bss.tx_res:00000000 tx_res
+C:\Users\Godwin\AppData\Local\Temp\ccAwo1DS.s:38     .bss.tx_res:00000000 $d
+C:\Users\Godwin\AppData\Local\Temp\ccAwo1DS.s:43     .bss.rx_res:00000000 rx_res
+C:\Users\Godwin\AppData\Local\Temp\ccAwo1DS.s:44     .bss.rx_res:00000000 $d
+C:\Users\Godwin\AppData\Local\Temp\ccAwo1DS.s:50     .bss.motor1:00000000 motor1
+C:\Users\Godwin\AppData\Local\Temp\ccAwo1DS.s:47     .bss.motor1:00000000 $d
+C:\Users\Godwin\AppData\Local\Temp\ccAwo1DS.s:53     .text.Arm_Init:00000000 $t
+C:\Users\Godwin\AppData\Local\Temp\ccAwo1DS.s:59     .text.Arm_Init:00000000 Arm_Init
+C:\Users\Godwin\AppData\Local\Temp\ccAwo1DS.s:207    .text.Arm_Init:0000010c $d
+C:\Users\Godwin\AppData\Local\Temp\ccAwo1DS.s:222    .text.Arm_motor1:00000000 $t
+C:\Users\Godwin\AppData\Local\Temp\ccAwo1DS.s:228    .text.Arm_motor1:00000000 Arm_motor1
+C:\Users\Godwin\AppData\Local\Temp\ccAwo1DS.s:254    .text.Arm_motor1:00000018 $d
+C:\Users\Godwin\AppData\Local\Temp\ccAwo1DS.s:260    .text.Arm_motor3:00000000 $t
+C:\Users\Godwin\AppData\Local\Temp\ccAwo1DS.s:266    .text.Arm_motor3:00000000 Arm_motor3
+C:\Users\Godwin\AppData\Local\Temp\ccAwo1DS.s:316    .text.Arm_motor3:00000044 $d
+C:\Users\Godwin\AppData\Local\Temp\ccAwo1DS.s:327    .text.Arm_motor4:00000000 $t
+C:\Users\Godwin\AppData\Local\Temp\ccAwo1DS.s:333    .text.Arm_motor4:00000000 Arm_motor4
+C:\Users\Godwin\AppData\Local\Temp\ccAwo1DS.s:382    .text.Arm_motor4:0000004c $d
+C:\Users\Godwin\AppData\Local\Temp\ccAwo1DS.s:392    .text.Arm_motor5:00000000 $t
+C:\Users\Godwin\AppData\Local\Temp\ccAwo1DS.s:398    .text.Arm_motor5:00000000 Arm_motor5
+C:\Users\Godwin\AppData\Local\Temp\ccAwo1DS.s:443    .text.Arm_motor5:00000044 $d
+C:\Users\Godwin\AppData\Local\Temp\ccAwo1DS.s:452    .text.Arm_motor6:00000000 $t
+C:\Users\Godwin\AppData\Local\Temp\ccAwo1DS.s:458    .text.Arm_motor6:00000000 Arm_motor6
+C:\Users\Godwin\AppData\Local\Temp\ccAwo1DS.s:516    .text.Arm_motor6:00000070 $d
 
 UNDEFINED SYMBOLS
 RobStride_Motor_Init
