@@ -279,3 +279,9 @@ void PC_Arm_Motor_Control_Updata(void)
     motor_radians[4] = pc_dn_data.pc_target_servo_angles[4];
     motor_radians[5] = pc_dn_data.pc_target_servo_angles[5];
 }
+void pc_up_tx_data(void)
+{
+    up_tx_data.chassis_vx = (float)(SBUS_CH.CH1 - (MID_VALUE)) /200;
+    up_tx_data.chassis_vy = (float)(SBUS_CH.CH2 - (MID_VALUE)) /200;
+    up_tx_data.chassis_yaw = (float)(SBUS_CH.CH3 - (MID_VALUE)) /200;
+}

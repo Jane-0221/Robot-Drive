@@ -139,8 +139,8 @@ uint16_t Lift_GetHeight(void)
  */
 static void Motor_Forward(void)
 {
-    HAL_GPIO_WritePin(RELAY1_PORT, RELAY1_PIN, RELAY_ON);
-    HAL_GPIO_WritePin(RELAY2_PORT, RELAY2_PIN, RELAY_OFF);
+    HAL_GPIO_WritePin(RELAY1_PORT, RELAY1_PIN, LIFT_RELAY_ON);
+    HAL_GPIO_WritePin(RELAY2_PORT, RELAY2_PIN, LIFT_RELAY_OFF);
 }
 
 /**
@@ -151,8 +151,8 @@ static void Motor_Forward(void)
  */
 static void Motor_Reverse(void)
 {
-    HAL_GPIO_WritePin(RELAY1_PORT, RELAY1_PIN, RELAY_OFF);
-    HAL_GPIO_WritePin(RELAY2_PORT, RELAY2_PIN, RELAY_ON);
+    HAL_GPIO_WritePin(RELAY1_PORT, RELAY1_PIN, LIFT_RELAY_OFF);
+    HAL_GPIO_WritePin(RELAY2_PORT, RELAY2_PIN, LIFT_RELAY_ON);
 }
 
 /**
@@ -163,8 +163,8 @@ static void Motor_Reverse(void)
  */
 static void Motor_Stop(void)
 {
-    HAL_GPIO_WritePin(RELAY1_PORT, RELAY1_PIN, RELAY_ON);
-    HAL_GPIO_WritePin(RELAY2_PORT, RELAY2_PIN, RELAY_ON);
+    HAL_GPIO_WritePin(RELAY1_PORT, RELAY1_PIN, LIFT_RELAY_ON);
+    HAL_GPIO_WritePin(RELAY2_PORT, RELAY2_PIN, LIFT_RELAY_ON);
 }
 
 /**

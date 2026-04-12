@@ -132,7 +132,7 @@ User/Drive/Unitree/crc_ccitt.c \
 User/Drive/Unitree/gom_protocol.c \
 User/Drive/bsp_pca9685.c \
 User/Software/remote_control.c \
-User/Software/USB_VirCom.c \
+User/BSP/USB_VirCom.c \
 User/Software/music.c \
 Core/Src/i2c.c
 

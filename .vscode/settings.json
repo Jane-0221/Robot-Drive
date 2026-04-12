@@ -107,8 +107,15 @@
     "freertos.h": "c"
   },
   "files.encoding": "utf8",
-  "makefile.makefilePath": "D:\\RM\\code\\25-EE-code\\Makefile",
-  "makefile.makePath": "D:\\gcc-arm-none-eabi-10.3-2021.10-win32\\Arm-GNU-Toolchian\\arm-none-eabi\\bin",
+  "C_Cpp.default.configurationProvider": "ms-vscode.cpptools",
+  "C_Cpp.default.compilerPath": "C:/ST/STM32CubeCLT_1.21.0/GNU-tools-for-STM32/bin/arm-none-eabi-gcc.exe",
+  "C_Cpp.default.intelliSenseMode": "windows-gcc-arm",
+  "C_Cpp.default.defines": [
+    "USE_HAL_DRIVER",
+    "STM32H723xx",
+    "USE_PWR_LDO_SUPPLY",
+    "CORE_CM7"
+  ],
   "github.copilot.advanced": {
     "debug.overrideCAPIUrl": "https://copilot.637274.xyz",
     "debug.overrideProxyUrl": "https://copilot.637274.xyz",

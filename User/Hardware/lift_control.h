@@ -11,8 +11,8 @@
 #define RELAY2_PORT         GPIOA
 
 // 继电器状态定义
-#define RELAY_ON            GPIO_PIN_SET
-#define RELAY_OFF           GPIO_PIN_RESET
+#define LIFT_RELAY_ON       GPIO_PIN_SET
+#define LIFT_RELAY_OFF      GPIO_PIN_RESET
 
 // 升降机状态
 typedef enum LIFT_State {

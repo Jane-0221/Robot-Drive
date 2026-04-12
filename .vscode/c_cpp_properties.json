@@ -1,64 +1,66 @@
 {
     "configurations": [
         {
-    "name": "windows-gcc-x64",
-    "includePath": [
-        // 项目根目录（递归搜索所有子文件夹）
-        "${workspaceFolder}/**",
-        // 核心头文件目录
-        "${workspaceFolder}/Core/Inc",
-        "${workspaceFolder}/Drivers/CMSIS/Core/Include",
-        "${workspaceFolder}/Drivers/CMSIS/Device/ST/STM32H7xx/Include",
-        "${workspaceFolder}/Drivers/STM32H7xx_HAL_Driver/Inc",
-        "${workspaceFolder}/Algorithm/Include",
-        "${workspaceFolder}/Algorithm",
-        // STM32H7xx specific paths
-        "${workspaceFolder}/Drivers/STM32H7xx_HAL_Driver/Inc/Legacy"
-    ],
-    "compilerPath": "C:/msys64/ucrt64/bin/gcc.exe",
-    "intelliSenseMode": "windows-gcc-x64",
-    "compilerArgs": [
-        "-DSTM32H723xx",
-        "-DUSE_HAL_DRIVER",
-        "-DUSE_HAL_DRIVER",
-        "-DCORE_CM7"
-    ],
-    "mergeConfigurations": false,
-    "browse": {
-        "path": [
-            // 同步更新 browse 路径（保持和 includePath 一致）
-            "${workspaceFolder}/**",
-            "${workspaceFolder}/Core/Inc",
-            "${workspaceFolder}/Drivers/CMSIS/Core/Include",
-            "${workspaceFolder}/Drivers/CMSIS/Device/ST/STM32H7xx/Include",
-            "${workspaceFolder}/Drivers/STM32H7xx_HAL_Driver/Inc",
-            "${workspaceFolder}/Algorithm/Include",
-            "${workspaceFolder}/Algorithm",
-            // STM32H7xx specific paths
-            "${workspaceFolder}/Drivers/STM32H7xx_HAL_Driver/Inc/Legacy"
-        ],
-        "limitSymbolsToIncludedHeaders": true
-    },
-    "cStandard": "c17"
-        },
-        {
-            "name": "arm-gnu-toolchain",
-            "includePath": [
-                "${workspaceFolder}/**",
-                "${workspaceFolder}/User/Hardware",
-                "${workspaceFolder}/User/BSP",
-                "${workspaceFolder}/User/Software"
-            ],
+            "name": "stm32h723",
+            "compilerPath": "C:/ST/STM32CubeCLT_1.21.0/GNU-tools-for-STM32/bin/arm-none-eabi-gcc.exe",
+            "intelliSenseMode": "windows-gcc-arm",
+            "cStandard": "c17",
+            "cppStandard": "gnu++14",
             "defines": [
                 "USE_HAL_DRIVER",
                 "STM32H723xx",
-                "YOUNG_OMNI",
+                "USE_PWR_LDO_SUPPLY",
                 "CORE_CM7"
             ],
-            "compilerPath": "C:\\msys64\\ucrt64\\bin\\gcc.exe",
-            "cStandard": "c17",
-            "cppStandard": "gnu++14",
-            "intelliSenseMode": "gcc-arm"
+            "includePath": [
+                "${workspaceFolder}/Core/Inc",
+                "${workspaceFolder}/USB_DEVICE/App",
+                "${workspaceFolder}/USB_DEVICE/Target",
+                "${workspaceFolder}/Drivers/STM32H7xx_HAL_Driver/Inc",
+                "${workspaceFolder}/Drivers/STM32H7xx_HAL_Driver/Inc/Legacy",
+                "${workspaceFolder}/Drivers/CMSIS/Device/ST/STM32H7xx/Include",
+                "${workspaceFolder}/Drivers/CMSIS/Include",
+                "${workspaceFolder}/Drivers/Chip/bmi088",
+                "${workspaceFolder}/Drivers/Chip/ws2812",
+                "${workspaceFolder}/User/Hardware",
+                "${workspaceFolder}/User/Drive",
+                "${workspaceFolder}/User/Drive/Unitree",
+                "${workspaceFolder}/User/Software",
+                "${workspaceFolder}/User/BSP",
+                "${workspaceFolder}/Algorithm/Include",
+                "${workspaceFolder}/Algorithm",
+                "${workspaceFolder}/Middlewares/ST/STM32_USB_Device_Library/Core/Inc",
+                "${workspaceFolder}/Middlewares/ST/STM32_USB_Device_Library/Class/CDC/Inc",
+                "${workspaceFolder}/Middlewares/Third_Party/FreeRTOS/Source/include",
+                "${workspaceFolder}/Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2",
+                "${workspaceFolder}/Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F"
+            ],
+            "browse": {
+                "path": [
+                    "${workspaceFolder}/Core/Inc",
+                    "${workspaceFolder}/USB_DEVICE/App",
+                    "${workspaceFolder}/USB_DEVICE/Target",
+                    "${workspaceFolder}/Drivers/STM32H7xx_HAL_Driver/Inc",
+                    "${workspaceFolder}/Drivers/STM32H7xx_HAL_Driver/Inc/Legacy",
+                    "${workspaceFolder}/Drivers/CMSIS/Device/ST/STM32H7xx/Include",
+                    "${workspaceFolder}/Drivers/CMSIS/Include",
+                    "${workspaceFolder}/Drivers/Chip/bmi088",
+                    "${workspaceFolder}/Drivers/Chip/ws2812",
+                    "${workspaceFolder}/User/Hardware",
+                    "${workspaceFolder}/User/Drive",
+                    "${workspaceFolder}/User/Drive/Unitree",
+                    "${workspaceFolder}/User/Software",
+                    "${workspaceFolder}/User/BSP",
+                    "${workspaceFolder}/Algorithm/Include",
+                    "${workspaceFolder}/Algorithm",
+                    "${workspaceFolder}/Middlewares/ST/STM32_USB_Device_Library/Core/Inc",
+                    "${workspaceFolder}/Middlewares/ST/STM32_USB_Device_Library/Class/CDC/Inc",
+                    "${workspaceFolder}/Middlewares/Third_Party/FreeRTOS/Source/include",
+                    "${workspaceFolder}/Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2",
+                    "${workspaceFolder}/Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F"
+                ],
+                "limitSymbolsToIncludedHeaders": true
+            }
         }
     ],
     "version": 4

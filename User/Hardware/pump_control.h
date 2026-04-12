@@ -10,8 +10,8 @@
 
 // 继电器电平定义：低电平表示继电器导通（泵/阀工作），高电平表示断开（泵/阀停止）
 // 注：使用前需确认硬件电路的电平匹配性，避免逻辑错误
-#define RELAY_ON            GPIO_PIN_RESET
-#define RELAY_OFF           GPIO_PIN_SET
+#define PUMP_RELAY_ACTIVE   GPIO_PIN_RESET
+#define PUMP_RELAY_INACTIVE GPIO_PIN_SET
 
 // 泵工作状态枚举
 typedef enum {

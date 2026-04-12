@@ -37,7 +37,11 @@
 #include "LED.h"
 #include "music.h"
 #include "head.h"
+#include "arm.h"
 #include "arm_sv.h"
+#include "lift_control.h"
+#include "pump_control.h"
+#include "remote_control.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/

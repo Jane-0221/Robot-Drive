@@ -14,5 +14,5 @@ extern void PC_Pump_Control_Updata(void);
 extern void PC_Head_Motor_Control_Updata(void);
 extern void PC_Up_Down_Motor_Control_Updata(void);
 extern void PC_Arm_Motor_Control_Updata(void);
-
+extern void pc_up_tx_data(void);
 #endif // !__REMOTE_CONTROL__

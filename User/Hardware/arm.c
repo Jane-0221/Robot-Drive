@@ -9,95 +9,96 @@
 #include "LZ_motor_driver.h"
 #include "FreeRTOS.h"
 #include "task.h"
+#include "cmsis_os.h"
 #include "DrEmpower_can.h"
 #include "stdio.h"
 
-// ===================== 全局变量定义 =====================
+// ===================== 鍏ㄥ眬鍙橀噺瀹氫箟 =====================
 /**
- * @brief 机械臂肩部电机类型（枚举值：SHOULDER_TYPE_LINGZU/DAREN/DAMIAO）
- * @note  用于切换不同品牌电机的控制逻辑（凌组/大然/大淼）
+ * @brief 鏈烘鑷傝偐閮ㄧ數鏈虹被鍨嬶紙鏋氫妇鍊硷細SHOULDER_TYPE_LINGZU/DAREN/DAMIAO锛?
+ * @note  鐢ㄤ簬鍒囨崲涓嶅悓鍝佺墝鐢垫満鐨勬帶鍒堕€昏緫锛堝噷缁?澶х劧/澶ф芳锛?
  */
 ShoulderType_t g_ShoulderType;
 
 /**
- * @brief 大然舵机状态结构体数组（3路）
- * @note  存储大然舵机的状态信息（角度、速度、扭矩等）
+ * @brief 澶х劧鑸垫満鐘舵€佺粨鏋勪綋鏁扮粍锛?璺級
+ * @note  瀛樺偍澶х劧鑸垫満鐨勭姸鎬佷俊鎭紙瑙掑害銆侀€熷害銆佹壄鐭╃瓑锛?
  */
 struct servo_state servo_state_daran[3];
 
 /**
- * @brief 大然舵机电压/电流结构体数组（3路）
- * @note  存储大然舵机的电气参数（输入电压、相电流等）
+ * @brief 澶х劧鑸垫満鐢靛帇/鐢垫祦缁撴瀯浣撴暟缁勶紙3璺級
+ * @note  瀛樺偍澶х劧鑸垫満鐨勭數姘斿弬鏁帮紙杈撳叆鐢靛帇銆佺浉鐢垫祦绛夛級
  */
 struct servo_volcur servo_volcur_daran[3];
 
 /**
- * @brief 大淼电机状态结构体数组（6路）
- * @note  存储DM4310电机的位置、速度、电流等状态
+ * @brief 澶ф芳鐢垫満鐘舵€佺粨鏋勪綋鏁扮粍锛?璺級
+ * @note  瀛樺偍DM4310鐢垫満鐨勪綅缃€侀€熷害銆佺數娴佺瓑鐘舵€?
  */
 extern Motor_DM_Status DM_Status[6];
 
 /**
- * @brief 凌组电机对象（3路）
- * @note  Robstride04协议驱动，对应凌组1/2/3号电机
+ * @brief 鍑岀粍鐢垫満瀵硅薄锛?璺級
+ * @note  Robstride04鍗忚椹卞姩锛屽搴斿噷缁?/2/3鍙风數鏈?
  */
-RobStride_Motor_t motor1; // 凌组1号电机
-RobStride_Motor_t motor2; // 凌组2号电机
-RobStride_Motor_t motor3; // 凌组3号电机
+RobStride_Motor_t motor1; // 鍑岀粍1鍙风數鏈?
+RobStride_Motor_t motor2; // 鍑岀粍2鍙风數鏈?
+RobStride_Motor_t motor3; // 鍑岀粍3鍙风數鏈?
 
 /**
- * @brief 凌组电机数据结构体数组（3路）
- * @note  存储凌组电机的目标/当前角度、速度等控制参数
+ * @brief 鍑岀粍鐢垫満鏁版嵁缁撴瀯浣撴暟缁勶紙3璺級
+ * @note  瀛樺偍鍑岀粍鐢垫満鐨勭洰鏍?褰撳墠瑙掑害銆侀€熷害绛夋帶鍒跺弬鏁?
  */
 ArmMotorData_t Linzu_motor_data[3];
 
 /**
- * @brief 大然电机数据结构体数组（3路）
- * @note  存储大然电机的目标/当前角度、速度等控制参数
+ * @brief 澶х劧鐢垫満鏁版嵁缁撴瀯浣撴暟缁勶紙3璺級
+ * @note  瀛樺偍澶х劧鐢垫満鐨勭洰鏍?褰撳墠瑙掑害銆侀€熷害绛夋帶鍒跺弬鏁?
  */
 ArmMotorData_t Daran_motor_data[3];
 
 /**
- * @brief 大淼电机数据结构体数组（3路）
- * @note  存储大淼电机的目标/当前角度、速度等控制参数
+ * @brief 澶ф芳鐢垫満鏁版嵁缁撴瀯浣撴暟缁勶紙3璺級
+ * @note  瀛樺偍澶ф芳鐢垫満鐨勭洰鏍?褰撳墠瑙掑害銆侀€熷害绛夋帶鍒跺弬鏁?
  */
 ArmMotorData_t Damiao_motor_data[3];
 
 /**
- * @brief 数据回复使能标志
- * @note  浮点型：0.0f=禁用回复，非0.0f=启用回复（未在本代码中实际使用）
+ * @brief 鏁版嵁鍥炲浣胯兘鏍囧織
+ * @note  娴偣鍨嬶細0.0f=绂佺敤鍥炲锛岄潪0.0f=鍚敤鍥炲锛堟湭鍦ㄦ湰浠ｇ爜涓疄闄呬娇鐢級
  */
 float reply_enable = 0.0f;
 
-// ===================== 函数定义 =====================
+// ===================== 鍑芥暟瀹氫箟 =====================
 /**
- * @brief 机械臂初始化函数
- * @retval 无
- * @note   1. 核心功能：选择肩部电机类型，初始化凌组/大然/大淼电机，配置CAN2通信；
- *         2. 凌组电机：初始化RobStride协议，设置CSP位置模式，使能电机，开启主动上报；
- *         3. 大然电机：清除错误，设置模式2（位置模式），配置参数22001（比例系数）；
- *         4. 大淼电机：初始化位置模式，暂未配置具体参数；
- *         5. 所有电机均挂载在CAN2总线上。
+ * @brief 鏈烘鑷傚垵濮嬪寲鍑芥暟
+ * @retval 鏃?
+ * @note   1. 鏍稿績鍔熻兘锛氶€夋嫨鑲╅儴鐢垫満绫诲瀷锛屽垵濮嬪寲鍑岀粍/澶х劧/澶ф芳鐢垫満锛岄厤缃瓹AN2閫氫俊锛?
+ *         2. 鍑岀粍鐢垫満锛氬垵濮嬪寲RobStride鍗忚锛岃缃瓹SP浣嶇疆妯″紡锛屼娇鑳界數鏈猴紝寮€鍚富鍔ㄤ笂鎶ワ紱
+ *         3. 澶х劧鐢垫満锛氭竻闄ら敊璇紝璁剧疆妯″紡2锛堜綅缃ā寮忥級锛岄厤缃弬鏁?2001锛堟瘮渚嬬郴鏁帮級锛?
+ *         4. 澶ф芳鐢垫満锛氬垵濮嬪寲浣嶇疆妯″紡锛屾殏鏈厤缃叿浣撳弬鏁帮紱
+ *         5. 鎵€鏈夌數鏈哄潎鎸傝浇鍦–AN2鎬荤嚎涓娿€?
  */
 void Arm_Init()
 {
-    // 选择默认肩部电机类型（注释为凌组，实际启用大然）
+    // 閫夋嫨榛樿鑲╅儴鐢垫満绫诲瀷锛堟敞閲婁负鍑岀粍锛屽疄闄呭惎鐢ㄥぇ鐒讹級
     // g_ShoulderType = SHOULDER_TYPE_LINGZU;
     g_ShoulderType = SHOULDER_TYPE_DARAN;
 
-    /* 凌组电机初始化（使用CAN2总线） */
-    // 1号凌组电机初始化
-    RobStride_Motor_Init(&motor1, MOTOR_LINGZU_1_ID, false);          // 初始化电机对象（ID为凌组1号）
-    Get_RobStride_Motor_parameter(&motor1, CAN_HANDLE_2, 0X7005);     // 读取电机参数（0X7005为参数地址）
-    HAL_Delay(10);                                                    // 延时确保通信稳定
-    Set_RobStride_Motor_parameter(&motor1, CAN_HANDLE_2, 0X7005, CSP_control_mode, 'j'); // 设置CSP位置控制模式
-    Enable_Motor(&motor1, (hcan_t *)CAN_HANDLE_2);                    // 使能电机
-    Set_RobStride_Motor_parameter(&motor1, CAN_HANDLE_2, 0X7017, 1.0f, 'p'); // 设置参数（0X7017，比例1.0）
+    /* 鍑岀粍鐢垫満鍒濆鍖栵紙浣跨敤CAN2鎬荤嚎锛?*/
+    // 1鍙峰噷缁勭數鏈哄垵濮嬪寲
+    RobStride_Motor_Init(&motor1, MOTOR_LINGZU_1_ID, false);          // 鍒濆鍖栫數鏈哄璞★紙ID涓哄噷缁?鍙凤級
+    Get_RobStride_Motor_parameter(&motor1, CAN_HANDLE_2, 0X7005);     // 璇诲彇鐢垫満鍙傛暟锛?X7005涓哄弬鏁板湴鍧€锛?
+    HAL_Delay(10);                                                    // 寤舵椂纭繚閫氫俊绋冲畾
+    Set_RobStride_Motor_parameter(&motor1, CAN_HANDLE_2, 0X7005, CSP_control_mode, 'j'); // 璁剧疆CSP浣嶇疆鎺у埗妯″紡
+    Enable_Motor(&motor1, (hcan_t *)CAN_HANDLE_2);                    // 浣胯兘鐢垫満
+    Set_RobStride_Motor_parameter(&motor1, CAN_HANDLE_2, 0X7017, 1.0f, 'p'); // 璁剧疆鍙傛暟锛?X7017锛屾瘮渚?.0锛?
     HAL_Delay(10);
-    // 开启主动上报（0x00=关闭，0x01=开启）
+    // 寮€鍚富鍔ㄤ笂鎶ワ紙0x00=鍏抽棴锛?x01=寮€鍚級
     RobStride_Motor_ProactiveEscalationSet(&motor1, CAN_HANDLE_2, 0x01);
 
-    // 2号凌组电机初始化（逻辑同1号）
+    // 2鍙峰噷缁勭數鏈哄垵濮嬪寲锛堥€昏緫鍚?鍙凤級
     RobStride_Motor_Init(&motor2, MOTOR_LINGZU_2_ID, false);
     Get_RobStride_Motor_parameter(&motor2, CAN_HANDLE_2, 0X7005);
     HAL_Delay(10);
@@ -107,7 +108,7 @@ void Arm_Init()
     HAL_Delay(10);
     RobStride_Motor_ProactiveEscalationSet(&motor2, CAN_HANDLE_2, 0x01);
 
-    // 3号凌组电机初始化（逻辑同1号）
+    // 3鍙峰噷缁勭數鏈哄垵濮嬪寲锛堥€昏緫鍚?鍙凤級
     RobStride_Motor_Init(&motor3, MOTOR_LINGZU_3_ID, false);
     Get_RobStride_Motor_parameter(&motor3, CAN_HANDLE_2, 0X7005);
     HAL_Delay(10);
@@ -117,29 +118,29 @@ void Arm_Init()
     HAL_Delay(10);
     RobStride_Motor_ProactiveEscalationSet(&motor3, CAN_HANDLE_2, 0x01);
 
-    /* 大然电机初始化（使用CAN2总线） */
-    clear_error(CAN_HANDLE_2, MOTOR_DARAN_1_ID);                     // 清除1号大然电机错误
-    set_mode(CAN_HANDLE_2, MOTOR_DARAN_1_ID, 2);                     // 设置模式2（位置模式）
-    write_property(CAN_HANDLE_2, MOTOR_DARAN_1_ID, 22001, 3, 1.0f); // 写入参数22001（比例系数1.0）
+    /* 澶х劧鐢垫満鍒濆鍖栵紙浣跨敤CAN2鎬荤嚎锛?*/
+    clear_error(CAN_HANDLE_2, MOTOR_DARAN_1_ID);                     // 娓呴櫎1鍙峰ぇ鐒剁數鏈洪敊璇?
+    set_mode(CAN_HANDLE_2, MOTOR_DARAN_1_ID, 2);                     // 璁剧疆妯″紡2锛堜綅缃ā寮忥級
+    write_property(CAN_HANDLE_2, MOTOR_DARAN_1_ID, 22001, 3, 1.0f); // 鍐欏叆鍙傛暟22001锛堟瘮渚嬬郴鏁?.0锛?
 
-    clear_error(CAN_HANDLE_2, MOTOR_DARAN_2_ID);                     // 清除2号大然电机错误
-    set_mode(CAN_HANDLE_2, MOTOR_DARAN_2_ID, 2);                     // 设置位置模式
-    write_property(CAN_HANDLE_2, MOTOR_DARAN_2_ID, 22001, 3, 1.0f); // 配置比例系数
+    clear_error(CAN_HANDLE_2, MOTOR_DARAN_2_ID);                     // 娓呴櫎2鍙峰ぇ鐒剁數鏈洪敊璇?
+    set_mode(CAN_HANDLE_2, MOTOR_DARAN_2_ID, 2);                     // 璁剧疆浣嶇疆妯″紡
+    write_property(CAN_HANDLE_2, MOTOR_DARAN_2_ID, 22001, 3, 1.0f); // 閰嶇疆姣斾緥绯绘暟
 
-    clear_error(CAN_HANDLE_2, MOTOR_DARAN_3_ID);                     // 清除3号大然电机错误
-    set_mode(CAN_HANDLE_2, MOTOR_DARAN_3_ID, 2);                     // 设置位置模式
-    write_property(CAN_HANDLE_2, MOTOR_DARAN_3_ID, 22001, 3, 1.0f); // 配置比例系数
+    clear_error(CAN_HANDLE_2, MOTOR_DARAN_3_ID);                     // 娓呴櫎3鍙峰ぇ鐒剁數鏈洪敊璇?
+    set_mode(CAN_HANDLE_2, MOTOR_DARAN_3_ID, 2);                     // 璁剧疆浣嶇疆妯″紡
+    write_property(CAN_HANDLE_2, MOTOR_DARAN_3_ID, 22001, 3, 1.0f); // 閰嶇疆姣斾緥绯绘暟
 
-    /* 大淼电机初始化（使用CAN2总线） */
-    arm_motor_init(&arm_motor[Motor4], MOTOR_DAMIAO_4_ID, POS_MODE); // 4号大淼电机初始化（位置模式）
-    arm_motor_init(&arm_motor[Motor5], MOTOR_DAMIAO_5_ID, POS_MODE); // 5号大淼电机初始化（位置模式）
-    arm_motor_init(&arm_motor[Motor6], MOTOR_DAMIAO_6_ID, POS_MODE); // 6号大淼电机初始化（位置模式）
+    /* 澶ф芳鐢垫満鍒濆鍖栵紙浣跨敤CAN2鎬荤嚎锛?*/
+    arm_motor_init(&arm_motor[Motor4], MOTOR_DAMIAO_4_ID, POS_MODE); // 4鍙峰ぇ娣肩數鏈哄垵濮嬪寲锛堜綅缃ā寮忥級
+    arm_motor_init(&arm_motor[Motor5], MOTOR_DAMIAO_5_ID, POS_MODE); // 5鍙峰ぇ娣肩數鏈哄垵濮嬪寲锛堜綅缃ā寮忥級
+    arm_motor_init(&arm_motor[Motor6], MOTOR_DAMIAO_6_ID, POS_MODE); // 6鍙峰ぇ娣肩數鏈哄垵濮嬪寲锛堜綅缃ā寮忥級
 
-    enable_motor_mode(CAN_HANDLE_2, MOTOR_DAMIAO_4_ID, POS_MODE);    // 使能4号大淼电机位置模式
-    enable_motor_mode(CAN_HANDLE_2, MOTOR_DAMIAO_5_ID, POS_MODE);    // 使能5号大淼电机位置模式
-    enable_motor_mode(CAN_HANDLE_2, MOTOR_DAMIAO_6_ID, POS_MODE);    // 使能6号大淼电机位置模式
+    enable_motor_mode(CAN_HANDLE_2, MOTOR_DAMIAO_4_ID, POS_MODE);    // 浣胯兘4鍙峰ぇ娣肩數鏈轰綅缃ā寮?
+    enable_motor_mode(CAN_HANDLE_2, MOTOR_DAMIAO_5_ID, POS_MODE);    // 浣胯兘5鍙峰ぇ娣肩數鏈轰綅缃ā寮?
+    enable_motor_mode(CAN_HANDLE_2, MOTOR_DAMIAO_6_ID, POS_MODE);    // 浣胯兘6鍙峰ぇ娣肩數鏈轰綅缃ā寮?
 
-    // 初始化凌组电机目标参数（角度10°，速度1.0r/min）
+    // 鍒濆鍖栧噷缁勭數鏈虹洰鏍囧弬鏁帮紙瑙掑害10掳锛岄€熷害1.0r/min锛?
     Linzu_motor_data[0].target_angle = 10.0f;
     Linzu_motor_data[1].target_angle = 10.0f;
     Linzu_motor_data[2].target_angle = 10.0f;
@@ -147,7 +148,7 @@ void Arm_Init()
     Linzu_motor_data[1].target_velocity = 1.0f;
     Linzu_motor_data[2].target_velocity = 1.0f;
 
-    // 初始化大然电机目标参数（角度10°，速度分别为90/20/20r/min）
+    // 鍒濆鍖栧ぇ鐒剁數鏈虹洰鏍囧弬鏁帮紙瑙掑害10掳锛岄€熷害鍒嗗埆涓?0/20/20r/min锛?
     Daran_motor_data[0].target_angle = 10.0f;
     Daran_motor_data[1].target_angle = 10.0f;
     Daran_motor_data[2].target_angle = 10.0f;
@@ -157,9 +158,9 @@ void Arm_Init()
 }
 
 /**
- * @brief 控制1号凌组电机（CSP位置模式）
- * @retval 无
- * @note   根据Linzu_motor_data[0]的目标角度/速度，通过CAN2发送控制指令
+ * @brief 鎺у埗1鍙峰噷缁勭數鏈猴紙CSP浣嶇疆妯″紡锛?
+ * @retval 鏃?
+ * @note   鏍规嵁Linzu_motor_data[0]鐨勭洰鏍囪搴?閫熷害锛岄€氳繃CAN2鍙戦€佹帶鍒舵寚浠?
  */
 void Arm_Linzu_motor1()
 {
@@ -167,9 +168,9 @@ void Arm_Linzu_motor1()
 }
 
 /**
- * @brief 控制2号凌组电机（CSP位置模式）
- * @retval 无
- * @note   根据Linzu_motor_data[1]的目标角度/速度，通过CAN2发送控制指令
+ * @brief 鎺у埗2鍙峰噷缁勭數鏈猴紙CSP浣嶇疆妯″紡锛?
+ * @retval 鏃?
+ * @note   鏍规嵁Linzu_motor_data[1]鐨勭洰鏍囪搴?閫熷害锛岄€氳繃CAN2鍙戦€佹帶鍒舵寚浠?
  */
 void Arm_Linzu_motor2()
 {
@@ -177,9 +178,9 @@ void Arm_Linzu_motor2()
 }
 
 /**
- * @brief 控制3号凌组电机（CSP位置模式）
- * @retval 无
- * @note   根据Linzu_motor_data[2]的目标角度/速度，通过CAN2发送控制指令
+ * @brief 鎺у埗3鍙峰噷缁勭數鏈猴紙CSP浣嶇疆妯″紡锛?
+ * @retval 鏃?
+ * @note   鏍规嵁Linzu_motor_data[2]鐨勭洰鏍囪搴?閫熷害锛岄€氳繃CAN2鍙戦€佹帶鍒舵寚浠?
  */
 void Arm_Linzu_motor3()
 {
@@ -187,11 +188,11 @@ void Arm_Linzu_motor3()
 }
 
 /**
- * @brief 控制1号大然电机（位置模式）
- * @retval 无
- * @note   1. 延时1ms确保通信稳定；
- *         2. 设置目标角度、速度、加速度（10.0f）、立即生效（1）；
- *         3. 指令通过CAN2发送至1号大然电机。
+ * @brief 鎺у埗1鍙峰ぇ鐒剁數鏈猴紙浣嶇疆妯″紡锛?
+ * @retval 鏃?
+ * @note   1. 寤舵椂1ms纭繚閫氫俊绋冲畾锛?
+ *         2. 璁剧疆鐩爣瑙掑害銆侀€熷害銆佸姞閫熷害锛?0.0f锛夈€佺珛鍗崇敓鏁堬紙1锛夛紱
+ *         3. 鎸囦护閫氳繃CAN2鍙戦€佽嚦1鍙峰ぇ鐒剁數鏈恒€?
  */
 void Arm_Daran_motor1()
 {
@@ -200,9 +201,9 @@ void Arm_Daran_motor1()
 }
 
 /**
- * @brief 控制2号大然电机（位置模式）
- * @retval 无
- * @note   逻辑同1号大然电机，使用Daran_motor_data[1]的目标参数
+ * @brief 鎺у埗2鍙峰ぇ鐒剁數鏈猴紙浣嶇疆妯″紡锛?
+ * @retval 鏃?
+ * @note   閫昏緫鍚?鍙峰ぇ鐒剁數鏈猴紝浣跨敤Daran_motor_data[1]鐨勭洰鏍囧弬鏁?
  */
 void Arm_Daran_motor2()
 {
@@ -211,9 +212,9 @@ void Arm_Daran_motor2()
 }
 
 /**
- * @brief 控制3号大然电机（位置模式）
- * @retval 无
- * @note   逻辑同1号大然电机，使用Daran_motor_data[2]的目标参数
+ * @brief 鎺у埗3鍙峰ぇ鐒剁數鏈猴紙浣嶇疆妯″紡锛?
+ * @retval 鏃?
+ * @note   閫昏緫鍚?鍙峰ぇ鐒剁數鏈猴紝浣跨敤Daran_motor_data[2]鐨勭洰鏍囧弬鏁?
  */
 void Arm_Daran_motor3()
 {
@@ -222,12 +223,12 @@ void Arm_Daran_motor3()
 }
 
 /**
- * @brief 控制4号大淼电机（位置模式）
- * @retval 无
- * @note   1. 设置位置模式；
- *         2. 配置目标位置/速度；
- *         3. 设置位置速度控制参数（5=位置参数，10=速度参数）；
- *         4. 固定目标位置为20（可根据需求修改）。
+ * @brief 鎺у埗4鍙峰ぇ娣肩數鏈猴紙浣嶇疆妯″紡锛?
+ * @retval 鏃?
+ * @note   1. 璁剧疆浣嶇疆妯″紡锛?
+ *         2. 閰嶇疆鐩爣浣嶇疆/閫熷害锛?
+ *         3. 璁剧疆浣嶇疆閫熷害鎺у埗鍙傛暟锛?=浣嶇疆鍙傛暟锛?0=閫熷害鍙傛暟锛夛紱
+ *         4. 鍥哄畾鐩爣浣嶇疆涓?0锛堝彲鏍规嵁闇€姹備慨鏀癸級銆?
  */
 void Arm_Damiao_motor4()
 {
@@ -238,9 +239,9 @@ void Arm_Damiao_motor4()
 }
 
 /**
- * @brief 控制5号大淼电机（位置模式）
- * @retval 无
- * @note   逻辑同4号大淼电机，位置参数10，速度参数1
+ * @brief 鎺у埗5鍙峰ぇ娣肩數鏈猴紙浣嶇疆妯″紡锛?
+ * @retval 鏃?
+ * @note   閫昏緫鍚?鍙峰ぇ娣肩數鏈猴紝浣嶇疆鍙傛暟10锛岄€熷害鍙傛暟1
  */
 void Arm_Damiao_motor5()
 {
@@ -250,12 +251,12 @@ void Arm_Damiao_motor5()
 }
 
 /**
- * @brief 控制6号大淼电机（位置模式）
- * @retval 无
- * @note   1. 设置位置模式；
- *         2. 配置目标位置/速度；
- *         3. 固定目标位置为10，使用电机6的位置设定值作为控制参数；
- *         4. 速度参数固定为1。
+ * @brief 鎺у埗6鍙峰ぇ娣肩數鏈猴紙浣嶇疆妯″紡锛?
+ * @retval 鏃?
+ * @note   1. 璁剧疆浣嶇疆妯″紡锛?
+ *         2. 閰嶇疆鐩爣浣嶇疆/閫熷害锛?
+ *         3. 鍥哄畾鐩爣浣嶇疆涓?0锛屼娇鐢ㄧ數鏈?鐨勪綅缃瀹氬€间綔涓烘帶鍒跺弬鏁帮紱
+ *         4. 閫熷害鍙傛暟鍥哄畾涓?銆?
  */
 void Arm_Damiao_motor6()
 {
@@ -266,9 +267,9 @@ void Arm_Damiao_motor6()
 }
 
 /**
- * @brief 更新凌组电机当前状态数据
- * @retval 无
- * @note   从motor1/2/3的RobStride协议缓存中，读取当前角度、速度，更新到Linzu_motor_data
+ * @brief 鏇存柊鍑岀粍鐢垫満褰撳墠鐘舵€佹暟鎹?
+ * @retval 鏃?
+ * @note   浠巑otor1/2/3鐨凴obStride鍗忚缂撳瓨涓紝璇诲彇褰撳墠瑙掑害銆侀€熷害锛屾洿鏂板埌Linzu_motor_data
  */
 void Arm_Linzu_Data_update()
 {
@@ -281,15 +282,15 @@ void Arm_Linzu_Data_update()
 }
 
 /**
- * @brief 更新大然电机当前状态数据
- * @retval 无
- * @note   1. 从daran_motor_state缓存中读取角度、速度（扭矩注释未使用）；
- *         2. 更新到Daran_motor_data的current_angle/current_velocity成员；
- *         3. 调试打印代码已注释，如需查看可取消注释。
+ * @brief 鏇存柊澶х劧鐢垫満褰撳墠鐘舵€佹暟鎹?
+ * @retval 鏃?
+ * @note   1. 浠巇aran_motor_state缂撳瓨涓鍙栬搴︺€侀€熷害锛堟壄鐭╂敞閲婃湭浣跨敤锛夛紱
+ *         2. 鏇存柊鍒癉aran_motor_data鐨刢urrent_angle/current_velocity鎴愬憳锛?
+ *         3. 璋冭瘯鎵撳嵃浠ｇ爜宸叉敞閲婏紝濡傞渶鏌ョ湅鍙彇娑堟敞閲娿€?
  */
 void Arm_Daran_Data_update()
 {
-    // printf("Angle: %.2f��, Speed: %.2f r/min, Torque: %.2f Nm\r\n",
+    // printf("Angle: %.2f锟斤拷, Speed: %.2f r/min, Torque: %.2f Nm\r\n",
     //        daran_motor_state[0].angle, daran_motor_state[0].speed, daran_motor_state[0].torque);
 
     Daran_motor_data[0].current_angle = daran_motor_state[0].angle;
@@ -301,11 +302,11 @@ void Arm_Daran_Data_update()
 }
 
 /**
- * @brief 批量更新所有电机状态数据
- * @retval 无
- * @note   1. 先更新凌组电机数据；
- *         2. 延时1ms后更新大然电机数据；
- *         3. 大淼电机数据更新逻辑暂未实现。
+ * @brief 鎵归噺鏇存柊鎵€鏈夌數鏈虹姸鎬佹暟鎹?
+ * @retval 鏃?
+ * @note   1. 鍏堟洿鏂板噷缁勭數鏈烘暟鎹紱
+ *         2. 寤舵椂1ms鍚庢洿鏂板ぇ鐒剁數鏈烘暟鎹紱
+ *         3. 澶ф芳鐢垫満鏁版嵁鏇存柊閫昏緫鏆傛湭瀹炵幇銆?
  */
 void Arm_All_Data_update()
 {
@@ -315,12 +316,12 @@ void Arm_All_Data_update()
 }
 
 /**
- * @brief 机械臂电机控制指令发送函数
- * @retval 无
- * @note   1. 根据g_ShoulderType选择发送凌组/大然电机控制指令；
- *         2. 凌组电机：依次发送1/2/3号指令，间隔1ms FreeRTOS延时；
- *         3. 大然电机：依次发送1/2/3号指令，间隔1ms FreeRTOS延时；
- *         4. 大淼电机控制指令已注释，如需启用可取消注释。
+ * @brief 鏈烘鑷傜數鏈烘帶鍒舵寚浠ゅ彂閫佸嚱鏁?
+ * @retval 鏃?
+ * @note   1. 鏍规嵁g_ShoulderType閫夋嫨鍙戦€佸噷缁?澶х劧鐢垫満鎺у埗鎸囦护锛?
+ *         2. 鍑岀粍鐢垫満锛氫緷娆″彂閫?/2/3鍙锋寚浠わ紝闂撮殧1ms FreeRTOS寤舵椂锛?
+ *         3. 澶х劧鐢垫満锛氫緷娆″彂閫?/2/3鍙锋寚浠わ紝闂撮殧1ms FreeRTOS寤舵椂锛?
+ *         4. 澶ф芳鐢垫満鎺у埗鎸囦护宸叉敞閲婏紝濡傞渶鍚敤鍙彇娑堟敞閲娿€?
  */
 void Arm_all_tx()
 {

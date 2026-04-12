@@ -128,6 +128,7 @@ const osThreadAttr_t PC_Comm_attributes = {
 
 /* Private function prototypes -----------------------------------------------*/
 /* USER CODE BEGIN FunctionPrototypes */
+void Pump_Update(void);
 
 /* USER CODE END FunctionPrototypes */
 
@@ -440,7 +441,8 @@ void PC_Comm_Task(void *argument)
   /* Infinite loop */
   for (;;)
   {
-    //
+    pc_up_tx_data();
+    send_up_frame(&huart10);
     unpack_dn_frame(uart_protocol_raw_data, &pc_dn_data);
     osDelay(1);
     HAL_IWDG_Refresh(&hiwdg1);
