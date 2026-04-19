@@ -275,8 +275,8 @@ void pc_up_tx_data(void)
 {
     if (SBUS_CH.CH8 == LOW_VALUE && SBUS_CH.CH6 == LOW_VALUE && SBUS_CH.CH7 == LOW_VALUE && SBUS_CH.CH5 == LOW_VALUE)
     {
-        up_tx_data.chassis_vx = (float)(SBUS_CH.CH1 - (MID_VALUE))/100;
-        up_tx_data.chassis_vy = (-(float)(SBUS_CH.CH2 - (MID_VALUE)))/100;
-        up_tx_data.chassis_yaw = (float)(SBUS_CH.CH3 - (MID_VALUE))/100;
+        up_tx_data.chassis_vx = -(float)(SBUS_CH.CH2 - (MID_VALUE))/300;
+        up_tx_data.chassis_vy = (float)(SBUS_CH.CH1 - (MID_VALUE))/300;
+        up_tx_data.chassis_yaw = (float)(SBUS_CH.CH3 - (MID_VALUE))/200;
     }
 }
