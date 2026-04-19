@@ -2,9 +2,9 @@
 #include <string.h>
 #include "fdcan.h"
 
-// Íâ²¿CAN¾ä±úÉùÃ÷£¨±£ÁôÔ­ÓĞÓ²¼ş¾ä±úÃüÃû£¬½öĞŞ¸Äº¯Êı²ÎÊı£©
+// å¤–éƒ¨CANå¥æŸ„å£°æ˜ï¼ˆä¿ç•™åŸæœ‰ç¡¬ä»¶å¥æŸ„å‘½åï¼Œä»…ä¿®æ”¹å‡½æ•°å‚æ•°ï¼‰
 
-// RS04µç»ú²ÎÊı·¶Î§
+// RS04ç”µæœºå‚æ•°èŒƒå›´
 #define P_MIN -12.57f      // RS04: -12.57rad
 #define P_MAX 12.57f       // RS04: 12.57rad
 #define V_MIN -15.0f       // RS04: -15rad/s
@@ -18,9 +18,9 @@
 
 const uint16_t Index_List[] = {0X7005, 0X7006, 0X700A, 0X700B, 0X7010, 0X7011, 0X7014, 0X7016, 0X7017, 0X7018, 0x7019, 0x701A, 0x701B, 0x701C, 0x701D};
 
-uint32_t Mailbox; // ÓÊÏä±äÁ¿
+uint32_t Mailbox; // é‚®ç®±å˜é‡
 
-// Èç¹ûÃ»ÓĞ¶¨ÒåCANÏà¹ØÀàĞÍ£¬¶¨ÒåËüÃÇ
+// å¦‚æœæ²¡æœ‰å®šä¹‰CANç›¸å…³ç±»å‹ï¼Œå®šä¹‰å®ƒä»¬
 #ifndef CAN_TxHeaderTypeDef
 typedef struct {
     uint32_t StdId;
@@ -44,7 +44,7 @@ typedef struct {
 #endif
 
 /*******************************************************************************
-* º¯Êı¹¦ÄÜ  : uint16_tĞÍ×ªfloatĞÍ¸¡µãÊı
+* å‡½æ•°åŠŸèƒ½  : uint16_tå‹è½¬floatå‹æµ®ç‚¹æ•°
 *******************************************************************************/
 float uint16_to_float_lz(uint16_t x, float x_min, float x_max, uint8_t bits)
 {
@@ -55,9 +55,9 @@ float uint16_to_float_lz(uint16_t x, float x_min, float x_max, uint8_t bits)
 }
 
 /*******************************************************************************
-* º¯Êı¹¦ÄÜ  : float¸¡µãÊı×ªintĞÍ
+* å‡½æ•°åŠŸèƒ½  : floatæµ®ç‚¹æ•°è½¬intå‹
 *******************************************************************************/
-uint16_t float_to_uint_lz_lz(float x, float x_min, float x_max, uint8_t bits)
+uint16_t float_to_uint_lz(float x, float x_min, float x_max, uint8_t bits)
 {
     float span = x_max - x_min;
     float offset = x_min;
@@ -67,7 +67,7 @@ uint16_t float_to_uint_lz_lz(float x, float x_min, float x_max, uint8_t bits)
 }
 
 /*******************************************************************************
-* º¯Êı¹¦ÄÜ  : uint8_tÊı×é×ªfloat¸¡µãÊı
+* å‡½æ•°åŠŸèƒ½  : uint8_tæ•°ç»„è½¬floatæµ®ç‚¹æ•°
 *******************************************************************************/
 float Byte_to_float(uint8_t* bytedata)
 {
@@ -77,27 +77,27 @@ float Byte_to_float(uint8_t* bytedata)
 }
 
 /*******************************************************************************
-* º¯Êı¹¦ÄÜ  : MIT´íÎ»Âë×ª»»ÖÁË½ÓĞÄ£Ê½´íÎ»Âë
+* å‡½æ•°åŠŸèƒ½  : MITé”™ä½ç è½¬æ¢è‡³ç§æœ‰æ¨¡å¼é”™ä½ç 
 *******************************************************************************/
 uint8_t mapFaults(uint16_t fault16)
 {
     uint8_t fault8 = 0;
     
-    // ¸ù¾İRS04ËµÃ÷ÊéµÚ55Ò³µÄ¹ÊÕÏÎ»¶¨Òå½øĞĞÓ³Éä
-    if (fault16 & (1 << 16)) fault8 |= (1 << 0); // AÏàµçÁ÷²ÉÑù¹ıÁ÷ -> Ç·Ñ¹¹ÊÕÏ(Î»0)
-    if (fault16 & (1 << 14)) fault8 |= (1 << 4); // µç»ú¶Â×ª¹ıÔØËã·¨±£»¤ -> ¹ıÔØ¹ÊÕÏ(Î»4)
-    if (fault16 & (1 << 9))  fault8 |= (1 << 5); // Î»ÖÃ³õÊ¼»¯¹ÊÕÏ -> Î´±ê¶¨(Î»5)
-    if (fault16 & (1 << 8))  fault8 |= (1 << 1); // Ó²¼şÊ¶±ğ¹ÊÕÏ -> Çı¶¯¹ÊÕÏ(Î»1)
-    if (fault16 & (1 << 7))  fault8 |= (1 << 5); // ±àÂëÆ÷Î´±ê¶¨ -> Î´±ê¶¨(Î»5)
-    if (fault16 & (1 << 5))  fault8 |= (1 << 2); // CÏàµçÁ÷²ÉÑù¹ıÁ÷ -> ¹ıÎÂ(Î»2)
-    if (fault16 & (1 << 4))  fault8 |= (1 << 2); // BÏàµçÁ÷²ÉÑù¹ıÁ÷ -> ¹ıÎÂ(Î»2)
-    if (fault16 & (1 << 3))  fault8 |= (1 << 3); // ¹ıÑ¹¹ÊÕÏ -> ´Å±àÂë¹ÊÕÏ(Î»3)
+    // æ ¹æ®RS04è¯´æ˜ä¹¦ç¬¬55é¡µçš„æ•…éšœä½å®šä¹‰è¿›è¡Œæ˜ å°„
+    if (fault16 & (1 << 16)) fault8 |= (1 << 0); // Aç›¸ç”µæµé‡‡æ ·è¿‡æµ -> æ¬ å‹æ•…éšœ(ä½0)
+    if (fault16 & (1 << 14)) fault8 |= (1 << 4); // ç”µæœºå µè½¬è¿‡è½½ç®—æ³•ä¿æŠ¤ -> è¿‡è½½æ•…éšœ(ä½4)
+    if (fault16 & (1 << 9))  fault8 |= (1 << 5); // ä½ç½®åˆå§‹åŒ–æ•…éšœ -> æœªæ ‡å®š(ä½5)
+    if (fault16 & (1 << 8))  fault8 |= (1 << 1); // ç¡¬ä»¶è¯†åˆ«æ•…éšœ -> é©±åŠ¨æ•…éšœ(ä½1)
+    if (fault16 & (1 << 7))  fault8 |= (1 << 5); // ç¼–ç å™¨æœªæ ‡å®š -> æœªæ ‡å®š(ä½5)
+    if (fault16 & (1 << 5))  fault8 |= (1 << 2); // Cç›¸ç”µæµé‡‡æ ·è¿‡æµ -> è¿‡æ¸©(ä½2)
+    if (fault16 & (1 << 4))  fault8 |= (1 << 2); // Bç›¸ç”µæµé‡‡æ ·è¿‡æµ -> è¿‡æ¸©(ä½2)
+    if (fault16 & (1 << 3))  fault8 |= (1 << 3); // è¿‡å‹æ•…éšœ -> ç£ç¼–ç æ•…éšœ(ä½3)
     
     return fault8;
 }
 
 /*******************************************************************************
-* º¯Êı¹¦ÄÜ  : RobStrideµç»ú³õÊ¼»¯
+* å‡½æ•°åŠŸèƒ½  : RobStrideç”µæœºåˆå§‹åŒ–
 *******************************************************************************/
 void RobStride_Motor_Init(RobStride_Motor_t* motor, uint8_t CAN_Id, bool MIT_mode)
 {
@@ -107,7 +107,7 @@ void RobStride_Motor_Init(RobStride_Motor_t* motor, uint8_t CAN_Id, bool MIT_mod
     motor->MIT_Mode = MIT_mode;
     motor->MIT_Type = operationControl;
     
-    // ³õÊ¼»¯Êı¾İ¶ÁĞ´½á¹¹
+    // åˆå§‹åŒ–æ•°æ®è¯»å†™ç»“æ„
     data_read_write_init(&motor->drw);
 }
 
@@ -117,33 +117,33 @@ void RobStride_Motor_Init_Offset(RobStride_Motor_t* motor, uint8_t CAN_Id, bool 
 }
 
 /*******************************************************************************
-* º¯Êı¹¦ÄÜ  : ½ÓÊÕ´¦Àíº¯Êı
+* å‡½æ•°åŠŸèƒ½  : æ¥æ”¶å¤„ç†å‡½æ•°
 *******************************************************************************/
 void RobStride_Motor_Analysis(RobStride_Motor_t* motor, uint8_t* DataFrame, uint32_t ID_ExtId)
 {
     if (motor->MIT_Mode)
     {
-        // MITĞ­ÒéÊ¹ÓÃ±ê×¼Ö¡£¬Ö÷»úIDÎª0xFD
+        // MITåè®®ä½¿ç”¨æ ‡å‡†å¸§ï¼Œä¸»æœºIDä¸º0xFD
         if ((ID_ExtId & 0xFF) == 0xFD)
         {
-            // ¼ì²éÊÇ·ñÎª¹ÊÕÏ·´À¡Ö¡
+            // æ£€æŸ¥æ˜¯å¦ä¸ºæ•…éšœåé¦ˆå¸§
             if (DataFrame[3] == 0x00 && DataFrame[4] == 0x00 && DataFrame[5] == 0x00 &&
                 DataFrame[6] == 0x00 && DataFrame[7] == 0x00)
             {
-                // ¹ÊÕÏĞÅÏ¢ÔÚByte1-2ÖĞ
+                // æ•…éšœä¿¡æ¯åœ¨Byte1-2ä¸­
                 uint16_t fault16 = (uint16_t)(DataFrame[1] << 8) | DataFrame[2];
                 motor->error_code = mapFaults(fault16);
             }
             else
             {
-                // Õı³£Êı¾İÖ¡½âÎö
+                // æ­£å¸¸æ•°æ®å¸§è§£æ
                 motor->Pos_Info.Angle = uint16_to_float_lz((uint16_t)(DataFrame[1] << 8) | DataFrame[2], P_MIN, P_MAX, 16);
                 
-                // ËÙ¶È£º12Î»
+                // é€Ÿåº¦ï¼š12ä½
                 uint16_t speed_raw = (uint16_t)(DataFrame[3] << 4) | (DataFrame[4] >> 4);
                 motor->Pos_Info.Speed = uint16_to_float_lz(speed_raw, V_MIN, V_MAX, 12);
                 
-                // Á¦¾Ø£º12Î»
+                // åŠ›çŸ©ï¼š12ä½
                 uint16_t torque_raw = (uint16_t)((DataFrame[4] & 0x0F) << 8) | DataFrame[5];
                 motor->Pos_Info.Torque = uint16_to_float_lz(torque_raw, T_MIN, T_MAX, 12);
                 
@@ -152,20 +152,20 @@ void RobStride_Motor_Analysis(RobStride_Motor_t* motor, uint8_t* DataFrame, uint
         }
         else if ((ID_ExtId & 0xFF) == 0xFE)
         {
-            // »ñÈ¡IDÓ¦´ğÖ¡
+            // è·å–IDåº”ç­”å¸§
             memcpy(&motor->Unique_ID, DataFrame, 8);
         }
     }
     else
     {
-        // Ë½ÓĞĞ­Òé½âÎö
+        // ç§æœ‰åè®®è§£æ
         if (((ID_ExtId >> 8) & 0xFF) == motor->CAN_ID)
         {
             uint8_t communication_type = (uint8_t)((ID_ExtId >> 24) & 0x3F);
             
             if (communication_type == 2)
             {
-                // Í¨ĞÅÀàĞÍ2£ºµç»ú·´À¡Êı¾İ
+                // é€šä¿¡ç±»å‹2ï¼šç”µæœºåé¦ˆæ•°æ®
                 motor->Pos_Info.Angle = uint16_to_float_lz((uint16_t)(DataFrame[0] << 8) | DataFrame[1], P_MIN, P_MAX, 16);
                 motor->Pos_Info.Speed = uint16_to_float_lz((uint16_t)(DataFrame[2] << 8) | DataFrame[3], V_MIN, V_MAX, 16);
                 motor->Pos_Info.Torque = uint16_to_float_lz((uint16_t)(DataFrame[4] << 8) | DataFrame[5], T_MIN, T_MAX, 16);
@@ -175,7 +175,7 @@ void RobStride_Motor_Analysis(RobStride_Motor_t* motor, uint8_t* DataFrame, uint
             }
             else if (communication_type == 17)
             {
-                // Í¨ĞÅÀàĞÍ17£º²ÎÊı¶ÁÈ¡Ó¦´ğ
+                // é€šä¿¡ç±»å‹17ï¼šå‚æ•°è¯»å–åº”ç­”
                 uint16_t index = (uint16_t)(DataFrame[1] << 8) | DataFrame[0];
                 
                 for (uint8_t index_num = 0; index_num <= 13; index_num++)
@@ -233,7 +233,7 @@ void RobStride_Motor_Analysis(RobStride_Motor_t* motor, uint8_t* DataFrame, uint
             }
             else if ((ID_ExtId & 0xFF) == 0xFE)
             {
-                // »ñÈ¡IDÓ¦´ğÖ¡
+                // è·å–IDåº”ç­”å¸§
                 motor->CAN_ID = (uint8_t)((ID_ExtId >> 8) & 0xFF);
                 memcpy(&motor->Unique_ID, DataFrame, 8);
             }
@@ -242,8 +242,8 @@ void RobStride_Motor_Analysis(RobStride_Motor_t* motor, uint8_t* DataFrame, uint
 }
 
 /*******************************************************************************
-* º¯Êı¹¦ÄÜ  : RobStrideµç»ú»ñÈ¡Éè±¸IDºÍMCU
-* ĞŞ¸Äµã£º²ÎÊı¸ÄÎªhcan_t* hcan
+* å‡½æ•°åŠŸèƒ½  : RobStrideç”µæœºè·å–è®¾å¤‡IDå’ŒMCU
+* ä¿®æ”¹ç‚¹ï¼šå‚æ•°æ”¹ä¸ºhcan_t* hcan
 *******************************************************************************/
 void RobStride_Get_CAN_ID(RobStride_Motor_t* motor, hcan_t* hcan)
 {
@@ -255,13 +255,13 @@ void RobStride_Get_CAN_ID(RobStride_Motor_t* motor, hcan_t* hcan)
     TxMessage.DLC = 8;
     TxMessage.ExtId = Communication_Type_Get_ID << 24 | (uint32_t)motor->Master_CAN_ID << 8 | motor->CAN_ID;
     
-    // Ìæ»»Îªhcan²ÎÊı
+    // æ›¿æ¢ä¸ºhcanå‚æ•°
     canx_send_ext_data(hcan, TxMessage.ExtId, txdata, TxMessage.DLC);
 }
 
 /*******************************************************************************
-* º¯Êı¹¦ÄÜ  : RobStrideµç»úÔË¿ØÄ£Ê½
-* ĞŞ¸Äµã£º²ÎÊı¸ÄÎªhcan_t* hcan
+* å‡½æ•°åŠŸèƒ½  : RobStrideç”µæœºè¿æ§æ¨¡å¼
+* ä¿®æ”¹ç‚¹ï¼šå‚æ•°æ”¹ä¸ºhcan_t* hcan
 *******************************************************************************/
 void RobStride_Motor_move_control(RobStride_Motor_t* motor, hcan_t* hcan, float Torque, float Angle, float Speed, float Kp, float Kd)
 {
@@ -308,13 +308,13 @@ void RobStride_Motor_move_control(RobStride_Motor_t* motor, hcan_t* hcan, float 
     txdata[6] = (uint8_t)(kd_uint >> 8);
     txdata[7] = (uint8_t)(kd_uint & 0xFF);
     
-    // Ìæ»»Îªhcan²ÎÊı
+    // æ›¿æ¢ä¸ºhcanå‚æ•°
     canx_send_ext_data(hcan, TxMessage.ExtId, txdata, TxMessage.DLC);
 }
 
 /*******************************************************************************
-* º¯Êı¹¦ÄÜ  : RS04 MITÄ£Ê½Ê¹ÄÜ
-* ĞŞ¸Äµã£º²ÎÊı¸ÄÎªhcan_t* hcan
+* å‡½æ•°åŠŸèƒ½  : RS04 MITæ¨¡å¼ä½¿èƒ½
+* ä¿®æ”¹ç‚¹ï¼šå‚æ•°æ”¹ä¸ºhcan_t* hcan
 *******************************************************************************/
 void RobStride_Motor_MIT_Enable(RobStride_Motor_t* motor, hcan_t* hcan)
 {
@@ -335,13 +335,13 @@ void RobStride_Motor_MIT_Enable(RobStride_Motor_t* motor, hcan_t* hcan)
     txdata[6] = 0xFF;
     txdata[7] = MIT_CMD_ENABLE;
     
-    // Ìæ»»Îªhcan²ÎÊı
+    // æ›¿æ¢ä¸ºhcanå‚æ•°
     canx_send_data(hcan, (uint16_t)txMsg.StdId, txdata, txMsg.DLC);
 }
 
 /*******************************************************************************
-* º¯Êı¹¦ÄÜ  : RS04 MITÄ£Ê½Ê§ÄÜ
-* ĞŞ¸Äµã£º²ÎÊı¸ÄÎªhcan_t* hcan
+* å‡½æ•°åŠŸèƒ½  : RS04 MITæ¨¡å¼å¤±èƒ½
+* ä¿®æ”¹ç‚¹ï¼šå‚æ•°æ”¹ä¸ºhcan_t* hcan
 *******************************************************************************/
 void RobStride_Motor_MIT_Disable(RobStride_Motor_t* motor, hcan_t* hcan)
 {
@@ -362,13 +362,13 @@ void RobStride_Motor_MIT_Disable(RobStride_Motor_t* motor, hcan_t* hcan)
     txdata[6] = 0xFF;
     txdata[7] = MIT_CMD_DISABLE;
     
-    // Ìæ»»Îªhcan²ÎÊı
+    // æ›¿æ¢ä¸ºhcanå‚æ•°
     canx_send_data(hcan, (uint16_t)txMsg.StdId, txdata, txMsg.DLC);
 }
 
 /*******************************************************************************
-* º¯Êı¹¦ÄÜ  : RS04 MITÄ£Ê½Çå³ı»ò¼ì²é´íÎó
-* ĞŞ¸Äµã£º²ÎÊı¸ÄÎªhcan_t* hcan
+* å‡½æ•°åŠŸèƒ½  : RS04 MITæ¨¡å¼æ¸…é™¤æˆ–æ£€æŸ¥é”™è¯¯
+* ä¿®æ”¹ç‚¹ï¼šå‚æ•°æ”¹ä¸ºhcan_t* hcan
 *******************************************************************************/
 void RobStride_Motor_MIT_ClearOrCheckError(RobStride_Motor_t* motor, hcan_t* hcan, uint8_t F_CMD)
 {
@@ -389,13 +389,13 @@ void RobStride_Motor_MIT_ClearOrCheckError(RobStride_Motor_t* motor, hcan_t* hca
     txdata[6] = F_CMD;
     txdata[7] = MIT_CMD_CLEAR_ERR;
     
-    // Ìæ»»Îªhcan²ÎÊı
+    // æ›¿æ¢ä¸ºhcanå‚æ•°
     canx_send_data(hcan, (uint16_t)txMsg.StdId, txdata, txMsg.DLC);
 }
 
 /*******************************************************************************
-* º¯Êı¹¦ÄÜ  : RS04 MITÉèÖÃµç»úÔËĞĞÄ£Ê½
-* ĞŞ¸Äµã£º²ÎÊı¸ÄÎªhcan_t* hcan
+* å‡½æ•°åŠŸèƒ½  : RS04 MITè®¾ç½®ç”µæœºè¿è¡Œæ¨¡å¼
+* ä¿®æ”¹ç‚¹ï¼šå‚æ•°æ”¹ä¸ºhcan_t* hcan
 *******************************************************************************/
 void RobStride_Motor_MIT_SetMotorType(RobStride_Motor_t* motor, hcan_t* hcan, uint8_t F_CMD)
 {
@@ -416,13 +416,13 @@ void RobStride_Motor_MIT_SetMotorType(RobStride_Motor_t* motor, hcan_t* hcan, ui
     txdata[6] = F_CMD;
     txdata[7] = MIT_CMD_SET_MODE;
     
-    // Ìæ»»Îªhcan²ÎÊı
+    // æ›¿æ¢ä¸ºhcanå‚æ•°
     canx_send_data(hcan, (uint16_t)txMsg.StdId, txdata, txMsg.DLC);
 }
 
 /*******************************************************************************
-* º¯Êı¹¦ÄÜ  : RS04 MITÉèÖÃµç»úID
-* ĞŞ¸Äµã£º²ÎÊı¸ÄÎªhcan_t* hcan
+* å‡½æ•°åŠŸèƒ½  : RS04 MITè®¾ç½®ç”µæœºID
+* ä¿®æ”¹ç‚¹ï¼šå‚æ•°æ”¹ä¸ºhcan_t* hcan
 *******************************************************************************/
 void RobStride_Motor_MIT_SetMotorId(RobStride_Motor_t* motor, hcan_t* hcan, uint8_t F_CMD)
 {
@@ -441,15 +441,15 @@ void RobStride_Motor_MIT_SetMotorId(RobStride_Motor_t* motor, hcan_t* hcan, uint
     txdata[4] = 0xFF;
     txdata[5] = 0xFF;
     txdata[6] = F_CMD;
-    txdata[7] = 0xFA; // ÉèÖÃIDÃüÁî
+    txdata[7] = 0xFA; // è®¾ç½®IDå‘½ä»¤
     
-    // Ìæ»»Îªhcan²ÎÊı
+    // æ›¿æ¢ä¸ºhcanå‚æ•°
     canx_send_data(hcan, (uint16_t)txMsg.StdId, txdata, txMsg.DLC);
 }
 
 /*******************************************************************************
-* º¯Êı¹¦ÄÜ  : RS04 MITÔË¿ØÄ£Ê½¿ØÖÆÖ¸Áî
-* ĞŞ¸Äµã£º²ÎÊı¸ÄÎªhcan_t* hcan
+* å‡½æ•°åŠŸèƒ½  : RS04 MITè¿æ§æ¨¡å¼æ§åˆ¶æŒ‡ä»¤
+* ä¿®æ”¹ç‚¹ï¼šå‚æ•°æ”¹ä¸ºhcan_t* hcan
 *******************************************************************************/
 void RobStride_Motor_MIT_Control(RobStride_Motor_t* motor, hcan_t* hcan, float Angle, float Speed, float Kp, float Kd, float Torque)
 {
@@ -479,13 +479,13 @@ void RobStride_Motor_MIT_Control(RobStride_Motor_t* motor, hcan_t* hcan, float A
     uint16_t torque_uint = float_to_uint_lz(Torque, T_MIN, T_MAX, 12);
     txdata[7] = (uint8_t)(torque_uint & 0xFF);
     
-    // Ìæ»»Îªhcan²ÎÊı
+    // æ›¿æ¢ä¸ºhcanå‚æ•°
     canx_send_data(hcan, (uint16_t)txMsg.StdId, txdata, txMsg.DLC);
 }
 
 /*******************************************************************************
-* º¯Êı¹¦ÄÜ  : RS04 MITÎ»ÖÃÄ£Ê½¿ØÖÆÖ¸Áî
-* ĞŞ¸Äµã£º²ÎÊı¸ÄÎªhcan_t* hcan
+* å‡½æ•°åŠŸèƒ½  : RS04 MITä½ç½®æ¨¡å¼æ§åˆ¶æŒ‡ä»¤
+* ä¿®æ”¹ç‚¹ï¼šå‚æ•°æ”¹ä¸ºhcan_t* hcan
 *******************************************************************************/
 void RobStride_Motor_MIT_PositionControl(RobStride_Motor_t* motor, hcan_t* hcan, float position_rad, float speed_rad_per_s)
 {
@@ -500,13 +500,13 @@ void RobStride_Motor_MIT_PositionControl(RobStride_Motor_t* motor, hcan_t* hcan,
     memcpy(&txdata[0], &position_rad, 4);
     memcpy(&txdata[4], &speed_rad_per_s, 4);
     
-    // Ìæ»»Îªhcan²ÎÊı
+    // æ›¿æ¢ä¸ºhcanå‚æ•°
     canx_send_data(hcan, (uint16_t)txMsg.StdId, txdata, txMsg.DLC);
 }
 
 /*******************************************************************************
-* º¯Êı¹¦ÄÜ  : RS04 MITËÙ¶ÈÄ£Ê½¿ØÖÆÖ¸Áî
-* ĞŞ¸Äµã£º²ÎÊı¸ÄÎªhcan_t* hcan
+* å‡½æ•°åŠŸèƒ½  : RS04 MITé€Ÿåº¦æ¨¡å¼æ§åˆ¶æŒ‡ä»¤
+* ä¿®æ”¹ç‚¹ï¼šå‚æ•°æ”¹ä¸ºhcan_t* hcan
 *******************************************************************************/
 void RobStride_Motor_MIT_SpeedControl(RobStride_Motor_t* motor, hcan_t* hcan, float speed_rad_per_s, float current_limit)
 {
@@ -521,13 +521,13 @@ void RobStride_Motor_MIT_SpeedControl(RobStride_Motor_t* motor, hcan_t* hcan, fl
     memcpy(&txdata[0], &speed_rad_per_s, 4);
     memcpy(&txdata[4], &current_limit, 4);
     
-    // Ìæ»»Îªhcan²ÎÊı
+    // æ›¿æ¢ä¸ºhcanå‚æ•°
     canx_send_data(hcan, (uint16_t)txMsg.StdId, txdata, txMsg.DLC);
 }
 
 /*******************************************************************************
-* º¯Êı¹¦ÄÜ  : RS04 MITÁãµãÉèÖÃÄ£Ê½
-* ĞŞ¸Äµã£º²ÎÊı¸ÄÎªhcan_t* hcan
+* å‡½æ•°åŠŸèƒ½  : RS04 MITé›¶ç‚¹è®¾ç½®æ¨¡å¼
+* ä¿®æ”¹ç‚¹ï¼šå‚æ•°æ”¹ä¸ºhcan_t* hcan
 *******************************************************************************/
 void RobStride_Motor_MIT_SetZeroPos(RobStride_Motor_t* motor, hcan_t* hcan)
 {
@@ -548,13 +548,13 @@ void RobStride_Motor_MIT_SetZeroPos(RobStride_Motor_t* motor, hcan_t* hcan)
     txdata[6] = 0xFF;
     txdata[7] = MIT_CMD_SET_ZERO;
     
-    // Ìæ»»Îªhcan²ÎÊı
+    // æ›¿æ¢ä¸ºhcanå‚æ•°
     canx_send_data(hcan, (uint16_t)txMsg.StdId, txdata, txMsg.DLC);
 }
 
 /*******************************************************************************
-* º¯Êı¹¦ÄÜ  : RS04 MITÉèÖÃĞ­ÒéÀàĞÍ
-* ĞŞ¸Äµã£º²ÎÊı¸ÄÎªhcan_t* hcan
+* å‡½æ•°åŠŸèƒ½  : RS04 MITè®¾ç½®åè®®ç±»å‹
+* ä¿®æ”¹ç‚¹ï¼šå‚æ•°æ”¹ä¸ºhcan_t* hcan
 *******************************************************************************/
 void RobStride_Motor_MIT_SetProtocol(RobStride_Motor_t* motor, hcan_t* hcan, uint8_t protocol_type)
 {
@@ -575,13 +575,13 @@ void RobStride_Motor_MIT_SetProtocol(RobStride_Motor_t* motor, hcan_t* hcan, uin
     txdata[6] = protocol_type;
     txdata[7] = MIT_CMD_SET_PROTOCOL;
     
-    // Ìæ»»Îªhcan²ÎÊı
+    // æ›¿æ¢ä¸ºhcanå‚æ•°
     canx_send_data(hcan, (uint16_t)txMsg.StdId, txdata, txMsg.DLC);
 }
 
 /*******************************************************************************
-* º¯Êı¹¦ÄÜ  : RobStrideµç»úÎ»ÖÃÄ£Ê½(PP²å²¹Î»ÖÃÄ£Ê½¿ØÖÆ)
-* ĞŞ¸Äµã£º²ÎÊı¸ÄÎªhcan_t* hcan
+* å‡½æ•°åŠŸèƒ½  : RobStrideç”µæœºä½ç½®æ¨¡å¼(PPæ’è¡¥ä½ç½®æ¨¡å¼æ§åˆ¶)
+* ä¿®æ”¹ç‚¹ï¼šå‚æ•°æ”¹ä¸ºhcan_t* hcan
 *******************************************************************************/
 void RobStride_Motor_Pos_control(RobStride_Motor_t* motor, hcan_t* hcan, float Speed, float Angle)
 {
@@ -598,15 +598,15 @@ void RobStride_Motor_Pos_control(RobStride_Motor_t* motor, hcan_t* hcan, float S
         Set_RobStride_Motor_parameter(motor, hcan, 0X7025, motor->Motor_Set_All.set_acceleration, 'p');
     }
     
-    // ¼òµ¥ÑÓÊ±
+    // ç®€å•å»¶æ—¶
     for(uint32_t i = 0; i < 10000; i++); 
     
     Set_RobStride_Motor_parameter(motor, hcan, 0X7016, motor->Motor_Set_All.set_angle, 'p');
 }
 
 /*******************************************************************************
-* º¯Êı¹¦ÄÜ  : RobStrideµç»úÎ»ÖÃÄ£Ê½(CSPÎ»ÖÃÄ£Ê½¿ØÖÆ)
-* ĞŞ¸Äµã£º²ÎÊı¸ÄÎªhcan_t* hcan
+* å‡½æ•°åŠŸèƒ½  : RobStrideç”µæœºä½ç½®æ¨¡å¼(CSPä½ç½®æ¨¡å¼æ§åˆ¶)
+* ä¿®æ”¹ç‚¹ï¼šå‚æ•°æ”¹ä¸ºhcan_t* hcan
 *******************************************************************************/
 void RobStride_Motor_CSP_control(RobStride_Motor_t* motor, hcan_t* hcan, float Angle, float limit_spd)
 {
@@ -627,7 +627,7 @@ void RobStride_Motor_CSP_control(RobStride_Motor_t* motor, hcan_t* hcan, float A
             Set_RobStride_Motor_parameter(motor, hcan, 0X7017, motor->Motor_Set_All.set_limit_speed, 'p');
         }
         
-        // ¼òµ¥ÑÓÊ±
+        // ç®€å•å»¶æ—¶
         for(uint32_t i = 0; i < 10000; i++); 
         
         Set_RobStride_Motor_parameter(motor, hcan, 0X7016, motor->Motor_Set_All.set_angle, 'p');
@@ -635,8 +635,8 @@ void RobStride_Motor_CSP_control(RobStride_Motor_t* motor, hcan_t* hcan, float A
 }
 
 /*******************************************************************************
-* º¯Êı¹¦ÄÜ  : RobStrideµç»úËÙ¶ÈÄ£Ê½
-* ĞŞ¸Äµã£º²ÎÊı¸ÄÎªhcan_t* hcan
+* å‡½æ•°åŠŸèƒ½  : RobStrideç”µæœºé€Ÿåº¦æ¨¡å¼
+* ä¿®æ”¹ç‚¹ï¼šå‚æ•°æ”¹ä¸ºhcan_t* hcan
 *******************************************************************************/
 void RobStride_Motor_Speed_control(RobStride_Motor_t* motor, hcan_t* hcan, float Speed, float limit_cur)
 {
@@ -657,8 +657,8 @@ void RobStride_Motor_Speed_control(RobStride_Motor_t* motor, hcan_t* hcan, float
 }
 
 /*******************************************************************************
-* º¯Êı¹¦ÄÜ  : RobStrideµç»úµçÁ÷Ä£Ê½
-* ĞŞ¸Äµã£º²ÎÊı¸ÄÎªhcan_t* hcan
+* å‡½æ•°åŠŸèƒ½  : RobStrideç”µæœºç”µæµæ¨¡å¼
+* ä¿®æ”¹ç‚¹ï¼šå‚æ•°æ”¹ä¸ºhcan_t* hcan
 *******************************************************************************/
 void RobStride_Motor_current_control(RobStride_Motor_t* motor, hcan_t* hcan, float current)
 {
@@ -677,8 +677,8 @@ void RobStride_Motor_current_control(RobStride_Motor_t* motor, hcan_t* hcan, flo
 }
 
 /*******************************************************************************
-* º¯Êı¹¦ÄÜ  : RobStrideµç»úÁãµãÄ£Ê½
-* ĞŞ¸Äµã£º²ÎÊı¸ÄÎªhcan_t* hcan
+* å‡½æ•°åŠŸèƒ½  : RobStrideç”µæœºé›¶ç‚¹æ¨¡å¼
+* ä¿®æ”¹ç‚¹ï¼šå‚æ•°æ”¹ä¸ºhcan_t* hcan
 *******************************************************************************/
 void RobStride_Motor_Set_Zero_control(RobStride_Motor_t* motor, hcan_t* hcan)
 {
@@ -686,8 +686,8 @@ void RobStride_Motor_Set_Zero_control(RobStride_Motor_t* motor, hcan_t* hcan)
 }
 
 /*******************************************************************************
-* º¯Êı¹¦ÄÜ  : RobStrideµç»úÊ¹ÄÜ
-* ĞŞ¸Äµã£º²ÎÊı¸ÄÎªhcan_t* hcan
+* å‡½æ•°åŠŸèƒ½  : RobStrideç”µæœºä½¿èƒ½
+* ä¿®æ”¹ç‚¹ï¼šå‚æ•°æ”¹ä¸ºhcan_t* hcan
 *******************************************************************************/
 void Enable_Motor(RobStride_Motor_t* motor, hcan_t* hcan)
 {
@@ -707,14 +707,14 @@ void Enable_Motor(RobStride_Motor_t* motor, hcan_t* hcan)
                           (uint32_t)motor->Master_CAN_ID << 8 | 
                           motor->CAN_ID;
         
-        // Ìæ»»Îªhcan²ÎÊı
+        // æ›¿æ¢ä¸ºhcanå‚æ•°
         canx_send_ext_data(hcan, TxMessage.ExtId, txdata, TxMessage.DLC);
     }
 }
 
 /*******************************************************************************
-* º¯Êı¹¦ÄÜ  : RobStrideµç»úÊ§ÄÜ
-* ĞŞ¸Äµã£º²ÎÊı¸ÄÎªhcan_t* hcan
+* å‡½æ•°åŠŸèƒ½  : RobStrideç”µæœºå¤±èƒ½
+* ä¿®æ”¹ç‚¹ï¼šå‚æ•°æ”¹ä¸ºhcan_t* hcan
 *******************************************************************************/
 void Disenable_Motor(RobStride_Motor_t* motor, hcan_t* hcan, uint8_t clear_error)
 {
@@ -735,15 +735,15 @@ void Disenable_Motor(RobStride_Motor_t* motor, hcan_t* hcan, uint8_t clear_error
                           (uint32_t)motor->Master_CAN_ID << 8 | 
                           motor->CAN_ID;
         
-        // Ìæ»»Îªhcan²ÎÊı
+        // æ›¿æ¢ä¸ºhcanå‚æ•°
         canx_send_ext_data(hcan, TxMessage.ExtId, txdata, TxMessage.DLC);
         Set_RobStride_Motor_parameter(motor, hcan, 0X7005, move_control_mode, 'j');
     }
 }
 
 /*******************************************************************************
-* º¯Êı¹¦ÄÜ  : RobStrideµç»úĞ´Èë²ÎÊı
-* ĞŞ¸Äµã£º²ÎÊı¸ÄÎªhcan_t* hcan
+* å‡½æ•°åŠŸèƒ½  : RobStrideç”µæœºå†™å…¥å‚æ•°
+* ä¿®æ”¹ç‚¹ï¼šå‚æ•°æ”¹ä¸ºhcan_t* hcan
 *******************************************************************************/
 void Set_RobStride_Motor_parameter(RobStride_Motor_t* motor, hcan_t* hcan, uint16_t Index, float Value, char Value_mode)
 {
@@ -775,13 +775,13 @@ void Set_RobStride_Motor_parameter(RobStride_Motor_t* motor, hcan_t* hcan, uint1
         txdata[7] = 0x00;
     }
     
-    // Ìæ»»Îªhcan²ÎÊı
+    // æ›¿æ¢ä¸ºhcanå‚æ•°
     canx_send_ext_data(hcan, TxMessage.ExtId, txdata, TxMessage.DLC);
 }
 
 /*******************************************************************************
-* º¯Êı¹¦ÄÜ  : RobStrideµç»úµ¥¸ö²ÎÊı¶ÁÈ¡
-* ĞŞ¸Äµã£º²ÎÊı¸ÄÎªhcan_t* hcan
+* å‡½æ•°åŠŸèƒ½  : RobStrideç”µæœºå•ä¸ªå‚æ•°è¯»å–
+* ä¿®æ”¹ç‚¹ï¼šå‚æ•°æ”¹ä¸ºhcan_t* hcan
 *******************************************************************************/
 void Get_RobStride_Motor_parameter(RobStride_Motor_t* motor, hcan_t* hcan, uint16_t Index)
 {
@@ -798,13 +798,13 @@ void Get_RobStride_Motor_parameter(RobStride_Motor_t* motor, hcan_t* hcan, uint1
                       (uint32_t)motor->Master_CAN_ID << 8 | 
                       motor->CAN_ID;
     
-    // Ìæ»»Îªhcan²ÎÊı
+    // æ›¿æ¢ä¸ºhcanå‚æ•°
     canx_send_ext_data(hcan, TxMessage.ExtId, txdata, TxMessage.DLC);
 }
 
 /*******************************************************************************
-* º¯Êı¹¦ÄÜ  : RobStrideµç»úÉèÖÃCAN_ID
-* ĞŞ¸Äµã£º²ÎÊı¸ÄÎªhcan_t* hcan
+* å‡½æ•°åŠŸèƒ½  : RobStrideç”µæœºè®¾ç½®CAN_ID
+* ä¿®æ”¹ç‚¹ï¼šå‚æ•°æ”¹ä¸ºhcan_t* hcan
 *******************************************************************************/
 void Set_CAN_ID(RobStride_Motor_t* motor, hcan_t* hcan, uint8_t Set_CAN_ID)
 {
@@ -821,13 +821,13 @@ void Set_CAN_ID(RobStride_Motor_t* motor, hcan_t* hcan, uint8_t Set_CAN_ID)
                       (uint32_t)motor->Master_CAN_ID << 8 | 
                       motor->CAN_ID;
     
-    // Ìæ»»Îªhcan²ÎÊı
+    // æ›¿æ¢ä¸ºhcanå‚æ•°
     canx_send_ext_data(hcan, TxMessage.ExtId, txdata, TxMessage.DLC);
 }
 
 /*******************************************************************************
-* º¯Êı¹¦ÄÜ  : RobStrideµç»úÉèÖÃ»úĞµÁãµã
-* ĞŞ¸Äµã£º²ÎÊı¸ÄÎªhcan_t* hcan
+* å‡½æ•°åŠŸèƒ½  : RobStrideç”µæœºè®¾ç½®æœºæ¢°é›¶ç‚¹
+* ä¿®æ”¹ç‚¹ï¼šå‚æ•°æ”¹ä¸ºhcan_t* hcan
 *******************************************************************************/
 void Set_ZeroPos(RobStride_Motor_t* motor, hcan_t* hcan)
 {
@@ -844,15 +844,15 @@ void Set_ZeroPos(RobStride_Motor_t* motor, hcan_t* hcan)
                       motor->CAN_ID;
     
     txdata[0] = 1;
-    // Ìæ»»Îªhcan²ÎÊı
+    // æ›¿æ¢ä¸ºhcanå‚æ•°
     canx_send_ext_data(hcan, TxMessage.ExtId, txdata, TxMessage.DLC);
     
     Enable_Motor(motor, hcan);
 }
 
 /*******************************************************************************
-* º¯Êı¹¦ÄÜ  : RobStrideµç»úÊı¾İ±£´æ
-* ĞŞ¸Äµã£º²ÎÊı¸ÄÎªhcan_t* hcan
+* å‡½æ•°åŠŸèƒ½  : RobStrideç”µæœºæ•°æ®ä¿å­˜
+* ä¿®æ”¹ç‚¹ï¼šå‚æ•°æ”¹ä¸ºhcan_t* hcan
 *******************************************************************************/
 void RobStride_Motor_MotorDataSave(RobStride_Motor_t* motor, hcan_t* hcan)
 {
@@ -875,13 +875,13 @@ void RobStride_Motor_MotorDataSave(RobStride_Motor_t* motor, hcan_t* hcan)
     txdata[6] = 0x07;
     txdata[7] = 0x08;
     
-    // Ìæ»»Îªhcan²ÎÊı
+    // æ›¿æ¢ä¸ºhcanå‚æ•°
     canx_send_ext_data(hcan, TxMessage.ExtId, txdata, TxMessage.DLC);
 }
 
 /*******************************************************************************
-* º¯Êı¹¦ÄÜ  : RobStrideµç»ú²¨ÌØÂÊĞŞ¸Ä
-* ĞŞ¸Äµã£º²ÎÊı¸ÄÎªhcan_t* hcan
+* å‡½æ•°åŠŸèƒ½  : RobStrideç”µæœºæ³¢ç‰¹ç‡ä¿®æ”¹
+* ä¿®æ”¹ç‚¹ï¼šå‚æ•°æ”¹ä¸ºhcan_t* hcan
 *******************************************************************************/
 void RobStride_Motor_BaudRateChange(RobStride_Motor_t* motor, hcan_t* hcan, uint8_t F_CMD)
 {
@@ -904,13 +904,13 @@ void RobStride_Motor_BaudRateChange(RobStride_Motor_t* motor, hcan_t* hcan, uint
     txdata[6] = F_CMD;
     txdata[7] = 0x08;
     
-    // Ìæ»»Îªhcan²ÎÊı
+    // æ›¿æ¢ä¸ºhcanå‚æ•°
     canx_send_ext_data(hcan, TxMessage.ExtId, txdata, TxMessage.DLC);
 }
 
 /*******************************************************************************
-* º¯Êı¹¦ÄÜ  : RobStrideµç»úÖ÷¶¯ÉÏ±¨ÉèÖÃ
-* ĞŞ¸Äµã£º²ÎÊı¸ÄÎªhcan_t* hcan
+* å‡½æ•°åŠŸèƒ½  : RobStrideç”µæœºä¸»åŠ¨ä¸ŠæŠ¥è®¾ç½®
+* ä¿®æ”¹ç‚¹ï¼šå‚æ•°æ”¹ä¸ºhcan_t* hcan
 *******************************************************************************/
 void RobStride_Motor_ProactiveEscalationSet(RobStride_Motor_t* motor, hcan_t* hcan, uint8_t F_CMD)
 {
@@ -933,13 +933,13 @@ void RobStride_Motor_ProactiveEscalationSet(RobStride_Motor_t* motor, hcan_t* hc
     txdata[6] = F_CMD;
     txdata[7] = 0x08;
     
-    // Ìæ»»Îªhcan²ÎÊı
+    // æ›¿æ¢ä¸ºhcanå‚æ•°
     canx_send_ext_data(hcan, TxMessage.ExtId, txdata, TxMessage.DLC);
 }
 
 /*******************************************************************************
-* º¯Êı¹¦ÄÜ  : RobStrideµç»úĞ­ÒéĞŞ¸Ä
-* ĞŞ¸Äµã£º²ÎÊı¸ÄÎªhcan_t* hcan
+* å‡½æ•°åŠŸèƒ½  : RobStrideç”µæœºåè®®ä¿®æ”¹
+* ä¿®æ”¹ç‚¹ï¼šå‚æ•°æ”¹ä¸ºhcan_t* hcan
 *******************************************************************************/
 void RobStride_Motor_MotorModeSet(RobStride_Motor_t* motor, hcan_t* hcan, uint8_t F_CMD)
 {
@@ -962,12 +962,12 @@ void RobStride_Motor_MotorModeSet(RobStride_Motor_t* motor, hcan_t* hcan, uint8_
     txdata[6] = F_CMD;
     txdata[7] = 0x08;
     
-    // Ìæ»»Îªhcan²ÎÊı
+    // æ›¿æ¢ä¸ºhcanå‚æ•°
     canx_send_ext_data(hcan, TxMessage.ExtId, txdata, TxMessage.DLC);
 }
 
 /*******************************************************************************
-* º¯Êı¹¦ÄÜ  : Êı¾İ¶ÁĞ´½á¹¹Ìå³õÊ¼»¯
+* å‡½æ•°åŠŸèƒ½  : æ•°æ®è¯»å†™ç»“æ„ä½“åˆå§‹åŒ–
 *******************************************************************************/
 void data_read_write_init(data_read_write_t* drw)
 {
@@ -989,7 +989,7 @@ void data_read_write_init(data_read_write_t* drw)
 }
 
 /*******************************************************************************
-* º¯Êı¹¦ÄÜ  : »ñÈ¡MITÄ£Ê½×´Ì¬
+* å‡½æ•°åŠŸèƒ½  : è·å–MITæ¨¡å¼çŠ¶æ€
 *******************************************************************************/
 bool Get_MIT_Mode(RobStride_Motor_t* motor)
 {
@@ -997,7 +997,7 @@ bool Get_MIT_Mode(RobStride_Motor_t* motor)
 }
 
 /*******************************************************************************
-* º¯Êı¹¦ÄÜ  : »ñÈ¡MITÀàĞÍ
+* å‡½æ•°åŠŸèƒ½  : è·å–MITç±»å‹
 *******************************************************************************/
 enum MIT_TYPE get_MIT_Type(RobStride_Motor_t* motor)
 {

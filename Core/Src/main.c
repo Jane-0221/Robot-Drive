@@ -40,6 +40,7 @@
 #include "arm.h"
 #include "arm_sv.h"
 #include "lift_control.h"
+#include "omni_wheel.h"
 #include "pump_control.h"
 #include "remote_control.h"
 /* USER CODE END Includes */
@@ -136,6 +137,7 @@ int main(void)
   IMU_init();
   Music_init();
   Arm_Init();
+  Omni_Wheel_Init();
   Head_Init();
   HAL_IWDG_Refresh(&hiwdg1);
   remote_control_init();

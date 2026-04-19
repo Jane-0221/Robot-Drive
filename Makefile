@@ -118,6 +118,7 @@ User/Drive/LZ_motor_driver.c \
 User/Drive/DrEmpower_can.c \
 User/Drive/pt_sensor.c \
 User/Hardware/arm.c \
+User/Hardware/omni_wheel.c \
 User/Hardware/lift_control.c \
 User/Hardware/pump_control.c \
 User/Hardware/head.c \

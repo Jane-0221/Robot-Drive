@@ -13,6 +13,7 @@
 #include "arm_sv.h"
 #include "uart_protocol.h" // 添加PC通信协议头文件
 #include "arm_sv.h"
+#include "omni_wheel.h"
 // 遥控器值
 #define LOW_VALUE 353
 #define MID_VALUE 1024
@@ -278,5 +279,8 @@ void pc_up_tx_data(void)
         up_tx_data.chassis_vx = -(float)(SBUS_CH.CH2 - (MID_VALUE))/300;
         up_tx_data.chassis_vy = (float)(SBUS_CH.CH1 - (MID_VALUE))/300;
         up_tx_data.chassis_yaw = (float)(SBUS_CH.CH3 - (MID_VALUE))/200;
+        x = up_tx_data.chassis_vx;
+        y = up_tx_data.chassis_vy;
+        w = up_tx_data.chassis_yaw;
     }
 }

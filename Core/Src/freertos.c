@@ -37,6 +37,7 @@
 #include "head.h"
 #include "lift_control.h"
 #include "arm_sv.h"
+#include "omni_wheel.h"
 #include "Sbus.h"
 #include "stp23l.h"
 #include "uart_protocol.h"
@@ -240,7 +241,7 @@ void Remote_control_Task(void *argument)
 
   /* USER CODE BEGIN Remote_control_Task */
   MX_USB_DEVICE_Init();
-  int control_mode = 1; // 0: 遥控模式, 1: pc模式
+  int control_mode = 0; // 0: 遥控模式, 1: pc模式
   PT_Send_ReadTemp_Cmd(&huart1);
   /* Infinite loop */
   for (;;)
@@ -248,7 +249,7 @@ void Remote_control_Task(void *argument)
     PT_Send_ReadPress_Cmd(&huart1);
     osDelay(1);
     update_sbus(sbus_data_buffer, &SBUS_CH); //
-
+    Omni_Wheel_Update();
     if (control_mode == 0)
     {
       // 遥控模式
@@ -259,7 +260,7 @@ void Remote_control_Task(void *argument)
       osDelay(1);
       Up_Down_Motor_Control_Updata();
     }
-    else if(control_mode==1)
+    else if (control_mode == 1)
     {
       // pc模式
       osDelay(1);
@@ -272,8 +273,10 @@ void Remote_control_Task(void *argument)
       PC_Arm_Motor_Control_Updata();
     }
     ARM_SV_Tx_Rx();
+
     osDelay(1);
   }
+
   /* USER CODE END Remote_control_Task */
 }
 
@@ -292,6 +295,7 @@ void Arm_MT_Task(void *argument)
   {
     osDelay(1);
     Arm_all_tx();
+
   }
   /* USER CODE END Arm_MT_Task */
 }
@@ -335,6 +339,7 @@ void Motor_control_Task(void *argument)
   /* Infinite loop */
   for (;;)
   {
+
     osDelay(1);
   }
   /* USER CODE END Motor_control_Task */
