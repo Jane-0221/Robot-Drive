@@ -769,6 +769,11 @@ void Set_RobStride_Motor_parameter(RobStride_Motor_t* motor, hcan_t* hcan, uint1
     else if (Value_mode == 'j')
     {
         motor->Motor_Set_All.set_motor_mode = (uint8_t)Value;
+        if (Index == 0x7005U)
+        {
+            /* 本地同步运行模式，避免等待参数回读期间重复发送整套切模指令。 */
+            motor->drw.run_mode.data = Value;
+        }
         txdata[4] = (uint8_t)Value;
         txdata[5] = 0x00;
         txdata[6] = 0x00;

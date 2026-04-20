@@ -89,7 +89,7 @@ osThreadId_t Motor_controlHandle;
 const osThreadAttr_t Motor_control_attributes = {
     .name = "Motor_control",
     .stack_size = 256 * 4,
-    .priority = (osPriority_t)osPriorityLow1,
+    .priority = (osPriority_t)osPriorityHigh2,
 };
 /* Definitions for Head */
 osThreadId_t HeadHandle;
@@ -249,7 +249,6 @@ void Remote_control_Task(void *argument)
     PT_Send_ReadPress_Cmd(&huart1);
     osDelay(1);
     update_sbus(sbus_data_buffer, &SBUS_CH); //
-    Omni_Wheel_Update();
     if (control_mode == 0)
     {
       // 遥控模式
@@ -339,7 +338,7 @@ void Motor_control_Task(void *argument)
   /* Infinite loop */
   for (;;)
   {
-
+    Omni_Wheel_Update();
     osDelay(1);
   }
   /* USER CODE END Motor_control_Task */
