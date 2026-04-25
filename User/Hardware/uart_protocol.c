@@ -130,11 +130,21 @@ HAL_StatusTypeDef send_frame(UART_HandleTypeDef *huart, uint8_t *frame_buf, uint
 
 HAL_StatusTypeDef send_up_frame(UART_HandleTypeDef *huart)
 {
-    uint8_t frame_buf[UP_FRAME_LEN];
+    static uint8_t frame_buf[UP_FRAME_LEN];
+
+    if (huart == NULL)
+    {
+        return HAL_ERROR;
+    }
+
+    if (huart->gState != HAL_UART_STATE_READY)
+    {
+        return HAL_BUSY;
+    }
 
     pack_up_frame(&up_tx_data, frame_buf);
 
-    return send_frame(huart, frame_buf, UP_FRAME_LEN);
+    return HAL_UART_Transmit_DMA(huart, frame_buf, UP_FRAME_LEN);
 }
 
 void store_uart_protocol_data(const uint8_t *data, uint16_t size)

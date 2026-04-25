@@ -8,6 +8,7 @@ void remote_control_init(void);
 extern void Pump_Control_Updata(void);
 extern void Head_Motor_Control_Updata(void);
 void Up_Down_Motor_Control_Updata(void);
+extern void Chassis_Control_Updata(void);
 
 // PC控制函数声明
 extern void PC_Pump_Control_Updata(void);

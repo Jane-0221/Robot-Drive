@@ -7,6 +7,8 @@
 /************************* 全局变量实例化 *************************/
 uint8_t pt_raw_buf[PT_BUF_MAX_LEN] = {0};
 float g_pressure_value = 0.0f;
+static const uint8_t pt_temp_cmd[] = PT_CMD_FRAME_TEMP;
+static const uint8_t pt_press_cmd[] = PT_CMD_FRAME_PRESS;
 
 
 
@@ -45,10 +47,13 @@ void PT_Send_ReadTemp_Cmd(UART_HandleTypeDef *huart)
     }
     
     // 读取温度的指令帧（来自pt_sensor.h的宏定义）
-    uint8_t temp_cmd[] = PT_CMD_FRAME_TEMP;
+    if (huart->gState != HAL_UART_STATE_READY)
+    {
+        return;
+    }
     
     // 发送4字节指令（HAL库阻塞式发送，超时100ms）
-    HAL_UART_Transmit(huart, temp_cmd, sizeof(temp_cmd), 100);
+    HAL_UART_Transmit_DMA(huart, (uint8_t *)pt_temp_cmd, sizeof(pt_temp_cmd));
 }
 
 /**
@@ -66,10 +71,13 @@ void PT_Send_ReadPress_Cmd(UART_HandleTypeDef *huart)
     }
     
     // 读取压力的指令帧（来自pt_sensor.h的宏定义）
-    uint8_t press_cmd[] = PT_CMD_FRAME_PRESS;
+    if (huart->gState != HAL_UART_STATE_READY)
+    {
+        return;
+    }
     
     // 发送4字节指令
-    HAL_UART_Transmit(huart, press_cmd, sizeof(press_cmd), 100);
+    HAL_UART_Transmit_DMA(huart, (uint8_t *)pt_press_cmd, sizeof(pt_press_cmd));
 }
 
 void PT_ParsePressureToGlobal(uint8_t *buf, uint16_t size)

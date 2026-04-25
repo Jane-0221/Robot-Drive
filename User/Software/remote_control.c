@@ -20,6 +20,24 @@
 #define HIGH_VALUE 1694
 #define RANGE 50
 // extern DnData_t pc_dn_data;
+
+static uint8_t sbus_match(uint16_t value, uint16_t target)
+{
+    return (value >= (target - RANGE)) && (value <= (target + RANGE));
+}
+
+static float sbus_axis_to_float(uint16_t value, float scale)
+{
+    int32_t delta = (int32_t)value - MID_VALUE;
+
+    if ((delta > -RANGE) && (delta < RANGE))
+    {
+        return 0.0f;
+    }
+
+    return (float)delta / scale;
+}
+
 void remote_control_init()
 {
 }
@@ -216,6 +234,30 @@ void Up_Down_Motor_Control_Updata(void)
     }
 }
 
+void Chassis_Control_Updata(void)
+{
+    float chassis_vx = 0.0f;
+    float chassis_vy = 0.0f;
+    float chassis_yaw = 0.0f;
+
+    if (sbus_match(SBUS_CH.CH8, LOW_VALUE) &&
+        sbus_match(SBUS_CH.CH6, LOW_VALUE) &&
+        sbus_match(SBUS_CH.CH7, LOW_VALUE) &&
+        sbus_match(SBUS_CH.CH5, LOW_VALUE))
+    {
+        chassis_vx = -sbus_axis_to_float(SBUS_CH.CH2, 300.0f);
+        chassis_vy = sbus_axis_to_float(SBUS_CH.CH1, 300.0f);
+        chassis_yaw = sbus_axis_to_float(SBUS_CH.CH3, 200.0f);
+    }
+
+    up_tx_data.chassis_vx = chassis_vx;
+    up_tx_data.chassis_vy = chassis_vy;
+    up_tx_data.chassis_yaw = chassis_yaw;
+    x = chassis_vx;
+    y = chassis_vy;
+    w = chassis_yaw;
+}
+
 // PC控制函数实现
 
 /**
@@ -274,13 +316,7 @@ void PC_Arm_Motor_Control_Updata(void)
 }
 void pc_up_tx_data(void)
 {
-    if (SBUS_CH.CH8 == LOW_VALUE && SBUS_CH.CH6 == LOW_VALUE && SBUS_CH.CH7 == LOW_VALUE && SBUS_CH.CH5 == LOW_VALUE)
-    {
-        up_tx_data.chassis_vx = -(float)(SBUS_CH.CH2 - (MID_VALUE))/300;
-        up_tx_data.chassis_vy = (float)(SBUS_CH.CH1 - (MID_VALUE))/300;
-        up_tx_data.chassis_yaw = (float)(SBUS_CH.CH3 - (MID_VALUE))/200;
-        x = up_tx_data.chassis_vx;
-        y = up_tx_data.chassis_vy;
-        w = up_tx_data.chassis_yaw;
-    }
+    up_tx_data.chassis_vx = x;
+    up_tx_data.chassis_vy = y;
+    up_tx_data.chassis_yaw = w;
 }
