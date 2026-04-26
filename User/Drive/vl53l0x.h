@@ -47,13 +47,16 @@ extern volatile uint32_t vl53l0x_i2c_cr2;
 extern volatile uint8_t vl53l0x_probe_52_status;
 extern volatile uint8_t vl53l0x_probe_29_status;
 extern volatile uint8_t vl53l0x_probe_52_shift_status;
+extern volatile uint8_t vl53l0x_soft_probe_52_status;
+extern volatile uint8_t vl53l0x_soft_probe_a4_status;
 extern volatile uint8_t vl53l0x_recover_count;
 
 VL53L0X_StatusTypeDef VL53L0X_Init(void);
 VL53L0X_StatusTypeDef VL53L0X_ReadDistance(void);
-uint8_t VL53L0X_ScanI2C4(void);
+uint8_t VL53L0X_ScanI2C1(void);
 void VL53L0X_UpdateBusDebug(void);
-void VL53L0X_RecoverI2C4(void);
+void VL53L0X_RecoverI2C1(void);
+uint8_t VL53L0X_SoftProbeI2C1(void);
 
 #ifdef __cplusplus
 }
