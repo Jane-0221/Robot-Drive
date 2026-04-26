@@ -9,7 +9,11 @@
 
 #define RAD_S_TO_RPM (30.0f/PI)
 #define RPM_TO_RAD_S (PI / 30.0f) //Rpm转化为角度度
+#ifndef DEG_TO_RAD
 #define DEG_TO_RAD (PI / 180.0f) //角度转化为弧度
+#endif
+#ifndef RAD_TO_DEG
 #define RAD_TO_DEG (180.0f / PI) //弧度转化为角度
+#endif
 
 #endif // !__USER_MATH__

@@ -10,7 +10,14 @@
                 "USE_HAL_DRIVER",
                 "STM32H723xx",
                 "USE_PWR_LDO_SUPPLY",
-                "CORE_CM7"
+                "CORE_CM7",
+                "ARM_MATH_CM7"
+            ],
+            "compilerArgs": [
+                "-mcpu=cortex-m7",
+                "-mthumb",
+                "-mfpu=fpv5-d16",
+                "-mfloat-abi=hard"
             ],
             "includePath": [
                 "${workspaceFolder}/Core/Inc",

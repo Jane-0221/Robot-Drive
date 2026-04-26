@@ -146,12 +146,10 @@ void IMU_updata() // 1000HZ
 
 	// AHRS.lib
 	// Èç¹ûÊ§°Ü£¬·µ»Ø0
-	static uint32_t last_time = 0;
 	IMU_data.AHRS.err_code = AHRS_update(IMU_data.AHRS.q,0.001f,
 										 IMU_data.gyro,
 										 accel_fliter_3,
 										 IMU_data.mag);
-	last_time = Get_sys_time_ms();
 	get_angle(IMU_data.AHRS.q, &IMU_data.AHRS.yaw, &IMU_data.AHRS.roll, &IMU_data.AHRS.pitch);
 
 	// process_IMU_data();
@@ -203,7 +201,6 @@ void IMU_heat_set(uint16_t ccr)
 static void imu_temp_control(fp32 temp)
 {
 	uint16_t tempPWM;
-	static uint8_t temp_constant_time = 0;
 	if(first_temperate)
 	{
 		pid_cal(&IMU_tempure_pid, temp, 45);

@@ -53,18 +53,18 @@ void lz_disable_motor(uint8_t can_bus, uint8_t motor_id) {
  * @brief 发送 MIT 协议控制参数（命令 3）
  * @param can_bus CAN 总线编号
  * @param motor_id 电机 ID
- * @param angle 目标角度（弧度，范围 P_MIN~P_MAX）
- * @param speed 目标速度（rad/s，范围 V_MIN~V_MAX）
- * @param kp 位置刚度（范围 KP_MIN~KP_MAX）
- * @param kd 速度阻尼（范围 KD_MIN~KD_MAX）
- * @param torque 前馈转矩（范围 T_MIN~T_MAX）
+ * @param angle 目标角度（弧度，范围 LZ_P_MIN~LZ_P_MAX）
+ * @param speed 目标速度（rad/s，范围 LZ_V_MIN~LZ_V_MAX）
+ * @param kp 位置刚度（范围 LZ_KP_MIN~LZ_KP_MAX）
+ * @param kd 速度阻尼（范围 LZ_KD_MIN~LZ_KD_MAX）
+ * @param torque 前馈转矩（范围 LZ_T_MIN~LZ_T_MAX）
  */
 void lz_send_mit_params(uint8_t can_bus, uint8_t motor_id, float angle, float speed, float kp, float kd, float torque) {
-    uint16_t angle_uint = float_to_uint(angle, P_MIN, P_MAX, 16);
-    uint16_t speed_uint = float_to_uint(speed, V_MIN, V_MAX, 12);
-    uint16_t kp_uint = float_to_uint(kp, KP_MIN, KP_MAX, 12);
-    uint16_t kd_uint = float_to_uint(kd, KD_MIN, KD_MAX, 12);
-    uint16_t torque_uint = float_to_uint(torque, T_MIN, T_MAX, 12);
+    uint16_t angle_uint = float_to_uint(angle, LZ_P_MIN, LZ_P_MAX, 16);
+    uint16_t speed_uint = float_to_uint(speed, LZ_V_MIN, LZ_V_MAX, 12);
+    uint16_t kp_uint = float_to_uint(kp, LZ_KP_MIN, LZ_KP_MAX, 12);
+    uint16_t kd_uint = float_to_uint(kd, LZ_KD_MIN, LZ_KD_MAX, 12);
+    uint16_t torque_uint = float_to_uint(torque, LZ_T_MIN, LZ_T_MAX, 12);
 
     uint8_t data[8] = {
         (uint8_t)(angle_uint >> 8), 

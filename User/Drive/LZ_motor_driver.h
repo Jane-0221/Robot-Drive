@@ -11,16 +11,16 @@
 #define DEFAULT_MASTER_ID  0xFD
 
 // 参数范围定义
-#define P_MIN -12.57f
-#define P_MAX 12.57f
-#define V_MIN -33.0f
-#define V_MAX 33.0f
-#define KP_MIN 0.0f
-#define KP_MAX 500.0f
-#define KD_MIN 0.0f
-#define KD_MAX 5.0f
-#define T_MIN -14.0f
-#define T_MAX 14.0f
+#define LZ_P_MIN -12.57f
+#define LZ_P_MAX 12.57f
+#define LZ_V_MIN -33.0f
+#define LZ_V_MAX 33.0f
+#define LZ_KP_MIN 0.0f
+#define LZ_KP_MAX 500.0f
+#define LZ_KD_MIN 0.0f
+#define LZ_KD_MAX 5.0f
+#define LZ_T_MIN -14.0f
+#define LZ_T_MAX 14.0f
 
 // 电机控制模式
 typedef enum {
