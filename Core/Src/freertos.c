@@ -43,6 +43,7 @@
 #include "uart_protocol.h"
 #include "pt_sensor.h"
 #include "usart.h"
+#include "vl53l0x.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -241,8 +242,16 @@ void Remote_control_Task(void *argument)
 
   /* USER CODE BEGIN Remote_control_Task */
   MX_USB_DEVICE_Init();
+  uint32_t vl53l0x_last_tick = osKernelGetTickCount();
+  uint32_t vl53l0x_period_ticks = osKernelGetTickFreq() / 100U;
+
+  if (vl53l0x_period_ticks == 0U)
+  {
+    vl53l0x_period_ticks = 1U;
+  }
   int control_mode = 0; // 0: 遥控模式, 1: pc模式
   PT_Send_ReadTemp_Cmd(&huart1);
+  (void)VL53L0X_Init();
   /* Infinite loop */
   for (;;)
   {
@@ -263,6 +272,14 @@ void Remote_control_Task(void *argument)
       PC_Up_Down_Motor_Control_Updata();
       PC_Arm_Motor_Control_Updata();
     }
+
+    uint32_t tick_now = osKernelGetTickCount();
+    if ((tick_now - vl53l0x_last_tick) >= vl53l0x_period_ticks)
+    {
+      vl53l0x_last_tick = tick_now;
+      (void)VL53L0X_ReadDistance();
+    }
+
     osDelay(1);
   }
 
@@ -284,7 +301,6 @@ void Arm_MT_Task(void *argument)
   {
     osDelay(1);
     Arm_all_tx();
-
   }
   /* USER CODE END Arm_MT_Task */
 }
