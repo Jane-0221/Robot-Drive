@@ -5,10 +5,13 @@
 
 #define VL53L0X_I2C_TIMEOUT_MS 100U
 #define VL53L0X_I2C_SCAN_TIMEOUT_MS 2U
-#define VL53L0X_START_DELAY_MS 10U
+#define VL53L0X_READY_POLL_TIMEOUT_MS 100U
+#define VL53L0X_READY_POLL_DELAY_MS 1U
 #define VL53L0X_REG_START      0x00U
 #define VL53L0X_REG_RESULT     0x14U
 #define VL53L0X_START_CMD      0x01U
+#define VL53L0X_RESULT_READY_BIT 0x01U
+#define VL53L0X_DISTANCE_OFFSET_MM 100U
 
 volatile uint16_t vl53l0x_distance_mm = 0U;
 volatile uint8_t vl53l0x_raw_data[VL53L0X_RESULT_LEN] = {0U};
@@ -24,6 +27,9 @@ volatile uint8_t vl53l0x_i2c_state = 0U;
 volatile uint8_t vl53l0x_i2c_busy_flag = 0U;
 volatile uint32_t vl53l0x_i2c_isr = 0U;
 volatile uint32_t vl53l0x_i2c_cr2 = 0U;
+volatile uint8_t vl53l0x_ready_status = 0U;
+volatile uint8_t vl53l0x_ready_poll_count = 0U;
+volatile uint8_t vl53l0x_range_status = 0U;
 volatile uint8_t vl53l0x_probe_52_status = HAL_ERROR;
 volatile uint8_t vl53l0x_probe_29_status = HAL_ERROR;
 volatile uint8_t vl53l0x_probe_52_shift_status = HAL_ERROR;
@@ -41,11 +47,16 @@ static VL53L0X_StatusTypeDef VL53L0X_StatusFromHal(HAL_StatusTypeDef hal_status)
     return VL53L0X_ERROR;
 }
 
-static void VL53L0X_DelayAfterStart(void)
+static void VL53L0X_DelayMs(uint32_t delay_ms)
 {
+    if (delay_ms == 0U)
+    {
+        return;
+    }
+
     if (osKernelGetState() == osKernelRunning)
     {
-        uint32_t delay_ticks = (osKernelGetTickFreq() * VL53L0X_START_DELAY_MS + 999U) / 1000U;
+        uint32_t delay_ticks = (osKernelGetTickFreq() * delay_ms + 999U) / 1000U;
 
         if (delay_ticks == 0U)
         {
@@ -56,8 +67,56 @@ static void VL53L0X_DelayAfterStart(void)
     }
     else
     {
-        HAL_Delay(VL53L0X_START_DELAY_MS);
+        HAL_Delay(delay_ms);
     }
+}
+
+static HAL_StatusTypeDef VL53L0X_WaitResultReady(void)
+{
+    HAL_StatusTypeDef hal_status = HAL_TIMEOUT;
+    uint8_t result_reg;
+    uint8_t status = 0U;
+
+    vl53l0x_ready_status = 0U;
+    vl53l0x_ready_poll_count = 0U;
+
+    for (uint8_t count = 0U; count < VL53L0X_READY_POLL_TIMEOUT_MS; count++)
+    {
+        result_reg = VL53L0X_REG_RESULT;
+        hal_status = HAL_I2C_Master_Transmit(&hi2c1,
+                                             VL53L0X_I2C_HAL_ADDR,
+                                             &result_reg,
+                                             1U,
+                                             VL53L0X_I2C_TIMEOUT_MS);
+        vl53l0x_last_hal_status = hal_status;
+        if (hal_status != HAL_OK)
+        {
+            return hal_status;
+        }
+
+        hal_status = HAL_I2C_Master_Receive(&hi2c1,
+                                            VL53L0X_I2C_HAL_ADDR,
+                                            &status,
+                                            1U,
+                                            VL53L0X_I2C_TIMEOUT_MS);
+        vl53l0x_last_hal_status = hal_status;
+        if (hal_status != HAL_OK)
+        {
+            return hal_status;
+        }
+
+        vl53l0x_ready_status = status;
+        vl53l0x_ready_poll_count = (uint8_t)(count + 1U);
+
+        if ((status & VL53L0X_RESULT_READY_BIT) != 0U)
+        {
+            return HAL_OK;
+        }
+
+        VL53L0X_DelayMs(VL53L0X_READY_POLL_DELAY_MS);
+    }
+
+    return HAL_TIMEOUT;
 }
 
 static void VL53L0X_BusDelay(void)
@@ -345,7 +404,20 @@ VL53L0X_StatusTypeDef VL53L0X_ReadDistance(void)
         return vl53l0x_status;
     }
 
-    VL53L0X_DelayAfterStart();
+    vl53l0x_error_step = VL53L0X_STEP_READY_POLL;
+    hal_status = VL53L0X_WaitResultReady();
+    vl53l0x_last_hal_status = hal_status;
+    if (hal_status != HAL_OK)
+    {
+        vl53l0x_last_hal_error = HAL_I2C_GetError(&hi2c1);
+        vl53l0x_status = VL53L0X_StatusFromHal(hal_status);
+        VL53L0X_UpdateBusDebug();
+        if (vl53l0x_i2c_busy_flag != 0U)
+        {
+            VL53L0X_RecoverI2C1();
+        }
+        return vl53l0x_status;
+    }
 
     vl53l0x_error_step = VL53L0X_STEP_RESULT_REG_WRITE;
     hal_status = HAL_I2C_Master_Transmit(&hi2c1,
@@ -391,7 +463,10 @@ VL53L0X_StatusTypeDef VL53L0X_ReadDistance(void)
     }
 
     distance = ((uint16_t)read_buf[10] << 8) | read_buf[11];
-    vl53l0x_distance_mm = distance;
+    vl53l0x_range_status = (uint8_t)((read_buf[0] & 0x78U) >> 3);
+    vl53l0x_distance_mm = (distance > VL53L0X_DISTANCE_OFFSET_MM) ?
+                           (uint16_t)(distance - VL53L0X_DISTANCE_OFFSET_MM) :
+                           0U;
     vl53l0x_last_hal_error = 0U;
     vl53l0x_error_step = VL53L0X_STEP_NONE;
     vl53l0x_status = VL53L0X_OK;

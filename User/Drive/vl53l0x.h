@@ -26,6 +26,7 @@ typedef enum
     VL53L0X_STEP_NONE = 0,
     VL53L0X_STEP_DEVICE_READY,
     VL53L0X_STEP_START_WRITE,
+    VL53L0X_STEP_READY_POLL,
     VL53L0X_STEP_RESULT_REG_WRITE,
     VL53L0X_STEP_RESULT_READ
 } VL53L0X_StepTypeDef;
@@ -44,6 +45,9 @@ extern volatile uint8_t vl53l0x_i2c_state;
 extern volatile uint8_t vl53l0x_i2c_busy_flag;
 extern volatile uint32_t vl53l0x_i2c_isr;
 extern volatile uint32_t vl53l0x_i2c_cr2;
+extern volatile uint8_t vl53l0x_ready_status;
+extern volatile uint8_t vl53l0x_ready_poll_count;
+extern volatile uint8_t vl53l0x_range_status;
 extern volatile uint8_t vl53l0x_probe_52_status;
 extern volatile uint8_t vl53l0x_probe_29_status;
 extern volatile uint8_t vl53l0x_probe_52_shift_status;
