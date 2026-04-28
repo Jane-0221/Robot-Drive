@@ -245,24 +245,8 @@ void Remote_control_Task(void *argument)
 
   /* USER CODE BEGIN Remote_control_Task */
   MX_USB_DEVICE_Init();
-#if VL53L0X_COMM_ENABLE
-  uint32_t vl53l0x_last_tick = osKernelGetTickCount();
-  uint32_t vl53l0x_period_ticks = osKernelGetTickFreq() / 100U;
-
-  if (vl53l0x_period_ticks == 0U)
-  {
-    vl53l0x_period_ticks = 1U;
-  }
-#endif
   int control_mode = 0; // 0: 遥控模式, 1: pc模式
   PT_Send_ReadTemp_Cmd(&huart1);
-#if VL53L0X_SOFT_PROBE_ON_BOOT
-  osDelay(VL53L0X_SOFT_PROBE_DELAY_MS);
-  (void)VL53L0X_SoftProbeI2C1();
-#endif
-#if VL53L0X_COMM_ENABLE
-  (void)VL53L0X_Init();
-#endif
   /* Infinite loop */
   for (;;)
   {
@@ -284,15 +268,6 @@ void Remote_control_Task(void *argument)
       PC_Arm_Motor_Control_Updata();
     }
 
-#if VL53L0X_COMM_ENABLE
-    uint32_t tick_now = osKernelGetTickCount();
-    if ((tick_now - vl53l0x_last_tick) >= vl53l0x_period_ticks)
-    {
-      vl53l0x_last_tick = tick_now;
-      (void)VL53L0X_ReadDistance();
-    }
-#endif
-
     osDelay(1);
   }
 
@@ -309,11 +284,33 @@ void Remote_control_Task(void *argument)
 void Arm_MT_Task(void *argument)
 {
   /* USER CODE BEGIN Arm_MT_Task */
+#if VL53L0X_COMM_ENABLE
+  uint32_t vl53l0x_last_tick = osKernelGetTickCount();
+  uint32_t vl53l0x_period_ticks = osKernelGetTickFreq() / 100U;
+
+  if (vl53l0x_period_ticks == 0U)
+  {
+    vl53l0x_period_ticks = 1U;
+  }
+#if VL53L0X_SOFT_PROBE_ON_BOOT
+  osDelay(VL53L0X_SOFT_PROBE_DELAY_MS);
+  (void)VL53L0X_SoftProbeI2C1();
+#endif
+  (void)VL53L0X_Init();
+#endif
   /* Infinite loop */
   for (;;)
   {
     osDelay(1);
     Arm_all_tx();
+#if VL53L0X_COMM_ENABLE
+    uint32_t tick_now = osKernelGetTickCount();
+    if ((tick_now - vl53l0x_last_tick) >= vl53l0x_period_ticks)
+    {
+      vl53l0x_last_tick = tick_now;
+      (void)VL53L0X_ReadDistance();
+    }
+#endif
   }
   /* USER CODE END Arm_MT_Task */
 }

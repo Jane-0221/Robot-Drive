@@ -30,10 +30,10 @@ static float sbus_axis_to_float(uint16_t value, float scale)
 {
     int32_t delta = (int32_t)value - MID_VALUE;
 
-    if ((delta > -RANGE) && (delta < RANGE))
-    {
-        return 0.0f;
-    }
+    // if ((delta > -RANGE) && (delta < RANGE))
+    // {
+    //     return 0.0f;
+    // }
 
     return (float)delta / scale;
 }
