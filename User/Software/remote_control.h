@@ -7,6 +7,7 @@ void remote_control_init(void);
 
 extern void Pump_Control_Updata(void);
 extern void Head_Motor_Control_Updata(void);
+extern void Arm_Motor_Control_Updata(void);
 uint8_t Arm_Motor_Disable_Updata(void);
 uint8_t Arm_Motor_Disable_IsActive(void);
 void Up_Down_Motor_Control_Updata(void);

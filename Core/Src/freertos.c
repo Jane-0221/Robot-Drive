@@ -258,6 +258,7 @@ void Remote_control_Task(void *argument)
       // 遥控模式
       Pump_Control_Updata();
       Head_Motor_Control_Updata();
+      Arm_Motor_Control_Updata();
       Up_Down_Motor_Control_Updata();
     }
     else if ((control_mode == 1))
