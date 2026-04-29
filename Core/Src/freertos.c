@@ -252,20 +252,25 @@ void Remote_control_Task(void *argument)
   {
     PT_Send_ReadPress_Cmd(&huart1);
     update_sbus(sbus_data_buffer, &SBUS_CH); //
-    if (control_mode == 0)
+    uint8_t arm_disable_active = Arm_Motor_Disable_Updata();
+    if ((control_mode == 0))
     {
       // 遥控模式
       Pump_Control_Updata();
       Head_Motor_Control_Updata();
       Up_Down_Motor_Control_Updata();
     }
-    else if (control_mode == 1)
+    else if ((control_mode == 1))
     {
       // pc模式
       PC_Pump_Control_Updata();
       PC_Head_Motor_Control_Updata();
       PC_Up_Down_Motor_Control_Updata();
-      PC_Arm_Motor_Control_Updata();
+      if (arm_disable_active == 0U)
+      {
+        // 机械臂电机控制
+        PC_Arm_Motor_Control_Updata();
+      }
     }
 
     osDelay(1);
@@ -302,7 +307,10 @@ void Arm_MT_Task(void *argument)
   for (;;)
   {
     osDelay(1);
-    Arm_all_tx();
+    if (Arm_Motor_Disable_IsActive() == 0U)
+    {
+      Arm_all_tx();
+    }
 #if VL53L0X_COMM_ENABLE
     uint32_t tick_now = osKernelGetTickCount();
     if ((tick_now - vl53l0x_last_tick) >= vl53l0x_period_ticks)

@@ -202,7 +202,7 @@ void HAL_FDCAN_RxFifo0Callback(FDCAN_HandleTypeDef *hfdcan, uint32_t RxFifo0ITs)
       }
     }
 
-    // ========== FDCAN2 数据处理（大淼/大然/RobStride电机） ==========
+    // ========== FDCAN2 数据处理（达妙/大然/RobStride电机） ==========
     else if (hfdcan->Instance == FDCAN2)
     {
       // 标准帧（11位ID）处理逻辑

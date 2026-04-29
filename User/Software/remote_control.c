@@ -14,12 +14,16 @@
 #include "uart_protocol.h" // 添加PC通信协议头文件
 #include "arm_sv.h"
 #include "omni_wheel.h"
+#include "cmsis_os.h"
 // 遥控器值
 #define LOW_VALUE 353
 #define MID_VALUE 1024
 #define HIGH_VALUE 1694
 #define RANGE 50
 // extern DnData_t pc_dn_data;
+
+static volatile uint8_t arm_motor_disable_active = 0U;
+static uint8_t arm_motor_disable_latched = 0U;
 
 static uint8_t sbus_match(uint16_t value, uint16_t target)
 {
@@ -40,6 +44,48 @@ static float sbus_axis_to_float(uint16_t value, float scale)
 
 void remote_control_init()
 {
+}
+
+uint8_t Arm_Motor_Disable_Updata(void)
+{
+    uint8_t disable_request = (SBUS_CH.CH5 == HIGH_VALUE) &&
+                              (SBUS_CH.CH6 == HIGH_VALUE) &&
+                              (SBUS_CH.CH7 == HIGH_VALUE) &&
+                              (SBUS_CH.CH8 == HIGH_VALUE);
+
+    arm_motor_disable_active = disable_request;
+
+    if (disable_request == 0U)
+    {
+        arm_motor_disable_latched = 0U;
+        return 0U;
+    }
+
+    if (arm_motor_disable_latched != 0U)
+    {
+        return 1U;
+    }
+
+    Disenable_Motor(&motor1, CAN_HANDLE_2, 0U);
+    osDelay(1);
+    Disenable_Motor(&motor2, CAN_HANDLE_2, 0U);
+    osDelay(1);
+    Disenable_Motor(&motor3, CAN_HANDLE_2, 0U);
+    osDelay(1);
+
+    disable_motor_mode(CAN_HANDLE_2, MOTOR_DAMIAO_4_ID, POS_MODE);
+    osDelay(1);
+    disable_motor_mode(CAN_HANDLE_2, MOTOR_DAMIAO_5_ID, POS_MODE);
+    osDelay(1);
+    disable_motor_mode(CAN_HANDLE_2, MOTOR_DAMIAO_6_ID, POS_MODE);
+
+    arm_motor_disable_latched = 1U;
+    return 1U;
+}
+
+uint8_t Arm_Motor_Disable_IsActive(void)
+{
+    return arm_motor_disable_active;
 }
 
 void Pump_Control_Updata(void)

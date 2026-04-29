@@ -16,7 +16,7 @@
 // ===================== 全局变量定义 =====================
 /**
  * @brief 机械臂肩部电机类型（枚举值：SHOULDER_TYPE_LINGZU/DAREN/DAMIAO）
- * @note  用于切换不同品牌电机的控制逻辑（灵足/大然/大淼）
+ * @note  用于切换不同品牌电机的控制逻辑（灵足/大然/达妙）
  */
 ShoulderType_t g_ShoulderType;
 
@@ -33,7 +33,7 @@ struct servo_state servo_state_daran[3];
 struct servo_volcur servo_volcur_daran[3];
 
 /**
- * @brief 大淼电机状态结构体数组（6路）
+ * @brief 达妙电机状态结构体数组（6路）
  * @note  存储DM4310电机的位置、速度、电流等状态
  */
 extern Motor_DM_Status DM_Status[6];
@@ -59,8 +59,8 @@ ArmMotorData_t Linzu_motor_data[3];
 ArmMotorData_t Daran_motor_data[3];
 
 /**
- * @brief 大淼电机数据结构体数组（3路）
- * @note  存储大淼电机的目标、当前角度、速度等控制参数
+ * @brief 达妙电机数据结构体数组（3路）
+ * @note  存储达妙电机的目标、当前角度、速度等控制参数
  */
 ArmMotorData_t Damiao_motor_data[3];
 
@@ -74,26 +74,26 @@ float reply_enable = 0.0f;
 /**
  * @brief 机械臂初始化函数
  * @retval 无
- * @note   1. 核心功能：选择肩部电机类型，初始化灵足/大然/大淼电机，配置CAN2通信；
+ * @note   1. 核心功能：选择肩部电机类型，初始化灵足/大然/达妙电机，配置CAN2通信；
  *         2. 灵足电机：初始化RobStride协议，设置CSP位置模式，使能电机，开启主动上报；
  *         3. 大然电机：清除错误，设置模式2（位置模式），配置参数22001（比例系数）；
- *         4. 大淼电机：初始化位置模式，暂未配置具体参数；
+ *         4. 达妙电机：初始化位置模式，暂未配置具体参数；
  *         5. 所有电机均挂载在CAN2总线上。
  */
 void Arm_Init()
 {
     // 选择默认肩部电机类型（注释为灵足，实际启用大然）
-     g_ShoulderType = SHOULDER_TYPE_LINGZU;
-    //g_ShoulderType = SHOULDER_TYPE_DARAN;
+    g_ShoulderType = SHOULDER_TYPE_LINGZU;
+    // g_ShoulderType = SHOULDER_TYPE_DARAN;
 
     /* 灵足电机初始化（使用CAN2总线） */
     // 1号灵足电机初始化
-    RobStride_Motor_Init(&motor1, MOTOR_LINGZU_1_ID, false);          // 初始化电机对象（ID为灵足1号）
-    Get_RobStride_Motor_parameter(&motor1, CAN_HANDLE_2, 0X7005);     // 读取电机参数，0X7005为参数地址
-    HAL_Delay(10);                                                    // 延时确保通信稳定
+    RobStride_Motor_Init(&motor1, MOTOR_LINGZU_1_ID, false);                             // 初始化电机对象（ID为灵足1号）
+    Get_RobStride_Motor_parameter(&motor1, CAN_HANDLE_2, 0X7005);                        // 读取电机参数，0X7005为参数地址
+    HAL_Delay(10);                                                                       // 延时确保通信稳定
     Set_RobStride_Motor_parameter(&motor1, CAN_HANDLE_2, 0X7005, CSP_control_mode, 'j'); // 设置CSP位置控制模式
-    Enable_Motor(&motor1, (hcan_t *)CAN_HANDLE_2);                    // 使能电机
-    Set_RobStride_Motor_parameter(&motor1, CAN_HANDLE_2, 0X7017, 1.0f, 'p'); // 设置参数0X7017，比例1.0
+    Enable_Motor(&motor1, (hcan_t *)CAN_HANDLE_2);                                       // 使能电机
+    Set_RobStride_Motor_parameter(&motor1, CAN_HANDLE_2, 0X7017, 1.0f, 'p');             // 设置参数0X7017，比例1.0
     HAL_Delay(10);
     // 开启主动上报（0x00=关闭，0x01=开启）
     RobStride_Motor_ProactiveEscalationSet(&motor1, CAN_HANDLE_2, 0x01);
@@ -119,26 +119,26 @@ void Arm_Init()
     RobStride_Motor_ProactiveEscalationSet(&motor3, CAN_HANDLE_2, 0x01);
 
     /* 大然电机初始化（使用CAN2总线） */
-    clear_error(CAN_HANDLE_2, MOTOR_DARAN_1_ID);                     // 清除1号大然电机错误
-    set_mode(CAN_HANDLE_2, MOTOR_DARAN_1_ID, 2);                     // 设置模式2（位置模式）
+    clear_error(CAN_HANDLE_2, MOTOR_DARAN_1_ID);                    // 清除1号大然电机错误
+    set_mode(CAN_HANDLE_2, MOTOR_DARAN_1_ID, 2);                    // 设置模式2（位置模式）
     write_property(CAN_HANDLE_2, MOTOR_DARAN_1_ID, 22001, 3, 1.0f); // 写入参数22001（比例系数1.0）
 
-    clear_error(CAN_HANDLE_2, MOTOR_DARAN_2_ID);                     // 清除2号大然电机错误
-    set_mode(CAN_HANDLE_2, MOTOR_DARAN_2_ID, 2);                     // 设置位置模式
+    clear_error(CAN_HANDLE_2, MOTOR_DARAN_2_ID);                    // 清除2号大然电机错误
+    set_mode(CAN_HANDLE_2, MOTOR_DARAN_2_ID, 2);                    // 设置位置模式
     write_property(CAN_HANDLE_2, MOTOR_DARAN_2_ID, 22001, 3, 1.0f); // 配置比例系数
 
-    clear_error(CAN_HANDLE_2, MOTOR_DARAN_3_ID);                     // 清除3号大然电机错误
-    set_mode(CAN_HANDLE_2, MOTOR_DARAN_3_ID, 2);                     // 设置位置模式
+    clear_error(CAN_HANDLE_2, MOTOR_DARAN_3_ID);                    // 清除3号大然电机错误
+    set_mode(CAN_HANDLE_2, MOTOR_DARAN_3_ID, 2);                    // 设置位置模式
     write_property(CAN_HANDLE_2, MOTOR_DARAN_3_ID, 22001, 3, 1.0f); // 配置比例系数
 
-    /* 大淼电机初始化（使用CAN2总线） */
-    arm_motor_init(&arm_motor[Motor4], MOTOR_DAMIAO_4_ID, POS_MODE); // 4号大淼电机初始化（位置模式）
-    arm_motor_init(&arm_motor[Motor5], MOTOR_DAMIAO_5_ID, POS_MODE); // 5号大淼电机初始化（位置模式）
-    arm_motor_init(&arm_motor[Motor6], MOTOR_DAMIAO_6_ID, POS_MODE); // 6号大淼电机初始化（位置模式）
+    /* 达妙电机初始化（使用CAN2总线） */
+    arm_motor_init(&arm_motor[Motor4], MOTOR_DAMIAO_4_ID, POS_MODE); // 4号达妙电机初始化（位置模式）
+    arm_motor_init(&arm_motor[Motor5], MOTOR_DAMIAO_5_ID, POS_MODE); // 5号达妙电机初始化（位置模式）
+    arm_motor_init(&arm_motor[Motor6], MOTOR_DAMIAO_6_ID, POS_MODE); // 6号达妙电机初始化（位置模式）
 
-    enable_motor_mode(CAN_HANDLE_2, MOTOR_DAMIAO_4_ID, POS_MODE);    // 使能4号大淼电机位置模式
-    enable_motor_mode(CAN_HANDLE_2, MOTOR_DAMIAO_5_ID, POS_MODE);    // 使能5号大淼电机位置模式
-    enable_motor_mode(CAN_HANDLE_2, MOTOR_DAMIAO_6_ID, POS_MODE);    // 使能6号大淼电机位置模式
+    enable_motor_mode(CAN_HANDLE_2, MOTOR_DAMIAO_4_ID, POS_MODE); // 使能4号达妙电机位置模式
+    enable_motor_mode(CAN_HANDLE_2, MOTOR_DAMIAO_5_ID, POS_MODE); // 使能5号达妙电机位置模式
+    enable_motor_mode(CAN_HANDLE_2, MOTOR_DAMIAO_6_ID, POS_MODE); // 使能6号达妙电机位置模式
 
     // 初始化灵足电机目标参数（角度10°，速度1.0r/min）
     Linzu_motor_data[0].target_angle = 10.0f;
@@ -155,6 +155,10 @@ void Arm_Init()
     Daran_motor_data[0].target_velocity = 90.0f;
     Daran_motor_data[1].target_velocity = 20.0f;
     Daran_motor_data[2].target_velocity = 20.0f;
+// 初始化灵足电机位置为0
+    Set_ZeroPos(&motor1, CAN_HANDLE_2);
+    Set_ZeroPos(&motor2, CAN_HANDLE_2);
+    Set_ZeroPos(&motor3, CAN_HANDLE_2);
 }
 
 /**
@@ -223,7 +227,7 @@ void Arm_Daran_motor3()
 }
 
 /**
- * @brief 控制4号大淼电机（位置模式）
+ * @brief 控制4号达妙电机（位置模式）
  * @retval 无
  * @note   1. 设置位置模式；
  *         2. 配置目标位置/速度；
@@ -239,9 +243,9 @@ void Arm_Damiao_motor4()
 }
 
 /**
- * @brief 控制5号大淼电机（位置模式）
+ * @brief 控制5号达妙电机（位置模式）
  * @retval 无
- * @note   逻辑5号大淼电机，位置参数10，速度参数1
+ * @note   逻辑5号达妙电机，位置参数10，速度参数1
  */
 void Arm_Damiao_motor5()
 {
@@ -251,7 +255,7 @@ void Arm_Damiao_motor5()
 }
 
 /**
- * @brief 控制6号大淼电机（位置模式）
+ * @brief 控制6号达妙电机（位置模式）
  * @retval 无
  * @note   1. 设置位置模式；
  *         2. 配置目标位置/速度；
@@ -306,7 +310,7 @@ void Arm_Daran_Data_update()
  * @retval 无
  * @note   1. 先更新灵足电机数据；
  *         2. 延时1ms后更新大然电机数据；
- *         3. 大淼电机数据更新逻辑暂未实现。
+ *         3. 达妙电机数据更新逻辑暂未实现。
  */
 void Arm_All_Data_update()
 {
@@ -321,7 +325,7 @@ void Arm_All_Data_update()
  * @note   1. 根据g_ShoulderType选择发送灵足/大然电机控制指令；
  *         2. 灵足电机：依次发送1/2/3号指令，间隔1ms FreeRTOS延时；
  *         3. 大然电机：依次发送1/2/3号指令，间隔1ms FreeRTOS延时；
- *         4. 大淼电机控制指令已注释，如需启用可取消注释。
+ *         4. 达妙电机控制指令已注释，如需启用可取消注释。
  */
 void Arm_all_tx()
 {
