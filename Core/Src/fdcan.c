@@ -54,8 +54,8 @@ void MX_FDCAN1_Init(void)
   hfdcan1.Init.DataTimeSeg1 = 29;
   hfdcan1.Init.DataTimeSeg2 = 10;
   hfdcan1.Init.MessageRAMOffset = 0;
-  hfdcan1.Init.StdFiltersNbr = 1;    // 1¸ö±ê×¼Ö¡¹ıÂËÆ÷
-  hfdcan1.Init.ExtFiltersNbr = 1;    // 1¸öÀ©Õ¹Ö¡¹ıÂËÆ÷
+  hfdcan1.Init.StdFiltersNbr = 1;    // 1ä¸ªæ ‡å‡†å¸§è¿‡æ»¤å™¨
+  hfdcan1.Init.ExtFiltersNbr = 1;    // 1ä¸ªæ‰©å±•å¸§è¿‡æ»¤å™¨
   hfdcan1.Init.RxFifo0ElmtsNbr = 4;
   hfdcan1.Init.RxFifo0ElmtSize = FDCAN_DATA_BYTES_8;
   hfdcan1.Init.RxFifo1ElmtsNbr = 0;
@@ -72,7 +72,7 @@ void MX_FDCAN1_Init(void)
     Error_Handler();
   }
   /* USER CODE BEGIN FDCAN1_Init 2 */
-  // ±ê×¼Ö¡¹ıÂËÆ÷£¨½ÓÊÕËùÓĞ±ê×¼Ö¡£©
+  // æ ‡å‡†å¸§è¿‡æ»¤å™¨ï¼ˆæ¥æ”¶æ‰€æœ‰æ ‡å‡†å¸§ï¼‰
   FDCAN_FilterTypeDef sFilterConfig;
   sFilterConfig.IdType = FDCAN_STANDARD_ID;
   sFilterConfig.FilterIndex = 0;
@@ -82,16 +82,16 @@ void MX_FDCAN1_Init(void)
   sFilterConfig.FilterID2 = 0x000;
   HAL_FDCAN_ConfigFilter(&hfdcan1, &sFilterConfig);
 
-  // À©Õ¹Ö¡¹ıÂËÆ÷£¨½ÓÊÕËùÓĞÀ©Õ¹Ö¡£©
+  // æ‰©å±•å¸§è¿‡æ»¤å™¨ï¼ˆæ¥æ”¶æ‰€æœ‰æ‰©å±•å¸§ï¼‰
   sFilterConfig.IdType = FDCAN_EXTENDED_ID;
-  sFilterConfig.FilterIndex = 0;      // ¶ÀÁ¢Ë÷Òı¿Õ¼ä
+  sFilterConfig.FilterIndex = 0;      // ç‹¬ç«‹ç´¢å¼•ç©ºé—´
   sFilterConfig.FilterID1 = 0x00000000;
   sFilterConfig.FilterID2 = 0x00000000;
   HAL_FDCAN_ConfigFilter(&hfdcan1, &sFilterConfig);
 
-  // ¼¤»î RX FIFO0 ĞÂÏûÏ¢Í¨Öª
+  // æ¿€æ´» RX FIFO0 æ–°æ¶ˆæ¯é€šçŸ¥
   HAL_FDCAN_ActivateNotification(&hfdcan1, FDCAN_IT_RX_FIFO0_NEW_MESSAGE, 0);
-  // Æô¶¯ FDCAN
+  // å¯åŠ¨ FDCAN
   HAL_FDCAN_Start(&hfdcan1);
   /* USER CODE END FDCAN1_Init 2 */
 
@@ -118,8 +118,8 @@ void MX_FDCAN2_Init(void)
   hfdcan2.Init.DataTimeSeg1 = 29;
   hfdcan2.Init.DataTimeSeg2 = 10;
   hfdcan2.Init.MessageRAMOffset = 0x406;
-  hfdcan2.Init.StdFiltersNbr = 1;    // 1¸ö±ê×¼Ö¡¹ıÂËÆ÷
-  hfdcan2.Init.ExtFiltersNbr = 1;    // 1¸öÀ©Õ¹Ö¡¹ıÂËÆ÷
+  hfdcan2.Init.StdFiltersNbr = 1;    // 1ä¸ªæ ‡å‡†å¸§è¿‡æ»¤å™¨
+  hfdcan2.Init.ExtFiltersNbr = 1;    // 1ä¸ªæ‰©å±•å¸§è¿‡æ»¤å™¨
   hfdcan2.Init.RxFifo0ElmtsNbr = 4;
   hfdcan2.Init.RxFifo0ElmtSize = FDCAN_DATA_BYTES_8;
   hfdcan2.Init.RxFifo1ElmtsNbr = 0;
@@ -137,7 +137,7 @@ void MX_FDCAN2_Init(void)
   }
   /* USER CODE BEGIN FDCAN2_Init 2 */
   FDCAN_FilterTypeDef sFilterConfig;
-  // ±ê×¼Ö¡¹ıÂËÆ÷
+  // æ ‡å‡†å¸§è¿‡æ»¤å™¨
   sFilterConfig.IdType = FDCAN_STANDARD_ID;
   sFilterConfig.FilterIndex = 0;
   sFilterConfig.FilterType = FDCAN_FILTER_MASK;
@@ -146,7 +146,7 @@ void MX_FDCAN2_Init(void)
   sFilterConfig.FilterID2 = 0x000;
   HAL_FDCAN_ConfigFilter(&hfdcan2, &sFilterConfig);
 
-  // À©Õ¹Ö¡¹ıÂËÆ÷
+  // æ‰©å±•å¸§è¿‡æ»¤å™¨
   sFilterConfig.IdType = FDCAN_EXTENDED_ID;
   sFilterConfig.FilterIndex = 0;
   sFilterConfig.FilterID1 = 0x00000000;
@@ -179,8 +179,8 @@ void MX_FDCAN3_Init(void)
   hfdcan3.Init.DataTimeSeg1 = 29;
   hfdcan3.Init.DataTimeSeg2 = 10;
   hfdcan3.Init.MessageRAMOffset = 0x812;
-  hfdcan3.Init.StdFiltersNbr = 1;    // 1¸ö±ê×¼Ö¡¹ıÂËÆ÷
-  hfdcan3.Init.ExtFiltersNbr = 1;    // 1¸öÀ©Õ¹Ö¡¹ıÂËÆ÷
+  hfdcan3.Init.StdFiltersNbr = 1;    // 1ä¸ªæ ‡å‡†å¸§è¿‡æ»¤å™¨
+  hfdcan3.Init.ExtFiltersNbr = 1;    // 1ä¸ªæ‰©å±•å¸§è¿‡æ»¤å™¨
   hfdcan3.Init.RxFifo0ElmtsNbr = 4;
   hfdcan3.Init.RxFifo0ElmtSize = FDCAN_DATA_BYTES_8;
   hfdcan3.Init.RxFifo1ElmtsNbr = 0;
@@ -198,7 +198,7 @@ void MX_FDCAN3_Init(void)
   }
   /* USER CODE BEGIN FDCAN3_Init 2 */
   FDCAN_FilterTypeDef sFilterConfig;
-  // ±ê×¼Ö¡¹ıÂËÆ÷
+  // æ ‡å‡†å¸§è¿‡æ»¤å™¨
   sFilterConfig.IdType = FDCAN_STANDARD_ID;
   sFilterConfig.FilterIndex = 0;
   sFilterConfig.FilterType = FDCAN_FILTER_MASK;
@@ -207,7 +207,7 @@ void MX_FDCAN3_Init(void)
   sFilterConfig.FilterID2 = 0x000;
   HAL_FDCAN_ConfigFilter(&hfdcan3, &sFilterConfig);
 
-  // À©Õ¹Ö¡¹ıÂËÆ÷
+  // æ‰©å±•å¸§è¿‡æ»¤å™¨
   sFilterConfig.IdType = FDCAN_EXTENDED_ID;
   sFilterConfig.FilterIndex = 0;
   sFilterConfig.FilterID1 = 0x00000000;

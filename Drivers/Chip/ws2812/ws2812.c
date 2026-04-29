@@ -1,7 +1,7 @@
 #include "ws2812.h"
 
-#define WS2812_LowLevel    0xC0     // 0§´§í
-#define WS2812_HighLevel   0xF0     // 1§´§í
+#define WS2812_LowLevel    0xC0     // 0Ð¢Ñ‹
+#define WS2812_HighLevel   0xF0     // 1Ð¢Ñ‹
 
 void WS2812_Ctrl(uint8_t r, uint8_t g, uint8_t b)
 {

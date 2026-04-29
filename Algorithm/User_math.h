@@ -8,12 +8,12 @@
 #define SQRT2   1.41421356237f  // sqrt(2)
 
 #define RAD_S_TO_RPM (30.0f/PI)
-#define RPM_TO_RAD_S (PI / 30.0f) //Rpm×ª»¯Îª½Ç¶È¶È
+#define RPM_TO_RAD_S (PI / 30.0f) //Rpmè½¬åŒ–ä¸ºè§’åº¦åº¦
 #ifndef DEG_TO_RAD
-#define DEG_TO_RAD (PI / 180.0f) //½Ç¶È×ª»¯Îª»¡¶È
+#define DEG_TO_RAD (PI / 180.0f) //è§’åº¦è½¬åŒ–ä¸ºå¼§åº¦
 #endif
 #ifndef RAD_TO_DEG
-#define RAD_TO_DEG (180.0f / PI) //»¡¶È×ª»¯Îª½Ç¶È
+#define RAD_TO_DEG (180.0f / PI) //å¼§åº¦è½¬åŒ–ä¸ºè§’åº¦
 #endif
 
 #endif // !__USER_MATH__
