@@ -15,10 +15,10 @@
 #define CAN_HANDLE_2 (&hfdcan2)
 
 // ==================== 电机ID宏定义 ====================
-/** 凌组电机ID（Robstride04协议，CAN2总线） */
-#define MOTOR_LINGZU_1_ID 0x01 // 凌组1号电机ID
-#define MOTOR_LINGZU_2_ID 0x02 // 凌组2号电机ID
-#define MOTOR_LINGZU_3_ID 0x03 // 凌组3号电机ID
+/** 灵足电机ID（Robstride04协议，CAN2总线） */
+#define MOTOR_LINGZU_1_ID 0x01 // 灵足1号电机ID
+#define MOTOR_LINGZU_2_ID 0x02 // 灵足2号电机ID
+#define MOTOR_LINGZU_3_ID 0x03 // 灵足3号电机ID
 
 /** 大然电机ID（DrEmpower协议，CAN2总线） */
 #define MOTOR_DARAN_1_ID 0x0b // 大然11号电机ID（0x0b=十进制11）
@@ -51,7 +51,7 @@ typedef enum Enum_Motor_DM_Status
  */
 typedef enum
 {
-    SHOULDER_TYPE_LINGZU = 0, // 肩部电机类型：凌组电机
+    SHOULDER_TYPE_LINGZU = 0, // 肩部电机类型：灵足电机
     SHOULDER_TYPE_DARAN = 1   // 肩部电机类型：大然电机
 } ShoulderType_t;
 
@@ -69,10 +69,10 @@ typedef struct
 } ArmMotorData_t;
 
 // ==================== 全局变量声明 ====================
-/** 凌组电机对象（3路，Robstride04协议） */
-extern RobStride_Motor_t motor1; // 凌组1号电机对象
-extern RobStride_Motor_t motor2; // 凌组2号电机对象
-extern RobStride_Motor_t motor3; // 凌组3号电机对象
+/** 灵足电机对象（3路，Robstride04协议） */
+extern RobStride_Motor_t motor1; // 灵足1号电机对象
+extern RobStride_Motor_t motor2; // 灵足2号电机对象
+extern RobStride_Motor_t motor3; // 灵足3号电机对象
 
 /** 大然电机状态/电气参数结构体数组（3路） */
 extern struct servo_state servo_state_daran[3];   // 大然电机状态（角度、速度、扭矩等）
@@ -85,7 +85,7 @@ extern Motor_DM_Status DM_Status[6]; // 存储每个大淼电机的使能/禁用
 extern ShoulderType_t g_ShoulderType;
 
 /** 电机控制数据结构体数组（按品牌分类） */
-extern ArmMotorData_t Linzu_motor_data[3];  // 凌组电机控制数据（3路）
+extern ArmMotorData_t Linzu_motor_data[3];  // 灵足电机控制数据（3路）
 extern ArmMotorData_t Daran_motor_data[3];  // 大然电机控制数据（3路）
 extern ArmMotorData_t Damiao_motor_data[3]; // 大淼电机控制数据（3路）
 
@@ -93,14 +93,14 @@ extern ArmMotorData_t Damiao_motor_data[3]; // 大淼电机控制数据（3路�
 /**
  * @brief 机械臂初始化函数
  * @retval 无
- * @note   初始化凌组/大然/大淼电机，配置CAN2通信，设置默认肩部电机类型
+ * @note   初始化灵足/大然/大淼电机，配置CAN2通信，设置默认肩部电机类型
  */
 void Arm_Init(void);
 
-/** 凌组电机控制函数（按编号区分） */
-void Arm_Linzu_motor1(void); // 控制1号凌组电机
-void Arm_Linzu_motor2(void); // 控制2号凌组电机
-void Arm_Linzu_motor3(void); // 控制3号凌组电机
+/** 灵足电机控制函数（按编号区分） */
+void Arm_Linzu_motor1(void); // 控制1号灵足电机
+void Arm_Linzu_motor2(void); // 控制2号灵足电机
+void Arm_Linzu_motor3(void); // 控制3号灵足电机
 
 /** 大然电机控制函数（按编号区分） */
 void Arm_Daran_motor1(void); // 控制1号大然电机
@@ -113,7 +113,7 @@ void Arm_Damiao_motor5(void); // 控制5号大淼电机
 void Arm_Damiao_motor6(void); // 控制6号大淼电机
 
 /** 电机状态数据更新函数 */
-void Arm_Linzu_Data_update(void); // 更新凌组电机当前角度/速度
+void Arm_Linzu_Data_update(void); // 更新灵足电机当前角度/速度
 void Arm_Daran_Data_update(void); // 更新大然电机当前角度/速度
 
 /** 全局函数声明（跨文件调用） */

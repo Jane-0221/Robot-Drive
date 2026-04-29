@@ -1,7 +1,7 @@
 /**
  * @file USB_VirCom.c
  * @author sethome
- * @brief ĞéÄâ´®¿ÚÊı¾İ·¢ËÍ
+ * @brief è™šæ‹Ÿä¸²å£æ•°æ®å‘é€
  * @version 0.1
  * @date 2022-11-20
  *
@@ -15,9 +15,9 @@
 #include "fifo.h"
 void VirCom_send(uint8_t data[], uint16_t len)
 {
-  if (CDC_Transmit_HS(data, len) == 1) // ÅĞ¶ÏÊı¾İÊÇ·ñ·¢ËÍ
+  if (CDC_Transmit_HS(data, len) == 1) // åˆ¤æ–­å‘é€æ˜¯å¦å¿™
   {
-    // USBÃ¦ÂµÊı¾İ×ªÈë»º³åÇø
+    // USBå¿™ç¢Œæ—¶å°†æ•°æ®è½¬å…¥ç¼“å†²åŒº
 
     fifo_s_puts(&USB_send_fifo, (char *)data, (int)len);
   }

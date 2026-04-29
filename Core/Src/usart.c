@@ -775,7 +775,7 @@ void HAL_UART_MspDeInit(UART_HandleTypeDef* uartHandle)
 
 // int fputc(int ch, FILE *f)
 // {
-// 	HAL_UART_Transmit(&huart10, (uint8_t *)&ch, 1, 100);	// 锟斤拷锟酵碉拷锟街斤拷锟斤拷锟斤拷
+// 	HAL_UART_Transmit(&huart10, (uint8_t *)&ch, 1, 100);	// 串口重定向输出
 // 	return (ch);
 // }
 /* USER CODE END 1 */

@@ -74,13 +74,13 @@ void Error_Handler(void);
 
 /* USER CODE BEGIN Private defines */
 #if defined(__GNUC__)
-    // 使锟斤拷 GCC
+    // 使用 GCC
     #define PACKED_STRUCT(name) struct __attribute__((packed)) name
 #elif defined(__CC_ARM)
-    // 使锟斤拷 ARMCC
+    // 使用 ARMCC
     #define PACKED_STRUCT(name) __packed struct name
 #else
-    // 未锟斤拷支锟街的憋拷锟斤拷锟斤拷
+    // 未支持的编译器
     #error "Unsupported compiler!"
 #endif
 #define ACC_CS_Pin GPIO_PIN_0

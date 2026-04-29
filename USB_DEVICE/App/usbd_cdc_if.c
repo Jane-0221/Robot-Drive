@@ -159,7 +159,7 @@ static int8_t CDC_Init_HS(void)
   /* Set Application Buffers */
   USBD_CDC_SetTxBuffer(&hUsbDeviceHS, UserTxBufferHS, 0);
   USBD_CDC_SetRxBuffer(&hUsbDeviceHS, UserRxBufferHS);
-  //��ʼ�����ͻ�����
+  // 初始化发送缓冲区
   fifo_s_init(&USB_send_fifo,USB_send_buffer,USB_SEND_BUFFER_SIZE);
 
   return (USBD_OK);

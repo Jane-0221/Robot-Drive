@@ -1,7 +1,7 @@
 /**
  * @file music.c
  * @author Siri (lixirui2017@outlook.com)
- * @brief ���ֲ���ģ��
+ * @brief 音乐播放模块
  * @version 0.1
  * @date 2025-04-07
  *
@@ -11,9 +11,9 @@
 
 #include "music.h"
 
-// ===== ����ֻ�ϻ����������� =====
+// ===== 《两只老虎》旋律数组 =====
 Note melody[] = {
-    // ��һ�Σ���������
+    // 第一段：主题重复
     {MID_DO, 500},
     {MID_RE, 500},
     {MID_MI, 500},
@@ -29,7 +29,7 @@ Note melody[] = {
     {MID_FA, 500},
     {MID_SOL, 1000}, // 3 4 5 -
 
-    // �ڶ��Σ������� + ��������
+    // 第二段：旋律展开
     {MID_SOL, 250},
     {MID_LA, 250},
     {MID_SOL, 250},
@@ -43,7 +43,7 @@ Note melody[] = {
     {MID_MI, 500},
     {MID_DO, 500}, // 5 6 5 4 3 1
 
-    // ��β���֣�����Do + ����Sol��
+    // 结尾部分：回到主音
     {MID_DO, 500},
     {HIGH_SOL, 500},
     {MID_DO, 1000}, // 1 5 1 -

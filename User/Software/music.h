@@ -16,7 +16,7 @@ typedef struct
 #define MUSIC_OFF() Buzzer_off()
 #define MUSIC_DELAY(time) osDelay(time)
 
-// ===== C�����������C3-B3��=====
+// ===== 低音区音符（C3-B3） =====
 #define LOW_DO 130.81f  // C3
 #define LOW_RE 146.83f  // D3
 #define LOW_MI 164.81f  // E3
@@ -25,16 +25,16 @@ typedef struct
 #define LOW_LA 220.00f  // A3
 #define LOW_SI 246.94f  // B3
 
-// ===== C�����������C4-B4��=====
-#define MID_DO 261.63f  // C4 (����C)
+// ===== 中音区音符（C4-B4） =====
+#define MID_DO 261.63f  // C4（中央C）
 #define MID_RE 293.66f  // D4
 #define MID_MI 329.63f  // E4
 #define MID_FA 349.23f  // F4
 #define MID_SOL 392.00f // G4
-#define MID_LA 440.00f  // A4 (��׼��)
+#define MID_LA 440.00f  // A4（标准音）
 #define MID_SI 493.88f  // B4
 
-// ===== C�����������C5-B5��=====
+// ===== 高音区音符（C5-B5） =====
 #define HIGH_DO 523.25f  // C5
 #define HIGH_RE 587.33f  // D5
 #define HIGH_MI 659.26f  // E5
@@ -43,8 +43,8 @@ typedef struct
 #define HIGH_LA 880.00f  // A5
 #define HIGH_SI 987.77f  // B5
 
-// ===== C���������־=====
-#define MUSIC_FINISH 0.00f //����
+// ===== 音乐结束标志 =====
+#define MUSIC_FINISH 0.00f // 结束
 
 void Music_init();
 void Music_play(Note *note);
