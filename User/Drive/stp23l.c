@@ -1,10 +1,10 @@
 #include "stp23l.h"
 #include <stddef.h>
 #include <string.h>
-/************************* È«¾Ö½âÎöÊı¾İÊµÀı»¯ *************************/
+/************************* å…¨å±€è§£ææ•°æ®å®ä¾‹åŒ– *************************/
 STP23L_DataDef stp23l_data = {0};
 uint8_t stp23l_raw_data[256];
-/************************* ¾²Ì¬¸¨Öúº¯Êı£º²éÕÒ4AA°üÍ· *************************/
+/************************* é™æ€è¾…åŠ©å‡½æ•°ï¼šæŸ¥æ‰¾4AAåŒ…å¤´ *************************/
 static uint16_t STP23L_FindHeader(uint8_t *buf, uint16_t size)
 {
     for(uint16_t i = 0; i <= size - STP23L_HEADER_BYTES; i++)
@@ -15,7 +15,7 @@ static uint16_t STP23L_FindHeader(uint8_t *buf, uint16_t size)
             return i;
         }
     }
-    return 0xFFFF; // Î´ÕÒµ½°üÍ·
+    return 0xFFFF; // æœªæ‰¾åˆ°åŒ…å¤´
 }
 void store_stp23l_data(const uint8_t *data, uint16_t size)
 {
@@ -23,25 +23,25 @@ void store_stp23l_data(const uint8_t *data, uint16_t size)
         return;
     }
     
-    // È·±£²»»á³¬³ö»º³åÇø´óĞ¡
+    // ç¡®ä¿ä¸ä¼šè¶…å‡ºç¼“å†²åŒºå¤§å°
     uint16_t copy_size = (size > 256) ? 256 : size;
     
-    // Ê¹ÓÃmemcpy°²È«µØ¸´ÖÆÊı¾İ
+    // ä½¿ç”¨memcpyå®‰å…¨åœ°å¤åˆ¶æ•°æ®
     memcpy(stp23l_raw_data, data, copy_size);
     
-    // Èç¹ûÊı¾İĞ¡ÓÚ256×Ö½Ú£¬Ê£Óà²¿·ÖÌî³ä0
+    // å¦‚æœæ•°æ®å°äº256å­—èŠ‚ï¼Œå‰©ä½™éƒ¨åˆ†å¡«å……0
     if (copy_size < 256) {
         memset(stp23l_raw_data + copy_size, 0, 256 - copy_size);
     }
 }
-/************************* ½âÎö¸´Î»º¯Êı *************************/
+/************************* è§£æå¤ä½å‡½æ•° *************************/
 void STP23L_Reset(void)
 {
     stp23l_data.parse_ok = 0;
     stp23l_data.parse_err = 0;
 }
 
-/************************* Õû°ü½âÎöº¯Êı£¨DMAÖĞ¶ÏÖ±½Óµ÷ÓÃ£© *************************/
+/************************* æ•´åŒ…è§£æå‡½æ•°ï¼ˆDMAä¸­æ–­ç›´æ¥è°ƒç”¨ï¼‰ *************************/
 void STP23L_ParseData(uint8_t *buf, uint16_t size)
 {
     if(buf == NULL || size < STP23L_HEAD_LEN)
@@ -60,20 +60,20 @@ void STP23L_ParseData(uint8_t *buf, uint16_t size)
         if(header_pos == 0xFFFF) break;
         buf_idx += header_pos;
 
-        // Ğ£ÑéÕû°üÍêÕûĞÔ
+        // æ ¡éªŒæ•´åŒ…å®Œæ•´æ€§
         if((size - buf_idx) < STP23L_PACK_TOTAL_LEN)
         {
             stp23l_data.parse_err = 1;
             break;
         }
 
-        // ½âÎö°üÍ·×Ö¶Î
+        // è§£æåŒ…å¤´å­—æ®µ
         uint8_t dev_addr = buf[buf_idx + 4];
         uint8_t cmd_code = buf[buf_idx + 5];
         uint16_t offset = (buf[buf_idx +7]<<8) | buf[buf_idx +6];
         uint16_t data_len = (buf[buf_idx +9]<<8) | buf[buf_idx +8];
 
-        // Ğ­ÒéÓ²Ğ£Ñé£º½ö´¦Àí»ñÈ¡²âÁ¿Êı¾İÃüÁî
+        // åè®®ç¡¬æ ¡éªŒï¼šä»…å¤„ç†è·å–æµ‹é‡æ•°æ®å‘½ä»¤
         if(dev_addr != STP23L_DEV_ADDR || cmd_code != STP23L_CMD_GET_DIST ||
            data_len != STP23L_DATA_FIELD_LEN || offset != 0x0000)
         {
@@ -82,7 +82,7 @@ void STP23L_ParseData(uint8_t *buf, uint16_t size)
             continue;
         }
 
-        // ¼ÆËãĞ£ÑéÂë£¨³ıÈ¥4AA£¬µÍ8Î»ÀÛ¼Ó£©
+        // è®¡ç®—æ ¡éªŒç ï¼ˆé™¤å»4AAï¼Œä½8ä½ç´¯åŠ ï¼‰
         crc_calc = 0;
         for(uint16_t i = 4; i < STP23L_PACK_TOTAL_LEN -1; i++)
         {
@@ -95,7 +95,7 @@ void STP23L_ParseData(uint8_t *buf, uint16_t size)
             continue;
         }
 
-        // ½âÎö12¸ö²âÁ¿µãÊı¾İ£¨Ğ¡¶ËÄ£Ê½£©
+        // è§£æ12ä¸ªæµ‹é‡ç‚¹æ•°æ®ï¼ˆå°ç«¯æ¨¡å¼ï¼‰
         stp23l_data.cmd_code = cmd_code;
         uint16_t data_offset = buf_idx + STP23L_HEAD_LEN;
         for(uint8_t i = 0; i < STP23L_POINT_NUM; i++)
@@ -109,11 +109,11 @@ void STP23L_ParseData(uint8_t *buf, uint16_t size)
             stp23l_data.points[i].reftof   = (buf[p_offset+14]<<8) | buf[p_offset+13];
         }
 
-        // ½âÎöÖ¡Ê±¼ä´Á
+        // è§£æå¸§æ—¶é—´æˆ³
         uint16_t ts_offset = buf_idx + STP23L_HEAD_LEN + STP23L_POINT_NUM * STP23L_POINT_BYTES;
         stp23l_data.timestamp = (buf[ts_offset+3]<<24) | (buf[ts_offset+2]<<16) | (buf[ts_offset+1]<<8) | buf[ts_offset];
 
-        // Ö¡½âÎöÍê³ÉÖÃÎ»
+        // å¸§è§£æå®Œæˆç½®ä½
         stp23l_data.parse_ok = 1;
         stp23l_data.recv_cnt++;
         stp23l_data.parse_err = 0;
@@ -122,43 +122,43 @@ void STP23L_ParseData(uint8_t *buf, uint16_t size)
     }
 }
 
-/************************* ºËĞÄ£ºÃ¿Ö¡ÌáÈ¡Ò»¸ö×îÖÕ¾àÀëÖµ *************************/
+/************************* æ ¸å¿ƒï¼šæ¯å¸§æå–ä¸€ä¸ªæœ€ç»ˆè·ç¦»å€¼ *************************/
 int16_t STP23L_GetFinalDistPerFrame(void)
 {
-    static int16_t last_valid_dist = 0; // ¾²Ì¬»º´æÉÏÒ»Ö¡ÓĞĞ§¾àÀë£¬·ÀÍ»±ä
-    int32_t valid_dist_sum = 0;         // ÓĞĞ§¾àÀëÀÛ¼ÓºÍ£¨32Î»±ÜÃâÒç³ö£©
-    uint8_t valid_point_cnt = 0;        // ÓĞĞ§²âµãÊıÁ¿
-    int16_t final_dist = 0;             // ±¾Ö¡×îÖÕ¾àÀëÖµ
+    static int16_t last_valid_dist = 0; // é™æ€ç¼“å­˜ä¸Šä¸€å¸§æœ‰æ•ˆè·ç¦»ï¼Œé˜²çªå˜
+    int32_t valid_dist_sum = 0;         // æœ‰æ•ˆè·ç¦»ç´¯åŠ å’Œï¼ˆ32ä½é¿å…æº¢å‡ºï¼‰
+    uint8_t valid_point_cnt = 0;        // æœ‰æ•ˆæµ‹ç‚¹æ•°é‡
+    int16_t final_dist = 0;             // æœ¬å¸§æœ€ç»ˆè·ç¦»å€¼
 
-    // ²½Öè1£º±éÀú12¸ö²âµã£¬°´ÊÖ²á±ê×¼¹ıÂËÓĞĞ§µã
+    // æ­¥éª¤1ï¼šéå†12ä¸ªæµ‹ç‚¹ï¼ŒæŒ‰æ‰‹å†Œæ ‡å‡†è¿‡æ»¤æœ‰æ•ˆç‚¹
     for(uint8_t i = 0; i < STP23L_POINT_NUM; i++)
     {
-        if((stp23l_data.points[i].confidence >= STP23L_CONFIDENCE_THRESH) &&  // ÖÃĞÅ¶È´ï±ê
-           (stp23l_data.points[i].distance >= STP23L_DIST_BLIND) &&            // ³¬³öÃ¤Çø
-           (stp23l_data.points[i].distance <= STP23L_DIST_MAX))               // Î´³¬Á¿³Ì
+        if((stp23l_data.points[i].confidence >= STP23L_CONFIDENCE_THRESH) &&  // ç½®ä¿¡åº¦è¾¾æ ‡
+           (stp23l_data.points[i].distance >= STP23L_DIST_BLIND) &&            // è¶…å‡ºç›²åŒº
+           (stp23l_data.points[i].distance <= STP23L_DIST_MAX))               // æœªè¶…é‡ç¨‹
         {
             valid_dist_sum += stp23l_data.points[i].distance;
             valid_point_cnt++;
         }
     }
 
-    // ²½Öè2£º¸ù¾İÓĞĞ§µãÊıÁ¿¼ÆËã±¾Ö¡×îÖÕ¾àÀë
+    // æ­¥éª¤2ï¼šæ ¹æ®æœ‰æ•ˆç‚¹æ•°é‡è®¡ç®—æœ¬å¸§æœ€ç»ˆè·ç¦»
     if(valid_point_cnt > 0)
     {
         if(valid_point_cnt == 1)
         {
-            final_dist = (int16_t)valid_dist_sum; // µ¥ÓĞĞ§µãÖ±½Ó·µ»Ø
+            final_dist = (int16_t)valid_dist_sum; // å•æœ‰æ•ˆç‚¹ç›´æ¥è¿”å›
         }
         else
         {
-            final_dist = (int16_t)(valid_dist_sum / valid_point_cnt); // ¶àÓĞĞ§µãÈ¡Æ½¾ù
+            final_dist = (int16_t)(valid_dist_sum / valid_point_cnt); // å¤šæœ‰æ•ˆç‚¹å–å¹³å‡
         }
-        last_valid_dist = final_dist; // ¸üĞÂÀúÊ·ÓĞĞ§¾àÀë
+        last_valid_dist = final_dist; // æ›´æ–°å†å²æœ‰æ•ˆè·ç¦»
     }
     else
     {
-        final_dist = last_valid_dist; // ÎŞÓĞĞ§µã£¬·µ»ØÀúÊ·Öµ·ÀÍ»±ä
+        final_dist = last_valid_dist; // æ— æœ‰æ•ˆç‚¹ï¼Œè¿”å›å†å²å€¼é˜²çªå˜
     }
 
-    return final_dist; // Ã¿Ö¡·µ»ØÒ»¸ö×îÖÕ¾àÀëÖµ
+    return final_dist; // æ¯å¸§è¿”å›ä¸€ä¸ªæœ€ç»ˆè·ç¦»å€¼
 }

@@ -1,6 +1,6 @@
 #include "buzzer.h"
 #include "cmsis_os2.h"
-//·äÃùÆ÷ PWM Çý¶¯³ÌÐò
+//èœ‚é¸£å™¨ PWM é©±åŠ¨ç¨‹åº
 void Buzzer_init(){
     __HAL_TIM_ENABLE(&BUZZER_TIM);
 }
@@ -16,7 +16,7 @@ void Buzzer_off(){
 void Buzzer_set_frequency(float fre){
     __HAL_TIM_DISABLE(&BUZZER_TIM);
     BUZZER_TIM.Instance->CNT = 0;
-    BUZZER_TIM.Instance->ARR = (1000000/fre-1)*1u;  //ÐÞ¸ÄÖØ×°ÔØÖµ-¡·ÆµÂÊ
+    BUZZER_TIM.Instance->ARR = (1000000/fre-1)*1u;  //ä¿®æ”¹é‡è£…è½½å€¼-ã€‹é¢‘çŽ‡
     BUZZER_TIM.Instance->CCR2 = (500000/fre-1)*1u;
     __HAL_TIM_ENABLE(&BUZZER_TIM);
 }

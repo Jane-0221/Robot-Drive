@@ -12,82 +12,82 @@ extern "C" {
 
 
 
-// ¸÷ÖÖ¿ØÖÆÄ£Ê½
-#define move_control_mode  0  // ÔË¿ØÄ£Ê½
-#define Pos_control_mode   1  // PPÎ»ÖÃÄ£Ê½
-#define Speed_control_mode 2  // ËÙ¶ÈÄ£Ê½
-#define Elect_control_mode 3  // µçÁ÷Ä£Ê½
-#define Set_Zero_mode      4  // ÁãµãÄ£Ê½
-#define CSP_control_mode   5  // CSPÎ»ÖÃÄ£Ê½
+// å„ç§æ§åˆ¶æ¨¡å¼
+#define move_control_mode  0  // è¿æ§æ¨¡å¼
+#define Pos_control_mode   1  // PPä½ç½®æ¨¡å¼
+#define Speed_control_mode 2  // é€Ÿåº¦æ¨¡å¼
+#define Elect_control_mode 3  // ç”µæµæ¨¡å¼
+#define Set_Zero_mode      4  // é›¶ç‚¹æ¨¡å¼
+#define CSP_control_mode   5  // CSPä½ç½®æ¨¡å¼
 
-// Í¨ĞÅÀàĞÍ
-#define Communication_Type_Get_ID 0x00                // »ñÈ¡Éè±¸µÄIDºÍ64Î»MCUÎ¨Ò»±êÊ¶·û
-#define Communication_Type_MotionControl 0x01         // ÔË¿ØÄ£Ê½ÓÃÀ´ÏòÖ÷»ú·¢ËÍ¿ØÖÆÖ¸Áî
-#define Communication_Type_MotorRequest 0x02          // ÓÃÀ´ÏòÖ÷»ú·´À¡µç»úÔËĞĞ×´Ì¬
-#define Communication_Type_MotorEnable 0x03           // µç»úÊ¹ÄÜÔËĞĞ
-#define Communication_Type_MotorStop 0x04             // µç»úÍ£Ö¹ÔËĞĞ
-#define Communication_Type_SetPosZero 0x06            // ÉèÖÃµç»ú»úĞµÁãÎ»
-#define Communication_Type_Can_ID 0x07                // ¸ü¸Äµ±Ç°µç»úCAN_ID
-#define Communication_Type_Control_Mode 0x12          // ÉèÖÃµç»úÄ£Ê½
-#define Communication_Type_GetSingleParameter 0x11    // ¶ÁÈ¡µ¥¸ö²ÎÊı
-#define Communication_Type_SetSingleParameter 0x12    // Éè¶¨µ¥¸ö²ÎÊı
-#define Communication_Type_ErrorFeedback 0x15         // ¹ÊÕÏ·´À¡Ö¡
-#define Communication_Type_MotorDataSave 0x16         // µç»úÊı¾İ±£´æÖ¡
-#define Communication_Type_BaudRateChange 0x17        // µç»ú²¨ÌØÂÊĞŞ¸ÄÖ¡£¬ÖØĞÂÉÏµçÉúĞ§
-#define Communication_Type_ProactiveEscalationSet 0x18 // µç»úÖ÷¶¯ÉÏ±¨
-#define Communication_Type_MotorModeSet 0x19          // µç»úĞ­ÒéĞŞ¸ÄÖ¡
+// é€šä¿¡ç±»å‹
+#define Communication_Type_Get_ID 0x00                // è·å–è®¾å¤‡çš„IDå’Œ64ä½MCUå”¯ä¸€æ ‡è¯†ç¬¦
+#define Communication_Type_MotionControl 0x01         // è¿æ§æ¨¡å¼ç”¨æ¥å‘ä¸»æœºå‘é€æ§åˆ¶æŒ‡ä»¤
+#define Communication_Type_MotorRequest 0x02          // ç”¨æ¥å‘ä¸»æœºåé¦ˆç”µæœºè¿è¡ŒçŠ¶æ€
+#define Communication_Type_MotorEnable 0x03           // ç”µæœºä½¿èƒ½è¿è¡Œ
+#define Communication_Type_MotorStop 0x04             // ç”µæœºåœæ­¢è¿è¡Œ
+#define Communication_Type_SetPosZero 0x06            // è®¾ç½®ç”µæœºæœºæ¢°é›¶ä½
+#define Communication_Type_Can_ID 0x07                // æ›´æ”¹å½“å‰ç”µæœºCAN_ID
+#define Communication_Type_Control_Mode 0x12          // è®¾ç½®ç”µæœºæ¨¡å¼
+#define Communication_Type_GetSingleParameter 0x11    // è¯»å–å•ä¸ªå‚æ•°
+#define Communication_Type_SetSingleParameter 0x12    // è®¾å®šå•ä¸ªå‚æ•°
+#define Communication_Type_ErrorFeedback 0x15         // æ•…éšœåé¦ˆå¸§
+#define Communication_Type_MotorDataSave 0x16         // ç”µæœºæ•°æ®ä¿å­˜å¸§
+#define Communication_Type_BaudRateChange 0x17        // ç”µæœºæ³¢ç‰¹ç‡ä¿®æ”¹å¸§ï¼Œé‡æ–°ä¸Šç”µç”Ÿæ•ˆ
+#define Communication_Type_ProactiveEscalationSet 0x18 // ç”µæœºä¸»åŠ¨ä¸ŠæŠ¥
+#define Communication_Type_MotorModeSet 0x19          // ç”µæœºåè®®ä¿®æ”¹å¸§
 
-// MITĞ­ÒéÃüÁî
-#define MIT_CMD_ENABLE    0xFC    // µç»úÊ¹ÄÜ
-#define MIT_CMD_DISABLE   0xFD    // µç»úÊ§ÄÜ
-#define MIT_CMD_CLEAR_ERR 0xFB    // Çå³ı´íÎó
-#define MIT_CMD_SET_ZERO  0xFE    // ÉèÖÃÁãµã
-#define MIT_CMD_SET_MODE  0xFC    // ÉèÖÃÔËĞĞÄ£Ê½
-#define MIT_CMD_SET_ID    0x01    // ÉèÖÃµç»úID
-#define MIT_CMD_SET_PROTOCOL 0xFD // ÉèÖÃĞ­ÒéÀàĞÍ
+// MITåè®®å‘½ä»¤
+#define MIT_CMD_ENABLE    0xFC    // ç”µæœºä½¿èƒ½
+#define MIT_CMD_DISABLE   0xFD    // ç”µæœºå¤±èƒ½
+#define MIT_CMD_CLEAR_ERR 0xFB    // æ¸…é™¤é”™è¯¯
+#define MIT_CMD_SET_ZERO  0xFE    // è®¾ç½®é›¶ç‚¹
+#define MIT_CMD_SET_MODE  0xFC    // è®¾ç½®è¿è¡Œæ¨¡å¼
+#define MIT_CMD_SET_ID    0x01    // è®¾ç½®ç”µæœºID
+#define MIT_CMD_SET_PROTOCOL 0xFD // è®¾ç½®åè®®ç±»å‹
 
-// MITÄ£Ê½ÀàĞÍ
+// MITæ¨¡å¼ç±»å‹
 enum MIT_TYPE {
     operationControl = 0,
     positionControl = 1,
     speedControl = 2
 };
 
-// ²ÎÊı¶ÁĞ´½á¹¹Ìå
+// å‚æ•°è¯»å†™ç»“æ„ä½“
 typedef struct {
     uint16_t index;
     float data;
 } data_read_write_one_t;
 
-// ¿É¶ÁĞ´²ÎÊı½á¹¹Ìå
+// å¯è¯»å†™å‚æ•°ç»“æ„ä½“
 typedef struct {
-    data_read_write_one_t run_mode;        // 0:ÔË¿ØÄ£Ê½ 1:Î»ÖÃÄ£Ê½ 2:ËÙ¶ÈÄ£Ê½ 3:µçÁ÷Ä£Ê½ 4:ÁãµãÄ£Ê½
-    data_read_write_one_t iq_ref;          // µçÁ÷Ä£Ê½IqÖ¸Áî£¬·¶Î§£º-90~90A
-    data_read_write_one_t spd_ref;         // ×ªËÙÄ£Ê½×ªËÙÖ¸Áî£¬·¶Î§£º-20~20rad/s
-    data_read_write_one_t imit_torque;     // ×ª¾ØÏŞÖÆ£¬·¶Î§£º0~120Nm
-    data_read_write_one_t cur_kp;          // µçÁ÷µÄKp£¬Ä¬ÈÏÖµ£º0.05
-    data_read_write_one_t cur_ki;          // µçÁ÷µÄKi£¬Ä¬ÈÏÖµ£º0.05
-    data_read_write_one_t cur_filt_gain;   // µçÁ÷ÂË²¨ÏµÊı£¬·¶Î§£º0~1.0£¬Ä¬ÈÏÖµ£º0.06
-    data_read_write_one_t loc_ref;         // Î»ÖÃÄ£Ê½½Ç¶ÈÖ¸Áî£¬µ¥Î»£ºrad
-    data_read_write_one_t limit_spd;       // Î»ÖÃÄ£Ê½ËÙ¶ÈÉèÖÃ£¬·¶Î§£º0~20rad/s
-    data_read_write_one_t limit_cur;       // ËÙ¶ÈÎ»ÖÃÄ£Ê½µçÁ÷ÉèÖÃ£¬·¶Î§£º0~90A
-    data_read_write_one_t mechPos;         // ¸ºÔØ¶Ë¼ÆÈ¦»úĞµ½Ç¶È£¬µ¥Î»£ºrad£¨Ö»¶Á£©
-    data_read_write_one_t iqf;             // iqÂË²¨Öµ£¬·¶Î§£º-90~90A£¨Ö»¶Á£©
-    data_read_write_one_t mechVel;         // ¸ºÔØ¶Ë×ªËÙ£¬·¶Î§£º-20~20rad/s£¨Ö»¶Á£©
-    data_read_write_one_t VBUS;            // Ä¸ÏßµçÑ¹£¬µ¥Î»£ºV£¨Ö»¶Á£©
-    data_read_write_one_t rotation;        // È¦Êı£¨Ö»¶Á£©
+    data_read_write_one_t run_mode;        // 0:è¿æ§æ¨¡å¼ 1:ä½ç½®æ¨¡å¼ 2:é€Ÿåº¦æ¨¡å¼ 3:ç”µæµæ¨¡å¼ 4:é›¶ç‚¹æ¨¡å¼
+    data_read_write_one_t iq_ref;          // ç”µæµæ¨¡å¼IqæŒ‡ä»¤ï¼ŒèŒƒå›´ï¼š-90~90A
+    data_read_write_one_t spd_ref;         // è½¬é€Ÿæ¨¡å¼è½¬é€ŸæŒ‡ä»¤ï¼ŒèŒƒå›´ï¼š-20~20rad/s
+    data_read_write_one_t imit_torque;     // è½¬çŸ©é™åˆ¶ï¼ŒèŒƒå›´ï¼š0~120Nm
+    data_read_write_one_t cur_kp;          // ç”µæµçš„Kpï¼Œé»˜è®¤å€¼ï¼š0.05
+    data_read_write_one_t cur_ki;          // ç”µæµçš„Kiï¼Œé»˜è®¤å€¼ï¼š0.05
+    data_read_write_one_t cur_filt_gain;   // ç”µæµæ»¤æ³¢ç³»æ•°ï¼ŒèŒƒå›´ï¼š0~1.0ï¼Œé»˜è®¤å€¼ï¼š0.06
+    data_read_write_one_t loc_ref;         // ä½ç½®æ¨¡å¼è§’åº¦æŒ‡ä»¤ï¼Œå•ä½ï¼šrad
+    data_read_write_one_t limit_spd;       // ä½ç½®æ¨¡å¼é€Ÿåº¦è®¾ç½®ï¼ŒèŒƒå›´ï¼š0~20rad/s
+    data_read_write_one_t limit_cur;       // é€Ÿåº¦ä½ç½®æ¨¡å¼ç”µæµè®¾ç½®ï¼ŒèŒƒå›´ï¼š0~90A
+    data_read_write_one_t mechPos;         // è´Ÿè½½ç«¯è®¡åœˆæœºæ¢°è§’åº¦ï¼Œå•ä½ï¼šradï¼ˆåªè¯»ï¼‰
+    data_read_write_one_t iqf;             // iqæ»¤æ³¢å€¼ï¼ŒèŒƒå›´ï¼š-90~90Aï¼ˆåªè¯»ï¼‰
+    data_read_write_one_t mechVel;         // è´Ÿè½½ç«¯è½¬é€Ÿï¼ŒèŒƒå›´ï¼š-20~20rad/sï¼ˆåªè¯»ï¼‰
+    data_read_write_one_t VBUS;            // æ¯çº¿ç”µå‹ï¼Œå•ä½ï¼šVï¼ˆåªè¯»ï¼‰
+    data_read_write_one_t rotation;        // åœˆæ•°ï¼ˆåªè¯»ï¼‰
 } data_read_write_t;
 
-// µç»úÎ»ÖÃĞÅÏ¢½á¹¹Ìå
+// ç”µæœºä½ç½®ä¿¡æ¯ç»“æ„ä½“
 typedef struct {
     float Angle;
     float Speed;
     float Torque;
     float Temp;
-    uint8_t pattern; // µç»úÄ£Ê½£¨0¸´Î»1±ê¶¨2ÔËĞĞ£©
+    uint8_t pattern; // ç”µæœºæ¨¡å¼ï¼ˆ0å¤ä½1æ ‡å®š2è¿è¡Œï¼‰
 } Motor_Pos_RobStride_Info_t;
 
-// µç»úÉè¶¨Öµ½á¹¹Ìå
+// ç”µæœºè®¾å®šå€¼ç»“æ„ä½“
 typedef struct {
     uint8_t set_motor_mode;
     float set_current;
@@ -102,79 +102,79 @@ typedef struct {
     float set_Kd;
 } Motor_Set_t;
 
-// RobStrideµç»úÖ÷½á¹¹Ìå
+// RobStrideç”µæœºä¸»ç»“æ„ä½“
 typedef struct {
     uint8_t CAN_ID;                     // CAN ID
-    uint64_t Unique_ID;                 // 64Î»MCUÎ¨Ò»±êÊ¶·û
-    uint16_t Master_CAN_ID;             // Ö÷»úID£¨Ä¬ÈÏ0xFD£©
+    uint64_t Unique_ID;                 // 64ä½MCUå”¯ä¸€æ ‡è¯†ç¬¦
+    uint16_t Master_CAN_ID;             // ä¸»æœºIDï¼ˆé»˜è®¤0xFDï¼‰
     
-    Motor_Set_t Motor_Set_All;     // Éè¶¨Öµ
-    uint8_t error_code;                 // ´íÎóÂë
+    Motor_Set_t Motor_Set_All;     // è®¾å®šå€¼
+    uint8_t error_code;                 // é”™è¯¯ç 
     
-    bool MIT_Mode;                      // MITÄ£Ê½±êÖ¾
-    enum MIT_TYPE MIT_Type;             // MITÄ£Ê½ÀàĞÍ
+    bool MIT_Mode;                      // MITæ¨¡å¼æ ‡å¿—
+    enum MIT_TYPE MIT_Type;             // MITæ¨¡å¼ç±»å‹
     
-    float output;                       // Êä³öÖµ
-    int32_t Can_Motor;                  // CANµç»ú±êÊ¶
-    Motor_Pos_RobStride_Info_t Pos_Info;  // Î»ÖÃĞÅÏ¢
-    data_read_write_t drw;                // µç»úÊı¾İ
+    float output;                       // è¾“å‡ºå€¼
+    int32_t Can_Motor;                  // CANç”µæœºæ ‡è¯†
+    Motor_Pos_RobStride_Info_t Pos_Info;  // ä½ç½®ä¿¡æ¯
+    data_read_write_t drw;                // ç”µæœºæ•°æ®
 } RobStride_Motor_t;
 
-// ²ÎÊıË÷ÒıÁĞ±í
+// å‚æ•°ç´¢å¼•åˆ—è¡¨
 extern const uint16_t Index_List[];
 
-// ÓÊÏä±äÁ¿
+// é‚®ç®±å˜é‡
 extern uint32_t Mailbox;
 
-// ²ÎÊı×ª»»º¯Êı
+// å‚æ•°è½¬æ¢å‡½æ•°
 float uint16_to_float_lz(uint16_t x, float x_min, float x_max, uint8_t bits);
 uint16_t float_to_uint_lz(float x, float x_min, float x_max, uint8_t bits);
 float Byte_to_float(uint8_t* bytedata);
 uint8_t mapFaults(uint16_t fault16);
 
-// µç»ú³õÊ¼»¯º¯Êı
+// ç”µæœºåˆå§‹åŒ–å‡½æ•°
 void RobStride_Motor_Init(RobStride_Motor_t* motor, uint8_t CAN_Id, bool MIT_mode);
 void RobStride_Motor_Init_Offset(RobStride_Motor_t* motor, uint8_t CAN_Id, bool MIT_mode);
 
-// µç»ú¿ØÖÆº¯Êı
-void RobStride_Get_CAN_ID(RobStride_Motor_t* motor, hcan_t* hcan); // ĞŞ¸Ä£ºÔö¼Óhcan²ÎÊı
+// ç”µæœºæ§åˆ¶å‡½æ•°
+void RobStride_Get_CAN_ID(RobStride_Motor_t* motor, hcan_t* hcan); // ä¿®æ”¹ï¼šå¢åŠ hcanå‚æ•°
 void RobStride_Motor_Analysis(RobStride_Motor_t* motor, uint8_t* DataFrame, uint32_t ID_ExtId);
-void RobStride_Motor_move_control(RobStride_Motor_t* motor, hcan_t* hcan, float Torque, float Angle, float Speed, float Kp, float Kd); // ĞŞ¸Ä£ºÔö¼Óhcan²ÎÊı
-void RobStride_Motor_Pos_control(RobStride_Motor_t* motor, hcan_t* hcan, float Speed, float Angle); // ĞŞ¸Ä£ºÔö¼Óhcan²ÎÊı
-void RobStride_Motor_CSP_control(RobStride_Motor_t* motor, hcan_t* hcan, float Angle, float limit_spd); // ĞŞ¸Ä£ºÔö¼Óhcan²ÎÊı
-void RobStride_Motor_Speed_control(RobStride_Motor_t* motor, hcan_t* hcan, float Speed, float limit_cur); // ĞŞ¸Ä£ºÔö¼Óhcan²ÎÊı
-void RobStride_Motor_current_control(RobStride_Motor_t* motor, hcan_t* hcan, float current); // ĞŞ¸Ä£ºÔö¼Óhcan²ÎÊı
-void RobStride_Motor_Set_Zero_control(RobStride_Motor_t* motor, hcan_t* hcan); // ĞŞ¸Ä£ºÔö¼Óhcan²ÎÊı
-void Enable_Motor(RobStride_Motor_t* motor, hcan_t* hcan); // ĞŞ¸Ä£ºÔö¼Óhcan²ÎÊı
-void Disenable_Motor(RobStride_Motor_t* motor, hcan_t* hcan, uint8_t clear_error); // ĞŞ¸Ä£ºÔö¼Óhcan²ÎÊı
-void Set_CAN_ID(RobStride_Motor_t* motor, hcan_t* hcan, uint8_t Set_CAN_ID); // ĞŞ¸Ä£ºÔö¼Óhcan²ÎÊı
-void Set_ZeroPos(RobStride_Motor_t* motor, hcan_t* hcan); // ĞŞ¸Ä£ºÔö¼Óhcan²ÎÊı
-void Set_RobStride_Motor_parameter(RobStride_Motor_t* motor, hcan_t* hcan, uint16_t Index, float Value, char Value_mode); // ĞŞ¸Ä£ºÔö¼Óhcan²ÎÊı
-void Get_RobStride_Motor_parameter(RobStride_Motor_t* motor, hcan_t* hcan, uint16_t Index); // ĞŞ¸Ä£ºÔö¼Óhcan²ÎÊı
+void RobStride_Motor_move_control(RobStride_Motor_t* motor, hcan_t* hcan, float Torque, float Angle, float Speed, float Kp, float Kd); // ä¿®æ”¹ï¼šå¢åŠ hcanå‚æ•°
+void RobStride_Motor_Pos_control(RobStride_Motor_t* motor, hcan_t* hcan, float Speed, float Angle); // ä¿®æ”¹ï¼šå¢åŠ hcanå‚æ•°
+void RobStride_Motor_CSP_control(RobStride_Motor_t* motor, hcan_t* hcan, float Angle, float limit_spd); // ä¿®æ”¹ï¼šå¢åŠ hcanå‚æ•°
+void RobStride_Motor_Speed_control(RobStride_Motor_t* motor, hcan_t* hcan, float Speed, float limit_cur); // ä¿®æ”¹ï¼šå¢åŠ hcanå‚æ•°
+void RobStride_Motor_current_control(RobStride_Motor_t* motor, hcan_t* hcan, float current); // ä¿®æ”¹ï¼šå¢åŠ hcanå‚æ•°
+void RobStride_Motor_Set_Zero_control(RobStride_Motor_t* motor, hcan_t* hcan); // ä¿®æ”¹ï¼šå¢åŠ hcanå‚æ•°
+void Enable_Motor(RobStride_Motor_t* motor, hcan_t* hcan); // ä¿®æ”¹ï¼šå¢åŠ hcanå‚æ•°
+void Disenable_Motor(RobStride_Motor_t* motor, hcan_t* hcan, uint8_t clear_error); // ä¿®æ”¹ï¼šå¢åŠ hcanå‚æ•°
+void Set_CAN_ID(RobStride_Motor_t* motor, hcan_t* hcan, uint8_t Set_CAN_ID); // ä¿®æ”¹ï¼šå¢åŠ hcanå‚æ•°
+void Set_ZeroPos(RobStride_Motor_t* motor, hcan_t* hcan); // ä¿®æ”¹ï¼šå¢åŠ hcanå‚æ•°
+void Set_RobStride_Motor_parameter(RobStride_Motor_t* motor, hcan_t* hcan, uint16_t Index, float Value, char Value_mode); // ä¿®æ”¹ï¼šå¢åŠ hcanå‚æ•°
+void Get_RobStride_Motor_parameter(RobStride_Motor_t* motor, hcan_t* hcan, uint16_t Index); // ä¿®æ”¹ï¼šå¢åŠ hcanå‚æ•°
 
-// MITĞ­ÒéÏà¹Øº¯Êı
-void RobStride_Motor_MIT_Enable(RobStride_Motor_t* motor, hcan_t* hcan); // ĞŞ¸Ä£ºÔö¼Óhcan²ÎÊı
-void RobStride_Motor_MIT_Disable(RobStride_Motor_t* motor, hcan_t* hcan); // ĞŞ¸Ä£ºÔö¼Óhcan²ÎÊı
-void RobStride_Motor_MIT_Control(RobStride_Motor_t* motor, hcan_t* hcan, float Angle, float Speed, float Kp, float Kd, float Torque); // ĞŞ¸Ä£ºÔö¼Óhcan²ÎÊı
-void RobStride_Motor_MIT_PositionControl(RobStride_Motor_t* motor, hcan_t* hcan, float position_rad, float speed_rad_per_s); // ĞŞ¸Ä£ºÔö¼Óhcan²ÎÊı
-void RobStride_Motor_MIT_SpeedControl(RobStride_Motor_t* motor, hcan_t* hcan, float speed_rad_per_s, float current_limit); // ĞŞ¸Ä£ºÔö¼Óhcan²ÎÊı
-void RobStride_Motor_MIT_SetZeroPos(RobStride_Motor_t* motor, hcan_t* hcan); // ĞŞ¸Ä£ºÔö¼Óhcan²ÎÊı
-void RobStride_Motor_MIT_ClearOrCheckError(RobStride_Motor_t* motor, hcan_t* hcan, uint8_t F_CMD); // ĞŞ¸Ä£ºÔö¼Óhcan²ÎÊı
-void RobStride_Motor_MIT_SetMotorType(RobStride_Motor_t* motor, hcan_t* hcan, uint8_t F_CMD); // ĞŞ¸Ä£ºÔö¼Óhcan²ÎÊı
-void RobStride_Motor_MIT_SetMotorId(RobStride_Motor_t* motor, hcan_t* hcan, uint8_t F_CMD); // ĞŞ¸Ä£ºÔö¼Óhcan²ÎÊı
-void RobStride_Motor_MIT_SetProtocol(RobStride_Motor_t* motor, hcan_t* hcan, uint8_t protocol_type); // ĞŞ¸Ä£ºÔö¼Óhcan²ÎÊı
+// MITåè®®ç›¸å…³å‡½æ•°
+void RobStride_Motor_MIT_Enable(RobStride_Motor_t* motor, hcan_t* hcan); // ä¿®æ”¹ï¼šå¢åŠ hcanå‚æ•°
+void RobStride_Motor_MIT_Disable(RobStride_Motor_t* motor, hcan_t* hcan); // ä¿®æ”¹ï¼šå¢åŠ hcanå‚æ•°
+void RobStride_Motor_MIT_Control(RobStride_Motor_t* motor, hcan_t* hcan, float Angle, float Speed, float Kp, float Kd, float Torque); // ä¿®æ”¹ï¼šå¢åŠ hcanå‚æ•°
+void RobStride_Motor_MIT_PositionControl(RobStride_Motor_t* motor, hcan_t* hcan, float position_rad, float speed_rad_per_s); // ä¿®æ”¹ï¼šå¢åŠ hcanå‚æ•°
+void RobStride_Motor_MIT_SpeedControl(RobStride_Motor_t* motor, hcan_t* hcan, float speed_rad_per_s, float current_limit); // ä¿®æ”¹ï¼šå¢åŠ hcanå‚æ•°
+void RobStride_Motor_MIT_SetZeroPos(RobStride_Motor_t* motor, hcan_t* hcan); // ä¿®æ”¹ï¼šå¢åŠ hcanå‚æ•°
+void RobStride_Motor_MIT_ClearOrCheckError(RobStride_Motor_t* motor, hcan_t* hcan, uint8_t F_CMD); // ä¿®æ”¹ï¼šå¢åŠ hcanå‚æ•°
+void RobStride_Motor_MIT_SetMotorType(RobStride_Motor_t* motor, hcan_t* hcan, uint8_t F_CMD); // ä¿®æ”¹ï¼šå¢åŠ hcanå‚æ•°
+void RobStride_Motor_MIT_SetMotorId(RobStride_Motor_t* motor, hcan_t* hcan, uint8_t F_CMD); // ä¿®æ”¹ï¼šå¢åŠ hcanå‚æ•°
+void RobStride_Motor_MIT_SetProtocol(RobStride_Motor_t* motor, hcan_t* hcan, uint8_t protocol_type); // ä¿®æ”¹ï¼šå¢åŠ hcanå‚æ•°
 
-// Í¨ÓÃ¹¦ÄÜº¯Êı
-void RobStride_Motor_MotorDataSave(RobStride_Motor_t* motor, hcan_t* hcan); // ĞŞ¸Ä£ºÔö¼Óhcan²ÎÊı
-void RobStride_Motor_BaudRateChange(RobStride_Motor_t* motor, hcan_t* hcan, uint8_t F_CMD); // ĞŞ¸Ä£ºÔö¼Óhcan²ÎÊı
-void RobStride_Motor_ProactiveEscalationSet(RobStride_Motor_t* motor, hcan_t* hcan, uint8_t F_CMD); // ĞŞ¸Ä£ºÔö¼Óhcan²ÎÊı
-void RobStride_Motor_MotorModeSet(RobStride_Motor_t* motor, hcan_t* hcan, uint8_t F_CMD); // ĞŞ¸Ä£ºÔö¼Óhcan²ÎÊı
+// é€šç”¨åŠŸèƒ½å‡½æ•°
+void RobStride_Motor_MotorDataSave(RobStride_Motor_t* motor, hcan_t* hcan); // ä¿®æ”¹ï¼šå¢åŠ hcanå‚æ•°
+void RobStride_Motor_BaudRateChange(RobStride_Motor_t* motor, hcan_t* hcan, uint8_t F_CMD); // ä¿®æ”¹ï¼šå¢åŠ hcanå‚æ•°
+void RobStride_Motor_ProactiveEscalationSet(RobStride_Motor_t* motor, hcan_t* hcan, uint8_t F_CMD); // ä¿®æ”¹ï¼šå¢åŠ hcanå‚æ•°
+void RobStride_Motor_MotorModeSet(RobStride_Motor_t* motor, hcan_t* hcan, uint8_t F_CMD); // ä¿®æ”¹ï¼šå¢åŠ hcanå‚æ•°
 
-// »ñÈ¡º¯Êı
+// è·å–å‡½æ•°
 bool Get_MIT_Mode(RobStride_Motor_t* motor);
 enum MIT_TYPE get_MIT_Type(RobStride_Motor_t* motor);
 
-// Êı¾İ¶ÁĞ´³õÊ¼»¯
+// æ•°æ®è¯»å†™åˆå§‹åŒ–
 void data_read_write_init(data_read_write_t* drw);
 
 #ifdef __cplusplus

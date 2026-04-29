@@ -2,9 +2,9 @@
 #define __KTECH_MOTOR_H__
 
 #include <stdint.h>
-#include "can_receive_send.h"   // Ìá¹© canx_send_data º¯Êı
+#include "can_receive_send.h"   // æä¾› canx_send_data å‡½æ•°
 
-/* ÃüÁî×Ö½Ú¶¨Òå */
+/* å‘½ä»¤å­—èŠ‚å®šä¹‰ */
 #define KTECH_CMD_READ_STATUS1      0x9A
 #define KTECH_CMD_CLEAR_ERROR       0x9B
 #define KTECH_CMD_READ_STATUS2      0x9C
@@ -30,71 +30,71 @@
 #define KTECH_CMD_READ_SINGLE_ANGLE  0x94
 #define KTECH_CMD_SET_ANGLE_RAM      0x95
 
-/* µç»úID·¶Î§ */
+/* ç”µæœºIDèŒƒå›´ */
 #define KTECH_ID_MIN    1
 #define KTECH_ID_MAX    32
 
-/* µç»ú·´À¡Êı¾İ½á¹¹ */
+/* ç”µæœºåé¦ˆæ•°æ®ç»“æ„ */
 typedef struct {
-    /* ×´Ì¬1Ïà¹Ø */
-    int8_t  temperature;      // ÎÂ¶È, ¡ãC
-    int16_t voltage;          // Ä¸ÏßµçÑ¹, 0.01V/LSB
-    int16_t current;          // Ä¸ÏßµçÁ÷, 0.01A/LSB
-    uint8_t motorState;       // µç»ú×´Ì¬: 0x00¿ªÆô, 0x10¹Ø±Õ
-    uint8_t errorState;       // ´íÎó±êÖ¾Î»
+    /* çŠ¶æ€1ç›¸å…³ */
+    int8_t  temperature;      // æ¸©åº¦, Â°C
+    int16_t voltage;          // æ¯çº¿ç”µå‹, 0.01V/LSB
+    int16_t current;          // æ¯çº¿ç”µæµ, 0.01A/LSB
+    uint8_t motorState;       // ç”µæœºçŠ¶æ€: 0x00å¼€å¯, 0x10å…³é—­
+    uint8_t errorState;       // é”™è¯¯æ ‡å¿—ä½
 
-    /* ×´Ì¬2Ïà¹Ø */
-    int16_t iq_or_power;      // ×ª¾ØµçÁ÷(MF/MG)»ò¹¦ÂÊ(MS)
-    int16_t speed;            // ×ªËÙ, 1dps/LSB
-    uint16_t encoder;         // ±àÂëÆ÷Öµ (14/15/16bit)
+    /* çŠ¶æ€2ç›¸å…³ */
+    int16_t iq_or_power;      // è½¬çŸ©ç”µæµ(MF/MG)æˆ–åŠŸç‡(MS)
+    int16_t speed;            // è½¬é€Ÿ, 1dps/LSB
+    uint16_t encoder;         // ç¼–ç å™¨å€¼ (14/15/16bit)
 
-    /* ×´Ì¬3Ïà¹Ø */
-    int16_t iA, iB, iC;       // ÈıÏàµçÁ÷ (½öMF/MG)
+    /* çŠ¶æ€3ç›¸å…³ */
+    int16_t iA, iB, iC;       // ä¸‰ç›¸ç”µæµ (ä»…MF/MG)
 
-    /* ±àÂëÆ÷¶ÁÈ¡Ïà¹Ø */
-    uint16_t encoderRaw;      // ±àÂëÆ÷Ô­Ê¼Öµ
-    uint16_t encoderOffset;   // ±àÂëÆ÷ÁãÆ«
+    /* ç¼–ç å™¨è¯»å–ç›¸å…³ */
+    uint16_t encoderRaw;      // ç¼–ç å™¨åŸå§‹å€¼
+    uint16_t encoderOffset;   // ç¼–ç å™¨é›¶å
 
-    /* ½Ç¶È¶ÁÈ¡Ïà¹Ø */
-    int64_t  multiAngle;      // ¶àÈ¦½Ç¶È, 0.01¡ã/LSB
-    uint32_t singleAngle;     // µ¥È¦½Ç¶È, 0.01¡ã/LSB, 0~36000
+    /* è§’åº¦è¯»å–ç›¸å…³ */
+    int64_t  multiAngle;      // å¤šåœˆè§’åº¦, 0.01Â°/LSB
+    uint32_t singleAngle;     // å•åœˆè§’åº¦, 0.01Â°/LSB, 0~36000
 
-    /* ²ÎÊı¶ÁĞ´Ïà¹Ø */
-    uint8_t  paramID;         // ²ÎÊıĞòºÅ
-    uint8_t  paramData[6];    // ²ÎÊıÖµ6×Ö½Ú
+    /* å‚æ•°è¯»å†™ç›¸å…³ */
+    uint8_t  paramID;         // å‚æ•°åºå·
+    uint8_t  paramData[6];    // å‚æ•°å€¼6å­—èŠ‚
 
-    /* ÆäËû */
-    uint8_t  brakeState;      // ±§Õ¢×´Ì¬: 0¶ÏµçÉ²³µ,1Í¨µçÊÍ·Å
+    /* å…¶ä»– */
+    uint8_t  brakeState;      // æŠ±é—¸çŠ¶æ€: 0æ–­ç”µåˆ¹è½¦,1é€šç”µé‡Šæ”¾
 } KTech_Feedback_t;
 
-/* µç»ú¿ØÖÆÊı¾İ½á¹¹£¨¿ÉÑ¡£¬ÓÃÓÚ´æ´¢ÓÃ»§ÉèÖÃ£© */
+/* ç”µæœºæ§åˆ¶æ•°æ®ç»“æ„ï¼ˆå¯é€‰ï¼Œç”¨äºå­˜å‚¨ç”¨æˆ·è®¾ç½®ï¼‰ */
 typedef struct {
-    int16_t  power_openloop;   // ¿ª»·¿ØÖÆÖµ (MS)
-    int16_t  iq_torque;        // ×ª¾ØµçÁ÷ (MF/MG)
-    int32_t  speed;            // ËÙ¶ÈÄ¿±ê (0.01dps/LSB)
-    int32_t  position_multi;   // ¶àÈ¦Î»ÖÃÄ¿±ê (0.01¡ã/LSB)
-    uint32_t position_single;  // µ¥È¦Î»ÖÃÄ¿±ê (0~36000)
-    int32_t  position_inc;     // ÔöÁ¿Î»ÖÃÄ¿±ê (0.01¡ã/LSB)
-    uint16_t maxSpeed;         // ËÙ¶ÈÏŞÖÆ (1dps/LSB)
-    uint8_t  direction;        // ·½Ïò: 0Ë³Ê±Õë,1ÄæÊ±Õë (µ¥È¦Ä£Ê½)
-    uint8_t  paramID;          // ²ÎÊıĞòºÅ
-    uint8_t  paramData[6];     // ²ÎÊıÖµ6×Ö½Ú
+    int16_t  power_openloop;   // å¼€ç¯æ§åˆ¶å€¼ (MS)
+    int16_t  iq_torque;        // è½¬çŸ©ç”µæµ (MF/MG)
+    int32_t  speed;            // é€Ÿåº¦ç›®æ ‡ (0.01dps/LSB)
+    int32_t  position_multi;   // å¤šåœˆä½ç½®ç›®æ ‡ (0.01Â°/LSB)
+    uint32_t position_single;  // å•åœˆä½ç½®ç›®æ ‡ (0~36000)
+    int32_t  position_inc;     // å¢é‡ä½ç½®ç›®æ ‡ (0.01Â°/LSB)
+    uint16_t maxSpeed;         // é€Ÿåº¦é™åˆ¶ (1dps/LSB)
+    uint8_t  direction;        // æ–¹å‘: 0é¡ºæ—¶é’ˆ,1é€†æ—¶é’ˆ (å•åœˆæ¨¡å¼)
+    uint8_t  paramID;          // å‚æ•°åºå·
+    uint8_t  paramData[6];     // å‚æ•°å€¼6å­—èŠ‚
 } KTech_Control_t;
 
-/* µç»úÕûÌå½á¹¹Ìå */
+/* ç”µæœºæ•´ä½“ç»“æ„ä½“ */
 typedef struct {
-    uint16_t          id;      // µç»úID 1-32
-    KTech_Feedback_t  fb;      // ·´À¡Êı¾İ
-    KTech_Control_t   ctrl;    // ¿ØÖÆÊı¾İ
+    uint16_t          id;      // ç”µæœºID 1-32
+    KTech_Feedback_t  fb;      // åé¦ˆæ•°æ®
+    KTech_Control_t   ctrl;    // æ§åˆ¶æ•°æ®
 } KTech_Motor_t;
 
-/* Íâ²¿ÉùÃ÷µç»úÊı×é£¨Ë÷Òı¶ÔÓ¦ID£© */
+/* å¤–éƒ¨å£°æ˜ç”µæœºæ•°ç»„ï¼ˆç´¢å¼•å¯¹åº”IDï¼‰ */
 extern KTech_Motor_t ktech_motors[KTECH_ID_MAX + 1];
 
-/* ³õÊ¼»¯Ö¸¶¨IDµÄµç»ú */
+/* åˆå§‹åŒ–æŒ‡å®šIDçš„ç”µæœº */
 void ktech_motor_init(uint16_t id);
 
-/* ·¢ËÍÃüÁîº¯Êı£¨¸÷ÃüÁîµÄ¾ßÌåÊµÏÖ£© */
+/* å‘é€å‘½ä»¤å‡½æ•°ï¼ˆå„å‘½ä»¤çš„å…·ä½“å®ç°ï¼‰ */
 void ktech_read_status1(hcan_t* hcan, uint16_t id);
 void ktech_clear_error(hcan_t* hcan, uint16_t id);
 void ktech_read_status2(hcan_t* hcan, uint16_t id);
@@ -102,7 +102,7 @@ void ktech_read_status3(hcan_t* hcan, uint16_t id);
 void ktech_motor_off(hcan_t* hcan, uint16_t id);
 void ktech_motor_on(hcan_t* hcan, uint16_t id);
 void ktech_motor_stop(hcan_t* hcan, uint16_t id);
-void ktech_brake_ctrl(hcan_t* hcan, uint16_t id, uint8_t cmd); // cmd:0É²³µ,1ÊÍ·Å,0x10¶ÁÈ¡
+void ktech_brake_ctrl(hcan_t* hcan, uint16_t id, uint8_t cmd); // cmd:0åˆ¹è½¦,1é‡Šæ”¾,0x10è¯»å–
 void ktech_openloop_ctrl(hcan_t* hcan, uint16_t id, int16_t power);
 void ktech_torque_ctrl(hcan_t* hcan, uint16_t id, int16_t iq);
 void ktech_speed_ctrl(hcan_t* hcan, uint16_t id, int32_t speed, int16_t iq_limit);
@@ -113,14 +113,14 @@ void ktech_pos_single2(hcan_t* hcan, uint16_t id, uint8_t dir, uint32_t angle, u
 void ktech_pos_inc1(hcan_t* hcan, uint16_t id, int32_t inc);
 void ktech_pos_inc2(hcan_t* hcan, uint16_t id, int32_t inc, uint16_t max_speed);
 void ktech_read_param(hcan_t* hcan, uint16_t id, uint8_t param_id);
-void ktech_write_param(hcan_t* hcan, uint16_t id, uint8_t param_id, uint8_t* data); // dataÎª6×Ö½Ú
+void ktech_write_param(hcan_t* hcan, uint16_t id, uint8_t param_id, uint8_t* data); // dataä¸º6å­—èŠ‚
 void ktech_read_encoder(hcan_t* hcan, uint16_t id);
 void ktech_set_zero(hcan_t* hcan, uint16_t id);
 void ktech_read_multi_angle(hcan_t* hcan, uint16_t id);
 void ktech_read_single_angle(hcan_t* hcan, uint16_t id);
 void ktech_set_angle_ram(hcan_t* hcan, uint16_t id, int32_t angle);
 
-/* CAN½ÓÊÕ½âÎöº¯Êı£¨ÔÚ½ÓÊÕ»Øµ÷ÖĞµ÷ÓÃ£© */
+/* CANæ¥æ”¶è§£æå‡½æ•°ï¼ˆåœ¨æ¥æ”¶å›è°ƒä¸­è°ƒç”¨ï¼‰ */
 extern void ktech_parse_motor_fb(KTech_Motor_t* motor, uint8_t* data);
 
 #endif /* __KTECH_MOTOR_H__ */

@@ -4,14 +4,14 @@
 #include "stm32h7xx.h"
 #include <stdint.h>
 
-// PCA9685 ¼Ä´æÆ÷µØÖ·
-#define PCA9685_ADDR        0x80        // I2CÉè±¸µØÖ·£¨8Î»Ğ´µØÖ·£©
-#define PCA9685_MODE1       0x00        // Mode1¼Ä´æÆ÷
-#define PCA9685_PRESCALE    0xFE        // Ô¤·ÖÆµ¼Ä´æÆ÷
-#define LED0_ON_L           0x06        // LED0Êä³öON¼ÆÊıÖµµÍ×Ö½Ú
+// PCA9685 å¯„å­˜å™¨åœ°å€
+#define PCA9685_ADDR        0x80        // I2Cè®¾å¤‡åœ°å€ï¼ˆ8ä½å†™åœ°å€ï¼‰
+#define PCA9685_MODE1       0x00        // Mode1å¯„å­˜å™¨
+#define PCA9685_PRESCALE    0xFE        // é¢„åˆ†é¢‘å¯„å­˜å™¨
+#define LED0_ON_L           0x06        // LED0è¾“å‡ºONè®¡æ•°å€¼ä½å­—èŠ‚
 
-// º¯ÊıÉùÃ÷
-void PCA9685_Init(float freq);                          // ³õÊ¼»¯PCA9685£¬ÉèÖÃPWMÆµÂÊ
-void PCA9685_SetDuty(uint8_t channel, float duty);      // ÉèÖÃÖ¸¶¨Í¨µÀµÄPWMÕ¼¿Õ±È (0.0 ~ 1.0)
+// å‡½æ•°å£°æ˜
+void PCA9685_Init(float freq);                          // åˆå§‹åŒ–PCA9685ï¼Œè®¾ç½®PWMé¢‘ç‡
+void PCA9685_SetDuty(uint8_t channel, float duty);      // è®¾ç½®æŒ‡å®šé€šé“çš„PWMå ç©ºæ¯” (0.0 ~ 1.0)
 
 #endif

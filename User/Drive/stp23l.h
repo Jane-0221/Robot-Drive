@@ -3,61 +3,61 @@
 
 #include "stdint.h"
 
-/************************* ÑÏ¸ñ×ñÑ­STP23L¹Ù·½ÊÖ²áºê¶¨Òå *************************/
-#define STP23L_HEADER            0xAAU        // Êı¾İ°üÆğÊ¼·û
-#define STP23L_DEV_ADDR          0x00U        // Éè±¸µØÖ·£¨±£ÁôÎ»£©
-#define STP23L_PACK_TOTAL_LEN    195U         // Õû°ü×Ü×Ö½Ú£º10°üÍ·+184Êı¾İ+1Ğ£Ñé
-#define STP23L_HEAD_LEN          10U          // °üÍ·³¤¶È
-#define STP23L_DATA_FIELD_LEN    0x00B8U      // Êı¾İÓò³¤¶È184×Ö½Ú
-#define STP23L_POINT_NUM         12U          // Ò»Ö¡12¸ö²âÁ¿µã
-#define STP23L_POINT_BYTES       15U          // Ã¿¸ö²âµã15×Ö½Ú
-#define STP23L_TS_BYTES          4U           // Ê±¼ä´Á4×Ö½Ú
-#define STP23L_HEADER_BYTES      4U           // 4¸öAAÆğÊ¼·û
+/************************* ä¸¥æ ¼éµå¾ªSTP23Lå®˜æ–¹æ‰‹å†Œå®å®šä¹‰ *************************/
+#define STP23L_HEADER            0xAAU        // æ•°æ®åŒ…èµ·å§‹ç¬¦
+#define STP23L_DEV_ADDR          0x00U        // è®¾å¤‡åœ°å€ï¼ˆä¿ç•™ä½ï¼‰
+#define STP23L_PACK_TOTAL_LEN    195U         // æ•´åŒ…æ€»å­—èŠ‚ï¼š10åŒ…å¤´+184æ•°æ®+1æ ¡éªŒ
+#define STP23L_HEAD_LEN          10U          // åŒ…å¤´é•¿åº¦
+#define STP23L_DATA_FIELD_LEN    0x00B8U      // æ•°æ®åŸŸé•¿åº¦184å­—èŠ‚
+#define STP23L_POINT_NUM         12U          // ä¸€å¸§12ä¸ªæµ‹é‡ç‚¹
+#define STP23L_POINT_BYTES       15U          // æ¯ä¸ªæµ‹ç‚¹15å­—èŠ‚
+#define STP23L_TS_BYTES          4U           // æ—¶é—´æˆ³4å­—èŠ‚
+#define STP23L_HEADER_BYTES      4U           // 4ä¸ªAAèµ·å§‹ç¬¦
 
-/************************* ÊÖ²áºËĞÄ²â¾àÖ¸±ê£¨Ó²¹ıÂË£© *************************/
-#define STP23L_CONFIDENCE_THRESH 80U          // ÖÃĞÅ¶ÈãĞÖµ£¨0~100£¬¿ÉÅäÖÃ£©
-#define STP23L_DIST_BLIND        30           // ÊÖ²á±ê×¢Ã¤Çø£º×îĞ¡ÓĞĞ§¾àÀë30mm
-#define STP23L_DIST_MAX          7500         // ÊÖ²á±ê×¢×î´óÓĞĞ§¾àÀë7500mm
+/************************* æ‰‹å†Œæ ¸å¿ƒæµ‹è·æŒ‡æ ‡ï¼ˆç¡¬è¿‡æ»¤ï¼‰ *************************/
+#define STP23L_CONFIDENCE_THRESH 80U          // ç½®ä¿¡åº¦é˜ˆå€¼ï¼ˆ0~100ï¼Œå¯é…ç½®ï¼‰
+#define STP23L_DIST_BLIND        30           // æ‰‹å†Œæ ‡æ³¨ç›²åŒºï¼šæœ€å°æœ‰æ•ˆè·ç¦»30mm
+#define STP23L_DIST_MAX          7500         // æ‰‹å†Œæ ‡æ³¨æœ€å¤§æœ‰æ•ˆè·ç¦»7500mm
 
-/************************* ÃüÁîÂëºê¶¨Òå *************************/
-#define STP23L_CMD_GET_DIST      0x02U        // »ñÈ¡²âÁ¿Êı¾İ£¨ºËĞÄ£©
-#define STP23L_CMD_RESET         0x0DU        // ¸´Î»
-#define STP23L_CMD_STOP          0x0FU        // Í£Ö¹´«Êä
-#define STP23L_CMD_ACK           0x10U        // Ó¦´ğ
-#define STP23L_CMD_VERSION       0x14U        // »ñÈ¡´«¸ĞÆ÷ĞÅÏ¢
+/************************* å‘½ä»¤ç å®å®šä¹‰ *************************/
+#define STP23L_CMD_GET_DIST      0x02U        // è·å–æµ‹é‡æ•°æ®ï¼ˆæ ¸å¿ƒï¼‰
+#define STP23L_CMD_RESET         0x0DU        // å¤ä½
+#define STP23L_CMD_STOP          0x0FU        // åœæ­¢ä¼ è¾“
+#define STP23L_CMD_ACK           0x10U        // åº”ç­”
+#define STP23L_CMD_VERSION       0x14U        // è·å–ä¼ æ„Ÿå™¨ä¿¡æ¯
 
-/************************* ²âµã½á¹¹Ìå£¨ÑÏ¸ñÆ¥ÅäÊÖ²á£© *************************/
+/************************* æµ‹ç‚¹ç»“æ„ä½“ï¼ˆä¸¥æ ¼åŒ¹é…æ‰‹å†Œï¼‰ *************************/
 typedef struct
 {
-    int16_t  distance;   // ¾àÀë(mm) 2BĞ¡¶Ë
-    uint16_t noise;      // »·¾³ÔëÉù 2BĞ¡¶Ë
-    uint32_t peak;       // ½ÓÊÕÇ¿¶È 4BĞ¡¶Ë
-    uint8_t  confidence; // ÖÃĞÅ¶È 1B£¨ÔëÉù+½ÓÊÕÇ¿¶ÈÈÚºÏ£©
-    uint32_t intg;       // »ı·Ö´ÎÊı 4BĞ¡¶Ë
-    int16_t  reftof;     // ÎÂ¶È±íÕ÷Öµ 2BĞ¡¶Ë
+    int16_t  distance;   // è·ç¦»(mm) 2Bå°ç«¯
+    uint16_t noise;      // ç¯å¢ƒå™ªå£° 2Bå°ç«¯
+    uint32_t peak;       // æ¥æ”¶å¼ºåº¦ 4Bå°ç«¯
+    uint8_t  confidence; // ç½®ä¿¡åº¦ 1Bï¼ˆå™ªå£°+æ¥æ”¶å¼ºåº¦èåˆï¼‰
+    uint32_t intg;       // ç§¯åˆ†æ¬¡æ•° 4Bå°ç«¯
+    int16_t  reftof;     // æ¸©åº¦è¡¨å¾å€¼ 2Bå°ç«¯
 }STP23L_PointDef;
 
-/************************* È«¾Ö½âÎöÊı¾İ½á¹¹Ìå£¨extern¹©Íâ²¿µ÷ÓÃ£© *************************/
+/************************* å…¨å±€è§£ææ•°æ®ç»“æ„ä½“ï¼ˆexternä¾›å¤–éƒ¨è°ƒç”¨ï¼‰ *************************/
 typedef struct
 {
-    uint8_t         parse_ok;    // ½âÎöÍê³É±êÖ¾£º1-Ö¡½âÎöÍê³É£¬0-Î´Íê³É
-    uint8_t         parse_err;   // ½âÎö´íÎó±êÖ¾£º1-Ğ£Ñé/Ö¡´íÎó£¬0-Õı³£
-    STP23L_PointDef points[STP23L_POINT_NUM]; // 12¸ö²âµãÔ­Ê¼Êı¾İ
-    uint32_t        timestamp;   // Ö¡Ê±¼ä´Á
-    uint32_t        recv_cnt;    // ³É¹¦½ÓÊÕÖ¡Êı
-    uint8_t         cmd_code;    // µ±Ç°ÃüÁîÂë
+    uint8_t         parse_ok;    // è§£æå®Œæˆæ ‡å¿—ï¼š1-å¸§è§£æå®Œæˆï¼Œ0-æœªå®Œæˆ
+    uint8_t         parse_err;   // è§£æé”™è¯¯æ ‡å¿—ï¼š1-æ ¡éªŒ/å¸§é”™è¯¯ï¼Œ0-æ­£å¸¸
+    STP23L_PointDef points[STP23L_POINT_NUM]; // 12ä¸ªæµ‹ç‚¹åŸå§‹æ•°æ®
+    uint32_t        timestamp;   // å¸§æ—¶é—´æˆ³
+    uint32_t        recv_cnt;    // æˆåŠŸæ¥æ”¶å¸§æ•°
+    uint8_t         cmd_code;    // å½“å‰å‘½ä»¤ç 
 }STP23L_DataDef;
 
 extern STP23L_DataDef stp23l_data;
 extern uint8_t stp23l_raw_data[256];
-/************************* ºËĞÄº¯ÊıÉùÃ÷ *************************/
-void STP23L_ParseData(uint8_t *buf, uint16_t size); // Õû°ü½âÎöº¯Êı
-void STP23L_Reset(void);                           // ½âÎö¸´Î»
-extern void store_stp23l_data(const uint8_t *data, uint16_t size); // ´æ´¢STP23LÔ­Ê¼Êı¾İ
-static inline void STP23L_ClearOkFlag(void)        // Çå³ı½âÎöÍê³É±êÖ¾
+/************************* æ ¸å¿ƒå‡½æ•°å£°æ˜ *************************/
+void STP23L_ParseData(uint8_t *buf, uint16_t size); // æ•´åŒ…è§£æå‡½æ•°
+void STP23L_Reset(void);                           // è§£æå¤ä½
+extern void store_stp23l_data(const uint8_t *data, uint16_t size); // å­˜å‚¨STP23LåŸå§‹æ•°æ®
+static inline void STP23L_ClearOkFlag(void)        // æ¸…é™¤è§£æå®Œæˆæ ‡å¿—
 {
     stp23l_data.parse_ok = 0;
 }
-int16_t STP23L_GetFinalDistPerFrame(void);         // Ã¿Ö¡»ñÈ¡Ò»¸ö×îÖÕ¾àÀëÖµ
+int16_t STP23L_GetFinalDistPerFrame(void);         // æ¯å¸§è·å–ä¸€ä¸ªæœ€ç»ˆè·ç¦»å€¼
 
 #endif // STP23L_H

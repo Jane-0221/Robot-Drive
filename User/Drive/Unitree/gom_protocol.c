@@ -9,8 +9,8 @@
 			(_IN) = (_MAX);       \
 	}
 
-/// @brief ½«·¢ËÍ¸øµç»úµÄ¸¡µã²ÎÊý×ª»»Îª¶¨µãÀàÐÍ²ÎÊý
-/// @param motor_s Òª×ª»»µÄµç»úÖ¸Áî½á¹¹Ìå
+/// @brief å°†å‘é€ç»™ç”µæœºçš„æµ®ç‚¹å‚æ•°è½¬æ¢ä¸ºå®šç‚¹ç±»åž‹å‚æ•°
+/// @param motor_s è¦è½¬æ¢çš„ç”µæœºæŒ‡ä»¤ç»“æž„ä½“
 void modify_data(MotorCmd_t *motor_s)
 {
 	motor_s->motor_send_data.head[0] = 0xFE;
@@ -34,8 +34,8 @@ void modify_data(MotorCmd_t *motor_s)
 	motor_s->motor_send_data.CRC16 = crc_ccitt(0, (uint8_t *)&motor_s->motor_send_data, sizeof(RIS_ControlData_t) - sizeof(motor_s->motor_send_data.CRC16));
 }
 
-/// @brief ½«½ÓÊÕµ½µÄ¶¨µãÀàÐÍÔ­Ê¼Êý¾Ý×ª»»Îª¸¡µã²ÎÊýÀàÐÍ
-/// @param motor_r Òª×ª»»µÄµç»ú·´À¡½á¹¹Ìå
+/// @brief å°†æŽ¥æ”¶åˆ°çš„å®šç‚¹ç±»åž‹åŽŸå§‹æ•°æ®è½¬æ¢ä¸ºæµ®ç‚¹å‚æ•°ç±»åž‹
+/// @param motor_r è¦è½¬æ¢çš„ç”µæœºåé¦ˆç»“æž„ä½“
 void extract_data(MotorData_t *motor_r)
 {
 	if (motor_r->motor_recv_data.head[0] != 0xFD || motor_r->motor_recv_data.head[1] != 0xEE)

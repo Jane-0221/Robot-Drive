@@ -65,13 +65,25 @@ uint8_t Arm_Motor_Disable_Updata(void)
     {
         return 1U;
     }
+    if (g_ShoulderType == SHOULDER_TYPE_LINGZU)
+    {
+        Disenable_Motor(&motor1, CAN_HANDLE_2, 0U);
+        osDelay(1);
+        Disenable_Motor(&motor2, CAN_HANDLE_2, 0U);
+        osDelay(1);
+        Disenable_Motor(&motor3, CAN_HANDLE_2, 0U);
+        osDelay(1);
+    }
 
-    Disenable_Motor(&motor1, CAN_HANDLE_2, 0U);
-    osDelay(1);
-    Disenable_Motor(&motor2, CAN_HANDLE_2, 0U);
-    osDelay(1);
-    Disenable_Motor(&motor3, CAN_HANDLE_2, 0U);
-    osDelay(1);
+    if (g_ShoulderType == SHOULDER_TYPE_DARAN)
+    {
+        set_mode(CAN_HANDLE_2, MOTOR_DARAN_1_ID, 1);
+        osDelay(1);
+        set_mode(CAN_HANDLE_2, MOTOR_DARAN_2_ID, 1);
+        osDelay(1);
+        set_mode(CAN_HANDLE_2, MOTOR_DARAN_3_ID, 1);
+        osDelay(1);
+    }
 
     disable_motor_mode(CAN_HANDLE_2, MOTOR_DAMIAO_4_ID, POS_MODE);
     osDelay(1);

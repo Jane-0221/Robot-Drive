@@ -10,26 +10,26 @@ Arm_Motor_t arm_motor[num];
 POS_Motor pos_motor;
 VEL_Motor vel_motor;
 TOR_Motor tor_motor;
-/**********************************************Êı¾İÀàĞÍ×ª»»******************************************************/
-float Hex_To_Float(uint32_t *Byte,int num)//Ê®Áù½øÖÆµ½¸¡µãÊı
+/**********************************************æ•°æ®ç±»å‹è½¬æ¢******************************************************/
+float Hex_To_Float(uint32_t *Byte,int num)//åå…­è¿›åˆ¶åˆ°æµ®ç‚¹æ•°
 {
 	return *((float*)Byte);
 }
 
-uint32_t FloatTohex(float HEX)//¸¡µãÊıµ½Ê®Áù½øÖÆ×ª»»
+uint32_t FloatTohex(float HEX)//æµ®ç‚¹æ•°åˆ°åå…­è¿›åˆ¶è½¬æ¢
 {
 	return *( uint32_t *)&HEX;
 }
 
 /**
 ************************************************************************
-* @brief:      	float_to_uint: ¸¡µãÊı×ª»»ÎªÎŞ·ûºÅÕûÊıº¯Êı
-* @param[in]:   x_float:	´ı×ª»»µÄ¸¡µãÊı
-* @param[in]:   x_min:		·¶Î§×îĞ¡Öµ
-* @param[in]:   x_max:		·¶Î§×î´óÖµ
-* @param[in]:   bits: 		Ä¿±êÎŞ·ûºÅÕûÊıµÄÎ»Êı
-* @retval:     	ÎŞ·ûºÅÕûÊı½á¹û
-* @details:    	½«¸ø¶¨µÄ¸¡µãÊı x ÔÚÖ¸¶¨·¶Î§ [x_min, x_max] ÄÚ½øĞĞÏßĞÔÓ³Éä£¬Ó³Éä½á¹ûÎªÒ»¸öÖ¸¶¨Î»ÊıµÄÎŞ·ûºÅÕûÊı
+* @brief:      	float_to_uint: æµ®ç‚¹æ•°è½¬æ¢ä¸ºæ— ç¬¦å·æ•´æ•°å‡½æ•°
+* @param[in]:   x_float:	å¾…è½¬æ¢çš„æµ®ç‚¹æ•°
+* @param[in]:   x_min:		èŒƒå›´æœ€å°å€¼
+* @param[in]:   x_max:		èŒƒå›´æœ€å¤§å€¼
+* @param[in]:   bits: 		ç›®æ ‡æ— ç¬¦å·æ•´æ•°çš„ä½æ•°
+* @retval:     	æ— ç¬¦å·æ•´æ•°ç»“æœ
+* @details:    	å°†ç»™å®šçš„æµ®ç‚¹æ•° x åœ¨æŒ‡å®šèŒƒå›´ [x_min, x_max] å†…è¿›è¡Œçº¿æ€§æ˜ å°„ï¼Œæ˜ å°„ç»“æœä¸ºä¸€ä¸ªæŒ‡å®šä½æ•°çš„æ— ç¬¦å·æ•´æ•°
 ************************************************************************
 **/
 int float_to_uint(float x_float, float x_min, float x_max, int bits)
@@ -41,13 +41,13 @@ int float_to_uint(float x_float, float x_min, float x_max, int bits)
 }
 /**
 ************************************************************************
-* @brief:      	uint_to_float: ÎŞ·ûºÅÕûÊı×ª»»Îª¸¡µãÊıº¯Êı
-* @param[in]:   x_int: ´ı×ª»»µÄÎŞ·ûºÅÕûÊı
-* @param[in]:   x_min: ·¶Î§×îĞ¡Öµ
-* @param[in]:   x_max: ·¶Î§×î´óÖµ
-* @param[in]:   bits:  ÎŞ·ûºÅÕûÊıµÄÎ»Êı
-* @retval:     	¸¡µãÊı½á¹û
-* @details:    	½«¸ø¶¨µÄÎŞ·ûºÅÕûÊı x_int ÔÚÖ¸¶¨·¶Î§ [x_min, x_max] ÄÚ½øĞĞÏßĞÔÓ³Éä£¬Ó³Éä½á¹ûÎªÒ»¸ö¸¡µãÊı
+* @brief:      	uint_to_float: æ— ç¬¦å·æ•´æ•°è½¬æ¢ä¸ºæµ®ç‚¹æ•°å‡½æ•°
+* @param[in]:   x_int: å¾…è½¬æ¢çš„æ— ç¬¦å·æ•´æ•°
+* @param[in]:   x_min: èŒƒå›´æœ€å°å€¼
+* @param[in]:   x_max: èŒƒå›´æœ€å¤§å€¼
+* @param[in]:   bits:  æ— ç¬¦å·æ•´æ•°çš„ä½æ•°
+* @retval:     	æµ®ç‚¹æ•°ç»“æœ
+* @details:    	å°†ç»™å®šçš„æ— ç¬¦å·æ•´æ•° x_int åœ¨æŒ‡å®šèŒƒå›´ [x_min, x_max] å†…è¿›è¡Œçº¿æ€§æ˜ å°„ï¼Œæ˜ å°„ç»“æœä¸ºä¸€ä¸ªæµ®ç‚¹æ•°
 ************************************************************************
 **/
 float uint_to_float(int x_int, float x_min, float x_max, int bits)
@@ -58,7 +58,7 @@ float uint_to_float(int x_int, float x_min, float x_max, int bits)
 	return ((float)x_int)*span/((float)((1<<bits)-1)) + offset;
 }
 
-/**************************************************µç»úÊ¹ÄÜÊ§ÄÜ³õÊ¼»¯**************************************************************************/
+/**************************************************ç”µæœºä½¿èƒ½å¤±èƒ½åˆå§‹åŒ–**************************************************************************/
 void arm_motor_init(Arm_Motor_t *motor,uint16_t id,uint16_t mode)
 {
   motor->mode=mode;
@@ -66,12 +66,12 @@ void arm_motor_init(Arm_Motor_t *motor,uint16_t id,uint16_t mode)
 }
 /**
 ************************************************************************
-* @brief:      	enable_motor_mode: ½ûÓÃµç»úÄ£Ê½º¯Êı
-* @param[in]:   hcan:     Ö¸ÏòCAN_HandleTypeDef½á¹¹µÄÖ¸Õë
-* @param[in]:   motor_id: µç»úID£¬Ö¸¶¨Ä¿±êµç»ú
-* @param[in]:   mode_id:  Ä£Ê½ID£¬Ö¸¶¨Òª½ûÓÃµÄÄ£Ê½
+* @brief:      	enable_motor_mode: ç¦ç”¨ç”µæœºæ¨¡å¼å‡½æ•°
+* @param[in]:   hcan:     æŒ‡å‘CAN_HandleTypeDefç»“æ„çš„æŒ‡é’ˆ
+* @param[in]:   motor_id: ç”µæœºIDï¼ŒæŒ‡å®šç›®æ ‡ç”µæœº
+* @param[in]:   mode_id:  æ¨¡å¼IDï¼ŒæŒ‡å®šè¦ç¦ç”¨çš„æ¨¡å¼
 * @retval:     	void
-* @details:    	Í¨¹ıCAN×ÜÏßÏòÌØ¶¨µç»ú·¢ËÍ½ûÓÃÌØ¶¨Ä£Ê½µÄÃüÁî
+* @details:    	é€šè¿‡CANæ€»çº¿å‘ç‰¹å®šç”µæœºå‘é€ç¦ç”¨ç‰¹å®šæ¨¡å¼çš„å‘½ä»¤
 ************************************************************************
 **/
 void enable_motor_mode(hcan_t* hcan, uint16_t motor_id, uint16_t mode_id)
@@ -93,12 +93,12 @@ void enable_motor_mode(hcan_t* hcan, uint16_t motor_id, uint16_t mode_id)
 }
 /**
 ************************************************************************
-* @brief:      	disable_motor_mode: ½ûÓÃµç»úÄ£Ê½º¯Êı
-* @param[in]:   hcan:     Ö¸ÏòCAN_HandleTypeDef½á¹¹µÄÖ¸Õë
-* @param[in]:   motor_id: µç»úID£¬Ö¸¶¨Ä¿±êµç»ú
-* @param[in]:   mode_id:  Ä£Ê½ID£¬Ö¸¶¨Òª½ûÓÃµÄÄ£Ê½
+* @brief:      	disable_motor_mode: ç¦ç”¨ç”µæœºæ¨¡å¼å‡½æ•°
+* @param[in]:   hcan:     æŒ‡å‘CAN_HandleTypeDefç»“æ„çš„æŒ‡é’ˆ
+* @param[in]:   motor_id: ç”µæœºIDï¼ŒæŒ‡å®šç›®æ ‡ç”µæœº
+* @param[in]:   mode_id:  æ¨¡å¼IDï¼ŒæŒ‡å®šè¦ç¦ç”¨çš„æ¨¡å¼
 * @retval:     	void
-* @details:    	Í¨¹ıCAN×ÜÏßÏòÌØ¶¨µç»ú·¢ËÍ½ûÓÃÌØ¶¨Ä£Ê½µÄÃüÁî
+* @details:    	é€šè¿‡CANæ€»çº¿å‘ç‰¹å®šç”µæœºå‘é€ç¦ç”¨ç‰¹å®šæ¨¡å¼çš„å‘½ä»¤
 ************************************************************************
 **/
 void disable_motor_mode(hcan_t* hcan, uint16_t motor_id, uint16_t mode_id)
@@ -134,22 +134,22 @@ void damiao_fbdata(Arm_Motor_t *motor, uint8_t *rx_data)
 	  motor->para.Tcoil = (float)(rx_data[7]);
 
 }
-/*******************************************²»Í¬ĞÍºÅ´ïÃîµç»ú½ÓÊÕÊı¾İ**********************************************************************/
+/*******************************************ä¸åŒå‹å·è¾¾å¦™ç”µæœºæ¥æ”¶æ•°æ®**********************************************************************/
 /**
 ************************************************************************
-* @brief:      	dm4310_fbdata: »ñÈ¡DM4310µç»ú·´À¡Êı¾İº¯Êı
-* @param[in]:   motor:    Ö¸Ïòmotor_t½á¹¹µÄÖ¸Õë£¬°üº¬µç»úÏà¹ØĞÅÏ¢ºÍ·´À¡Êı¾İ
-* @param[in]:   rx_data:  Ö¸Ïò°üº¬·´À¡Êı¾İµÄÊı×éÖ¸Õë
-* @param[in]:   data_len: Êı¾İ³¤¶È
+* @brief:      	dm4310_fbdata: è·å–DM4310ç”µæœºåé¦ˆæ•°æ®å‡½æ•°
+* @param[in]:   motor:    æŒ‡å‘motor_tç»“æ„çš„æŒ‡é’ˆï¼ŒåŒ…å«ç”µæœºç›¸å…³ä¿¡æ¯å’Œåé¦ˆæ•°æ®
+* @param[in]:   rx_data:  æŒ‡å‘åŒ…å«åé¦ˆæ•°æ®çš„æ•°ç»„æŒ‡é’ˆ
+* @param[in]:   data_len: æ•°æ®é•¿åº¦
 * @retval:     	void
-* @details:    	´Ó½ÓÊÕµ½µÄÊı¾İÖĞÌáÈ¡DM4310µç»úµÄ·´À¡ĞÅÏ¢£¬°üÀ¨µç»úID¡¢
-*               ×´Ì¬¡¢Î»ÖÃ¡¢ËÙ¶È¡¢Å¤¾ØÏà¹ØÎÂ¶È²ÎÊı¡¢¼Ä´æÆ÷Êı¾İµÈ
+* @details:    	ä»æ¥æ”¶åˆ°çš„æ•°æ®ä¸­æå–DM4310ç”µæœºçš„åé¦ˆä¿¡æ¯ï¼ŒåŒ…æ‹¬ç”µæœºIDã€
+*               çŠ¶æ€ã€ä½ç½®ã€é€Ÿåº¦ã€æ‰­çŸ©ç›¸å…³æ¸©åº¦å‚æ•°ã€å¯„å­˜å™¨æ•°æ®ç­‰
 ************************************************************************
 **/
 void dm4310_fbdata(Arm_Motor_t *motor, uint8_t *rx_data,uint32_t data_len)
 { 
 	if(data_len==FDCAN_DLC_BYTES_8)
-	{//·µ»ØµÄÊı¾İÓĞ8¸ö×Ö½Ú
+	{//è¿”å›çš„æ•°æ®æœ‰8ä¸ªå­—èŠ‚
 	  motor->para.id = (rx_data[0])&0x0F;
 	  motor->para.state = (rx_data[0])>>4;
 	  motor->para.p_int=(rx_data[1]<<8)|rx_data[2];
@@ -166,7 +166,7 @@ void dm4310_fbdata(Arm_Motor_t *motor, uint8_t *rx_data,uint32_t data_len)
 void dm8009_fbdata(Arm_Motor_t *motor, uint8_t *rx_data,uint32_t data_len)
 { 
 	if(data_len==FDCAN_DLC_BYTES_8)
-	{//·µ»ØµÄÊı¾İÓĞ8¸ö×Ö½Ú
+	{//è¿”å›çš„æ•°æ®æœ‰8ä¸ªå­—èŠ‚
 	  motor->para.id = (rx_data[0])&0x0F;
 	  motor->para.state = (rx_data[0])>>4;
 	  motor->para.p_int=(rx_data[1]<<8)|rx_data[2];
@@ -183,7 +183,7 @@ void dm8009_fbdata(Arm_Motor_t *motor, uint8_t *rx_data,uint32_t data_len)
 void dm10010l_fbdata(Arm_Motor_t *motor, uint8_t *rx_data,uint32_t data_len)
 { 
 	if(data_len==FDCAN_DLC_BYTES_8)
-	{//·µ»ØµÄÊı¾İÓĞ8¸ö×Ö½Ú
+	{//è¿”å›çš„æ•°æ®æœ‰8ä¸ªå­—èŠ‚
 	  motor->para.id = (rx_data[0])&0x0F;
 	  motor->para.state = (rx_data[0])>>4;
 	  motor->para.p_int=(rx_data[1]<<8)|rx_data[2];
@@ -196,19 +196,19 @@ void dm10010l_fbdata(Arm_Motor_t *motor, uint8_t *rx_data,uint32_t data_len)
 	  motor->para.Tcoil = (float)(rx_data[7]);
 	}
 }
-/************************************¿ØÖÆ´ïÃîµç»ú²ÎÊı**************************************************************************************/
-//POSÄ£Ê½´«Èë²ÎÊı
+/************************************æ§åˆ¶è¾¾å¦™ç”µæœºå‚æ•°**************************************************************************************/
+//POSæ¨¡å¼ä¼ å…¥å‚æ•°
 void set_DM_pos_vel(float pos, float vel,uint16_t motor_id)
 {
 	arm_motor[motor_id].ctrl.pos_set = pos;
 	arm_motor[motor_id].ctrl.vel_set = vel;
 }
-//VELÄ£Ê½´«Èë²ÎÊı
+//VELæ¨¡å¼ä¼ å…¥å‚æ•°
 void set_DM_vel(float vel,uint16_t motor_id)
 {
 	arm_motor[motor_id].ctrl.vel_set = vel;
 }
-//MITÄ£Ê½´«Èë²ÎÊı
+//MITæ¨¡å¼ä¼ å…¥å‚æ•°
 void set_DM_mit(float pos, float vel, float torq,float kp, float kd,uint16_t motor_id)
 {
 	arm_motor[motor_id].ctrl.pos_set = pos;
@@ -217,25 +217,25 @@ void set_DM_mit(float pos, float vel, float torq,float kp, float kd,uint16_t mot
 	arm_motor[motor_id].ctrl.kp_set = kp;
 	arm_motor[motor_id].ctrl.kd_set = kd;
 }
-//´ïÃîµÏ»ú¿ØÖÆÄ£Ê½Ğ´Èë £¨Ö»ÊÇ´æÈëÊı×é·½±ãÎÒÃÇ¿´£¬ÕæÕıµÄÄ£Ê½ÉèÖÃÔÚÉÏÎ»»úÀï£©
+//è¾¾å¦™è¿ªæœºæ§åˆ¶æ¨¡å¼å†™å…¥ ï¼ˆåªæ˜¯å­˜å…¥æ•°ç»„æ–¹ä¾¿æˆ‘ä»¬çœ‹ï¼ŒçœŸæ­£çš„æ¨¡å¼è®¾ç½®åœ¨ä¸Šä½æœºé‡Œï¼‰
 void set_DM_mode(uint16_t motor_id, uint16_t mode_id)
 {
 	arm_motor[motor_id].ctrl.set_mode = mode_id;
 }
 
-/***********************************************´ïÃëµç»úµÄ²»Í¬Ä£Ê½**************************************************************************/
+/***********************************************è¾¾ç§’ç”µæœºçš„ä¸åŒæ¨¡å¼**************************************************************************/
 /**
 ************************************************************************
-* @brief:      	mit_ctrl: MITÄ£Ê½ÏÂµÄµç»ú¿ØÖÆº¯Êı
-* @param[in]:   hcan:			Ö¸ÏòCAN_HandleTypeDef½á¹¹µÄÖ¸Õë£¬ÓÃÓÚÖ¸¶¨CAN×ÜÏß
-* @param[in]:   motor_id:	µç»úID£¬Ö¸¶¨Ä¿±êµç»ú
-* @param[in]:   pos:			Î»ÖÃ¸ø¶¨Öµ
-* @param[in]:   vel:			ËÙ¶È¸ø¶¨Öµ
-* @param[in]:   kp:				Î»ÖÃ±ÈÀıÏµÊı
-* @param[in]:   kd:				Î»ÖÃÎ¢·ÖÏµÊı
-* @param[in]:   torq:			×ª¾Ø¸ø¶¨Öµ
+* @brief:      	mit_ctrl: MITæ¨¡å¼ä¸‹çš„ç”µæœºæ§åˆ¶å‡½æ•°
+* @param[in]:   hcan:			æŒ‡å‘CAN_HandleTypeDefç»“æ„çš„æŒ‡é’ˆï¼Œç”¨äºæŒ‡å®šCANæ€»çº¿
+* @param[in]:   motor_id:	ç”µæœºIDï¼ŒæŒ‡å®šç›®æ ‡ç”µæœº
+* @param[in]:   pos:			ä½ç½®ç»™å®šå€¼
+* @param[in]:   vel:			é€Ÿåº¦ç»™å®šå€¼
+* @param[in]:   kp:				ä½ç½®æ¯”ä¾‹ç³»æ•°
+* @param[in]:   kd:				ä½ç½®å¾®åˆ†ç³»æ•°
+* @param[in]:   torq:			è½¬çŸ©ç»™å®šå€¼
 * @retval:     	void
-* @details:    	Í¨¹ıCAN×ÜÏßÏòµç»ú·¢ËÍMITÄ£Ê½ÏÂµÄ¿ØÖÆÖ¡¡£
+* @details:    	é€šè¿‡CANæ€»çº¿å‘ç”µæœºå‘é€MITæ¨¡å¼ä¸‹çš„æ§åˆ¶å¸§ã€‚
 ************************************************************************
 **/
 void mit_ctrl(hcan_t* hcan, uint16_t motor_id, float pos, float vel,float kp, float kd, float torq)
@@ -263,12 +263,12 @@ void mit_ctrl(hcan_t* hcan, uint16_t motor_id, float pos, float vel,float kp, fl
 }
 /**
 ************************************************************************
-* @brief:      	pos_speed_ctrl: Î»ÖÃËÙ¶È¿ØÖÆº¯Êı
-* @param[in]:   hcan:			Ö¸ÏòCAN_HandleTypeDef½á¹¹µÄÖ¸Õë£¬ÓÃÓÚÖ¸¶¨CAN×ÜÏß
-* @param[in]:   motor_id:	µç»úID£¬Ö¸¶¨Ä¿±êµç»ú
-* @param[in]:   vel:			ËÙ¶È¸ø¶¨Öµ
+* @brief:      	pos_speed_ctrl: ä½ç½®é€Ÿåº¦æ§åˆ¶å‡½æ•°
+* @param[in]:   hcan:			æŒ‡å‘CAN_HandleTypeDefç»“æ„çš„æŒ‡é’ˆï¼Œç”¨äºæŒ‡å®šCANæ€»çº¿
+* @param[in]:   motor_id:	ç”µæœºIDï¼ŒæŒ‡å®šç›®æ ‡ç”µæœº
+* @param[in]:   vel:			é€Ÿåº¦ç»™å®šå€¼
 * @retval:     	void
-* @details:    	Í¨¹ıCAN×ÜÏßÏòµç»ú·¢ËÍÎ»ÖÃËÙ¶È¿ØÖÆÃüÁî
+* @details:    	é€šè¿‡CANæ€»çº¿å‘ç”µæœºå‘é€ä½ç½®é€Ÿåº¦æ§åˆ¶å‘½ä»¤
 ************************************************************************
 **/
 void pos_speed_ctrl(hcan_t* hcan,uint16_t motor_id, float pos, float vel)
@@ -294,7 +294,7 @@ void pos_speed_ctrl(hcan_t* hcan,uint16_t motor_id, float pos, float vel)
 	canx_send_data(hcan, id, data, 8);
 }
 
-//µç»úÊ¹ÄÜ
+//ç”µæœºä½¿èƒ½
 void CAN_Send_Enter(hcan_t* hcan,uint16_t motor_id)
 {
 	FDCAN_TxHeaderTypeDef TxHeader;
@@ -302,13 +302,13 @@ void CAN_Send_Enter(hcan_t* hcan,uint16_t motor_id)
 	TxHeader.Identifier = motor_id;                 // CAN ID
   TxHeader.IdType =  FDCAN_STANDARD_ID ;        
   TxHeader.TxFrameType = FDCAN_DATA_FRAME; 
-	TxHeader.DataLength =FDCAN_DLC_BYTES_8;     // ·¢ËÍ³¤¶È£º8byte
+	TxHeader.DataLength =FDCAN_DLC_BYTES_8;     // å‘é€é•¿åº¦ï¼š8byte
 
 		TxHeader.ErrorStateIndicator =  FDCAN_ESI_ACTIVE;
-  TxHeader.BitRateSwitch = FDCAN_BRS_OFF;//±ÈÌØÂÊÇĞ»»¹Ø±Õ£¬²»ÊÊÓÃÓÚ¾­µäCAN
+  TxHeader.BitRateSwitch = FDCAN_BRS_OFF;//æ¯”ç‰¹ç‡åˆ‡æ¢å…³é—­ï¼Œä¸é€‚ç”¨äºç»å…¸CAN
   TxHeader.FDFormat =  FDCAN_CLASSIC_CAN;            // CANFD
   TxHeader.TxEventFifoControl =  FDCAN_NO_TX_EVENTS;  
-  TxHeader.MessageMarker = 0x00;//ÏûÏ¢±ê¼Ç
+  TxHeader.MessageMarker = 0x00;//æ¶ˆæ¯æ ‡è®°
 	
 	
 	
@@ -323,18 +323,18 @@ void CAN_Send_Enter(hcan_t* hcan,uint16_t motor_id)
 
 HAL_FDCAN_AddMessageToTxFifoQ(hcan, &TxHeader, enable_data);
 																				 
-		   // ·¢ËÍCANÖ¸Áî
+		   // å‘é€CANæŒ‡ä»¤
   if(HAL_FDCAN_AddMessageToTxFifoQ(hcan, &TxHeader, enable_data)
  != HAL_OK)
   {
-        // ·¢ËÍÊ§°Ü´¦Àí
+        // å‘é€å¤±è´¥å¤„ç†
        Error_Handler();      
   }																		 
 																				 
 																				 
 }
 
-//µç»úÊ§ÄÜ
+//ç”µæœºå¤±èƒ½
 
 void CAN_Send_Exit(hcan_t* hcan,uint16_t motor_id)
 {
@@ -343,13 +343,13 @@ void CAN_Send_Exit(hcan_t* hcan,uint16_t motor_id)
 	TxHeader.Identifier = motor_id;                 // CAN ID
   TxHeader.IdType =  FDCAN_STANDARD_ID ;        
   TxHeader.TxFrameType = FDCAN_DATA_FRAME; 
-	TxHeader.DataLength =FDCAN_DLC_BYTES_8;     // ·¢ËÍ³¤¶È£º8byte
+	TxHeader.DataLength =FDCAN_DLC_BYTES_8;     // å‘é€é•¿åº¦ï¼š8byte
 
 		TxHeader.ErrorStateIndicator =  FDCAN_ESI_ACTIVE;
-  TxHeader.BitRateSwitch = FDCAN_BRS_OFF;//±ÈÌØÂÊÇĞ»»¹Ø±Õ£¬²»ÊÊÓÃÓÚ¾­µäCAN
+  TxHeader.BitRateSwitch = FDCAN_BRS_OFF;//æ¯”ç‰¹ç‡åˆ‡æ¢å…³é—­ï¼Œä¸é€‚ç”¨äºç»å…¸CAN
   TxHeader.FDFormat =  FDCAN_CLASSIC_CAN;            // CANFD
   TxHeader.TxEventFifoControl =  FDCAN_NO_TX_EVENTS;  
-  TxHeader.MessageMarker = 0x00;//ÏûÏ¢±ê¼Ç
+  TxHeader.MessageMarker = 0x00;//æ¶ˆæ¯æ ‡è®°
 	
 	
 	
@@ -364,17 +364,17 @@ void CAN_Send_Exit(hcan_t* hcan,uint16_t motor_id)
 
 HAL_FDCAN_AddMessageToTxFifoQ(hcan, &TxHeader, exit_data);
 																				 
-		   // ·¢ËÍCANÖ¸Áî
+		   // å‘é€CANæŒ‡ä»¤
   if(HAL_FDCAN_AddMessageToTxFifoQ(hcan, &TxHeader, exit_data)
  != HAL_OK)
   {
-        // ·¢ËÍÊ§°Ü´¦Àí
+        // å‘é€å¤±è´¥å¤„ç†
        Error_Handler();      
   }																		 
 																				 
 																				 
 }
-//Çå³ı´íÎóÖ¡
+//æ¸…é™¤é”™è¯¯å¸§
 void CAN_Send_Clear_Error(hcan_t* hcan,uint16_t motor_id)
 {
 	FDCAN_TxHeaderTypeDef TxHeader;
@@ -382,13 +382,13 @@ void CAN_Send_Clear_Error(hcan_t* hcan,uint16_t motor_id)
 	TxHeader.Identifier = motor_id;                 // CAN ID
   TxHeader.IdType =  FDCAN_STANDARD_ID ;        
   TxHeader.TxFrameType = FDCAN_DATA_FRAME; 
-	TxHeader.DataLength =FDCAN_DLC_BYTES_8;     // ·¢ËÍ³¤¶È£º8byte
+	TxHeader.DataLength =FDCAN_DLC_BYTES_8;     // å‘é€é•¿åº¦ï¼š8byte
 
 		TxHeader.ErrorStateIndicator =  FDCAN_ESI_ACTIVE;
-  TxHeader.BitRateSwitch = FDCAN_BRS_OFF;//±ÈÌØÂÊÇĞ»»¹Ø±Õ£¬²»ÊÊÓÃÓÚ¾­µäCAN
+  TxHeader.BitRateSwitch = FDCAN_BRS_OFF;//æ¯”ç‰¹ç‡åˆ‡æ¢å…³é—­ï¼Œä¸é€‚ç”¨äºç»å…¸CAN
   TxHeader.FDFormat =  FDCAN_CLASSIC_CAN;            // CANFD
   TxHeader.TxEventFifoControl =  FDCAN_NO_TX_EVENTS;  
-  TxHeader.MessageMarker = 0x00;//ÏûÏ¢±ê¼Ç
+  TxHeader.MessageMarker = 0x00;//æ¶ˆæ¯æ ‡è®°
 	
 	
 	
@@ -403,17 +403,17 @@ void CAN_Send_Clear_Error(hcan_t* hcan,uint16_t motor_id)
 
 HAL_FDCAN_AddMessageToTxFifoQ(hcan, &TxHeader, clear_data);
 																				 
-		   // ·¢ËÍCANÖ¸Áî
+		   // å‘é€CANæŒ‡ä»¤
   if(HAL_FDCAN_AddMessageToTxFifoQ(hcan, &TxHeader, clear_data)
  != HAL_OK)
   {
-        // ·¢ËÍÊ§°Ü´¦Àí
+        // å‘é€å¤±è´¥å¤„ç†
        Error_Handler();      
   }																		 
 																				 
 																				 
 }
-//±£´æÁãµã
+//ä¿å­˜é›¶ç‚¹
 void CAN_Send_Save_Zero(hcan_t* hcan,uint16_t motor_id)
 {
 	FDCAN_TxHeaderTypeDef TxHeader;
@@ -421,13 +421,13 @@ void CAN_Send_Save_Zero(hcan_t* hcan,uint16_t motor_id)
 	TxHeader.Identifier = motor_id;                 // CAN ID
   TxHeader.IdType =  FDCAN_STANDARD_ID ;        
   TxHeader.TxFrameType = FDCAN_DATA_FRAME; 
-	TxHeader.DataLength =FDCAN_DLC_BYTES_8;     // ·¢ËÍ³¤¶È£º8byte
+	TxHeader.DataLength =FDCAN_DLC_BYTES_8;     // å‘é€é•¿åº¦ï¼š8byte
 
 		TxHeader.ErrorStateIndicator =  FDCAN_ESI_ACTIVE;
-  TxHeader.BitRateSwitch = FDCAN_BRS_OFF;//±ÈÌØÂÊÇĞ»»¹Ø±Õ£¬²»ÊÊÓÃÓÚ¾­µäCAN
+  TxHeader.BitRateSwitch = FDCAN_BRS_OFF;//æ¯”ç‰¹ç‡åˆ‡æ¢å…³é—­ï¼Œä¸é€‚ç”¨äºç»å…¸CAN
   TxHeader.FDFormat =  FDCAN_CLASSIC_CAN;            // CANFD
   TxHeader.TxEventFifoControl =  FDCAN_NO_TX_EVENTS;  
-  TxHeader.MessageMarker = 0x00;//ÏûÏ¢±ê¼Ç
+  TxHeader.MessageMarker = 0x00;//æ¶ˆæ¯æ ‡è®°
 	
 	
 	
@@ -442,11 +442,11 @@ void CAN_Send_Save_Zero(hcan_t* hcan,uint16_t motor_id)
 
 HAL_FDCAN_AddMessageToTxFifoQ(hcan, &TxHeader, Save_Zero);
 																				 
-		   // ·¢ËÍCANÖ¸Áî
+		   // å‘é€CANæŒ‡ä»¤
   if(HAL_FDCAN_AddMessageToTxFifoQ(hcan, &TxHeader, Save_Zero)
  != HAL_OK)
   {
-        // ·¢ËÍÊ§°Ü´¦Àí
+        // å‘é€å¤±è´¥å¤„ç†
        Error_Handler();      
   }																		 
 																				 
@@ -454,12 +454,12 @@ HAL_FDCAN_AddMessageToTxFifoQ(hcan, &TxHeader, Save_Zero);
 }
 /**
 ************************************************************************
-* @brief:      	speed_ctrl: ËÙ¶È¿ØÖÆº¯Êı
-* @param[in]:   hcan: 		Ö¸ÏòCAN_HandleTypeDef½á¹¹µÄÖ¸Õë£¬ÓÃÓÚÖ¸¶¨CAN×ÜÏß
-* @param[in]:   motor_id: µç»úID£¬Ö¸¶¨Ä¿±êµç»ú
-* @param[in]:   vel: 			ËÙ¶È¸ø¶¨Öµ
+* @brief:      	speed_ctrl: é€Ÿåº¦æ§åˆ¶å‡½æ•°
+* @param[in]:   hcan: 		æŒ‡å‘CAN_HandleTypeDefç»“æ„çš„æŒ‡é’ˆï¼Œç”¨äºæŒ‡å®šCANæ€»çº¿
+* @param[in]:   motor_id: ç”µæœºIDï¼ŒæŒ‡å®šç›®æ ‡ç”µæœº
+* @param[in]:   vel: 			é€Ÿåº¦ç»™å®šå€¼
 * @retval:     	void
-* @details:    	Í¨¹ıCAN×ÜÏßÏòµç»ú·¢ËÍËÙ¶È¿ØÖÆÃüÁî
+* @details:    	é€šè¿‡CANæ€»çº¿å‘ç”µæœºå‘é€é€Ÿåº¦æ§åˆ¶å‘½ä»¤
 ************************************************************************
 **/
 void speed_ctrl(hcan_t* hcan,uint16_t motor_id, float vel)
@@ -480,7 +480,7 @@ void speed_ctrl(hcan_t* hcan,uint16_t motor_id, float vel)
 }
 
 
-/**************************************´ïÃî²ÎÊıµ½Ò£¿ØÆ÷²ÎÊıµÄ×ª»»***************************************************************/
+/**************************************è¾¾å¦™å‚æ•°åˆ°é¥æ§å™¨å‚æ•°çš„è½¬æ¢***************************************************************/
 
 
 

@@ -1,7 +1,7 @@
 #include "ktech_motor.h"
 #include <string.h>
 
-/* µç»úÊı×é¶¨Òå */
+/* ç”µæœºæ•°ç»„å®šä¹‰ */
 KTech_Motor_t ktech_motors[KTECH_ID_MAX + 1];
 
 void ktech_motor_init(uint16_t id)
@@ -13,70 +13,70 @@ void ktech_motor_init(uint16_t id)
     }
 }
 
-/* µ×²ã·¢ËÍ°ü×°£ºÃüÁîID = 0x140 + µç»úID */
+/* åº•å±‚å‘é€åŒ…è£…ï¼šå‘½ä»¤ID = 0x140 + ç”µæœºID */
 static inline void send_cmd(hcan_t* hcan, uint16_t id, uint8_t* data)
 {
     uint16_t tx_id = 0x140 + id;
     canx_send_data(hcan, tx_id, data, 8);
 }
 
-/* ¶ÁÈ¡×´Ì¬1ºÍ´íÎó±êÖ¾ */
+/* è¯»å–çŠ¶æ€1å’Œé”™è¯¯æ ‡å¿— */
 void ktech_read_status1(hcan_t* hcan, uint16_t id)
 {
     uint8_t data[8] = {KTECH_CMD_READ_STATUS1, 0,0,0,0,0,0,0};
     send_cmd(hcan, id, data);
 }
 
-/* Çå³ı´íÎó±êÖ¾ */
+/* æ¸…é™¤é”™è¯¯æ ‡å¿— */
 void ktech_clear_error(hcan_t* hcan, uint16_t id)
 {
     uint8_t data[8] = {KTECH_CMD_CLEAR_ERROR, 0,0,0,0,0,0,0};
     send_cmd(hcan, id, data);
 }
 
-/* ¶ÁÈ¡×´Ì¬2 */
+/* è¯»å–çŠ¶æ€2 */
 void ktech_read_status2(hcan_t* hcan, uint16_t id)
 {
     uint8_t data[8] = {KTECH_CMD_READ_STATUS2, 0,0,0,0,0,0,0};
     send_cmd(hcan, id, data);
 }
 
-/* ¶ÁÈ¡×´Ì¬3 */
+/* è¯»å–çŠ¶æ€3 */
 void ktech_read_status3(hcan_t* hcan, uint16_t id)
 {
     uint8_t data[8] = {KTECH_CMD_READ_STATUS3, 0,0,0,0,0,0,0};
     send_cmd(hcan, id, data);
 }
 
-/* µç»ú¹Ø±Õ */
+/* ç”µæœºå…³é—­ */
 void ktech_motor_off(hcan_t* hcan, uint16_t id)
 {
     uint8_t data[8] = {KTECH_CMD_MOTOR_OFF, 0,0,0,0,0,0,0};
     send_cmd(hcan, id, data);
 }
 
-/* µç»úÔËĞĞ£¨¿ªÆô£© */
+/* ç”µæœºè¿è¡Œï¼ˆå¼€å¯ï¼‰ */
 void ktech_motor_on(hcan_t* hcan, uint16_t id)
 {
     uint8_t data[8] = {KTECH_CMD_MOTOR_ON, 0,0,0,0,0,0,0};
     send_cmd(hcan, id, data);
 }
 
-/* µç»úÍ£Ö¹ */
+/* ç”µæœºåœæ­¢ */
 void ktech_motor_stop(hcan_t* hcan, uint16_t id)
 {
     uint8_t data[8] = {KTECH_CMD_MOTOR_STOP, 0,0,0,0,0,0,0};
     send_cmd(hcan, id, data);
 }
 
-/* ±§Õ¢Æ÷¿ØÖÆºÍ×´Ì¬¶ÁÈ¡ */
+/* æŠ±é—¸å™¨æ§åˆ¶å’ŒçŠ¶æ€è¯»å– */
 void ktech_brake_ctrl(hcan_t* hcan, uint16_t id, uint8_t cmd)
 {
     uint8_t data[8] = {KTECH_CMD_BRAKE, cmd, 0,0,0,0,0,0};
     send_cmd(hcan, id, data);
 }
 
-/* ¿ª»·¿ØÖÆ (MSÏµÁĞ) */
+/* å¼€ç¯æ§åˆ¶ (MSç³»åˆ—) */
 void ktech_openloop_ctrl(hcan_t* hcan, uint16_t id, int16_t power)
 {
     uint8_t data[8] = {KTECH_CMD_OPENLOOP, 0,0,0,
@@ -84,7 +84,7 @@ void ktech_openloop_ctrl(hcan_t* hcan, uint16_t id, int16_t power)
     send_cmd(hcan, id, data);
 }
 
-/* ×ª¾Ø±Õ»·¿ØÖÆ (MF/MH/MG) */
+/* è½¬çŸ©é—­ç¯æ§åˆ¶ (MF/MH/MG) */
 void ktech_torque_ctrl(hcan_t* hcan, uint16_t id, int16_t iq)
 {
     uint8_t data[8] = {KTECH_CMD_TORQUE_CLOSED, 0,0,0,
@@ -92,7 +92,7 @@ void ktech_torque_ctrl(hcan_t* hcan, uint16_t id, int16_t iq)
     send_cmd(hcan, id, data);
 }
 
-/* ËÙ¶È±Õ»·¿ØÖÆ (´øÁ¦¾ØÏŞÖÆ) */
+/* é€Ÿåº¦é—­ç¯æ§åˆ¶ (å¸¦åŠ›çŸ©é™åˆ¶) */
 void ktech_speed_ctrl(hcan_t* hcan, uint16_t id, int32_t speed, int16_t iq_limit)
 {
     uint8_t data[8] = {KTECH_CMD_SPEED_CLOSED, 0,
@@ -102,7 +102,7 @@ void ktech_speed_ctrl(hcan_t* hcan, uint16_t id, int32_t speed, int16_t iq_limit
     send_cmd(hcan, id, data);
 }
 
-/* ¶àÈ¦Î»ÖÃ±Õ»·¿ØÖÆ1 */
+/* å¤šåœˆä½ç½®é—­ç¯æ§åˆ¶1 */
 void ktech_pos_multi1(hcan_t* hcan, uint16_t id, int32_t angle)
 {
     uint8_t data[8] = {KTECH_CMD_POS_MULTI1, 0,0,0,
@@ -111,7 +111,7 @@ void ktech_pos_multi1(hcan_t* hcan, uint16_t id, int32_t angle)
     send_cmd(hcan, id, data);
 }
 
-/* ¶àÈ¦Î»ÖÃ±Õ»·¿ØÖÆ2 (´øËÙ¶ÈÏŞÖÆ) */
+/* å¤šåœˆä½ç½®é—­ç¯æ§åˆ¶2 (å¸¦é€Ÿåº¦é™åˆ¶) */
 void ktech_pos_multi2(hcan_t* hcan, uint16_t id, int32_t angle, uint16_t max_speed)
 {
     uint8_t data[8] = {KTECH_CMD_POS_MULTI2, 0,
@@ -121,7 +121,7 @@ void ktech_pos_multi2(hcan_t* hcan, uint16_t id, int32_t angle, uint16_t max_spe
     send_cmd(hcan, id, data);
 }
 
-/* µ¥È¦Î»ÖÃ±Õ»·¿ØÖÆ1 (´ø·½Ïò) */
+/* å•åœˆä½ç½®é—­ç¯æ§åˆ¶1 (å¸¦æ–¹å‘) */
 void ktech_pos_single1(hcan_t* hcan, uint16_t id, uint8_t dir, uint32_t angle)
 {
     uint8_t data[8] = {KTECH_CMD_POS_SINGLE1, dir, 0,0,
@@ -130,7 +130,7 @@ void ktech_pos_single1(hcan_t* hcan, uint16_t id, uint8_t dir, uint32_t angle)
     send_cmd(hcan, id, data);
 }
 
-/* µ¥È¦Î»ÖÃ±Õ»·¿ØÖÆ2 (´ø·½ÏòºÍËÙ¶ÈÏŞÖÆ) */
+/* å•åœˆä½ç½®é—­ç¯æ§åˆ¶2 (å¸¦æ–¹å‘å’Œé€Ÿåº¦é™åˆ¶) */
 void ktech_pos_single2(hcan_t* hcan, uint16_t id, uint8_t dir, uint32_t angle, uint16_t max_speed)
 {
     uint8_t data[8] = {KTECH_CMD_POS_SINGLE2, dir,
@@ -140,7 +140,7 @@ void ktech_pos_single2(hcan_t* hcan, uint16_t id, uint8_t dir, uint32_t angle, u
     send_cmd(hcan, id, data);
 }
 
-/* ÔöÁ¿Î»ÖÃ±Õ»·¿ØÖÆ1 */
+/* å¢é‡ä½ç½®é—­ç¯æ§åˆ¶1 */
 void ktech_pos_inc1(hcan_t* hcan, uint16_t id, int32_t inc)
 {
     uint8_t data[8] = {KTECH_CMD_POS_INCREMENT1, 0,0,0,
@@ -149,7 +149,7 @@ void ktech_pos_inc1(hcan_t* hcan, uint16_t id, int32_t inc)
     send_cmd(hcan, id, data);
 }
 
-/* ÔöÁ¿Î»ÖÃ±Õ»·¿ØÖÆ2 (´øËÙ¶ÈÏŞÖÆ) */
+/* å¢é‡ä½ç½®é—­ç¯æ§åˆ¶2 (å¸¦é€Ÿåº¦é™åˆ¶) */
 void ktech_pos_inc2(hcan_t* hcan, uint16_t id, int32_t inc, uint16_t max_speed)
 {
     uint8_t data[8] = {KTECH_CMD_POS_INCREMENT2, 0,
@@ -159,14 +159,14 @@ void ktech_pos_inc2(hcan_t* hcan, uint16_t id, int32_t inc, uint16_t max_speed)
     send_cmd(hcan, id, data);
 }
 
-/* ¶ÁÈ¡¿ØÖÆ²ÎÊı */
+/* è¯»å–æ§åˆ¶å‚æ•° */
 void ktech_read_param(hcan_t* hcan, uint16_t id, uint8_t param_id)
 {
     uint8_t data[8] = {KTECH_CMD_READ_PARAM, param_id, 0,0,0,0,0,0};
     send_cmd(hcan, id, data);
 }
 
-/* Ğ´Èë¿ØÖÆ²ÎÊı (dataÖ¸Ïò6×Ö½ÚÊı¾İ) */
+/* å†™å…¥æ§åˆ¶å‚æ•° (dataæŒ‡å‘6å­—èŠ‚æ•°æ®) */
 void ktech_write_param(hcan_t* hcan, uint16_t id, uint8_t param_id, uint8_t* data)
 {
     uint8_t tx_data[8] = {KTECH_CMD_WRITE_PARAM, param_id,
@@ -174,35 +174,35 @@ void ktech_write_param(hcan_t* hcan, uint16_t id, uint8_t param_id, uint8_t* dat
     send_cmd(hcan, id, tx_data);
 }
 
-/* ¶ÁÈ¡±àÂëÆ÷Êı¾İ */
+/* è¯»å–ç¼–ç å™¨æ•°æ® */
 void ktech_read_encoder(hcan_t* hcan, uint16_t id)
 {
     uint8_t data[8] = {KTECH_CMD_READ_ENCODER, 0,0,0,0,0,0,0};
     send_cmd(hcan, id, data);
 }
 
-/* ÉèÖÃµ±Ç°Î»ÖÃµ½ROM×÷Îªµç»úÁãµã */
+/* è®¾ç½®å½“å‰ä½ç½®åˆ°ROMä½œä¸ºç”µæœºé›¶ç‚¹ */
 void ktech_set_zero(hcan_t* hcan, uint16_t id)
 {
     uint8_t data[8] = {KTECH_CMD_SET_ZERO, 0,0,0,0,0,0,0};
     send_cmd(hcan, id, data);
 }
 
-/* ¶ÁÈ¡¶àÈ¦½Ç¶È */
+/* è¯»å–å¤šåœˆè§’åº¦ */
 void ktech_read_multi_angle(hcan_t* hcan, uint16_t id)
 {
     uint8_t data[8] = {KTECH_CMD_READ_MULTI_ANGLE, 0,0,0,0,0,0,0};
     send_cmd(hcan, id, data);
 }
 
-/* ¶ÁÈ¡µ¥È¦½Ç¶È */
+/* è¯»å–å•åœˆè§’åº¦ */
 void ktech_read_single_angle(hcan_t* hcan, uint16_t id)
 {
     uint8_t data[8] = {KTECH_CMD_READ_SINGLE_ANGLE, 0,0,0,0,0,0,0};
     send_cmd(hcan, id, data);
 }
 
-/* ÉèÖÃµ±Ç°Î»ÖÃÎªÈÎÒâ½Ç¶È£¨Ğ´ÈëRAM£© */
+/* è®¾ç½®å½“å‰ä½ç½®ä¸ºä»»æ„è§’åº¦ï¼ˆå†™å…¥RAMï¼‰ */
 void ktech_set_angle_ram(hcan_t* hcan, uint16_t id, int32_t angle)
 {
     uint8_t data[8] = {KTECH_CMD_SET_ANGLE_RAM, 0,0,0,
@@ -211,7 +211,7 @@ void ktech_set_angle_ram(hcan_t* hcan, uint16_t id, int32_t angle)
     send_cmd(hcan, id, data);
 }
 
-/* CAN½ÓÊÕ½âÎöº¯Êı */
+/* CANæ¥æ”¶è§£æå‡½æ•° */
 void ktech_parse_motor_fb(KTech_Motor_t* motor, uint8_t* data)
 {
     if (!motor) return;

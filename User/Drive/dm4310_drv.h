@@ -39,7 +39,7 @@
 #define KD_MAX3 5.0f
 #define T_MIN3 -200.0f
 #define T_MAX3 200.0f
-// ´ïÃî²ÎÊıµ½Ò£¿ØÆ÷µÄ×ª»»
+// è¾¾å¦™å‚æ•°åˆ°é¥æ§å™¨çš„è½¬æ¢
 #define SBUS_POS 3.1415926f / 732.0000000f
 typedef struct
 {
@@ -50,12 +50,12 @@ typedef struct
 	int t_int;
 	int kp_int;
 	int kd_int;
-	float pos; // µç»úÎ»ÖÃ
-	float vel; // µç»úËÙ¶È
-	float tor; // Å¤¾Ø
+	float pos; // ç”µæœºä½ç½®
+	float vel; // ç”µæœºé€Ÿåº¦
+	float tor; // æ‰­çŸ©
 	float Kp;
 	float Kd;
-	float Tmos; // MosµÄÆ½¾ùÎÂ¶È
+	float Tmos; // Mosçš„å¹³å‡æ¸©åº¦
 	float Tcoil;
 } motor_fbpara_t;
 typedef struct
@@ -75,51 +75,51 @@ typedef struct
 	uint8_t write_flag;
 	uint8_t save_flag;
 
-	float UV_Value;	  // µÍÑ¹±£»¤Öµ
-	float KT_Value;	  // Å¤¾ØÏµÊı
-	float OT_Value;	  // ¹ıÎÂ±£»¤Öµ
-	float OC_Value;	  // ¹ıÁ÷±£»¤Öµ
-	float ACC;		  // ¼ÓËÙ¶È
-	float DEC;		  // ¼õËÙ¶È
-	float MAX_SPD;	  // ×î´óËÙ¶È
-	uint32_t MST_ID;  // ·´À¡ID
-	uint32_t ESC_ID;  // ½ÓÊÕID
-	uint32_t TIMEOUT; // ³¬Ê±¾¯±¨Ê±¼ä
-	uint32_t cmode;	  // ¿ØÖÆÄ£Ê½
-	float Damp;		  // µç»úÕ³ÖÍÏµÊı
-	float Inertia;	  // µç»ú×ª¶¯¹ßÁ¿
-	uint32_t hw_ver;  // ±£Áô
-	uint32_t sw_ver;  // Èí¼ş°æ±¾ºÅ
-	uint32_t SN;	  // ±£Áô
-	uint32_t NPP;	  // µç»ú¼«¶ÔÊı
-	float Rs;		  // µç×è
-	float Ls;		  // µç¸Ğ
-	float Flux;		  // ´ÅÁ´
-	float Gr;		  // ³İÂÖ¼õËÙ±È
-	float PMAX;		  // Î»ÖÃÓ³Éä·¶Î§
-	float VMAX;		  // ËÙ¶ÈÓ³Éä·¶Î§
-	float TMAX;		  // Å¤¾ØÓ³Éä·¶Î§
-	float I_BW;		  // µçÁ÷»·¿ØÖÆ´ø¿í
-	float KP_ASR;	  // ËÙ¶È»·Kp
-	float KI_ASR;	  // ËÙ¶È»·Ki
-	float KP_APR;	  // Î»ÖÃ»·Kp
-	float KI_APR;	  // Î»ÖÃ»·Ki
-	float OV_Value;	  // ¹ıÑ¹±£»¤Öµ
-	float GREF;		  // ³İÂÖÁ¦¾ØĞ§ÂÊ
-	float Deta;		  // ËÙ¶È»·×èÄáÏµÊı
-	float V_BW;		  // ËÙ¶È»·ÂË²¨´ø¿í
-	float IQ_cl;	  // µçÁ÷»·ÔöÇ¿ÏµÊı
-	float VL_cl;	  // ËÙ¶È»·ÔöÇ¿ÏµÊı
-	uint32_t can_br;  // CAN²¨ÌØÂÊ´úÂë
-	uint32_t sub_ver; // ×Ó°æ±¾ºÅ
-	float u_off;	  // uÏàÆ«ÖÃ
-	float v_off;	  // vÏàÆ«ÖÃ
-	float k1;		  // ²¹³¥Òò×Ó1
-	float k2;		  // ²¹³¥Òò×Ó2
-	float m_off;	  // ½Ç¶ÈÆ«ÒÆ
-	float dir;		  // ·½Ïò
-	float p_m;		  // µç»úÎ»ÖÃ
-	float x_out;	  // Êä³öÖáÎ»ÖÃ
+	float UV_Value;	  // ä½å‹ä¿æŠ¤å€¼
+	float KT_Value;	  // æ‰­çŸ©ç³»æ•°
+	float OT_Value;	  // è¿‡æ¸©ä¿æŠ¤å€¼
+	float OC_Value;	  // è¿‡æµä¿æŠ¤å€¼
+	float ACC;		  // åŠ é€Ÿåº¦
+	float DEC;		  // å‡é€Ÿåº¦
+	float MAX_SPD;	  // æœ€å¤§é€Ÿåº¦
+	uint32_t MST_ID;  // åé¦ˆID
+	uint32_t ESC_ID;  // æ¥æ”¶ID
+	uint32_t TIMEOUT; // è¶…æ—¶è­¦æŠ¥æ—¶é—´
+	uint32_t cmode;	  // æ§åˆ¶æ¨¡å¼
+	float Damp;		  // ç”µæœºç²˜æ»ç³»æ•°
+	float Inertia;	  // ç”µæœºè½¬åŠ¨æƒ¯é‡
+	uint32_t hw_ver;  // ä¿ç•™
+	uint32_t sw_ver;  // è½¯ä»¶ç‰ˆæœ¬å·
+	uint32_t SN;	  // ä¿ç•™
+	uint32_t NPP;	  // ç”µæœºæå¯¹æ•°
+	float Rs;		  // ç”µé˜»
+	float Ls;		  // ç”µæ„Ÿ
+	float Flux;		  // ç£é“¾
+	float Gr;		  // é½¿è½®å‡é€Ÿæ¯”
+	float PMAX;		  // ä½ç½®æ˜ å°„èŒƒå›´
+	float VMAX;		  // é€Ÿåº¦æ˜ å°„èŒƒå›´
+	float TMAX;		  // æ‰­çŸ©æ˜ å°„èŒƒå›´
+	float I_BW;		  // ç”µæµç¯æ§åˆ¶å¸¦å®½
+	float KP_ASR;	  // é€Ÿåº¦ç¯Kp
+	float KI_ASR;	  // é€Ÿåº¦ç¯Ki
+	float KP_APR;	  // ä½ç½®ç¯Kp
+	float KI_APR;	  // ä½ç½®ç¯Ki
+	float OV_Value;	  // è¿‡å‹ä¿æŠ¤å€¼
+	float GREF;		  // é½¿è½®åŠ›çŸ©æ•ˆç‡
+	float Deta;		  // é€Ÿåº¦ç¯é˜»å°¼ç³»æ•°
+	float V_BW;		  // é€Ÿåº¦ç¯æ»¤æ³¢å¸¦å®½
+	float IQ_cl;	  // ç”µæµç¯å¢å¼ºç³»æ•°
+	float VL_cl;	  // é€Ÿåº¦ç¯å¢å¼ºç³»æ•°
+	uint32_t can_br;  // CANæ³¢ç‰¹ç‡ä»£ç 
+	uint32_t sub_ver; // å­ç‰ˆæœ¬å·
+	float u_off;	  // uç›¸åç½®
+	float v_off;	  // vç›¸åç½®
+	float k1;		  // è¡¥å¿å› å­1
+	float k2;		  // è¡¥å¿å› å­2
+	float m_off;	  // è§’åº¦åç§»
+	float dir;		  // æ–¹å‘
+	float p_m;		  // ç”µæœºä½ç½®
+	float x_out;	  // è¾“å‡ºè½´ä½ç½®
 } esc_inf_t;
 
 typedef enum
@@ -148,8 +148,8 @@ typedef enum
 typedef struct
 {
 	uint16_t mode;
-	motor_fbpara_t para; // ·´À¡µÄÊı¾İ
-	motor_ctrl_t ctrl;	 // ·¢ËÍµÄÊı¾İ
+	motor_fbpara_t para; // åé¦ˆçš„æ•°æ®
+	motor_ctrl_t ctrl;	 // å‘é€çš„æ•°æ®
 
 	uint16_t mst_id;
 	esc_inf_t tmp;
@@ -186,8 +186,8 @@ extern POS_Motor pos_motor;
 extern VEL_Motor vel_motor;
 extern TOR_Motor tor_motor;
 
-extern float Hex_To_Float(uint32_t *Byte, int num); // Ê®Áù½øÖÆµ½¸¡µãÊı
-extern uint32_t FloatTohex(float HEX);				// ¸¡µãÊıµ½Ê®Áù½øÖÆ×ª»»
+extern float Hex_To_Float(uint32_t *Byte, int num); // åå…­è¿›åˆ¶åˆ°æµ®ç‚¹æ•°
+extern uint32_t FloatTohex(float HEX);				// æµ®ç‚¹æ•°åˆ°åå…­è¿›åˆ¶è½¬æ¢
 
 extern float uint_to_float(int x_int, float x_min, float x_max, int bits);
 extern int float_to_uint(float x_float, float x_min, float x_max, int bits);
@@ -205,12 +205,12 @@ void set_DM_vel(float vel, uint16_t motor_id);
 void set_DM_mit(float pos, float vel, float torq, float kp, float kd, uint16_t motor_id);
 void set_DM_mode(uint16_t motor_id, uint16_t mode_id);
 
-// ¹Ø½Úµç»ú
+// å…³èŠ‚ç”µæœº
 extern void mit_ctrl(hcan_t *hcan, uint16_t motor_id, float pos, float vel, float kp, float kd, float torq);
 extern void pos_speed_ctrl(hcan_t *hcan, uint16_t motor_id, float pos, float vel);
 extern void speed_ctrl(hcan_t *hcan, uint16_t motor_id, float _vel);
 
-// µç»úÊ¹ÄÜÏà¹Ø
+// ç”µæœºä½¿èƒ½ç›¸å…³
 extern void CAN_Send_Enter(hcan_t *hcan, uint16_t motor_id);
 extern void CAN_Send_Exit(hcan_t *hcan, uint16_t motor_id);
 extern void CAN_Send_Clear_Error(hcan_t *hcan, uint16_t motor_id);
