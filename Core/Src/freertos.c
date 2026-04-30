@@ -245,7 +245,7 @@ void Remote_control_Task(void *argument)
 
   /* USER CODE BEGIN Remote_control_Task */
   MX_USB_DEVICE_Init();
-  int control_mode = 0; // 0: 遥控模式, 1: pc模式
+  int control_mode = 1; // 0: 遥控模式, 1: pc模式
   PT_Send_ReadTemp_Cmd(&huart1);
   /* Infinite loop */
   for (;;)

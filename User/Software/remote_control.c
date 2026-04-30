@@ -475,6 +475,9 @@ void PC_Arm_Motor_Control_Updata(void)
     Linzu_motor_data[0].target_angle = pc_dn_data.pc_target_motor_angles[0];
     Linzu_motor_data[1].target_angle = pc_dn_data.pc_target_motor_angles[1];
     Linzu_motor_data[2].target_angle = pc_dn_data.pc_target_motor_angles[2];
+    Damiao_motor_data[0].target_angle = pc_dn_data.pc_target_motor_angles[3];
+    Damiao_motor_data[1].target_angle = pc_dn_data.pc_target_motor_angles[4];
+    Damiao_motor_data[2].target_angle = pc_dn_data.pc_target_motor_angles[5];
 }
 void pc_up_tx_data(void)
 {
