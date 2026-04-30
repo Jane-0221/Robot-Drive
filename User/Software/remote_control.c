@@ -113,17 +113,7 @@ void Pump_Control_Updata(void)
     }
 }
 
-static void arm_motor_adjust_by_channel(uint16_t channel, uint8_t motor_index)
-{
-    if (channel > (MID_VALUE + RANGE))
-    {
-        motor_radians[motor_index] += ARM_MOTOR_STEP;
-    }
-    else if (channel < (MID_VALUE - RANGE))
-    {
-        motor_radians[motor_index] -= ARM_MOTOR_STEP;
-    }
-}
+
 
 void Arm_Motor_Control_Updata(void)
 {
@@ -135,25 +125,74 @@ void Arm_Motor_Control_Updata(void)
     switch (SBUS_CH.CH7)
     {
     case HIGH_VALUE:
-        arm_motor_adjust_by_channel(SBUS_CH.CH1, 0);
-        arm_motor_adjust_by_channel(SBUS_CH.CH2, 1);
+            if (SBUS_CH.CH1 > (MID_VALUE + RANGE))
+            {
+                Linzu_motor_data[0].target_angle += 0.001f;
+            }
+            else if (SBUS_CH.CH1 < (MID_VALUE - RANGE))
+            {
+                Linzu_motor_data[0].target_angle -= 0.001f;
+            }
+
+            if (SBUS_CH.CH2 > (MID_VALUE + RANGE))
+            {
+                Linzu_motor_data[1].target_angle += 0.001f;
+            }
+            else if (SBUS_CH.CH2 < (MID_VALUE - RANGE))
+            {
+                Linzu_motor_data[1].target_angle -= 0.001f;
+            }
         break;
 
     case MID_VALUE:
-        arm_motor_adjust_by_channel(SBUS_CH.CH1, 2);
-        arm_motor_adjust_by_channel(SBUS_CH.CH2, 3);
+       if (SBUS_CH.CH1 > (MID_VALUE + RANGE))
+            {
+                Linzu_motor_data[2].target_angle += 0.001f;
+            }
+            else if (SBUS_CH.CH1 < (MID_VALUE - RANGE))
+            {
+                Linzu_motor_data[2].target_angle -= 0.001f;
+            }
+                if (SBUS_CH.CH2 > (MID_VALUE + RANGE))
+            {
+               Damiao_motor_data[0].target_angle += 0.001f;
+            }
+            else if (SBUS_CH.CH2 < (MID_VALUE - RANGE))
+            {
+                Damiao_motor_data[0].target_angle -= 0.001f;
+            }  
+
         break;
 
     case LOW_VALUE:
-        arm_motor_adjust_by_channel(SBUS_CH.CH1, 4);
-        arm_motor_adjust_by_channel(SBUS_CH.CH2, 5);
+                if (SBUS_CH.CH1 > (MID_VALUE + RANGE))
+            {
+                Damiao_motor_data[1].target_angle += 0.001f;
+            }
+            else if (SBUS_CH.CH1 < (MID_VALUE - RANGE))
+            {
+                Damiao_motor_data[1].target_angle -= 0.001f;
+            }
+                if (SBUS_CH.CH2 > (MID_VALUE + RANGE))
+            {
+               Damiao_motor_data[2].target_angle += 0.001f;
+            }
+            else if (SBUS_CH.CH2 < (MID_VALUE - RANGE))
+            {
+                Damiao_motor_data[2].target_angle -= 0.001f;
+            }  
+
         break;
 
     default:
         break;
     }
 }
-
+void arm_save_home_position(void)
+{
+     switch (SBUS_CH.CH5&&SBUS_CH.CH6==HIGH_VALUE)
+     
+}
 void Head_Motor_Control_Updata(void)
 {
     // 替换原有if-else if结构为switch语句
@@ -413,6 +452,12 @@ void PC_Arm_Motor_Control_Updata(void)
     motor_radians[3] = pc_dn_data.pc_target_servo_angles[3];
     motor_radians[4] = pc_dn_data.pc_target_servo_angles[4];
     motor_radians[5] = pc_dn_data.pc_target_servo_angles[5];
+    // 将PC传入的6路电机角度值赋值给电机臂目标角度
+    Linzu_motor_data[0].target_angle=pc_dn_data.pc_target_motor_angles[0];
+    Linzu_motor_data[1].target_angle=pc_dn_data.pc_target_motor_angles[1];
+    Linzu_motor_data[2].target_angle=pc_dn_data.pc_target_motor_angles[2];
+
+
 }
 void pc_up_tx_data(void)
 {

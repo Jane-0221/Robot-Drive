@@ -312,6 +312,8 @@ void Arm_MT_Task(void *argument)
     {
       Arm_all_tx();
     }
+
+    //手臂距离读取
 #if VL53L0X_COMM_ENABLE
     uint32_t tick_now = osKernelGetTickCount();
     if ((tick_now - vl53l0x_last_tick) >= vl53l0x_period_ticks)

@@ -239,7 +239,7 @@ void HAL_FDCAN_RxFifo0Callback(FDCAN_HandleTypeDef *hfdcan, uint32_t RxFifo0ITs)
           break;
         }
       }
-      // 扩展帧（29位ID）处理逻辑（RobStride电机）
+      // 扩展帧（29位ID）处理逻辑（RobStride电机）灵足电机
       else if (rx_header.IdType == FDCAN_EXTENDED_ID)
       {
         // 从扩展帧ID中提取目标电机ID（右移8位后取低8位）

@@ -139,11 +139,18 @@ void Arm_Init()
     enable_motor_mode(CAN_HANDLE_2, MOTOR_DAMIAO_4_ID, POS_MODE); // 使能4号达妙电机位置模式
     enable_motor_mode(CAN_HANDLE_2, MOTOR_DAMIAO_5_ID, POS_MODE); // 使能5号达妙电机位置模式
     enable_motor_mode(CAN_HANDLE_2, MOTOR_DAMIAO_6_ID, POS_MODE); // 使能6号达妙电机位置模式
+        set_DM_mode(Motor4, POS_MODE);
+        set_DM_mode(Motor5, POS_MODE);
+        set_DM_mode(Motor6, POS_MODE);
 
     // 初始化灵足电机目标参数（角度10°，速度1.0r/min）
-    Linzu_motor_data[0].target_angle = 10.0f;
-    Linzu_motor_data[1].target_angle = 10.0f;
-    Linzu_motor_data[2].target_angle = 10.0f;
+    Set_ZeroPos(&motor1, CAN_HANDLE_2);
+    Set_ZeroPos(&motor2, CAN_HANDLE_2);
+    Set_ZeroPos(&motor3, CAN_HANDLE_2);
+
+    Linzu_motor_data[0].target_angle = 0.0f;
+    Linzu_motor_data[1].target_angle = 0.0f;
+    Linzu_motor_data[2].target_angle = 0.0f;
     Linzu_motor_data[0].target_velocity = 1.0f;
     Linzu_motor_data[1].target_velocity = 1.0f;
     Linzu_motor_data[2].target_velocity = 1.0f;
@@ -155,10 +162,20 @@ void Arm_Init()
     Daran_motor_data[0].target_velocity = 90.0f;
     Daran_motor_data[1].target_velocity = 20.0f;
     Daran_motor_data[2].target_velocity = 20.0f;
-// 初始化灵足电机位置为0
-    Set_ZeroPos(&motor1, CAN_HANDLE_2);
-    Set_ZeroPos(&motor2, CAN_HANDLE_2);
-    Set_ZeroPos(&motor3, CAN_HANDLE_2);
+    // 初始化灵足电机位置为0
+
+    // 初始化电机失能
+    // Disenable_Motor(&motor1, CAN_HANDLE_2, 0U);
+    // osDelay(1);
+    // Disenable_Motor(&motor2, CAN_HANDLE_2, 0U);
+    // osDelay(1);
+    // Disenable_Motor(&motor3, CAN_HANDLE_2, 0U);
+    // osDelay(1);
+    // disable_motor_mode(CAN_HANDLE_2, MOTOR_DAMIAO_4_ID, POS_MODE);
+    // osDelay(1);
+    // disable_motor_mode(CAN_HANDLE_2, MOTOR_DAMIAO_5_ID, POS_MODE);
+    // osDelay(1);
+    // disable_motor_mode(CAN_HANDLE_2, MOTOR_DAMIAO_6_ID, POS_MODE);
 }
 
 /**
@@ -236,10 +253,10 @@ void Arm_Daran_motor3()
  */
 void Arm_Damiao_motor4()
 {
-    set_DM_mode(Motor4, POS_MODE);
+    CAN_Send_Enter(CAN_HANDLE_2, MOTOR_DAMIAO_4_ID);
     set_DM_pos_vel(pos_motor.MT04, vel_motor.MT04, Motor4);
-    pos_speed_ctrl(CAN_HANDLE_2, MOTOR_DAMIAO_4_ID, 5, 10);
-    pos_motor.MT04 = 20;
+    pos_speed_ctrl(CAN_HANDLE_2, MOTOR_DAMIAO_4_ID, Damiao_motor_data[0].target_angle, Damiao_motor_data[0].target_velocity);
+
 }
 
 /**
@@ -249,9 +266,10 @@ void Arm_Damiao_motor4()
  */
 void Arm_Damiao_motor5()
 {
-    set_DM_mode(Motor5, POS_MODE);
+    CAN_Send_Enter(CAN_HANDLE_2, MOTOR_DAMIAO_5_ID);
+   // set_DM_mode(Motor5, POS_MODE);
     set_DM_pos_vel(pos_motor.MT05, vel_motor.MT05, Motor5);
-    pos_speed_ctrl(CAN_HANDLE_2, MOTOR_DAMIAO_5_ID, 10, 1);
+    pos_speed_ctrl(CAN_HANDLE_2, MOTOR_DAMIAO_5_ID, Damiao_motor_data[1].target_angle, Damiao_motor_data[1].target_velocity);
 }
 
 /**
@@ -264,10 +282,11 @@ void Arm_Damiao_motor5()
  */
 void Arm_Damiao_motor6()
 {
-    set_DM_mode(Motor6, POS_MODE);
+    CAN_Send_Enter(CAN_HANDLE_2, MOTOR_DAMIAO_6_ID);
+   // set_DM_mode(Motor6, POS_MODE);
     set_DM_pos_vel(pos_motor.MT06, vel_motor.MT06, Motor6);
-    pos_motor.MT06 = 10;
-    pos_speed_ctrl(CAN_HANDLE_2, MOTOR_DAMIAO_6_ID, arm_motor[Motor6].ctrl.pos_set, 1);
+  //  pos_motor.MT06 = 10;
+    pos_speed_ctrl(CAN_HANDLE_2, MOTOR_DAMIAO_6_ID, Damiao_motor_data[2].target_angle, Damiao_motor_data[2].target_velocity);
 }
 
 /**
@@ -348,10 +367,10 @@ void Arm_all_tx()
         osDelay(1);
     }
 
-    // Arm_Damiao_motor4();
-    // osDelay(1);
-    // Arm_Damiao_motor5();
-    // osDelay(1);
-    // Arm_Damiao_motor6();
-    // osDelay(1);
+    Arm_Damiao_motor4();
+    osDelay(1);
+    Arm_Damiao_motor5();
+    osDelay(1);
+    Arm_Damiao_motor6();
+    osDelay(1);
 }
