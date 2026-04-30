@@ -102,6 +102,11 @@ uint8_t Arm_Motor_Disable_IsActive(void)
     return arm_motor_disable_active;
 }
 
+uint8_t Arm_Save_Position_IsActive(void)
+{
+    return arm_save_position;
+}
+
 void Pump_Control_Updata(void)
 {
     if (SBUS_CH.CH8 == HIGH_VALUE)
@@ -116,6 +121,11 @@ void Pump_Control_Updata(void)
 
 void Arm_Motor_Control_Updata(void)
 {
+    if (SBUS_CH.CH1 == 0 && SBUS_CH.CH2 == 0)
+    {
+        return;
+    }
+
     if (SBUS_CH.CH8 != LOW_VALUE)
     {
         return;
@@ -198,7 +208,9 @@ void arm_save_home_position(void)
         Damiao_motor_data[0].target_angle = 0.0f;
         Damiao_motor_data[1].target_angle = 0.0f;
         Damiao_motor_data[2].target_angle = 0.0f;
+        return;
     }
+    arm_save_position = 0U;
 }
 void Head_Motor_Control_Updata(void)
 {

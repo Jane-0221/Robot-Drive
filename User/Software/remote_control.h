@@ -3,7 +3,6 @@
 
 #include "stdint.h"
 #include "main.h"
-
 /**
  * @brief 遥控控制模块初始化。
  *
@@ -52,6 +51,7 @@ uint8_t Arm_Motor_Disable_IsActive(void);
 
 
 void arm_save_home_position(void);
+uint8_t Arm_Save_Position_IsActive(void);
 /**
  * @brief 根据 SBUS 遥控通道更新升降机构目标高度。
  *

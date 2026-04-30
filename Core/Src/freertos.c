@@ -311,12 +311,12 @@ void Arm_MT_Task(void *argument)
     osDelay(1);
     if (Arm_Motor_Disable_IsActive() == 0U)
     {
-      if (arm_save_position == 0U)
+      if (Arm_Save_Position_IsActive() == 0U)
       {
         Arm_all_tx();
       }
 
-      if (arm_save_position == 1U)
+      if (Arm_Save_Position_IsActive() == 1U)
       {
         Arm_save_position();
       }

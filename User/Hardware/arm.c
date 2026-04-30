@@ -139,14 +139,14 @@ void Arm_Init()
     enable_motor_mode(CAN_HANDLE_2, MOTOR_DAMIAO_4_ID, POS_MODE); // 使能4号达妙电机位置模式
     enable_motor_mode(CAN_HANDLE_2, MOTOR_DAMIAO_5_ID, POS_MODE); // 使能5号达妙电机位置模式
     enable_motor_mode(CAN_HANDLE_2, MOTOR_DAMIAO_6_ID, POS_MODE); // 使能6号达妙电机位置模式
-        set_DM_mode(Motor4, POS_MODE);
-        set_DM_mode(Motor5, POS_MODE);
-        set_DM_mode(Motor6, POS_MODE);
+    set_DM_mode(Motor4, POS_MODE);
+    set_DM_mode(Motor5, POS_MODE);
+    set_DM_mode(Motor6, POS_MODE);
 
     // 初始化灵足电机目标参数（角度10°，速度1.0r/min）
-    Set_ZeroPos(&motor1, CAN_HANDLE_2);
-    Set_ZeroPos(&motor2, CAN_HANDLE_2);
-    Set_ZeroPos(&motor3, CAN_HANDLE_2);
+    // Set_ZeroPos(&motor1, CAN_HANDLE_2);
+    // Set_ZeroPos(&motor2, CAN_HANDLE_2);
+    // Set_ZeroPos(&motor3, CAN_HANDLE_2);
 
     Linzu_motor_data[0].target_angle = 0.0f;
     Linzu_motor_data[1].target_angle = 0.0f;
@@ -156,10 +156,10 @@ void Arm_Init()
     Linzu_motor_data[2].target_velocity = 1.0f;
 
     // 初始化大然电机目标参数（角度10°，速度分别为90/20/20r/min）
-    Daran_motor_data[0].target_angle = 10.0f;
-    Daran_motor_data[1].target_angle = 10.0f;
-    Daran_motor_data[2].target_angle = 10.0f;
-    Daran_motor_data[0].target_velocity = 90.0f;
+    Daran_motor_data[0].target_angle = 0.0f;
+    Daran_motor_data[1].target_angle = 0.0f;
+    Daran_motor_data[2].target_angle = 0.0f;
+    Daran_motor_data[0].target_velocity = 20.0f;
     Daran_motor_data[1].target_velocity = 20.0f;
     Daran_motor_data[2].target_velocity = 20.0f;
     // 初始化灵足电机位置为0
@@ -185,7 +185,7 @@ void Arm_Init()
  */
 void Arm_Linzu_motor1()
 {
-    RobStride_Motor_CSP_control(&motor1, CAN_HANDLE_2, Linzu_motor_data[0].target_angle, Linzu_motor_data[0].target_velocity);
+     RobStride_Motor_CSP_control(&motor1, CAN_HANDLE_2, Linzu_motor_data[0].target_angle, Linzu_motor_data[0].target_velocity);
 }
 
 /**
@@ -217,7 +217,7 @@ void Arm_Linzu_motor3()
  */
 void Arm_Daran_motor1()
 {
-    HAL_Delay(1);
+    osDelay(1);
     set_angle(CAN_HANDLE_2, MOTOR_DARAN_1_ID, Daran_motor_data[0].target_angle, Daran_motor_data[0].target_velocity, 10.0f, 1);
 }
 
@@ -228,7 +228,7 @@ void Arm_Daran_motor1()
  */
 void Arm_Daran_motor2()
 {
-    HAL_Delay(1);
+    osDelay(1);
     set_angle(CAN_HANDLE_2, MOTOR_DARAN_2_ID, Daran_motor_data[1].target_angle, Daran_motor_data[1].target_velocity, 10.0f, 1);
 }
 
@@ -239,7 +239,7 @@ void Arm_Daran_motor2()
  */
 void Arm_Daran_motor3()
 {
-    HAL_Delay(1);
+    osDelay(1);
     set_angle(CAN_HANDLE_2, MOTOR_DARAN_3_ID, Daran_motor_data[2].target_angle, Daran_motor_data[2].target_velocity, 10.0f, 1);
 }
 
@@ -256,7 +256,6 @@ void Arm_Damiao_motor4()
     CAN_Send_Enter(CAN_HANDLE_2, MOTOR_DAMIAO_4_ID);
     set_DM_pos_vel(pos_motor.MT04, vel_motor.MT04, Motor4);
     pos_speed_ctrl(CAN_HANDLE_2, MOTOR_DAMIAO_4_ID, Damiao_motor_data[0].target_angle, Damiao_motor_data[0].target_velocity);
-
 }
 
 /**
@@ -267,7 +266,7 @@ void Arm_Damiao_motor4()
 void Arm_Damiao_motor5()
 {
     CAN_Send_Enter(CAN_HANDLE_2, MOTOR_DAMIAO_5_ID);
-   // set_DM_mode(Motor5, POS_MODE);
+    // set_DM_mode(Motor5, POS_MODE);
     set_DM_pos_vel(pos_motor.MT05, vel_motor.MT05, Motor5);
     pos_speed_ctrl(CAN_HANDLE_2, MOTOR_DAMIAO_5_ID, Damiao_motor_data[1].target_angle, Damiao_motor_data[1].target_velocity);
 }
@@ -283,9 +282,9 @@ void Arm_Damiao_motor5()
 void Arm_Damiao_motor6()
 {
     CAN_Send_Enter(CAN_HANDLE_2, MOTOR_DAMIAO_6_ID);
-   // set_DM_mode(Motor6, POS_MODE);
+    // set_DM_mode(Motor6, POS_MODE);
     set_DM_pos_vel(pos_motor.MT06, vel_motor.MT06, Motor6);
-  //  pos_motor.MT06 = 10;
+    //  pos_motor.MT06 = 10;
     pos_speed_ctrl(CAN_HANDLE_2, MOTOR_DAMIAO_6_ID, Damiao_motor_data[2].target_angle, Damiao_motor_data[2].target_velocity);
 }
 
@@ -367,18 +366,19 @@ void Arm_all_tx()
         osDelay(1);
     }
 
-    Arm_Damiao_motor4();
-    osDelay(1);
-    Arm_Damiao_motor5();
-    osDelay(1);
-    Arm_Damiao_motor6();
-    osDelay(1);
+    // Arm_Damiao_motor4();
+    // osDelay(1);
+    // Arm_Damiao_motor5();
+    // osDelay(1);
+    // Arm_Damiao_motor6();
+    // osDelay(1);
 }
 void Arm_save_position()
 {
 
     Set_ZeroPos(&motor1, CAN_HANDLE_2);
     osDelay(1);
+
     Set_ZeroPos(&motor2, CAN_HANDLE_2);
     osDelay(1);
     Set_ZeroPos(&motor3, CAN_HANDLE_2);
@@ -388,5 +388,5 @@ void Arm_save_position()
     CAN_Send_Save_Zero(CAN_HANDLE_2, MOTOR_DAMIAO_5_ID);
     osDelay(1);
     CAN_Send_Save_Zero(CAN_HANDLE_2, MOTOR_DAMIAO_6_ID);
-    osDelay(1);
+
 }
