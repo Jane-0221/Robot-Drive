@@ -2,7 +2,7 @@
     "configurations": [
         {
             "name": "stm32h723",
-            "compilerPath": "C:/ST/STM32CubeCLT_1.21.0/GNU-tools-for-STM32/bin/arm-none-eabi-gcc.exe",
+            "compilerPath": "arm-none-eabi-gcc",
             "intelliSenseMode": "windows-gcc-arm",
             "cStandard": "c17",
             "cppStandard": "gnu++14",

@@ -121,4 +121,6 @@ extern void Arm_All_Data_update(void); // 批量更新所有电机状态数据
 extern void Arm_all_tx(void);          // 发送所有电机控制指令
 extern void Arm_save_position(void);   // 保存当前位置
 
+extern void Arm_CheckAndReenableDisabledMotors(void);
+
 #endif

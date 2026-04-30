@@ -619,7 +619,7 @@ void RobStride_Motor_CSP_control(RobStride_Motor_t* motor, hcan_t* hcan, float A
         motor->Motor_Set_All.set_angle = Angle;
         motor->Motor_Set_All.set_limit_speed = limit_spd;
         
-        if (motor->drw.run_mode.data != 1)
+        if (motor->drw.run_mode.data != CSP_control_mode)
         {
             Set_RobStride_Motor_parameter(motor, hcan, 0X7005, CSP_control_mode, 'j');
             Get_RobStride_Motor_parameter(motor, hcan, 0x7005);

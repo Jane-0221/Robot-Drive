@@ -291,6 +291,7 @@ void Remote_control_Task(void *argument)
 void Arm_MT_Task(void *argument)
 {
   /* USER CODE BEGIN Arm_MT_Task */
+  uint8_t arm_save_position_latched = 0U;
 #if VL53L0X_COMM_ENABLE
   uint32_t vl53l0x_last_tick = osKernelGetTickCount();
   uint32_t vl53l0x_period_ticks = osKernelGetTickFreq() / 100U;
@@ -309,17 +310,28 @@ void Arm_MT_Task(void *argument)
   for (;;)
   {
     osDelay(1);
+    Arm_CheckAndReenableDisabledMotors();
     if (Arm_Motor_Disable_IsActive() == 0U)
     {
-      if (Arm_Save_Position_IsActive() == 0U)
-      {
-        Arm_all_tx();
-      }
+      uint8_t arm_save_active = Arm_Save_Position_IsActive();
 
-      if (Arm_Save_Position_IsActive() == 1U)
+      if (arm_save_active != 0U)
       {
-        Arm_save_position();
+        if (arm_save_position_latched == 0U)
+        {
+          Arm_save_position();
+          arm_save_position_latched = 1U;
+        }
       }
+      else
+      {
+        arm_save_position_latched = 0U;
+      }
+      Arm_all_tx();
+    }
+    else
+    {
+      arm_save_position_latched = 0U;
     }
 
     // 手臂距离读取
