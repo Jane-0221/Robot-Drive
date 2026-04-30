@@ -15,6 +15,7 @@
 #include "arm_sv.h"
 #include "omni_wheel.h"
 #include "cmsis_os.h"
+#include "Robstride04.h"
 // 遥控器值
 #define LOW_VALUE 353
 #define MID_VALUE 1024
@@ -25,7 +26,7 @@
 
 static volatile uint8_t arm_motor_disable_active = 0U;
 static uint8_t arm_motor_disable_latched = 0U;
-
+static uint8_t arm_save_position = 0U;
 static uint8_t sbus_match(uint16_t value, uint16_t target)
 {
     return (value >= (target - RANGE)) && (value <= (target + RANGE));
@@ -113,8 +114,6 @@ void Pump_Control_Updata(void)
     }
 }
 
-
-
 void Arm_Motor_Control_Updata(void)
 {
     if (SBUS_CH.CH8 != LOW_VALUE)
@@ -125,62 +124,62 @@ void Arm_Motor_Control_Updata(void)
     switch (SBUS_CH.CH7)
     {
     case HIGH_VALUE:
-            if (SBUS_CH.CH1 > (MID_VALUE + RANGE))
-            {
-                Linzu_motor_data[0].target_angle += 0.001f;
-            }
-            else if (SBUS_CH.CH1 < (MID_VALUE - RANGE))
-            {
-                Linzu_motor_data[0].target_angle -= 0.001f;
-            }
+        if (SBUS_CH.CH1 > (MID_VALUE + RANGE))
+        {
+            Linzu_motor_data[0].target_angle += 0.001f;
+        }
+        else if (SBUS_CH.CH1 < (MID_VALUE - RANGE))
+        {
+            Linzu_motor_data[0].target_angle -= 0.001f;
+        }
 
-            if (SBUS_CH.CH2 > (MID_VALUE + RANGE))
-            {
-                Linzu_motor_data[1].target_angle += 0.001f;
-            }
-            else if (SBUS_CH.CH2 < (MID_VALUE - RANGE))
-            {
-                Linzu_motor_data[1].target_angle -= 0.001f;
-            }
+        if (SBUS_CH.CH2 > (MID_VALUE + RANGE))
+        {
+            Linzu_motor_data[1].target_angle += 0.001f;
+        }
+        else if (SBUS_CH.CH2 < (MID_VALUE - RANGE))
+        {
+            Linzu_motor_data[1].target_angle -= 0.001f;
+        }
         break;
 
     case MID_VALUE:
-       if (SBUS_CH.CH1 > (MID_VALUE + RANGE))
-            {
-                Linzu_motor_data[2].target_angle += 0.001f;
-            }
-            else if (SBUS_CH.CH1 < (MID_VALUE - RANGE))
-            {
-                Linzu_motor_data[2].target_angle -= 0.001f;
-            }
-                if (SBUS_CH.CH2 > (MID_VALUE + RANGE))
-            {
-               Damiao_motor_data[0].target_angle += 0.001f;
-            }
-            else if (SBUS_CH.CH2 < (MID_VALUE - RANGE))
-            {
-                Damiao_motor_data[0].target_angle -= 0.001f;
-            }  
+        if (SBUS_CH.CH1 > (MID_VALUE + RANGE))
+        {
+            Linzu_motor_data[2].target_angle += 0.001f;
+        }
+        else if (SBUS_CH.CH1 < (MID_VALUE - RANGE))
+        {
+            Linzu_motor_data[2].target_angle -= 0.001f;
+        }
+        if (SBUS_CH.CH2 > (MID_VALUE + RANGE))
+        {
+            Damiao_motor_data[0].target_angle += 0.001f;
+        }
+        else if (SBUS_CH.CH2 < (MID_VALUE - RANGE))
+        {
+            Damiao_motor_data[0].target_angle -= 0.001f;
+        }
 
         break;
 
     case LOW_VALUE:
-                if (SBUS_CH.CH1 > (MID_VALUE + RANGE))
-            {
-                Damiao_motor_data[1].target_angle += 0.001f;
-            }
-            else if (SBUS_CH.CH1 < (MID_VALUE - RANGE))
-            {
-                Damiao_motor_data[1].target_angle -= 0.001f;
-            }
-                if (SBUS_CH.CH2 > (MID_VALUE + RANGE))
-            {
-               Damiao_motor_data[2].target_angle += 0.001f;
-            }
-            else if (SBUS_CH.CH2 < (MID_VALUE - RANGE))
-            {
-                Damiao_motor_data[2].target_angle -= 0.001f;
-            }  
+        if (SBUS_CH.CH1 > (MID_VALUE + RANGE))
+        {
+            Damiao_motor_data[1].target_angle += 0.001f;
+        }
+        else if (SBUS_CH.CH1 < (MID_VALUE - RANGE))
+        {
+            Damiao_motor_data[1].target_angle -= 0.001f;
+        }
+        if (SBUS_CH.CH2 > (MID_VALUE + RANGE))
+        {
+            Damiao_motor_data[2].target_angle += 0.001f;
+        }
+        else if (SBUS_CH.CH2 < (MID_VALUE - RANGE))
+        {
+            Damiao_motor_data[2].target_angle -= 0.001f;
+        }
 
         break;
 
@@ -190,8 +189,16 @@ void Arm_Motor_Control_Updata(void)
 }
 void arm_save_home_position(void)
 {
-     switch (SBUS_CH.CH5&&SBUS_CH.CH6==HIGH_VALUE)
-     
+    if (SBUS_CH.CH5 == HIGH_VALUE && SBUS_CH.CH6 == HIGH_VALUE)
+    {
+        arm_save_position = 1U;
+        Linzu_motor_data[0].target_angle = 0.0f;
+        Linzu_motor_data[1].target_angle = 0.0f;
+        Linzu_motor_data[2].target_angle = 0.0f;
+        Damiao_motor_data[0].target_angle = 0.0f;
+        Damiao_motor_data[1].target_angle = 0.0f;
+        Damiao_motor_data[2].target_angle = 0.0f;
+    }
 }
 void Head_Motor_Control_Updata(void)
 {
@@ -202,7 +209,7 @@ void Head_Motor_Control_Updata(void)
         {
         case HIGH_VALUE:
             Daran_motor_data[0].target_angle = 0;
-            Daran_motor_data[1].target_angle = 0;//头部电机
+            Daran_motor_data[1].target_angle = 0; // 头部电机
 
             // duties_tx.duty0 = 0.12;
             //  duties_tx.duty1 = 0.12;
@@ -238,7 +245,7 @@ void Head_Motor_Control_Updata(void)
 
         case MID_VALUE:
             Daran_motor_data[0].target_angle = 90;
-            Daran_motor_data[1].target_angle = 90;//头部电机
+            Daran_motor_data[1].target_angle = 90; // 头部电机
 
             // duties_tx.duty0 = 0.075;
             // duties_tx.duty1 = 0.075;
@@ -453,11 +460,9 @@ void PC_Arm_Motor_Control_Updata(void)
     motor_radians[4] = pc_dn_data.pc_target_servo_angles[4];
     motor_radians[5] = pc_dn_data.pc_target_servo_angles[5];
     // 将PC传入的6路电机角度值赋值给电机臂目标角度
-    Linzu_motor_data[0].target_angle=pc_dn_data.pc_target_motor_angles[0];
-    Linzu_motor_data[1].target_angle=pc_dn_data.pc_target_motor_angles[1];
-    Linzu_motor_data[2].target_angle=pc_dn_data.pc_target_motor_angles[2];
-
-
+    Linzu_motor_data[0].target_angle = pc_dn_data.pc_target_motor_angles[0];
+    Linzu_motor_data[1].target_angle = pc_dn_data.pc_target_motor_angles[1];
+    Linzu_motor_data[2].target_angle = pc_dn_data.pc_target_motor_angles[2];
 }
 void pc_up_tx_data(void)
 {

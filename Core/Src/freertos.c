@@ -260,6 +260,7 @@ void Remote_control_Task(void *argument)
       Head_Motor_Control_Updata();
       Arm_Motor_Control_Updata();
       Up_Down_Motor_Control_Updata();
+      arm_save_home_position();
     }
     else if ((control_mode == 1))
     {
@@ -310,10 +311,18 @@ void Arm_MT_Task(void *argument)
     osDelay(1);
     if (Arm_Motor_Disable_IsActive() == 0U)
     {
-      Arm_all_tx();
+      if (arm_save_position == 0U)
+      {
+        Arm_all_tx();
+      }
+
+      if (arm_save_position == 1U)
+      {
+        Arm_save_position();
+      }
     }
 
-    //手臂距离读取
+    // 手臂距离读取
 #if VL53L0X_COMM_ENABLE
     uint32_t tick_now = osKernelGetTickCount();
     if ((tick_now - vl53l0x_last_tick) >= vl53l0x_period_ticks)

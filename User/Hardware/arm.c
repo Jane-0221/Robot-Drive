@@ -374,3 +374,19 @@ void Arm_all_tx()
     Arm_Damiao_motor6();
     osDelay(1);
 }
+void Arm_save_position()
+{
+
+    Set_ZeroPos(&motor1, CAN_HANDLE_2);
+    osDelay(1);
+    Set_ZeroPos(&motor2, CAN_HANDLE_2);
+    osDelay(1);
+    Set_ZeroPos(&motor3, CAN_HANDLE_2);
+    osDelay(1);
+    CAN_Send_Save_Zero(CAN_HANDLE_2, MOTOR_DAMIAO_4_ID);
+    osDelay(1);
+    CAN_Send_Save_Zero(CAN_HANDLE_2, MOTOR_DAMIAO_5_ID);
+    osDelay(1);
+    CAN_Send_Save_Zero(CAN_HANDLE_2, MOTOR_DAMIAO_6_ID);
+    osDelay(1);
+}
