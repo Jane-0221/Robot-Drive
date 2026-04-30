@@ -115,6 +115,7 @@ void Arm_Damiao_motor6(void); // 控制6号达妙电机
 /** 电机状态数据更新函数 */
 void Arm_Linzu_Data_update(void); // 更新灵足电机当前角度/速度
 void Arm_Daran_Data_update(void); // 更新大然电机当前角度/速度
+void Arm_Damiao_Data_update(void); // 更新达妙电机当前角度/速度
 
 /** 全局函数声明（跨文件调用） */
 extern void Arm_All_Data_update(void); // 批量更新所有电机状态数据

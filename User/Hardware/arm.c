@@ -262,8 +262,6 @@ void Arm_Daran_motor3()
  */
 void Arm_Damiao_motor4()
 {
-     //CAN_Send_Enter(CAN_HANDLE_2, MOTOR_DAMIAO_4_ID);
-    //set_DM_pos_vel(pos_motor.MT04, vel_motor.MT04, Motor4);
     pos_speed_ctrl(CAN_HANDLE_2, MOTOR_DAMIAO_4_ID, Damiao_motor_data[0].target_angle, Damiao_motor_data[0].target_velocity);
 }
 
@@ -274,9 +272,6 @@ void Arm_Damiao_motor4()
  */
 void Arm_Damiao_motor5()
 {
-    // CAN_Send_Enter(CAN_HANDLE_2, MOTOR_DAMIAO_5_ID);
-    //set_DM_mode(Motor5, POS_MODE);
-    // set_DM_pos_vel(pos_motor.MT05, vel_motor.MT05, Motor5);
     pos_speed_ctrl(CAN_HANDLE_2, MOTOR_DAMIAO_5_ID, Damiao_motor_data[1].target_angle, Damiao_motor_data[1].target_velocity);
 }
 
@@ -290,9 +285,6 @@ void Arm_Damiao_motor5()
  */
 void Arm_Damiao_motor6()
 {
-    // CAN_Send_Enter(CAN_HANDLE_2, MOTOR_DAMIAO_6_ID);
-    //set_DM_mode(Motor6, POS_MODE);
-    // set_DM_pos_vel(pos_motor.MT06, vel_motor.MT06, Motor6);
     pos_speed_ctrl(CAN_HANDLE_2, MOTOR_DAMIAO_6_ID, Damiao_motor_data[2].target_angle, Damiao_motor_data[2].target_velocity);
 }
 
@@ -320,8 +312,6 @@ void Arm_Linzu_Data_update()
  */
 void Arm_Daran_Data_update()
 {
-    // printf("Angle: %.2f°, Speed: %.2f r/min, Torque: %.2f Nm\r\n",
-    //        daran_motor_state[0].angle, daran_motor_state[0].speed, daran_motor_state[0].torque);
 
     Daran_motor_data[0].current_angle = daran_motor_state[0].angle;
     Daran_motor_data[1].current_angle = daran_motor_state[1].angle;
@@ -329,6 +319,15 @@ void Arm_Daran_Data_update()
     Daran_motor_data[0].current_velocity = daran_motor_state[0].speed;
     Daran_motor_data[1].current_velocity = daran_motor_state[1].speed;
     Daran_motor_data[2].current_velocity = daran_motor_state[2].speed;
+}
+void Arm_Damiao_Data_update()
+{
+    Damiao_motor_data[0].current_angle = arm_motor[3].para.pos;
+    Damiao_motor_data[1].current_angle = arm_motor[4].para.pos;
+    Damiao_motor_data[2].current_angle = arm_motor[5].para.pos;
+    Damiao_motor_data[0].current_velocity = arm_motor[4].para.vel;
+    Damiao_motor_data[1].current_velocity = arm_motor[5].para.vel;
+    Damiao_motor_data[2].current_velocity = arm_motor[6].para.vel;
 }
 
 /**
@@ -341,8 +340,10 @@ void Arm_Daran_Data_update()
 void Arm_All_Data_update()
 {
     Arm_Linzu_Data_update();
-    HAL_Delay(1);
+    HAL_Delay(1);    HAL_Delay(1);    HAL_Delay(1);
     Arm_Daran_Data_update();
+    HAL_Delay(1);
+    Arm_Damiao_Data_update();
 }
 
 /**
