@@ -253,6 +253,7 @@ void Remote_control_Task(void *argument)
     PT_Send_ReadPress_Cmd(&huart1);
     update_sbus(sbus_data_buffer, &SBUS_CH); //
     uint8_t arm_disable_active = Arm_Motor_Disable_Updata();
+    Head_Motor_Enable_Disable_Updata();
     if ((control_mode == 0))
     {
       // 遥控模式
@@ -307,8 +308,8 @@ void Arm_MT_Task(void *argument)
   (void)VL53L0X_Init();
 #endif
   Arm_save_position();
-      /* Infinite loop */
-      for (;;)
+  /* Infinite loop */
+  for (;;)
   {
     osDelay(1);
     Arm_CheckAndReenableDisabledMotors();
@@ -408,10 +409,9 @@ void Head_Task(void *argument)
   /* Infinite loop */
   for (;;)
   {
-    Head_all_tx();
-
+    
     Head_Lk_Data_update();
-
+    Head_all_tx();
     osDelay(1);
   }
   /* USER CODE END Head_Task */

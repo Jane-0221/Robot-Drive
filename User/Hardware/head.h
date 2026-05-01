@@ -68,6 +68,24 @@ extern void Head_Lk_motor1(void);
 extern void Head_all_tx(void);
 
 /**
+ * @brief 使能头部两个电机
+ * @retval 无
+ */
+extern void Head_Motor_Enable(void);
+
+/**
+ * @brief 失能头部两个电机
+ * @retval 无
+ */
+extern void Head_Motor_Disable(void);
+
+/**
+ * @brief 将当前位置设置为头部电机180度位置
+ * @retval 无
+ */
+extern void Head_save_position(void);
+
+/**
  * @brief 更新头部连杆电机当前状态数据
  * @retval 无
  * @note   从motor_linkong数组读取科泰电机反馈数据，更新head_motor_data的current_angle/current_velocity

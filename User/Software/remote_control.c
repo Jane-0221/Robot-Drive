@@ -26,6 +26,8 @@
 
 static volatile uint8_t arm_motor_disable_active = 0U;
 static uint8_t arm_motor_disable_latched = 0U;
+static volatile uint8_t head_motor_disable_active = 0U;
+static uint8_t head_motor_enabled_latched = 1U;
 static uint8_t arm_save_position = 0U;
 static uint8_t sbus_match(uint16_t value, uint16_t target)
 {
@@ -100,6 +102,42 @@ uint8_t Arm_Motor_Disable_Updata(void)
 uint8_t Arm_Motor_Disable_IsActive(void)
 {
     return arm_motor_disable_active;
+}
+
+uint8_t Head_Motor_Enable_Disable_Updata(void)
+{
+    if (SBUS_CH.CH8 == HIGH_VALUE)
+    {
+        head_motor_disable_active = 1U;
+
+        if (head_motor_enabled_latched != 0U)
+        {
+            Head_Motor_Disable();
+            head_motor_enabled_latched = 0U;
+        }
+
+        return 1U;
+    }
+
+    if (SBUS_CH.CH8 == LOW_VALUE)
+    {
+        head_motor_disable_active = 0U;
+
+        if (head_motor_enabled_latched == 0U)
+        {
+            Head_Motor_Enable();
+            head_motor_enabled_latched = 1U;
+        }
+
+        return 0U;
+    }
+
+    return head_motor_disable_active;
+}
+
+uint8_t Head_Motor_Disable_IsActive(void)
+{
+    return head_motor_disable_active;
 }
 
 uint8_t Arm_Save_Position_IsActive(void)
@@ -208,6 +246,9 @@ void arm_save_home_position(void)
         Damiao_motor_data[0].target_angle = 0.0f;
         Damiao_motor_data[1].target_angle = 0.0f;
         Damiao_motor_data[2].target_angle = 0.0f;
+        Head_save_position();
+        head_motor_data[0].target_angle = 18000;
+        head_motor_data[1].target_angle = 18000;
         return;
     }
     arm_save_position = 0U;
@@ -220,8 +261,8 @@ void Head_Motor_Control_Updata(void)
         switch (SBUS_CH.CH6)
         {
         case HIGH_VALUE:
-            head_motor_data[0].target_angle = 0;
-            head_motor_data[1].target_angle = 0; //
+            // head_motor_data[0].target_angle = 0;
+            // head_motor_data[1].target_angle = 0; //
 
             // duties_tx.duty0 = 0.12;
             //  duties_tx.duty1 = 0.12;
@@ -256,8 +297,8 @@ void Head_Motor_Control_Updata(void)
             break;
 
         case MID_VALUE:
-            head_motor_data[0].target_angle = 9000;
-            head_motor_data[1].target_angle = 9000; // 头部电机
+            // head_motor_data[0].target_angle = 9000;
+            // head_motor_data[1].target_angle = 9000; // 头部电机
 
             // duties_tx.duty0 = 0.075;
             // duties_tx.duty1 = 0.075;
@@ -292,8 +333,8 @@ void Head_Motor_Control_Updata(void)
             break;
 
         case LOW_VALUE:
-            head_motor_data[0].target_angle = 18000;
-            head_motor_data[1].target_angle = 18000;
+            // head_motor_data[0].target_angle = 18000;
+            // head_motor_data[1].target_angle = 18000;
 
             // duties_tx.duty0 = 0.03;
             // duties_tx.duty1 = 0.03;

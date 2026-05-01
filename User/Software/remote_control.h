@@ -48,6 +48,22 @@ uint8_t Arm_Motor_Disable_Updata(void);
  */
 uint8_t Arm_Motor_Disable_IsActive(void);
 
+/**
+ * @brief 根据 CH8 控制头部电机使能/失能。
+ *
+ * CH8 高位时失能头部电机，CH8 低位时使能头部电机；中位保持上一次状态。
+ *
+ * @return uint8_t 1 表示头部电机处于失能请求状态，0 表示未失能。
+ */
+uint8_t Head_Motor_Enable_Disable_Updata(void);
+
+/**
+ * @brief 获取头部电机失能请求当前是否有效。
+ *
+ * @return uint8_t 1 表示头部电机失能请求有效，0 表示无效。
+ */
+uint8_t Head_Motor_Disable_IsActive(void);
+
 
 
 void arm_save_home_position(void);

@@ -1,8 +1,12 @@
 #include "head.h"
 #include "ktech_motor.h"
 
+#define HEAD_POSITION_180_DEG 18000U
+
 KTech_Motor_t motor_linkong[2];         // 凌空电机结构体定义
 Head_MotorData_t head_motor_data[2];    // 头部电机数据结构体定义
+
+static volatile uint8_t head_motor_enabled = 1U;
 
 void Head_Init()
 {
@@ -97,9 +101,58 @@ void Head_Lk_motor2()
 // 头部电机整体发送函数
 void Head_all_tx()
 {
+    if (head_motor_enabled == 0U)
+    {
+        return;
+    }
+
     Head_Lk_motor1();
     HAL_Delay(1);
     Head_Lk_motor2();
+}
+
+void Head_Motor_Enable(void)
+{
+    ktech_motor_on(CAN_HANDLE_1, MOTOR_LINKONG_1_ID);
+    HAL_Delay(1);
+    ktech_motor_on(CAN_HANDLE_1, MOTOR_LINKONG_2_ID);
+    head_motor_enabled = 1U;
+}
+
+void Head_Motor_Disable(void)
+{
+    head_motor_enabled = 0U;
+    ktech_motor_off(CAN_HANDLE_1, MOTOR_LINKONG_1_ID);
+    HAL_Delay(1);
+    ktech_motor_off(CAN_HANDLE_1, MOTOR_LINKONG_2_ID);
+}
+
+// 将当前位置设置为指定角度，并保持该角度
+static void Head_SaveAngleAndHold(uint8_t motor_index, uint16_t motor_id, uint32_t angle)
+{
+    ktech_motor_stop(CAN_HANDLE_1, motor_id);
+    HAL_Delay(1);
+
+    ktech_set_angle_ram(CAN_HANDLE_1, motor_id, (int32_t)angle);
+    head_motor_data[motor_index].target_angle = angle;
+    HAL_Delay(1);
+
+    ktech_motor_on(CAN_HANDLE_1, motor_id);
+    HAL_Delay(1);
+
+    ktech_pos_single2(CAN_HANDLE_1,
+                      motor_id,
+                      head_motor_data[motor_index].direction,
+                      angle,
+                      head_motor_data[motor_index].max_speed);
+}
+
+void Head_save_position(void)
+{
+    Head_SaveAngleAndHold(0U, MOTOR_LINKONG_1_ID, HEAD_POSITION_180_DEG);
+    HAL_Delay(1);
+    Head_SaveAngleAndHold(1U, MOTOR_LINKONG_2_ID, HEAD_POSITION_180_DEG);
+    head_motor_enabled = 1U;
 }
 
 // 头部电机状态数据更新函数
