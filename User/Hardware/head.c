@@ -6,6 +6,10 @@
 #define HEAD_SPEED_MIN 1U
 #define HEAD_SPEED_MAX 150U
 #define HEAD_SPEED_FULL_ERROR_UNITS 6000U
+#define HEAD_MOTOR1_LIMIT_LOW 34500U
+#define HEAD_MOTOR1_LIMIT_HIGH 1500U
+#define HEAD_MOTOR2_LIMIT_LOW 27000U
+#define HEAD_MOTOR2_LIMIT_HIGH 9000U
 
 KTech_Motor_t motor_linkong[2];         // 凌空电机结构体定义
 Head_MotorData_t head_motor_data[2];    // 头部电机数据结构体定义
@@ -15,6 +19,33 @@ static volatile uint8_t head_motor_enabled = 1U;
 static uint32_t Head_NormalizeAngle(uint32_t angle)
 {
     return angle % HEAD_SINGLE_TURN_UNITS;
+}
+
+static uint32_t Head_ClampAcrossZero(uint32_t angle, uint32_t low_limit, uint32_t high_limit)
+{
+    angle = Head_NormalizeAngle(angle);
+
+    if ((angle >= low_limit) || (angle <= high_limit))
+    {
+        return angle;
+    }
+
+    return ((angle - high_limit) <= (low_limit - angle)) ? high_limit : low_limit;
+}
+
+static uint32_t Head_LimitTargetAngle(uint8_t motor_index, uint32_t target_angle)
+{
+    if (motor_index == 0U)
+    {
+        return Head_ClampAcrossZero(target_angle, HEAD_MOTOR1_LIMIT_LOW, HEAD_MOTOR1_LIMIT_HIGH);
+    }
+
+    if (motor_index == 1U)
+    {
+        return Head_ClampAcrossZero(target_angle, HEAD_MOTOR2_LIMIT_LOW, HEAD_MOTOR2_LIMIT_HIGH);
+    }
+
+    return Head_NormalizeAngle(target_angle);
 }
 
 static uint32_t Head_CurrentAngleToUnits(float angle_deg)
@@ -99,9 +130,10 @@ void Head_Init()
 // 循环执行的电机1控制函数
 void Head_Lk_motor1(void)
 {
-    uint32_t current_target = Head_NormalizeAngle(head_motor_data[0].target_angle);
+    uint32_t current_target = Head_LimitTargetAngle(0U, head_motor_data[0].target_angle);
     uint16_t speed_limit;
 
+    head_motor_data[0].target_angle = current_target;
     Head_UpdateShortestDirection(0U, current_target);
     speed_limit = Head_CalcDynamicSpeed(0U, current_target);
 
@@ -115,9 +147,10 @@ void Head_Lk_motor1(void)
 // 循环执行的电机2控制函数
 void Head_Lk_motor2()
 {
-    uint32_t current_target = Head_NormalizeAngle(head_motor_data[1].target_angle);
+    uint32_t current_target = Head_LimitTargetAngle(1U, head_motor_data[1].target_angle);
     uint16_t speed_limit;
 
+    head_motor_data[1].target_angle = current_target;
     Head_UpdateShortestDirection(1U, current_target);
     speed_limit = Head_CalcDynamicSpeed(1U, current_target);
 
@@ -167,6 +200,7 @@ void Head_Motor_Disable(void)
 // 保存当前位置为零点，并保持新零点位置
 static void Head_SaveZeroAndHold(uint8_t motor_index, uint16_t motor_id)
 {
+    uint32_t current_target;
     uint16_t speed_limit;
 
     ktech_motor_stop(CAN_HANDLE_1, motor_id);
@@ -179,11 +213,13 @@ static void Head_SaveZeroAndHold(uint8_t motor_index, uint16_t motor_id)
     ktech_motor_on(CAN_HANDLE_1, motor_id);
     HAL_Delay(1);
 
-    speed_limit = Head_CalcDynamicSpeed(motor_index, 0U);
+    current_target = Head_LimitTargetAngle(motor_index, 0U);
+    head_motor_data[motor_index].target_angle = current_target;
+    speed_limit = Head_CalcDynamicSpeed(motor_index, current_target);
     ktech_pos_single2(CAN_HANDLE_1,
                       motor_id,
                       head_motor_data[motor_index].direction,
-                      0U,
+                      current_target,
                       speed_limit);
 }
 
