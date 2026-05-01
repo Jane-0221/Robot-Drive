@@ -36,6 +36,103 @@ extern FDCAN_HandleTypeDef hfdcan1;
 extern FDCAN_HandleTypeDef hfdcan2;
 extern FDCAN_HandleTypeDef hfdcan3;
 
+volatile CanTxFifoDebug_t can_tx_fifo_debug[3] = {
+    {.min_free_level = 0xFFFFFFFFU},
+    {.min_free_level = 0xFFFFFFFFU},
+    {.min_free_level = 0xFFFFFFFFU},
+};
+
+static int32_t CAN_TxFifoDebug_GetIndex(FDCAN_HandleTypeDef *hcan)
+{
+  if (hcan == NULL)
+  {
+    return -1;
+  }
+
+  if (hcan->Instance == FDCAN1)
+  {
+    return 0;
+  }
+
+  if (hcan->Instance == FDCAN2)
+  {
+    return 1;
+  }
+
+  if (hcan->Instance == FDCAN3)
+  {
+    return 2;
+  }
+
+  return -1;
+}
+
+void CAN_TxFifoDebug_Reset(void)
+{
+  for (uint32_t i = 0; i < 3U; i++)
+  {
+    can_tx_fifo_debug[i].sample_count = 0U;
+    can_tx_fifo_debug[i].full_count = 0U;
+    can_tx_fifo_debug[i].add_fail_count = 0U;
+    can_tx_fifo_debug[i].last_tick = 0U;
+    can_tx_fifo_debug[i].last_identifier = 0U;
+    can_tx_fifo_debug[i].last_id_type = 0U;
+    can_tx_fifo_debug[i].last_free_level = 0U;
+    can_tx_fifo_debug[i].min_free_level = 0xFFFFFFFFU;
+    can_tx_fifo_debug[i].last_hal_status = (uint32_t)HAL_OK;
+  }
+}
+
+void CAN_TxFifoDebug_RecordBeforeSend(FDCAN_HandleTypeDef *hcan, const FDCAN_TxHeaderTypeDef *tx_header)
+{
+  int32_t index = CAN_TxFifoDebug_GetIndex(hcan);
+  uint32_t free_level;
+  volatile CanTxFifoDebug_t *debug;
+
+  if (index < 0)
+  {
+    return;
+  }
+
+  free_level = HAL_FDCAN_GetTxFifoFreeLevel(hcan);
+  debug = &can_tx_fifo_debug[index];
+
+  debug->sample_count++;
+  debug->last_tick = HAL_GetTick();
+  debug->last_identifier = (tx_header != NULL) ? tx_header->Identifier : 0U;
+  debug->last_id_type = (tx_header != NULL) ? tx_header->IdType : 0U;
+  debug->last_free_level = free_level;
+
+  if (free_level < debug->min_free_level)
+  {
+    debug->min_free_level = free_level;
+  }
+
+  if (free_level == 0U)
+  {
+    debug->full_count++;
+  }
+}
+
+void CAN_TxFifoDebug_RecordAddResult(FDCAN_HandleTypeDef *hcan, HAL_StatusTypeDef status)
+{
+  int32_t index = CAN_TxFifoDebug_GetIndex(hcan);
+  volatile CanTxFifoDebug_t *debug;
+
+  if (index < 0)
+  {
+    return;
+  }
+
+  debug = &can_tx_fifo_debug[index];
+  debug->last_hal_status = (uint32_t)status;
+
+  if (status != HAL_OK)
+  {
+    debug->add_fail_count++;
+  }
+}
+
 /**
  * @brief CAN总线初始化函数（占位函数）
  * @note  1. 实际CAN控制器初始化由HAL库自动生成的MX_FDCANx_Init函数完成（在fdcan.c中）；
@@ -61,6 +158,7 @@ void can_init(void)
 uint8_t canx_send_data(FDCAN_HandleTypeDef *hcan, uint16_t id, uint8_t *data, uint32_t len)
 {
   FDCAN_TxHeaderTypeDef TxHeader;
+  HAL_StatusTypeDef tx_status;
   TxHeader.Identifier = id;                  // 设置CAN标准帧ID
   TxHeader.IdType = FDCAN_STANDARD_ID;       // 帧类型：标准帧（11位ID）
   TxHeader.TxFrameType = FDCAN_DATA_FRAME;   // 帧类型：数据帧（非远程帧）
@@ -91,7 +189,10 @@ uint8_t canx_send_data(FDCAN_HandleTypeDef *hcan, uint16_t id, uint8_t *data, ui
   TxHeader.MessageMarker = 0x00;
 
   // 将消息添加到发送FIFO队列，失败则触发错误处理
-  if (HAL_FDCAN_AddMessageToTxFifoQ(hcan, &TxHeader, data) != HAL_OK)
+  CAN_TxFifoDebug_RecordBeforeSend(hcan, &TxHeader);
+  tx_status = HAL_FDCAN_AddMessageToTxFifoQ(hcan, &TxHeader, data);
+  CAN_TxFifoDebug_RecordAddResult(hcan, tx_status);
+  if (tx_status != HAL_OK)
   {
     Error_Handler();
   }
@@ -110,6 +211,7 @@ uint8_t canx_send_data(FDCAN_HandleTypeDef *hcan, uint16_t id, uint8_t *data, ui
 uint8_t canx_send_ext_data(FDCAN_HandleTypeDef *hcan, uint32_t id, uint8_t *data, uint32_t len)
 {
   FDCAN_TxHeaderTypeDef TxHeader;
+  HAL_StatusTypeDef tx_status;
   TxHeader.Identifier = id;                  // 设置CAN扩展帧ID
   TxHeader.IdType = FDCAN_EXTENDED_ID;       // 帧类型：扩展帧（29位ID）
   TxHeader.TxFrameType = FDCAN_DATA_FRAME;   // 帧类型：数据帧
@@ -140,7 +242,10 @@ uint8_t canx_send_ext_data(FDCAN_HandleTypeDef *hcan, uint32_t id, uint8_t *data
   TxHeader.MessageMarker = 0x00;
 
   // 添加到发送FIFO队列，失败则触发错误处理
-  if (HAL_FDCAN_AddMessageToTxFifoQ(hcan, &TxHeader, data) != HAL_OK)
+  CAN_TxFifoDebug_RecordBeforeSend(hcan, &TxHeader);
+  tx_status = HAL_FDCAN_AddMessageToTxFifoQ(hcan, &TxHeader, data);
+  CAN_TxFifoDebug_RecordAddResult(hcan, tx_status);
+  if (tx_status != HAL_OK)
   {
     Error_Handler();
   }

@@ -9,12 +9,31 @@
  */
 typedef FDCAN_HandleTypeDef hcan_t;
 
+typedef struct
+{
+  uint32_t sample_count;
+  uint32_t full_count;
+  uint32_t add_fail_count;
+  uint32_t last_tick;
+  uint32_t last_identifier;
+  uint32_t last_id_type;
+  uint32_t last_free_level;
+  uint32_t min_free_level;
+  uint32_t last_hal_status;
+} CanTxFifoDebug_t;
+
+extern volatile CanTxFifoDebug_t can_tx_fifo_debug[3];
+
 // ===================== 函数声明 =====================
 /**
  * @brief CAN总线初始化函数（占位函数）
  * @note  实际初始化由HAL库自动生成的MX_FDCANx_Init完成，本函数仅做声明占位
  */
 extern void can_init(void);
+
+void CAN_TxFifoDebug_Reset(void);
+void CAN_TxFifoDebug_RecordBeforeSend(FDCAN_HandleTypeDef *hcan, const FDCAN_TxHeaderTypeDef *tx_header);
+void CAN_TxFifoDebug_RecordAddResult(FDCAN_HandleTypeDef *hcan, HAL_StatusTypeDef status);
 
 /**
  * @brief 发送CAN标准帧（11位ID）

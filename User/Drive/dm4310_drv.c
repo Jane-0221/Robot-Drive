@@ -6,6 +6,15 @@
 
 #include "arm_math.h"
 
+static HAL_StatusTypeDef DM4310_AddMessageToTxFifoQ(hcan_t *hcan, FDCAN_TxHeaderTypeDef *tx_header, uint8_t *data)
+{
+	HAL_StatusTypeDef status;
+	CAN_TxFifoDebug_RecordBeforeSend(hcan, tx_header);
+	status = HAL_FDCAN_AddMessageToTxFifoQ(hcan, tx_header, data);
+	CAN_TxFifoDebug_RecordAddResult(hcan, status);
+	return status;
+}
+
 Arm_Motor_t arm_motor[num];
 POS_Motor pos_motor;
 VEL_Motor vel_motor;
@@ -321,10 +330,10 @@ void CAN_Send_Enter(hcan_t* hcan,uint16_t motor_id)
                                          0xff,
                                          0xfc};
 
-HAL_FDCAN_AddMessageToTxFifoQ(hcan, &TxHeader, enable_data);
+DM4310_AddMessageToTxFifoQ(hcan, &TxHeader, enable_data);
 																				 
 		   // 发送CAN指令
-  if(HAL_FDCAN_AddMessageToTxFifoQ(hcan, &TxHeader, enable_data)
+  if(DM4310_AddMessageToTxFifoQ(hcan, &TxHeader, enable_data)
  != HAL_OK)
   {
         // 发送失败处理
@@ -362,10 +371,10 @@ void CAN_Send_Exit(hcan_t* hcan,uint16_t motor_id)
                                          0xff,
                                          0xfd};
 
-HAL_FDCAN_AddMessageToTxFifoQ(hcan, &TxHeader, exit_data);
+DM4310_AddMessageToTxFifoQ(hcan, &TxHeader, exit_data);
 																				 
 		   // 发送CAN指令
-  if(HAL_FDCAN_AddMessageToTxFifoQ(hcan, &TxHeader, exit_data)
+  if(DM4310_AddMessageToTxFifoQ(hcan, &TxHeader, exit_data)
  != HAL_OK)
   {
         // 发送失败处理
@@ -401,10 +410,10 @@ void CAN_Send_Clear_Error(hcan_t* hcan,uint16_t motor_id)
                                          0xff,
                                          0xfb};
 
-HAL_FDCAN_AddMessageToTxFifoQ(hcan, &TxHeader, clear_data);
+DM4310_AddMessageToTxFifoQ(hcan, &TxHeader, clear_data);
 																				 
 		   // 发送CAN指令
-  if(HAL_FDCAN_AddMessageToTxFifoQ(hcan, &TxHeader, clear_data)
+  if(DM4310_AddMessageToTxFifoQ(hcan, &TxHeader, clear_data)
  != HAL_OK)
   {
         // 发送失败处理
@@ -440,10 +449,10 @@ void CAN_Send_Save_Zero(hcan_t* hcan,uint16_t motor_id)
                                          0xff,
                                          0xfe};
 
-HAL_FDCAN_AddMessageToTxFifoQ(hcan, &TxHeader, Save_Zero);
+DM4310_AddMessageToTxFifoQ(hcan, &TxHeader, Save_Zero);
 																				 
 		   // 发送CAN指令
-  if(HAL_FDCAN_AddMessageToTxFifoQ(hcan, &TxHeader, Save_Zero)
+  if(DM4310_AddMessageToTxFifoQ(hcan, &TxHeader, Save_Zero)
  != HAL_OK)
   {
         // 发送失败处理
