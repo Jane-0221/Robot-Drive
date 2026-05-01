@@ -308,7 +308,7 @@ void Arm_MT_Task(void *argument)
 #endif
   (void)VL53L0X_Init();
 #endif
-  Arm_save_position();
+  //Arm_save_position();
   /* Infinite loop */
   for (;;)
   {
