@@ -3,6 +3,9 @@
 
 #define HEAD_SINGLE_TURN_UNITS 36000U
 #define HEAD_HALF_TURN_UNITS 18000
+#define HEAD_SPEED_MIN 1U
+#define HEAD_SPEED_MAX 150U
+#define HEAD_SPEED_FULL_ERROR_UNITS 6000U
 
 KTech_Motor_t motor_linkong[2];         // 凌空电机结构体定义
 Head_MotorData_t head_motor_data[2];    // 头部电机数据结构体定义
@@ -24,9 +27,8 @@ static uint32_t Head_CurrentAngleToUnits(float angle_deg)
     return ((uint32_t)(angle_deg * 100.0f + 0.5f)) % HEAD_SINGLE_TURN_UNITS;
 }
 
-static void Head_UpdateShortestDirection(uint8_t motor_index, uint32_t target_angle)
+static int32_t Head_GetShortestDelta(uint32_t current_angle, uint32_t target_angle)
 {
-    uint32_t current_angle = Head_CurrentAngleToUnits(head_motor_data[motor_index].current_angle);
     int32_t delta = (int32_t)target_angle - (int32_t)current_angle;
 
     if (delta > HEAD_HALF_TURN_UNITS)
@@ -37,6 +39,30 @@ static void Head_UpdateShortestDirection(uint8_t motor_index, uint32_t target_an
     {
         delta += (int32_t)HEAD_SINGLE_TURN_UNITS;
     }
+
+    return delta;
+}
+
+static uint16_t Head_CalcDynamicSpeed(uint8_t motor_index, uint32_t target_angle)
+{
+    uint32_t current_angle = Head_CurrentAngleToUnits(head_motor_data[motor_index].current_angle);
+    int32_t delta = Head_GetShortestDelta(current_angle, target_angle);
+    uint32_t error_units = (delta < 0) ? (uint32_t)(-delta) : (uint32_t)delta;
+
+    if (error_units >= HEAD_SPEED_FULL_ERROR_UNITS)
+    {
+        return (uint16_t)HEAD_SPEED_MAX;
+    }
+
+    return (uint16_t)(HEAD_SPEED_MIN +
+                     ((error_units * (HEAD_SPEED_MAX - HEAD_SPEED_MIN)) /
+                      HEAD_SPEED_FULL_ERROR_UNITS));
+}
+
+static void Head_UpdateShortestDirection(uint8_t motor_index, uint32_t target_angle)
+{
+    uint32_t current_angle = Head_CurrentAngleToUnits(head_motor_data[motor_index].current_angle);
+    int32_t delta = Head_GetShortestDelta(current_angle, target_angle);
 
     if (delta > 0)
     {
@@ -74,26 +100,32 @@ void Head_Init()
 void Head_Lk_motor1(void)
 {
     uint32_t current_target = Head_NormalizeAngle(head_motor_data[0].target_angle);
+    uint16_t speed_limit;
+
     Head_UpdateShortestDirection(0U, current_target);
+    speed_limit = Head_CalcDynamicSpeed(0U, current_target);
 
     ktech_pos_single2(CAN_HANDLE_1, 
                       MOTOR_LINKONG_1_ID, 
                       head_motor_data[0].direction, 
                       current_target, 
-                      head_motor_data[0].max_speed);
+                      speed_limit);
 }
 
 // 循环执行的电机2控制函数
 void Head_Lk_motor2()
 {
     uint32_t current_target = Head_NormalizeAngle(head_motor_data[1].target_angle);
+    uint16_t speed_limit;
+
     Head_UpdateShortestDirection(1U, current_target);
+    speed_limit = Head_CalcDynamicSpeed(1U, current_target);
 
     ktech_pos_single2(CAN_HANDLE_1, 
                       MOTOR_LINKONG_2_ID, 
                       head_motor_data[1].direction, 
                       current_target, 
-                      head_motor_data[1].max_speed);
+                      speed_limit);
 }
 
 // 头部电机整体发送函数
@@ -135,6 +167,8 @@ void Head_Motor_Disable(void)
 // 保存当前位置为零点，并保持新零点位置
 static void Head_SaveZeroAndHold(uint8_t motor_index, uint16_t motor_id)
 {
+    uint16_t speed_limit;
+
     ktech_motor_stop(CAN_HANDLE_1, motor_id);
     HAL_Delay(1);
 
@@ -145,11 +179,12 @@ static void Head_SaveZeroAndHold(uint8_t motor_index, uint16_t motor_id)
     ktech_motor_on(CAN_HANDLE_1, motor_id);
     HAL_Delay(1);
 
+    speed_limit = Head_CalcDynamicSpeed(motor_index, 0U);
     ktech_pos_single2(CAN_HANDLE_1,
                       motor_id,
                       head_motor_data[motor_index].direction,
                       0U,
-                      head_motor_data[motor_index].max_speed);
+                      speed_limit);
 }
 
 void Head_save_position(void)

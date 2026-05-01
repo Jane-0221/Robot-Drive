@@ -55,6 +55,7 @@
 #define VL53L0X_COMM_ENABLE 1U
 #define VL53L0X_SOFT_PROBE_ON_BOOT 0U
 #define VL53L0X_SOFT_PROBE_DELAY_MS 500U
+#define HEAD_STARTUP_FEEDBACK_ONLY_MS 50U
 
 /* USER CODE END PD */
 
@@ -406,12 +407,17 @@ void Motor_control_Task(void *argument)
 void Head_Task(void *argument)
 {
   /* USER CODE BEGIN Head_Task */
+  uint32_t head_start_tick = osKernelGetTickCount();
   /* Infinite loop */
   for (;;)
   {
     Head_Lk_Data_update();
 
-    if (Head_Motor_Disable_IsActive() == 0U)
+    if ((osKernelGetTickCount() - head_start_tick) < HEAD_STARTUP_FEEDBACK_ONLY_MS)
+    {
+      Head_RequestFeedback();
+    }
+    else if (Head_Motor_Disable_IsActive() == 0U)
     {
       Head_all_tx();
     }
