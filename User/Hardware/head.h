@@ -68,6 +68,12 @@ extern void Head_Lk_motor1(void);
 extern void Head_all_tx(void);
 
 /**
+ * @brief 请求头部两个电机反馈编码器数据
+ * @retval 无
+ */
+extern void Head_RequestFeedback(void);
+
+/**
  * @brief 使能头部两个电机
  * @retval 无
  */

@@ -409,9 +409,17 @@ void Head_Task(void *argument)
   /* Infinite loop */
   for (;;)
   {
-    
     Head_Lk_Data_update();
-    Head_all_tx();
+
+    if (Head_Motor_Disable_IsActive() == 0U)
+    {
+      Head_all_tx();
+    }
+    else
+    {
+      Head_RequestFeedback();
+    }
+
     osDelay(1);
   }
   /* USER CODE END Head_Task */
