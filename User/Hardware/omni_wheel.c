@@ -7,6 +7,7 @@
 #include "fdcan.h"
 #include "main.h"
 #include "pid.h"
+#include "ramp_generator.h"
 
 /* 全向轮底盘固定在 FDCAN3。 */
 #define OMNI_CAN_HANDLE (&hfdcan3)
@@ -33,6 +34,11 @@
 #define OMNI_ACCEL_LIMIT 10.0f
 #define OMNI_SPEED_LIMIT 20.0f
 
+/* Chassis command ramp fixed limits. Slopes are set at the top of Omni_Wheel_Update(). */
+#define OMNI_RAMP_INTERVAL_MS 1U
+#define OMNI_RAMP_LINEAR_LIMIT 2.3f
+#define OMNI_RAMP_YAW_LIMIT 3.5f
+
 /* 航向保持 PID 与启用阈值。 */
 #define OMNI_YAW_HOLD_KP 2.0f
 #define OMNI_YAW_HOLD_KI 0.02f
@@ -53,6 +59,9 @@ static RobStride_Motor_t omni_motor1;
 static RobStride_Motor_t omni_motor2;
 static RobStride_Motor_t omni_motor3;
 static uint8_t omni_initialized = 0U;
+static RampGenerator omni_x_ramp;
+static RampGenerator omni_y_ramp;
+static RampGenerator omni_w_ramp;
 
 /* 航向保持状态。
  * target 使用连续角 yaw_rad_cnt，避免跨 -pi/pi 时跳变。 */
@@ -122,6 +131,9 @@ void Omni_Wheel_Init(void)
     y = 0.0f;
     w = 0.0f;
     omni_debug = (Omni_Wheel_Debug_t){0};
+    RampGenerator_Init(&omni_x_ramp, OMNI_RAMP_INTERVAL_MS, 0.0f, 0.0f, OMNI_RAMP_LINEAR_LIMIT);
+    RampGenerator_Init(&omni_y_ramp, OMNI_RAMP_INTERVAL_MS, 0.0f, 0.0f, OMNI_RAMP_LINEAR_LIMIT);
+    RampGenerator_Init(&omni_w_ramp, OMNI_RAMP_INTERVAL_MS, 0.0f, 0.0f, OMNI_RAMP_YAW_LIMIT);
 
     /* 航向保持以上电时当前朝向为初值。 */
     pid_set(&omni_yaw_hold_pid,
@@ -143,9 +155,17 @@ void Omni_Wheel_Init(void)
 
 void Omni_Wheel_Update(void)
 {
+    const float ramp_linear_accel = 1.3f;
+    const float ramp_linear_decel = 1.83f;
+    const float ramp_yaw_accel = 1.5f;
+    const float ramp_yaw_decel = 1.83f;
+
     float x_cmd;
     float y_cmd;
     float w_cmd;
+    float x_target;
+    float y_target;
+    float w_target;
     float w_cmd_in;
     float v_cmd;
     float yaw_now;
@@ -153,6 +173,7 @@ void Omni_Wheel_Update(void)
     float cmd1;
     float cmd2;
     float cmd3;
+    uint32_t tick_ms;
 
     if (omni_initialized == 0U)
     {
@@ -160,9 +181,28 @@ void Omni_Wheel_Update(void)
     }
 
     /* 先把全局指令读到局部变量，避免一次计算中被其他任务改写。 */
-    x_cmd = x;
-    y_cmd = y;
-    w_cmd = w;
+    RampGenerator_SetAccel(&omni_x_ramp, ramp_linear_accel);
+    RampGenerator_SetDecel(&omni_x_ramp, ramp_linear_decel);
+    RampGenerator_SetAccel(&omni_y_ramp, ramp_linear_accel);
+    RampGenerator_SetDecel(&omni_y_ramp, ramp_linear_decel);
+    RampGenerator_SetAccel(&omni_w_ramp, ramp_yaw_accel);
+    RampGenerator_SetDecel(&omni_w_ramp, ramp_yaw_decel);
+
+    x_target = x;
+    y_target = y;
+    w_target = w;
+    RampGenerator_SetTarget(&omni_x_ramp, x_target);
+    RampGenerator_SetTarget(&omni_y_ramp, y_target);
+    RampGenerator_SetTarget(&omni_w_ramp, w_target);
+
+    tick_ms = HAL_GetTick();
+    RampGenerator_Update(&omni_x_ramp, tick_ms);
+    RampGenerator_Update(&omni_y_ramp, tick_ms);
+    RampGenerator_Update(&omni_w_ramp, tick_ms);
+
+    x_cmd = RampGenerator_GetCurrent(&omni_x_ramp);
+    y_cmd = RampGenerator_GetCurrent(&omni_y_ramp);
+    w_cmd = RampGenerator_GetCurrent(&omni_w_ramp);
     w_cmd_in = w_cmd;
     yaw_now = IMU_data.AHRS.yaw_rad_cnt;
     v_cmd = sqrtf(x_cmd * x_cmd + y_cmd * y_cmd);
@@ -225,7 +265,7 @@ void Omni_Wheel_Update(void)
     omni_debug.pattern1 = omni_motor1.Pos_Info.pattern;
     omni_debug.pattern2 = omni_motor2.Pos_Info.pattern;
     omni_debug.pattern3 = omni_motor3.Pos_Info.pattern;
-    omni_debug.update_tick_ms = HAL_GetTick();
+    omni_debug.update_tick_ms = tick_ms;
     omni_debug.update_count++;
 
     RobStride_Motor_Speed_control(&omni_motor1, OMNI_CAN_HANDLE, cmd1, OMNI_CURRENT_LIMIT);

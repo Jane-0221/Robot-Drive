@@ -306,8 +306,9 @@ void Arm_MT_Task(void *argument)
 #endif
   (void)VL53L0X_Init();
 #endif
-  /* Infinite loop */
-  for (;;)
+  Arm_save_position();
+      /* Infinite loop */
+      for (;;)
   {
     osDelay(1);
     Arm_CheckAndReenableDisabledMotors();

@@ -22,7 +22,7 @@ void Head_Init()
     
     // 电机2数据初始化
     head_motor_data[1].direction = DIR_CW;   // 0:顺时针, 1:逆时针
-    head_motor_data[1].target_angle = 9000;
+    head_motor_data[1].target_angle =18000;
     head_motor_data[1].max_speed = 360;
 };
 

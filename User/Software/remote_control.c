@@ -220,8 +220,8 @@ void Head_Motor_Control_Updata(void)
         switch (SBUS_CH.CH6)
         {
         case HIGH_VALUE:
-            Daran_motor_data[0].target_angle = 0;
-            Daran_motor_data[1].target_angle = 0; // 头部电机
+            head_motor_data[0].target_angle = 0;
+            head_motor_data[1].target_angle = 0; //
 
             // duties_tx.duty0 = 0.12;
             //  duties_tx.duty1 = 0.12;
@@ -256,8 +256,8 @@ void Head_Motor_Control_Updata(void)
             break;
 
         case MID_VALUE:
-            Daran_motor_data[0].target_angle = 90;
-            Daran_motor_data[1].target_angle = 90; // 头部电机
+            head_motor_data[0].target_angle = 9000;
+            head_motor_data[1].target_angle = 9000; // 头部电机
 
             // duties_tx.duty0 = 0.075;
             // duties_tx.duty1 = 0.075;
@@ -292,8 +292,8 @@ void Head_Motor_Control_Updata(void)
             break;
 
         case LOW_VALUE:
-            Daran_motor_data[0].target_angle = 180;
-            Daran_motor_data[1].target_angle = 180;
+            head_motor_data[0].target_angle = 18000;
+            head_motor_data[1].target_angle = 18000;
 
             // duties_tx.duty0 = 0.03;
             // duties_tx.duty1 = 0.03;
@@ -442,8 +442,8 @@ void PC_Pump_Control_Updata(void)
 void PC_Head_Motor_Control_Updata(void)
 {
     // 使用PC传入的电机角度信息（pc_target_motor_angles[0]和[1]对应头部电机）
-    Daran_motor_data[0].target_angle = pc_dn_data.pc_target_motor_angles[0];
-    Daran_motor_data[1].target_angle = pc_dn_data.pc_target_motor_angles[1];
+    head_motor_data[0].target_angle = pc_dn_data.pc_target_motor_angles[0];
+    head_motor_data[1].target_angle = pc_dn_data.pc_target_motor_angles[1];
 }
 
 /**

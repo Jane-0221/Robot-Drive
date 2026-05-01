@@ -493,9 +493,7 @@ void Arm_save_position(void)
     Damiao_motor_data[0].target_angle = 0.0f;
     Damiao_motor_data[1].target_angle = 0.0f;
     Damiao_motor_data[2].target_angle = 0.0f;
-    Damiao_motor_data[0].target_velocity = 1.0f;
-    Damiao_motor_data[1].target_velocity = 1.0f;
-    Damiao_motor_data[2].target_velocity = 1.0f;
+
 
     Arm_Linzu_SaveZeroAndHold(&motor1, &Linzu_motor_data[0]);
     osDelay(1);
