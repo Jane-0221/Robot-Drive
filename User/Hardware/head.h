@@ -86,7 +86,7 @@ extern void Head_Motor_Enable(void);
 extern void Head_Motor_Disable(void);
 
 /**
- * @brief 将当前位置设置为头部电机180度位置
+ * @brief 保存当前位置为头部电机零点
  * @retval 无
  */
 extern void Head_save_position(void);

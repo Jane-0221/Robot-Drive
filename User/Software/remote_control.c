@@ -247,8 +247,6 @@ void arm_save_home_position(void)
         Damiao_motor_data[1].target_angle = 0.0f;
         Damiao_motor_data[2].target_angle = 0.0f;
         Head_save_position();
-        head_motor_data[0].target_angle = 18000;
-        head_motor_data[1].target_angle = 18000;
         return;
     }
     arm_save_position = 0U;

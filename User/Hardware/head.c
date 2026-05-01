@@ -1,7 +1,6 @@
 #include "head.h"
 #include "ktech_motor.h"
 
-#define HEAD_POSITION_180_DEG 18000U
 #define HEAD_SINGLE_TURN_UNITS 36000U
 #define HEAD_HALF_TURN_UNITS 18000
 
@@ -133,14 +132,14 @@ void Head_Motor_Disable(void)
     ktech_motor_off(CAN_HANDLE_1, MOTOR_LINKONG_2_ID);
 }
 
-// 将当前位置设置为指定角度，并保持该角度
-static void Head_SaveAngleAndHold(uint8_t motor_index, uint16_t motor_id, uint32_t angle)
+// 保存当前位置为零点，并保持新零点位置
+static void Head_SaveZeroAndHold(uint8_t motor_index, uint16_t motor_id)
 {
     ktech_motor_stop(CAN_HANDLE_1, motor_id);
     HAL_Delay(1);
 
-    ktech_set_angle_ram(CAN_HANDLE_1, motor_id, (int32_t)angle);
-    head_motor_data[motor_index].target_angle = angle;
+    ktech_set_zero(CAN_HANDLE_1, motor_id);
+    head_motor_data[motor_index].target_angle = 0U;
     HAL_Delay(1);
 
     ktech_motor_on(CAN_HANDLE_1, motor_id);
@@ -149,15 +148,15 @@ static void Head_SaveAngleAndHold(uint8_t motor_index, uint16_t motor_id, uint32
     ktech_pos_single2(CAN_HANDLE_1,
                       motor_id,
                       head_motor_data[motor_index].direction,
-                      angle,
+                      0U,
                       head_motor_data[motor_index].max_speed);
 }
 
 void Head_save_position(void)
 {
-    Head_SaveAngleAndHold(0U, MOTOR_LINKONG_1_ID, HEAD_POSITION_180_DEG);
+    Head_SaveZeroAndHold(0U, MOTOR_LINKONG_1_ID);
     HAL_Delay(1);
-    Head_SaveAngleAndHold(1U, MOTOR_LINKONG_2_ID, HEAD_POSITION_180_DEG);
+    Head_SaveZeroAndHold(1U, MOTOR_LINKONG_2_ID);
     head_motor_enabled = 1U;
 }
 
