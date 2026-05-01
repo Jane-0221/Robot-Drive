@@ -1,7 +1,7 @@
 {
-  "C_Cpp_Runner.cCompilerPath": "arm-none-eabi-gcc",
-  "C_Cpp_Runner.cppCompilerPath": "arm-none-eabi-g++",
-  "C_Cpp_Runner.debuggerPath": "arm-none-eabi-gdb",
+  "C_Cpp_Runner.cCompilerPath": "C:/ST/STM32CubeCLT_1.21.0/GNU-tools-for-STM32/bin/arm-none-eabi-gcc.exe",
+  "C_Cpp_Runner.cppCompilerPath": "C:/ST/STM32CubeCLT_1.21.0/GNU-tools-for-STM32/bin/arm-none-eabi-g++.exe",
+  "C_Cpp_Runner.debuggerPath": "C:/ST/STM32CubeCLT_1.21.0/GNU-tools-for-STM32/bin/arm-none-eabi-gdb.exe",
   "C_Cpp_Runner.cStandard": "",
   "C_Cpp_Runner.cppStandard": "",
   "C_Cpp_Runner.msvcBatchPath": "C:/Program Files/Microsoft Visual Studio/VR_NR/Community/VC/Auxiliary/Build/vcvarsall.bat",
@@ -131,7 +131,7 @@
     "freertos.h": "c"
   },
   "files.encoding": "utf8",
-  "C_Cpp.default.compilerPath": "arm-none-eabi-gcc",
+  "C_Cpp.default.compilerPath": "C:/ST/STM32CubeCLT_1.21.0/GNU-tools-for-STM32/bin/arm-none-eabi-gcc.exe",
   "C_Cpp.default.intelliSenseMode": "windows-gcc-arm",
   "C_Cpp.default.compilerArgs": [
     "-mcpu=cortex-m7",

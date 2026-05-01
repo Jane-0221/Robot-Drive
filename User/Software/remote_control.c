@@ -22,6 +22,8 @@
 #define HIGH_VALUE 1694
 #define RANGE 50
 #define ARM_MOTOR_STEP 0.003f
+#define HEAD_RAD_TO_ANGLE_UNIT (18000.0f / 3.14159265358979323846f)
+#define HEAD_SINGLE_TURN_UNITS 36000L
 // extern DnData_t pc_dn_data;
 
 static volatile uint8_t arm_motor_disable_active = 0U;
@@ -44,6 +46,26 @@ static float sbus_axis_to_float(uint16_t value, float scale)
     // }
 
     return (float)delta / scale;
+}
+
+static uint32_t head_radian_to_target_angle(float radian)
+{
+    float angle_unit_f = radian * HEAD_RAD_TO_ANGLE_UNIT;
+    int32_t angle_unit = (angle_unit_f >= 0.0f) ?
+                         (int32_t)(angle_unit_f + 0.5f) :
+                         (int32_t)(angle_unit_f - 0.5f);
+
+    while (angle_unit < 0)
+    {
+        angle_unit += HEAD_SINGLE_TURN_UNITS;
+    }
+
+    while (angle_unit >= HEAD_SINGLE_TURN_UNITS)
+    {
+        angle_unit -= HEAD_SINGLE_TURN_UNITS;
+    }
+
+    return (uint32_t)angle_unit;
 }
 
 void remote_control_init()
@@ -481,8 +503,8 @@ void PC_Pump_Control_Updata(void)
 void PC_Head_Motor_Control_Updata(void)
 {
     // 使用PC传入的电机角度信息（pc_target_motor_angles[0]和[1]对应头部电机）
-    head_motor_data[0].target_angle = pc_dn_data.pc_target_motor_angles[0];
-    head_motor_data[1].target_angle = pc_dn_data.pc_target_motor_angles[1];
+    head_motor_data[0].target_angle = head_radian_to_target_angle(pc_dn_data.pc_target_motor_angles[0]);
+    head_motor_data[1].target_angle = head_radian_to_target_angle(pc_dn_data.pc_target_motor_angles[1]);
 }
 
 /**

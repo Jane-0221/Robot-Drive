@@ -56,8 +56,8 @@ void Head_Init()
 
     // 电机1数据初始化
     head_motor_data[0].direction = DIR_CW;   // 0:顺时针, 1:逆时针
-    head_motor_data[0].target_angle = 18000;
-    head_motor_data[0].max_speed = 360;
+    head_motor_data[0].target_angle = 0;
+    head_motor_data[0].max_speed = 10;
 
 
     ktech_motor_init(MOTOR_LINKONG_2_ID);
@@ -66,8 +66,8 @@ void Head_Init()
     
     // 电机2数据初始化
     head_motor_data[1].direction = DIR_CW;   // 0:顺时针, 1:逆时针
-    head_motor_data[1].target_angle =18000;
-    head_motor_data[1].max_speed = 360;
+    head_motor_data[1].target_angle = 0;
+    head_motor_data[1].max_speed = 10;
 };
 
 // 循环执行的电机1控制函数

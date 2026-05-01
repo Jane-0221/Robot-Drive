@@ -1,5 +1,6 @@
 #ifndef __HEAD_H__
 #define __HEAD_H__
+#include <stdint.h>
 #include "can_receive_send.h"
 #include "ktech_motor.h"
 
