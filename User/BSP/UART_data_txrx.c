@@ -105,12 +105,6 @@ void HAL_UARTEx_RxEventCallback(UART_HandleTypeDef *huart, uint16_t Size)
 {
   if (huart == &huart1)//气路气压
   {
-    printf("总帧: ");
-    for(uint16_t j = 0; j <Size; j++)
-    {
-        printf("%02X ", UART1_data.rev_data[j]);
-    }
-    printf("\n");
     pt_store_raw_data(UART1_data.rev_data, Size); // 存储数据
     HAL_UARTEx_ReceiveToIdle_DMA(huart, UART1_data.rev_data, UART_BUFFER_SIZE);
     __HAL_DMA_DISABLE_IT(huart->hdmarx, DMA_IT_HT);

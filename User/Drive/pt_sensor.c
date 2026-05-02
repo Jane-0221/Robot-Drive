@@ -1,4 +1,6 @@
 #include "pt_sensor.h"
+#include "FreeRTOS.h"
+#include "task.h"
 #include <stddef.h>
 #include <string.h>
 #include <math.h>
@@ -7,6 +9,9 @@
 /************************* 全局变量实例化 *************************/
 uint8_t pt_raw_buf[PT_BUF_MAX_LEN] = {0};
 float g_pressure_value = 0.0f;
+static uint8_t pt_parse_buf[PT_BUF_MAX_LEN];
+static volatile uint16_t pt_raw_size = 0U;
+static volatile uint8_t pt_data_pending = 0U;
 static const uint8_t pt_temp_cmd[] = PT_CMD_FRAME_TEMP;
 static const uint8_t pt_press_cmd[] = PT_CMD_FRAME_PRESS;
 
@@ -24,12 +29,8 @@ void pt_store_raw_data(const uint8_t *data, uint16_t size)
     // 限制缓存大小，防止溢出
     uint16_t copy_len = (size > PT_BUF_MAX_LEN) ? PT_BUF_MAX_LEN : size;
     memcpy(pt_raw_buf, data, copy_len);
-    
-    // 剩余空间清0
-    if(copy_len < PT_BUF_MAX_LEN)
-    {
-        memset(pt_raw_buf + copy_len, 0, PT_BUF_MAX_LEN - copy_len);
-    }
+    pt_raw_size = copy_len;
+    pt_data_pending = 1U;
 }
 
 /**
@@ -38,6 +39,25 @@ void pt_store_raw_data(const uint8_t *data, uint16_t size)
  * @retval 无
  * @note   指令帧：55 04 0E 6A，超时时间100ms
  */
+uint8_t PT_ParseLatestPressure(void)
+{
+    uint16_t size;
+
+    if (pt_data_pending == 0U)
+    {
+        return 0U;
+    }
+
+    taskENTER_CRITICAL();
+    size = pt_raw_size;
+    memcpy(pt_parse_buf, pt_raw_buf, size);
+    pt_data_pending = 0U;
+    taskEXIT_CRITICAL();
+
+    PT_ParsePressureToGlobal(pt_parse_buf, size);
+    return 1U;
+}
+
 void PT_Send_ReadTemp_Cmd(UART_HandleTypeDef *huart)
 {
     // 空指针校验，避免传入NULL导致程序崩溃

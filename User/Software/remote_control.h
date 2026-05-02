@@ -67,6 +67,7 @@ uint8_t Head_Motor_Disable_IsActive(void);
 
 
 void arm_save_home_position(void);
+void head_save_home_position(void);
 uint8_t Arm_Save_Position_IsActive(void);
 /**
  * @brief 根据 SBUS 遥控通道更新升降机构目标高度。

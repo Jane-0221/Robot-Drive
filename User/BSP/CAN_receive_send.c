@@ -42,6 +42,28 @@ volatile CanTxFifoDebug_t can_tx_fifo_debug[3] = {
     {.min_free_level = 0xFFFFFFFFU},
 };
 
+static uint8_t KTech_FeedbackHasEncoder(uint8_t cmd)
+{
+  switch (cmd)
+  {
+  case KTECH_CMD_READ_STATUS2:
+  case KTECH_CMD_OPENLOOP:
+  case KTECH_CMD_TORQUE_CLOSED:
+  case KTECH_CMD_SPEED_CLOSED:
+  case KTECH_CMD_POS_MULTI1:
+  case KTECH_CMD_POS_MULTI2:
+  case KTECH_CMD_POS_SINGLE1:
+  case KTECH_CMD_POS_SINGLE2:
+  case KTECH_CMD_POS_INCREMENT1:
+  case KTECH_CMD_POS_INCREMENT2:
+  case KTECH_CMD_READ_ENCODER:
+    return 1U;
+
+  default:
+    return 0U;
+  }
+}
+
 static int32_t CAN_TxFifoDebug_GetIndex(FDCAN_HandleTypeDef *hcan)
 {
   if (hcan == NULL)
@@ -299,11 +321,19 @@ void HAL_FDCAN_RxFifo0Callback(FDCAN_HandleTypeDef *hfdcan, uint32_t RxFifo0ITs)
       if (rx_header.Identifier == 0x141)
       {
         ktech_parse_motor_fb(&motor_linkong[0], rx_data);
+        if (KTech_FeedbackHasEncoder(rx_data[0]) != 0U)
+        {
+          Head_NotifyFeedback(0U);
+        }
       }
       // 帧ID 0x142：解析第1路科泰电机反馈数据
       else if (rx_header.Identifier == 0x142)
       {
         ktech_parse_motor_fb(&motor_linkong[1], rx_data);
+        if (KTech_FeedbackHasEncoder(rx_data[0]) != 0U)
+        {
+          Head_NotifyFeedback(1U);
+        }
       }
     }
 

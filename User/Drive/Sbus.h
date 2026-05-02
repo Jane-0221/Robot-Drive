@@ -27,6 +27,7 @@ typedef struct
 extern SBUS_CH_Struct SBUS_CH;
 extern uint8_t sbus_data_buffer[256];
 void update_sbus(volatile const uint8_t *sbus_buf,SBUS_CH_Struct *SBUS_CH);
+uint8_t SBUS_UpdateIfNew(void);
 
 // 存储256字节数据的函数声明
 void store_sbus_data(const uint8_t *data, uint16_t size);

@@ -1,4 +1,5 @@
 #include "head.h"
+#include "cmsis_os2.h"
 #include "ktech_motor.h"
 
 #define HEAD_SINGLE_TURN_UNITS 36000U
@@ -15,6 +16,41 @@ KTech_Motor_t motor_linkong[2];         // 凌空电机结构体定义
 Head_MotorData_t head_motor_data[2];    // 头部电机数据结构体定义
 
 static volatile uint8_t head_motor_enabled = 1U;
+static volatile uint32_t head_feedback_count[2] = {0U};
+
+static void Head_ResetFeedbackReady(void)
+{
+    head_feedback_count[0] = 0U;
+    head_feedback_count[1] = 0U;
+}
+
+uint8_t Head_FeedbackReady(void)
+{
+    return ((head_feedback_count[0] != 0U) && (head_feedback_count[1] != 0U)) ? 1U : 0U;
+}
+
+void Head_NotifyFeedback(uint8_t motor_index)
+{
+    if (motor_index < 2U)
+    {
+        if (head_feedback_count[motor_index] != UINT32_MAX)
+        {
+            head_feedback_count[motor_index]++;
+        }
+    }
+}
+
+static void Head_DelayMs(uint32_t ms)
+{
+    if (osKernelGetState() == osKernelRunning)
+    {
+        osDelay(ms);
+    }
+    else
+    {
+        HAL_Delay(ms);
+    }
+}
 
 static uint32_t Head_NormalizeAngle(uint32_t angle)
 {
@@ -107,6 +143,8 @@ static void Head_UpdateShortestDirection(uint8_t motor_index, uint32_t target_an
 
 void Head_Init()
 {
+    Head_ResetFeedbackReady();
+
     ktech_motor_init(MOTOR_LINKONG_1_ID);
     // 将电机1从关闭状态切换到运行状态
     ktech_motor_on(CAN_HANDLE_1, MOTOR_LINKONG_1_ID);
@@ -170,21 +208,23 @@ void Head_all_tx()
     }
 
     Head_Lk_motor1();
-    HAL_Delay(1);
+    Head_DelayMs(1U);
     Head_Lk_motor2();
 }
 
 void Head_RequestFeedback(void)
 {
     ktech_read_status2(CAN_HANDLE_1, MOTOR_LINKONG_1_ID);
-    HAL_Delay(1);
+    Head_DelayMs(1U);
     ktech_read_status2(CAN_HANDLE_1, MOTOR_LINKONG_2_ID);
 }
 
 void Head_Motor_Enable(void)
 {
+    Head_ResetFeedbackReady();
+
     ktech_motor_on(CAN_HANDLE_1, MOTOR_LINKONG_1_ID);
-    HAL_Delay(1);
+    Head_DelayMs(1U);
     ktech_motor_on(CAN_HANDLE_1, MOTOR_LINKONG_2_ID);
     head_motor_enabled = 1U;
 }
@@ -193,7 +233,7 @@ void Head_Motor_Disable(void)
 {
     head_motor_enabled = 0U;
     ktech_motor_off(CAN_HANDLE_1, MOTOR_LINKONG_1_ID);
-    HAL_Delay(1);
+    Head_DelayMs(1U);
     ktech_motor_off(CAN_HANDLE_1, MOTOR_LINKONG_2_ID);
 }
 
@@ -204,14 +244,14 @@ static void Head_SaveZeroAndHold(uint8_t motor_index, uint16_t motor_id)
     uint16_t speed_limit;
 
     ktech_motor_stop(CAN_HANDLE_1, motor_id);
-    HAL_Delay(1);
+    Head_DelayMs(1U);
 
     ktech_set_zero(CAN_HANDLE_1, motor_id);
     head_motor_data[motor_index].target_angle = 0U;
-    HAL_Delay(1);
+    Head_DelayMs(1U);
 
     ktech_motor_on(CAN_HANDLE_1, motor_id);
-    HAL_Delay(1);
+    Head_DelayMs(1U);
 
     current_target = Head_LimitTargetAngle(motor_index, 0U);
     head_motor_data[motor_index].target_angle = current_target;
@@ -226,7 +266,7 @@ static void Head_SaveZeroAndHold(uint8_t motor_index, uint16_t motor_id)
 void Head_save_position(void)
 {
     Head_SaveZeroAndHold(0U, MOTOR_LINKONG_1_ID);
-    HAL_Delay(1);
+    Head_DelayMs(1U);
     Head_SaveZeroAndHold(1U, MOTOR_LINKONG_2_ID);
     head_motor_enabled = 1U;
 }

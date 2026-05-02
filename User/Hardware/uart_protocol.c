@@ -1,8 +1,13 @@
 #include "uart_protocol.h"
 
+#include "FreeRTOS.h"
+#include "task.h"
 #include <string.h>
 
 uint8_t uart_protocol_raw_data[256] = {0};
+static uint8_t uart_protocol_parse_data[256] = {0};
+static volatile uint16_t uart_protocol_raw_size = 0U;
+static volatile uint8_t uart_protocol_data_pending = 0U;
 
 DnData_t pc_dn_data = {
     .pc_target_servo_angles = {0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f},
@@ -123,6 +128,73 @@ void unpack_dn_frame(uint8_t *frame_buf, DnData_t *data)
     data->pc_target_lift_height = (uint16_t)((frame_buf[idx] | (frame_buf[idx + 1] << 8)) / 10);
 }
 
+static uint8_t is_valid_dn_frame(const uint8_t *frame_buf)
+{
+    uint16_t crc_rx;
+    uint16_t crc_calc;
+
+    if (frame_buf == NULL)
+    {
+        return 0U;
+    }
+
+    if ((frame_buf[0] != FRAME_HEADER1) ||
+        (frame_buf[1] != FRAME_HEADER2) ||
+        (frame_buf[2] != DN_FRAME_TYPE) ||
+        (frame_buf[3] != DN_DATA_LEN) ||
+        (frame_buf[DN_FRAME_LEN - 2U] != FRAME_TAIL1) ||
+        (frame_buf[DN_FRAME_LEN - 1U] != FRAME_TAIL2))
+    {
+        return 0U;
+    }
+
+    crc_rx = (uint16_t)frame_buf[DN_DATA_LEN + 4U] |
+             ((uint16_t)frame_buf[DN_DATA_LEN + 5U] << 8);
+    crc_calc = crc16_ccitt((uint8_t *)&frame_buf[2], DN_DATA_LEN + 2U);
+
+    return (crc_rx == crc_calc) ? 1U : 0U;
+}
+
+uint8_t UART_Protocol_UnpackLatest(DnData_t *data)
+{
+    uint16_t size;
+    uint16_t frame_pos = 0U;
+    uint8_t found = 0U;
+
+    if ((data == NULL) || (uart_protocol_data_pending == 0U))
+    {
+        return 0U;
+    }
+
+    taskENTER_CRITICAL();
+    size = uart_protocol_raw_size;
+    memcpy(uart_protocol_parse_data, uart_protocol_raw_data, size);
+    uart_protocol_data_pending = 0U;
+    taskEXIT_CRITICAL();
+
+    if (size < DN_FRAME_LEN)
+    {
+        return 0U;
+    }
+
+    for (uint16_t pos = 0U; pos <= (uint16_t)(size - DN_FRAME_LEN); pos++)
+    {
+        if (is_valid_dn_frame(&uart_protocol_parse_data[pos]) != 0U)
+        {
+            frame_pos = pos;
+            found = 1U;
+        }
+    }
+
+    if (found == 0U)
+    {
+        return 0U;
+    }
+
+    unpack_dn_frame(&uart_protocol_parse_data[frame_pos], data);
+    return 1U;
+}
+
 HAL_StatusTypeDef send_frame(UART_HandleTypeDef *huart, uint8_t *frame_buf, uint16_t len)
 {
     return HAL_UART_Transmit(huart, frame_buf, len, 100);
@@ -157,9 +229,6 @@ void store_uart_protocol_data(const uint8_t *data, uint16_t size)
     uint16_t copy_size = (size > 256U) ? 256U : size;
 
     memcpy(uart_protocol_raw_data, data, copy_size);
-
-    if (copy_size < 256U)
-    {
-        memset(uart_protocol_raw_data + copy_size, 0, 256U - copy_size);
-    }
+    uart_protocol_raw_size = copy_size;
+    uart_protocol_data_pending = 1U;
 }

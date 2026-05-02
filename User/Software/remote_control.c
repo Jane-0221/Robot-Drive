@@ -307,11 +307,24 @@ void arm_save_home_position(void)
         Damiao_motor_data[0].target_angle = 0.0f;
         Damiao_motor_data[1].target_angle = 0.0f;
         Damiao_motor_data[2].target_angle = 0.0f;
-        Head_save_position();
+     
         return;
     }
     arm_save_position = 0U;
 }
+void head_save_home_position(void)
+{
+    if (SBUS_CH.CH5 == HIGH_VALUE && SBUS_CH.CH6 == HIGH_VALUE)
+    {
+
+        head_motor_data[0].target_angle = 0.0f;
+        head_motor_data[1].target_angle = 0.0f;
+        Head_save_position();
+        return;
+    }
+
+}
+
 void Head_Motor_Control_Updata(void)
 {
     // 替换原有if-else if结构为switch语句

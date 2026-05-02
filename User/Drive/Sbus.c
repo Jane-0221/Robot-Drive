@@ -1,10 +1,15 @@
 #include "Sbus.h"
+#include "FreeRTOS.h"
+#include "task.h"
 #include <string.h>
 
 SBUS_CH_Struct SBUS_CH;
 
 // 定义256字节的数据缓冲区
- uint8_t sbus_data_buffer[256];
+uint8_t sbus_data_buffer[256];
+static uint8_t sbus_parse_buffer[256];
+static volatile uint16_t sbus_data_size = 0U;
+static volatile uint8_t sbus_data_pending = 0U;
 
 // 存储256字节数据的函数
 void store_sbus_data(const uint8_t *data, uint16_t size)
@@ -18,11 +23,8 @@ void store_sbus_data(const uint8_t *data, uint16_t size)
     
     // 使用memcpy安全地复制数据
     memcpy(sbus_data_buffer, data, copy_size);
-    
-    // 如果数据小于256字节，剩余部分填充0
-    if (copy_size < 256) {
-        memset(sbus_data_buffer + copy_size, 0, 256 - copy_size);
-    }
+    sbus_data_size = copy_size;
+    sbus_data_pending = 1U;
 }
 
 // 获取存储的数据缓冲区指针
@@ -39,6 +41,9 @@ uint16_t get_sbus_buffer_size(void)
 
 void update_sbus(volatile const uint8_t *sbus_buf,SBUS_CH_Struct *SBUS_CH)
 {
+        if ((sbus_buf == NULL) || (SBUS_CH == NULL)) {
+            return;
+        }
 
 
         SBUS_CH->ConnectState = 1;       
@@ -59,4 +64,26 @@ void update_sbus(volatile const uint8_t *sbus_buf,SBUS_CH_Struct *SBUS_CH)
         SBUS_CH->CH15 = (((int16_t)sbus_buf[20] >> 2 | ((int16_t)sbus_buf[21] << 6 )) & 0x07FF);
         SBUS_CH->CH16 = (((int16_t)sbus_buf[21] >> 5 | ((int16_t)sbus_buf[22] << 3 )) & 0x07FF);
 
+}
+
+uint8_t SBUS_UpdateIfNew(void)
+{
+    uint16_t size;
+
+    if (sbus_data_pending == 0U) {
+        return 0U;
+    }
+
+    taskENTER_CRITICAL();
+    size = sbus_data_size;
+    memcpy(sbus_parse_buffer, sbus_data_buffer, size);
+    sbus_data_pending = 0U;
+    taskEXIT_CRITICAL();
+
+    if (size < 23U) {
+        return 0U;
+    }
+
+    update_sbus(sbus_parse_buffer, &SBUS_CH);
+    return 1U;
 }

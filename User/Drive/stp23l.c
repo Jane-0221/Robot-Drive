@@ -1,9 +1,14 @@
 #include "stp23l.h"
+#include "FreeRTOS.h"
+#include "task.h"
 #include <stddef.h>
 #include <string.h>
 /************************* 全局解析数据实例化 *************************/
 STP23L_DataDef stp23l_data = {0};
 uint8_t stp23l_raw_data[256];
+static uint8_t stp23l_parse_buffer[256];
+static volatile uint16_t stp23l_raw_size = 0U;
+static volatile uint8_t stp23l_data_pending = 0U;
 /************************* 静态辅助函数：查找4AA包头 *************************/
 static uint16_t STP23L_FindHeader(uint8_t *buf, uint16_t size)
 {
@@ -28,17 +33,33 @@ void store_stp23l_data(const uint8_t *data, uint16_t size)
     
     // 使用memcpy安全地复制数据
     memcpy(stp23l_raw_data, data, copy_size);
-    
-    // 如果数据小于256字节，剩余部分填充0
-    if (copy_size < 256) {
-        memset(stp23l_raw_data + copy_size, 0, 256 - copy_size);
-    }
+    stp23l_raw_size = copy_size;
+    stp23l_data_pending = 1U;
 }
 /************************* 解析复位函数 *************************/
 void STP23L_Reset(void)
 {
     stp23l_data.parse_ok = 0;
     stp23l_data.parse_err = 0;
+}
+
+uint8_t STP23L_ParseLatest(void)
+{
+    uint16_t size;
+
+    if (stp23l_data_pending == 0U)
+    {
+        return 0U;
+    }
+
+    taskENTER_CRITICAL();
+    size = stp23l_raw_size;
+    memcpy(stp23l_parse_buffer, stp23l_raw_data, size);
+    stp23l_data_pending = 0U;
+    taskEXIT_CRITICAL();
+
+    STP23L_ParseData(stp23l_parse_buffer, size);
+    return 1U;
 }
 
 /************************* 整包解析函数（DMA中断直接调用） *************************/

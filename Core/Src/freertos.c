@@ -55,7 +55,10 @@
 #define VL53L0X_COMM_ENABLE 1U
 #define VL53L0X_SOFT_PROBE_ON_BOOT 0U
 #define VL53L0X_SOFT_PROBE_DELAY_MS 500U
-#define HEAD_STARTUP_FEEDBACK_ONLY_MS 50U
+#define HEAD_FEEDBACK_WAIT_TIMEOUT_MS 300U
+#define PT_PRESS_POLL_PERIOD_MS 10U
+#define PC_COMM_TX_PERIOD_MS 10U
+#define LOG_TASK_IDLE_PERIOD_MS 1000U
 
 /* USER CODE END PD */
 
@@ -67,6 +70,21 @@
 /* Private variables ---------------------------------------------------------*/
 /* USER CODE BEGIN Variables */
 uint32_t color = 0;
+typedef enum
+{
+  STACK_REMOTE_CONTROL = 0,
+  STACK_ARM_MT,
+  STACK_LIFT_CONTROL,
+  STACK_MOTOR_CONTROL,
+  STACK_HEAD,
+  STACK_ARM_UPDATE,
+  STACK_LOG_AND_DEBUG,
+  STACK_ARM_SV,
+  STACK_PC_COMM,
+  STACK_TASK_COUNT
+} StackWatermarkIndex_t;
+
+volatile uint32_t freertos_stack_watermark_words[STACK_TASK_COUNT] = {0U};
 /* USER CODE END Variables */
 /* Definitions for Remote_control */
 osThreadId_t Remote_controlHandle;
@@ -135,6 +153,7 @@ const osThreadAttr_t PC_Comm_attributes = {
 /* Private function prototypes -----------------------------------------------*/
 /* USER CODE BEGIN FunctionPrototypes */
 void Pump_Update(void);
+static void UpdateTaskStackWatermarks(void);
 
 /* USER CODE END FunctionPrototypes */
 
@@ -166,6 +185,29 @@ void vApplicationIdleHook(void)
   important that vApplicationIdleHook() is permitted to return to its calling
   function, because it is the responsibility of the idle task to clean up
   memory allocated by the kernel to any task that has since been deleted. */
+}
+
+static uint32_t GetStackHighWaterWords(osThreadId_t handle)
+{
+  if (handle == NULL)
+  {
+    return 0U;
+  }
+
+  return (uint32_t)uxTaskGetStackHighWaterMark((TaskHandle_t)handle);
+}
+
+static void UpdateTaskStackWatermarks(void)
+{
+  freertos_stack_watermark_words[STACK_REMOTE_CONTROL] = GetStackHighWaterWords(Remote_controlHandle);
+  freertos_stack_watermark_words[STACK_ARM_MT] = GetStackHighWaterWords(Arm_MTHandle);
+  freertos_stack_watermark_words[STACK_LIFT_CONTROL] = GetStackHighWaterWords(Lift_controlHandle);
+  freertos_stack_watermark_words[STACK_MOTOR_CONTROL] = GetStackHighWaterWords(Motor_controlHandle);
+  freertos_stack_watermark_words[STACK_HEAD] = GetStackHighWaterWords(HeadHandle);
+  freertos_stack_watermark_words[STACK_ARM_UPDATE] = GetStackHighWaterWords(Arm_updateHandle);
+  freertos_stack_watermark_words[STACK_LOG_AND_DEBUG] = GetStackHighWaterWords(Log_and_debugHandle);
+  freertos_stack_watermark_words[STACK_ARM_SV] = GetStackHighWaterWords(Arm_SVHandle);
+  freertos_stack_watermark_words[STACK_PC_COMM] = GetStackHighWaterWords(PC_CommHandle);
 }
 /* USER CODE END 2 */
 
@@ -248,13 +290,18 @@ void Remote_control_Task(void *argument)
   MX_USB_DEVICE_Init();
   int control_mode = 1; // 0: 遥控模式, 1: pc模式
   PT_Send_ReadTemp_Cmd(&huart1);
+  uint32_t pt_press_last_tick = osKernelGetTickCount() - PT_PRESS_POLL_PERIOD_MS;
   int a = 0;
   /* Infinite loop */
   for (;;)
   {
-    PT_Send_ReadPress_Cmd(&huart1);
-    update_sbus(sbus_data_buffer, &SBUS_CH); //
-    uint8_t arm_disable_active = 0U;
+    uint32_t tick_now = osKernelGetTickCount();
+    if ((tick_now - pt_press_last_tick) >= PT_PRESS_POLL_PERIOD_MS)
+    {
+      pt_press_last_tick = tick_now;
+      PT_Send_ReadPress_Cmd(&huart1);
+    }
+    SBUS_UpdateIfNew();
     // uint8_t arm_disable_active = Arm_Motor_Disable_Updata();
     Head_Motor_Enable_Disable_Updata();
 
@@ -373,8 +420,8 @@ void Lift_control_Task(void *argument)
   /* Infinite loop */
   for (;;)
   {
-    STP23L_ParseData(stp23l_raw_data, sizeof(stp23l_raw_data)); // 解析升降数据包
-    PT_ParsePressureToGlobal(pt_raw_buf, sizeof(pt_raw_buf));
+    STP23L_ParseLatest();
+    PT_ParseLatestPressure();
 
     Lift_RefreshHeight();           // 高度数据处理，得到当前高度
     Lift_GoToTarget(aim_tx_height); // 根据目标高度，控制电机运动
@@ -399,7 +446,6 @@ void Motor_control_Task(void *argument)
   /* Infinite loop */
   for (;;)
   {
-    update_sbus(sbus_data_buffer, &SBUS_CH);
     Chassis_Control_Updata();
     Omni_Wheel_Update();
     osDelay(1);
@@ -417,17 +463,27 @@ void Motor_control_Task(void *argument)
 void Head_Task(void *argument)
 {
   /* USER CODE BEGIN Head_Task */
-  uint32_t head_start_tick = osKernelGetTickCount();
+  uint8_t head_feedback_ready;
+  uint8_t head_disable_active;
+  uint8_t last_head_disable_active = 1U;
+  uint32_t head_feedback_wait_start_tick = osKernelGetTickCount();
   /* Infinite loop */
   for (;;)
   {
+    uint32_t tick_now = osKernelGetTickCount();
+    head_feedback_ready = Head_FeedbackReady();
+    head_disable_active = Head_Motor_Disable_IsActive();
     Head_Lk_Data_update();
 
-    if ((osKernelGetTickCount() - head_start_tick) < HEAD_STARTUP_FEEDBACK_ONLY_MS)
+    if ((last_head_disable_active != 0U) && (head_disable_active == 0U))
     {
-      Head_RequestFeedback();
+      head_feedback_wait_start_tick = tick_now;
     }
-    else if (Head_Motor_Disable_IsActive() == 0U)
+    last_head_disable_active = head_disable_active;
+
+    if ((head_disable_active == 0U) &&
+        ((head_feedback_ready != 0U) ||
+         ((tick_now - head_feedback_wait_start_tick) >= HEAD_FEEDBACK_WAIT_TIMEOUT_MS)))
     {
       Head_all_tx();
     }
@@ -435,7 +491,7 @@ void Head_Task(void *argument)
     {
       Head_RequestFeedback();
     }
-
+    head_save_home_position();
     osDelay(1);
   }
   /* USER CODE END Head_Task */
@@ -482,7 +538,8 @@ void Log_and_debug_Task(void *argument)
     // Music_play(melody);
     // printf("hello\n");
     // Music_play_56_nations();
-    osDelay(1);
+    UpdateTaskStackWatermarks();
+    osDelay(LOG_TASK_IDLE_PERIOD_MS);
   }
   /* USER CODE END Log_and_debug_Task */
 }
@@ -517,14 +574,23 @@ void Arm_SV_Task(void *argument)
 void PC_Comm_Task(void *argument)
 {
   /* USER CODE BEGIN PC_Comm_Task */
+  uint32_t pc_tx_last_tick = osKernelGetTickCount() - PC_COMM_TX_PERIOD_MS;
   /* Infinite loop */
   for (;;)
   {
-    pc_up_tx_data();
-    send_up_frame(&huart10);
-    unpack_dn_frame(uart_protocol_raw_data, &pc_dn_data);
-    osDelay(1);
+    uint32_t tick_now = osKernelGetTickCount();
+
+    UART_Protocol_UnpackLatest(&pc_dn_data);
+
+    if ((tick_now - pc_tx_last_tick) >= PC_COMM_TX_PERIOD_MS)
+    {
+      pc_tx_last_tick = tick_now;
+      pc_up_tx_data();
+      (void)send_up_frame(&huart10);
+    }
+
     HAL_IWDG_Refresh(&hiwdg1);
+    osDelay(1);
   }
   /* USER CODE END PC_Comm_Task */
 }

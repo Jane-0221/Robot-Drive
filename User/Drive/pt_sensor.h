@@ -27,6 +27,7 @@ extern float g_pressure_value;
 
 /************************* 核心函数声明 *************************/
 void pt_store_raw_data(const uint8_t *data, uint16_t size);
+uint8_t PT_ParseLatestPressure(void);
 void PT_Send_ReadTemp_Cmd(UART_HandleTypeDef *huart);
 void PT_Send_ReadPress_Cmd(UART_HandleTypeDef *huart);
 void PT_ParsePressureToGlobal(uint8_t *buf, uint16_t size);

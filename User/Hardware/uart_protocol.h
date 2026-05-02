@@ -13,6 +13,7 @@
 #define UP_DATA_LEN   56
 #define DN_DATA_LEN   51
 #define UP_FRAME_LEN  64
+#define DN_FRAME_LEN  59
 
 typedef struct {
     float air_path_state;
@@ -45,6 +46,7 @@ extern UpData_t up_tx_data;
 uint16_t crc16_ccitt(uint8_t *data, uint16_t len);
 void pack_up_frame(UpData_t *data, uint8_t *frame_buf);
 void unpack_dn_frame(uint8_t *frame_buf, DnData_t *data);
+uint8_t UART_Protocol_UnpackLatest(DnData_t *data);
 HAL_StatusTypeDef send_frame(UART_HandleTypeDef *huart, uint8_t *frame_buf, uint16_t len);
 HAL_StatusTypeDef send_up_frame(UART_HandleTypeDef *huart);
 void store_uart_protocol_data(const uint8_t *data, uint16_t size);
