@@ -21,7 +21,13 @@
 #define MID_VALUE 1024
 #define HIGH_VALUE 1694
 #define RANGE 50
-#define ARM_MOTOR_STEP 0.003f
+#define ARM_MOTOR_STEP 0.001f
+#define ARM_SELECTED_MOTOR_INVALID 0xFFU
+#define ARM_MOTOR_CH3_ENABLE_THRESHOLD 1500U
+#define ARM_MOTOR_CH3_DISABLE_THRESHOLD 500U
+#define ARM_MOTOR_CH3_LATCH_NONE 0U
+#define ARM_MOTOR_CH3_LATCH_ENABLE 1U
+#define ARM_MOTOR_CH3_LATCH_DISABLE 2U
 #define HEAD_RAD_TO_ANGLE_UNIT (18000.0f / 3.14159265358979323846f)
 #define HEAD_SINGLE_TURN_UNITS 36000L
 // extern DnData_t pc_dn_data;
@@ -31,6 +37,8 @@ static uint8_t arm_motor_disable_latched = 0U;
 static volatile uint8_t head_motor_disable_active = 0U;
 static uint8_t head_motor_enabled_latched = 1U;
 static uint8_t arm_save_position = 0U;
+static uint8_t arm_motor_ch3_latch[ARM_LOGICAL_MOTOR_COUNT] = {0U};
+static uint8_t arm_motor_save_zero_latched = 0U;
 static uint8_t sbus_match(uint16_t value, uint16_t target)
 {
     return (value >= (target - RANGE)) && (value <= (target + RANGE));
@@ -179,82 +187,113 @@ void Pump_Control_Updata(void)
     }
 }
 
-void Arm_Motor_Control_Updata(void)
+static uint8_t Arm_GetRemoteSelectedMotor(void)
 {
-    if (SBUS_CH.CH1 == 0 && SBUS_CH.CH2 == 0)
-    {
-        return;
-    }
+    uint8_t motor_offset;
 
-    if (SBUS_CH.CH8 != LOW_VALUE)
+    if (SBUS_CH.CH8 == HIGH_VALUE)
     {
-        return;
+        motor_offset = 0U;
+    }
+    else if (SBUS_CH.CH8 == LOW_VALUE)
+    {
+        motor_offset = 3U;
+    }
+    else
+    {
+        return ARM_SELECTED_MOTOR_INVALID;
     }
 
     switch (SBUS_CH.CH7)
     {
     case HIGH_VALUE:
-        if (SBUS_CH.CH1 > (MID_VALUE + RANGE))
-        {
-            Linzu_motor_data[0].target_angle += 0.001f;
-        }
-        else if (SBUS_CH.CH1 < (MID_VALUE - RANGE))
-        {
-            Linzu_motor_data[0].target_angle -= 0.001f;
-        }
-
-        if (SBUS_CH.CH2 > (MID_VALUE + RANGE))
-        {
-            Linzu_motor_data[1].target_angle += 0.001f;
-        }
-        else if (SBUS_CH.CH2 < (MID_VALUE - RANGE))
-        {
-            Linzu_motor_data[1].target_angle -= 0.001f;
-        }
-        break;
+        return motor_offset;
 
     case MID_VALUE:
-        if (SBUS_CH.CH1 > (MID_VALUE + RANGE))
-        {
-            Linzu_motor_data[2].target_angle += 0.001f;
-        }
-        else if (SBUS_CH.CH1 < (MID_VALUE - RANGE))
-        {
-            Linzu_motor_data[2].target_angle -= 0.001f;
-        }
-        if (SBUS_CH.CH2 > (MID_VALUE + RANGE))
-        {
-            Damiao_motor_data[0].target_angle += 0.001f;
-        }
-        else if (SBUS_CH.CH2 < (MID_VALUE - RANGE))
-        {
-            Damiao_motor_data[0].target_angle -= 0.001f;
-        }
-
-        break;
+        return motor_offset + 1U;
 
     case LOW_VALUE:
+        return motor_offset + 2U;
+
+    default:
+        return ARM_SELECTED_MOTOR_INVALID;
+    }
+}
+
+static void Arm_ResetMotorCh3Latches(void)
+{
+    uint8_t i;
+
+    for (i = 0U; i < ARM_LOGICAL_MOTOR_COUNT; i++)
+    {
+        arm_motor_ch3_latch[i] = ARM_MOTOR_CH3_LATCH_NONE;
+    }
+}
+
+void Arm_Motor_Control_Updata(void)
+{
+    uint8_t selected_motor = Arm_GetRemoteSelectedMotor();
+
+    if (selected_motor >= ARM_LOGICAL_MOTOR_COUNT)
+    {
+        if ((SBUS_CH.CH3 <= ARM_MOTOR_CH3_ENABLE_THRESHOLD) &&
+            (SBUS_CH.CH3 >= ARM_MOTOR_CH3_DISABLE_THRESHOLD))
+        {
+            Arm_ResetMotorCh3Latches();
+        }
+
+        if (SBUS_CH.CH5 != HIGH_VALUE)
+        {
+            arm_motor_save_zero_latched = 0U;
+        }
+
+        return;
+    }
+
+    if (SBUS_CH.CH1 != 0U)
+    {
         if (SBUS_CH.CH1 > (MID_VALUE + RANGE))
         {
-            Damiao_motor_data[1].target_angle += 0.001f;
+            (void)Arm_AdjustMotorTargetByIndex(selected_motor, ARM_MOTOR_STEP);
         }
         else if (SBUS_CH.CH1 < (MID_VALUE - RANGE))
         {
-            Damiao_motor_data[1].target_angle -= 0.001f;
+            (void)Arm_AdjustMotorTargetByIndex(selected_motor, -ARM_MOTOR_STEP);
         }
-        if (SBUS_CH.CH2 > (MID_VALUE + RANGE))
-        {
-            Damiao_motor_data[2].target_angle += 0.001f;
-        }
-        else if (SBUS_CH.CH2 < (MID_VALUE - RANGE))
-        {
-            Damiao_motor_data[2].target_angle -= 0.001f;
-        }
+    }
 
-        break;
+    if (SBUS_CH.CH3 > ARM_MOTOR_CH3_ENABLE_THRESHOLD)
+    {
+        if (arm_motor_ch3_latch[selected_motor] != ARM_MOTOR_CH3_LATCH_ENABLE)
+        {
+            (void)Arm_EnableMotorByIndex(selected_motor);
+            arm_motor_ch3_latch[selected_motor] = ARM_MOTOR_CH3_LATCH_ENABLE;
+        }
+    }
+    else if (SBUS_CH.CH3 < ARM_MOTOR_CH3_DISABLE_THRESHOLD)
+    {
+        if (arm_motor_ch3_latch[selected_motor] != ARM_MOTOR_CH3_LATCH_DISABLE)
+        {
+            (void)Arm_DisableMotorByIndex(selected_motor);
+            arm_motor_ch3_latch[selected_motor] = ARM_MOTOR_CH3_LATCH_DISABLE;
+        }
+    }
+    else
+    {
+        Arm_ResetMotorCh3Latches();
+    }
 
-    default:
-        break;
+    if (SBUS_CH.CH5 == HIGH_VALUE)
+    {
+        if (arm_motor_save_zero_latched == 0U)
+        {
+            (void)Arm_SaveMotorZeroByIndex(selected_motor);
+            arm_motor_save_zero_latched = 1U;
+        }
+    }
+    else
+    {
+        arm_motor_save_zero_latched = 0U;
     }
 }
 void arm_save_home_position(void)

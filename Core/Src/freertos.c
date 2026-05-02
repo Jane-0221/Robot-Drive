@@ -253,7 +253,8 @@ void Remote_control_Task(void *argument)
   {
     PT_Send_ReadPress_Cmd(&huart1);
     update_sbus(sbus_data_buffer, &SBUS_CH); //
-    uint8_t arm_disable_active = Arm_Motor_Disable_Updata();
+    uint8_t arm_disable_active = 0U;
+    // uint8_t arm_disable_active = Arm_Motor_Disable_Updata();
     Head_Motor_Enable_Disable_Updata();
     if ((control_mode == 0))
     {
@@ -313,7 +314,7 @@ void Arm_MT_Task(void *argument)
   for (;;)
   {
     osDelay(1);
-    Arm_CheckAndReenableDisabledMotors();
+    // Arm_CheckAndReenableDisabledMotors();
     if (Arm_Motor_Disable_IsActive() == 0U)
     {
       uint8_t arm_save_active = Arm_Save_Position_IsActive();

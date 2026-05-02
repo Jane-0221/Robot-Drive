@@ -30,6 +30,8 @@
 #define MOTOR_DAMIAO_5_ID 0x05 // 达妙5号电机ID
 #define MOTOR_DAMIAO_6_ID 0x06 // 达妙6号电机ID
 
+#define ARM_LOGICAL_MOTOR_COUNT 6U
+
 /** 余数电机ID（预留，未在代码中实际使用） */
 #define MOTOR_YUSHU_1_ID 2 // 余数1号电机ID
 #define MOTOR_YUSHU_2_ID 3 // 余数2号电机ID
@@ -123,5 +125,9 @@ extern void Arm_all_tx(void);          // 发送所有电机控制指令
 extern void Arm_save_position(void);   // 保存当前位置
 
 extern void Arm_CheckAndReenableDisabledMotors(void);
+uint8_t Arm_AdjustMotorTargetByIndex(uint8_t logical_motor, float delta_angle);
+uint8_t Arm_EnableMotorByIndex(uint8_t logical_motor);
+uint8_t Arm_DisableMotorByIndex(uint8_t logical_motor);
+uint8_t Arm_SaveMotorZeroByIndex(uint8_t logical_motor);
 
 #endif

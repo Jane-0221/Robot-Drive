@@ -405,6 +405,80 @@ void Arm_all_tx()
     osDelay(1);
 }
 
+static ArmMotorData_t *Arm_GetMotorDataByIndex(uint8_t logical_motor)
+{
+    if (logical_motor < 3U)
+    {
+        if (g_ShoulderType == SHOULDER_TYPE_DARAN)
+        {
+            return &Daran_motor_data[logical_motor];
+        }
+
+        return &Linzu_motor_data[logical_motor];
+    }
+
+    if (logical_motor < ARM_LOGICAL_MOTOR_COUNT)
+    {
+        return &Damiao_motor_data[logical_motor - 3U];
+    }
+
+    return NULL;
+}
+
+static RobStride_Motor_t *Arm_GetLinzuMotorByIndex(uint8_t logical_motor)
+{
+    RobStride_Motor_t *linzu_motors[3] = {&motor1, &motor2, &motor3};
+
+    if (logical_motor >= 3U)
+    {
+        return NULL;
+    }
+
+    return linzu_motors[logical_motor];
+}
+
+static uint8_t Arm_GetDaranMotorIdByIndex(uint8_t logical_motor, uint8_t *motor_id)
+{
+    static const uint8_t daran_motor_ids[3] = {
+        MOTOR_DARAN_1_ID,
+        MOTOR_DARAN_2_ID,
+        MOTOR_DARAN_3_ID,
+    };
+
+    if (logical_motor >= 3U)
+    {
+        return 0U;
+    }
+
+    *motor_id = daran_motor_ids[logical_motor];
+    return 1U;
+}
+
+static uint8_t Arm_GetDamiaoMotorInfoByIndex(uint8_t logical_motor, uint16_t *motor_id, uint16_t *motor_index)
+{
+    static const uint16_t damiao_motor_ids[3] = {
+        MOTOR_DAMIAO_4_ID,
+        MOTOR_DAMIAO_5_ID,
+        MOTOR_DAMIAO_6_ID,
+    };
+    static const uint16_t damiao_motor_indices[3] = {
+        Motor4,
+        Motor5,
+        Motor6,
+    };
+    uint8_t damiao_index;
+
+    if ((logical_motor < 3U) || (logical_motor >= ARM_LOGICAL_MOTOR_COUNT))
+    {
+        return 0U;
+    }
+
+    damiao_index = logical_motor - 3U;
+    *motor_id = damiao_motor_ids[damiao_index];
+    *motor_index = damiao_motor_indices[damiao_index];
+    return 1U;
+}
+
 static void Arm_ReenableLinzuMotor(RobStride_Motor_t *motor, ArmMotorData_t *motor_data)
 {
     if (motor->Pos_Info.pattern == 2U)
@@ -492,6 +566,190 @@ static void Arm_Linzu_SaveZeroAndHold(RobStride_Motor_t *motor, ArmMotorData_t *
     Set_RobStride_Motor_parameter(motor, CAN_HANDLE_2, 0X7017, motor_data->target_velocity, 'p');
     osDelay(ARM_LINZU_ZERO_REENABLE_DELAY_MS);
     RobStride_Motor_CSP_control(motor, CAN_HANDLE_2, Arm_LimitTargetAngle(motor_data), motor_data->target_velocity);
+}
+
+uint8_t Arm_AdjustMotorTargetByIndex(uint8_t logical_motor, float delta_angle)
+{
+    ArmMotorData_t *motor_data = Arm_GetMotorDataByIndex(logical_motor);
+
+    if (motor_data == NULL)
+    {
+        return 0U;
+    }
+
+    motor_data->target_angle += delta_angle;
+    return 1U;
+}
+
+uint8_t Arm_EnableMotorByIndex(uint8_t logical_motor)
+{
+    ArmMotorData_t *motor_data = Arm_GetMotorDataByIndex(logical_motor);
+
+    if (motor_data == NULL)
+    {
+        return 0U;
+    }
+
+    if (logical_motor < 3U)
+    {
+        if (g_ShoulderType == SHOULDER_TYPE_LINGZU)
+        {
+            RobStride_Motor_t *motor = Arm_GetLinzuMotorByIndex(logical_motor);
+
+            if (motor == NULL)
+            {
+                return 0U;
+            }
+
+            Set_RobStride_Motor_parameter(motor, CAN_HANDLE_2, 0X7005, CSP_control_mode, 'j');
+            Enable_Motor(motor, CAN_HANDLE_2);
+            RobStride_Motor_CSP_control(motor, CAN_HANDLE_2, Arm_LimitTargetAngle(motor_data), motor_data->target_velocity);
+            return 1U;
+        }
+
+        if (g_ShoulderType == SHOULDER_TYPE_DARAN)
+        {
+            uint8_t motor_id;
+
+            if (Arm_GetDaranMotorIdByIndex(logical_motor, &motor_id) == 0U)
+            {
+                return 0U;
+            }
+
+            set_mode(CAN_HANDLE_2, motor_id, 2);
+            osDelay(1);
+            set_angle(CAN_HANDLE_2, motor_id, motor_data->target_angle, motor_data->target_velocity, 10.0f, 1);
+            return 1U;
+        }
+
+        return 0U;
+    }
+
+    {
+        uint16_t motor_id;
+        uint16_t motor_index;
+
+        if (Arm_GetDamiaoMotorInfoByIndex(logical_motor, &motor_id, &motor_index) == 0U)
+        {
+            return 0U;
+        }
+
+        enable_motor_mode(CAN_HANDLE_2, motor_id, POS_MODE);
+        set_DM_mode(motor_index, POS_MODE);
+        pos_speed_ctrl(CAN_HANDLE_2, motor_id, Arm_LimitTargetAngle(motor_data), motor_data->target_velocity);
+        return 1U;
+    }
+}
+
+uint8_t Arm_DisableMotorByIndex(uint8_t logical_motor)
+{
+    if (logical_motor < 3U)
+    {
+        if (g_ShoulderType == SHOULDER_TYPE_LINGZU)
+        {
+            RobStride_Motor_t *motor = Arm_GetLinzuMotorByIndex(logical_motor);
+
+            if (motor == NULL)
+            {
+                return 0U;
+            }
+
+            Disenable_Motor(motor, CAN_HANDLE_2, 0U);
+            return 1U;
+        }
+
+        if (g_ShoulderType == SHOULDER_TYPE_DARAN)
+        {
+            uint8_t motor_id;
+
+            if (Arm_GetDaranMotorIdByIndex(logical_motor, &motor_id) == 0U)
+            {
+                return 0U;
+            }
+
+            set_mode(CAN_HANDLE_2, motor_id, 1);
+            return 1U;
+        }
+
+        return 0U;
+    }
+
+    {
+        uint16_t motor_id;
+        uint16_t motor_index;
+
+        if (Arm_GetDamiaoMotorInfoByIndex(logical_motor, &motor_id, &motor_index) == 0U)
+        {
+            return 0U;
+        }
+
+        disable_motor_mode(CAN_HANDLE_2, motor_id, POS_MODE);
+        return 1U;
+    }
+}
+
+uint8_t Arm_SaveMotorZeroByIndex(uint8_t logical_motor)
+{
+    ArmMotorData_t *motor_data = Arm_GetMotorDataByIndex(logical_motor);
+
+    if (motor_data == NULL)
+    {
+        return 0U;
+    }
+
+    if (logical_motor < 3U)
+    {
+        if (g_ShoulderType == SHOULDER_TYPE_LINGZU)
+        {
+            RobStride_Motor_t *motor = Arm_GetLinzuMotorByIndex(logical_motor);
+
+            if (motor == NULL)
+            {
+                return 0U;
+            }
+
+            Arm_Linzu_SaveZeroAndHold(motor, motor_data);
+            return 1U;
+        }
+
+        if (g_ShoulderType == SHOULDER_TYPE_DARAN)
+        {
+            uint8_t motor_id;
+
+            if (Arm_GetDaranMotorIdByIndex(logical_motor, &motor_id) == 0U)
+            {
+                return 0U;
+            }
+
+            motor_data->target_angle = 0.0f;
+            set_zero_position(CAN_HANDLE_2, motor_id);
+            osDelay(1);
+            set_mode(CAN_HANDLE_2, motor_id, 2);
+            osDelay(1);
+            set_angle(CAN_HANDLE_2, motor_id, motor_data->target_angle, motor_data->target_velocity, 10.0f, 1);
+            return 1U;
+        }
+
+        return 0U;
+    }
+
+    {
+        uint16_t motor_id;
+        uint16_t motor_index;
+
+        if (Arm_GetDamiaoMotorInfoByIndex(logical_motor, &motor_id, &motor_index) == 0U)
+        {
+            return 0U;
+        }
+
+        motor_data->target_angle = 0.0f;
+        CAN_Send_Save_Zero(CAN_HANDLE_2, motor_id);
+        osDelay(1);
+        CAN_Send_Enter(CAN_HANDLE_2, motor_id);
+        osDelay(1);
+        pos_speed_ctrl(CAN_HANDLE_2, motor_id, Arm_LimitTargetAngle(motor_data), motor_data->target_velocity);
+        return 1U;
+    }
 }
 
 void Arm_save_position(void)
