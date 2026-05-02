@@ -246,8 +246,9 @@ void Remote_control_Task(void *argument)
 
   /* USER CODE BEGIN Remote_control_Task */
   MX_USB_DEVICE_Init();
-  int control_mode = 0; // 0: 遥控模式, 1: pc模式
+  int control_mode = 1; // 0: 遥控模式, 1: pc模式
   PT_Send_ReadTemp_Cmd(&huart1);
+  int a = 0;
   /* Infinite loop */
   for (;;)
   {
@@ -256,6 +257,7 @@ void Remote_control_Task(void *argument)
     uint8_t arm_disable_active = 0U;
     // uint8_t arm_disable_active = Arm_Motor_Disable_Updata();
     Head_Motor_Enable_Disable_Updata();
+
     if ((control_mode == 0))
     {
       // 遥控模式
@@ -268,16 +270,23 @@ void Remote_control_Task(void *argument)
     else if ((control_mode == 1))
     {
       // pc模式
+
       PC_Pump_Control_Updata();
       PC_Head_Motor_Control_Updata();
       PC_Up_Down_Motor_Control_Updata();
-      if (arm_disable_active == 0U)
+      // if (arm_disable_active == 0U)
+      // {
+      // 机械臂电机控制
+      PC_Arm_Motor_Control_Updata();
+      // }
+      if (a == 0U)
       {
-        // 机械臂电机控制
-        PC_Arm_Motor_Control_Updata();
+        a = 1U;
+        
+        Arm_EnableAllMotors();
       }
     }
-
+    Arm_Motor_Disable_Updata();
     osDelay(1);
   }
 
@@ -309,7 +318,7 @@ void Arm_MT_Task(void *argument)
 #endif
   (void)VL53L0X_Init();
 #endif
-  //Arm_save_position();
+  // Arm_save_position();
   /* Infinite loop */
   for (;;)
   {

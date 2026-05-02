@@ -127,6 +127,7 @@ extern void Arm_save_position(void);   // 保存当前位置
 extern void Arm_CheckAndReenableDisabledMotors(void);
 uint8_t Arm_AdjustMotorTargetByIndex(uint8_t logical_motor, float delta_angle);
 uint8_t Arm_EnableMotorByIndex(uint8_t logical_motor);
+uint8_t Arm_EnableAllMotors(void);
 uint8_t Arm_DisableMotorByIndex(uint8_t logical_motor);
 uint8_t Arm_SaveMotorZeroByIndex(uint8_t logical_motor);
 

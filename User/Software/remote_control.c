@@ -82,7 +82,7 @@ void remote_control_init()
 
 uint8_t Arm_Motor_Disable_Updata(void)
 {
-    uint8_t disable_request = (SBUS_CH.CH5 == HIGH_VALUE) &&
+    uint8_t disable_request = (SBUS_CH.CH5 == LOW_VALUE) &&
                               (SBUS_CH.CH6 == HIGH_VALUE) &&
                               (SBUS_CH.CH7 == HIGH_VALUE) &&
                               (SBUS_CH.CH8 == HIGH_VALUE);

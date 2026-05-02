@@ -72,7 +72,25 @@ float reply_enable = 0.0f;
 
 #define ARM_REENABLE_CHECK_PERIOD_MS 100U
 #define ARM_DAMIAO_ENABLE_STATE 2U
-#define ARM_TARGET_ANGLE_LIMIT_RAD 0.785398163f
+#define ARM_PI_RAD 3.141592654f
+#define ARM_TWO_PI_RAD 6.283185307f
+#define ARM_TARGET_ANGLE_LIMIT_RAD 1.047197551f
+#define ARM_TARGET_CURRENT_MAX_DIFF_RAD ARM_PI_RAD
+
+static float Arm_GetEquivalentAngleNearCurrent(float target_angle, float current_angle)
+{
+    while ((target_angle - current_angle) > ARM_PI_RAD)
+    {
+        target_angle -= ARM_TWO_PI_RAD;
+    }
+
+    while ((target_angle - current_angle) < -ARM_PI_RAD)
+    {
+        target_angle += ARM_TWO_PI_RAD;
+    }
+
+    return target_angle;
+}
 
 static float Arm_ClampTargetAngle(float angle)
 {
@@ -93,6 +111,70 @@ static float Arm_LimitTargetAngle(ArmMotorData_t *motor_data)
 {
     motor_data->target_angle = Arm_ClampTargetAngle(motor_data->target_angle);
     return motor_data->target_angle;
+}
+
+static uint8_t Arm_IsAngleDiffSafe(float target_angle, float current_angle)
+{
+    float angle_diff;
+
+    angle_diff = target_angle - current_angle;
+
+    if (angle_diff < 0.0f)
+    {
+        angle_diff = -angle_diff;
+    }
+
+    return (angle_diff <= ARM_TARGET_CURRENT_MAX_DIFF_RAD) ? 1U : 0U;
+}
+
+static uint8_t Arm_GetSafeTargetAngle(ArmMotorData_t *motor_data, float *target_angle)
+{
+    *target_angle = Arm_LimitTargetAngle(motor_data);
+    return Arm_IsAngleDiffSafe(*target_angle, motor_data->current_angle);
+}
+
+static uint8_t Arm_SendLinzuTarget(RobStride_Motor_t *motor, ArmMotorData_t *motor_data)
+{
+    float target_angle;
+    float motor_angle;
+
+    target_angle = Arm_LimitTargetAngle(motor_data);
+    motor_angle = motor->Pos_Info.Angle;
+    target_angle = Arm_GetEquivalentAngleNearCurrent(target_angle, motor_angle);
+
+    if (Arm_IsAngleDiffSafe(target_angle, motor_angle) == 0U)
+    {
+        return 0U;
+    }
+
+    RobStride_Motor_CSP_control(motor, CAN_HANDLE_2, target_angle, motor_data->target_velocity);
+    return 1U;
+}
+
+static uint8_t Arm_SendDaranTarget(uint8_t motor_id, ArmMotorData_t *motor_data)
+{
+    float target_angle;
+
+    if (Arm_GetSafeTargetAngle(motor_data, &target_angle) == 0U)
+    {
+        return 0U;
+    }
+
+    set_angle(CAN_HANDLE_2, motor_id, target_angle, motor_data->target_velocity, 10.0f, 1);
+    return 1U;
+}
+
+static uint8_t Arm_SendDamiaoTarget(uint16_t motor_id, ArmMotorData_t *motor_data)
+{
+    float target_angle;
+
+    if (Arm_GetSafeTargetAngle(motor_data, &target_angle) == 0U)
+    {
+        return 0U;
+    }
+
+    pos_speed_ctrl(CAN_HANDLE_2, motor_id, target_angle, motor_data->target_velocity);
+    return 1U;
 }
 
 // ===================== 函数定义 =====================
@@ -117,8 +199,8 @@ void Arm_Init()
     Get_RobStride_Motor_parameter(&motor1, CAN_HANDLE_2, 0X7005);                        // 读取电机参数，0X7005为参数地址
     HAL_Delay(10);                                                                       // 延时确保通信稳定
     Set_RobStride_Motor_parameter(&motor1, CAN_HANDLE_2, 0X7005, CSP_control_mode, 'j'); // 设置CSP位置控制模式
-    Enable_Motor(&motor1, (hcan_t *)CAN_HANDLE_2);                                       // 使能电机
-    Set_RobStride_Motor_parameter(&motor1, CAN_HANDLE_2, 0X7017, 1.0f, 'p');             // 设置参数0X7017，比例1.0
+    // Enable_Motor(&motor1, (hcan_t *)CAN_HANDLE_2);                                       // 使能电机
+    Set_RobStride_Motor_parameter(&motor1, CAN_HANDLE_2, 0X7017, 1.0f, 'p'); // 设置参数0X7017，比例1.0
     HAL_Delay(10);
     // 开启主动上报（0x00=关闭，0x01=开启）
     RobStride_Motor_ProactiveEscalationSet(&motor1, CAN_HANDLE_2, 0x01);
@@ -128,7 +210,7 @@ void Arm_Init()
     Get_RobStride_Motor_parameter(&motor2, CAN_HANDLE_2, 0X7005);
     HAL_Delay(10);
     Set_RobStride_Motor_parameter(&motor2, CAN_HANDLE_2, 0X7005, CSP_control_mode, 'j');
-    Enable_Motor(&motor2, (hcan_t *)CAN_HANDLE_2);
+    // Enable_Motor(&motor2, (hcan_t *)CAN_HANDLE_2);
     Set_RobStride_Motor_parameter(&motor2, CAN_HANDLE_2, 0X7017, 1.0f, 'p');
     HAL_Delay(10);
     RobStride_Motor_ProactiveEscalationSet(&motor2, CAN_HANDLE_2, 0x01);
@@ -138,7 +220,7 @@ void Arm_Init()
     Get_RobStride_Motor_parameter(&motor3, CAN_HANDLE_2, 0X7005);
     HAL_Delay(10);
     Set_RobStride_Motor_parameter(&motor3, CAN_HANDLE_2, 0X7005, CSP_control_mode, 'j');
-    Enable_Motor(&motor3, (hcan_t *)CAN_HANDLE_2);
+    // Enable_Motor(&motor3, (hcan_t *)CAN_HANDLE_2);
     Set_RobStride_Motor_parameter(&motor3, CAN_HANDLE_2, 0X7017, 1.0f, 'p');
     HAL_Delay(10);
     RobStride_Motor_ProactiveEscalationSet(&motor3, CAN_HANDLE_2, 0x01);
@@ -216,7 +298,7 @@ void Arm_Init()
  */
 void Arm_Linzu_motor1()
 {
-    RobStride_Motor_CSP_control(&motor1, CAN_HANDLE_2, Arm_LimitTargetAngle(&Linzu_motor_data[0]), Linzu_motor_data[0].target_velocity);
+    (void)Arm_SendLinzuTarget(&motor1, &Linzu_motor_data[0]);
 }
 
 /**
@@ -226,7 +308,7 @@ void Arm_Linzu_motor1()
  */
 void Arm_Linzu_motor2()
 {
-    RobStride_Motor_CSP_control(&motor2, CAN_HANDLE_2, Arm_LimitTargetAngle(&Linzu_motor_data[1]), Linzu_motor_data[1].target_velocity);
+    (void)Arm_SendLinzuTarget(&motor2, &Linzu_motor_data[1]);
 }
 
 /**
@@ -236,7 +318,7 @@ void Arm_Linzu_motor2()
  */
 void Arm_Linzu_motor3()
 {
-    RobStride_Motor_CSP_control(&motor3, CAN_HANDLE_2, Arm_LimitTargetAngle(&Linzu_motor_data[2]), Linzu_motor_data[2].target_velocity);
+    (void)Arm_SendLinzuTarget(&motor3, &Linzu_motor_data[2]);
 }
 
 /**
@@ -249,7 +331,7 @@ void Arm_Linzu_motor3()
 void Arm_Daran_motor1()
 {
     osDelay(1);
-    set_angle(CAN_HANDLE_2, MOTOR_DARAN_1_ID, Daran_motor_data[0].target_angle, Daran_motor_data[0].target_velocity, 10.0f, 1);
+    (void)Arm_SendDaranTarget(MOTOR_DARAN_1_ID, &Daran_motor_data[0]);
 }
 
 /**
@@ -260,7 +342,7 @@ void Arm_Daran_motor1()
 void Arm_Daran_motor2()
 {
     osDelay(1);
-    set_angle(CAN_HANDLE_2, MOTOR_DARAN_2_ID, Daran_motor_data[1].target_angle, Daran_motor_data[1].target_velocity, 10.0f, 1);
+    (void)Arm_SendDaranTarget(MOTOR_DARAN_2_ID, &Daran_motor_data[1]);
 }
 
 /**
@@ -271,7 +353,7 @@ void Arm_Daran_motor2()
 void Arm_Daran_motor3()
 {
     osDelay(1);
-    set_angle(CAN_HANDLE_2, MOTOR_DARAN_3_ID, Daran_motor_data[2].target_angle, Daran_motor_data[2].target_velocity, 10.0f, 1);
+    (void)Arm_SendDaranTarget(MOTOR_DARAN_3_ID, &Daran_motor_data[2]);
 }
 
 /**
@@ -284,7 +366,7 @@ void Arm_Daran_motor3()
  */
 void Arm_Damiao_motor4()
 {
-    pos_speed_ctrl(CAN_HANDLE_2, MOTOR_DAMIAO_4_ID, Arm_LimitTargetAngle(&Damiao_motor_data[0]), Damiao_motor_data[0].target_velocity);
+    (void)Arm_SendDamiaoTarget(MOTOR_DAMIAO_4_ID, &Damiao_motor_data[0]);
 }
 
 /**
@@ -294,7 +376,8 @@ void Arm_Damiao_motor4()
  */
 void Arm_Damiao_motor5()
 {
-    pos_speed_ctrl(CAN_HANDLE_2, MOTOR_DAMIAO_5_ID, Arm_LimitTargetAngle(&Damiao_motor_data[1]), Damiao_motor_data[1].target_velocity);
+
+    (void)Arm_SendDamiaoTarget(MOTOR_DAMIAO_5_ID, &Damiao_motor_data[1]);
 }
 
 /**
@@ -307,7 +390,7 @@ void Arm_Damiao_motor5()
  */
 void Arm_Damiao_motor6()
 {
-    pos_speed_ctrl(CAN_HANDLE_2, MOTOR_DAMIAO_6_ID, Arm_LimitTargetAngle(&Damiao_motor_data[2]), Damiao_motor_data[2].target_velocity);
+    (void)Arm_SendDamiaoTarget(MOTOR_DAMIAO_6_ID, &Damiao_motor_data[2]);
 }
 
 /**
@@ -362,7 +445,7 @@ void Arm_Damiao_Data_update()
 void Arm_All_Data_update()
 {
     Arm_Linzu_Data_update();
-    osDelay(1); 
+    osDelay(1);
     Arm_Daran_Data_update();
     osDelay(1);
     Arm_Damiao_Data_update();
@@ -488,7 +571,7 @@ static void Arm_ReenableLinzuMotor(RobStride_Motor_t *motor, ArmMotorData_t *mot
 
     Set_RobStride_Motor_parameter(motor, CAN_HANDLE_2, 0X7005, CSP_control_mode, 'j');
     Enable_Motor(motor, CAN_HANDLE_2);
-    RobStride_Motor_CSP_control(motor, CAN_HANDLE_2, Arm_LimitTargetAngle(motor_data), motor_data->target_velocity);
+    (void)Arm_SendLinzuTarget(motor, motor_data);
 }
 
 static void Arm_ReenableDamiaoMotor(uint16_t motor_id, uint16_t motor_index, ArmMotorData_t *motor_data)
@@ -500,7 +583,7 @@ static void Arm_ReenableDamiaoMotor(uint16_t motor_id, uint16_t motor_index, Arm
 
     enable_motor_mode(CAN_HANDLE_2, motor_id, POS_MODE);
     set_DM_mode(motor_index, POS_MODE);
-    pos_speed_ctrl(CAN_HANDLE_2, motor_id, Arm_LimitTargetAngle(motor_data), motor_data->target_velocity);
+    (void)Arm_SendDamiaoTarget(motor_id, motor_data);
 }
 
 void Arm_CheckAndReenableDisabledMotors(void)
@@ -565,7 +648,7 @@ static void Arm_Linzu_SaveZeroAndHold(RobStride_Motor_t *motor, ArmMotorData_t *
     osDelay(ARM_LINZU_ZERO_REENABLE_DELAY_MS);
     Set_RobStride_Motor_parameter(motor, CAN_HANDLE_2, 0X7017, motor_data->target_velocity, 'p');
     osDelay(ARM_LINZU_ZERO_REENABLE_DELAY_MS);
-    RobStride_Motor_CSP_control(motor, CAN_HANDLE_2, Arm_LimitTargetAngle(motor_data), motor_data->target_velocity);
+    (void)Arm_SendLinzuTarget(motor, motor_data);
 }
 
 uint8_t Arm_AdjustMotorTargetByIndex(uint8_t logical_motor, float delta_angle)
@@ -603,8 +686,7 @@ uint8_t Arm_EnableMotorByIndex(uint8_t logical_motor)
 
             Set_RobStride_Motor_parameter(motor, CAN_HANDLE_2, 0X7005, CSP_control_mode, 'j');
             Enable_Motor(motor, CAN_HANDLE_2);
-            RobStride_Motor_CSP_control(motor, CAN_HANDLE_2, Arm_LimitTargetAngle(motor_data), motor_data->target_velocity);
-            return 1U;
+            return Arm_SendLinzuTarget(motor, motor_data);
         }
 
         if (g_ShoulderType == SHOULDER_TYPE_DARAN)
@@ -618,8 +700,7 @@ uint8_t Arm_EnableMotorByIndex(uint8_t logical_motor)
 
             set_mode(CAN_HANDLE_2, motor_id, 2);
             osDelay(1);
-            set_angle(CAN_HANDLE_2, motor_id, motor_data->target_angle, motor_data->target_velocity, 10.0f, 1);
-            return 1U;
+            return Arm_SendDaranTarget(motor_id, motor_data);
         }
 
         return 0U;
@@ -636,9 +717,26 @@ uint8_t Arm_EnableMotorByIndex(uint8_t logical_motor)
 
         enable_motor_mode(CAN_HANDLE_2, motor_id, POS_MODE);
         set_DM_mode(motor_index, POS_MODE);
-        pos_speed_ctrl(CAN_HANDLE_2, motor_id, Arm_LimitTargetAngle(motor_data), motor_data->target_velocity);
-        return 1U;
+        return Arm_SendDamiaoTarget(motor_id, motor_data);
     }
+}
+
+uint8_t Arm_EnableAllMotors(void)
+{
+    uint8_t logical_motor;
+    uint8_t all_enabled = 1U;
+
+    for (logical_motor = 0U; logical_motor < ARM_LOGICAL_MOTOR_COUNT; logical_motor++)
+    {
+        if (Arm_EnableMotorByIndex(logical_motor) == 0U)
+        {
+            all_enabled = 0U;
+        }
+
+        osDelay(1);
+    }
+
+    return all_enabled;
 }
 
 uint8_t Arm_DisableMotorByIndex(uint8_t logical_motor)
@@ -726,8 +824,7 @@ uint8_t Arm_SaveMotorZeroByIndex(uint8_t logical_motor)
             osDelay(1);
             set_mode(CAN_HANDLE_2, motor_id, 2);
             osDelay(1);
-            set_angle(CAN_HANDLE_2, motor_id, motor_data->target_angle, motor_data->target_velocity, 10.0f, 1);
-            return 1U;
+            return Arm_SendDaranTarget(motor_id, motor_data);
         }
 
         return 0U;
@@ -747,8 +844,7 @@ uint8_t Arm_SaveMotorZeroByIndex(uint8_t logical_motor)
         osDelay(1);
         CAN_Send_Enter(CAN_HANDLE_2, motor_id);
         osDelay(1);
-        pos_speed_ctrl(CAN_HANDLE_2, motor_id, Arm_LimitTargetAngle(motor_data), motor_data->target_velocity);
-        return 1U;
+        return Arm_SendDamiaoTarget(motor_id, motor_data);
     }
 }
 
@@ -757,7 +853,6 @@ void Arm_save_position(void)
     Damiao_motor_data[0].target_angle = 0.0f;
     Damiao_motor_data[1].target_angle = 0.0f;
     Damiao_motor_data[2].target_angle = 0.0f;
-
 
     Arm_Linzu_SaveZeroAndHold(&motor1, &Linzu_motor_data[0]);
     osDelay(1);
@@ -775,13 +870,13 @@ void Arm_save_position(void)
 
     CAN_Send_Enter(CAN_HANDLE_2, MOTOR_DAMIAO_4_ID);
     osDelay(1);
-    pos_speed_ctrl(CAN_HANDLE_2, MOTOR_DAMIAO_4_ID, Arm_LimitTargetAngle(&Damiao_motor_data[0]), Damiao_motor_data[0].target_velocity);
+    (void)Arm_SendDamiaoTarget(MOTOR_DAMIAO_4_ID, &Damiao_motor_data[0]);
     osDelay(1);
     CAN_Send_Enter(CAN_HANDLE_2, MOTOR_DAMIAO_5_ID);
     osDelay(1);
-    pos_speed_ctrl(CAN_HANDLE_2, MOTOR_DAMIAO_5_ID, Arm_LimitTargetAngle(&Damiao_motor_data[1]), Damiao_motor_data[1].target_velocity);
+    (void)Arm_SendDamiaoTarget(MOTOR_DAMIAO_5_ID, &Damiao_motor_data[1]);
     osDelay(1);
     CAN_Send_Enter(CAN_HANDLE_2, MOTOR_DAMIAO_6_ID);
     osDelay(1);
-    pos_speed_ctrl(CAN_HANDLE_2, MOTOR_DAMIAO_6_ID, Arm_LimitTargetAngle(&Damiao_motor_data[2]), Damiao_motor_data[2].target_velocity);
+    (void)Arm_SendDamiaoTarget(MOTOR_DAMIAO_6_ID, &Damiao_motor_data[2]);
 }
