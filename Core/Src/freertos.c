@@ -55,7 +55,8 @@
 #define VL53L0X_COMM_ENABLE 1U
 #define VL53L0X_SOFT_PROBE_ON_BOOT 0U
 #define VL53L0X_SOFT_PROBE_DELAY_MS 500U
-#define HEAD_FEEDBACK_WAIT_TIMEOUT_MS 300U
+#define HEAD_STARTUP_STABILIZE_MS 1000U
+#define HEAD_REENABLE_STABILIZE_MS 100U
 #define PT_PRESS_POLL_PERIOD_MS 10U
 #define PC_COMM_TX_PERIOD_MS 10U
 #define LOG_TASK_IDLE_PERIOD_MS 1000U
@@ -466,6 +467,8 @@ void Head_Task(void *argument)
   uint8_t head_feedback_ready;
   uint8_t head_disable_active;
   uint8_t last_head_disable_active = 1U;
+  uint8_t head_first_enable = 1U;
+  uint32_t head_stabilize_ms = HEAD_STARTUP_STABILIZE_MS;
   uint32_t head_feedback_wait_start_tick = osKernelGetTickCount();
   /* Infinite loop */
   for (;;)
@@ -477,13 +480,17 @@ void Head_Task(void *argument)
 
     if ((last_head_disable_active != 0U) && (head_disable_active == 0U))
     {
+      head_stabilize_ms = (head_first_enable != 0U) ?
+                           HEAD_STARTUP_STABILIZE_MS :
+                           HEAD_REENABLE_STABILIZE_MS;
+      head_first_enable = 0U;
       head_feedback_wait_start_tick = tick_now;
     }
     last_head_disable_active = head_disable_active;
 
     if ((head_disable_active == 0U) &&
-        ((head_feedback_ready != 0U) ||
-         ((tick_now - head_feedback_wait_start_tick) >= HEAD_FEEDBACK_WAIT_TIMEOUT_MS)))
+        (head_feedback_ready != 0U) &&
+        ((tick_now - head_feedback_wait_start_tick) >= head_stabilize_ms))
     {
       Head_all_tx();
     }

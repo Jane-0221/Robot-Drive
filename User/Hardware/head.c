@@ -11,6 +11,7 @@
 #define HEAD_MOTOR1_LIMIT_HIGH 1500U
 #define HEAD_MOTOR2_LIMIT_LOW 27000U
 #define HEAD_MOTOR2_LIMIT_HIGH 9000U
+#define HEAD_FEEDBACK_READY_COUNT 3U
 
 KTech_Motor_t motor_linkong[2];         // 凌空电机结构体定义
 Head_MotorData_t head_motor_data[2];    // 头部电机数据结构体定义
@@ -26,7 +27,8 @@ static void Head_ResetFeedbackReady(void)
 
 uint8_t Head_FeedbackReady(void)
 {
-    return ((head_feedback_count[0] != 0U) && (head_feedback_count[1] != 0U)) ? 1U : 0U;
+    return ((head_feedback_count[0] >= HEAD_FEEDBACK_READY_COUNT) &&
+            (head_feedback_count[1] >= HEAD_FEEDBACK_READY_COUNT)) ? 1U : 0U;
 }
 
 void Head_NotifyFeedback(uint8_t motor_index)
