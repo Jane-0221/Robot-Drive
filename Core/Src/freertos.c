@@ -643,7 +643,7 @@ void PC_Comm_Task(void *argument)
     uint32_t tick_now = osKernelGetTickCount();
 
     UART_Protocol_UnpackLatest(&pc_dn_data);
-
+    pc_arm_tx_data();
     if ((tick_now - pc_tx_last_tick) >= PC_COMM_TX_PERIOD_MS)
     {
       pc_tx_last_tick = tick_now;

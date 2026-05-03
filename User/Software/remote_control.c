@@ -555,8 +555,8 @@ void PC_Pump_Control_Updata(void)
 void PC_Head_Motor_Control_Updata(void)
 {
     // 使用PC传入的电机角度信息（pc_target_motor_angles[0]和[1]对应头部电机）
-    head_motor_data[0].target_angle = head_radian_to_target_angle(pc_dn_data.pc_target_motor_angles[0]);
-    head_motor_data[1].target_angle = head_radian_to_target_angle(pc_dn_data.pc_target_motor_angles[1]);
+    // head_motor_data[0].target_angle = head_radian_to_target_angle(pc_dn_data.pc_target_motor_angles[0]);
+    // head_motor_data[1].target_angle = head_radian_to_target_angle(pc_dn_data.pc_target_motor_angles[1]);
 }
 
 /**
@@ -597,4 +597,8 @@ void pc_up_tx_data(void)
     up_tx_data.chassis_vx = x;
     up_tx_data.chassis_vy = y;
     up_tx_data.chassis_yaw = w;
+}
+void pc_arm_tx_data(void)
+{
+  up_tx_data.arm_motor_angle_6 = lift_height_final;
 }

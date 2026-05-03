@@ -115,6 +115,7 @@ void Lift_RefreshHeight(void)
          lift_height_final = STP23L_GetFinalDistPerFrame(); // 从传感器获取高度
          STP23L_ClearOkFlag();                              // 清除标志位以保持一致性 
      } 
+     
      // 使用ADC高度测量的示例（已注释）
      // lift_current_height = HAL_ADC_GetValue(&hadc1); 
      // 目前使用 STP23L 传感器进行高度测量

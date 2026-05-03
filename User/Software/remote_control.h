@@ -109,4 +109,6 @@ extern void PC_Arm_Motor_Control_Updata(void);
  * @brief 将当前底盘速度状态写入 PC 上传数据结构。
  */
 extern void pc_up_tx_data(void);
+extern void pc_arm_tx_data(void);
+
 #endif // !__REMOTE_CONTROL__

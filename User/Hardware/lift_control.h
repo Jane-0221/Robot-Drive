@@ -22,7 +22,7 @@ typedef enum LIFT_State {
 } LIFT_State;
 
 extern LIFT_State lift_state;
-
+extern int16_t lift_height_final; // 每帧最终高度
 extern uint16_t lift_current_height;   // 当前高度
 extern int16_t aim_tx_height;            // 目标高度值，每帧更新
 

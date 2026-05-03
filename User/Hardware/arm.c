@@ -74,7 +74,7 @@ float reply_enable = 0.0f;
 #define ARM_DAMIAO_ENABLE_STATE 2U
 #define ARM_PI_RAD 3.141592654f
 #define ARM_TWO_PI_RAD 6.283185307f
-#define ARM_TARGET_ANGLE_LIMIT_RAD 1.047197551f
+#define ARM_TARGET_ANGLE_LIMIT_RAD 2.617993878f
 #define ARM_TARGET_CURRENT_MAX_DIFF_RAD ARM_PI_RAD
 
 static float Arm_GetEquivalentAngleNearCurrent(float target_angle, float current_angle)
