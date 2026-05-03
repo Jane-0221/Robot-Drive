@@ -73,14 +73,19 @@ extern void Head_all_tx(void);
  * @retval 无
  */
 extern void Head_RequestFeedback(void);
+extern void Head_RequestFeedbackByIndex(uint8_t motor_index);
 extern uint8_t Head_FeedbackReady(void);
+extern uint8_t Head_MotorFeedbackReady(uint8_t motor_index);
+extern uint32_t Head_GetFeedbackCount(uint8_t motor_index);
 extern void Head_NotifyFeedback(uint8_t motor_index);
+extern void Head_TxMotorByIndex(uint8_t motor_index);
 
 /**
  * @brief 使能头部两个电机
  * @retval 无
  */
 extern void Head_Motor_Enable(void);
+extern void Head_Motor_SendEnableCommand(void);
 
 /**
  * @brief 失能头部两个电机

@@ -57,6 +57,7 @@
 #define VL53L0X_SOFT_PROBE_DELAY_MS 500U
 #define HEAD_STARTUP_STABILIZE_MS 1000U
 #define HEAD_REENABLE_STABILIZE_MS 100U
+#define HEAD_TASK_MOTOR_COUNT 2U
 #define PT_PRESS_POLL_PERIOD_MS 10U
 #define PC_COMM_TX_PERIOD_MS 10U
 #define LOG_TASK_IDLE_PERIOD_MS 1000U
@@ -86,6 +87,10 @@ typedef enum
 } StackWatermarkIndex_t;
 
 volatile uint32_t freertos_stack_watermark_words[STACK_TASK_COUNT] = {0U};
+volatile uint32_t head_task_feedback_count_debug[HEAD_TASK_MOTOR_COUNT] = {0U};
+volatile uint8_t head_task_ready_mask_debug = 0U;
+volatile uint8_t head_task_control_mask_debug = 0U;
+volatile uint8_t head_task_block_reason_debug[HEAD_TASK_MOTOR_COUNT] = {0U};
 /* USER CODE END Variables */
 /* Definitions for Remote_control */
 osThreadId_t Remote_controlHandle;
@@ -464,17 +469,19 @@ void Motor_control_Task(void *argument)
 void Head_Task(void *argument)
 {
   /* USER CODE BEGIN Head_Task */
-  uint8_t head_feedback_ready;
   uint8_t head_disable_active;
   uint8_t last_head_disable_active = 1U;
   uint8_t head_first_enable = 1U;
+  uint8_t head_enable_command_sent = 0U;
   uint32_t head_stabilize_ms = HEAD_STARTUP_STABILIZE_MS;
   uint32_t head_feedback_wait_start_tick = osKernelGetTickCount();
   /* Infinite loop */
   for (;;)
   {
     uint32_t tick_now = osKernelGetTickCount();
-    head_feedback_ready = Head_FeedbackReady();
+    uint8_t head_stable;
+    uint8_t motor_index;
+
     head_disable_active = Head_Motor_Disable_IsActive();
     Head_Lk_Data_update();
 
@@ -484,20 +491,68 @@ void Head_Task(void *argument)
                            HEAD_STARTUP_STABILIZE_MS :
                            HEAD_REENABLE_STABILIZE_MS;
       head_first_enable = 0U;
+      head_enable_command_sent = 0U;
       head_feedback_wait_start_tick = tick_now;
     }
     last_head_disable_active = head_disable_active;
 
-    if ((head_disable_active == 0U) &&
-        (head_feedback_ready != 0U) &&
-        ((tick_now - head_feedback_wait_start_tick) >= head_stabilize_ms))
+    head_stable = ((tick_now - head_feedback_wait_start_tick) >= head_stabilize_ms) ? 1U : 0U;
+    head_task_ready_mask_debug = 0U;
+    head_task_control_mask_debug = 0U;
+
+    for (motor_index = 0U; motor_index < HEAD_TASK_MOTOR_COUNT; motor_index++)
     {
-      Head_all_tx();
+      head_task_feedback_count_debug[motor_index] = Head_GetFeedbackCount(motor_index);
+
+      if (Head_MotorFeedbackReady(motor_index) != 0U)
+      {
+        head_task_ready_mask_debug |= (uint8_t)(1U << motor_index);
+      }
+    }
+
+    if (head_disable_active != 0U)
+    {
+      Head_RequestFeedback();
+      head_task_block_reason_debug[0] = 1U;
+      head_task_block_reason_debug[1] = 1U;
+    }
+    else if (head_stable == 0U)
+    {
+      Head_RequestFeedback();
+      head_task_block_reason_debug[0] = 2U;
+      head_task_block_reason_debug[1] = 2U;
+    }
+    else if (head_enable_command_sent == 0U)
+    {
+      Head_Motor_SendEnableCommand();
+      head_enable_command_sent = 1U;
+      Head_RequestFeedback();
+      head_task_block_reason_debug[0] = 3U;
+      head_task_block_reason_debug[1] = 3U;
     }
     else
     {
-      Head_RequestFeedback();
+      for (motor_index = 0U; motor_index < HEAD_TASK_MOTOR_COUNT; motor_index++)
+      {
+        if (Head_MotorFeedbackReady(motor_index) != 0U)
+        {
+          Head_TxMotorByIndex(motor_index);
+          head_task_control_mask_debug |= (uint8_t)(1U << motor_index);
+          head_task_block_reason_debug[motor_index] = 0U;
+        }
+        else
+        {
+          Head_RequestFeedbackByIndex(motor_index);
+          head_task_block_reason_debug[motor_index] = 4U;
+        }
+
+        if (motor_index == 0U)
+        {
+          osDelay(1);
+        }
+      }
     }
+
     head_save_home_position();
     osDelay(1);
   }

@@ -12,6 +12,7 @@
 #define HEAD_MOTOR2_LIMIT_LOW 27000U
 #define HEAD_MOTOR2_LIMIT_HIGH 9000U
 #define HEAD_FEEDBACK_READY_COUNT 3U
+#define HEAD_MOTOR_COUNT 2U
 
 KTech_Motor_t motor_linkong[2];         // 凌空电机结构体定义
 Head_MotorData_t head_motor_data[2];    // 头部电机数据结构体定义
@@ -31,9 +32,29 @@ uint8_t Head_FeedbackReady(void)
             (head_feedback_count[1] >= HEAD_FEEDBACK_READY_COUNT)) ? 1U : 0U;
 }
 
+uint8_t Head_MotorFeedbackReady(uint8_t motor_index)
+{
+    if (motor_index >= HEAD_MOTOR_COUNT)
+    {
+        return 0U;
+    }
+
+    return (head_feedback_count[motor_index] >= HEAD_FEEDBACK_READY_COUNT) ? 1U : 0U;
+}
+
+uint32_t Head_GetFeedbackCount(uint8_t motor_index)
+{
+    if (motor_index >= HEAD_MOTOR_COUNT)
+    {
+        return 0U;
+    }
+
+    return head_feedback_count[motor_index];
+}
+
 void Head_NotifyFeedback(uint8_t motor_index)
 {
-    if (motor_index < 2U)
+    if (motor_index < HEAD_MOTOR_COUNT)
     {
         if (head_feedback_count[motor_index] != UINT32_MAX)
         {
@@ -201,6 +222,23 @@ void Head_Lk_motor2()
                       speed_limit);
 }
 
+void Head_TxMotorByIndex(uint8_t motor_index)
+{
+    if (head_motor_enabled == 0U)
+    {
+        return;
+    }
+
+    if (motor_index == 0U)
+    {
+        Head_Lk_motor1();
+    }
+    else if (motor_index == 1U)
+    {
+        Head_Lk_motor2();
+    }
+}
+
 // 头部电机整体发送函数
 void Head_all_tx()
 {
@@ -221,14 +259,30 @@ void Head_RequestFeedback(void)
     ktech_read_status2(CAN_HANDLE_1, MOTOR_LINKONG_2_ID);
 }
 
-void Head_Motor_Enable(void)
+void Head_RequestFeedbackByIndex(uint8_t motor_index)
 {
-    Head_ResetFeedbackReady();
+    if (motor_index == 0U)
+    {
+        ktech_read_status2(CAN_HANDLE_1, MOTOR_LINKONG_1_ID);
+    }
+    else if (motor_index == 1U)
+    {
+        ktech_read_status2(CAN_HANDLE_1, MOTOR_LINKONG_2_ID);
+    }
+}
 
+void Head_Motor_SendEnableCommand(void)
+{
     ktech_motor_on(CAN_HANDLE_1, MOTOR_LINKONG_1_ID);
     Head_DelayMs(1U);
     ktech_motor_on(CAN_HANDLE_1, MOTOR_LINKONG_2_ID);
     head_motor_enabled = 1U;
+}
+
+void Head_Motor_Enable(void)
+{
+    Head_ResetFeedbackReady();
+    Head_Motor_SendEnableCommand();
 }
 
 void Head_Motor_Disable(void)
