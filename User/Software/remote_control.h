@@ -104,6 +104,11 @@ extern void PC_Up_Down_Motor_Control_Updata(void);
  * @brief 根据 PC 下发数据更新机械臂舵机和电机目标角度。
  */
 extern void PC_Arm_Motor_Control_Updata(void);
+extern void PC_Arm_Motor_Enable_Disable_Updata(void);
+extern volatile uint8_t pc_arm_motor_enable_state_debug[6];
+extern volatile uint8_t pc_arm_motor_last_index_debug;
+extern volatile uint8_t pc_arm_motor_last_enable_state_debug;
+extern volatile uint32_t pc_arm_motor_command_count_debug;
 
 /**
  * @brief 将当前底盘速度状态写入 PC 上传数据结构。

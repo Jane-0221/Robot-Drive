@@ -82,8 +82,51 @@ float reply_enable = 0.0f;
 #define ARM_TARGET_ANGLE_RAMP_SLOW_RAD_PER_S 1.0f
 #define ARM_TARGET_ANGLE_RAMP_FAST_RAD_PER_S 2.0f
 
+volatile uint8_t arm_motor_disabled_mask_debug = 0U;
+
 static RampGenerator arm_target_angle_ramps[ARM_LOGICAL_MOTOR_COUNT];
 static uint8_t arm_target_angle_ramps_initialized = 0U;
+
+static uint8_t Arm_GetMotorMask(uint8_t logical_motor)
+{
+    if (logical_motor >= ARM_LOGICAL_MOTOR_COUNT)
+    {
+        return 0U;
+    }
+
+    return (uint8_t)(1U << logical_motor);
+}
+
+static uint8_t Arm_MotorTxDisabledByIndex(uint8_t logical_motor)
+{
+    uint8_t motor_mask = Arm_GetMotorMask(logical_motor);
+
+    if (motor_mask == 0U)
+    {
+        return 1U;
+    }
+
+    return ((arm_motor_disabled_mask_debug & motor_mask) != 0U) ? 1U : 0U;
+}
+
+static void Arm_SetMotorTxDisabledByIndex(uint8_t logical_motor, uint8_t disabled)
+{
+    uint8_t motor_mask = Arm_GetMotorMask(logical_motor);
+
+    if (motor_mask == 0U)
+    {
+        return;
+    }
+
+    if (disabled != 0U)
+    {
+        arm_motor_disabled_mask_debug |= motor_mask;
+    }
+    else
+    {
+        arm_motor_disabled_mask_debug &= (uint8_t)(~motor_mask);
+    }
+}
 
 static float Arm_GetEquivalentAngleNearCurrent(float target_angle, float current_angle)
 {
@@ -625,29 +668,56 @@ void Arm_all_tx()
 {
     if (g_ShoulderType == SHOULDER_TYPE_LINGZU)
     {
-        Arm_Linzu_motor1();
-        osDelay(1);
-        Arm_Linzu_motor2();
-        osDelay(1);
-        Arm_Linzu_motor3();
-        osDelay(1);
+        if (Arm_MotorTxDisabledByIndex(0U) == 0U)
+        {
+            Arm_Linzu_motor1();
+            osDelay(1);
+        }
+        if (Arm_MotorTxDisabledByIndex(1U) == 0U)
+        {
+            Arm_Linzu_motor2();
+            osDelay(1);
+        }
+        if (Arm_MotorTxDisabledByIndex(2U) == 0U)
+        {
+            Arm_Linzu_motor3();
+            osDelay(1);
+        }
     }
     else if (g_ShoulderType == SHOULDER_TYPE_DARAN)
     {
-        Arm_Daran_motor1();
-        osDelay(1);
-        Arm_Daran_motor2();
-        osDelay(1);
-        Arm_Daran_motor3();
-        osDelay(1);
+        if (Arm_MotorTxDisabledByIndex(0U) == 0U)
+        {
+            Arm_Daran_motor1();
+            osDelay(1);
+        }
+        if (Arm_MotorTxDisabledByIndex(1U) == 0U)
+        {
+            Arm_Daran_motor2();
+            osDelay(1);
+        }
+        if (Arm_MotorTxDisabledByIndex(2U) == 0U)
+        {
+            Arm_Daran_motor3();
+            osDelay(1);
+        }
     }
 
-    Arm_Damiao_motor4();
-    osDelay(1);
-    Arm_Damiao_motor5();
-    osDelay(1);
-    Arm_Damiao_motor6();
-    osDelay(1);
+    if (Arm_MotorTxDisabledByIndex(3U) == 0U)
+    {
+        Arm_Damiao_motor4();
+        osDelay(1);
+    }
+    if (Arm_MotorTxDisabledByIndex(4U) == 0U)
+    {
+        Arm_Damiao_motor5();
+        osDelay(1);
+    }
+    if (Arm_MotorTxDisabledByIndex(5U) == 0U)
+    {
+        Arm_Damiao_motor6();
+        osDelay(1);
+    }
 }
 
 static ArmMotorData_t *Arm_GetMotorDataByIndex(uint8_t logical_motor)
@@ -762,13 +832,31 @@ void Arm_CheckAndReenableDisabledMotors(void)
 
     last_check_tick = now_tick;
 
-    Arm_ReenableLinzuMotor(0U, &motor1, &Linzu_motor_data[0]);
-    Arm_ReenableLinzuMotor(1U, &motor2, &Linzu_motor_data[1]);
-    Arm_ReenableLinzuMotor(2U, &motor3, &Linzu_motor_data[2]);
+    if (Arm_MotorTxDisabledByIndex(0U) == 0U)
+    {
+        Arm_ReenableLinzuMotor(0U, &motor1, &Linzu_motor_data[0]);
+    }
+    if (Arm_MotorTxDisabledByIndex(1U) == 0U)
+    {
+        Arm_ReenableLinzuMotor(1U, &motor2, &Linzu_motor_data[1]);
+    }
+    if (Arm_MotorTxDisabledByIndex(2U) == 0U)
+    {
+        Arm_ReenableLinzuMotor(2U, &motor3, &Linzu_motor_data[2]);
+    }
 
-    Arm_ReenableDamiaoMotor(3U, MOTOR_DAMIAO_4_ID, Motor4, &Damiao_motor_data[0]);
-    Arm_ReenableDamiaoMotor(4U, MOTOR_DAMIAO_5_ID, Motor5, &Damiao_motor_data[1]);
-    Arm_ReenableDamiaoMotor(5U, MOTOR_DAMIAO_6_ID, Motor6, &Damiao_motor_data[2]);
+    if (Arm_MotorTxDisabledByIndex(3U) == 0U)
+    {
+        Arm_ReenableDamiaoMotor(3U, MOTOR_DAMIAO_4_ID, Motor4, &Damiao_motor_data[0]);
+    }
+    if (Arm_MotorTxDisabledByIndex(4U) == 0U)
+    {
+        Arm_ReenableDamiaoMotor(4U, MOTOR_DAMIAO_5_ID, Motor5, &Damiao_motor_data[1]);
+    }
+    if (Arm_MotorTxDisabledByIndex(5U) == 0U)
+    {
+        Arm_ReenableDamiaoMotor(5U, MOTOR_DAMIAO_6_ID, Motor6, &Damiao_motor_data[2]);
+    }
 }
 
 #define ARM_LINZU_ZERO_STOP_DELAY_MS 20U
@@ -852,6 +940,7 @@ uint8_t Arm_EnableMotorByIndex(uint8_t logical_motor)
 
             Set_RobStride_Motor_parameter(motor, CAN_HANDLE_2, 0X7005, CSP_control_mode, 'j');
             Enable_Motor(motor, CAN_HANDLE_2);
+            Arm_SetMotorTxDisabledByIndex(logical_motor, 0U);
             return Arm_SendLinzuTarget(motor, motor_data);
         }
 
@@ -866,6 +955,7 @@ uint8_t Arm_EnableMotorByIndex(uint8_t logical_motor)
 
             set_mode(CAN_HANDLE_2, motor_id, 2);
             osDelay(1);
+            Arm_SetMotorTxDisabledByIndex(logical_motor, 0U);
             return Arm_SendDaranTarget(motor_id, motor_data);
         }
 
@@ -883,6 +973,7 @@ uint8_t Arm_EnableMotorByIndex(uint8_t logical_motor)
 
         enable_motor_mode(CAN_HANDLE_2, motor_id, POS_MODE);
         set_DM_mode(motor_index, POS_MODE);
+        Arm_SetMotorTxDisabledByIndex(logical_motor, 0U);
         return Arm_SendDamiaoTarget(motor_id, motor_data);
     }
 }
@@ -919,6 +1010,7 @@ uint8_t Arm_DisableMotorByIndex(uint8_t logical_motor)
             }
 
             Disenable_Motor(motor, CAN_HANDLE_2, 0U);
+            Arm_SetMotorTxDisabledByIndex(logical_motor, 1U);
             return 1U;
         }
 
@@ -932,6 +1024,7 @@ uint8_t Arm_DisableMotorByIndex(uint8_t logical_motor)
             }
 
             set_mode(CAN_HANDLE_2, motor_id, 1);
+            Arm_SetMotorTxDisabledByIndex(logical_motor, 1U);
             return 1U;
         }
 
@@ -948,6 +1041,7 @@ uint8_t Arm_DisableMotorByIndex(uint8_t logical_motor)
         }
 
         disable_motor_mode(CAN_HANDLE_2, motor_id, POS_MODE);
+        Arm_SetMotorTxDisabledByIndex(logical_motor, 1U);
         return 1U;
     }
 }
@@ -1055,4 +1149,33 @@ void Arm_save_position(void)
     CAN_Send_Enter(CAN_HANDLE_2, MOTOR_DAMIAO_6_ID);
     osDelay(1);
     (void)Arm_SendDamiaoTarget(MOTOR_DAMIAO_6_ID, &Damiao_motor_data[2]);
+}
+void Arm_Motor_Disable_All(void)
+{
+    Disenable_Motor(&motor1, CAN_HANDLE_2, 0U);
+    osDelay(1);
+    Disenable_Motor(&motor2, CAN_HANDLE_2, 0U);
+    osDelay(1);
+    Disenable_Motor(&motor3, CAN_HANDLE_2, 0U);
+    osDelay(1);
+    disable_motor_mode(CAN_HANDLE_2, MOTOR_DAMIAO_4_ID, POS_MODE);
+    osDelay(1);
+    disable_motor_mode(CAN_HANDLE_2, MOTOR_DAMIAO_5_ID, POS_MODE);
+    osDelay(1);
+    disable_motor_mode(CAN_HANDLE_2, MOTOR_DAMIAO_6_ID, POS_MODE);
+}
+ void Arm_Motor_Enable_All(void)
+{
+    Disenable_Motor(&motor1, CAN_HANDLE_2, 0U);
+    osDelay(1);
+    Disenable_Motor(&motor2, CAN_HANDLE_2, 0U);
+    osDelay(1);
+    Disenable_Motor(&motor3, CAN_HANDLE_2, 0U);
+    osDelay(1);
+    disable_motor_mode(CAN_HANDLE_2, MOTOR_DAMIAO_4_ID, POS_MODE);
+    osDelay(1);
+    disable_motor_mode(CAN_HANDLE_2, MOTOR_DAMIAO_5_ID, POS_MODE);
+    osDelay(1);
+    disable_motor_mode(CAN_HANDLE_2, MOTOR_DAMIAO_6_ID, POS_MODE);
+
 }

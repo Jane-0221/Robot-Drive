@@ -30,7 +30,20 @@
 #define ARM_MOTOR_CH3_LATCH_DISABLE 2U
 #define HEAD_RAD_TO_ANGLE_UNIT (18000.0f / 3.14159265358979323846f)
 #define HEAD_SINGLE_TURN_UNITS 36000L
+#define PC_ARM_MOTOR_DEBUG_STATE_NONE 0xFFU
 // extern DnData_t pc_dn_data;
+
+volatile uint8_t pc_arm_motor_enable_state_debug[ARM_LOGICAL_MOTOR_COUNT] = {
+    PC_ARM_MOTOR_DEBUG_STATE_NONE,
+    PC_ARM_MOTOR_DEBUG_STATE_NONE,
+    PC_ARM_MOTOR_DEBUG_STATE_NONE,
+    PC_ARM_MOTOR_DEBUG_STATE_NONE,
+    PC_ARM_MOTOR_DEBUG_STATE_NONE,
+    PC_ARM_MOTOR_DEBUG_STATE_NONE,
+};
+volatile uint8_t pc_arm_motor_last_index_debug = PC_ARM_MOTOR_DEBUG_STATE_NONE;
+volatile uint8_t pc_arm_motor_last_enable_state_debug = PC_ARM_MOTOR_DEBUG_STATE_NONE;
+volatile uint32_t pc_arm_motor_command_count_debug = 0U;
 
 static volatile uint8_t arm_motor_disable_active = 0U;
 static uint8_t arm_motor_disable_latched = 0U;
@@ -97,31 +110,11 @@ uint8_t Arm_Motor_Disable_Updata(void)
     {
         return 1U;
     }
-    if (g_ShoulderType == SHOULDER_TYPE_LINGZU)
+    for (uint8_t logical_motor = 0U; logical_motor < ARM_LOGICAL_MOTOR_COUNT; logical_motor++)
     {
-        Disenable_Motor(&motor1, CAN_HANDLE_2, 0U);
-        osDelay(1);
-        Disenable_Motor(&motor2, CAN_HANDLE_2, 0U);
-        osDelay(1);
-        Disenable_Motor(&motor3, CAN_HANDLE_2, 0U);
+        (void)Arm_DisableMotorByIndex(logical_motor);
         osDelay(1);
     }
-
-    if (g_ShoulderType == SHOULDER_TYPE_DARAN)
-    {
-        set_mode(CAN_HANDLE_2, MOTOR_DARAN_1_ID, 1);
-        osDelay(1);
-        set_mode(CAN_HANDLE_2, MOTOR_DARAN_2_ID, 1);
-        osDelay(1);
-        set_mode(CAN_HANDLE_2, MOTOR_DARAN_3_ID, 1);
-        osDelay(1);
-    }
-
-    disable_motor_mode(CAN_HANDLE_2, MOTOR_DAMIAO_4_ID, POS_MODE);
-    osDelay(1);
-    disable_motor_mode(CAN_HANDLE_2, MOTOR_DAMIAO_5_ID, POS_MODE);
-    osDelay(1);
-    disable_motor_mode(CAN_HANDLE_2, MOTOR_DAMIAO_6_ID, POS_MODE);
 
     arm_motor_disable_latched = 1U;
     return 1U;
@@ -589,6 +582,42 @@ void PC_Arm_Motor_Control_Updata(void)
     Damiao_motor_data[1].target_angle = pc_dn_data.pc_target_motor_angles[4];
     Damiao_motor_data[2].target_angle = pc_dn_data.pc_target_motor_angles[5];
 }
+
+void PC_Arm_Motor_Enable_Disable_Updata(void)
+{
+    PcArmMotorCtrl_t command;
+
+    if (UART_Protocol_GetArmMotorCtrlCommand(&command) == 0U)
+    {
+        return;
+    }
+
+    if ((command.motor_index >= ARM_LOGICAL_MOTOR_COUNT) ||
+        (command.enable_state > 1U))
+    {
+        return;
+    }
+
+    pc_arm_motor_enable_state_debug[command.motor_index] = command.enable_state;
+    pc_arm_motor_last_index_debug = command.motor_index;
+    pc_arm_motor_last_enable_state_debug = command.enable_state;
+    pc_arm_motor_command_count_debug++;
+
+    if (Arm_Motor_Disable_Updata() != 0U)
+    {
+        return;
+    }
+
+    if (command.enable_state != 0U)
+    {
+        (void)Arm_EnableMotorByIndex(command.motor_index);
+    }
+    else
+    {
+        (void)Arm_DisableMotorByIndex(command.motor_index);
+    }
+}
+
 void pc_up_tx_data(void)
 {
     up_tx_data.chassis_vx = x;

@@ -331,6 +331,7 @@ void Remote_control_Task(void *argument)
       // {
       // 机械臂电机控制
       PC_Arm_Motor_Control_Updata();
+      PC_Arm_Motor_Enable_Disable_Updata();
       // }
       if (a == 0U)
       {
@@ -339,7 +340,7 @@ void Remote_control_Task(void *argument)
         Arm_EnableAllMotors();
       }
     }
-    Arm_Motor_Disable_Updata();
+    //Arm_Motor_Disable_Updata();
     osDelay(1);
   }
 

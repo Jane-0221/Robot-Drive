@@ -9,11 +9,14 @@
 #define FRAME_TAIL2   0xFF
 #define UP_FRAME_TYPE 0x01
 #define DN_FRAME_TYPE 0x02
+#define PC_ARM_MOTOR_CTRL_FRAME_TYPE 0x03
 
 #define UP_DATA_LEN   56
 #define DN_DATA_LEN   51
+#define PC_ARM_MOTOR_CTRL_DATA_LEN 2
 #define UP_FRAME_LEN  64
 #define DN_FRAME_LEN  59
+#define PC_ARM_MOTOR_CTRL_FRAME_LEN 10
 
 typedef struct {
     float air_path_state;
@@ -39,6 +42,11 @@ typedef struct {
     uint16_t pc_target_lift_height;
 } DnData_t;
 
+typedef struct {
+    uint8_t motor_index;
+    uint8_t enable_state;
+} PcArmMotorCtrl_t;
+
 extern DnData_t pc_dn_data;
 extern uint8_t uart_protocol_raw_data[256];
 extern UpData_t up_tx_data;
@@ -47,6 +55,7 @@ uint16_t crc16_ccitt(uint8_t *data, uint16_t len);
 void pack_up_frame(UpData_t *data, uint8_t *frame_buf);
 void unpack_dn_frame(uint8_t *frame_buf, DnData_t *data);
 uint8_t UART_Protocol_UnpackLatest(DnData_t *data);
+uint8_t UART_Protocol_GetArmMotorCtrlCommand(PcArmMotorCtrl_t *command);
 HAL_StatusTypeDef send_frame(UART_HandleTypeDef *huart, uint8_t *frame_buf, uint16_t len);
 HAL_StatusTypeDef send_up_frame(UART_HandleTypeDef *huart);
 void store_uart_protocol_data(const uint8_t *data, uint16_t size);

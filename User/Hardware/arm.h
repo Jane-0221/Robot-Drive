@@ -85,6 +85,7 @@ extern Motor_DM_Status DM_Status[6]; // 存储每个达妙电机的使能/禁用
 
 /** 全局肩部电机类型选择变量 */
 extern ShoulderType_t g_ShoulderType;
+extern volatile uint8_t arm_motor_disabled_mask_debug;
 
 /** 电机控制数据结构体数组（按品牌分类） */
 extern ArmMotorData_t Linzu_motor_data[3];  // 灵足电机控制数据（3路）
@@ -115,15 +116,16 @@ void Arm_Damiao_motor5(void); // 控制5号达妙电机
 void Arm_Damiao_motor6(void); // 控制6号达妙电机
 
 /** 电机状态数据更新函数 */
-void Arm_Linzu_Data_update(void); // 更新灵足电机当前角度/速度
-void Arm_Daran_Data_update(void); // 更新大然电机当前角度/速度
+void Arm_Linzu_Data_update(void);  // 更新灵足电机当前角度/速度
+void Arm_Daran_Data_update(void);  // 更新大然电机当前角度/速度
 void Arm_Damiao_Data_update(void); // 更新达妙电机当前角度/速度
 
 /** 全局函数声明（跨文件调用） */
 extern void Arm_All_Data_update(void); // 批量更新所有电机状态数据
 extern void Arm_all_tx(void);          // 发送所有电机控制指令
 extern void Arm_save_position(void);   // 保存当前位置
-
+extern void Arm_Motor_Disable_All(void);
+extern void Arm_Motor_Enable_All(void);
 extern void Arm_CheckAndReenableDisabledMotors(void);
 uint8_t Arm_AdjustMotorTargetByIndex(uint8_t logical_motor, float delta_angle);
 uint8_t Arm_EnableMotorByIndex(uint8_t logical_motor);
