@@ -59,9 +59,7 @@ static float sbus_axis_to_float(uint16_t value, float scale)
 static uint32_t head_radian_to_target_angle(float radian)
 {
     float angle_unit_f = radian * HEAD_RAD_TO_ANGLE_UNIT;
-    int32_t angle_unit = (angle_unit_f >= 0.0f) ?
-                         (int32_t)(angle_unit_f + 0.5f) :
-                         (int32_t)(angle_unit_f - 0.5f);
+    int32_t angle_unit = (angle_unit_f >= 0.0f) ? (int32_t)(angle_unit_f + 0.5f) : (int32_t)(angle_unit_f - 0.5f);
 
     while (angle_unit < 0)
     {
@@ -307,7 +305,7 @@ void arm_save_home_position(void)
         Damiao_motor_data[0].target_angle = 0.0f;
         Damiao_motor_data[1].target_angle = 0.0f;
         Damiao_motor_data[2].target_angle = 0.0f;
-     
+
         return;
     }
     arm_save_position = 0U;
@@ -322,7 +320,6 @@ void head_save_home_position(void)
         Head_save_position();
         return;
     }
-
 }
 
 void Head_Motor_Control_Updata(void)
@@ -600,5 +597,11 @@ void pc_up_tx_data(void)
 }
 void pc_arm_tx_data(void)
 {
-  up_tx_data.arm_motor_angle_6 = lift_height_final;
+    up_tx_data.arm_motor_angle_1 = Daran_motor_data[0].current_angle;
+    up_tx_data.arm_motor_angle_2 = Daran_motor_data[1].current_angle;
+    up_tx_data.arm_motor_angle_3 = Daran_motor_data[2].current_angle;
+    up_tx_data.arm_motor_angle_4 = Damiao_motor_data[0].current_angle;
+    up_tx_data.arm_motor_angle_5 = Damiao_motor_data[1].current_angle;
+    up_tx_data.arm_motor_angle_6 = Damiao_motor_data[2].current_angle;
+    up_tx_data.lift_height = lift_height_final;
 }
