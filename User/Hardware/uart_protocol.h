@@ -12,10 +12,10 @@
 #define PC_ARM_MOTOR_CTRL_FRAME_TYPE 0x03
 
 #define UP_DATA_LEN   56
-#define DN_DATA_LEN   51
+#define DN_DATA_LEN   59
 #define PC_ARM_MOTOR_CTRL_DATA_LEN 2
 #define UP_FRAME_LEN  64
-#define DN_FRAME_LEN  59
+#define DN_FRAME_LEN  67
 #define PC_ARM_MOTOR_CTRL_FRAME_LEN 10
 
 typedef struct {
@@ -40,6 +40,7 @@ typedef struct {
     float    pc_target_motor_angles[6];
     uint8_t  pc_pump_state;
     uint16_t pc_target_lift_height;
+    float    pc_target_head_motor_angles[2];
 } DnData_t;
 
 typedef struct {
