@@ -124,13 +124,20 @@ void Arm_Damiao_Data_update(void); // 更新达妙电机当前角度/速度
 extern void Arm_All_Data_update(void); // 批量更新所有电机状态数据
 extern void Arm_all_tx(void);          // 发送所有电机控制指令
 extern void Arm_save_position(void);   // 保存当前位置
-extern void Arm_Motor_Disable_All(void);
-extern void Arm_Motor_Enable_All(void);
+// extern void Arm_Motor_Disable_All(void);
+// extern void Arm_Motor_Enable_All(void);
 extern void Arm_CheckAndReenableDisabledMotors(void);
+float Arm_WrapAngleToPi(float angle);
+void Arm_SetPcTargetAngles(const float target_angles[ARM_LOGICAL_MOTOR_COUNT], uint32_t now_ms);
 uint8_t Arm_AdjustMotorTargetByIndex(uint8_t logical_motor, float delta_angle);
 uint8_t Arm_EnableMotorByIndex(uint8_t logical_motor);
 uint8_t Arm_EnableAllMotors(void);
 uint8_t Arm_DisableMotorByIndex(uint8_t logical_motor);
 uint8_t Arm_SaveMotorZeroByIndex(uint8_t logical_motor);
+
+extern volatile float arm_pc_target_debug[ARM_LOGICAL_MOTOR_COUNT];
+extern volatile float arm_planned_target_debug[ARM_LOGICAL_MOTOR_COUNT];
+extern volatile float arm_planned_velocity_debug[ARM_LOGICAL_MOTOR_COUNT];
+extern volatile uint32_t arm_planner_dt_ms_debug;
 
 #endif

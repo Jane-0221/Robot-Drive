@@ -112,7 +112,7 @@ void Lift_RefreshHeight(void)
 
     if (stp23l_data.parse_ok == 1) 
      { 
-         lift_height_final = STP23L_GetFinalDistPerFrame(); // 从传感器获取高度
+         lift_height_final = STP23L_GetFinalDistPerFrame()-32; // 从传感器获取高度
          STP23L_ClearOkFlag();                              // 清除标志位以保持一致性 
      } 
      

@@ -213,6 +213,7 @@ uint8_t UART_Protocol_UnpackLatest(DnData_t *data)
 {
     uint16_t size;
     uint16_t frame_pos = 0U;
+    DnData_t dn_data_local;
     PcArmMotorCtrl_t arm_motor_ctrl_command = {0U, 0U};
     uint8_t dn_found = 0U;
     uint8_t arm_motor_ctrl_found = 0U;
@@ -262,10 +263,28 @@ uint8_t UART_Protocol_UnpackLatest(DnData_t *data)
 
     if (dn_found != 0U)
     {
-        unpack_dn_frame(&uart_protocol_parse_data[frame_pos], data);
+        unpack_dn_frame(&uart_protocol_parse_data[frame_pos], &dn_data_local);
+
+        taskENTER_CRITICAL();
+        *data = dn_data_local;
+        taskEXIT_CRITICAL();
     }
 
     return ((dn_found != 0U) || (arm_motor_ctrl_found != 0U)) ? 1U : 0U;
+}
+
+uint8_t UART_Protocol_CopyLatestDnData(DnData_t *out)
+{
+    if (out == NULL)
+    {
+        return 0U;
+    }
+
+    taskENTER_CRITICAL();
+    *out = pc_dn_data;
+    taskEXIT_CRITICAL();
+
+    return 1U;
 }
 
 uint8_t UART_Protocol_GetArmMotorCtrlCommand(PcArmMotorCtrl_t *command)

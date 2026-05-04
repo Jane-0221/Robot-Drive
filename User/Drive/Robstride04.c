@@ -598,9 +598,6 @@ void RobStride_Motor_Pos_control(RobStride_Motor_t* motor, hcan_t* hcan, float S
         Set_RobStride_Motor_parameter(motor, hcan, 0X7025, motor->Motor_Set_All.set_acceleration, 'p');
     }
     
-    // 简单延时
-    for(uint32_t i = 0; i < 10000; i++); 
-    
     Set_RobStride_Motor_parameter(motor, hcan, 0X7016, motor->Motor_Set_All.set_angle, 'p');
 }
 
@@ -626,9 +623,6 @@ void RobStride_Motor_CSP_control(RobStride_Motor_t* motor, hcan_t* hcan, float A
             Enable_Motor(motor, hcan);
             Set_RobStride_Motor_parameter(motor, hcan, 0X7017, motor->Motor_Set_All.set_limit_speed, 'p');
         }
-        
-        // 简单延时
-        for(uint32_t i = 0; i < 10000; i++); 
         
         Set_RobStride_Motor_parameter(motor, hcan, 0X7016, motor->Motor_Set_All.set_angle, 'p');
     }

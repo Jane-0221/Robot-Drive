@@ -567,20 +567,29 @@ void PC_Up_Down_Motor_Control_Updata(void)
  */
 void PC_Arm_Motor_Control_Updata(void)
 {
+    DnData_t pc_snapshot;
+    float target_motor_angles[ARM_LOGICAL_MOTOR_COUNT];
+
+    if (UART_Protocol_CopyLatestDnData(&pc_snapshot) == 0U)
+    {
+        return;
+    }
+
     // 将PC传入的6路舵机角度值赋值给motor_radians数组
-    motor_radians[0] = pc_dn_data.pc_target_servo_angles[0];
-    motor_radians[1] = pc_dn_data.pc_target_servo_angles[1];
-    motor_radians[2] = pc_dn_data.pc_target_servo_angles[2];
-    motor_radians[3] = pc_dn_data.pc_target_servo_angles[3];
-    motor_radians[4] = pc_dn_data.pc_target_servo_angles[4];
-    motor_radians[5] = pc_dn_data.pc_target_servo_angles[5];
+    motor_radians[0] = pc_snapshot.pc_target_servo_angles[0];
+    motor_radians[1] = pc_snapshot.pc_target_servo_angles[1];
+    motor_radians[2] = pc_snapshot.pc_target_servo_angles[2];
+    motor_radians[3] = pc_snapshot.pc_target_servo_angles[3];
+    motor_radians[4] = pc_snapshot.pc_target_servo_angles[4];
+    motor_radians[5] = pc_snapshot.pc_target_servo_angles[5];
     // 将PC传入的6路电机角度值赋值给电机臂目标角度
-    Linzu_motor_data[0].target_angle = pc_dn_data.pc_target_motor_angles[0];
-    Linzu_motor_data[1].target_angle = pc_dn_data.pc_target_motor_angles[1];
-    Linzu_motor_data[2].target_angle = pc_dn_data.pc_target_motor_angles[2];
-    Damiao_motor_data[0].target_angle = pc_dn_data.pc_target_motor_angles[3];
-    Damiao_motor_data[1].target_angle = pc_dn_data.pc_target_motor_angles[4];
-    Damiao_motor_data[2].target_angle = pc_dn_data.pc_target_motor_angles[5];
+    target_motor_angles[0] = pc_snapshot.pc_target_motor_angles[0];
+    target_motor_angles[1] = pc_snapshot.pc_target_motor_angles[1];
+    target_motor_angles[2] = pc_snapshot.pc_target_motor_angles[2];
+    target_motor_angles[3] = pc_snapshot.pc_target_motor_angles[3];
+    target_motor_angles[4] = pc_snapshot.pc_target_motor_angles[4];
+    target_motor_angles[5] = pc_snapshot.pc_target_motor_angles[5];
+    Arm_SetPcTargetAngles(target_motor_angles, HAL_GetTick());
 }
 
 void PC_Arm_Motor_Enable_Disable_Updata(void)
@@ -624,15 +633,26 @@ void pc_up_tx_data(void)
     up_tx_data.chassis_vy = y;
     up_tx_data.chassis_yaw = w;
 }
+
 void pc_arm_tx_data(void)
 {
-    up_tx_data.arm_motor_angle_1 = Daran_motor_data[0].current_angle;
-    up_tx_data.arm_motor_angle_2 = Daran_motor_data[1].current_angle;
-    up_tx_data.arm_motor_angle_3 = Daran_motor_data[2].current_angle;
+    if (g_ShoulderType == SHOULDER_TYPE_DARAN)
+    {
+        up_tx_data.arm_motor_angle_1 = Daran_motor_data[0].current_angle;
+        up_tx_data.arm_motor_angle_2 = Daran_motor_data[1].current_angle;
+        up_tx_data.arm_motor_angle_3 = Daran_motor_data[2].current_angle;
+    }
+    else
+    {
+        up_tx_data.arm_motor_angle_1 = Arm_WrapAngleToPi(Linzu_motor_data[0].current_angle);
+        up_tx_data.arm_motor_angle_2 = Arm_WrapAngleToPi(Linzu_motor_data[1].current_angle);
+        up_tx_data.arm_motor_angle_3 = Arm_WrapAngleToPi(Linzu_motor_data[2].current_angle);
+    }
+
     up_tx_data.arm_motor_angle_4 = Damiao_motor_data[0].current_angle;
     up_tx_data.arm_motor_angle_5 = Damiao_motor_data[1].current_angle;
     up_tx_data.arm_motor_angle_6 = Damiao_motor_data[2].current_angle;
     up_tx_data.lift_height = lift_height_final;
-    up_tx_data.head_motor_angle_1 = head_motor_data[1].current_angle;
-    up_tx_data.head_motor_angle_2 = head_motor_data[0].current_angle;
+    up_tx_data.head_motor_angle_1 = head_motor_data[0].current_angle;
+    up_tx_data.head_motor_angle_2 = head_motor_data[1].current_angle;
 }

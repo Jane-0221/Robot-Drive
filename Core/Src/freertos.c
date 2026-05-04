@@ -60,6 +60,7 @@
 #define HEAD_TASK_MOTOR_COUNT 2U
 #define PT_PRESS_POLL_PERIOD_MS 10U
 #define PC_COMM_TX_PERIOD_MS 10U
+#define ARM_CONTROL_TX_PERIOD_MS 10U
 #define LOG_TASK_IDLE_PERIOD_MS 1000U
 
 /* USER CODE END PD */
@@ -318,7 +319,7 @@ void Remote_control_Task(void *argument)
       Head_Motor_Control_Updata();
       Arm_Motor_Control_Updata();
       Up_Down_Motor_Control_Updata();
-      arm_save_home_position();
+      //arm_save_home_position();
     }
     else if ((control_mode == 1))
     {
@@ -358,6 +359,7 @@ void Arm_MT_Task(void *argument)
 {
   /* USER CODE BEGIN Arm_MT_Task */
   uint8_t arm_save_position_latched = 0U;
+  uint32_t arm_control_next_tick = osKernelGetTickCount();
 #if VL53L0X_COMM_ENABLE
   uint32_t vl53l0x_last_tick = osKernelGetTickCount();
   uint32_t vl53l0x_period_ticks = osKernelGetTickFreq() / 100U;
@@ -372,11 +374,9 @@ void Arm_MT_Task(void *argument)
 #endif
   (void)VL53L0X_Init();
 #endif
-  // Arm_save_position();
   /* Infinite loop */
   for (;;)
   {
-    osDelay(1);
     // Arm_CheckAndReenableDisabledMotors();
     if (Arm_Motor_Disable_IsActive() == 0U)
     {
@@ -410,6 +410,12 @@ void Arm_MT_Task(void *argument)
       (void)VL53L0X_ReadDistance();
     }
 #endif
+    arm_control_next_tick += ARM_CONTROL_TX_PERIOD_MS;
+    if (osDelayUntil(arm_control_next_tick) != osOK)
+    {
+      arm_control_next_tick = osKernelGetTickCount();
+      osDelay(ARM_CONTROL_TX_PERIOD_MS);
+    }
   }
   /* USER CODE END Arm_MT_Task */
 }

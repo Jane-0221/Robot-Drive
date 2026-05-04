@@ -81,11 +81,42 @@ float reply_enable = 0.0f;
 #define ARM_TARGET_ANGLE_RAMP_MAX_ELAPSED_MS 50U
 #define ARM_TARGET_ANGLE_RAMP_SLOW_RAD_PER_S 1.0f
 #define ARM_TARGET_ANGLE_RAMP_FAST_RAD_PER_S 2.0f
+#define ARM_PC_TARGET_STABLE_MS 25U
+#define ARM_PC_TARGET_STREAM_FORCE_MS 60U
+#define ARM_PC_TARGET_NOISE_RAD 0.003f
+#define ARM_PC_TARGET_MAX_DT_MS 50U
+#define ARM_PC_TARGET_SLOW_MAX_VEL_RAD_PER_S 0.8f
+#define ARM_PC_TARGET_SLOW_MAX_ACC_RAD_PER_S2 1.2f
+#define ARM_PC_TARGET_FAST_MAX_VEL_RAD_PER_S 1.5f
+#define ARM_PC_TARGET_FAST_MAX_ACC_RAD_PER_S2 3.0f
 
 volatile uint8_t arm_motor_disabled_mask_debug = 0U;
+volatile float arm_pc_target_debug[ARM_LOGICAL_MOTOR_COUNT] = {0.0f};
+volatile float arm_planned_target_debug[ARM_LOGICAL_MOTOR_COUNT] = {0.0f};
+volatile float arm_planned_velocity_debug[ARM_LOGICAL_MOTOR_COUNT] = {0.0f};
+volatile uint32_t arm_planner_dt_ms_debug = 0U;
 
 static RampGenerator arm_target_angle_ramps[ARM_LOGICAL_MOTOR_COUNT];
 static uint8_t arm_target_angle_ramps_initialized = 0U;
+
+typedef struct
+{
+    float latest_target;
+    float pending_target;
+    float accepted_target;
+    float planned_angle;
+    float planned_velocity;
+    uint32_t pending_since_ms;
+    uint32_t stream_start_ms;
+    uint32_t last_input_ms;
+    uint32_t last_update_ms;
+    uint8_t initialized;
+} ArmPcTargetPlanner_t;
+
+static ArmPcTargetPlanner_t arm_pc_target_planners[ARM_LOGICAL_MOTOR_COUNT];
+static uint8_t arm_pc_target_planner_enabled = 0U;
+
+static ArmMotorData_t *Arm_GetMotorDataByIndex(uint8_t logical_motor);
 
 static uint8_t Arm_GetMotorMask(uint8_t logical_motor)
 {
@@ -128,19 +159,24 @@ static void Arm_SetMotorTxDisabledByIndex(uint8_t logical_motor, uint8_t disable
     }
 }
 
+float Arm_WrapAngleToPi(float angle)
+{
+    while (angle > ARM_PI_RAD)
+    {
+        angle -= ARM_TWO_PI_RAD;
+    }
+
+    while (angle < -ARM_PI_RAD)
+    {
+        angle += ARM_TWO_PI_RAD;
+    }
+
+    return angle;
+}
+
 static float Arm_GetEquivalentAngleNearCurrent(float target_angle, float current_angle)
 {
-    while ((target_angle - current_angle) > ARM_PI_RAD)
-    {
-        target_angle -= ARM_TWO_PI_RAD;
-    }
-
-    while ((target_angle - current_angle) < -ARM_PI_RAD)
-    {
-        target_angle += ARM_TWO_PI_RAD;
-    }
-
-    return target_angle;
+    return current_angle + Arm_WrapAngleToPi(target_angle - current_angle);
 }
 
 static float Arm_ClampTargetAngle(float angle)
@@ -248,6 +284,274 @@ static uint8_t Arm_GetSafeTargetAngle(ArmMotorData_t *motor_data, float *target_
     return Arm_IsAngleDiffSafe(*target_angle, motor_data->current_angle);
 }
 
+static float Arm_AbsFloat(float value)
+{
+    return (value < 0.0f) ? -value : value;
+}
+
+static float Arm_GetCurrentAngleByIndex(uint8_t logical_motor)
+{
+    ArmMotorData_t *motor_data = Arm_GetMotorDataByIndex(logical_motor);
+
+    if (motor_data == NULL)
+    {
+        return 0.0f;
+    }
+
+    return Arm_ClampTargetAngle(motor_data->current_angle);
+}
+
+static float Arm_GetPcPlannerMaxVel(uint8_t logical_motor)
+{
+    return (logical_motor < 3U) ?
+           ARM_PC_TARGET_SLOW_MAX_VEL_RAD_PER_S :
+           ARM_PC_TARGET_FAST_MAX_VEL_RAD_PER_S;
+}
+
+static float Arm_GetPcPlannerMaxAcc(uint8_t logical_motor)
+{
+    return (logical_motor < 3U) ?
+           ARM_PC_TARGET_SLOW_MAX_ACC_RAD_PER_S2 :
+           ARM_PC_TARGET_FAST_MAX_ACC_RAD_PER_S2;
+}
+
+static void Arm_UpdatePcPlannerDebug(uint8_t logical_motor)
+{
+    ArmPcTargetPlanner_t *planner;
+
+    if (logical_motor >= ARM_LOGICAL_MOTOR_COUNT)
+    {
+        return;
+    }
+
+    planner = &arm_pc_target_planners[logical_motor];
+    arm_pc_target_debug[logical_motor] = planner->latest_target;
+    arm_planned_target_debug[logical_motor] = planner->planned_angle;
+    arm_planned_velocity_debug[logical_motor] = planner->planned_velocity;
+}
+
+static void Arm_SyncPcPlannerByIndex(uint8_t logical_motor, float target_angle, uint32_t now_ms)
+{
+    ArmPcTargetPlanner_t *planner;
+
+    if (logical_motor >= ARM_LOGICAL_MOTOR_COUNT)
+    {
+        return;
+    }
+
+    target_angle = Arm_ClampTargetAngle(target_angle);
+    planner = &arm_pc_target_planners[logical_motor];
+    planner->latest_target = target_angle;
+    planner->pending_target = target_angle;
+    planner->accepted_target = target_angle;
+    planner->planned_angle = target_angle;
+    planner->planned_velocity = 0.0f;
+    planner->pending_since_ms = now_ms;
+    planner->stream_start_ms = now_ms;
+    planner->last_input_ms = now_ms;
+    planner->last_update_ms = now_ms;
+    planner->initialized = 1U;
+    Arm_UpdatePcPlannerDebug(logical_motor);
+}
+
+static void Arm_InitPcPlannerByIndex(uint8_t logical_motor, uint32_t now_ms)
+{
+    float current_angle;
+
+    if (logical_motor >= ARM_LOGICAL_MOTOR_COUNT)
+    {
+        return;
+    }
+
+    current_angle = Arm_GetCurrentAngleByIndex(logical_motor);
+    Arm_SyncPcPlannerByIndex(logical_motor, current_angle, now_ms);
+}
+
+static void Arm_AcceptPendingPcTargetIfReady(uint8_t logical_motor, uint32_t now_ms)
+{
+    ArmPcTargetPlanner_t *planner;
+    uint8_t accept_target = 0U;
+
+    if (logical_motor >= ARM_LOGICAL_MOTOR_COUNT)
+    {
+        return;
+    }
+
+    planner = &arm_pc_target_planners[logical_motor];
+    if (planner->initialized == 0U)
+    {
+        Arm_InitPcPlannerByIndex(logical_motor, now_ms);
+    }
+
+    if (Arm_AbsFloat(planner->pending_target - planner->accepted_target) <= ARM_PC_TARGET_NOISE_RAD)
+    {
+        return;
+    }
+
+    if ((now_ms - planner->pending_since_ms) >= ARM_PC_TARGET_STABLE_MS)
+    {
+        accept_target = 1U;
+    }
+    else if ((now_ms - planner->stream_start_ms) >= ARM_PC_TARGET_STREAM_FORCE_MS)
+    {
+        accept_target = 1U;
+    }
+
+    if (accept_target != 0U)
+    {
+        planner->accepted_target = planner->pending_target;
+        planner->pending_since_ms = now_ms;
+        planner->stream_start_ms = now_ms;
+    }
+}
+
+void Arm_SetPcTargetAngles(const float target_angles[ARM_LOGICAL_MOTOR_COUNT], uint32_t now_ms)
+{
+    uint8_t logical_motor;
+
+    if (target_angles == NULL)
+    {
+        return;
+    }
+
+    arm_pc_target_planner_enabled = 1U;
+
+    for (logical_motor = 0U; logical_motor < ARM_LOGICAL_MOTOR_COUNT; logical_motor++)
+    {
+        ArmPcTargetPlanner_t *planner = &arm_pc_target_planners[logical_motor];
+        ArmMotorData_t *motor_data = Arm_GetMotorDataByIndex(logical_motor);
+        float target_angle = Arm_ClampTargetAngle(target_angles[logical_motor]);
+
+        if (planner->initialized == 0U)
+        {
+            Arm_InitPcPlannerByIndex(logical_motor, now_ms);
+        }
+
+        if (motor_data != NULL)
+        {
+            motor_data->target_angle = target_angle;
+        }
+
+        if (Arm_AbsFloat(target_angle - planner->pending_target) > ARM_PC_TARGET_NOISE_RAD)
+        {
+            if ((now_ms - planner->last_input_ms) > ARM_PC_TARGET_STABLE_MS)
+            {
+                planner->stream_start_ms = now_ms;
+            }
+
+            planner->pending_target = target_angle;
+            planner->pending_since_ms = now_ms;
+        }
+
+        planner->latest_target = target_angle;
+        planner->last_input_ms = now_ms;
+        Arm_AcceptPendingPcTargetIfReady(logical_motor, now_ms);
+        Arm_UpdatePcPlannerDebug(logical_motor);
+    }
+}
+
+static void Arm_UpdatePcTargetPlanner(uint32_t now_ms)
+{
+    uint8_t logical_motor;
+
+    if (arm_pc_target_planner_enabled == 0U)
+    {
+        return;
+    }
+
+    for (logical_motor = 0U; logical_motor < ARM_LOGICAL_MOTOR_COUNT; logical_motor++)
+    {
+        ArmPcTargetPlanner_t *planner = &arm_pc_target_planners[logical_motor];
+        uint32_t elapsed_ms;
+        float dt_s;
+        float error;
+        float direction;
+        float max_vel;
+        float max_acc;
+        float stop_distance;
+        float old_error;
+        float new_angle;
+        float new_error;
+
+        if (planner->initialized == 0U)
+        {
+            Arm_InitPcPlannerByIndex(logical_motor, now_ms);
+        }
+
+        Arm_AcceptPendingPcTargetIfReady(logical_motor, now_ms);
+
+        elapsed_ms = now_ms - planner->last_update_ms;
+        if (elapsed_ms == 0U)
+        {
+            Arm_UpdatePcPlannerDebug(logical_motor);
+            continue;
+        }
+
+        planner->last_update_ms = now_ms;
+        if (elapsed_ms > ARM_PC_TARGET_MAX_DT_MS)
+        {
+            elapsed_ms = ARM_PC_TARGET_MAX_DT_MS;
+        }
+        arm_planner_dt_ms_debug = elapsed_ms;
+
+        dt_s = (float)elapsed_ms * 0.001f;
+        error = planner->accepted_target - planner->planned_angle;
+
+        if (Arm_AbsFloat(error) <= ARM_PC_TARGET_NOISE_RAD)
+        {
+            planner->planned_angle = planner->accepted_target;
+            planner->planned_velocity = 0.0f;
+            Arm_UpdatePcPlannerDebug(logical_motor);
+            continue;
+        }
+
+        direction = (error >= 0.0f) ? 1.0f : -1.0f;
+        max_vel = Arm_GetPcPlannerMaxVel(logical_motor);
+        max_acc = Arm_GetPcPlannerMaxAcc(logical_motor);
+        stop_distance = (planner->planned_velocity * planner->planned_velocity) / (2.0f * max_acc);
+
+        if ((planner->planned_velocity * direction) < 0.0f)
+        {
+            planner->planned_velocity += direction * max_acc * dt_s;
+        }
+        else if (Arm_AbsFloat(error) <= stop_distance)
+        {
+            planner->planned_velocity -= direction * max_acc * dt_s;
+        }
+        else
+        {
+            planner->planned_velocity += direction * max_acc * dt_s;
+        }
+
+        if (planner->planned_velocity > max_vel)
+        {
+            planner->planned_velocity = max_vel;
+        }
+        else if (planner->planned_velocity < -max_vel)
+        {
+            planner->planned_velocity = -max_vel;
+        }
+
+        old_error = planner->accepted_target - planner->planned_angle;
+        new_angle = planner->planned_angle + planner->planned_velocity * dt_s;
+        new_error = planner->accepted_target - new_angle;
+
+        if (((old_error > 0.0f) && (new_error < 0.0f)) ||
+            ((old_error < 0.0f) && (new_error > 0.0f)) ||
+            (Arm_AbsFloat(new_error) <= ARM_PC_TARGET_NOISE_RAD))
+        {
+            planner->planned_angle = planner->accepted_target;
+            planner->planned_velocity = 0.0f;
+        }
+        else
+        {
+            planner->planned_angle = Arm_ClampTargetAngle(new_angle);
+        }
+
+        Arm_UpdatePcPlannerDebug(logical_motor);
+    }
+}
+
 static void Arm_SyncTargetAngleRamp(uint8_t logical_motor, ArmMotorData_t *motor_data)
 {
     if (motor_data == NULL)
@@ -257,6 +561,7 @@ static void Arm_SyncTargetAngleRamp(uint8_t logical_motor, ArmMotorData_t *motor
 
     Arm_TargetAngleRampsInitIfNeeded();
     Arm_SetTargetAngleRampValue(logical_motor, Arm_LimitTargetAngle(motor_data));
+    Arm_SyncPcPlannerByIndex(logical_motor, motor_data->target_angle, HAL_GetTick());
 }
 
 static float Arm_GetSmoothedTargetAngle(uint8_t logical_motor, ArmMotorData_t *motor_data)
@@ -273,6 +578,12 @@ static float Arm_GetSmoothedTargetAngle(uint8_t logical_motor, ArmMotorData_t *m
     }
 
     Arm_TargetAngleRampsInitIfNeeded();
+
+    if (arm_pc_target_planner_enabled != 0U)
+    {
+        Arm_UpdatePcTargetPlanner(HAL_GetTick());
+        return arm_pc_target_planners[logical_motor].planned_angle;
+    }
 
     ramp = &arm_target_angle_ramps[logical_motor];
     now_tick = HAL_GetTick();
@@ -480,6 +791,10 @@ void Arm_Init()
     Daran_motor_data[1].target_velocity = 20.0f;
     Daran_motor_data[2].target_velocity = 20.0f;
     Arm_TargetAngleRampsInit();
+    for (uint8_t logical_motor = 0U; logical_motor < ARM_LOGICAL_MOTOR_COUNT; logical_motor++)
+    {
+        Arm_SyncPcPlannerByIndex(logical_motor, 0.0f, HAL_GetTick());
+    }
     // 初始化灵足电机位置为0
 
     // 初始化电机失能
@@ -535,7 +850,6 @@ void Arm_Linzu_motor3()
  */
 void Arm_Daran_motor1()
 {
-    osDelay(1);
     (void)Arm_SendDaranSmoothedTarget(0U, MOTOR_DARAN_1_ID, &Daran_motor_data[0]);
 }
 
@@ -546,7 +860,6 @@ void Arm_Daran_motor1()
  */
 void Arm_Daran_motor2()
 {
-    osDelay(1);
     (void)Arm_SendDaranSmoothedTarget(1U, MOTOR_DARAN_2_ID, &Daran_motor_data[1]);
 }
 
@@ -557,7 +870,6 @@ void Arm_Daran_motor2()
  */
 void Arm_Daran_motor3()
 {
-    osDelay(1);
     (void)Arm_SendDaranSmoothedTarget(2U, MOTOR_DARAN_3_ID, &Daran_motor_data[2]);
 }
 
@@ -666,22 +978,21 @@ void Arm_All_Data_update()
  */
 void Arm_all_tx()
 {
+    Arm_UpdatePcTargetPlanner(HAL_GetTick());
+
     if (g_ShoulderType == SHOULDER_TYPE_LINGZU)
     {
         if (Arm_MotorTxDisabledByIndex(0U) == 0U)
         {
             Arm_Linzu_motor1();
-            osDelay(1);
         }
         if (Arm_MotorTxDisabledByIndex(1U) == 0U)
         {
             Arm_Linzu_motor2();
-            osDelay(1);
         }
         if (Arm_MotorTxDisabledByIndex(2U) == 0U)
         {
             Arm_Linzu_motor3();
-            osDelay(1);
         }
     }
     else if (g_ShoulderType == SHOULDER_TYPE_DARAN)
@@ -689,34 +1000,28 @@ void Arm_all_tx()
         if (Arm_MotorTxDisabledByIndex(0U) == 0U)
         {
             Arm_Daran_motor1();
-            osDelay(1);
         }
         if (Arm_MotorTxDisabledByIndex(1U) == 0U)
         {
             Arm_Daran_motor2();
-            osDelay(1);
         }
         if (Arm_MotorTxDisabledByIndex(2U) == 0U)
         {
             Arm_Daran_motor3();
-            osDelay(1);
         }
     }
 
     if (Arm_MotorTxDisabledByIndex(3U) == 0U)
     {
         Arm_Damiao_motor4();
-        osDelay(1);
     }
     if (Arm_MotorTxDisabledByIndex(4U) == 0U)
     {
         Arm_Damiao_motor5();
-        osDelay(1);
     }
     if (Arm_MotorTxDisabledByIndex(5U) == 0U)
     {
         Arm_Damiao_motor6();
-        osDelay(1);
     }
 }
 
@@ -1150,32 +1455,32 @@ void Arm_save_position(void)
     osDelay(1);
     (void)Arm_SendDamiaoTarget(MOTOR_DAMIAO_6_ID, &Damiao_motor_data[2]);
 }
-void Arm_Motor_Disable_All(void)
-{
-    Disenable_Motor(&motor1, CAN_HANDLE_2, 0U);
-    osDelay(1);
-    Disenable_Motor(&motor2, CAN_HANDLE_2, 0U);
-    osDelay(1);
-    Disenable_Motor(&motor3, CAN_HANDLE_2, 0U);
-    osDelay(1);
-    disable_motor_mode(CAN_HANDLE_2, MOTOR_DAMIAO_4_ID, POS_MODE);
-    osDelay(1);
-    disable_motor_mode(CAN_HANDLE_2, MOTOR_DAMIAO_5_ID, POS_MODE);
-    osDelay(1);
-    disable_motor_mode(CAN_HANDLE_2, MOTOR_DAMIAO_6_ID, POS_MODE);
-}
- void Arm_Motor_Enable_All(void)
-{
-    Disenable_Motor(&motor1, CAN_HANDLE_2, 0U);
-    osDelay(1);
-    Disenable_Motor(&motor2, CAN_HANDLE_2, 0U);
-    osDelay(1);
-    Disenable_Motor(&motor3, CAN_HANDLE_2, 0U);
-    osDelay(1);
-    disable_motor_mode(CAN_HANDLE_2, MOTOR_DAMIAO_4_ID, POS_MODE);
-    osDelay(1);
-    disable_motor_mode(CAN_HANDLE_2, MOTOR_DAMIAO_5_ID, POS_MODE);
-    osDelay(1);
-    disable_motor_mode(CAN_HANDLE_2, MOTOR_DAMIAO_6_ID, POS_MODE);
+// void Arm_Motor_Disable_All(void)
+// {
+//     Disenable_Motor(&motor1, CAN_HANDLE_2, 0U);
+//     osDelay(1);
+//     Disenable_Motor(&motor2, CAN_HANDLE_2, 0U);
+//     osDelay(1);
+//     Disenable_Motor(&motor3, CAN_HANDLE_2, 0U);
+//     osDelay(1);
+//     disable_motor_mode(CAN_HANDLE_2, MOTOR_DAMIAO_4_ID, POS_MODE);
+//     osDelay(1);
+//     disable_motor_mode(CAN_HANDLE_2, MOTOR_DAMIAO_5_ID, POS_MODE);
+//     osDelay(1);
+//     disable_motor_mode(CAN_HANDLE_2, MOTOR_DAMIAO_6_ID, POS_MODE);
+// }
+//  void Arm_Motor_Enable_All(void)
+// {
+//     Disenable_Motor(&motor1, CAN_HANDLE_2, 0U);
+//     osDelay(1);
+//     Disenable_Motor(&motor2, CAN_HANDLE_2, 0U);
+//     osDelay(1);
+//     Disenable_Motor(&motor3, CAN_HANDLE_2, 0U);
+//     osDelay(1);
+//     disable_motor_mode(CAN_HANDLE_2, MOTOR_DAMIAO_4_ID, POS_MODE);
+//     osDelay(1);
+//     disable_motor_mode(CAN_HANDLE_2, MOTOR_DAMIAO_5_ID, POS_MODE);
+//     osDelay(1);
+//     disable_motor_mode(CAN_HANDLE_2, MOTOR_DAMIAO_6_ID, POS_MODE);
 
-}
+// }

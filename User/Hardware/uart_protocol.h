@@ -56,6 +56,7 @@ uint16_t crc16_ccitt(uint8_t *data, uint16_t len);
 void pack_up_frame(UpData_t *data, uint8_t *frame_buf);
 void unpack_dn_frame(uint8_t *frame_buf, DnData_t *data);
 uint8_t UART_Protocol_UnpackLatest(DnData_t *data);
+uint8_t UART_Protocol_CopyLatestDnData(DnData_t *out);
 uint8_t UART_Protocol_GetArmMotorCtrlCommand(PcArmMotorCtrl_t *command);
 HAL_StatusTypeDef send_frame(UART_HandleTypeDef *huart, uint8_t *frame_buf, uint16_t len);
 HAL_StatusTypeDef send_up_frame(UART_HandleTypeDef *huart);
