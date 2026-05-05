@@ -58,6 +58,15 @@ uint8_t Arm_Motor_Disable_IsActive(void);
 uint8_t Head_Motor_Enable_Disable_Updata(void);
 
 /**
+ * @brief PA15 USER_KEY 触发的头部电机使能/失能翻转请求。
+ *
+ * 与遥控器 CH8 共用同一套头部电机失能状态：任一来源请求失能时，Head_Task 都会保持失能。
+ *
+ * @return uint8_t 1 表示头部电机当前处于失能请求状态，0 表示未失能。
+ */
+uint8_t Head_Motor_ToggleByUserKey(void);
+
+/**
  * @brief 获取头部电机失能请求当前是否有效。
  *
  * @return uint8_t 1 表示头部电机失能请求有效，0 表示无效。

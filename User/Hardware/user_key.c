@@ -2,6 +2,7 @@
 
 #include "arm.h"
 #include "main.h"
+#include "remote_control.h"
 
 /* USER_KEY 硬件连接：PA15，按下接地，未按下由内部上拉保持高电平。 */
 #define USER_KEY_GPIO_PORT GPIOA
@@ -18,6 +19,12 @@ static uint8_t user_key_initialized = 0U;
 
 /* 上电时如果按键已经按住，必须先松开一次，避免误触发手臂电机使能。 */
 static uint8_t user_key_released_seen = 0U;
+
+static void USER_KEY_HandlePressedEvent(void)
+{
+    (void)Arm_EnableAllMotors();
+    (void)Head_Motor_ToggleByUserKey();
+}
 
 /**
  * @brief 初始化 USER_KEY GPIO 和消抖初始状态。
@@ -94,6 +101,6 @@ void USER_KEY_Update(void)
         (user_key_released_seen != 0U))
     {
         user_key_released_seen = 0U;
-        (void)Arm_EnableAllMotors();
+        USER_KEY_HandlePressedEvent();
     }
 }

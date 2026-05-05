@@ -48,6 +48,9 @@ volatile uint32_t pc_arm_motor_command_count_debug = 0U;
 static volatile uint8_t arm_motor_disable_active = 0U;
 static uint8_t arm_motor_disable_latched = 0U;
 static volatile uint8_t head_motor_disable_active = 0U;
+static volatile uint8_t head_motor_remote_disable_active = 0U;
+static volatile uint8_t head_motor_user_key_disable_active = 0U;
+static uint8_t head_motor_user_key_enabled_latched = 0U;
 static uint8_t head_motor_enabled_latched = 1U;
 static uint8_t arm_save_position = 0U;
 static uint8_t arm_motor_ch3_latch[ARM_LOGICAL_MOTOR_COUNT] = {0U};
@@ -91,6 +94,30 @@ void remote_control_init()
 {
 }
 
+static uint8_t Head_Motor_ApplyDisableRequest(uint8_t disable_request)
+{
+    head_motor_disable_active = disable_request;
+
+    if (disable_request != 0U)
+    {
+        if (head_motor_enabled_latched != 0U)
+        {
+            Head_Motor_Disable();
+            head_motor_enabled_latched = 0U;
+        }
+
+        return 1U;
+    }
+
+    if (head_motor_enabled_latched == 0U)
+    {
+        Head_Motor_Enable();
+        head_motor_enabled_latched = 1U;
+    }
+
+    return 0U;
+}
+
 uint8_t Arm_Motor_Disable_Updata(void)
 {
     uint8_t disable_request = (SBUS_CH.CH5 == LOW_VALUE) &&
@@ -129,31 +156,34 @@ uint8_t Head_Motor_Enable_Disable_Updata(void)
 {
     if (SBUS_CH.CH8 == HIGH_VALUE)
     {
-        head_motor_disable_active = 1U;
-
-        if (head_motor_enabled_latched != 0U)
-        {
-            Head_Motor_Disable();
-            head_motor_enabled_latched = 0U;
-        }
-
-        return 1U;
+        head_motor_remote_disable_active = 1U;
     }
-
-    if (SBUS_CH.CH8 == LOW_VALUE)
+    else if (SBUS_CH.CH8 == LOW_VALUE)
     {
-        head_motor_disable_active = 0U;
-
-        if (head_motor_enabled_latched == 0U)
-        {
-            Head_Motor_Enable();
-            head_motor_enabled_latched = 1U;
-        }
-
-        return 0U;
+        head_motor_remote_disable_active = 0U;
     }
 
-    return head_motor_disable_active;
+    return Head_Motor_ApplyDisableRequest(
+        ((head_motor_remote_disable_active != 0U) ||
+         (head_motor_user_key_disable_active != 0U)) ? 1U : 0U);
+}
+
+uint8_t Head_Motor_ToggleByUserKey(void)
+{
+    if (head_motor_user_key_enabled_latched == 0U)
+    {
+        head_motor_user_key_disable_active = 0U;
+        head_motor_user_key_enabled_latched = 1U;
+    }
+    else
+    {
+        head_motor_user_key_disable_active = 1U;
+        head_motor_user_key_enabled_latched = 0U;
+    }
+
+    return Head_Motor_ApplyDisableRequest(
+        ((head_motor_remote_disable_active != 0U) ||
+         (head_motor_user_key_disable_active != 0U)) ? 1U : 0U);
 }
 
 uint8_t Head_Motor_Disable_IsActive(void)
