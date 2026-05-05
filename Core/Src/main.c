@@ -43,6 +43,7 @@
 #include "omni_wheel.h"
 #include "pump_control.h"
 #include "remote_control.h"
+#include "user_key.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -111,6 +112,7 @@ int main(void)
 
   /* Initialize all configured peripherals */
   MX_GPIO_Init();
+  USER_KEY_Init();
   MX_DMA_Init();
   MX_FDCAN1_Init();
   MX_FDCAN2_Init();

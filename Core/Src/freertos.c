@@ -44,6 +44,7 @@
 #include "pt_sensor.h"
 #include "usart.h"
 #include "vl53l0x.h"
+#include "user_key.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -377,6 +378,7 @@ void Arm_MT_Task(void *argument)
   /* Infinite loop */
   for (;;)
   {
+    USER_KEY_Update();
     // Arm_CheckAndReenableDisabledMotors();
     if (Arm_Motor_Disable_IsActive() == 0U)
     {
