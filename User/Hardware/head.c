@@ -13,6 +13,10 @@
 #define HEAD_MOTOR2_LIMIT_HIGH 9000U
 #define HEAD_FEEDBACK_READY_COUNT 3U
 #define HEAD_MOTOR_COUNT 2U
+#define HEAD_MOTOR1_INCREASE_DIR DIR_CW
+#define HEAD_MOTOR1_DECREASE_DIR DIR_CCW
+#define HEAD_MOTOR2_INCREASE_DIR DIR_CW
+#define HEAD_MOTOR2_DECREASE_DIR DIR_CCW
 
 KTech_Motor_t motor_linkong[2];         // 凌空电机结构体定义
 Head_MotorData_t head_motor_data[2];    // 头部电机数据结构体定义
@@ -149,19 +153,27 @@ static uint16_t Head_CalcDynamicSpeed(uint8_t motor_index, uint32_t target_angle
                       HEAD_SPEED_FULL_ERROR_UNITS));
 }
 
+static uint8_t Head_GetDirectionForDelta(uint8_t motor_index, int32_t delta)
+{
+    if (delta > 0)
+    {
+        return (motor_index == 0U) ? HEAD_MOTOR1_INCREASE_DIR : HEAD_MOTOR2_INCREASE_DIR;
+    }
+
+    if (delta < 0)
+    {
+        return (motor_index == 0U) ? HEAD_MOTOR1_DECREASE_DIR : HEAD_MOTOR2_DECREASE_DIR;
+    }
+
+    return head_motor_data[motor_index].direction;
+}
+
 static void Head_UpdateShortestDirection(uint8_t motor_index, uint32_t target_angle)
 {
     uint32_t current_angle = Head_CurrentAngleToUnits(head_motor_data[motor_index].current_angle);
     int32_t delta = Head_GetShortestDelta(current_angle, target_angle);
 
-    if (delta > 0)
-    {
-        head_motor_data[motor_index].direction = DIR_CW;
-    }
-    else if (delta < 0)
-    {
-        head_motor_data[motor_index].direction = DIR_CCW;
-    }
+    head_motor_data[motor_index].direction = Head_GetDirectionForDelta(motor_index, delta);
 }
 
 void Head_Init()
@@ -311,6 +323,7 @@ static void Head_SaveZeroAndHold(uint8_t motor_index, uint16_t motor_id)
 
     current_target = Head_LimitTargetAngle(motor_index, 0U);
     head_motor_data[motor_index].target_angle = current_target;
+    Head_UpdateShortestDirection(motor_index, current_target);
     speed_limit = Head_CalcDynamicSpeed(motor_index, current_target);
     ktech_pos_single2(CAN_HANDLE_1,
                       motor_id,
