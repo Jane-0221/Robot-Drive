@@ -28,8 +28,12 @@
 #define ARM_MOTOR_CH3_LATCH_NONE 0U
 #define ARM_MOTOR_CH3_LATCH_ENABLE 1U
 #define ARM_MOTOR_CH3_LATCH_DISABLE 2U
+#define HEAD_PI 3.14159265358979323846f
 #define HEAD_RAD_TO_ANGLE_UNIT (18000.0f / 3.14159265358979323846f)
 #define HEAD_SINGLE_TURN_UNITS 36000L
+#define HEAD_SINGLE_TURN_DEG 360.0f
+#define HEAD_HALF_TURN_DEG 180.0f
+#define HEAD_DEG_TO_RAD (HEAD_PI / HEAD_HALF_TURN_DEG)
 #define PC_ARM_MOTOR_DEBUG_STATE_NONE 0xFFU
 // extern DnData_t pc_dn_data;
 
@@ -88,6 +92,26 @@ static uint32_t head_radian_to_target_angle(float radian)
     }
 
     return (uint32_t)angle_unit;
+}
+
+static float head_degree_to_pc_radian(float angle_deg)
+{
+    while (angle_deg < 0.0f)
+    {
+        angle_deg += HEAD_SINGLE_TURN_DEG;
+    }
+
+    while (angle_deg >= HEAD_SINGLE_TURN_DEG)
+    {
+        angle_deg -= HEAD_SINGLE_TURN_DEG;
+    }
+
+    if (angle_deg > HEAD_HALF_TURN_DEG)
+    {
+        angle_deg -= HEAD_SINGLE_TURN_DEG;
+    }
+
+    return angle_deg * HEAD_DEG_TO_RAD;
 }
 
 void remote_control_init()
@@ -691,6 +715,6 @@ void pc_arm_tx_data(void)
     up_tx_data.arm_motor_angle_5 = Damiao_motor_data[1].current_angle;
     up_tx_data.arm_motor_angle_6 = Damiao_motor_data[2].current_angle;
     up_tx_data.lift_height = lift_height_final;
-    up_tx_data.head_motor_angle_1 = head_motor_data[0].current_angle;
-    up_tx_data.head_motor_angle_2 = head_motor_data[1].current_angle;
+    up_tx_data.head_motor_angle_1 = head_degree_to_pc_radian(head_motor_data[0].current_angle);
+    up_tx_data.head_motor_angle_2 = head_degree_to_pc_radian(head_motor_data[1].current_angle);
 }

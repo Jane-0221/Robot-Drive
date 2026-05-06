@@ -8,7 +8,7 @@
 #define HEAD_SPEED_MIN 1U                        // 动态速度下限，单位1dps/LSB
 #define HEAD_SPEED_MAX 150U                      // 动态速度上限，单位1dps/LSB
 #define HEAD_SPEED_FULL_ERROR_UNITS 6000U        // 角度误差达到60°时使用最大速度
-#define HEAD_MOTOR1_LIMIT_LOW 34200U             // 1号电机跨零限位下边界，341°
+#define HEAD_MOTOR1_LIMIT_LOW 34300U             // 1号电机跨零限位下边界，343°
 #define HEAD_MOTOR1_LIMIT_HIGH 2000U             // 1号电机跨零限位上边界，20°
 #define HEAD_MOTOR2_LIMIT_LOW 27000U             // 2号电机跨零限位下边界，270°
 #define HEAD_MOTOR2_LIMIT_HIGH 9000U             // 2号电机跨零限位上边界，90°
