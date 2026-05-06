@@ -1,5 +1,11 @@
 #ifndef __HEAD_H__
 #define __HEAD_H__
+
+/**
+ * @file head.h
+ * @brief 头部两路KTech连杆电机的控制接口、状态数据和硬件资源定义。
+ */
+
 #include <stdint.h>
 #include "can_receive_send.h"
 #include "ktech_motor.h"
@@ -26,11 +32,11 @@
  */
 typedef struct
 {
-    float current_velocity; // 当前速度（单位：rad/s，弧度/秒）
-    float current_angle;    // 当前角度（单位：rad，弧度）
+    float current_velocity; // 当前速度（KTech状态2反馈，单位：dps）
+    float current_angle;    // 当前角度（单位：°，由编码器值换算得到）
     uint8_t direction;      // 旋转方向（0=顺时针(DIR_CW)，1=逆时针(DIR_CCW)）
     uint32_t target_angle;  // 目标角度（分辨率0.01°/LSB，如18000对应180°）
-    uint16_t max_speed;     // 最大转速（单位：dps，度/秒，360 dps即360°/秒）
+    uint16_t max_speed;     // 预留最大转速限制字段（单位：1dps/LSB，当前发送使用动态速度计算）
 } Head_MotorData_t;
 
 // ==================== 全局变量声明 ====================
@@ -71,31 +77,78 @@ extern void Head_all_tx(void);
 /**
  * @brief 请求头部两个电机反馈编码器数据
  * @retval 无
+ * @note  读取KTech状态2，反馈中包含速度和编码器位置
  */
 extern void Head_RequestFeedback(void);
+
+/**
+ * @brief 请求指定头部电机反馈数据
+ * @param motor_index 电机索引，0对应1号电机，1对应2号电机
+ * @retval 无
+ */
 extern void Head_RequestFeedbackByIndex(uint8_t motor_index);
+
+/**
+ * @brief 判断两路头部电机反馈是否均已达到稳定计数
+ * @retval 1=两路反馈均就绪，0=至少一路未就绪
+ */
 extern uint8_t Head_FeedbackReady(void);
+
+/**
+ * @brief 判断指定头部电机反馈是否已达到稳定计数
+ * @param motor_index 电机索引，0对应1号电机，1对应2号电机
+ * @retval 1=指定电机反馈就绪，0=索引无效或反馈未就绪
+ */
 extern uint8_t Head_MotorFeedbackReady(uint8_t motor_index);
+
+/**
+ * @brief 获取指定头部电机已收到的反馈帧计数
+ * @param motor_index 电机索引，0对应1号电机，1对应2号电机
+ * @retval 反馈计数；索引无效时返回0
+ */
 extern uint32_t Head_GetFeedbackCount(uint8_t motor_index);
+
+/**
+ * @brief 通知头部模块已收到指定电机的一帧有效反馈
+ * @param motor_index 电机索引，0对应1号电机，1对应2号电机
+ * @retval 无
+ * @note  通常由CAN接收解析流程在识别到有效KTech反馈后调用
+ */
 extern void Head_NotifyFeedback(uint8_t motor_index);
+
+/**
+ * @brief 按索引发送单个头部电机控制指令
+ * @param motor_index 电机索引，0对应1号电机，1对应2号电机
+ * @retval 无
+ * @note  若头部电机处于禁用状态，则不会发送控制帧
+ */
 extern void Head_TxMotorByIndex(uint8_t motor_index);
 
 /**
  * @brief 使能头部两个电机
  * @retval 无
+ * @note  会清零反馈就绪计数，再发送电机运行命令
  */
 extern void Head_Motor_Enable(void);
+
+/**
+ * @brief 向头部两个电机发送运行命令
+ * @retval 无
+ * @note  仅发送运行命令并打开控制发送标志，不清零反馈计数
+ */
 extern void Head_Motor_SendEnableCommand(void);
 
 /**
  * @brief 失能头部两个电机
  * @retval 无
+ * @note  禁止继续下发头部控制帧，并向两路电机发送关闭命令
  */
 extern void Head_Motor_Disable(void);
 
 /**
  * @brief 保存当前位置为头部电机零点
  * @retval 无
+ * @note  保存后会重新使能电机，并把目标位置保持在新的零点
  */
 extern void Head_save_position(void);
 
@@ -103,6 +156,7 @@ extern void Head_save_position(void);
  * @brief 更新头部连杆电机当前状态数据
  * @retval 无
  * @note   从motor_linkong数组读取科泰电机反馈数据，更新head_motor_data的current_angle/current_velocity
+ *         current_angle单位为°，current_velocity单位为dps
  */
 extern void Head_Lk_Data_update(void);
 
