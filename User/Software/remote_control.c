@@ -512,7 +512,7 @@ void Up_Down_Motor_Control_Updata(void)
     switch (SBUS_CH.CH7)
     {
     case HIGH_VALUE:
-        aim_tx_height = 100;
+        aim_tx_height = LIFT_TARGET_HEIGHT_MIN_MM;
         break;
     case LOW_VALUE:
         aim_tx_height = 700;
@@ -586,7 +586,15 @@ void PC_Head_Motor_Control_Updata(void)
 void PC_Up_Down_Motor_Control_Updata(void)
 {
     // 使用PC传入的升降目标高度信息（0.1mm单位）
-    aim_tx_height = pc_dn_data.pc_target_lift_height;
+    if ((pc_dn_data.pc_target_lift_height > 0U) &&
+        (pc_dn_data.pc_target_lift_height < LIFT_TARGET_HEIGHT_MIN_MM))
+    {
+        aim_tx_height = LIFT_TARGET_HEIGHT_MIN_MM;
+    }
+    else
+    {
+        aim_tx_height = pc_dn_data.pc_target_lift_height;
+    }
 }
 
 /**

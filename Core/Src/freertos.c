@@ -435,6 +435,7 @@ void Lift_control_Task(void *argument)
   /* Infinite loop */
   for (;;)
   {
+  //
     STP23L_ParseLatest();
     PT_ParseLatestPressure();
 

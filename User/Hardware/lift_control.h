@@ -13,6 +13,7 @@
 // 继电器状态定义
 #define LIFT_RELAY_ON       GPIO_PIN_SET
 #define LIFT_RELAY_OFF      GPIO_PIN_RESET
+#define LIFT_TARGET_HEIGHT_MIN_MM 200
 
 // 升降机状态
 typedef enum LIFT_State {
