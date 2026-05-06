@@ -34,6 +34,10 @@
 #define HEAD_SINGLE_TURN_DEG 360.0f
 #define HEAD_HALF_TURN_DEG 180.0f
 #define HEAD_DEG_TO_RAD (HEAD_PI / HEAD_HALF_TURN_DEG)
+#define HEAD_MOTOR1_PC_MIN_RAD (-1700.0f * HEAD_PI / 18000.0f)
+#define HEAD_MOTOR1_PC_MAX_RAD (2000.0f * HEAD_PI / 18000.0f)
+#define HEAD_MOTOR2_PC_MIN_RAD (-9000.0f * HEAD_PI / 18000.0f)
+#define HEAD_MOTOR2_PC_MAX_RAD (9000.0f * HEAD_PI / 18000.0f)
 #define PC_ARM_MOTOR_DEBUG_STATE_NONE 0xFFU
 // extern DnData_t pc_dn_data;
 
@@ -76,10 +80,49 @@ static float sbus_axis_to_float(uint16_t value, float scale)
     return (float)delta / scale;
 }
 
-static uint32_t head_radian_to_target_angle(float radian)
+static float head_clamp_pc_head_radian(uint8_t motor_index, float radian)
 {
-    float angle_unit_f = radian * HEAD_RAD_TO_ANGLE_UNIT;
-    int32_t angle_unit = (angle_unit_f >= 0.0f) ? (int32_t)(angle_unit_f + 0.5f) : (int32_t)(angle_unit_f - 0.5f);
+    float min_radian;
+    float max_radian;
+
+    if (radian != radian)
+    {
+        return 0.0f;
+    }
+
+    if (motor_index == 0U)
+    {
+        min_radian = HEAD_MOTOR1_PC_MIN_RAD;
+        max_radian = HEAD_MOTOR1_PC_MAX_RAD;
+    }
+    else
+    {
+        min_radian = HEAD_MOTOR2_PC_MIN_RAD;
+        max_radian = HEAD_MOTOR2_PC_MAX_RAD;
+    }
+
+    if (radian < min_radian)
+    {
+        return min_radian;
+    }
+
+    if (radian > max_radian)
+    {
+        return max_radian;
+    }
+
+    return radian;
+}
+
+static uint32_t head_radian_to_target_angle(uint8_t motor_index, float radian)
+{
+    float angle_unit_f;
+    int32_t angle_unit;
+
+    radian = head_clamp_pc_head_radian(motor_index, radian);
+
+    angle_unit_f = radian * HEAD_RAD_TO_ANGLE_UNIT;
+    angle_unit = (angle_unit_f >= 0.0f) ? (int32_t)(angle_unit_f + 0.5f) : (int32_t)(angle_unit_f - 0.5f);
 
     while (angle_unit < 0)
     {
@@ -599,8 +642,8 @@ void PC_Pump_Control_Updata(void)
 void PC_Head_Motor_Control_Updata(void)
 {
     // 使用PC传入的头部电机目标角度信息（弧度）
-    head_motor_data[0].target_angle = head_radian_to_target_angle(pc_dn_data.pc_target_head_motor_angles[0]);
-    head_motor_data[1].target_angle = head_radian_to_target_angle(pc_dn_data.pc_target_head_motor_angles[1]);
+    head_motor_data[0].target_angle = head_radian_to_target_angle(0U, pc_dn_data.pc_target_head_motor_angles[0]);
+    head_motor_data[1].target_angle = head_radian_to_target_angle(1U, pc_dn_data.pc_target_head_motor_angles[1]);
 }
 
 /**

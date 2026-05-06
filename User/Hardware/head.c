@@ -119,6 +119,32 @@ static uint32_t Head_NormalizeAngle(uint32_t angle)
     return angle % HEAD_SINGLE_TURN_UNITS;
 }
 
+static uint8_t Head_GetMotorLimits(uint8_t motor_index, uint32_t *low_limit, uint32_t *high_limit)
+{
+    if (motor_index == 0U)
+    {
+        *low_limit = HEAD_MOTOR1_LIMIT_LOW;
+        *high_limit = HEAD_MOTOR1_LIMIT_HIGH;
+        return 1U;
+    }
+
+    if (motor_index == 1U)
+    {
+        *low_limit = HEAD_MOTOR2_LIMIT_LOW;
+        *high_limit = HEAD_MOTOR2_LIMIT_HIGH;
+        return 1U;
+    }
+
+    return 0U;
+}
+
+static uint8_t Head_IsAngleInAcrossZeroRange(uint32_t angle, uint32_t low_limit, uint32_t high_limit)
+{
+    angle = Head_NormalizeAngle(angle);
+
+    return ((angle >= low_limit) || (angle <= high_limit)) ? 1U : 0U;
+}
+
 /**
  * @brief  对跨零点的安全角度区间进行限幅。
  * @param  angle      待限幅目标角度，单位0.01°
@@ -130,7 +156,7 @@ static uint32_t Head_ClampAcrossZero(uint32_t angle, uint32_t low_limit, uint32_
 {
     angle = Head_NormalizeAngle(angle);
 
-    if ((angle >= low_limit) || (angle <= high_limit))
+    if (Head_IsAngleInAcrossZeroRange(angle, low_limit, high_limit) != 0U)
     {
         return angle;
     }
@@ -146,14 +172,12 @@ static uint32_t Head_ClampAcrossZero(uint32_t angle, uint32_t low_limit, uint32_
  */
 static uint32_t Head_LimitTargetAngle(uint8_t motor_index, uint32_t target_angle)
 {
-    if (motor_index == 0U)
-    {
-        return Head_ClampAcrossZero(target_angle, HEAD_MOTOR1_LIMIT_LOW, HEAD_MOTOR1_LIMIT_HIGH);
-    }
+    uint32_t low_limit;
+    uint32_t high_limit;
 
-    if (motor_index == 1U)
+    if (Head_GetMotorLimits(motor_index, &low_limit, &high_limit) != 0U)
     {
-        return Head_ClampAcrossZero(target_angle, HEAD_MOTOR2_LIMIT_LOW, HEAD_MOTOR2_LIMIT_HIGH);
+        return Head_ClampAcrossZero(target_angle, low_limit, high_limit);
     }
 
     return Head_NormalizeAngle(target_angle);
@@ -172,6 +196,29 @@ static uint32_t Head_CurrentAngleToUnits(float angle_deg)
     }
 
     return ((uint32_t)(angle_deg * 100.0f + 0.5f)) % HEAD_SINGLE_TURN_UNITS;
+}
+
+static uint32_t Head_GetSafeSendTargetAngle(uint8_t motor_index, uint32_t target_angle)
+{
+    uint32_t low_limit;
+    uint32_t high_limit;
+    uint32_t current_angle;
+    uint32_t limited_target;
+
+    if (Head_GetMotorLimits(motor_index, &low_limit, &high_limit) == 0U)
+    {
+        return Head_NormalizeAngle(target_angle);
+    }
+
+    limited_target = Head_ClampAcrossZero(target_angle, low_limit, high_limit);
+    current_angle = Head_CurrentAngleToUnits(head_motor_data[motor_index].current_angle);
+
+    if (Head_IsAngleInAcrossZeroRange(current_angle, low_limit, high_limit) == 0U)
+    {
+        return Head_ClampAcrossZero(current_angle, low_limit, high_limit);
+    }
+
+    return limited_target;
 }
 
 /**
@@ -196,6 +243,37 @@ static int32_t Head_GetShortestDelta(uint32_t current_angle, uint32_t target_ang
     return delta;
 }
 
+static int32_t Head_GetLimitedShortestDelta(uint8_t motor_index, uint32_t current_angle, uint32_t target_angle)
+{
+    uint32_t low_limit;
+    uint32_t high_limit;
+    int32_t delta;
+
+    current_angle = Head_NormalizeAngle(current_angle);
+    target_angle = Head_NormalizeAngle(target_angle);
+    delta = Head_GetShortestDelta(current_angle, target_angle);
+
+    if ((Head_GetMotorLimits(motor_index, &low_limit, &high_limit) != 0U) &&
+        (Head_IsAngleInAcrossZeroRange(current_angle, low_limit, high_limit) != 0U) &&
+        (Head_IsAngleInAcrossZeroRange(target_angle, low_limit, high_limit) != 0U))
+    {
+        if ((delta == -HEAD_HALF_TURN_UNITS) &&
+            (current_angle >= low_limit) &&
+            (target_angle <= high_limit))
+        {
+            delta = HEAD_HALF_TURN_UNITS;
+        }
+        else if ((delta == HEAD_HALF_TURN_UNITS) &&
+                 (current_angle <= high_limit) &&
+                 (target_angle >= low_limit))
+        {
+            delta = -HEAD_HALF_TURN_UNITS;
+        }
+    }
+
+    return delta;
+}
+
 /**
  * @brief  根据目标误差计算动态速度限制。
  * @param  motor_index  电机索引
@@ -205,7 +283,7 @@ static int32_t Head_GetShortestDelta(uint32_t current_angle, uint32_t target_ang
 static uint16_t Head_CalcDynamicSpeed(uint8_t motor_index, uint32_t target_angle)
 {
     uint32_t current_angle = Head_CurrentAngleToUnits(head_motor_data[motor_index].current_angle);
-    int32_t delta = Head_GetShortestDelta(current_angle, target_angle);
+    int32_t delta = Head_GetLimitedShortestDelta(motor_index, current_angle, target_angle);
     uint32_t error_units = (delta < 0) ? (uint32_t)(-delta) : (uint32_t)delta;
 
     if (error_units >= HEAD_SPEED_FULL_ERROR_UNITS)
@@ -247,7 +325,7 @@ static uint8_t Head_GetDirectionForDelta(uint8_t motor_index, int32_t delta)
 static void Head_UpdateShortestDirection(uint8_t motor_index, uint32_t target_angle)
 {
     uint32_t current_angle = Head_CurrentAngleToUnits(head_motor_data[motor_index].current_angle);
-    int32_t delta = Head_GetShortestDelta(current_angle, target_angle);
+    int32_t delta = Head_GetLimitedShortestDelta(motor_index, current_angle, target_angle);
 
     head_motor_data[motor_index].direction = Head_GetDirectionForDelta(motor_index, delta);
 }
@@ -285,7 +363,7 @@ void Head_Init()
  */
 void Head_Lk_motor1(void)
 {
-    uint32_t current_target = Head_LimitTargetAngle(0U, head_motor_data[0].target_angle);
+    uint32_t current_target = Head_GetSafeSendTargetAngle(0U, head_motor_data[0].target_angle);
     uint16_t speed_limit;
 
     head_motor_data[0].target_angle = current_target;
@@ -305,7 +383,7 @@ void Head_Lk_motor1(void)
  */
 void Head_Lk_motor2()
 {
-    uint32_t current_target = Head_LimitTargetAngle(1U, head_motor_data[1].target_angle);
+    uint32_t current_target = Head_GetSafeSendTargetAngle(1U, head_motor_data[1].target_angle);
     uint16_t speed_limit;
 
     head_motor_data[1].target_angle = current_target;
@@ -433,12 +511,13 @@ static void Head_SaveZeroAndHold(uint8_t motor_index, uint16_t motor_id)
 
     ktech_set_zero(CAN_HANDLE_1, motor_id);
     head_motor_data[motor_index].target_angle = 0U;
+    head_motor_data[motor_index].current_angle = 0.0f;
     Head_DelayMs(1U);
 
     ktech_motor_on(CAN_HANDLE_1, motor_id);
     Head_DelayMs(1U);
 
-    current_target = Head_LimitTargetAngle(motor_index, 0U);
+    current_target = Head_GetSafeSendTargetAngle(motor_index, 0U);
     head_motor_data[motor_index].target_angle = current_target;
     Head_UpdateShortestDirection(motor_index, current_target);
     speed_limit = Head_CalcDynamicSpeed(motor_index, current_target);
