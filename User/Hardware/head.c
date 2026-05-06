@@ -119,6 +119,22 @@ static uint32_t Head_NormalizeAngle(uint32_t angle)
     return angle % HEAD_SINGLE_TURN_UNITS;
 }
 
+/**
+ * @brief  将跨零单圈角度转换成以零点为中心的有符号角度。
+ * @note   例如34300会转换为-1700，避免把负向小角度当成343°单圈长路径发送。
+ */
+static int32_t Head_AngleToSignedUnits(uint32_t angle)
+{
+    angle = Head_NormalizeAngle(angle);
+
+    if (angle > HEAD_HALF_TURN_UNITS)
+    {
+        return (int32_t)angle - (int32_t)HEAD_SINGLE_TURN_UNITS;
+    }
+
+    return (int32_t)angle;
+}
+
 static uint8_t Head_GetMotorLimits(uint8_t motor_index, uint32_t *low_limit, uint32_t *high_limit)
 {
     if (motor_index == 0U)
@@ -162,25 +178,6 @@ static uint32_t Head_ClampAcrossZero(uint32_t angle, uint32_t low_limit, uint32_
     }
 
     return ((angle - high_limit) <= (low_limit - angle)) ? high_limit : low_limit;
-}
-
-/**
- * @brief  根据电机编号限制目标角度到对应机械安全范围。
- * @param  motor_index  电机索引，0对应1号电机，1对应2号电机
- * @param  target_angle 原始目标角度，单位0.01°
- * @retval 限幅后的目标角度
- */
-static uint32_t Head_LimitTargetAngle(uint8_t motor_index, uint32_t target_angle)
-{
-    uint32_t low_limit;
-    uint32_t high_limit;
-
-    if (Head_GetMotorLimits(motor_index, &low_limit, &high_limit) != 0U)
-    {
-        return Head_ClampAcrossZero(target_angle, low_limit, high_limit);
-    }
-
-    return Head_NormalizeAngle(target_angle);
 }
 
 /**
@@ -358,42 +355,44 @@ void Head_Init()
 };
 
 /**
- * @brief  发送1号头部电机单圈位置控制指令。
+ * @brief  发送1号头部电机位置控制指令。
  * @note   发送前会进行目标角度限幅、最短方向计算和动态速度计算。
  */
 void Head_Lk_motor1(void)
 {
     uint32_t current_target = Head_GetSafeSendTargetAngle(0U, head_motor_data[0].target_angle);
+    int32_t signed_target;
     uint16_t speed_limit;
 
     head_motor_data[0].target_angle = current_target;
     Head_UpdateShortestDirection(0U, current_target);
     speed_limit = Head_CalcDynamicSpeed(0U, current_target);
+    signed_target = Head_AngleToSignedUnits(current_target);
 
-    ktech_pos_single2(CAN_HANDLE_1, 
+    ktech_pos_multi2(CAN_HANDLE_1, 
                       MOTOR_LINKONG_1_ID, 
-                      head_motor_data[0].direction, 
-                      current_target, 
+                      signed_target, 
                       speed_limit);
 }
 
 /**
- * @brief  发送2号头部电机单圈位置控制指令。
+ * @brief  发送2号头部电机位置控制指令。
  * @note   发送前会进行目标角度限幅、最短方向计算和动态速度计算。
  */
 void Head_Lk_motor2()
 {
     uint32_t current_target = Head_GetSafeSendTargetAngle(1U, head_motor_data[1].target_angle);
+    int32_t signed_target;
     uint16_t speed_limit;
 
     head_motor_data[1].target_angle = current_target;
     Head_UpdateShortestDirection(1U, current_target);
     speed_limit = Head_CalcDynamicSpeed(1U, current_target);
+    signed_target = Head_AngleToSignedUnits(current_target);
 
-    ktech_pos_single2(CAN_HANDLE_1, 
+    ktech_pos_multi2(CAN_HANDLE_1, 
                       MOTOR_LINKONG_2_ID, 
-                      head_motor_data[1].direction, 
-                      current_target, 
+                      signed_target, 
                       speed_limit);
 }
 
@@ -504,6 +503,7 @@ void Head_Motor_Disable(void)
 static void Head_SaveZeroAndHold(uint8_t motor_index, uint16_t motor_id)
 {
     uint32_t current_target;
+    int32_t signed_target;
     uint16_t speed_limit;
 
     ktech_motor_stop(CAN_HANDLE_1, motor_id);
@@ -521,10 +521,10 @@ static void Head_SaveZeroAndHold(uint8_t motor_index, uint16_t motor_id)
     head_motor_data[motor_index].target_angle = current_target;
     Head_UpdateShortestDirection(motor_index, current_target);
     speed_limit = Head_CalcDynamicSpeed(motor_index, current_target);
-    ktech_pos_single2(CAN_HANDLE_1,
+    signed_target = Head_AngleToSignedUnits(current_target);
+    ktech_pos_multi2(CAN_HANDLE_1,
                       motor_id,
-                      head_motor_data[motor_index].direction,
-                      current_target,
+                      signed_target,
                       speed_limit);
 }
 

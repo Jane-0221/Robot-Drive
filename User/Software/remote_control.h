@@ -118,6 +118,10 @@ extern volatile uint8_t pc_arm_motor_enable_state_debug[6];
 extern volatile uint8_t pc_arm_motor_last_index_debug;
 extern volatile uint8_t pc_arm_motor_last_enable_state_debug;
 extern volatile uint32_t pc_arm_motor_command_count_debug;
+extern volatile float head_pc_tx_source_deg_debug[2];
+extern volatile float head_pc_tx_normalized_deg_debug[2];
+extern volatile float head_pc_tx_rad_debug[2];
+extern volatile uint32_t head_pc_tx_invalid_count_debug[2];
 
 /**
  * @brief 将当前底盘速度状态写入 PC 上传数据结构。

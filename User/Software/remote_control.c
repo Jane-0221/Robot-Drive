@@ -34,6 +34,8 @@
 #define HEAD_SINGLE_TURN_DEG 360.0f
 #define HEAD_HALF_TURN_DEG 180.0f
 #define HEAD_DEG_TO_RAD (HEAD_PI / HEAD_HALF_TURN_DEG)
+#define HEAD_ANGLE_SANITY_LIMIT_DEG 1000000.0f
+#define HEAD_PC_TX_ZERO_DEADBAND_DEG 1.0f
 #define HEAD_MOTOR1_PC_MIN_RAD (-1700.0f * HEAD_PI / 18000.0f)
 #define HEAD_MOTOR1_PC_MAX_RAD (2000.0f * HEAD_PI / 18000.0f)
 #define HEAD_MOTOR2_PC_MIN_RAD (-9000.0f * HEAD_PI / 18000.0f)
@@ -52,6 +54,10 @@ volatile uint8_t pc_arm_motor_enable_state_debug[ARM_LOGICAL_MOTOR_COUNT] = {
 volatile uint8_t pc_arm_motor_last_index_debug = PC_ARM_MOTOR_DEBUG_STATE_NONE;
 volatile uint8_t pc_arm_motor_last_enable_state_debug = PC_ARM_MOTOR_DEBUG_STATE_NONE;
 volatile uint32_t pc_arm_motor_command_count_debug = 0U;
+volatile float head_pc_tx_source_deg_debug[2] = {0.0f, 0.0f};
+volatile float head_pc_tx_normalized_deg_debug[2] = {0.0f, 0.0f};
+volatile float head_pc_tx_rad_debug[2] = {0.0f, 0.0f};
+volatile uint32_t head_pc_tx_invalid_count_debug[2] = {0U, 0U};
 
 static volatile uint8_t arm_motor_disable_active = 0U;
 static uint8_t arm_motor_disable_latched = 0U;
@@ -63,6 +69,7 @@ static uint8_t head_motor_enabled_latched = 1U;
 static uint8_t arm_save_position = 0U;
 static uint8_t arm_motor_ch3_latch[ARM_LOGICAL_MOTOR_COUNT] = {0U};
 static uint8_t arm_motor_save_zero_latched = 0U;
+static uint8_t head_save_zero_latched = 0U;
 static uint8_t sbus_match(uint16_t value, uint16_t target)
 {
     return (value >= (target - RANGE)) && (value <= (target + RANGE));
@@ -137,8 +144,20 @@ static uint32_t head_radian_to_target_angle(uint8_t motor_index, float radian)
     return (uint32_t)angle_unit;
 }
 
-static float head_degree_to_pc_radian(float angle_deg)
+static uint8_t head_degree_is_invalid(float angle_deg)
 {
+    return ((angle_deg != angle_deg) ||
+            (angle_deg > HEAD_ANGLE_SANITY_LIMIT_DEG) ||
+            (angle_deg < -HEAD_ANGLE_SANITY_LIMIT_DEG)) ? 1U : 0U;
+}
+
+static float head_normalize_degree_for_pc_tx(float angle_deg)
+{
+    if (head_degree_is_invalid(angle_deg) != 0U)
+    {
+        return 0.0f;
+    }
+
     while (angle_deg < 0.0f)
     {
         angle_deg += HEAD_SINGLE_TURN_DEG;
@@ -149,11 +168,23 @@ static float head_degree_to_pc_radian(float angle_deg)
         angle_deg -= HEAD_SINGLE_TURN_DEG;
     }
 
+    if ((angle_deg <= HEAD_PC_TX_ZERO_DEADBAND_DEG) ||
+        ((HEAD_SINGLE_TURN_DEG - angle_deg) <= HEAD_PC_TX_ZERO_DEADBAND_DEG))
+    {
+        return 0.0f;
+    }
+
     if (angle_deg > HEAD_HALF_TURN_DEG)
     {
         angle_deg -= HEAD_SINGLE_TURN_DEG;
     }
 
+    return angle_deg;
+}
+
+static float head_degree_to_pc_radian(float angle_deg)
+{
+    angle_deg = head_normalize_degree_for_pc_tx(angle_deg);
     return angle_deg * HEAD_DEG_TO_RAD;
 }
 
@@ -404,12 +435,18 @@ void head_save_home_position(void)
 {
     if (SBUS_CH.CH5 == HIGH_VALUE && SBUS_CH.CH6 == HIGH_VALUE)
     {
+        if (head_save_zero_latched == 0U)
+        {
+            head_motor_data[0].target_angle = 0.0f;
+            head_motor_data[1].target_angle = 0.0f;
+            Head_save_position();
+            head_save_zero_latched = 1U;
+        }
 
-        head_motor_data[0].target_angle = 0.0f;
-        head_motor_data[1].target_angle = 0.0f;
-        Head_save_position();
         return;
     }
+
+    head_save_zero_latched = 0U;
 }
 
 void Head_Motor_Control_Updata(void)
@@ -758,6 +795,22 @@ void pc_arm_tx_data(void)
     up_tx_data.arm_motor_angle_5 = Damiao_motor_data[1].current_angle;
     up_tx_data.arm_motor_angle_6 = Damiao_motor_data[2].current_angle;
     up_tx_data.lift_height = lift_height_final;
-    up_tx_data.head_motor_angle_1 = head_degree_to_pc_radian(head_motor_data[0].current_angle);
-    up_tx_data.head_motor_angle_2 = head_degree_to_pc_radian(head_motor_data[1].current_angle);
+
+    head_pc_tx_source_deg_debug[0] = head_motor_data[0].current_angle;
+    head_pc_tx_source_deg_debug[1] = head_motor_data[1].current_angle;
+    if (head_degree_is_invalid(head_pc_tx_source_deg_debug[0]) != 0U)
+    {
+        head_pc_tx_invalid_count_debug[0]++;
+    }
+    if (head_degree_is_invalid(head_pc_tx_source_deg_debug[1]) != 0U)
+    {
+        head_pc_tx_invalid_count_debug[1]++;
+    }
+
+    head_pc_tx_normalized_deg_debug[0] = head_normalize_degree_for_pc_tx(head_pc_tx_source_deg_debug[0]);
+    head_pc_tx_normalized_deg_debug[1] = head_normalize_degree_for_pc_tx(head_pc_tx_source_deg_debug[1]);
+    head_pc_tx_rad_debug[0] = head_degree_to_pc_radian(head_pc_tx_source_deg_debug[0]);
+    head_pc_tx_rad_debug[1] = head_degree_to_pc_radian(head_pc_tx_source_deg_debug[1]);
+    up_tx_data.head_motor_angle_1 = head_pc_tx_rad_debug[0];
+    up_tx_data.head_motor_angle_2 = head_pc_tx_rad_debug[1];
 }
