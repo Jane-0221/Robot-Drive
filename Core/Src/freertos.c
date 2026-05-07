@@ -380,6 +380,7 @@ void Arm_MT_Task(void *argument)
   {
     USER_KEY_Update();
     // Arm_CheckAndReenableDisabledMotors();
+    Arm_RequestDisabledFeedback();
     if (Arm_Motor_Disable_IsActive() == 0U)
     {
       uint8_t arm_save_active = Arm_Save_Position_IsActive();

@@ -89,8 +89,11 @@ float reply_enable = 0.0f;
 #define ARM_PC_TARGET_SLOW_MAX_ACC_RAD_PER_S2 1.2f
 #define ARM_PC_TARGET_FAST_MAX_VEL_RAD_PER_S 1.5f
 #define ARM_PC_TARGET_FAST_MAX_ACC_RAD_PER_S2 3.0f
+#define ARM_DISABLED_FEEDBACK_PERIOD_MS 50U
 
 volatile uint8_t arm_motor_disabled_mask_debug = 0U;
+volatile uint32_t arm_feedback_count_debug[ARM_LOGICAL_MOTOR_COUNT] = {0U};
+volatile uint32_t arm_feedback_last_tick_debug[ARM_LOGICAL_MOTOR_COUNT] = {0U};
 volatile float arm_pc_target_debug[ARM_LOGICAL_MOTOR_COUNT] = {0.0f};
 volatile float arm_planned_target_debug[ARM_LOGICAL_MOTOR_COUNT] = {0.0f};
 volatile float arm_planned_velocity_debug[ARM_LOGICAL_MOTOR_COUNT] = {0.0f};
@@ -1161,6 +1164,62 @@ void Arm_CheckAndReenableDisabledMotors(void)
     if (Arm_MotorTxDisabledByIndex(5U) == 0U)
     {
         Arm_ReenableDamiaoMotor(5U, MOTOR_DAMIAO_6_ID, Motor6, &Damiao_motor_data[2]);
+    }
+}
+
+void Arm_RequestDisabledFeedback(void)
+{
+    static uint32_t last_request_tick = 0U;
+    uint32_t now_tick = HAL_GetTick();
+    uint8_t logical_motor;
+
+    if ((now_tick - last_request_tick) < ARM_DISABLED_FEEDBACK_PERIOD_MS)
+    {
+        return;
+    }
+
+    last_request_tick = now_tick;
+
+    if (g_ShoulderType == SHOULDER_TYPE_LINGZU)
+    {
+        for (logical_motor = 0U; logical_motor < 3U; logical_motor++)
+        {
+            RobStride_Motor_t *motor;
+
+            if (Arm_MotorTxDisabledByIndex(logical_motor) == 0U)
+            {
+                continue;
+            }
+
+            motor = Arm_GetLinzuMotorByIndex(logical_motor);
+            if (motor == NULL)
+            {
+                continue;
+            }
+
+            Get_RobStride_Motor_parameter(motor, CAN_HANDLE_2, 0x7019U);
+            osDelay(1U);
+        }
+    }
+
+    for (logical_motor = 3U; logical_motor < ARM_LOGICAL_MOTOR_COUNT; logical_motor++)
+    {
+        uint16_t motor_id;
+        uint16_t motor_index;
+
+        if (Arm_MotorTxDisabledByIndex(logical_motor) == 0U)
+        {
+            continue;
+        }
+
+        if (Arm_GetDamiaoMotorInfoByIndex(logical_motor, &motor_id, &motor_index) == 0U)
+        {
+            continue;
+        }
+
+        (void)motor_index;
+        disable_motor_mode(CAN_HANDLE_2, motor_id, POS_MODE);
+        osDelay(1U);
     }
 }
 

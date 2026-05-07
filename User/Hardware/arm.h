@@ -86,6 +86,8 @@ extern Motor_DM_Status DM_Status[6]; // 存储每个达妙电机的使能/禁用
 /** 全局肩部电机类型选择变量 */
 extern ShoulderType_t g_ShoulderType;
 extern volatile uint8_t arm_motor_disabled_mask_debug;
+extern volatile uint32_t arm_feedback_count_debug[ARM_LOGICAL_MOTOR_COUNT];
+extern volatile uint32_t arm_feedback_last_tick_debug[ARM_LOGICAL_MOTOR_COUNT];
 
 /** 电机控制数据结构体数组（按品牌分类） */
 extern ArmMotorData_t Linzu_motor_data[3];  // 灵足电机控制数据（3路）
@@ -127,6 +129,7 @@ extern void Arm_save_position(void);   // 保存当前位置
 // extern void Arm_Motor_Disable_All(void);
 // extern void Arm_Motor_Enable_All(void);
 extern void Arm_CheckAndReenableDisabledMotors(void);
+void Arm_RequestDisabledFeedback(void);
 float Arm_WrapAngleToPi(float angle);
 void Arm_SetPcTargetAngles(const float target_angles[ARM_LOGICAL_MOTOR_COUNT], uint32_t now_ms);
 uint8_t Arm_AdjustMotorTargetByIndex(uint8_t logical_motor, float delta_angle);

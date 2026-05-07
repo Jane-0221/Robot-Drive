@@ -216,12 +216,14 @@ void RobStride_Motor_Analysis(RobStride_Motor_t* motor, uint8_t* DataFrame, uint
                                 break;
                             case 10:
                                 motor->drw.mechPos.data = Byte_to_float(DataFrame);
+                                motor->Pos_Info.Angle = motor->drw.mechPos.data;
                                 break;
                             case 11:
                                 motor->drw.iqf.data = Byte_to_float(DataFrame);
                                 break;
                             case 12:
                                 motor->drw.mechVel.data = Byte_to_float(DataFrame);
+                                motor->Pos_Info.Speed = motor->drw.mechVel.data;
                                 break;
                             case 13:
                                 motor->drw.VBUS.data = Byte_to_float(DataFrame);

@@ -89,6 +89,17 @@ static int32_t CAN_TxFifoDebug_GetIndex(FDCAN_HandleTypeDef *hcan)
   return -1;
 }
 
+static void CAN_ArmFeedbackDebug_Record(uint8_t logical_motor)
+{
+  if (logical_motor >= ARM_LOGICAL_MOTOR_COUNT)
+  {
+    return;
+  }
+
+  arm_feedback_count_debug[logical_motor]++;
+  arm_feedback_last_tick_debug[logical_motor] = HAL_GetTick();
+}
+
 void CAN_TxFifoDebug_Reset(void)
 {
   for (uint32_t i = 0; i < 3U; i++)
@@ -348,12 +359,15 @@ void HAL_FDCAN_RxFifo0Callback(FDCAN_HandleTypeDef *hfdcan, uint32_t RxFifo0ITs)
         {
         case 4: // 帧ID=4：解析机械臂4号电机反馈
           damiao_fbdata(&arm_motor[Motor4], rx_data);
+          CAN_ArmFeedbackDebug_Record(3U);
           break;
         case 5: // 帧ID=5：解析机械臂5号电机反馈
           damiao_fbdata(&arm_motor[Motor5], rx_data);
+          CAN_ArmFeedbackDebug_Record(4U);
           break;
         case 6: // 帧ID=6：解析机械臂6号电机反馈
           damiao_fbdata(&arm_motor[Motor6], rx_data);
+          CAN_ArmFeedbackDebug_Record(5U);
           break;
         default:
           // 非4/5/6 ID：解析大然电机ID（从帧ID高位提取）
@@ -382,14 +396,17 @@ void HAL_FDCAN_RxFifo0Callback(FDCAN_HandleTypeDef *hfdcan, uint32_t RxFifo0ITs)
         if (target_id == 0x01) // 电机ID=0x01：解析1号RobStride电机
         {
           RobStride_Motor_Analysis(&motor1, rx_data, rx_header.Identifier);
+          CAN_ArmFeedbackDebug_Record(0U);
         }
         else if (target_id == 0x02) // 电机ID=0x02：解析2号RobStride电机
         {
           RobStride_Motor_Analysis(&motor2, rx_data, rx_header.Identifier);
+          CAN_ArmFeedbackDebug_Record(1U);
         }
         else if (target_id == 0x03) // 电机ID=0x03：解析3号RobStride电机
         {
           RobStride_Motor_Analysis(&motor3, rx_data, rx_header.Identifier);
+          CAN_ArmFeedbackDebug_Record(2U);
         }
       }
     }
