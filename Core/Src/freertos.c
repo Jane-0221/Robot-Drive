@@ -438,9 +438,11 @@ void Lift_control_Task(void *argument)
   {
   //
     STP23L_ParseLatest();
+    Arm_STP23L_ParseLatest();
     PT_ParseLatestPressure();
 
     Lift_RefreshHeight();           // 高度数据处理，得到当前高度
+    Arm_RefreshDistance();
     Lift_GoToTarget(aim_tx_height); // 根据目标高度，控制电机运动
     osDelay(1);
     Pump_Update(); // 更新气泵状态

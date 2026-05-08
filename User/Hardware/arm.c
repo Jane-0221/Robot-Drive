@@ -13,6 +13,7 @@
 #include "DrEmpower_can.h"
 #include "stdio.h"
 #include "ramp_generator.h"
+#include "stp23l.h"
 
 // ===================== 全局变量定义 =====================
 /**
@@ -21,6 +22,15 @@
  */
 ShoulderType_t g_ShoulderType;
 int16_t arm_distance_final = 0;
+
+void Arm_RefreshDistance(void)
+{
+    if (arm_stp23l_data.parse_ok == 1)
+    {
+        arm_distance_final = Arm_STP23L_GetFinalDistPerFrame();
+        Arm_STP23L_ClearOkFlag();
+    }
+}
 
 /**
  * @brief 大然舵机状态结构体数组（3路）

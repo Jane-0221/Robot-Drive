@@ -102,6 +102,7 @@ extern ArmMotorData_t Damiao_motor_data[3]; // 达妙电机控制数据（3路�
  * @retval 无
  * @note   初始化灵足/大然/达妙电机，配置CAN2通信，设置默认肩部电机类型
  */
+void Arm_RefreshDistance(void);
 void Arm_Init(void);
 
 /** 灵足电机控制函数（按编号区分） */

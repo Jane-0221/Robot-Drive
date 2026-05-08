@@ -24,6 +24,7 @@ extern DMA_HandleTypeDef hdma_uart5_rx; // 遥控器，仅用接受
 extern DMA_HandleTypeDef hdma_uart7_rx; // 串口7
 extern DMA_HandleTypeDef hdma_uart7_tx;
 extern DMA_HandleTypeDef hdma_usart10_rx; // 串口10
+extern DMA_HandleTypeDef hdma_uart8_rx;
 extern DMA_HandleTypeDef hdma_usart10_tx;
 extern DMA_HandleTypeDef hdma_usart1_rx;
 extern DMA_HandleTypeDef hdma_usart1_tx;
@@ -38,6 +39,7 @@ extern UART_HandleTypeDef huart2;
 extern UART_HandleTypeDef huart3;
 extern UART_HandleTypeDef huart5; // 遥控器，可能用不到
 extern UART_HandleTypeDef huart7;
+extern UART_HandleTypeDef huart8;
 extern UART_HandleTypeDef huart10;
 
 // 将上述串口+DMA整合，并包含缓冲区
@@ -46,6 +48,7 @@ transmit_data UART2_data;
 transmit_data UART3_data;
 transmit_data UART5_data;
 transmit_data UART7_data;
+transmit_data UART8_data;
 transmit_data UART10_data;
 
 /**
@@ -60,6 +63,7 @@ void uart_init(void)
   UART_DMA_rxtx_start(&UART3_data, &huart3, &hdma_usart3_rx, &hdma_usart3_rx);
   UART_DMA_rxtx_start(&UART5_data, &huart5, &hdma_uart5_rx, &hdma_uart5_rx);
   UART_DMA_rxtx_start(&UART7_data, &huart7, &hdma_uart7_rx, &hdma_uart7_tx);
+  UART_DMA_rxtx_start(&UART8_data, &huart8, &hdma_uart8_rx, &hdma_uart8_rx);
   UART_DMA_rxtx_start(&UART10_data, &huart10, &hdma_usart10_rx, &hdma_usart10_tx);
 
 
@@ -121,6 +125,12 @@ void HAL_UARTEx_RxEventCallback(UART_HandleTypeDef *huart, uint16_t Size)
     HAL_UARTEx_ReceiveToIdle_DMA(huart, UART7_data.rev_data, UART_BUFFER_SIZE);
     __HAL_DMA_DISABLE_IT(huart->hdmarx, DMA_IT_HT);
   }
+  else if (huart == &huart8)
+  {
+    store_arm_stp23l_data(UART8_data.rev_data, Size);
+    HAL_UARTEx_ReceiveToIdle_DMA(huart, UART8_data.rev_data, UART_BUFFER_SIZE);
+    __HAL_DMA_DISABLE_IT(huart->hdmarx, DMA_IT_HT);
+  }
   else if (huart == &huart10) // 和主机间通信
   {
     store_uart_protocol_data(UART10_data.rev_data, Size); // 存储数据
@@ -150,6 +160,11 @@ void HAL_UART_ErrorCallback(UART_HandleTypeDef *huart)
   if (huart == &huart7)
   {
     HAL_UARTEx_ReceiveToIdle_DMA(&huart7, UART7_data.rev_data, UART_BUFFER_SIZE);
+    __HAL_DMA_DISABLE_IT(huart->hdmarx, DMA_IT_HT);
+  }
+  else if (huart == &huart8)
+  {
+    HAL_UARTEx_ReceiveToIdle_DMA(&huart8, UART8_data.rev_data, UART_BUFFER_SIZE);
     __HAL_DMA_DISABLE_IT(huart->hdmarx, DMA_IT_HT);
   }
   else if (huart == &huart10)

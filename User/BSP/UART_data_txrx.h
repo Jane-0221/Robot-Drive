@@ -45,6 +45,7 @@ extern transmit_data UART1_data;  // UART1的收发数据结构体
  * @brief 串口全局初始化函数
  * @note  统一初始化所有串口（UART1/7/10）的DMA收发、中断等配置
  */
+extern transmit_data UART8_data;
 void uart_init(void);                                                                                                                        
 
 /**
