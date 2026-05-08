@@ -20,6 +20,7 @@
  * @note  用于切换不同品牌电机的控制逻辑（灵足/大然/达妙）
  */
 ShoulderType_t g_ShoulderType;
+int16_t arm_distance_final = 0;
 
 /**
  * @brief 大然舵机状态结构体数组（3路）

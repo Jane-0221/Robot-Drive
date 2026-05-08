@@ -796,6 +796,7 @@ void pc_arm_tx_data(void)
     up_tx_data.arm_motor_angle_5 = Damiao_motor_data[1].current_angle;
     up_tx_data.arm_motor_angle_6 = Damiao_motor_data[2].current_angle;
     up_tx_data.lift_height = lift_height_final;
+    up_tx_data.arm_distance = arm_distance_final;
 
     head_pc_tx_source_deg_debug[0] = head_motor_data[0].current_angle;
     head_pc_tx_source_deg_debug[1] = head_motor_data[1].current_angle;
@@ -814,4 +815,5 @@ void pc_arm_tx_data(void)
     head_pc_tx_rad_debug[1] = head_degree_to_pc_radian(head_pc_tx_source_deg_debug[1]);
     up_tx_data.head_motor_angle_1 = head_pc_tx_rad_debug[0];
     up_tx_data.head_motor_angle_2 = head_pc_tx_rad_debug[1];
+ 
 }

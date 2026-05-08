@@ -1,6 +1,7 @@
 #ifndef __ARM_H__
 #define __ARM_H__
 
+#include <stdint.h>
 #include "can_receive_send.h"
 #include "dm4310_drv.h"
 #include "Robstride04.h"
@@ -85,6 +86,7 @@ extern Motor_DM_Status DM_Status[6]; // 存储每个达妙电机的使能/禁用
 
 /** 全局肩部电机类型选择变量 */
 extern ShoulderType_t g_ShoulderType;
+extern int16_t arm_distance_final;
 extern volatile uint8_t arm_motor_disabled_mask_debug;
 extern volatile uint32_t arm_feedback_count_debug[ARM_LOGICAL_MOTOR_COUNT];
 extern volatile uint32_t arm_feedback_last_tick_debug[ARM_LOGICAL_MOTOR_COUNT];

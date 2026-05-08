@@ -11,10 +11,10 @@
 #define DN_FRAME_TYPE 0x02
 #define PC_ARM_MOTOR_CTRL_FRAME_TYPE 0x03
 
-#define UP_DATA_LEN   56
+#define UP_DATA_LEN   60
 #define DN_DATA_LEN   59
 #define PC_ARM_MOTOR_CTRL_DATA_LEN 2
-#define UP_FRAME_LEN  64
+#define UP_FRAME_LEN  68
 #define DN_FRAME_LEN  67
 #define PC_ARM_MOTOR_CTRL_FRAME_LEN 10
 
@@ -30,6 +30,7 @@ typedef struct {
     float arm_motor_angle_5;
     float arm_motor_angle_6;
     float lift_height;
+    float arm_distance;
     float chassis_vx;
     float chassis_vy;
     float chassis_yaw;
