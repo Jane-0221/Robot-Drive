@@ -613,20 +613,21 @@ void Head_Motor_Control_Updata(void)
 
 void Up_Down_Motor_Control_Updata(void)
 {
-    switch (SBUS_CH.CH7)
-    {
-    case HIGH_VALUE:
-        aim_tx_height = LIFT_TARGET_HEIGHT_MIN_MM;
-        break;
-    case LOW_VALUE:
-        aim_tx_height = 700;
-        break;
-    case MID_VALUE:
-        aim_tx_height = 400;
-        break;
-    default:
-        break;
-    }
+    aim_tx_height = 70;
+    // switch (SBUS_CH.CH7)
+    // {
+    // case HIGH_VALUE:
+    //     aim_tx_height = LIFT_TARGET_HEIGHT_MIN_MM;
+    //     break;
+    // case LOW_VALUE:
+    //     aim_tx_height = 700;
+    //     break;
+    // case MID_VALUE:
+    //     aim_tx_height = 400;
+    //     break;
+    // default:
+    //     break;
+    // }
 }
 
 void Chassis_Control_Updata(void)

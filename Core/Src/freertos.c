@@ -320,7 +320,7 @@ void Remote_control_Task(void *argument)
       Head_Motor_Control_Updata();
       Arm_Motor_Control_Updata();
       Up_Down_Motor_Control_Updata();
-      //arm_save_home_position();
+
     }
     else if ((control_mode == 1))
     {
