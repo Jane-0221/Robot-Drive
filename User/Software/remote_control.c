@@ -937,5 +937,6 @@ void pc_arm_tx_data(void)
     head_pc_tx_rad_debug[1] = head_degree_to_pc_radian(head_pc_tx_source_deg_debug[1]);
     up_tx_data.head_motor_angle_1 = head_pc_tx_rad_debug[0];
     up_tx_data.head_motor_angle_2 = head_pc_tx_rad_debug[1];
- 
+    up_tx_data.air_path_state =pump_state ;
+    up_tx_data.suck_state = Check_Liquid_Sucked();
 }
