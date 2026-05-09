@@ -81,6 +81,10 @@
   "C_Cpp_Runner.useLinkTimeOptimization": false,
   "C_Cpp_Runner.msvcSecureNoWarnings": false,
   "cmake.configureOnOpen": false,
+  "makefile.makePath": "C:/msys64/ucrt64/bin/mingw32-make.exe",
+  "makefile.makefilePath": "${workspaceFolder}/Makefile",
+  "makefile.makeDirectory": "${workspaceFolder}",
+  "GBK2UTF8.autoDetect": false,
   "C_Cpp.errorSquiggles": "enabled",
   "files.associations": {
     "Makefile": "makefile",

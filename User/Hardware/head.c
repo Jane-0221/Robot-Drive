@@ -24,6 +24,7 @@ KTech_Motor_t motor_linkong[2];         // 凌空电机反馈解析结构体数�
 Head_MotorData_t head_motor_data[2];    // 头部电机控制数据数组，保存当前状态和目标指令
 
 static volatile uint8_t head_motor_enabled = 1U;              // 头部电机控制发送使能标志：0=禁止发送，1=允许发送
+static volatile uint8_t head_motor_tx_enabled[HEAD_MOTOR_COUNT] = {1U, 1U};
 static volatile uint32_t head_feedback_count[2] = {0U};       // 每个电机收到有效反馈帧的累计次数
 
 /**
@@ -34,6 +35,14 @@ static void Head_ResetFeedbackReady(void)
 {
     head_feedback_count[0] = 0U;
     head_feedback_count[1] = 0U;
+}
+
+static void Head_ResetMotorFeedbackReady(uint8_t motor_index)
+{
+    if (motor_index < HEAD_MOTOR_COUNT)
+    {
+        head_feedback_count[motor_index] = 0U;
+    }
 }
 
 /**
@@ -107,6 +116,28 @@ static void Head_DelayMs(uint32_t ms)
     {
         HAL_Delay(ms);
     }
+}
+
+static uint8_t Head_GetMotorIdByIndex(uint8_t motor_index, uint16_t *motor_id)
+{
+    if (motor_id == NULL)
+    {
+        return 0U;
+    }
+
+    if (motor_index == 0U)
+    {
+        *motor_id = MOTOR_LINKONG_1_ID;
+        return 1U;
+    }
+
+    if (motor_index == 1U)
+    {
+        *motor_id = MOTOR_LINKONG_2_ID;
+        return 1U;
+    }
+
+    return 0U;
 }
 
 /**
@@ -403,7 +434,9 @@ void Head_Lk_motor2()
  */
 void Head_TxMotorByIndex(uint8_t motor_index)
 {
-    if (head_motor_enabled == 0U)
+    if ((head_motor_enabled == 0U) ||
+        (motor_index >= HEAD_MOTOR_COUNT) ||
+        (head_motor_tx_enabled[motor_index] == 0U))
     {
         return;
     }
@@ -429,9 +462,9 @@ void Head_all_tx()
         return;
     }
 
-    Head_Lk_motor1();
+    Head_TxMotorByIndex(0U);
     Head_DelayMs(1U);
-    Head_Lk_motor2();
+    Head_TxMotorByIndex(1U);
 }
 
 /**
@@ -468,8 +501,10 @@ void Head_RequestFeedbackByIndex(uint8_t motor_index)
 void Head_Motor_SendEnableCommand(void)
 {
     ktech_motor_on(CAN_HANDLE_1, MOTOR_LINKONG_1_ID);
+    head_motor_tx_enabled[0] = 1U;
     Head_DelayMs(1U);
     ktech_motor_on(CAN_HANDLE_1, MOTOR_LINKONG_2_ID);
+    head_motor_tx_enabled[1] = 1U;
     head_motor_enabled = 1U;
 }
 
@@ -490,9 +525,43 @@ void Head_Motor_Enable(void)
 void Head_Motor_Disable(void)
 {
     head_motor_enabled = 0U;
+    head_motor_tx_enabled[0] = 0U;
+    head_motor_tx_enabled[1] = 0U;
     ktech_motor_off(CAN_HANDLE_1, MOTOR_LINKONG_1_ID);
     Head_DelayMs(1U);
     ktech_motor_off(CAN_HANDLE_1, MOTOR_LINKONG_2_ID);
+}
+
+uint8_t Head_EnableMotorByIndex(uint8_t motor_index)
+{
+    uint16_t motor_id;
+
+    if (Head_GetMotorIdByIndex(motor_index, &motor_id) == 0U)
+    {
+        return 0U;
+    }
+
+    Head_ResetMotorFeedbackReady(motor_index);
+    ktech_motor_on(CAN_HANDLE_1, motor_id);
+    head_motor_tx_enabled[motor_index] = 1U;
+    head_motor_enabled = 1U;
+
+    return 1U;
+}
+
+uint8_t Head_DisableMotorByIndex(uint8_t motor_index)
+{
+    uint16_t motor_id;
+
+    if (Head_GetMotorIdByIndex(motor_index, &motor_id) == 0U)
+    {
+        return 0U;
+    }
+
+    head_motor_tx_enabled[motor_index] = 0U;
+    ktech_motor_off(CAN_HANDLE_1, motor_id);
+
+    return 1U;
 }
 
 /**
@@ -535,9 +604,27 @@ static void Head_SaveZeroAndHold(uint8_t motor_index, uint16_t motor_id)
 void Head_save_position(void)
 {
     Head_SaveZeroAndHold(0U, MOTOR_LINKONG_1_ID);
+    head_motor_tx_enabled[0] = 1U;
     Head_DelayMs(1U);
     Head_SaveZeroAndHold(1U, MOTOR_LINKONG_2_ID);
+    head_motor_tx_enabled[1] = 1U;
     head_motor_enabled = 1U;
+}
+
+uint8_t Head_SaveMotorZeroByIndex(uint8_t motor_index)
+{
+    uint16_t motor_id;
+
+    if (Head_GetMotorIdByIndex(motor_index, &motor_id) == 0U)
+    {
+        return 0U;
+    }
+
+    Head_SaveZeroAndHold(motor_index, motor_id);
+    head_motor_tx_enabled[motor_index] = 1U;
+    head_motor_enabled = 1U;
+
+    return 1U;
 }
 
 /**

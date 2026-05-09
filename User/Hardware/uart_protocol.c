@@ -8,8 +8,16 @@ uint8_t uart_protocol_raw_data[256] = {0};
 static uint8_t uart_protocol_parse_data[256] = {0};
 static volatile uint16_t uart_protocol_raw_size = 0U;
 static volatile uint8_t uart_protocol_data_pending = 0U;
-static PcArmMotorCtrl_t pc_arm_motor_ctrl_pending = {0U, 0U};
-static volatile uint8_t pc_arm_motor_ctrl_pending_valid = 0U;
+static PcMotorCtrl_t pc_motor_ctrl_pending = {0U, 0U, 0U};
+static volatile uint8_t pc_motor_ctrl_pending_valid = 0U;
+
+volatile PcMotorCtrl_t pc_motor_ctrl_latest = {
+    PC_MOTOR_CTRL_STATE_NONE,
+    PC_MOTOR_CTRL_STATE_NONE,
+    PC_MOTOR_CTRL_STATE_NONE,
+};
+volatile uint8_t pc_motor_ctrl_latest_valid = 0U;
+volatile uint32_t pc_motor_ctrl_rx_count = 0U;
 
 DnData_t pc_dn_data = {
     .pc_target_servo_angles = {0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f},
@@ -173,7 +181,7 @@ static uint8_t is_valid_dn_frame(const uint8_t *frame_buf)
     return (crc_rx == crc_calc) ? 1U : 0U;
 }
 
-static uint8_t is_valid_pc_arm_motor_ctrl_frame(const uint8_t *frame_buf)
+static uint8_t is_valid_pc_motor_ctrl_frame(const uint8_t *frame_buf)
 {
     uint16_t crc_rx;
     uint16_t crc_calc;
@@ -185,30 +193,41 @@ static uint8_t is_valid_pc_arm_motor_ctrl_frame(const uint8_t *frame_buf)
 
     if ((frame_buf[0] != FRAME_HEADER1) ||
         (frame_buf[1] != FRAME_HEADER2) ||
-        (frame_buf[2] != PC_ARM_MOTOR_CTRL_FRAME_TYPE) ||
-        (frame_buf[3] != PC_ARM_MOTOR_CTRL_DATA_LEN) ||
-        (frame_buf[PC_ARM_MOTOR_CTRL_FRAME_LEN - 2U] != FRAME_TAIL1) ||
-        (frame_buf[PC_ARM_MOTOR_CTRL_FRAME_LEN - 1U] != FRAME_TAIL2))
+        (frame_buf[2] != PC_MOTOR_CTRL_FRAME_TYPE) ||
+        (frame_buf[3] != PC_MOTOR_CTRL_DATA_LEN) ||
+        (frame_buf[PC_MOTOR_CTRL_FRAME_LEN - 2U] != FRAME_TAIL1) ||
+        (frame_buf[PC_MOTOR_CTRL_FRAME_LEN - 1U] != FRAME_TAIL2))
     {
         return 0U;
     }
 
-    crc_rx = (uint16_t)frame_buf[PC_ARM_MOTOR_CTRL_DATA_LEN + 4U] |
-             ((uint16_t)frame_buf[PC_ARM_MOTOR_CTRL_DATA_LEN + 5U] << 8);
-    crc_calc = crc16_ccitt((uint8_t *)&frame_buf[2], PC_ARM_MOTOR_CTRL_DATA_LEN + 2U);
+    crc_rx = (uint16_t)frame_buf[PC_MOTOR_CTRL_DATA_LEN + 4U] |
+             ((uint16_t)frame_buf[PC_MOTOR_CTRL_DATA_LEN + 5U] << 8);
+    crc_calc = crc16_ccitt((uint8_t *)&frame_buf[2], PC_MOTOR_CTRL_DATA_LEN + 2U);
 
     return (crc_rx == crc_calc) ? 1U : 0U;
 }
 
-static void unpack_pc_arm_motor_ctrl_frame(const uint8_t *frame_buf, PcArmMotorCtrl_t *command)
+static uint8_t normalize_ascii_digit(uint8_t value)
+{
+    if ((value >= (uint8_t)'0') && (value <= (uint8_t)'9'))
+    {
+        return (uint8_t)(value - (uint8_t)'0');
+    }
+
+    return value;
+}
+
+static void unpack_pc_motor_ctrl_frame(const uint8_t *frame_buf, PcMotorCtrl_t *command)
 {
     if ((frame_buf == NULL) || (command == NULL))
     {
         return;
     }
 
-    command->motor_index = frame_buf[4];
-    command->enable_state = frame_buf[5];
+    command->target_type = normalize_ascii_digit(frame_buf[4]);
+    command->motor_index = normalize_ascii_digit(frame_buf[5]);
+    command->command = normalize_ascii_digit(frame_buf[6]);
 }
 
 uint8_t UART_Protocol_UnpackLatest(DnData_t *data)
@@ -216,9 +235,9 @@ uint8_t UART_Protocol_UnpackLatest(DnData_t *data)
     uint16_t size;
     uint16_t frame_pos = 0U;
     DnData_t dn_data_local;
-    PcArmMotorCtrl_t arm_motor_ctrl_command = {0U, 0U};
+    PcMotorCtrl_t motor_ctrl_command = {0U, 0U, 0U};
     uint8_t dn_found = 0U;
-    uint8_t arm_motor_ctrl_found = 0U;
+    uint8_t motor_ctrl_found = 0U;
 
     if ((data == NULL) || (uart_protocol_data_pending == 0U))
     {
@@ -231,7 +250,7 @@ uint8_t UART_Protocol_UnpackLatest(DnData_t *data)
     uart_protocol_data_pending = 0U;
     taskEXIT_CRITICAL();
 
-    if (size < PC_ARM_MOTOR_CTRL_FRAME_LEN)
+    if (size < PC_MOTOR_CTRL_FRAME_LEN)
     {
         return 0U;
     }
@@ -247,19 +266,22 @@ uint8_t UART_Protocol_UnpackLatest(DnData_t *data)
             dn_found = 1U;
         }
 
-        if ((remaining >= PC_ARM_MOTOR_CTRL_FRAME_LEN) &&
-            (is_valid_pc_arm_motor_ctrl_frame(&uart_protocol_parse_data[pos]) != 0U))
+        if ((remaining >= PC_MOTOR_CTRL_FRAME_LEN) &&
+            (is_valid_pc_motor_ctrl_frame(&uart_protocol_parse_data[pos]) != 0U))
         {
-            unpack_pc_arm_motor_ctrl_frame(&uart_protocol_parse_data[pos], &arm_motor_ctrl_command);
-            arm_motor_ctrl_found = 1U;
+            unpack_pc_motor_ctrl_frame(&uart_protocol_parse_data[pos], &motor_ctrl_command);
+            motor_ctrl_found = 1U;
         }
     }
 
-    if (arm_motor_ctrl_found != 0U)
+    if (motor_ctrl_found != 0U)
     {
         taskENTER_CRITICAL();
-        pc_arm_motor_ctrl_pending = arm_motor_ctrl_command;
-        pc_arm_motor_ctrl_pending_valid = 1U;
+        pc_motor_ctrl_pending = motor_ctrl_command;
+        pc_motor_ctrl_pending_valid = 1U;
+        pc_motor_ctrl_latest = motor_ctrl_command;
+        pc_motor_ctrl_latest_valid = 1U;
+        pc_motor_ctrl_rx_count++;
         taskEXIT_CRITICAL();
     }
 
@@ -272,7 +294,7 @@ uint8_t UART_Protocol_UnpackLatest(DnData_t *data)
         taskEXIT_CRITICAL();
     }
 
-    return ((dn_found != 0U) || (arm_motor_ctrl_found != 0U)) ? 1U : 0U;
+    return ((dn_found != 0U) || (motor_ctrl_found != 0U)) ? 1U : 0U;
 }
 
 uint8_t UART_Protocol_CopyLatestDnData(DnData_t *out)
@@ -289,7 +311,7 @@ uint8_t UART_Protocol_CopyLatestDnData(DnData_t *out)
     return 1U;
 }
 
-uint8_t UART_Protocol_GetArmMotorCtrlCommand(PcArmMotorCtrl_t *command)
+uint8_t UART_Protocol_GetMotorCtrlCommand(PcMotorCtrl_t *command)
 {
     if (command == NULL)
     {
@@ -297,14 +319,14 @@ uint8_t UART_Protocol_GetArmMotorCtrlCommand(PcArmMotorCtrl_t *command)
     }
 
     taskENTER_CRITICAL();
-    if (pc_arm_motor_ctrl_pending_valid == 0U)
+    if (pc_motor_ctrl_pending_valid == 0U)
     {
         taskEXIT_CRITICAL();
         return 0U;
     }
 
-    *command = pc_arm_motor_ctrl_pending;
-    pc_arm_motor_ctrl_pending_valid = 0U;
+    *command = pc_motor_ctrl_pending;
+    pc_motor_ctrl_pending_valid = 0U;
     taskEXIT_CRITICAL();
 
     return 1U;

@@ -3,6 +3,24 @@
 
 #include "stdint.h"
 #include "main.h"
+#include "uart_protocol.h"
+
+typedef struct {
+    PcMotorCtrl_t latest_rx_command;
+    uint8_t latest_rx_valid;
+    uint32_t latest_rx_count;
+    PcMotorCtrl_t latest_handled_command;
+    uint8_t latest_handled_valid;
+    uint8_t arm_motor_command[6];
+    uint8_t head_motor_command[2];
+    uint8_t arm_last_index;
+    uint8_t arm_last_command;
+    uint32_t arm_command_count;
+    uint8_t head_last_index;
+    uint8_t head_last_command;
+    uint32_t head_command_count;
+} PcMotorCommandDebug_t;
+
 /**
  * @brief 遥控控制模块初始化。
  *
@@ -113,11 +131,16 @@ extern void PC_Up_Down_Motor_Control_Updata(void);
  * @brief 根据 PC 下发数据更新机械臂舵机和电机目标角度。
  */
 extern void PC_Arm_Motor_Control_Updata(void);
-extern void PC_Arm_Motor_Enable_Disable_Updata(void);
+extern void PC_Motor_Command_Updata(void);
 extern volatile uint8_t pc_arm_motor_enable_state_debug[6];
 extern volatile uint8_t pc_arm_motor_last_index_debug;
 extern volatile uint8_t pc_arm_motor_last_enable_state_debug;
 extern volatile uint32_t pc_arm_motor_command_count_debug;
+extern volatile uint8_t pc_head_motor_enable_state_debug[2];
+extern volatile uint8_t pc_head_motor_last_index_debug;
+extern volatile uint8_t pc_head_motor_last_enable_state_debug;
+extern volatile uint32_t pc_head_motor_command_count_debug;
+extern volatile PcMotorCommandDebug_t pc_motor_command_debug;
 extern volatile float head_pc_tx_source_deg_debug[2];
 extern volatile float head_pc_tx_normalized_deg_debug[2];
 extern volatile float head_pc_tx_rad_debug[2];

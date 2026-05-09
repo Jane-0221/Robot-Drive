@@ -296,7 +296,7 @@ void Remote_control_Task(void *argument)
 
   /* USER CODE BEGIN Remote_control_Task */
   MX_USB_DEVICE_Init();
-  int control_mode = 1; // 0: 遥控模式, 1: pc模式
+  int control_mode = 0; // 0: 遥控模式, 1: pc模式
   PT_Send_ReadTemp_Cmd(&huart1);
   uint32_t pt_press_last_tick = osKernelGetTickCount() - PT_PRESS_POLL_PERIOD_MS;
   int a = 0;
@@ -333,7 +333,7 @@ void Remote_control_Task(void *argument)
       // {
       // 机械臂电机控制
       PC_Arm_Motor_Control_Updata();
-      PC_Arm_Motor_Enable_Disable_Updata();
+      PC_Motor_Command_Updata();
       // }
       if (a == 0U)
       {

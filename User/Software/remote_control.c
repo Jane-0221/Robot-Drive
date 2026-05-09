@@ -54,6 +54,46 @@ volatile uint8_t pc_arm_motor_enable_state_debug[ARM_LOGICAL_MOTOR_COUNT] = {
 volatile uint8_t pc_arm_motor_last_index_debug = PC_ARM_MOTOR_DEBUG_STATE_NONE;
 volatile uint8_t pc_arm_motor_last_enable_state_debug = PC_ARM_MOTOR_DEBUG_STATE_NONE;
 volatile uint32_t pc_arm_motor_command_count_debug = 0U;
+volatile uint8_t pc_head_motor_enable_state_debug[2] = {
+    PC_ARM_MOTOR_DEBUG_STATE_NONE,
+    PC_ARM_MOTOR_DEBUG_STATE_NONE,
+};
+volatile uint8_t pc_head_motor_last_index_debug = PC_ARM_MOTOR_DEBUG_STATE_NONE;
+volatile uint8_t pc_head_motor_last_enable_state_debug = PC_ARM_MOTOR_DEBUG_STATE_NONE;
+volatile uint32_t pc_head_motor_command_count_debug = 0U;
+volatile PcMotorCommandDebug_t pc_motor_command_debug = {
+    .latest_rx_command = {
+        PC_MOTOR_CTRL_STATE_NONE,
+        PC_MOTOR_CTRL_STATE_NONE,
+        PC_MOTOR_CTRL_STATE_NONE,
+    },
+    .latest_rx_valid = 0U,
+    .latest_rx_count = 0U,
+    .latest_handled_command = {
+        PC_MOTOR_CTRL_STATE_NONE,
+        PC_MOTOR_CTRL_STATE_NONE,
+        PC_MOTOR_CTRL_STATE_NONE,
+    },
+    .latest_handled_valid = 0U,
+    .arm_motor_command = {
+        PC_MOTOR_CTRL_STATE_NONE,
+        PC_MOTOR_CTRL_STATE_NONE,
+        PC_MOTOR_CTRL_STATE_NONE,
+        PC_MOTOR_CTRL_STATE_NONE,
+        PC_MOTOR_CTRL_STATE_NONE,
+        PC_MOTOR_CTRL_STATE_NONE,
+    },
+    .head_motor_command = {
+        PC_MOTOR_CTRL_STATE_NONE,
+        PC_MOTOR_CTRL_STATE_NONE,
+    },
+    .arm_last_index = PC_MOTOR_CTRL_STATE_NONE,
+    .arm_last_command = PC_MOTOR_CTRL_STATE_NONE,
+    .arm_command_count = 0U,
+    .head_last_index = PC_MOTOR_CTRL_STATE_NONE,
+    .head_last_command = PC_MOTOR_CTRL_STATE_NONE,
+    .head_command_count = 0U,
+};
 volatile float head_pc_tx_source_deg_debug[2] = {0.0f, 0.0f};
 volatile float head_pc_tx_normalized_deg_debug[2] = {0.0f, 0.0f};
 volatile float head_pc_tx_rad_debug[2] = {0.0f, 0.0f};
@@ -70,6 +110,43 @@ static uint8_t arm_save_position = 0U;
 static uint8_t arm_motor_ch3_latch[ARM_LOGICAL_MOTOR_COUNT] = {0U};
 static uint8_t arm_motor_save_zero_latched = 0U;
 static uint8_t head_save_zero_latched = 0U;
+
+static void PC_Motor_Command_DebugRefresh(void)
+{
+    pc_motor_command_debug.latest_rx_command.target_type = pc_motor_ctrl_latest.target_type;
+    pc_motor_command_debug.latest_rx_command.motor_index = pc_motor_ctrl_latest.motor_index;
+    pc_motor_command_debug.latest_rx_command.command = pc_motor_ctrl_latest.command;
+    pc_motor_command_debug.latest_rx_valid = pc_motor_ctrl_latest_valid;
+    pc_motor_command_debug.latest_rx_count = pc_motor_ctrl_rx_count;
+
+    for (uint8_t i = 0U; i < ARM_LOGICAL_MOTOR_COUNT; i++)
+    {
+        pc_motor_command_debug.arm_motor_command[i] = pc_arm_motor_enable_state_debug[i];
+    }
+
+    pc_motor_command_debug.head_motor_command[0] = pc_head_motor_enable_state_debug[0];
+    pc_motor_command_debug.head_motor_command[1] = pc_head_motor_enable_state_debug[1];
+    pc_motor_command_debug.arm_last_index = pc_arm_motor_last_index_debug;
+    pc_motor_command_debug.arm_last_command = pc_arm_motor_last_enable_state_debug;
+    pc_motor_command_debug.arm_command_count = pc_arm_motor_command_count_debug;
+    pc_motor_command_debug.head_last_index = pc_head_motor_last_index_debug;
+    pc_motor_command_debug.head_last_command = pc_head_motor_last_enable_state_debug;
+    pc_motor_command_debug.head_command_count = pc_head_motor_command_count_debug;
+}
+
+static void PC_Motor_Command_DebugSetHandled(const PcMotorCtrl_t *command)
+{
+    if (command == NULL)
+    {
+        return;
+    }
+
+    pc_motor_command_debug.latest_handled_command.target_type = command->target_type;
+    pc_motor_command_debug.latest_handled_command.motor_index = command->motor_index;
+    pc_motor_command_debug.latest_handled_command.command = command->command;
+    pc_motor_command_debug.latest_handled_valid = 1U;
+}
+
 static uint8_t sbus_match(uint16_t value, uint16_t target)
 {
     return (value >= (target - RANGE)) && (value <= (target + RANGE));
@@ -735,38 +812,83 @@ void PC_Arm_Motor_Control_Updata(void)
     Arm_SetPcTargetAngles(target_motor_angles, HAL_GetTick());
 }
 
-void PC_Arm_Motor_Enable_Disable_Updata(void)
+void PC_Motor_Command_Updata(void)
 {
-    PcArmMotorCtrl_t command;
+    PcMotorCtrl_t command;
 
-    if (UART_Protocol_GetArmMotorCtrlCommand(&command) == 0U)
+    PC_Motor_Command_DebugRefresh();
+
+    if (UART_Protocol_GetMotorCtrlCommand(&command) == 0U)
     {
         return;
     }
 
-    if ((command.motor_index >= ARM_LOGICAL_MOTOR_COUNT) ||
-        (command.enable_state > 1U))
+    if (command.command > PC_MOTOR_CTRL_COMMAND_SAVE_ZERO)
     {
         return;
     }
 
-    pc_arm_motor_enable_state_debug[command.motor_index] = command.enable_state;
-    pc_arm_motor_last_index_debug = command.motor_index;
-    pc_arm_motor_last_enable_state_debug = command.enable_state;
-    pc_arm_motor_command_count_debug++;
-
-    if (Arm_Motor_Disable_Updata() != 0U)
+    if (command.target_type == PC_MOTOR_CTRL_TARGET_ARM)
     {
+        if (command.motor_index >= ARM_LOGICAL_MOTOR_COUNT)
+        {
+            return;
+        }
+
+        pc_arm_motor_enable_state_debug[command.motor_index] = command.command;
+        pc_arm_motor_last_index_debug = command.motor_index;
+        pc_arm_motor_last_enable_state_debug = command.command;
+        pc_arm_motor_command_count_debug++;
+        PC_Motor_Command_DebugSetHandled(&command);
+        PC_Motor_Command_DebugRefresh();
+
+        if (Arm_Motor_Disable_Updata() != 0U)
+        {
+            return;
+        }
+
+        if (command.command == PC_MOTOR_CTRL_COMMAND_ENABLE)
+        {
+            (void)Arm_EnableMotorByIndex(command.motor_index);
+        }
+        else if (command.command == PC_MOTOR_CTRL_COMMAND_SAVE_ZERO)
+        {
+            (void)Arm_SaveMotorZeroByIndex(command.motor_index);
+        }
+        else
+        {
+            (void)Arm_DisableMotorByIndex(command.motor_index);
+        }
+
         return;
     }
 
-    if (command.enable_state != 0U)
+    if (command.target_type == PC_MOTOR_CTRL_TARGET_HEAD)
     {
-        (void)Arm_EnableMotorByIndex(command.motor_index);
-    }
-    else
-    {
-        (void)Arm_DisableMotorByIndex(command.motor_index);
+        if (command.motor_index >= 2U)
+        {
+            return;
+        }
+
+        pc_head_motor_enable_state_debug[command.motor_index] = command.command;
+        pc_head_motor_last_index_debug = command.motor_index;
+        pc_head_motor_last_enable_state_debug = command.command;
+        pc_head_motor_command_count_debug++;
+        PC_Motor_Command_DebugSetHandled(&command);
+        PC_Motor_Command_DebugRefresh();
+
+        if (command.command == PC_MOTOR_CTRL_COMMAND_ENABLE)
+        {
+            (void)Head_EnableMotorByIndex(command.motor_index);
+        }
+        else if (command.command == PC_MOTOR_CTRL_COMMAND_SAVE_ZERO)
+        {
+            (void)Head_SaveMotorZeroByIndex(command.motor_index);
+        }
+        else
+        {
+            (void)Head_DisableMotorByIndex(command.motor_index);
+        }
     }
 }
 

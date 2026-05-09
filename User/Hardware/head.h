@@ -138,6 +138,10 @@ extern void Head_Motor_Enable(void);
  */
 extern void Head_Motor_SendEnableCommand(void);
 
+extern uint8_t Head_EnableMotorByIndex(uint8_t motor_index);
+extern uint8_t Head_DisableMotorByIndex(uint8_t motor_index);
+extern uint8_t Head_SaveMotorZeroByIndex(uint8_t motor_index);
+
 /**
  * @brief 失能头部两个电机
  * @retval 无
