@@ -343,6 +343,7 @@ void Remote_control_Task(void *argument)
       }
     }
     //Arm_Motor_Disable_Updata();
+   // Pump_Control_Updata();
     osDelay(1);
   }
 

@@ -1,5 +1,4 @@
 #include "remote_control.h"
-#include "ramp_generator.h"
 #include "IMU_updata.h"
 #include "Stm32_time.h"
 #include <tim.h>
