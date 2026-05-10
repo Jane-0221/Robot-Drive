@@ -134,7 +134,7 @@ extern void Arm_save_position(void);   // 保存当前位置
 extern void Arm_CheckAndReenableDisabledMotors(void);
 void Arm_RequestDisabledFeedback(void);
 float Arm_WrapAngleToPi(float angle);
-void Arm_SetPcTargetAngles(const float target_angles[ARM_LOGICAL_MOTOR_COUNT], uint32_t now_ms);
+void Arm_SetPcTargetAngles(const float target_angles[ARM_LOGICAL_MOTOR_COUNT], const float target_velocities[ARM_LOGICAL_MOTOR_COUNT], uint32_t now_ms);
 uint8_t Arm_AdjustMotorTargetByIndex(uint8_t logical_motor, float delta_angle);
 uint8_t Arm_EnableMotorByIndex(uint8_t logical_motor);
 uint8_t Arm_EnableAllMotors(void);

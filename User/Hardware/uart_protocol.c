@@ -22,6 +22,7 @@ volatile uint32_t pc_motor_ctrl_rx_count = 0U;
 DnData_t pc_dn_data = {
     .pc_target_servo_angles = {0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f},
     .pc_target_motor_angles = {0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f},
+    .pc_target_motor_velocities = {0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f},
     .pc_pump_state = 0,
     .pc_target_lift_height = 0,
     .pc_target_head_motor_angles = {0.0f, 0.0f},
@@ -134,6 +135,18 @@ void unpack_dn_frame(uint8_t *frame_buf, DnData_t *data)
         p[2] = frame_buf[idx + 2];
         p[3] = frame_buf[idx + 3];
         data->pc_target_motor_angles[i] = value;
+        idx += 4;
+    }
+
+    for (int i = 0; i < 6; i++)
+    {
+        float value;
+        uint8_t *p = (uint8_t *)&value;
+        p[0] = frame_buf[idx];
+        p[1] = frame_buf[idx + 1];
+        p[2] = frame_buf[idx + 2];
+        p[3] = frame_buf[idx + 3];
+        data->pc_target_motor_velocities[i] = value;
         idx += 4;
     }
 

@@ -210,13 +210,13 @@ static uint8_t Arm_GetSafeTargetAngle(uint8_t logical_motor, ArmMotorData_t *mot
     return Arm_IsAngleDiffSafe(*target_angle, motor_data->current_angle);
 }
 
-void Arm_SetPcTargetAngles(const float target_angles[ARM_LOGICAL_MOTOR_COUNT], uint32_t now_ms)
+void Arm_SetPcTargetAngles(const float target_angles[ARM_LOGICAL_MOTOR_COUNT], const float target_velocities[ARM_LOGICAL_MOTOR_COUNT], uint32_t now_ms)
 {
     uint8_t logical_motor;
 
     (void)now_ms;
 
-    if (target_angles == NULL)
+    if ((target_angles == NULL) || (target_velocities == NULL))
     {
         return;
     }
@@ -229,6 +229,7 @@ void Arm_SetPcTargetAngles(const float target_angles[ARM_LOGICAL_MOTOR_COUNT], u
         if (motor_data != NULL)
         {
             motor_data->target_angle = target_angle;
+            motor_data->target_velocity = target_velocities[logical_motor];
         }
     }
 }

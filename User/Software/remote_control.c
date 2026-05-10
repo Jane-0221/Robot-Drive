@@ -788,6 +788,7 @@ void PC_Arm_Motor_Control_Updata(void)
 {
     DnData_t pc_snapshot;
     float target_motor_angles[ARM_LOGICAL_MOTOR_COUNT];
+    float target_motor_velocities[ARM_LOGICAL_MOTOR_COUNT];
 
     if (UART_Protocol_CopyLatestDnData(&pc_snapshot) == 0U)
     {
@@ -808,7 +809,13 @@ void PC_Arm_Motor_Control_Updata(void)
     target_motor_angles[3] = pc_snapshot.pc_target_motor_angles[3];
     target_motor_angles[4] = pc_snapshot.pc_target_motor_angles[4];
     target_motor_angles[5] = pc_snapshot.pc_target_motor_angles[5];
-    Arm_SetPcTargetAngles(target_motor_angles, HAL_GetTick());
+    target_motor_velocities[0] = pc_snapshot.pc_target_motor_velocities[0];
+    target_motor_velocities[1] = pc_snapshot.pc_target_motor_velocities[1];
+    target_motor_velocities[2] = pc_snapshot.pc_target_motor_velocities[2];
+    target_motor_velocities[3] = pc_snapshot.pc_target_motor_velocities[3];
+    target_motor_velocities[4] = pc_snapshot.pc_target_motor_velocities[4];
+    target_motor_velocities[5] = pc_snapshot.pc_target_motor_velocities[5];
+    Arm_SetPcTargetAngles(target_motor_angles, target_motor_velocities, HAL_GetTick());
 }
 
 void PC_Motor_Command_Updata(void)
