@@ -89,6 +89,7 @@ float reply_enable = 0.0f;
 #define ARM_TARGET_ANGLE_LIMIT_RAD 2.617993878f
 #define ARM_TARGET_CURRENT_MAX_DIFF_RAD ARM_PI_RAD
 #define ARM_DISABLED_FEEDBACK_PERIOD_MS 50U
+#define ARM_LINZU_ENABLE_SETTLE_MS 1U
 
 volatile uint8_t arm_motor_disabled_mask_debug = 0U;
 volatile uint32_t arm_feedback_count_debug[ARM_LOGICAL_MOTOR_COUNT] = {0U};
@@ -639,6 +640,19 @@ static RobStride_Motor_t *Arm_GetLinzuMotorByIndex(uint8_t logical_motor)
     return linzu_motors[logical_motor];
 }
 
+static void Arm_EnableLinzuMotorFeedback(RobStride_Motor_t *motor)
+{
+    if (motor == NULL)
+    {
+        return;
+    }
+
+    Enable_Motor(motor, CAN_HANDLE_2);
+    osDelay(ARM_LINZU_ENABLE_SETTLE_MS);
+    RobStride_Motor_ProactiveEscalationSet(motor, CAN_HANDLE_2, 0x01);
+    osDelay(ARM_LINZU_ENABLE_SETTLE_MS);
+}
+
 static uint8_t Arm_GetDaranMotorIdByIndex(uint8_t logical_motor, uint8_t *motor_id)
 {
     static const uint8_t daran_motor_ids[3] = {
@@ -689,7 +703,7 @@ static void Arm_ReenableLinzuMotor(uint8_t logical_motor, RobStride_Motor_t *mot
     }
 
     Set_RobStride_Motor_parameter(motor, CAN_HANDLE_2, 0X7005, CSP_control_mode, 'j');
-    Enable_Motor(motor, CAN_HANDLE_2);
+    Arm_EnableLinzuMotorFeedback(motor);
     (void)Arm_SendLinzuTarget(logical_motor, motor, motor_data);
 }
 
@@ -837,7 +851,7 @@ static void Arm_Linzu_SaveZeroAndHold(uint8_t logical_motor, RobStride_Motor_t *
 
     Set_RobStride_Motor_parameter(motor, CAN_HANDLE_2, 0X7005, CSP_control_mode, 'j');
     osDelay(ARM_LINZU_ZERO_REENABLE_DELAY_MS);
-    Enable_Motor(motor, CAN_HANDLE_2);
+    Arm_EnableLinzuMotorFeedback(motor);
     osDelay(ARM_LINZU_ZERO_REENABLE_DELAY_MS);
     Set_RobStride_Motor_parameter(motor, CAN_HANDLE_2, 0X7017, motor_data->target_velocity, 'p');
     osDelay(ARM_LINZU_ZERO_REENABLE_DELAY_MS);
@@ -878,7 +892,7 @@ uint8_t Arm_EnableMotorByIndex(uint8_t logical_motor)
             }
 
             Set_RobStride_Motor_parameter(motor, CAN_HANDLE_2, 0X7005, CSP_control_mode, 'j');
-            Enable_Motor(motor, CAN_HANDLE_2);
+            Arm_EnableLinzuMotorFeedback(motor);
             Arm_SetMotorTxDisabledByIndex(logical_motor, 0U);
             return Arm_SendLinzuTarget(logical_motor, motor, motor_data);
         }

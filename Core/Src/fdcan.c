@@ -120,7 +120,7 @@ void MX_FDCAN2_Init(void)
   hfdcan2.Init.MessageRAMOffset = 0x406;
   hfdcan2.Init.StdFiltersNbr = 1;    // 1个标准帧过滤器
   hfdcan2.Init.ExtFiltersNbr = 1;    // 1个扩展帧过滤器
-  hfdcan2.Init.RxFifo0ElmtsNbr = 4;
+  hfdcan2.Init.RxFifo0ElmtsNbr = 16;
   hfdcan2.Init.RxFifo0ElmtSize = FDCAN_DATA_BYTES_8;
   hfdcan2.Init.RxFifo1ElmtsNbr = 0;
   hfdcan2.Init.RxFifo1ElmtSize = FDCAN_DATA_BYTES_8;
@@ -149,6 +149,7 @@ void MX_FDCAN2_Init(void)
   // 扩展帧过滤器
   sFilterConfig.IdType = FDCAN_EXTENDED_ID;
   sFilterConfig.FilterIndex = 0;
+  sFilterConfig.FilterConfig = FDCAN_FILTER_TO_RXFIFO0;
   sFilterConfig.FilterID1 = 0x00000000;
   sFilterConfig.FilterID2 = 0x00000000;
   HAL_FDCAN_ConfigFilter(&hfdcan2, &sFilterConfig);
