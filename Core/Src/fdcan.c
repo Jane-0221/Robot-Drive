@@ -106,7 +106,7 @@ void MX_FDCAN2_Init(void)
   hfdcan2.Instance = FDCAN2;
   hfdcan2.Init.FrameFormat = FDCAN_FRAME_CLASSIC;
   hfdcan2.Init.Mode = FDCAN_MODE_NORMAL;
-  hfdcan2.Init.AutoRetransmission = DISABLE;
+  hfdcan2.Init.AutoRetransmission = ENABLE;
   hfdcan2.Init.TransmitPause = DISABLE;
   hfdcan2.Init.ProtocolException = DISABLE;
   hfdcan2.Init.NominalPrescaler = 3;
@@ -122,7 +122,7 @@ void MX_FDCAN2_Init(void)
   hfdcan2.Init.ExtFiltersNbr = 1;    // 1个扩展帧过滤器
   hfdcan2.Init.RxFifo0ElmtsNbr = 16;
   hfdcan2.Init.RxFifo0ElmtSize = FDCAN_DATA_BYTES_8;
-  hfdcan2.Init.RxFifo1ElmtsNbr = 0;
+  hfdcan2.Init.RxFifo1ElmtsNbr = 16;
   hfdcan2.Init.RxFifo1ElmtSize = FDCAN_DATA_BYTES_8;
   hfdcan2.Init.RxBuffersNbr = 0;
   hfdcan2.Init.RxBufferSize = FDCAN_DATA_BYTES_8;
@@ -149,12 +149,22 @@ void MX_FDCAN2_Init(void)
   // 扩展帧过滤器
   sFilterConfig.IdType = FDCAN_EXTENDED_ID;
   sFilterConfig.FilterIndex = 0;
-  sFilterConfig.FilterConfig = FDCAN_FILTER_TO_RXFIFO0;
+  sFilterConfig.FilterConfig = FDCAN_FILTER_TO_RXFIFO1;
   sFilterConfig.FilterID1 = 0x00000000;
   sFilterConfig.FilterID2 = 0x00000000;
   HAL_FDCAN_ConfigFilter(&hfdcan2, &sFilterConfig);
 
-  HAL_FDCAN_ActivateNotification(&hfdcan2, FDCAN_IT_RX_FIFO0_NEW_MESSAGE, 0);
+  HAL_FDCAN_ConfigGlobalFilter(&hfdcan2, FDCAN_ACCEPT_IN_RX_FIFO0, FDCAN_ACCEPT_IN_RX_FIFO1,
+                               FDCAN_FILTER_REMOTE, FDCAN_FILTER_REMOTE);
+
+  HAL_FDCAN_ActivateNotification(&hfdcan2,
+                                 FDCAN_IT_RX_FIFO0_NEW_MESSAGE |
+                                     FDCAN_IT_RX_FIFO0_FULL |
+                                     FDCAN_IT_RX_FIFO0_MESSAGE_LOST |
+                                     FDCAN_IT_RX_FIFO1_NEW_MESSAGE |
+                                     FDCAN_IT_RX_FIFO1_FULL |
+                                     FDCAN_IT_RX_FIFO1_MESSAGE_LOST,
+                                 0);
   HAL_FDCAN_Start(&hfdcan2);
   /* USER CODE END FDCAN2_Init 2 */
 }

@@ -42,6 +42,51 @@ volatile CanTxFifoDebug_t can_tx_fifo_debug[3] = {
     {.min_free_level = 0xFFFFFFFFU},
 };
 
+volatile uint32_t can2_std_rx_total_debug = 0U;
+volatile uint32_t can2_ext_rx_total_debug = 0U;
+volatile uint32_t can2_std_rx_unknown_debug = 0U;
+volatile uint32_t can2_std_last_id_debug = 0U;
+volatile uint32_t can2_std_recent_id_debug[16] = {0U};
+volatile uint32_t can2_std_recent_index_debug = 0U;
+volatile uint32_t can2_fifo0_full_debug = 0U;
+volatile uint32_t can2_fifo0_lost_debug = 0U;
+volatile uint32_t can2_fifo1_full_debug = 0U;
+volatile uint32_t can2_fifo1_lost_debug = 0U;
+
+static void CAN_ArmFeedbackDebug_Record(uint8_t logical_motor);
+
+static void CAN2_StdRxDebug_Record(uint32_t identifier)
+{
+  uint32_t index = can2_std_recent_index_debug & 0x0FU;
+
+  can2_std_rx_total_debug++;
+  can2_std_last_id_debug = identifier;
+  can2_std_recent_id_debug[index] = identifier;
+  can2_std_recent_index_debug++;
+}
+
+static void CAN2_RobStrideExtFrame_Process(uint32_t identifier, uint8_t *rx_data)
+{
+  can2_ext_rx_total_debug++;
+
+  uint8_t target_id = (uint8_t)((identifier >> 8) & 0xFF);
+  if (target_id == 0x01)
+  {
+    RobStride_Motor_Analysis(&motor1, rx_data, identifier);
+    CAN_ArmFeedbackDebug_Record(0U);
+  }
+  else if (target_id == 0x02)
+  {
+    RobStride_Motor_Analysis(&motor2, rx_data, identifier);
+    CAN_ArmFeedbackDebug_Record(1U);
+  }
+  else if (target_id == 0x03)
+  {
+    RobStride_Motor_Analysis(&motor3, rx_data, identifier);
+    CAN_ArmFeedbackDebug_Record(2U);
+  }
+}
+
 static uint8_t KTech_FeedbackHasEncoder(uint8_t cmd)
 {
   switch (cmd)
@@ -315,11 +360,23 @@ uint8_t fdcanx_receive(FDCAN_HandleTypeDef *hfdcan, uint32_t RXFIFO, FDCAN_RxHea
  */
 void HAL_FDCAN_RxFifo0Callback(FDCAN_HandleTypeDef *hfdcan, uint32_t RxFifo0ITs)
 {
+  if (hfdcan->Instance == FDCAN2)
+  {
+    if ((RxFifo0ITs & FDCAN_IT_RX_FIFO0_FULL) != 0U)
+    {
+      can2_fifo0_full_debug++;
+    }
+    if ((RxFifo0ITs & FDCAN_IT_RX_FIFO0_MESSAGE_LOST) != 0U)
+    {
+      can2_fifo0_lost_debug++;
+    }
+  }
+
   FDCAN_RxHeaderTypeDef rx_header; // 存储接收帧头信息
   uint8_t rx_data[8];              // 接收数据缓冲区（默认8字节）
 
   // 仅处理“FIFO0有新消息”中断，其他中断直接返回
-  if ((RxFifo0ITs & FDCAN_IT_RX_FIFO0_NEW_MESSAGE) == 0)
+  if ((RxFifo0ITs & (FDCAN_IT_RX_FIFO0_NEW_MESSAGE | FDCAN_IT_RX_FIFO0_FULL | FDCAN_IT_RX_FIFO0_MESSAGE_LOST)) == 0)
     return;
 
   // 循环读取FIFO0中的所有消息（直到读取失败，即FIFO为空）
@@ -354,22 +411,28 @@ void HAL_FDCAN_RxFifo0Callback(FDCAN_HandleTypeDef *hfdcan, uint32_t RxFifo0ITs)
       // 标准帧（11位ID）处理逻辑
       if (rx_header.IdType == FDCAN_STANDARD_ID)
       {
+        CAN2_StdRxDebug_Record(rx_header.Identifier);
+
         // 按帧ID分类处理
         switch (rx_header.Identifier)
         {
-        case 4: // 帧ID=4：解析机械臂4号电机反馈
+        case MOTOR_DAMIAO_4_ID:
+        case MOTOR_DAMIAO_4_ID + POS_MODE:
           damiao_fbdata(&arm_motor[Motor4], rx_data);
           CAN_ArmFeedbackDebug_Record(3U);
           break;
-        case 5: // 帧ID=5：解析机械臂5号电机反馈
+        case MOTOR_DAMIAO_5_ID:
+        case MOTOR_DAMIAO_5_ID + POS_MODE:
           damiao_fbdata(&arm_motor[Motor5], rx_data);
           CAN_ArmFeedbackDebug_Record(4U);
           break;
-        case 6: // 帧ID=6：解析机械臂6号电机反馈
+        case MOTOR_DAMIAO_6_ID:
+        case MOTOR_DAMIAO_6_ID + POS_MODE:
           damiao_fbdata(&arm_motor[Motor6], rx_data);
           CAN_ArmFeedbackDebug_Record(5U);
           break;
         default:
+          can2_std_rx_unknown_debug++;
           // 非4/5/6 ID：解析大然电机ID（从帧ID高位提取）
           uint8_t motor_id = (rx_header.Identifier >> 5) & 0x3F;
           switch (motor_id)
@@ -391,22 +454,21 @@ void HAL_FDCAN_RxFifo0Callback(FDCAN_HandleTypeDef *hfdcan, uint32_t RxFifo0ITs)
       // 扩展帧（29位ID）处理逻辑（RobStride电机）灵足电机
       else if (rx_header.IdType == FDCAN_EXTENDED_ID)
       {
+        can2_ext_rx_total_debug++;
+
         // 从扩展帧ID中提取目标电机ID（右移8位后取低8位）
         uint8_t target_id = (uint8_t)((rx_header.Identifier >> 8) & 0xFF);
         if (target_id == 0x01) // 电机ID=0x01：解析1号RobStride电机
         {
-          RobStride_Motor_Analysis(&motor1, rx_data, rx_header.Identifier);
-          CAN_ArmFeedbackDebug_Record(0U);
+          CAN2_RobStrideExtFrame_Process(rx_header.Identifier, rx_data);
         }
         else if (target_id == 0x02) // 电机ID=0x02：解析2号RobStride电机
         {
-          RobStride_Motor_Analysis(&motor2, rx_data, rx_header.Identifier);
-          CAN_ArmFeedbackDebug_Record(1U);
+          CAN2_RobStrideExtFrame_Process(rx_header.Identifier, rx_data);
         }
         else if (target_id == 0x03) // 电机ID=0x03：解析3号RobStride电机
         {
-          RobStride_Motor_Analysis(&motor3, rx_data, rx_header.Identifier);
-          CAN_ArmFeedbackDebug_Record(2U);
+          CAN2_RobStrideExtFrame_Process(rx_header.Identifier, rx_data);
         }
       }
     }
@@ -429,6 +491,37 @@ void HAL_FDCAN_RxFifo0Callback(FDCAN_HandleTypeDef *hfdcan, uint32_t RxFifo0ITs)
  *         2. 过滤器配置：接收所有标准帧/扩展帧（FilterID=0，掩码=0），统一存入FIFO0；
  *         3. 全局过滤：所有未匹配过滤器的帧也存入FIFO0，避免丢帧。
  */
+void HAL_FDCAN_RxFifo1Callback(FDCAN_HandleTypeDef *hfdcan, uint32_t RxFifo1ITs)
+{
+  FDCAN_RxHeaderTypeDef rx_header;
+  uint8_t rx_data[8];
+
+  if (hfdcan->Instance == FDCAN2)
+  {
+    if ((RxFifo1ITs & FDCAN_IT_RX_FIFO1_FULL) != 0U)
+    {
+      can2_fifo1_full_debug++;
+    }
+    if ((RxFifo1ITs & FDCAN_IT_RX_FIFO1_MESSAGE_LOST) != 0U)
+    {
+      can2_fifo1_lost_debug++;
+    }
+  }
+
+  if ((RxFifo1ITs & (FDCAN_IT_RX_FIFO1_NEW_MESSAGE | FDCAN_IT_RX_FIFO1_FULL | FDCAN_IT_RX_FIFO1_MESSAGE_LOST)) == 0U)
+  {
+    return;
+  }
+
+  while (HAL_FDCAN_GetRxMessage(hfdcan, FDCAN_RX_FIFO1, &rx_header, rx_data) == HAL_OK)
+  {
+    if ((hfdcan->Instance == FDCAN2) && (rx_header.IdType == FDCAN_EXTENDED_ID))
+    {
+      CAN2_RobStrideExtFrame_Process(rx_header.Identifier, rx_data);
+    }
+  }
+}
+
 void HAL_FDCAN_ErrorCallback(FDCAN_HandleTypeDef *hfdcan)
 {
   // 步骤1：停止CAN控制器并重新初始化（错误恢复）
@@ -455,11 +548,34 @@ void HAL_FDCAN_ErrorCallback(FDCAN_HandleTypeDef *hfdcan)
 
   // 步骤4：配置全局过滤规则
   // 规则：未匹配过滤器的标准帧/扩展帧都存入FIFO0，远程帧过滤
+  if (hfdcan->Instance == FDCAN2)
+  {
+    sFilter.FilterConfig = FDCAN_FILTER_TO_RXFIFO1;
+    HAL_FDCAN_ConfigFilter(hfdcan, &sFilter);
+  }
+
   HAL_FDCAN_ConfigGlobalFilter(hfdcan, FDCAN_ACCEPT_IN_RX_FIFO0, FDCAN_ACCEPT_IN_RX_FIFO0,
                                FDCAN_FILTER_REMOTE, FDCAN_FILTER_REMOTE);
 
   // 步骤5：开启FIFO0新消息中断通知
+  if (hfdcan->Instance == FDCAN2)
+  {
+    HAL_FDCAN_ConfigGlobalFilter(hfdcan, FDCAN_ACCEPT_IN_RX_FIFO0, FDCAN_ACCEPT_IN_RX_FIFO1,
+                                 FDCAN_FILTER_REMOTE, FDCAN_FILTER_REMOTE);
+  }
+
   HAL_FDCAN_ActivateNotification(hfdcan, FDCAN_IT_RX_FIFO0_NEW_MESSAGE, 0);
+  if (hfdcan->Instance == FDCAN2)
+  {
+    HAL_FDCAN_ActivateNotification(hfdcan,
+                                   FDCAN_IT_RX_FIFO0_NEW_MESSAGE |
+                                       FDCAN_IT_RX_FIFO0_FULL |
+                                       FDCAN_IT_RX_FIFO0_MESSAGE_LOST |
+                                       FDCAN_IT_RX_FIFO1_NEW_MESSAGE |
+                                       FDCAN_IT_RX_FIFO1_FULL |
+                                       FDCAN_IT_RX_FIFO1_MESSAGE_LOST,
+                                   0);
+  }
   
   // 步骤6：重启CAN控制器
   HAL_FDCAN_Start(hfdcan);

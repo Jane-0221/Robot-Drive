@@ -94,6 +94,11 @@ float reply_enable = 0.0f;
 volatile uint8_t arm_motor_disabled_mask_debug = 0U;
 volatile uint32_t arm_feedback_count_debug[ARM_LOGICAL_MOTOR_COUNT] = {0U};
 volatile uint32_t arm_feedback_last_tick_debug[ARM_LOGICAL_MOTOR_COUNT] = {0U};
+volatile uint32_t arm_damiao_tx_attempt_debug[3] = {0U};
+volatile uint32_t arm_damiao_tx_reject_debug[3] = {0U};
+volatile uint32_t arm_damiao_tx_sent_debug[3] = {0U};
+volatile uint32_t arm_damiao_tx_last_tick_debug[3] = {0U};
+volatile float arm_damiao_tx_last_velocity_debug[3] = {0.0f};
 
 static ArmMotorData_t *Arm_GetMotorDataByIndex(uint8_t logical_motor);
 
@@ -272,13 +277,31 @@ static uint8_t Arm_SendDaranTarget(uint8_t logical_motor, uint8_t motor_id, ArmM
 static uint8_t Arm_SendDamiaoTarget(uint8_t logical_motor, uint16_t motor_id, ArmMotorData_t *motor_data)
 {
     float target_angle;
+    uint8_t damiao_index = logical_motor - 3U;
+
+    if (damiao_index < 3U)
+    {
+        arm_damiao_tx_attempt_debug[damiao_index]++;
+    }
 
     if (Arm_GetSafeTargetAngle(logical_motor, motor_data, &target_angle) == 0U)
     {
+        if (damiao_index < 3U)
+        {
+            arm_damiao_tx_reject_debug[damiao_index]++;
+        }
         return 0U;
     }
 
     pos_speed_ctrl(CAN_HANDLE_2, motor_id, target_angle, motor_data->target_velocity);
+
+    if (damiao_index < 3U)
+    {
+        arm_damiao_tx_sent_debug[damiao_index]++;
+        arm_damiao_tx_last_tick_debug[damiao_index] = HAL_GetTick();
+        arm_damiao_tx_last_velocity_debug[damiao_index] = motor_data->target_velocity;
+    }
+
     return 1U;
 }
 
@@ -563,6 +586,40 @@ void Arm_All_Data_update()
  */
 void Arm_all_tx()
 {
+    static uint8_t damiao_tx_slot = 0U;
+    uint8_t damiao_attempt;
+
+    for (damiao_attempt = 0U; damiao_attempt < 3U; damiao_attempt++)
+    {
+        uint8_t slot = damiao_tx_slot;
+        uint8_t logical_motor = (uint8_t)(slot + 3U);
+
+        damiao_tx_slot++;
+        if (damiao_tx_slot >= 3U)
+        {
+            damiao_tx_slot = 0U;
+        }
+
+        if (Arm_MotorTxDisabledByIndex(logical_motor) != 0U)
+        {
+            continue;
+        }
+
+        if (slot == 0U)
+        {
+            Arm_Damiao_motor4();
+        }
+        else if (slot == 1U)
+        {
+            Arm_Damiao_motor5();
+        }
+        else
+        {
+            Arm_Damiao_motor6();
+        }
+        break;
+    }
+
     if (g_ShoulderType == SHOULDER_TYPE_LINGZU)
     {
         if (Arm_MotorTxDisabledByIndex(0U) == 0U)
@@ -592,19 +649,6 @@ void Arm_all_tx()
         {
             Arm_Daran_motor3();
         }
-    }
-
-    if (Arm_MotorTxDisabledByIndex(3U) == 0U)
-    {
-        Arm_Damiao_motor4();
-    }
-    if (Arm_MotorTxDisabledByIndex(4U) == 0U)
-    {
-        Arm_Damiao_motor5();
-    }
-    if (Arm_MotorTxDisabledByIndex(5U) == 0U)
-    {
-        Arm_Damiao_motor6();
     }
 }
 

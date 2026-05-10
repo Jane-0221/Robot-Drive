@@ -23,6 +23,16 @@ typedef struct
 } CanTxFifoDebug_t;
 
 extern volatile CanTxFifoDebug_t can_tx_fifo_debug[3];
+extern volatile uint32_t can2_std_rx_total_debug;
+extern volatile uint32_t can2_ext_rx_total_debug;
+extern volatile uint32_t can2_std_rx_unknown_debug;
+extern volatile uint32_t can2_std_last_id_debug;
+extern volatile uint32_t can2_std_recent_id_debug[16];
+extern volatile uint32_t can2_std_recent_index_debug;
+extern volatile uint32_t can2_fifo0_full_debug;
+extern volatile uint32_t can2_fifo0_lost_debug;
+extern volatile uint32_t can2_fifo1_full_debug;
+extern volatile uint32_t can2_fifo1_lost_debug;
 
 // ===================== 函数声明 =====================
 /**

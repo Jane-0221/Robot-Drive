@@ -90,6 +90,11 @@ extern int16_t arm_distance_final;
 extern volatile uint8_t arm_motor_disabled_mask_debug;
 extern volatile uint32_t arm_feedback_count_debug[ARM_LOGICAL_MOTOR_COUNT];
 extern volatile uint32_t arm_feedback_last_tick_debug[ARM_LOGICAL_MOTOR_COUNT];
+extern volatile uint32_t arm_damiao_tx_attempt_debug[3];
+extern volatile uint32_t arm_damiao_tx_reject_debug[3];
+extern volatile uint32_t arm_damiao_tx_sent_debug[3];
+extern volatile uint32_t arm_damiao_tx_last_tick_debug[3];
+extern volatile float arm_damiao_tx_last_velocity_debug[3];
 
 /** 电机控制数据结构体数组（按品牌分类） */
 extern ArmMotorData_t Linzu_motor_data[3];  // 灵足电机控制数据（3路）
