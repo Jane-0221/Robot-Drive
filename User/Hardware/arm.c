@@ -570,9 +570,7 @@ void Arm_Damiao_Data_update()
 void Arm_All_Data_update()
 {
     Arm_Linzu_Data_update();
-    osDelay(1);
     Arm_Daran_Data_update();
-    osDelay(1);
     Arm_Damiao_Data_update();
 }
 
