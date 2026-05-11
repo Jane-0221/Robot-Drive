@@ -45,6 +45,14 @@
 #include "usart.h"
 #include "vl53l0x.h"
 #include "user_key.h"
+
+volatile uint32_t pc_up_tx_attempt_debug = 0U;
+volatile uint32_t pc_up_tx_ok_debug = 0U;
+volatile uint32_t pc_up_tx_busy_debug = 0U;
+volatile uint32_t pc_up_tx_error_debug = 0U;
+volatile uint32_t pc_up_tx_last_tick_debug = 0U;
+volatile uint32_t pc_up_tx_feedback_age_debug[ARM_LOGICAL_MOTOR_COUNT] = {0U};
+volatile uint32_t pc_up_tx_feedback_tick_debug[ARM_LOGICAL_MOTOR_COUNT] = {0U};
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -665,7 +673,27 @@ void PC_Comm_Task(void *argument)
       Arm_Damiao_Data_update();
       pc_arm_tx_data();
       pc_up_tx_data();
-      (void)send_up_frame(&huart10);
+      pc_up_tx_attempt_debug++;
+      pc_up_tx_last_tick_debug = HAL_GetTick();
+      for (uint8_t motor_index = 0U; motor_index < ARM_LOGICAL_MOTOR_COUNT; motor_index++)
+      {
+        uint32_t feedback_tick = arm_feedback_last_tick_debug[motor_index];
+        pc_up_tx_feedback_tick_debug[motor_index] = feedback_tick;
+        pc_up_tx_feedback_age_debug[motor_index] = (feedback_tick == 0U) ? 0xFFFFFFFFU : (pc_up_tx_last_tick_debug - feedback_tick);
+      }
+      HAL_StatusTypeDef pc_tx_status = send_up_frame(&huart10);
+      if (pc_tx_status == HAL_OK)
+      {
+        pc_up_tx_ok_debug++;
+      }
+      else if (pc_tx_status == HAL_BUSY)
+      {
+        pc_up_tx_busy_debug++;
+      }
+      else
+      {
+        pc_up_tx_error_debug++;
+      }
     }
 
     HAL_IWDG_Refresh(&hiwdg1);
