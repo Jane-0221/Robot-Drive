@@ -15,6 +15,7 @@
 #define KD_MAX 100.0f      // RS04: 0~100
 #define T_MIN -120.0f      // RS04: -120Nm
 #define T_MAX 120.0f       // RS04: 120Nm
+#define CSP_LIMIT_SPD_MAX 20.0f
 
 const uint16_t Index_List[] = {0X7005, 0X7006, 0X700A, 0X700B, 0X7010, 0X7011, 0X7014, 0X7016, 0X7017, 0X7018, 0x7019, 0x701A, 0x701B, 0x701C, 0x701D};
 
@@ -616,6 +617,22 @@ void RobStride_Motor_CSP_control(RobStride_Motor_t* motor, hcan_t* hcan, float A
     else
     {
         motor->Motor_Set_All.set_angle = Angle;
+
+        if (limit_spd != limit_spd)
+        {
+            limit_spd = 0.0f;
+        }
+
+        if (limit_spd < 0.0f)
+        {
+            limit_spd = -limit_spd;
+        }
+
+        if (limit_spd > CSP_LIMIT_SPD_MAX)
+        {
+            limit_spd = CSP_LIMIT_SPD_MAX;
+        }
+
         motor->Motor_Set_All.set_limit_speed = limit_spd;
         
         if (motor->drw.run_mode.data != CSP_control_mode)
@@ -623,6 +640,10 @@ void RobStride_Motor_CSP_control(RobStride_Motor_t* motor, hcan_t* hcan, float A
             Set_RobStride_Motor_parameter(motor, hcan, 0X7005, CSP_control_mode, 'j');
             Get_RobStride_Motor_parameter(motor, hcan, 0x7005);
             Enable_Motor(motor, hcan);
+        }
+
+        if (motor->drw.limit_spd.data != motor->Motor_Set_All.set_limit_speed)
+        {
             Set_RobStride_Motor_parameter(motor, hcan, 0X7017, motor->Motor_Set_All.set_limit_speed, 'p');
         }
         
@@ -761,6 +782,14 @@ void Set_RobStride_Motor_parameter(RobStride_Motor_t* motor, hcan_t* hcan, uint1
     if (Value_mode == 'p')
     {
         memcpy(&txdata[4], &Value, 4);
+        if (Index == 0x7016U)
+        {
+            motor->drw.loc_ref.data = Value;
+        }
+        else if (Index == 0x7017U)
+        {
+            motor->drw.limit_spd.data = Value;
+        }
     }
     else if (Value_mode == 'j')
     {

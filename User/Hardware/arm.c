@@ -90,10 +90,18 @@ float reply_enable = 0.0f;
 #define ARM_TARGET_CURRENT_MAX_DIFF_RAD ARM_PI_RAD
 #define ARM_DISABLED_FEEDBACK_PERIOD_MS 50U
 #define ARM_LINZU_ENABLE_SETTLE_MS 1U
+#define ARM_LINZU_LIMIT_SPEED_MIN_RAD_S 1.0f
+#define ARM_LINZU_LIMIT_SPEED_MAX_RAD_S 20.0f
 
 volatile uint8_t arm_motor_disabled_mask_debug = 0U;
 volatile uint32_t arm_feedback_count_debug[ARM_LOGICAL_MOTOR_COUNT] = {0U};
 volatile uint32_t arm_feedback_last_tick_debug[ARM_LOGICAL_MOTOR_COUNT] = {0U};
+volatile uint32_t arm_linzu_tx_attempt_debug[3] = {0U};
+volatile uint32_t arm_linzu_tx_reject_debug[3] = {0U};
+volatile uint32_t arm_linzu_tx_sent_debug[3] = {0U};
+volatile uint32_t arm_linzu_tx_last_tick_debug[3] = {0U};
+volatile float arm_linzu_tx_requested_velocity_debug[3] = {0.0f};
+volatile float arm_linzu_tx_last_velocity_debug[3] = {0.0f};
 volatile uint32_t arm_damiao_tx_attempt_debug[3] = {0U};
 volatile uint32_t arm_damiao_tx_reject_debug[3] = {0U};
 volatile uint32_t arm_damiao_tx_sent_debug[3] = {0U};
@@ -216,6 +224,33 @@ static uint8_t Arm_GetSafeTargetAngle(uint8_t logical_motor, ArmMotorData_t *mot
     return Arm_IsAngleDiffSafe(*target_angle, motor_data->current_angle);
 }
 
+static float Arm_GetLinzuLimitSpeed(float requested_speed)
+{
+    float limit_speed = requested_speed;
+
+    if (limit_speed != limit_speed)
+    {
+        limit_speed = ARM_LINZU_LIMIT_SPEED_MIN_RAD_S;
+    }
+
+    if (limit_speed < 0.0f)
+    {
+        limit_speed = -limit_speed;
+    }
+
+    if (limit_speed < ARM_LINZU_LIMIT_SPEED_MIN_RAD_S)
+    {
+        limit_speed = ARM_LINZU_LIMIT_SPEED_MIN_RAD_S;
+    }
+
+    if (limit_speed > ARM_LINZU_LIMIT_SPEED_MAX_RAD_S)
+    {
+        limit_speed = ARM_LINZU_LIMIT_SPEED_MAX_RAD_S;
+    }
+
+    return limit_speed;
+}
+
 void Arm_SetPcTargetAngles(const float target_angles[ARM_LOGICAL_MOTOR_COUNT], const float target_velocities[ARM_LOGICAL_MOTOR_COUNT], uint32_t now_ms)
 {
     uint8_t logical_motor;
@@ -244,6 +279,13 @@ static uint8_t Arm_SendLinzuTarget(uint8_t logical_motor, RobStride_Motor_t *mot
 {
     float target_angle;
     float motor_angle;
+    float limit_speed;
+
+    if (logical_motor < 3U)
+    {
+        arm_linzu_tx_attempt_debug[logical_motor]++;
+        arm_linzu_tx_requested_velocity_debug[logical_motor] = motor_data->target_velocity;
+    }
 
     target_angle = Arm_LimitTargetAngle(logical_motor, motor_data);
     motor_angle = motor->Pos_Info.Angle;
@@ -254,10 +296,23 @@ static uint8_t Arm_SendLinzuTarget(uint8_t logical_motor, RobStride_Motor_t *mot
 
     if (Arm_IsAngleDiffSafe(target_angle, motor_angle) == 0U)
     {
+        if (logical_motor < 3U)
+        {
+            arm_linzu_tx_reject_debug[logical_motor]++;
+        }
         return 0U;
     }
 
-    RobStride_Motor_CSP_control(motor, CAN_HANDLE_2, target_angle, motor_data->target_velocity);
+    limit_speed = Arm_GetLinzuLimitSpeed(motor_data->target_velocity);
+    RobStride_Motor_CSP_control(motor, CAN_HANDLE_2, target_angle, limit_speed);
+
+    if (logical_motor < 3U)
+    {
+        arm_linzu_tx_sent_debug[logical_motor]++;
+        arm_linzu_tx_last_tick_debug[logical_motor] = HAL_GetTick();
+        arm_linzu_tx_last_velocity_debug[logical_motor] = limit_speed;
+    }
+
     return 1U;
 }
 
@@ -570,7 +625,7 @@ void Arm_Damiao_Data_update()
 void Arm_All_Data_update()
 {
     Arm_Linzu_Data_update();
-    Arm_Daran_Data_update();
+   // Arm_Daran_Data_update();
     Arm_Damiao_Data_update();
 }
 
@@ -586,37 +641,6 @@ void Arm_all_tx()
 {
     static uint8_t damiao_tx_slot = 0U;
     uint8_t damiao_attempt;
-
-    for (damiao_attempt = 0U; damiao_attempt < 3U; damiao_attempt++)
-    {
-        uint8_t slot = damiao_tx_slot;
-        uint8_t logical_motor = (uint8_t)(slot + 3U);
-
-        damiao_tx_slot++;
-        if (damiao_tx_slot >= 3U)
-        {
-            damiao_tx_slot = 0U;
-        }
-
-        if (Arm_MotorTxDisabledByIndex(logical_motor) != 0U)
-        {
-            continue;
-        }
-
-        if (slot == 0U)
-        {
-            Arm_Damiao_motor4();
-        }
-        else if (slot == 1U)
-        {
-            Arm_Damiao_motor5();
-        }
-        else
-        {
-            Arm_Damiao_motor6();
-        }
-        break;
-    }
 
     if (g_ShoulderType == SHOULDER_TYPE_LINGZU)
     {
@@ -647,6 +671,37 @@ void Arm_all_tx()
         {
             Arm_Daran_motor3();
         }
+    }
+
+    for (damiao_attempt = 0U; damiao_attempt < 3U; damiao_attempt++)
+    {
+        uint8_t slot = damiao_tx_slot;
+        uint8_t logical_motor = (uint8_t)(slot + 3U);
+
+        damiao_tx_slot++;
+        if (damiao_tx_slot >= 3U)
+        {
+            damiao_tx_slot = 0U;
+        }
+
+        if (Arm_MotorTxDisabledByIndex(logical_motor) != 0U)
+        {
+            continue;
+        }
+
+        if (slot == 0U)
+        {
+            Arm_Damiao_motor4();
+        }
+        else if (slot == 1U)
+        {
+            Arm_Damiao_motor5();
+        }
+        else
+        {
+            Arm_Damiao_motor6();
+        }
+        break;
     }
 }
 
