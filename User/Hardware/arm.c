@@ -92,6 +92,7 @@ float reply_enable = 0.0f;
 #define ARM_LINZU_ENABLE_SETTLE_MS 1U
 #define ARM_LINZU_LIMIT_SPEED_MIN_RAD_S 1.0f
 #define ARM_LINZU_LIMIT_SPEED_MAX_RAD_S 20.0f
+#define ARM_TX_SLOT_COUNT 10U
 
 volatile uint8_t arm_motor_disabled_mask_debug = 0U;
 volatile uint32_t arm_feedback_count_debug[ARM_LOGICAL_MOTOR_COUNT] = {0U};
@@ -632,75 +633,88 @@ void Arm_All_Data_update()
 /**
  * @brief 机械臂电机控制指令发送函数
  * @retval 无
- * @note   1. 根据g_ShoulderType选择发送灵足/大然电机控制指令；
- *         2. 灵足电机：依次发送1/2/3号指令，间隔1ms FreeRTOS延时；
- *         3. 大然电机：依次发送1/2/3号指令，间隔1ms FreeRTOS延时；
- *         4. 达妙电机控制指令已注释，如需启用可取消注释。
+ * @note   1. 由1ms任务周期驱动，每次只发送一个slot，避免CAN2同一时刻突发多帧；
+ *         2. slot 0/2/4发送肩部1/2/3号电机，按g_ShoulderType选择灵足或大然；
+ *         3. slot 1/3/5发送达妙4/5/6号电机；
+ *         4. slot 6/7/8/9空闲，使每路目标控制保持100Hz。
  */
 void Arm_all_tx()
 {
-    static uint8_t damiao_tx_slot = 0U;
-    uint8_t damiao_attempt;
+    static uint8_t arm_tx_slot = 0U;
+    uint8_t slot = arm_tx_slot;
 
-    if (g_ShoulderType == SHOULDER_TYPE_LINGZU)
+    arm_tx_slot++;
+    if (arm_tx_slot >= ARM_TX_SLOT_COUNT)
     {
-        if (Arm_MotorTxDisabledByIndex(0U) == 0U)
-        {
-            Arm_Linzu_motor1();
-        }
-        if (Arm_MotorTxDisabledByIndex(1U) == 0U)
-        {
-            Arm_Linzu_motor2();
-        }
-        if (Arm_MotorTxDisabledByIndex(2U) == 0U)
-        {
-            Arm_Linzu_motor3();
-        }
-    }
-    else if (g_ShoulderType == SHOULDER_TYPE_DARAN)
-    {
-        if (Arm_MotorTxDisabledByIndex(0U) == 0U)
-        {
-            Arm_Daran_motor1();
-        }
-        if (Arm_MotorTxDisabledByIndex(1U) == 0U)
-        {
-            Arm_Daran_motor2();
-        }
-        if (Arm_MotorTxDisabledByIndex(2U) == 0U)
-        {
-            Arm_Daran_motor3();
-        }
+        arm_tx_slot = 0U;
     }
 
-    for (damiao_attempt = 0U; damiao_attempt < 3U; damiao_attempt++)
+    switch (slot)
     {
-        uint8_t slot = damiao_tx_slot;
-        uint8_t logical_motor = (uint8_t)(slot + 3U);
-
-        damiao_tx_slot++;
-        if (damiao_tx_slot >= 3U)
+    case 0U:
+        if (Arm_MotorTxDisabledByIndex(0U) == 0U)
         {
-            damiao_tx_slot = 0U;
+            if (g_ShoulderType == SHOULDER_TYPE_LINGZU)
+            {
+                Arm_Linzu_motor1();
+            }
+            else if (g_ShoulderType == SHOULDER_TYPE_DARAN)
+            {
+                Arm_Daran_motor1();
+            }
         }
+        break;
 
-        if (Arm_MotorTxDisabledByIndex(logical_motor) != 0U)
-        {
-            continue;
-        }
-
-        if (slot == 0U)
+    case 1U:
+        if (Arm_MotorTxDisabledByIndex(3U) == 0U)
         {
             Arm_Damiao_motor4();
         }
-        else if (slot == 1U)
+        break;
+
+    case 2U:
+        if (Arm_MotorTxDisabledByIndex(1U) == 0U)
+        {
+            if (g_ShoulderType == SHOULDER_TYPE_LINGZU)
+            {
+                Arm_Linzu_motor2();
+            }
+            else if (g_ShoulderType == SHOULDER_TYPE_DARAN)
+            {
+                Arm_Daran_motor2();
+            }
+        }
+        break;
+
+    case 3U:
+        if (Arm_MotorTxDisabledByIndex(4U) == 0U)
         {
             Arm_Damiao_motor5();
         }
-        else
+        break;
+
+    case 4U:
+        if (Arm_MotorTxDisabledByIndex(2U) == 0U)
+        {
+            if (g_ShoulderType == SHOULDER_TYPE_LINGZU)
+            {
+                Arm_Linzu_motor3();
+            }
+            else if (g_ShoulderType == SHOULDER_TYPE_DARAN)
+            {
+                Arm_Daran_motor3();
+            }
+        }
+        break;
+
+    case 5U:
+        if (Arm_MotorTxDisabledByIndex(5U) == 0U)
         {
             Arm_Damiao_motor6();
         }
+        break;
+
+    default:
         break;
     }
 }

@@ -69,7 +69,7 @@ volatile uint32_t pc_up_tx_feedback_tick_debug[ARM_LOGICAL_MOTOR_COUNT] = {0U};
 #define HEAD_TASK_MOTOR_COUNT 2U
 #define PT_PRESS_POLL_PERIOD_MS 10U
 #define PC_COMM_TX_PERIOD_MS 10U
-#define ARM_CONTROL_TX_PERIOD_MS 10U
+#define ARM_CONTROL_TX_PERIOD_MS 1U
 #define LOG_TASK_IDLE_PERIOD_MS 1000U
 
 /* USER CODE END PD */
@@ -304,7 +304,7 @@ void Remote_control_Task(void *argument)
 
   /* USER CODE BEGIN Remote_control_Task */
   MX_USB_DEVICE_Init();
-  int control_mode = 0; // 0: 遥控模式, 1: pc模式
+  int control_mode = 1; // 0: 遥控模式, 1: pc模式
   PT_Send_ReadTemp_Cmd(&huart1);
   uint32_t pt_press_last_tick = osKernelGetTickCount() - PT_PRESS_POLL_PERIOD_MS;
   int a = 0;
