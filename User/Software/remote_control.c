@@ -40,6 +40,10 @@
 #define HEAD_MOTOR2_PC_MIN_RAD (-9000.0f * HEAD_PI / 18000.0f)
 #define HEAD_MOTOR2_PC_MAX_RAD (9000.0f * HEAD_PI / 18000.0f)
 #define PC_ARM_MOTOR_DEBUG_STATE_NONE 0xFFU
+#define PC_CHASSIS_TIMEOUT_MS 200U
+#define PC_CHASSIS_LINEAR_LIMIT 2.3f
+#define PC_CHASSIS_YAW_LIMIT 3.5f
+#define PC_CHASSIS_SANITY_LIMIT 1000000.0f
 // extern DnData_t pc_dn_data;
 
 volatile uint8_t pc_arm_motor_enable_state_debug[ARM_LOGICAL_MOTOR_COUNT] = {
@@ -161,6 +165,38 @@ static float sbus_axis_to_float(uint16_t value, float scale)
     // }
 
     return (float)delta / scale;
+}
+
+static uint8_t pc_chassis_float_is_valid(float value)
+{
+    return ((value == value) &&
+            (value <= PC_CHASSIS_SANITY_LIMIT) &&
+            (value >= -PC_CHASSIS_SANITY_LIMIT)) ? 1U : 0U;
+}
+
+static float pc_chassis_clamp(float value, float limit)
+{
+    if (value > limit)
+    {
+        return limit;
+    }
+
+    if (value < -limit)
+    {
+        return -limit;
+    }
+
+    return value;
+}
+
+static void chassis_apply_command(float chassis_vx, float chassis_vy, float chassis_yaw)
+{
+    up_tx_data.chassis_vx = chassis_vx;
+    up_tx_data.chassis_vy = chassis_vy;
+    up_tx_data.chassis_yaw = chassis_yaw;
+    x = chassis_vx;
+    y = chassis_vy;
+    w = chassis_yaw;
 }
 
 static float head_clamp_pc_head_radian(uint8_t motor_index, float radian)
@@ -722,12 +758,39 @@ void Chassis_Control_Updata(void)
         chassis_yaw = sbus_axis_to_float(SBUS_CH.CH3, 200.0f);
     }
 
-    up_tx_data.chassis_vx = chassis_vx;
-    up_tx_data.chassis_vy = chassis_vy;
-    up_tx_data.chassis_yaw = chassis_yaw;
-    x = chassis_vx;
-    y = chassis_vy;
-    w = chassis_yaw;
+    chassis_apply_command(chassis_vx, chassis_vy, chassis_yaw);
+}
+
+void PC_Chassis_Control_Updata(void)
+{
+    PcChassisCtrl_t chassis_command;
+    uint32_t last_tick;
+    uint32_t tick_now = HAL_GetTick();
+
+    if (UART_Protocol_CopyLatestChassisCtrl(&chassis_command, &last_tick) == 0U)
+    {
+        chassis_apply_command(0.0f, 0.0f, 0.0f);
+        return;
+    }
+
+    if ((tick_now - last_tick) > PC_CHASSIS_TIMEOUT_MS)
+    {
+        chassis_apply_command(0.0f, 0.0f, 0.0f);
+        return;
+    }
+
+    if ((pc_chassis_float_is_valid(chassis_command.x) == 0U) ||
+        (pc_chassis_float_is_valid(chassis_command.y) == 0U) ||
+        (pc_chassis_float_is_valid(chassis_command.w) == 0U))
+    {
+        chassis_apply_command(0.0f, 0.0f, 0.0f);
+        return;
+    }
+
+    chassis_apply_command(
+        pc_chassis_clamp(chassis_command.x, PC_CHASSIS_LINEAR_LIMIT),
+        pc_chassis_clamp(chassis_command.y, PC_CHASSIS_LINEAR_LIMIT),
+        pc_chassis_clamp(chassis_command.w, PC_CHASSIS_YAW_LIMIT));
 }
 
 // PC控制函数实现

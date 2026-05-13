@@ -101,6 +101,7 @@ volatile uint32_t head_task_feedback_count_debug[HEAD_TASK_MOTOR_COUNT] = {0U};
 volatile uint8_t head_task_ready_mask_debug = 0U;
 volatile uint8_t head_task_control_mask_debug = 0U;
 volatile uint8_t head_task_block_reason_debug[HEAD_TASK_MOTOR_COUNT] = {0U};
+volatile uint8_t control_mode = CONTROL_MODE_PC;
 /* USER CODE END Variables */
 /* Definitions for Remote_control */
 osThreadId_t Remote_controlHandle;
@@ -304,7 +305,6 @@ void Remote_control_Task(void *argument)
 
   /* USER CODE BEGIN Remote_control_Task */
   MX_USB_DEVICE_Init();
-  int control_mode = 1; // 0: 遥控模式, 1: pc模式
   PT_Send_ReadTemp_Cmd(&huart1);
   uint32_t pt_press_last_tick = osKernelGetTickCount() - PT_PRESS_POLL_PERIOD_MS;
   int a = 0;
@@ -321,7 +321,7 @@ void Remote_control_Task(void *argument)
     // uint8_t arm_disable_active = Arm_Motor_Disable_Updata();
     Head_Motor_Enable_Disable_Updata();
 
-    if ((control_mode == 0))
+    if ((control_mode == CONTROL_MODE_REMOTE))
     {
       // 遥控模式
       Pump_Control_Updata();
@@ -330,7 +330,7 @@ void Remote_control_Task(void *argument)
       Up_Down_Motor_Control_Updata();
 
     }
-    else if ((control_mode == 1))
+    else if ((control_mode == CONTROL_MODE_PC))
     {
       // pc模式
 
@@ -474,7 +474,21 @@ void Motor_control_Task(void *argument)
   /* Infinite loop */
   for (;;)
   {
-    Chassis_Control_Updata();
+    if (control_mode == CONTROL_MODE_REMOTE)
+    {
+      Chassis_Control_Updata();
+    }
+    else if (control_mode == CONTROL_MODE_PC)
+    {
+      PC_Chassis_Control_Updata();
+    }
+    else
+    {
+      x = 0.0f;
+      y = 0.0f;
+      w = 0.0f;
+    }
+
     Omni_Wheel_Update();
     osDelay(1);
   }

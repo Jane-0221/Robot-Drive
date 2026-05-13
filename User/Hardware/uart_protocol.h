@@ -10,13 +10,16 @@
 #define UP_FRAME_TYPE 0x01
 #define DN_FRAME_TYPE 0x02
 #define PC_MOTOR_CTRL_FRAME_TYPE 0x03
+#define PC_CHASSIS_CTRL_FRAME_TYPE 0x04
 
 #define UP_DATA_LEN   60
 #define DN_DATA_LEN   83
 #define PC_MOTOR_CTRL_DATA_LEN 3
+#define PC_CHASSIS_CTRL_DATA_LEN 12
 #define UP_FRAME_LEN  68
 #define DN_FRAME_LEN  91
 #define PC_MOTOR_CTRL_FRAME_LEN 11
+#define PC_CHASSIS_CTRL_FRAME_LEN 20
 
 #define PC_MOTOR_CTRL_TARGET_ARM  0U
 #define PC_MOTOR_CTRL_TARGET_HEAD 1U
@@ -59,12 +62,22 @@ typedef struct {
     uint8_t command;
 } PcMotorCtrl_t;
 
+typedef struct {
+    float x;
+    float y;
+    float w;
+} PcChassisCtrl_t;
+
 extern DnData_t pc_dn_data;
 extern uint8_t uart_protocol_raw_data[256];
 extern UpData_t up_tx_data;
 extern volatile PcMotorCtrl_t pc_motor_ctrl_latest;
 extern volatile uint8_t pc_motor_ctrl_latest_valid;
 extern volatile uint32_t pc_motor_ctrl_rx_count;
+extern volatile PcChassisCtrl_t pc_chassis_ctrl_latest;
+extern volatile uint8_t pc_chassis_ctrl_latest_valid;
+extern volatile uint32_t pc_chassis_ctrl_rx_count;
+extern volatile uint32_t pc_chassis_ctrl_last_tick;
 
 uint16_t crc16_ccitt(uint8_t *data, uint16_t len);
 void pack_up_frame(UpData_t *data, uint8_t *frame_buf);
@@ -72,6 +85,7 @@ void unpack_dn_frame(uint8_t *frame_buf, DnData_t *data);
 uint8_t UART_Protocol_UnpackLatest(DnData_t *data);
 uint8_t UART_Protocol_CopyLatestDnData(DnData_t *out);
 uint8_t UART_Protocol_GetMotorCtrlCommand(PcMotorCtrl_t *command);
+uint8_t UART_Protocol_CopyLatestChassisCtrl(PcChassisCtrl_t *out, uint32_t *last_tick);
 HAL_StatusTypeDef send_frame(UART_HandleTypeDef *huart, uint8_t *frame_buf, uint16_t len);
 HAL_StatusTypeDef send_up_frame(UART_HandleTypeDef *huart);
 void store_uart_protocol_data(const uint8_t *data, uint16_t size);

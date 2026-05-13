@@ -5,6 +5,11 @@
 #include "main.h"
 #include "uart_protocol.h"
 
+#define CONTROL_MODE_REMOTE 0U
+#define CONTROL_MODE_PC     1U
+
+extern volatile uint8_t control_mode;
+
 typedef struct {
     PcMotorCtrl_t latest_rx_command;
     uint8_t latest_rx_valid;
@@ -116,6 +121,11 @@ extern void Chassis_Control_Updata(void);
  * @brief 根据 PC 下发数据更新气泵状态。
  */
 extern void PC_Pump_Control_Updata(void);
+
+/**
+ * @brief 根据 PC 下发的底盘速度帧更新 x/y/w。
+ */
+extern void PC_Chassis_Control_Updata(void);
 
 /**
  * @brief 根据 PC 下发数据更新头部电机目标角度。
