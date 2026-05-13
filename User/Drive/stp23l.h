@@ -49,25 +49,16 @@ typedef struct
 }STP23L_DataDef;
 
 extern STP23L_DataDef stp23l_data;
-extern STP23L_DataDef arm_stp23l_data;
 extern uint8_t stp23l_raw_data[256];
-extern uint8_t arm_stp23l_raw_data[256];
 /************************* 核心函数声明 *************************/
 void STP23L_ParseData(uint8_t *buf, uint16_t size); // 整包解析函数
 uint8_t STP23L_ParseLatest(void);
-uint8_t Arm_STP23L_ParseLatest(void);
 void STP23L_Reset(void);                           // 解析复位
 extern void store_stp23l_data(const uint8_t *data, uint16_t size); // 存储STP23L原始数据
-extern void store_arm_stp23l_data(const uint8_t *data, uint16_t size);
 static inline void STP23L_ClearOkFlag(void)        // 清除解析完成标志
 {
     stp23l_data.parse_ok = 0;
 }
-static inline void Arm_STP23L_ClearOkFlag(void)
-{
-    arm_stp23l_data.parse_ok = 0;
-}
 int16_t STP23L_GetFinalDistPerFrame(void);         // 每帧获取一个最终距离值
-int16_t Arm_STP23L_GetFinalDistPerFrame(void);
 
 #endif // STP23L_H

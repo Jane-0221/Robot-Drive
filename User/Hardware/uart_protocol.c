@@ -49,7 +49,6 @@ UpData_t up_tx_data = {
     .arm_motor_angle_5 = 0.0f,
     .arm_motor_angle_6 = 0.0f,
     .lift_height = 0.0f,
-    .arm_distance = 0.0f,
     .chassis_vx = 0.0f,
     .chassis_vy = 0.0f,
     .chassis_yaw = 0.0f,
@@ -114,7 +113,6 @@ void pack_up_frame(UpData_t *data, uint8_t *frame_buf)
     write_float_le(frame_buf, &idx, data->arm_motor_angle_5);
     write_float_le(frame_buf, &idx, data->arm_motor_angle_6);
     write_float_le(frame_buf, &idx, data->lift_height);
-    write_float_le(frame_buf, &idx, data->arm_distance);
     write_float_le(frame_buf, &idx, data->chassis_vx);
     write_float_le(frame_buf, &idx, data->chassis_vy);
     write_float_le(frame_buf, &idx, data->chassis_yaw);

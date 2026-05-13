@@ -5,18 +5,11 @@
 #include <string.h>
 /************************* 全局解析数据实例化 *************************/
 STP23L_DataDef stp23l_data = {0};
-STP23L_DataDef arm_stp23l_data = {0};
 uint8_t stp23l_raw_data[256];
-uint8_t arm_stp23l_raw_data[256];
 static uint8_t stp23l_parse_buffer[256];
-static uint8_t arm_stp23l_parse_buffer[256];
 static volatile uint16_t stp23l_raw_size = 0U;
-static volatile uint16_t arm_stp23l_raw_size = 0U;
 static volatile uint8_t stp23l_data_pending = 0U;
-static volatile uint8_t arm_stp23l_data_pending = 0U;
 
-static void STP23L_ParseDataInto(STP23L_DataDef *out, uint8_t *buf, uint16_t size);
-static int16_t STP23L_GetFinalDistFromData(const STP23L_DataDef *data, int16_t *last_valid_dist);
 /************************* 静态辅助函数：查找4AA包头 *************************/
 static uint16_t STP23L_FindHeader(uint8_t *buf, uint16_t size)
 {
@@ -47,74 +40,15 @@ static void STP23L_StoreRaw(const uint8_t *data,
     *data_pending = 1U;
 }
 
-static int16_t STP23L_GetFinalDistFromData(const STP23L_DataDef *data, int16_t *last_valid_dist)
-{
-    int32_t valid_dist_sum = 0;
-    uint8_t valid_point_cnt = 0;
-    int16_t final_dist = 0;
-
-    if ((data == NULL) || (last_valid_dist == NULL))
-    {
-        return 0;
-    }
-
-    for(uint8_t i = 0; i < STP23L_POINT_NUM; i++)
-    {
-        if((data->points[i].confidence >= STP23L_CONFIDENCE_THRESH) &&
-           (data->points[i].distance >= STP23L_DIST_BLIND) &&
-           (data->points[i].distance <= STP23L_DIST_MAX))
-        {
-            valid_dist_sum += data->points[i].distance;
-            valid_point_cnt++;
-        }
-    }
-
-    if(valid_point_cnt > 0)
-    {
-        final_dist = (int16_t)(valid_dist_sum / valid_point_cnt);
-        *last_valid_dist = final_dist;
-    }
-    else
-    {
-        final_dist = *last_valid_dist;
-    }
-
-    return final_dist;
-}
-
-int16_t Arm_STP23L_GetFinalDistPerFrame(void)
-{
-    static int16_t last_valid_dist = 0;
-
-    return STP23L_GetFinalDistFromData(&arm_stp23l_data, &last_valid_dist);
-}
-
 void store_stp23l_data(const uint8_t *data, uint16_t size)
 {
-    if (data == NULL || size == 0) {
-        return;
-    }
-    
-    // 确保不会超出缓冲区大小
-    uint16_t copy_size = (size > 256) ? 256 : size;
-    
-    // 使用memcpy安全地复制数据
-    memcpy(stp23l_raw_data, data, copy_size);
-    stp23l_raw_size = copy_size;
-    stp23l_data_pending = 1U;
-}
-/************************* 解析复位函数 *************************/
-void store_arm_stp23l_data(const uint8_t *data, uint16_t size)
-{
-    STP23L_StoreRaw(data, size, arm_stp23l_raw_data, &arm_stp23l_raw_size, &arm_stp23l_data_pending);
+    STP23L_StoreRaw(data, size, stp23l_raw_data, &stp23l_raw_size, &stp23l_data_pending);
 }
 
 void STP23L_Reset(void)
 {
     stp23l_data.parse_ok = 0;
     stp23l_data.parse_err = 0;
-    arm_stp23l_data.parse_ok = 0;
-    arm_stp23l_data.parse_err = 0;
 }
 
 uint8_t STP23L_ParseLatest(void)
@@ -133,26 +67,6 @@ uint8_t STP23L_ParseLatest(void)
     taskEXIT_CRITICAL();
 
     STP23L_ParseData(stp23l_parse_buffer, size);
-    return 1U;
-}
-
-/************************* 整包解析函数（DMA中断直接调用） *************************/
-uint8_t Arm_STP23L_ParseLatest(void)
-{
-    uint16_t size;
-
-    if (arm_stp23l_data_pending == 0U)
-    {
-        return 0U;
-    }
-
-    taskENTER_CRITICAL();
-    size = arm_stp23l_raw_size;
-    memcpy(arm_stp23l_parse_buffer, arm_stp23l_raw_data, size);
-    arm_stp23l_data_pending = 0U;
-    taskEXIT_CRITICAL();
-
-    STP23L_ParseDataInto(&arm_stp23l_data, arm_stp23l_parse_buffer, size);
     return 1U;
 }
 
@@ -231,85 +145,6 @@ void STP23L_ParseData(uint8_t *buf, uint16_t size)
         stp23l_data.parse_ok = 1;
         stp23l_data.recv_cnt++;
         stp23l_data.parse_err = 0;
-
-        buf_idx += STP23L_PACK_TOTAL_LEN;
-    }
-}
-
-/************************* 核心：每帧提取一个最终距离值 *************************/
-static void STP23L_ParseDataInto(STP23L_DataDef *out, uint8_t *buf, uint16_t size)
-{
-    if (out == NULL)
-    {
-        return;
-    }
-
-    if(buf == NULL || size < STP23L_HEAD_LEN)
-    {
-        out->parse_err = 1;
-        return;
-    }
-
-    uint16_t buf_idx = 0;
-    uint8_t crc_calc = 0;
-    uint16_t header_pos = 0;
-
-    while(buf_idx <= size - STP23L_HEADER_BYTES)
-    {
-        header_pos = STP23L_FindHeader(&buf[buf_idx], size - buf_idx);
-        if(header_pos == 0xFFFF) break;
-        buf_idx += header_pos;
-
-        if((size - buf_idx) < STP23L_PACK_TOTAL_LEN)
-        {
-            out->parse_err = 1;
-            break;
-        }
-
-        uint8_t dev_addr = buf[buf_idx + 4];
-        uint8_t cmd_code = buf[buf_idx + 5];
-        uint16_t offset = (buf[buf_idx +7]<<8) | buf[buf_idx +6];
-        uint16_t data_len = (buf[buf_idx +9]<<8) | buf[buf_idx +8];
-
-        if(dev_addr != STP23L_DEV_ADDR || cmd_code != STP23L_CMD_GET_DIST ||
-           data_len != STP23L_DATA_FIELD_LEN || offset != 0x0000)
-        {
-            buf_idx++;
-            out->parse_err = 1;
-            continue;
-        }
-
-        crc_calc = 0;
-        for(uint16_t i = 4; i < STP23L_PACK_TOTAL_LEN -1; i++)
-        {
-            crc_calc += buf[buf_idx + i];
-        }
-        if(crc_calc != buf[buf_idx + STP23L_PACK_TOTAL_LEN -1])
-        {
-            buf_idx += STP23L_HEADER_BYTES;
-            out->parse_err = 1;
-            continue;
-        }
-
-        out->cmd_code = cmd_code;
-        uint16_t data_offset = buf_idx + STP23L_HEAD_LEN;
-        for(uint8_t i = 0; i < STP23L_POINT_NUM; i++)
-        {
-            uint16_t p_offset = data_offset + i * STP23L_POINT_BYTES;
-            out->points[i].distance = (buf[p_offset+1]<<8) | buf[p_offset];
-            out->points[i].noise    = (buf[p_offset+3]<<8) | buf[p_offset+2];
-            out->points[i].peak     = (buf[p_offset+7]<<24) | (buf[p_offset+6]<<16) | (buf[p_offset+5]<<8) | buf[p_offset+4];
-            out->points[i].confidence = buf[p_offset+8];
-            out->points[i].intg     = (buf[p_offset+12]<<24) | (buf[p_offset+11]<<16) | (buf[p_offset+10]<<8) | buf[p_offset+9];
-            out->points[i].reftof   = (buf[p_offset+14]<<8) | buf[p_offset+13];
-        }
-
-        uint16_t ts_offset = buf_idx + STP23L_HEAD_LEN + STP23L_POINT_NUM * STP23L_POINT_BYTES;
-        out->timestamp = (buf[ts_offset+3]<<24) | (buf[ts_offset+2]<<16) | (buf[ts_offset+1]<<8) | buf[ts_offset];
-
-        out->parse_ok = 1;
-        out->recv_cnt++;
-        out->parse_err = 0;
 
         buf_idx += STP23L_PACK_TOTAL_LEN;
     }

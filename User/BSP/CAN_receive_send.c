@@ -27,10 +27,8 @@
 #include "iwdg.h"
 #include "buzzer.h"
 #include "fdcan.h"
-#include "DrEmpower_can.h" // 大然电机通信协议头文件（第三方电机驱动）
 #include "ktech_motor.h"
 #include "head.h"
-#include "DrEmpower_can.h"
 
 extern FDCAN_HandleTypeDef hfdcan1;
 extern FDCAN_HandleTypeDef hfdcan2;
@@ -405,7 +403,7 @@ void HAL_FDCAN_RxFifo0Callback(FDCAN_HandleTypeDef *hfdcan, uint32_t RxFifo0ITs)
       }
     }
 
-    // ========== FDCAN2 数据处理（达妙/大然/RobStride电机） ==========
+    // ========== FDCAN2 数据处理（达妙/RobStride电机） ==========
     else if (hfdcan->Instance == FDCAN2)
     {
       // 标准帧（11位ID）处理逻辑
@@ -433,21 +431,6 @@ void HAL_FDCAN_RxFifo0Callback(FDCAN_HandleTypeDef *hfdcan, uint32_t RxFifo0ITs)
           break;
         default:
           can2_std_rx_unknown_debug++;
-          // 非4/5/6 ID：解析大然电机ID（从帧ID高位提取）
-          uint8_t motor_id = (rx_header.Identifier >> 5) & 0x3F;
-          switch (motor_id)
-          {
-          case 11: // 电机ID=11：解析第0路大然电机反馈
-            DrRobot_ParseFbData(&daran_motor_state[0], rx_data);
-            break;
-          case 12: // 电机ID=12：解析第1路大然电机反馈
-            DrRobot_ParseFbData(&daran_motor_state[1], rx_data);
-            break;
-          case 13: // 电机ID=13：预留（无处理逻辑）
-            break;
-          default: // 未定义电机ID：无处理
-            break;
-          }
           break;
         }
       }

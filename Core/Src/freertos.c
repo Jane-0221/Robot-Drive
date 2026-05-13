@@ -43,7 +43,6 @@
 #include "uart_protocol.h"
 #include "pt_sensor.h"
 #include "usart.h"
-#include "vl53l0x.h"
 #include "user_key.h"
 
 volatile uint32_t pc_up_tx_attempt_debug = 0U;
@@ -61,9 +60,6 @@ volatile uint32_t pc_up_tx_feedback_tick_debug[ARM_LOGICAL_MOTOR_COUNT] = {0U};
 
 /* Private define ------------------------------------------------------------*/
 /* USER CODE BEGIN PD */
-#define VL53L0X_COMM_ENABLE 1U
-#define VL53L0X_SOFT_PROBE_ON_BOOT 0U
-#define VL53L0X_SOFT_PROBE_DELAY_MS 500U
 #define HEAD_STARTUP_STABILIZE_MS 1000U
 #define HEAD_REENABLE_STABILIZE_MS 100U
 #define HEAD_TASK_MOTOR_COUNT 2U
@@ -370,20 +366,6 @@ void Arm_MT_Task(void *argument)
   /* USER CODE BEGIN Arm_MT_Task */
   uint8_t arm_save_position_latched = 0U;
   uint32_t arm_control_next_tick = osKernelGetTickCount();
-#if VL53L0X_COMM_ENABLE
-  uint32_t vl53l0x_last_tick = osKernelGetTickCount();
-  uint32_t vl53l0x_period_ticks = osKernelGetTickFreq() / 100U;
-
-  if (vl53l0x_period_ticks == 0U)
-  {
-    vl53l0x_period_ticks = 1U;
-  }
-#if VL53L0X_SOFT_PROBE_ON_BOOT
-  osDelay(VL53L0X_SOFT_PROBE_DELAY_MS);
-  (void)VL53L0X_SoftProbeI2C1();
-#endif
-  (void)VL53L0X_Init();
-#endif
   /* Infinite loop */
   for (;;)
   {
@@ -413,15 +395,6 @@ void Arm_MT_Task(void *argument)
       arm_save_position_latched = 0U;
     }
 
-    // 手臂距离读取
-#if VL53L0X_COMM_ENABLE
-    uint32_t tick_now = osKernelGetTickCount();
-    if ((tick_now - vl53l0x_last_tick) >= vl53l0x_period_ticks)
-    {
-      vl53l0x_last_tick = tick_now;
-      (void)VL53L0X_ReadDistance();
-    }
-#endif
     arm_control_next_tick += ARM_CONTROL_TX_PERIOD_MS;
     if (osDelayUntil(arm_control_next_tick) != osOK)
     {
@@ -447,11 +420,9 @@ void Lift_control_Task(void *argument)
   {
   //
     STP23L_ParseLatest();
-    Arm_STP23L_ParseLatest();
     PT_ParseLatestPressure();
 
     Lift_RefreshHeight();           // 高度数据处理，得到当前高度
-    Arm_RefreshDistance();
     Lift_GoToTarget(aim_tx_height); // 根据目标高度，控制电机运动
     osDelay(1);
     Pump_Update(); // 更新气泵状态
@@ -683,7 +654,6 @@ void PC_Comm_Task(void *argument)
     {
       pc_tx_last_tick = tick_now;
       Arm_Linzu_Data_update();
-      Arm_Daran_Data_update();
       Arm_Damiao_Data_update();
       pc_arm_tx_data();
       pc_up_tx_data();

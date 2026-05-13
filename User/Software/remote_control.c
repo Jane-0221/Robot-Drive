@@ -970,24 +970,14 @@ void pc_up_tx_data(void)
 
 void pc_arm_tx_data(void)
 {
-    if (g_ShoulderType == SHOULDER_TYPE_DARAN)
-    {
-        up_tx_data.arm_motor_angle_1 = Daran_motor_data[0].current_angle;
-        up_tx_data.arm_motor_angle_2 = Daran_motor_data[1].current_angle;
-        up_tx_data.arm_motor_angle_3 = Daran_motor_data[2].current_angle;
-    }
-    else
-    {
-        up_tx_data.arm_motor_angle_1 = Arm_WrapAngleToPi(Linzu_motor_data[0].current_angle);
-        up_tx_data.arm_motor_angle_2 = Arm_WrapAngleToPi(Linzu_motor_data[1].current_angle);
-        up_tx_data.arm_motor_angle_3 = Arm_WrapAngleToPi(Linzu_motor_data[2].current_angle);
-    }
+    up_tx_data.arm_motor_angle_1 = Arm_WrapAngleToPi(Linzu_motor_data[0].current_angle);
+    up_tx_data.arm_motor_angle_2 = Arm_WrapAngleToPi(Linzu_motor_data[1].current_angle);
+    up_tx_data.arm_motor_angle_3 = Arm_WrapAngleToPi(Linzu_motor_data[2].current_angle);
 
     up_tx_data.arm_motor_angle_4 = Damiao_motor_data[0].current_angle;
     up_tx_data.arm_motor_angle_5 = Damiao_motor_data[1].current_angle;
     up_tx_data.arm_motor_angle_6 = Damiao_motor_data[2].current_angle;
     up_tx_data.lift_height = lift_height_final;
-    up_tx_data.arm_distance = arm_distance_final;
 
     head_pc_tx_source_deg_debug[0] = head_motor_data[0].current_angle;
     head_pc_tx_source_deg_debug[1] = head_motor_data[1].current_angle;

@@ -132,7 +132,6 @@ int main(void)
   MX_USART1_UART_Init();
   MX_TIM12_Init();
   MX_I2C2_Init();
-  MX_I2C1_Init();
   /* USER CODE BEGIN 2 */
   // HAL_IWDG_Refresh(&hiwdg1);
   /*INIT*/

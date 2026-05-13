@@ -10,38 +10,7 @@
 #include "FreeRTOS.h"
 #include "task.h"
 #include "cmsis_os.h"
-#include "DrEmpower_can.h"
 #include "stdio.h"
-#include "stp23l.h"
-
-// ===================== 全局变量定义 =====================
-/**
- * @brief 机械臂肩部电机类型（枚举值：SHOULDER_TYPE_LINGZU/DAREN/DAMIAO）
- * @note  用于切换不同品牌电机的控制逻辑（灵足/大然/达妙）
- */
-ShoulderType_t g_ShoulderType;
-int16_t arm_distance_final = 0;
-
-void Arm_RefreshDistance(void)
-{
-    if (arm_stp23l_data.parse_ok == 1)
-    {
-        arm_distance_final = Arm_STP23L_GetFinalDistPerFrame();
-        Arm_STP23L_ClearOkFlag();
-    }
-}
-
-/**
- * @brief 大然舵机状态结构体数组（3路）
- * @note  存储大然舵机的状态信息（角度、速度、扭矩等）
- */
-struct servo_state servo_state_daran[3];
-
-/**
- * @brief 大然舵机电压/电流结构体数组（3路）
- * @note  存储大然舵机的电气参数（输入电压、相电流等）
- */
-struct servo_volcur servo_volcur_daran[3];
 
 /**
  * @brief 达妙电机状态结构体数组（6路）
@@ -62,12 +31,6 @@ RobStride_Motor_t motor3; // 灵足3号电机
  * @note  存储灵足电机的目标、当前角度、速度等控制参数
  */
 ArmMotorData_t Linzu_motor_data[3];
-
-/**
- * @brief 大然电机数据结构体数组（3路）
- * @note  存储大然电机的目标、当前角度、速度等控制参数
- */
-ArmMotorData_t Daran_motor_data[3];
 
 /**
  * @brief 达妙电机数据结构体数组（3路）
@@ -317,19 +280,6 @@ static uint8_t Arm_SendLinzuTarget(uint8_t logical_motor, RobStride_Motor_t *mot
     return 1U;
 }
 
-static uint8_t Arm_SendDaranTarget(uint8_t logical_motor, uint8_t motor_id, ArmMotorData_t *motor_data)
-{
-    float target_angle;
-
-    if (Arm_GetSafeTargetAngle(logical_motor, motor_data, &target_angle) == 0U)
-    {
-        return 0U;
-    }
-
-    set_angle(CAN_HANDLE_2, motor_id, target_angle, motor_data->target_velocity, 10.0f, 1);
-    return 1U;
-}
-
 static uint8_t Arm_SendDamiaoTarget(uint8_t logical_motor, uint16_t motor_id, ArmMotorData_t *motor_data)
 {
     float target_angle;
@@ -365,18 +315,13 @@ static uint8_t Arm_SendDamiaoTarget(uint8_t logical_motor, uint16_t motor_id, Ar
 /**
  * @brief 机械臂初始化函数
  * @retval 无
- * @note   1. 核心功能：选择肩部电机类型，初始化灵足/大然/达妙电机，配置CAN2通信；
+ * @note   1. 核心功能：初始化灵足/达妙电机，配置CAN2通信；
  *         2. 灵足电机：初始化RobStride协议，设置CSP位置模式，使能电机，开启主动上报；
- *         3. 大然电机：清除错误，设置模式2（位置模式），配置参数22001（比例系数）；
- *         4. 达妙电机：初始化位置模式，暂未配置具体参数；
- *         5. 所有电机均挂载在CAN2总线上。
+ *         3. 达妙电机：初始化位置模式，暂未配置具体参数；
+ *         4. 所有电机均挂载在CAN2总线上。
  */
 void Arm_Init()
 {
-    // 选择默认肩部电机类型（注释为灵足，实际启用大然）
-    g_ShoulderType = SHOULDER_TYPE_LINGZU;
-    // g_ShoulderType = SHOULDER_TYPE_DARAN;
-
     /* 灵足电机初始化（使用CAN2总线） */
     // 1号灵足电机初始化
     RobStride_Motor_Init(&motor1, MOTOR_LINGZU_1_ID, false);                             // 初始化电机对象（ID为灵足1号）
@@ -409,19 +354,6 @@ void Arm_Init()
     HAL_Delay(10);
     RobStride_Motor_ProactiveEscalationSet(&motor3, CAN_HANDLE_2, 0x01);
 
-    /* 大然电机初始化（使用CAN2总线） */
-    clear_error(CAN_HANDLE_2, MOTOR_DARAN_1_ID);                    // 清除1号大然电机错误
-    set_mode(CAN_HANDLE_2, MOTOR_DARAN_1_ID, 2);                    // 设置模式2（位置模式）
-    write_property(CAN_HANDLE_2, MOTOR_DARAN_1_ID, 22001, 3, 1.0f); // 写入参数22001（比例系数1.0）
-
-    clear_error(CAN_HANDLE_2, MOTOR_DARAN_2_ID);                    // 清除2号大然电机错误
-    set_mode(CAN_HANDLE_2, MOTOR_DARAN_2_ID, 2);                    // 设置位置模式
-    write_property(CAN_HANDLE_2, MOTOR_DARAN_2_ID, 22001, 3, 1.0f); // 配置比例系数
-
-    clear_error(CAN_HANDLE_2, MOTOR_DARAN_3_ID);                    // 清除3号大然电机错误
-    set_mode(CAN_HANDLE_2, MOTOR_DARAN_3_ID, 2);                    // 设置位置模式
-    write_property(CAN_HANDLE_2, MOTOR_DARAN_3_ID, 22001, 3, 1.0f); // 配置比例系数
-
     /* 达妙电机初始化（使用CAN2总线） */
     arm_motor_init(&arm_motor[Motor4], MOTOR_DAMIAO_4_ID, POS_MODE); // 4号达妙电机初始化（位置模式）
     arm_motor_init(&arm_motor[Motor5], MOTOR_DAMIAO_5_ID, POS_MODE); // 5号达妙电机初始化（位置模式）
@@ -452,13 +384,6 @@ void Arm_Init()
     Linzu_motor_data[1].target_velocity = 1.0f;
     Linzu_motor_data[2].target_velocity = 1.0f;
 
-    // 初始化大然电机目标参数（角度10°，速度分别为90/20/20r/min）
-    Daran_motor_data[0].target_angle = 0.0f;
-    Daran_motor_data[1].target_angle = 0.0f;
-    Daran_motor_data[2].target_angle = 0.0f;
-    Daran_motor_data[0].target_velocity = 20.0f;
-    Daran_motor_data[1].target_velocity = 20.0f;
-    Daran_motor_data[2].target_velocity = 20.0f;
     // 初始化灵足电机位置为0
 
     // 初始化电机失能
@@ -503,38 +428,6 @@ void Arm_Linzu_motor2()
 void Arm_Linzu_motor3()
 {
     (void)Arm_SendLinzuTarget(2U, &motor3, &Linzu_motor_data[2]);
-}
-
-/**
- * @brief 控制1号大然电机（位置模式）
- * @retval 无
- * @note   1. 延时1ms确保通信稳定；
- *         2. 设置目标角度、速度、加速度（10.0f）、立即生效（1）；
- *         3. 指令通过CAN2发送至1号大然电机。
- */
-void Arm_Daran_motor1()
-{
-    (void)Arm_SendDaranTarget(0U, MOTOR_DARAN_1_ID, &Daran_motor_data[0]);
-}
-
-/**
- * @brief 控制2号大然电机（位置模式）
- * @retval 无
- * @note   逻辑2号大然电机，使用Daran_motor_data[1]的目标参数
- */
-void Arm_Daran_motor2()
-{
-    (void)Arm_SendDaranTarget(1U, MOTOR_DARAN_2_ID, &Daran_motor_data[1]);
-}
-
-/**
- * @brief 控制3号大然电机（位置模式）
- * @retval 无
- * @note   逻辑3号大然电机，使用Daran_motor_data[2]的目标参数
- */
-void Arm_Daran_motor3()
-{
-    (void)Arm_SendDaranTarget(2U, MOTOR_DARAN_3_ID, &Daran_motor_data[2]);
 }
 
 /**
@@ -589,23 +482,6 @@ void Arm_Linzu_Data_update()
     Linzu_motor_data[2].current_velocity = motor3.Pos_Info.Speed;
 }
 
-/**
- * @brief 更新大然电机当前状态数据
- * @retval 无
- * @note   1. 从daran_motor_state缓存中读取角度、速度（扭矩注释未使用）；
- *         2. 更新到Daran_motor_data的current_angle/current_velocity成员；
- *         3. 调试打印代码已注释，如需查看可取消注释。
- */
-void Arm_Daran_Data_update()
-{
-
-    Daran_motor_data[0].current_angle = daran_motor_state[0].angle;
-    Daran_motor_data[1].current_angle = daran_motor_state[1].angle;
-    Daran_motor_data[2].current_angle = daran_motor_state[2].angle;
-    Daran_motor_data[0].current_velocity = daran_motor_state[0].speed;
-    Daran_motor_data[1].current_velocity = daran_motor_state[1].speed;
-    Daran_motor_data[2].current_velocity = daran_motor_state[2].speed;
-}
 void Arm_Damiao_Data_update()
 {
     Damiao_motor_data[0].current_angle = arm_motor[3].para.pos;
@@ -620,13 +496,11 @@ void Arm_Damiao_Data_update()
  * @brief 批量更新所有电机状态数据
  * @retval 无
  * @note   1. 先更新灵足电机数据；
- *         2. 延时1ms后更新大然电机数据；
- *         3. 达妙电机数据更新逻辑暂未实现。
+ *         2. 更新达妙电机数据。
  */
 void Arm_All_Data_update()
 {
     Arm_Linzu_Data_update();
-   // Arm_Daran_Data_update();
     Arm_Damiao_Data_update();
 }
 
@@ -634,7 +508,7 @@ void Arm_All_Data_update()
  * @brief 机械臂电机控制指令发送函数
  * @retval 无
  * @note   1. 由1ms任务周期驱动，每次只发送一个slot，避免CAN2同一时刻突发多帧；
- *         2. slot 0/2/4发送肩部1/2/3号电机，按g_ShoulderType选择灵足或大然；
+ *         2. slot 0/2/4发送灵足1/2/3号电机；
  *         3. slot 1/3/5发送达妙4/5/6号电机；
  *         4. slot 6/7/8/9空闲，使每路目标控制保持100Hz。
  */
@@ -654,14 +528,7 @@ void Arm_all_tx()
     case 0U:
         if (Arm_MotorTxDisabledByIndex(0U) == 0U)
         {
-            if (g_ShoulderType == SHOULDER_TYPE_LINGZU)
-            {
-                Arm_Linzu_motor1();
-            }
-            else if (g_ShoulderType == SHOULDER_TYPE_DARAN)
-            {
-                Arm_Daran_motor1();
-            }
+            Arm_Linzu_motor1();
         }
         break;
 
@@ -675,14 +542,7 @@ void Arm_all_tx()
     case 2U:
         if (Arm_MotorTxDisabledByIndex(1U) == 0U)
         {
-            if (g_ShoulderType == SHOULDER_TYPE_LINGZU)
-            {
-                Arm_Linzu_motor2();
-            }
-            else if (g_ShoulderType == SHOULDER_TYPE_DARAN)
-            {
-                Arm_Daran_motor2();
-            }
+            Arm_Linzu_motor2();
         }
         break;
 
@@ -696,14 +556,7 @@ void Arm_all_tx()
     case 4U:
         if (Arm_MotorTxDisabledByIndex(2U) == 0U)
         {
-            if (g_ShoulderType == SHOULDER_TYPE_LINGZU)
-            {
-                Arm_Linzu_motor3();
-            }
-            else if (g_ShoulderType == SHOULDER_TYPE_DARAN)
-            {
-                Arm_Daran_motor3();
-            }
+            Arm_Linzu_motor3();
         }
         break;
 
@@ -723,11 +576,6 @@ static ArmMotorData_t *Arm_GetMotorDataByIndex(uint8_t logical_motor)
 {
     if (logical_motor < 3U)
     {
-        if (g_ShoulderType == SHOULDER_TYPE_DARAN)
-        {
-            return &Daran_motor_data[logical_motor];
-        }
-
         return &Linzu_motor_data[logical_motor];
     }
 
@@ -762,23 +610,6 @@ static void Arm_EnableLinzuMotorFeedback(RobStride_Motor_t *motor)
     osDelay(ARM_LINZU_ENABLE_SETTLE_MS);
     RobStride_Motor_ProactiveEscalationSet(motor, CAN_HANDLE_2, 0x01);
     osDelay(ARM_LINZU_ENABLE_SETTLE_MS);
-}
-
-static uint8_t Arm_GetDaranMotorIdByIndex(uint8_t logical_motor, uint8_t *motor_id)
-{
-    static const uint8_t daran_motor_ids[3] = {
-        MOTOR_DARAN_1_ID,
-        MOTOR_DARAN_2_ID,
-        MOTOR_DARAN_3_ID,
-    };
-
-    if (logical_motor >= 3U)
-    {
-        return 0U;
-    }
-
-    *motor_id = daran_motor_ids[logical_motor];
-    return 1U;
 }
 
 static uint8_t Arm_GetDamiaoMotorInfoByIndex(uint8_t logical_motor, uint16_t *motor_id, uint16_t *motor_index)
@@ -882,26 +713,23 @@ void Arm_RequestDisabledFeedback(void)
 
     last_request_tick = now_tick;
 
-    if (g_ShoulderType == SHOULDER_TYPE_LINGZU)
+    for (logical_motor = 0U; logical_motor < 3U; logical_motor++)
     {
-        for (logical_motor = 0U; logical_motor < 3U; logical_motor++)
+        RobStride_Motor_t *motor;
+
+        if (Arm_MotorTxDisabledByIndex(logical_motor) == 0U)
         {
-            RobStride_Motor_t *motor;
-
-            if (Arm_MotorTxDisabledByIndex(logical_motor) == 0U)
-            {
-                continue;
-            }
-
-            motor = Arm_GetLinzuMotorByIndex(logical_motor);
-            if (motor == NULL)
-            {
-                continue;
-            }
-
-            Get_RobStride_Motor_parameter(motor, CAN_HANDLE_2, 0x7019U);
-            osDelay(1U);
+            continue;
         }
+
+        motor = Arm_GetLinzuMotorByIndex(logical_motor);
+        if (motor == NULL)
+        {
+            continue;
+        }
+
+        Get_RobStride_Motor_parameter(motor, CAN_HANDLE_2, 0x7019U);
+        osDelay(1U);
     }
 
     for (logical_motor = 3U; logical_motor < ARM_LOGICAL_MOTOR_COUNT; logical_motor++)
@@ -993,37 +821,17 @@ uint8_t Arm_EnableMotorByIndex(uint8_t logical_motor)
 
     if (logical_motor < 3U)
     {
-        if (g_ShoulderType == SHOULDER_TYPE_LINGZU)
+        RobStride_Motor_t *motor = Arm_GetLinzuMotorByIndex(logical_motor);
+
+        if (motor == NULL)
         {
-            RobStride_Motor_t *motor = Arm_GetLinzuMotorByIndex(logical_motor);
-
-            if (motor == NULL)
-            {
-                return 0U;
-            }
-
-            Set_RobStride_Motor_parameter(motor, CAN_HANDLE_2, 0X7005, CSP_control_mode, 'j');
-            Arm_EnableLinzuMotorFeedback(motor);
-            Arm_SetMotorTxDisabledByIndex(logical_motor, 0U);
-            return Arm_SendLinzuTarget(logical_motor, motor, motor_data);
+            return 0U;
         }
 
-        if (g_ShoulderType == SHOULDER_TYPE_DARAN)
-        {
-            uint8_t motor_id;
-
-            if (Arm_GetDaranMotorIdByIndex(logical_motor, &motor_id) == 0U)
-            {
-                return 0U;
-            }
-
-            set_mode(CAN_HANDLE_2, motor_id, 2);
-            osDelay(1);
-            Arm_SetMotorTxDisabledByIndex(logical_motor, 0U);
-            return Arm_SendDaranTarget(logical_motor, motor_id, motor_data);
-        }
-
-        return 0U;
+        Set_RobStride_Motor_parameter(motor, CAN_HANDLE_2, 0X7005, CSP_control_mode, 'j');
+        Arm_EnableLinzuMotorFeedback(motor);
+        Arm_SetMotorTxDisabledByIndex(logical_motor, 0U);
+        return Arm_SendLinzuTarget(logical_motor, motor, motor_data);
     }
 
     {
@@ -1064,35 +872,16 @@ uint8_t Arm_DisableMotorByIndex(uint8_t logical_motor)
 {
     if (logical_motor < 3U)
     {
-        if (g_ShoulderType == SHOULDER_TYPE_LINGZU)
+        RobStride_Motor_t *motor = Arm_GetLinzuMotorByIndex(logical_motor);
+
+        if (motor == NULL)
         {
-            RobStride_Motor_t *motor = Arm_GetLinzuMotorByIndex(logical_motor);
-
-            if (motor == NULL)
-            {
-                return 0U;
-            }
-
-            Disenable_Motor(motor, CAN_HANDLE_2, 0U);
-            Arm_SetMotorTxDisabledByIndex(logical_motor, 1U);
-            return 1U;
+            return 0U;
         }
 
-        if (g_ShoulderType == SHOULDER_TYPE_DARAN)
-        {
-            uint8_t motor_id;
-
-            if (Arm_GetDaranMotorIdByIndex(logical_motor, &motor_id) == 0U)
-            {
-                return 0U;
-            }
-
-            set_mode(CAN_HANDLE_2, motor_id, 1);
-            Arm_SetMotorTxDisabledByIndex(logical_motor, 1U);
-            return 1U;
-        }
-
-        return 0U;
+        Disenable_Motor(motor, CAN_HANDLE_2, 0U);
+        Arm_SetMotorTxDisabledByIndex(logical_motor, 1U);
+        return 1U;
     }
 
     {
@@ -1121,37 +910,15 @@ uint8_t Arm_SaveMotorZeroByIndex(uint8_t logical_motor)
 
     if (logical_motor < 3U)
     {
-        if (g_ShoulderType == SHOULDER_TYPE_LINGZU)
+        RobStride_Motor_t *motor = Arm_GetLinzuMotorByIndex(logical_motor);
+
+        if (motor == NULL)
         {
-            RobStride_Motor_t *motor = Arm_GetLinzuMotorByIndex(logical_motor);
-
-            if (motor == NULL)
-            {
-                return 0U;
-            }
-
-            Arm_Linzu_SaveZeroAndHold(logical_motor, motor, motor_data);
-            return 1U;
+            return 0U;
         }
 
-        if (g_ShoulderType == SHOULDER_TYPE_DARAN)
-        {
-            uint8_t motor_id;
-
-            if (Arm_GetDaranMotorIdByIndex(logical_motor, &motor_id) == 0U)
-            {
-                return 0U;
-            }
-
-            motor_data->target_angle = 0.0f;
-            set_zero_position(CAN_HANDLE_2, motor_id);
-            osDelay(1);
-            set_mode(CAN_HANDLE_2, motor_id, 2);
-            osDelay(1);
-            return Arm_SendDaranTarget(logical_motor, motor_id, motor_data);
-        }
-
-        return 0U;
+        Arm_Linzu_SaveZeroAndHold(logical_motor, motor, motor_data);
+        return 1U;
     }
 
     {
