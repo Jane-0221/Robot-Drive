@@ -29,13 +29,10 @@ extern DMA_HandleTypeDef hdma_usart1_rx;
 extern DMA_HandleTypeDef hdma_usart1_tx;
 extern DMA_HandleTypeDef hdma_usart2_rx;
 extern DMA_HandleTypeDef hdma_usart2_tx;
-extern DMA_HandleTypeDef hdma_usart3_rx;
-extern DMA_HandleTypeDef hdma_usart3_tx;
 
 // 串口控制变量
 extern UART_HandleTypeDef huart1;
 extern UART_HandleTypeDef huart2;
-extern UART_HandleTypeDef huart3;
 extern UART_HandleTypeDef huart5; // 遥控器，可能用不到
 extern UART_HandleTypeDef huart7;
 extern UART_HandleTypeDef huart10;
@@ -43,7 +40,6 @@ extern UART_HandleTypeDef huart10;
 // 将上述串口+DMA整合，并包含缓冲区
 transmit_data UART1_data;
 transmit_data UART2_data;
-transmit_data UART3_data;
 transmit_data UART5_data;
 transmit_data UART7_data;
 transmit_data UART10_data;
@@ -57,7 +53,6 @@ void uart_init(void)
 {
   UART_DMA_rxtx_start(&UART1_data, &huart1, &hdma_usart1_rx, &hdma_usart1_rx);
   // UART_DMA_rxtx_start(&UART2_data, &huart2, &hdma_usart2_rx, &hdma_usart2_rx);
-  UART_DMA_rxtx_start(&UART3_data, &huart3, &hdma_usart3_rx, &hdma_usart3_rx);
   UART_DMA_rxtx_start(&UART5_data, &huart5, &hdma_uart5_rx, &hdma_uart5_rx);
   UART_DMA_rxtx_start(&UART7_data, &huart7, &hdma_uart7_rx, &hdma_uart7_tx);
   UART_DMA_rxtx_start(&UART10_data, &huart10, &hdma_usart10_rx, &hdma_usart10_tx);
@@ -126,12 +121,6 @@ void HAL_UARTEx_RxEventCallback(UART_HandleTypeDef *huart, uint16_t Size)
     store_uart_protocol_data(UART10_data.rev_data, Size); // 存储数据
     HAL_UARTEx_ReceiveToIdle_DMA(huart, UART10_data.rev_data, UART_BUFFER_SIZE);
     __HAL_DMA_DISABLE_IT(huart->hdmarx, DMA_IT_HT);
-  }
-  else if (huart == &huart3)
-  {
-    //宇树电机
-    //  HAL_UART_Receive(&huart1, (uint8_t *)&data.motor_recv_data, sizeof(data.motor_recv_data), 1);
-    //      __HAL_DMA_DISABLE_IT(huart->hdmarx, DMA_IT_HT);
   }
 }
 

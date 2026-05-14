@@ -124,11 +124,9 @@ int main(void)
   MX_SPI6_Init();
   MX_UART5_Init();
   MX_UART7_Init();
-  MX_UART8_Init();
   MX_USART10_UART_Init();
   MX_FDCAN3_Init();
   MX_IWDG1_Init();
-  MX_USART3_UART_Init();
   MX_USART1_UART_Init();
   MX_TIM12_Init();
   MX_I2C2_Init();
