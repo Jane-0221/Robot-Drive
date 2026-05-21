@@ -20,6 +20,14 @@ typedef struct
   uint32_t last_free_level;
   uint32_t min_free_level;
   uint32_t last_hal_status;
+  uint32_t software_queue_depth;
+  uint32_t software_queue_max_depth;
+  uint32_t software_enqueue_count;
+  uint32_t software_dequeue_count;
+  uint32_t software_drop_old_count;
+  uint32_t hardware_fifo_full_count;
+  uint32_t hal_fail_count;
+  uint32_t invalid_param_count;
 } CanTxFifoDebug_t;
 
 extern volatile CanTxFifoDebug_t can_tx_fifo_debug[3];
@@ -44,6 +52,8 @@ extern void can_init(void);
 void CAN_TxFifoDebug_Reset(void);
 void CAN_TxFifoDebug_RecordBeforeSend(FDCAN_HandleTypeDef *hcan, const FDCAN_TxHeaderTypeDef *tx_header);
 void CAN_TxFifoDebug_RecordAddResult(FDCAN_HandleTypeDef *hcan, HAL_StatusTypeDef status);
+HAL_StatusTypeDef CAN_TxQueueFrame(FDCAN_HandleTypeDef *hcan, const FDCAN_TxHeaderTypeDef *tx_header, const uint8_t *data, uint32_t len);
+void CAN_TxProcess(FDCAN_HandleTypeDef *hcan);
 
 /**
  * @brief 发送CAN标准帧（11位ID）

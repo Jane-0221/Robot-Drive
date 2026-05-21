@@ -34,10 +34,16 @@
 #define OMNI_ACCEL_LIMIT 10.0f
 #define OMNI_SPEED_LIMIT 20.0f
 
-/* Chassis command ramp fixed limits. Slopes are set at the top of Omni_Wheel_Update(). */
+/* Chassis command ramp fixed limits. */
 #define OMNI_RAMP_INTERVAL_MS 1U
+#define OMNI_RAMP_LINEAR_ACCEL 1.3f
+#define OMNI_RAMP_LINEAR_DECEL 1.83f
+#define OMNI_RAMP_YAW_ACCEL 1.5f
+#define OMNI_RAMP_YAW_DECEL 1.83f
 #define OMNI_RAMP_LINEAR_LIMIT 2.3f
 #define OMNI_RAMP_YAW_LIMIT 3.5f
+#define OMNI_MOTOR_TX_INTERVAL_MS 5U
+#define OMNI_MOTOR_TX_COUNT 3U
 
 /* 航向保持 PID 与启用阈值。 */
 #define OMNI_YAW_HOLD_KP 2.0f
@@ -62,6 +68,8 @@ static uint8_t omni_initialized = 0U;
 static RampGenerator omni_x_ramp;
 static RampGenerator omni_y_ramp;
 static RampGenerator omni_w_ramp;
+static uint8_t omni_tx_slot = 0U;
+static uint32_t omni_tx_last_tick_ms = 0U;
 
 /* 航向保持状态。
  * target 使用连续角 yaw_rad_cnt，避免跨 -pi/pi 时跳变。 */
@@ -124,6 +132,115 @@ static void Omni_Wheel_Limit(float *cmd1, float *cmd2, float *cmd3)
     *cmd3 *= scale;
 }
 
+static void Omni_Wheel_UpdateRamps(uint32_t tick_ms, float *x_cmd, float *y_cmd, float *w_cmd)
+{
+    float x_target;
+    float y_target;
+    float w_target;
+
+    x_target = x;
+    y_target = y;
+    w_target = w;
+
+    RampGenerator_SetTarget(&omni_x_ramp, x_target);
+    RampGenerator_SetTarget(&omni_y_ramp, y_target);
+    RampGenerator_SetTarget(&omni_w_ramp, w_target);
+
+    RampGenerator_Update(&omni_x_ramp, tick_ms);
+    RampGenerator_Update(&omni_y_ramp, tick_ms);
+    RampGenerator_Update(&omni_w_ramp, tick_ms);
+
+    *x_cmd = RampGenerator_GetCurrent(&omni_x_ramp);
+    *y_cmd = RampGenerator_GetCurrent(&omni_y_ramp);
+    *w_cmd = RampGenerator_GetCurrent(&omni_w_ramp);
+}
+
+static void Omni_Wheel_ApplyStraightCorrection(float x_cmd,
+                                               float y_cmd,
+                                               float *w_cmd,
+                                               float *yaw_now,
+                                               float *yaw_correction)
+{
+    float v_cmd;
+
+    *yaw_now = IMU_data.AHRS.yaw_rad_cnt;
+    *yaw_correction = 0.0f;
+    v_cmd = sqrtf(x_cmd * x_cmd + y_cmd * y_cmd);
+
+    if ((v_cmd > OMNI_TRANSLATION_ENABLE_THRESHOLD) && (fabsf(*w_cmd) < OMNI_YAW_CMD_DEADBAND))
+    {
+        if (omni_yaw_lock_valid == 0U)
+        {
+            omni_yaw_target = *yaw_now;
+            Omni_Wheel_Reset_Yaw_Pid();
+        }
+
+        *yaw_correction = pid_cal(&omni_yaw_hold_pid, *yaw_now, omni_yaw_target);
+        *w_cmd += *yaw_correction;
+        omni_yaw_lock_valid = 1U;
+    }
+    else
+    {
+        omni_yaw_target = *yaw_now;
+        Omni_Wheel_Reset_Yaw_Pid();
+        omni_yaw_lock_valid = 0U;
+    }
+}
+
+static void Omni_Wheel_CalcWheelCommands(float x_cmd,
+                                         float y_cmd,
+                                         float w_cmd,
+                                         float *cmd1,
+                                         float *cmd2,
+                                         float *cmd3)
+{
+    *cmd1 = (y_cmd + OMNI_CHASSIS_RADIUS_M * w_cmd) / OMNI_WHEEL_RADIUS_M;
+    *cmd2 = (-OMNI_SQRT3_OVER_2 * x_cmd - 0.5f * y_cmd + OMNI_CHASSIS_RADIUS_M * w_cmd) / OMNI_WHEEL_RADIUS_M;
+    *cmd3 = (OMNI_SQRT3_OVER_2 * x_cmd - 0.5f * y_cmd + OMNI_CHASSIS_RADIUS_M * w_cmd) / OMNI_WHEEL_RADIUS_M;
+
+    *cmd1 *= OMNI_DIR1;
+    *cmd2 *= OMNI_DIR2;
+    *cmd3 *= OMNI_DIR3;
+
+    Omni_Wheel_Limit(cmd1, cmd2, cmd3);
+}
+
+static void Omni_Wheel_TxScheduled(float cmd1, float cmd2, float cmd3, uint32_t tick_ms)
+{
+    if ((tick_ms - omni_tx_last_tick_ms) < OMNI_MOTOR_TX_INTERVAL_MS)
+    {
+        return;
+    }
+
+    omni_tx_last_tick_ms = tick_ms;
+    omni_debug.tx_last_tick_ms = tick_ms;
+    omni_debug.tx_slot = omni_tx_slot;
+
+    switch (omni_tx_slot)
+    {
+    case 0U:
+        RobStride_Motor_Speed_control(&omni_motor1, OMNI_CAN_HANDLE, cmd1, OMNI_CURRENT_LIMIT);
+        omni_debug.tx_count1++;
+        break;
+
+    case 1U:
+        RobStride_Motor_Speed_control(&omni_motor2, OMNI_CAN_HANDLE, cmd2, OMNI_CURRENT_LIMIT);
+        omni_debug.tx_count2++;
+        break;
+
+    default:
+        RobStride_Motor_Speed_control(&omni_motor3, OMNI_CAN_HANDLE, cmd3, OMNI_CURRENT_LIMIT);
+        omni_debug.tx_count3++;
+        break;
+    }
+
+    omni_tx_slot++;
+    if (omni_tx_slot >= OMNI_MOTOR_TX_COUNT)
+    {
+        omni_tx_slot = 0U;
+    }
+}
+
 void Omni_Wheel_Init(void)
 {
     /* 上电默认底盘静止。 */
@@ -131,9 +248,11 @@ void Omni_Wheel_Init(void)
     y = 0.0f;
     w = 0.0f;
     omni_debug = (Omni_Wheel_Debug_t){0};
-    RampGenerator_Init(&omni_x_ramp, OMNI_RAMP_INTERVAL_MS, 0.0f, 0.0f, OMNI_RAMP_LINEAR_LIMIT);
-    RampGenerator_Init(&omni_y_ramp, OMNI_RAMP_INTERVAL_MS, 0.0f, 0.0f, OMNI_RAMP_LINEAR_LIMIT);
-    RampGenerator_Init(&omni_w_ramp, OMNI_RAMP_INTERVAL_MS, 0.0f, 0.0f, OMNI_RAMP_YAW_LIMIT);
+    omni_tx_slot = 0U;
+    omni_tx_last_tick_ms = HAL_GetTick() - OMNI_MOTOR_TX_INTERVAL_MS;
+    RampGenerator_Init(&omni_x_ramp, OMNI_RAMP_INTERVAL_MS, OMNI_RAMP_LINEAR_ACCEL, OMNI_RAMP_LINEAR_DECEL, OMNI_RAMP_LINEAR_LIMIT);
+    RampGenerator_Init(&omni_y_ramp, OMNI_RAMP_INTERVAL_MS, OMNI_RAMP_LINEAR_ACCEL, OMNI_RAMP_LINEAR_DECEL, OMNI_RAMP_LINEAR_LIMIT);
+    RampGenerator_Init(&omni_w_ramp, OMNI_RAMP_INTERVAL_MS, OMNI_RAMP_YAW_ACCEL, OMNI_RAMP_YAW_DECEL, OMNI_RAMP_YAW_LIMIT);
 
     /* 航向保持以上电时当前朝向为初值。 */
     pid_set(&omni_yaw_hold_pid,
@@ -155,19 +274,10 @@ void Omni_Wheel_Init(void)
 
 void Omni_Wheel_Update(void)
 {
-    const float ramp_linear_accel = 1.3f;
-    const float ramp_linear_decel = 1.83f;
-    const float ramp_yaw_accel = 1.5f;
-    const float ramp_yaw_decel = 1.83f;
-
     float x_cmd;
     float y_cmd;
     float w_cmd;
-    float x_target;
-    float y_target;
-    float w_target;
     float w_cmd_in;
-    float v_cmd;
     float yaw_now;
     float yaw_correction;
     float cmd1;
@@ -181,70 +291,12 @@ void Omni_Wheel_Update(void)
     }
 
     /* 先把全局指令读到局部变量，避免一次计算中被其他任务改写。 */
-    RampGenerator_SetAccel(&omni_x_ramp, ramp_linear_accel);
-    RampGenerator_SetDecel(&omni_x_ramp, ramp_linear_decel);
-    RampGenerator_SetAccel(&omni_y_ramp, ramp_linear_accel);
-    RampGenerator_SetDecel(&omni_y_ramp, ramp_linear_decel);
-    RampGenerator_SetAccel(&omni_w_ramp, ramp_yaw_accel);
-    RampGenerator_SetDecel(&omni_w_ramp, ramp_yaw_decel);
-
-    x_target = x;
-    y_target = y;
-    w_target = w;
-    RampGenerator_SetTarget(&omni_x_ramp, x_target);
-    RampGenerator_SetTarget(&omni_y_ramp, y_target);
-    RampGenerator_SetTarget(&omni_w_ramp, w_target);
-
     tick_ms = HAL_GetTick();
-    RampGenerator_Update(&omni_x_ramp, tick_ms);
-    RampGenerator_Update(&omni_y_ramp, tick_ms);
-    RampGenerator_Update(&omni_w_ramp, tick_ms);
-
-    x_cmd = RampGenerator_GetCurrent(&omni_x_ramp);
-    y_cmd = RampGenerator_GetCurrent(&omni_y_ramp);
-    w_cmd = RampGenerator_GetCurrent(&omni_w_ramp);
+    Omni_Wheel_UpdateRamps(tick_ms, &x_cmd, &y_cmd, &w_cmd);
     w_cmd_in = w_cmd;
-    yaw_now = IMU_data.AHRS.yaw_rad_cnt;
-    v_cmd = sqrtf(x_cmd * x_cmd + y_cmd * y_cmd);
-    yaw_correction = 0.0f;
 
-    /* 只在有平移指令且基本没有人工转向时启用航向保持。
-     * 这解决的是“车头跑偏导致走不直”，不是对横向侧滑做位移估计。 */
-    if ((v_cmd > OMNI_TRANSLATION_ENABLE_THRESHOLD) && (fabsf(w_cmd) < OMNI_YAW_CMD_DEADBAND))
-    {
-        if (omni_yaw_lock_valid == 0U)
-        {
-            /* 从不锁定切回平移时，用当前朝向作为新的锁定目标。 */
-            omni_yaw_target = yaw_now;
-            Omni_Wheel_Reset_Yaw_Pid();
-        }
-
-        yaw_correction = pid_cal(&omni_yaw_hold_pid, yaw_now, omni_yaw_target);
-        w_cmd += yaw_correction;
-        omni_yaw_lock_valid = 1U;
-    }
-    else
-    {
-        /* 明显转向或没有平移时不做走直纠偏，
-         * 同时把当前朝向更新成下一次平移的锁定目标。 */
-        omni_yaw_target = yaw_now;
-        Omni_Wheel_Reset_Yaw_Pid();
-        omni_yaw_lock_valid = 0U;
-    }
-
-    /* 三轮 120 度全向轮逆运动学：
-     * x 为前向，y 为右向，w 为顺时针。
-     * 计算结果为每个轮子的目标角速度，单位 rad/s。 */
-    cmd1 = (y_cmd + OMNI_CHASSIS_RADIUS_M * w_cmd) / OMNI_WHEEL_RADIUS_M;
-    cmd2 = (-OMNI_SQRT3_OVER_2 * x_cmd - 0.5f * y_cmd + OMNI_CHASSIS_RADIUS_M * w_cmd) / OMNI_WHEEL_RADIUS_M;
-    cmd3 = (OMNI_SQRT3_OVER_2 * x_cmd - 0.5f * y_cmd + OMNI_CHASSIS_RADIUS_M * w_cmd) / OMNI_WHEEL_RADIUS_M;
-
-    /* 方向修正独立放在矩阵之后，方便现场调反。 */
-    cmd1 *= OMNI_DIR1;
-    cmd2 *= OMNI_DIR2;
-    cmd3 *= OMNI_DIR3;
-
-    Omni_Wheel_Limit(&cmd1, &cmd2, &cmd3);
+    Omni_Wheel_ApplyStraightCorrection(x_cmd, y_cmd, &w_cmd, &yaw_now, &yaw_correction);
+    Omni_Wheel_CalcWheelCommands(x_cmd, y_cmd, w_cmd, &cmd1, &cmd2, &cmd3);
 
     omni_debug.x_cmd = x_cmd;
     omni_debug.y_cmd = y_cmd;
@@ -268,9 +320,7 @@ void Omni_Wheel_Update(void)
     omni_debug.update_tick_ms = tick_ms;
     omni_debug.update_count++;
 
-    RobStride_Motor_Speed_control(&omni_motor1, OMNI_CAN_HANDLE, cmd1, OMNI_CURRENT_LIMIT);
-    RobStride_Motor_Speed_control(&omni_motor2, OMNI_CAN_HANDLE, cmd2, OMNI_CURRENT_LIMIT);
-    RobStride_Motor_Speed_control(&omni_motor3, OMNI_CAN_HANDLE, cmd3, OMNI_CURRENT_LIMIT);
+    Omni_Wheel_TxScheduled(cmd1, cmd2, cmd3, tick_ms);
 }
 
 void Omni_Wheel_RxCallback(uint32_t ext_id, uint8_t *data)

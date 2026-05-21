@@ -34,6 +34,27 @@ extern FDCAN_HandleTypeDef hfdcan1;
 extern FDCAN_HandleTypeDef hfdcan2;
 extern FDCAN_HandleTypeDef hfdcan3;
 
+#define CAN_TX_BUS_COUNT 3U
+#define CAN_TX_QUEUE_DEPTH 32U
+#define CAN_TX_DATA_BYTES 8U
+
+typedef struct
+{
+  FDCAN_TxHeaderTypeDef header;
+  uint8_t data[CAN_TX_DATA_BYTES];
+} CanTxQueuedFrame_t;
+
+typedef struct
+{
+  CanTxQueuedFrame_t frame[CAN_TX_QUEUE_DEPTH];
+  uint8_t head;
+  uint8_t tail;
+  uint8_t count;
+} CanTxQueue_t;
+
+static CanTxQueue_t can_tx_queue[CAN_TX_BUS_COUNT];
+static volatile uint8_t can_tx_processing[CAN_TX_BUS_COUNT] = {0U};
+
 volatile CanTxFifoDebug_t can_tx_fifo_debug[3] = {
     {.min_free_level = 0xFFFFFFFFU},
     {.min_free_level = 0xFFFFFFFFU},
@@ -132,6 +153,70 @@ static int32_t CAN_TxFifoDebug_GetIndex(FDCAN_HandleTypeDef *hcan)
   return -1;
 }
 
+static void CAN_TxCriticalEnter(uint32_t *primask)
+{
+  if (primask == NULL)
+  {
+    return;
+  }
+
+  *primask = __get_PRIMASK();
+  __disable_irq();
+}
+
+static void CAN_TxCriticalExit(uint32_t primask)
+{
+  if (primask == 0U)
+  {
+    __enable_irq();
+  }
+}
+
+static void CAN_TxDebug_RecordInvalid(FDCAN_HandleTypeDef *hcan)
+{
+  int32_t index = CAN_TxFifoDebug_GetIndex(hcan);
+
+  if (index >= 0)
+  {
+    can_tx_fifo_debug[index].invalid_param_count++;
+  }
+}
+
+static uint8_t CAN_TxProcess_Begin(uint32_t index)
+{
+  uint8_t can_process = 0U;
+  uint32_t primask;
+
+  if (index >= CAN_TX_BUS_COUNT)
+  {
+    return 0U;
+  }
+
+  CAN_TxCriticalEnter(&primask);
+  if (can_tx_processing[index] == 0U)
+  {
+    can_tx_processing[index] = 1U;
+    can_process = 1U;
+  }
+  CAN_TxCriticalExit(primask);
+
+  return can_process;
+}
+
+static void CAN_TxProcess_End(uint32_t index)
+{
+  uint32_t primask;
+
+  if (index >= CAN_TX_BUS_COUNT)
+  {
+    return;
+  }
+
+  CAN_TxCriticalEnter(&primask);
+  can_tx_processing[index] = 0U;
+  CAN_TxCriticalExit(primask);
+}
+
 static void CAN_ArmFeedbackDebug_Record(uint8_t logical_motor)
 {
   if (logical_motor >= ARM_LOGICAL_MOTOR_COUNT)
@@ -145,7 +230,13 @@ static void CAN_ArmFeedbackDebug_Record(uint8_t logical_motor)
 
 void CAN_TxFifoDebug_Reset(void)
 {
-  for (uint32_t i = 0; i < 3U; i++)
+  uint32_t primask;
+
+  CAN_TxCriticalEnter(&primask);
+  memset(can_tx_queue, 0, sizeof(can_tx_queue));
+  memset((void *)can_tx_processing, 0, sizeof(can_tx_processing));
+
+  for (uint32_t i = 0; i < CAN_TX_BUS_COUNT; i++)
   {
     can_tx_fifo_debug[i].sample_count = 0U;
     can_tx_fifo_debug[i].full_count = 0U;
@@ -156,7 +247,16 @@ void CAN_TxFifoDebug_Reset(void)
     can_tx_fifo_debug[i].last_free_level = 0U;
     can_tx_fifo_debug[i].min_free_level = 0xFFFFFFFFU;
     can_tx_fifo_debug[i].last_hal_status = (uint32_t)HAL_OK;
+    can_tx_fifo_debug[i].software_queue_depth = 0U;
+    can_tx_fifo_debug[i].software_queue_max_depth = 0U;
+    can_tx_fifo_debug[i].software_enqueue_count = 0U;
+    can_tx_fifo_debug[i].software_dequeue_count = 0U;
+    can_tx_fifo_debug[i].software_drop_old_count = 0U;
+    can_tx_fifo_debug[i].hardware_fifo_full_count = 0U;
+    can_tx_fifo_debug[i].hal_fail_count = 0U;
+    can_tx_fifo_debug[i].invalid_param_count = 0U;
   }
+  CAN_TxCriticalExit(primask);
 }
 
 void CAN_TxFifoDebug_RecordBeforeSend(FDCAN_HandleTypeDef *hcan, const FDCAN_TxHeaderTypeDef *tx_header)
@@ -187,6 +287,7 @@ void CAN_TxFifoDebug_RecordBeforeSend(FDCAN_HandleTypeDef *hcan, const FDCAN_TxH
   if (free_level == 0U)
   {
     debug->full_count++;
+    debug->hardware_fifo_full_count++;
   }
 }
 
@@ -206,6 +307,7 @@ void CAN_TxFifoDebug_RecordAddResult(FDCAN_HandleTypeDef *hcan, HAL_StatusTypeDe
   if (status != HAL_OK)
   {
     debug->add_fail_count++;
+    debug->hal_fail_count++;
   }
 }
 
@@ -215,8 +317,120 @@ void CAN_TxFifoDebug_RecordAddResult(FDCAN_HandleTypeDef *hcan, HAL_StatusTypeDe
  *        2. 本函数仅做声明占位，无实际初始化逻辑，可根据需求补充自定义初始化；
  *        3. 中断配置、过滤器配置等核心初始化逻辑在HAL_FDCAN_ErrorCallback中也有兜底处理。
  */
+HAL_StatusTypeDef CAN_TxQueueFrame(FDCAN_HandleTypeDef *hcan, const FDCAN_TxHeaderTypeDef *tx_header, const uint8_t *data, uint32_t len)
+{
+  int32_t index = CAN_TxFifoDebug_GetIndex(hcan);
+  CanTxQueuedFrame_t queued_frame;
+  CanTxQueue_t *queue;
+  volatile CanTxFifoDebug_t *debug;
+  uint32_t primask;
+
+  if ((index < 0) || (tx_header == NULL) || (len > CAN_TX_DATA_BYTES) || ((data == NULL) && (len > 0U)))
+  {
+    CAN_TxDebug_RecordInvalid(hcan);
+    return HAL_ERROR;
+  }
+
+  memset(&queued_frame, 0, sizeof(queued_frame));
+  queued_frame.header = *tx_header;
+  if ((data != NULL) && (len > 0U))
+  {
+    memcpy(queued_frame.data, data, len);
+  }
+
+  queue = &can_tx_queue[index];
+  debug = &can_tx_fifo_debug[index];
+
+  CAN_TxCriticalEnter(&primask);
+  if (queue->count >= CAN_TX_QUEUE_DEPTH)
+  {
+    queue->tail = (uint8_t)((queue->tail + 1U) % CAN_TX_QUEUE_DEPTH);
+    queue->count--;
+    debug->software_drop_old_count++;
+  }
+
+  queue->frame[queue->head] = queued_frame;
+  queue->head = (uint8_t)((queue->head + 1U) % CAN_TX_QUEUE_DEPTH);
+  queue->count++;
+  debug->software_enqueue_count++;
+  debug->software_queue_depth = queue->count;
+  if (queue->count > debug->software_queue_max_depth)
+  {
+    debug->software_queue_max_depth = queue->count;
+  }
+  CAN_TxCriticalExit(primask);
+
+  CAN_TxProcess(hcan);
+
+  return HAL_OK;
+}
+
+void CAN_TxProcess(FDCAN_HandleTypeDef *hcan)
+{
+  int32_t index = CAN_TxFifoDebug_GetIndex(hcan);
+  CanTxQueuedFrame_t queued_frame;
+  HAL_StatusTypeDef tx_status;
+  uint32_t free_level;
+  uint32_t primask;
+
+  if (index < 0)
+  {
+    return;
+  }
+
+  if (CAN_TxProcess_Begin((uint32_t)index) == 0U)
+  {
+    return;
+  }
+
+  for (;;)
+  {
+    free_level = HAL_FDCAN_GetTxFifoFreeLevel(hcan);
+    if (free_level == 0U)
+    {
+      can_tx_fifo_debug[index].sample_count++;
+      can_tx_fifo_debug[index].last_tick = HAL_GetTick();
+      can_tx_fifo_debug[index].last_free_level = 0U;
+      can_tx_fifo_debug[index].full_count++;
+      can_tx_fifo_debug[index].hardware_fifo_full_count++;
+      can_tx_fifo_debug[index].min_free_level = 0U;
+      break;
+    }
+
+    CAN_TxCriticalEnter(&primask);
+    if (can_tx_queue[index].count == 0U)
+    {
+      can_tx_fifo_debug[index].software_queue_depth = 0U;
+      CAN_TxCriticalExit(primask);
+      break;
+    }
+    queued_frame = can_tx_queue[index].frame[can_tx_queue[index].tail];
+    can_tx_queue[index].tail = (uint8_t)((can_tx_queue[index].tail + 1U) % CAN_TX_QUEUE_DEPTH);
+    can_tx_queue[index].count--;
+    can_tx_fifo_debug[index].software_dequeue_count++;
+    can_tx_fifo_debug[index].software_queue_depth = can_tx_queue[index].count;
+    CAN_TxCriticalExit(primask);
+
+    CAN_TxFifoDebug_RecordBeforeSend(hcan, &queued_frame.header);
+    tx_status = HAL_FDCAN_AddMessageToTxFifoQ(hcan, &queued_frame.header, queued_frame.data);
+    CAN_TxFifoDebug_RecordAddResult(hcan, tx_status);
+    if (tx_status != HAL_OK)
+    {
+      break;
+    }
+  }
+
+  CAN_TxProcess_End((uint32_t)index);
+}
+
 void can_init(void)
 {
+  CAN_TxFifoDebug_Reset();
+
+  (void)HAL_FDCAN_ActivateNotification(&hfdcan1, FDCAN_IT_TX_FIFO_EMPTY, 0);
+  (void)HAL_FDCAN_ActivateNotification(&hfdcan2, FDCAN_IT_TX_FIFO_EMPTY, 0);
+  (void)HAL_FDCAN_ActivateNotification(&hfdcan3, FDCAN_IT_TX_FIFO_EMPTY, 0);
+
   // 实际初始化由 HAL 库自动生成的 MX_FDCANx_Init 完成，此处仅占位
   // 若需自定义初始化（如过滤器、中断），可在此补充
 }
@@ -234,7 +448,6 @@ void can_init(void)
 uint8_t canx_send_data(FDCAN_HandleTypeDef *hcan, uint16_t id, uint8_t *data, uint32_t len)
 {
   FDCAN_TxHeaderTypeDef TxHeader;
-  HAL_StatusTypeDef tx_status;
   TxHeader.Identifier = id;                  // 设置CAN标准帧ID
   TxHeader.IdType = FDCAN_STANDARD_ID;       // 帧类型：标准帧（11位ID）
   TxHeader.TxFrameType = FDCAN_DATA_FRAME;   // 帧类型：数据帧（非远程帧）
@@ -242,18 +455,6 @@ uint8_t canx_send_data(FDCAN_HandleTypeDef *hcan, uint16_t id, uint8_t *data, ui
   // 数据长度映射（FDCAN仅支持固定DLC长度，不足则补零，超出则返回错误）
   if (len <= 8)
     TxHeader.DataLength = FDCAN_DLC_BYTES_8;
-  else if (len == 12)
-    TxHeader.DataLength = FDCAN_DLC_BYTES_12;
-  else if (len == 16)
-    TxHeader.DataLength = FDCAN_DLC_BYTES_16;
-  else if (len == 20)
-    TxHeader.DataLength = FDCAN_DLC_BYTES_20;
-  else if (len == 24)
-    TxHeader.DataLength = FDCAN_DLC_BYTES_24;
-  else if (len == 48)
-    TxHeader.DataLength = FDCAN_DLC_BYTES_48;
-  else if (len == 64)
-    TxHeader.DataLength = FDCAN_DLC_BYTES_64;
   else
     return 1; // 不支持的长度，返回错误
 
@@ -265,14 +466,7 @@ uint8_t canx_send_data(FDCAN_HandleTypeDef *hcan, uint16_t id, uint8_t *data, ui
   TxHeader.MessageMarker = 0x00;
 
   // 将消息添加到发送FIFO队列，失败则触发错误处理
-  CAN_TxFifoDebug_RecordBeforeSend(hcan, &TxHeader);
-  tx_status = HAL_FDCAN_AddMessageToTxFifoQ(hcan, &TxHeader, data);
-  CAN_TxFifoDebug_RecordAddResult(hcan, tx_status);
-  if (tx_status != HAL_OK)
-  {
-    Error_Handler();
-  }
-  return 0; // 发送成功
+  return (CAN_TxQueueFrame(hcan, &TxHeader, data, len) == HAL_OK) ? 0U : 1U;
 }
 
 /**
@@ -287,7 +481,6 @@ uint8_t canx_send_data(FDCAN_HandleTypeDef *hcan, uint16_t id, uint8_t *data, ui
 uint8_t canx_send_ext_data(FDCAN_HandleTypeDef *hcan, uint32_t id, uint8_t *data, uint32_t len)
 {
   FDCAN_TxHeaderTypeDef TxHeader;
-  HAL_StatusTypeDef tx_status;
   TxHeader.Identifier = id;                  // 设置CAN扩展帧ID
   TxHeader.IdType = FDCAN_EXTENDED_ID;       // 帧类型：扩展帧（29位ID）
   TxHeader.TxFrameType = FDCAN_DATA_FRAME;   // 帧类型：数据帧
@@ -295,18 +488,6 @@ uint8_t canx_send_ext_data(FDCAN_HandleTypeDef *hcan, uint32_t id, uint8_t *data
   // 数据长度映射（与标准帧逻辑一致）
   if (len <= 8)
     TxHeader.DataLength = FDCAN_DLC_BYTES_8;
-  else if (len == 12)
-    TxHeader.DataLength = FDCAN_DLC_BYTES_12;
-  else if (len == 16)
-    TxHeader.DataLength = FDCAN_DLC_BYTES_16;
-  else if (len == 20)
-    TxHeader.DataLength = FDCAN_DLC_BYTES_20;
-  else if (len == 24)
-    TxHeader.DataLength = FDCAN_DLC_BYTES_24;
-  else if (len == 48)
-    TxHeader.DataLength = FDCAN_DLC_BYTES_48;
-  else if (len == 64)
-    TxHeader.DataLength = FDCAN_DLC_BYTES_64;
   else
     return 1; // 不支持的长度，返回错误
 
@@ -318,14 +499,7 @@ uint8_t canx_send_ext_data(FDCAN_HandleTypeDef *hcan, uint32_t id, uint8_t *data
   TxHeader.MessageMarker = 0x00;
 
   // 添加到发送FIFO队列，失败则触发错误处理
-  CAN_TxFifoDebug_RecordBeforeSend(hcan, &TxHeader);
-  tx_status = HAL_FDCAN_AddMessageToTxFifoQ(hcan, &TxHeader, data);
-  CAN_TxFifoDebug_RecordAddResult(hcan, tx_status);
-  if (tx_status != HAL_OK)
-  {
-    Error_Handler();
-  }
-  return 0; // 发送成功
+  return (CAN_TxQueueFrame(hcan, &TxHeader, data, len) == HAL_OK) ? 0U : 1U;
 }
 
 /**
@@ -356,6 +530,11 @@ uint8_t fdcanx_receive(FDCAN_HandleTypeDef *hfdcan, uint32_t RXFIFO, FDCAN_RxHea
  *         2. 按CAN控制器（FDCAN1/FDCAN2）和帧ID分类处理不同电机的反馈数据；
  *         3. FDCAN3未在本函数中处理，可根据需求补充。
  */
+void HAL_FDCAN_TxFifoEmptyCallback(FDCAN_HandleTypeDef *hfdcan)
+{
+  CAN_TxProcess(hfdcan);
+}
+
 void HAL_FDCAN_RxFifo0Callback(FDCAN_HandleTypeDef *hfdcan, uint32_t RxFifo0ITs)
 {
   if (hfdcan->Instance == FDCAN2)
@@ -547,7 +726,7 @@ void HAL_FDCAN_ErrorCallback(FDCAN_HandleTypeDef *hfdcan)
                                  FDCAN_FILTER_REMOTE, FDCAN_FILTER_REMOTE);
   }
 
-  HAL_FDCAN_ActivateNotification(hfdcan, FDCAN_IT_RX_FIFO0_NEW_MESSAGE, 0);
+  HAL_FDCAN_ActivateNotification(hfdcan, FDCAN_IT_RX_FIFO0_NEW_MESSAGE | FDCAN_IT_TX_FIFO_EMPTY, 0);
   if (hfdcan->Instance == FDCAN2)
   {
     HAL_FDCAN_ActivateNotification(hfdcan,
@@ -562,4 +741,5 @@ void HAL_FDCAN_ErrorCallback(FDCAN_HandleTypeDef *hfdcan)
   
   // 步骤6：重启CAN控制器
   HAL_FDCAN_Start(hfdcan);
+  CAN_TxProcess(hfdcan);
 }

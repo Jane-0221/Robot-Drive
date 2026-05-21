@@ -38,8 +38,13 @@ typedef struct
     uint8_t pattern1;
     uint8_t pattern2;
     uint8_t pattern3;
+    uint8_t tx_slot;
     uint32_t update_tick_ms;
     uint32_t update_count;
+    uint32_t tx_last_tick_ms;
+    uint32_t tx_count1;
+    uint32_t tx_count2;
+    uint32_t tx_count3;
 } Omni_Wheel_Debug_t;
 
 extern volatile Omni_Wheel_Debug_t omni_debug;

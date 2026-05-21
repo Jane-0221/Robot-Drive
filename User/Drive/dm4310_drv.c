@@ -8,11 +8,7 @@
 
 static HAL_StatusTypeDef DM4310_AddMessageToTxFifoQ(hcan_t *hcan, FDCAN_TxHeaderTypeDef *tx_header, uint8_t *data)
 {
-	HAL_StatusTypeDef status;
-	CAN_TxFifoDebug_RecordBeforeSend(hcan, tx_header);
-	status = HAL_FDCAN_AddMessageToTxFifoQ(hcan, tx_header, data);
-	CAN_TxFifoDebug_RecordAddResult(hcan, status);
-	return status;
+	return CAN_TxQueueFrame(hcan, tx_header, data, 8U);
 }
 
 Arm_Motor_t arm_motor[num];
@@ -330,15 +326,7 @@ void CAN_Send_Enter(hcan_t* hcan,uint16_t motor_id)
                                          0xff,
                                          0xfc};
 
-DM4310_AddMessageToTxFifoQ(hcan, &TxHeader, enable_data);
-																				 
-		   // 发送CAN指令
-  if(DM4310_AddMessageToTxFifoQ(hcan, &TxHeader, enable_data)
- != HAL_OK)
-  {
-        // 发送失败处理
-       Error_Handler();      
-  }																		 
+  (void)DM4310_AddMessageToTxFifoQ(hcan, &TxHeader, enable_data);
 																				 
 																				 
 }
@@ -371,15 +359,7 @@ void CAN_Send_Exit(hcan_t* hcan,uint16_t motor_id)
                                          0xff,
                                          0xfd};
 
-DM4310_AddMessageToTxFifoQ(hcan, &TxHeader, exit_data);
-																				 
-		   // 发送CAN指令
-  if(DM4310_AddMessageToTxFifoQ(hcan, &TxHeader, exit_data)
- != HAL_OK)
-  {
-        // 发送失败处理
-       Error_Handler();      
-  }																		 
+  (void)DM4310_AddMessageToTxFifoQ(hcan, &TxHeader, exit_data);
 																				 
 																				 
 }
@@ -410,15 +390,7 @@ void CAN_Send_Clear_Error(hcan_t* hcan,uint16_t motor_id)
                                          0xff,
                                          0xfb};
 
-DM4310_AddMessageToTxFifoQ(hcan, &TxHeader, clear_data);
-																				 
-		   // 发送CAN指令
-  if(DM4310_AddMessageToTxFifoQ(hcan, &TxHeader, clear_data)
- != HAL_OK)
-  {
-        // 发送失败处理
-       Error_Handler();      
-  }																		 
+  (void)DM4310_AddMessageToTxFifoQ(hcan, &TxHeader, clear_data);
 																				 
 																				 
 }
@@ -449,15 +421,7 @@ void CAN_Send_Save_Zero(hcan_t* hcan,uint16_t motor_id)
                                          0xff,
                                          0xfe};
 
-DM4310_AddMessageToTxFifoQ(hcan, &TxHeader, Save_Zero);
-																				 
-		   // 发送CAN指令
-  if(DM4310_AddMessageToTxFifoQ(hcan, &TxHeader, Save_Zero)
- != HAL_OK)
-  {
-        // 发送失败处理
-       Error_Handler();      
-  }																		 
+  (void)DM4310_AddMessageToTxFifoQ(hcan, &TxHeader, Save_Zero);
 																				 
 																				 
 }

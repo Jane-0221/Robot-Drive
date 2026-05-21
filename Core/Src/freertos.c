@@ -97,7 +97,7 @@ volatile uint32_t head_task_feedback_count_debug[HEAD_TASK_MOTOR_COUNT] = {0U};
 volatile uint8_t head_task_ready_mask_debug = 0U;
 volatile uint8_t head_task_control_mask_debug = 0U;
 volatile uint8_t head_task_block_reason_debug[HEAD_TASK_MOTOR_COUNT] = {0U};
-volatile uint8_t control_mode = CONTROL_MODE_PC;
+volatile uint8_t control_mode = CONTROL_MODE_REMOTE;
 /* USER CODE END Variables */
 /* Definitions for Remote_control */
 osThreadId_t Remote_controlHandle;
