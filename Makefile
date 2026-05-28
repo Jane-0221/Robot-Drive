@@ -116,6 +116,7 @@ User/Drive/ktech_motor.c \
 User/Drive/Robstride04.c \
 User/Drive/LZ_motor_driver.c \
 User/Drive/DrEmpower_can.c \
+User/Drive/Servo_can.c \
 User/Drive/pt_sensor.c \
 User/Drive/vl53l0x.c \
 User/Hardware/arm.c \
