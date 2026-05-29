@@ -7,16 +7,6 @@ extern "C" {
 
 #include <stdint.h>
 
-/* 底盘速度指令：
- * x: 车体前向速度，单位 m/s
- * y: 车体右向速度，单位 m/s
- * w: 车体顺时针角速度，单位 rad/s
- */
-extern volatile float x;
-extern volatile float y;
-extern volatile float w;
-
-/* 调试观察量，方便在在线调试窗口里直接看底盘指令与反馈。 */
 typedef struct
 {
     float x_cmd;
@@ -38,6 +28,7 @@ typedef struct
     uint8_t pattern1;
     uint8_t pattern2;
     uint8_t pattern3;
+    uint8_t ready_mask;
     uint8_t tx_slot;
     uint32_t update_tick_ms;
     uint32_t update_count;
@@ -45,19 +36,25 @@ typedef struct
     uint32_t tx_count1;
     uint32_t tx_count2;
     uint32_t tx_count3;
+    uint32_t last_feedback_tick1;
+    uint32_t last_feedback_tick2;
+    uint32_t last_feedback_tick3;
+    uint32_t enable_retry_last_tick1;
+    uint32_t enable_retry_last_tick2;
+    uint32_t enable_retry_last_tick3;
+    uint32_t enable_retry_count1;
+    uint32_t enable_retry_count2;
+    uint32_t enable_retry_count3;
 } Omni_Wheel_Debug_t;
 
 extern volatile Omni_Wheel_Debug_t omni_debug;
 
-/* 初始化 3 个全向轮电机为 FDCAN3 速度模式。 */
 void Omni_Wheel_Init(void);
-/* 根据全局 x/y/w 计算 3 个轮子的目标角速度并下发。 */
 void Omni_Wheel_Update(void);
-/* 处理 FDCAN3 上 RobStride 扩展帧反馈。 */
 void Omni_Wheel_RxCallback(uint32_t ext_id, uint8_t *data);
 
 #ifdef __cplusplus
 }
 #endif
 
-#endif
+#endif /* __OMNI_WHEEL_H__ */

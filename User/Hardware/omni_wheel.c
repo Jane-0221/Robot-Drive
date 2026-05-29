@@ -4,6 +4,7 @@
 
 #include "IMU_updata.h"
 #include "Robstride04.h"
+#include "chassis.h"
 #include "fdcan.h"
 #include "main.h"
 #include "pid.h"
@@ -44,6 +45,12 @@
 #define OMNI_RAMP_YAW_LIMIT 3.5f
 #define OMNI_MOTOR_TX_INTERVAL_MS 5U
 #define OMNI_MOTOR_TX_COUNT 3U
+#define OMNI_MOTOR_RUNNING_PATTERN 2U
+#define OMNI_MOTOR_FEEDBACK_TIMEOUT_MS 500U
+#define OMNI_MOTOR_ENABLE_RETRY_INTERVAL_MS 200U
+#define OMNI_MOTOR1_INDEX 0U
+#define OMNI_MOTOR2_INDEX 1U
+#define OMNI_MOTOR3_INDEX 2U
 
 /* 航向保持 PID 与启用阈值。 */
 #define OMNI_YAW_HOLD_KP 2.0f
@@ -54,10 +61,6 @@
 #define OMNI_TRANSLATION_ENABLE_THRESHOLD 0.02f
 #define OMNI_YAW_CMD_DEADBAND 0.05f
 
-/* 底盘速度指令，全局暴露给其他模块直接赋值。 */
-volatile float x = 0.0f;
-volatile float y = 0.0f;
-volatile float w = 0.0f;
 volatile Omni_Wheel_Debug_t omni_debug = {0};
 
 /* 模块内部电机对象，不对外暴露。 */
@@ -70,6 +73,9 @@ static RampGenerator omni_y_ramp;
 static RampGenerator omni_w_ramp;
 static uint8_t omni_tx_slot = 0U;
 static uint32_t omni_tx_last_tick_ms = 0U;
+static volatile uint32_t omni_feedback_tick_ms[OMNI_MOTOR_TX_COUNT] = {0};
+static uint32_t omni_enable_retry_tick_ms[OMNI_MOTOR_TX_COUNT] = {0};
+static uint32_t omni_enable_retry_count[OMNI_MOTOR_TX_COUNT] = {0};
 
 /* 航向保持状态。
  * target 使用连续角 yaw_rad_cnt，避免跨 -pi/pi 时跳变。 */
@@ -103,6 +109,96 @@ static void Omni_Wheel_Init_Motor(RobStride_Motor_t *motor, uint8_t can_id)
     Set_RobStride_Motor_parameter(motor, OMNI_CAN_HANDLE, 0x7022, OMNI_ACCEL_LIMIT, 'p');
     HAL_Delay(10);
     RobStride_Motor_ProactiveEscalationSet(motor, OMNI_CAN_HANDLE, 0x01);
+}
+
+static void Omni_Wheel_ResetMotorRuntime(uint32_t tick_ms)
+{
+    uint8_t i;
+
+    for (i = 0U; i < OMNI_MOTOR_TX_COUNT; i++)
+    {
+        omni_feedback_tick_ms[i] = 0U;
+        omni_enable_retry_tick_ms[i] = tick_ms;
+        omni_enable_retry_count[i] = 0U;
+    }
+}
+
+static uint8_t Omni_Wheel_FeedbackFresh(uint8_t index, uint32_t tick_ms)
+{
+    if (omni_feedback_tick_ms[index] == 0U)
+    {
+        return 0U;
+    }
+
+    if ((tick_ms - omni_feedback_tick_ms[index]) > OMNI_MOTOR_FEEDBACK_TIMEOUT_MS)
+    {
+        return 0U;
+    }
+
+    return 1U;
+}
+
+static uint8_t Omni_Wheel_MotorReady(RobStride_Motor_t *motor, uint8_t index, uint32_t tick_ms)
+{
+    if (Omni_Wheel_FeedbackFresh(index, tick_ms) == 0U)
+    {
+        return 0U;
+    }
+
+    if (motor->Pos_Info.pattern != OMNI_MOTOR_RUNNING_PATTERN)
+    {
+        return 0U;
+    }
+
+    return 1U;
+}
+
+static void Omni_Wheel_RetryEnableMotor(RobStride_Motor_t *motor, uint8_t index, uint32_t tick_ms)
+{
+    if ((tick_ms - omni_enable_retry_tick_ms[index]) < OMNI_MOTOR_ENABLE_RETRY_INTERVAL_MS)
+    {
+        return;
+    }
+
+    omni_enable_retry_tick_ms[index] = tick_ms;
+    omni_enable_retry_count[index]++;
+
+    Set_RobStride_Motor_parameter(motor, OMNI_CAN_HANDLE, 0x7005, Speed_control_mode, 'j');
+    Enable_Motor(motor, OMNI_CAN_HANDLE);
+    Set_RobStride_Motor_parameter(motor, OMNI_CAN_HANDLE, 0x7018, OMNI_CURRENT_LIMIT, 'p');
+    Set_RobStride_Motor_parameter(motor, OMNI_CAN_HANDLE, 0x7022, OMNI_ACCEL_LIMIT, 'p');
+    RobStride_Motor_ProactiveEscalationSet(motor, OMNI_CAN_HANDLE, 0x01);
+}
+
+static uint8_t Omni_Wheel_EnsureMotorReady(RobStride_Motor_t *motor, uint8_t index, uint32_t tick_ms)
+{
+    if (Omni_Wheel_MotorReady(motor, index, tick_ms) != 0U)
+    {
+        return 1U;
+    }
+
+    Omni_Wheel_RetryEnableMotor(motor, index, tick_ms);
+    return 0U;
+}
+
+static uint8_t Omni_Wheel_GetReadyMask(uint32_t tick_ms)
+{
+    uint8_t ready_mask = 0U;
+
+    if (Omni_Wheel_MotorReady(&omni_motor1, OMNI_MOTOR1_INDEX, tick_ms) != 0U)
+    {
+        ready_mask |= 0x01U;
+    }
+    if (Omni_Wheel_MotorReady(&omni_motor2, OMNI_MOTOR2_INDEX, tick_ms) != 0U)
+    {
+        ready_mask |= 0x02U;
+    }
+    if (Omni_Wheel_MotorReady(&omni_motor3, OMNI_MOTOR3_INDEX, tick_ms) != 0U)
+    {
+        ready_mask |= 0x04U;
+    }
+
+    return ready_mask;
 }
 
 static void Omni_Wheel_Limit(float *cmd1, float *cmd2, float *cmd3)
@@ -219,18 +315,27 @@ static void Omni_Wheel_TxScheduled(float cmd1, float cmd2, float cmd3, uint32_t 
     switch (omni_tx_slot)
     {
     case 0U:
-        RobStride_Motor_Speed_control(&omni_motor1, OMNI_CAN_HANDLE, cmd1, OMNI_CURRENT_LIMIT);
-        omni_debug.tx_count1++;
+        if (Omni_Wheel_EnsureMotorReady(&omni_motor1, OMNI_MOTOR1_INDEX, tick_ms) != 0U)
+        {
+            RobStride_Motor_Speed_control(&omni_motor1, OMNI_CAN_HANDLE, cmd1, OMNI_CURRENT_LIMIT);
+            omni_debug.tx_count1++;
+        }
         break;
 
     case 1U:
-        RobStride_Motor_Speed_control(&omni_motor2, OMNI_CAN_HANDLE, cmd2, OMNI_CURRENT_LIMIT);
-        omni_debug.tx_count2++;
+        if (Omni_Wheel_EnsureMotorReady(&omni_motor2, OMNI_MOTOR2_INDEX, tick_ms) != 0U)
+        {
+            RobStride_Motor_Speed_control(&omni_motor2, OMNI_CAN_HANDLE, cmd2, OMNI_CURRENT_LIMIT);
+            omni_debug.tx_count2++;
+        }
         break;
 
     default:
-        RobStride_Motor_Speed_control(&omni_motor3, OMNI_CAN_HANDLE, cmd3, OMNI_CURRENT_LIMIT);
-        omni_debug.tx_count3++;
+        if (Omni_Wheel_EnsureMotorReady(&omni_motor3, OMNI_MOTOR3_INDEX, tick_ms) != 0U)
+        {
+            RobStride_Motor_Speed_control(&omni_motor3, OMNI_CAN_HANDLE, cmd3, OMNI_CURRENT_LIMIT);
+            omni_debug.tx_count3++;
+        }
         break;
     }
 
@@ -243,13 +348,13 @@ static void Omni_Wheel_TxScheduled(float cmd1, float cmd2, float cmd3, uint32_t 
 
 void Omni_Wheel_Init(void)
 {
-    /* 上电默认底盘静止。 */
-    x = 0.0f;
-    y = 0.0f;
-    w = 0.0f;
+    uint32_t tick_ms;
+
+    tick_ms = HAL_GetTick();
     omni_debug = (Omni_Wheel_Debug_t){0};
     omni_tx_slot = 0U;
-    omni_tx_last_tick_ms = HAL_GetTick() - OMNI_MOTOR_TX_INTERVAL_MS;
+    omni_tx_last_tick_ms = tick_ms - OMNI_MOTOR_TX_INTERVAL_MS;
+    Omni_Wheel_ResetMotorRuntime(tick_ms);
     RampGenerator_Init(&omni_x_ramp, OMNI_RAMP_INTERVAL_MS, OMNI_RAMP_LINEAR_ACCEL, OMNI_RAMP_LINEAR_DECEL, OMNI_RAMP_LINEAR_LIMIT);
     RampGenerator_Init(&omni_y_ramp, OMNI_RAMP_INTERVAL_MS, OMNI_RAMP_LINEAR_ACCEL, OMNI_RAMP_LINEAR_DECEL, OMNI_RAMP_LINEAR_LIMIT);
     RampGenerator_Init(&omni_w_ramp, OMNI_RAMP_INTERVAL_MS, OMNI_RAMP_YAW_ACCEL, OMNI_RAMP_YAW_DECEL, OMNI_RAMP_YAW_LIMIT);
@@ -321,11 +426,23 @@ void Omni_Wheel_Update(void)
     omni_debug.update_count++;
 
     Omni_Wheel_TxScheduled(cmd1, cmd2, cmd3, tick_ms);
+
+    omni_debug.ready_mask = Omni_Wheel_GetReadyMask(tick_ms);
+    omni_debug.last_feedback_tick1 = omni_feedback_tick_ms[OMNI_MOTOR1_INDEX];
+    omni_debug.last_feedback_tick2 = omni_feedback_tick_ms[OMNI_MOTOR2_INDEX];
+    omni_debug.last_feedback_tick3 = omni_feedback_tick_ms[OMNI_MOTOR3_INDEX];
+    omni_debug.enable_retry_last_tick1 = omni_enable_retry_tick_ms[OMNI_MOTOR1_INDEX];
+    omni_debug.enable_retry_last_tick2 = omni_enable_retry_tick_ms[OMNI_MOTOR2_INDEX];
+    omni_debug.enable_retry_last_tick3 = omni_enable_retry_tick_ms[OMNI_MOTOR3_INDEX];
+    omni_debug.enable_retry_count1 = omni_enable_retry_count[OMNI_MOTOR1_INDEX];
+    omni_debug.enable_retry_count2 = omni_enable_retry_count[OMNI_MOTOR2_INDEX];
+    omni_debug.enable_retry_count3 = omni_enable_retry_count[OMNI_MOTOR3_INDEX];
 }
 
 void Omni_Wheel_RxCallback(uint32_t ext_id, uint8_t *data)
 {
     uint8_t target_id;
+    uint8_t communication_type;
 
     /* 只处理有效数据指针。 */
     if (data == 0)
@@ -335,17 +452,30 @@ void Omni_Wheel_RxCallback(uint32_t ext_id, uint8_t *data)
 
     /* RobStride 私有协议扩展帧里，目标电机 ID 在 bit[15:8]。 */
     target_id = (uint8_t)((ext_id >> 8) & 0xFFU);
+    communication_type = (uint8_t)((ext_id >> 24) & 0x3FU);
 
     switch (target_id)
     {
     case OMNI_MOTOR1_ID:
         RobStride_Motor_Analysis(&omni_motor1, data, ext_id);
+        if (communication_type == Communication_Type_MotorRequest)
+        {
+            omni_feedback_tick_ms[OMNI_MOTOR1_INDEX] = HAL_GetTick();
+        }
         break;
     case OMNI_MOTOR2_ID:
         RobStride_Motor_Analysis(&omni_motor2, data, ext_id);
+        if (communication_type == Communication_Type_MotorRequest)
+        {
+            omni_feedback_tick_ms[OMNI_MOTOR2_INDEX] = HAL_GetTick();
+        }
         break;
     case OMNI_MOTOR3_ID:
         RobStride_Motor_Analysis(&omni_motor3, data, ext_id);
+        if (communication_type == Communication_Type_MotorRequest)
+        {
+            omni_feedback_tick_ms[OMNI_MOTOR3_INDEX] = HAL_GetTick();
+        }
         break;
     default:
         break;

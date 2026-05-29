@@ -12,7 +12,7 @@
 #include "arm_sv.h"
 #include "uart_protocol.h" // 添加PC通信协议头文件
 #include "arm_sv.h"
-#include "omni_wheel.h"
+#include "chassis.h"
 #include "cmsis_os.h"
 #include "Robstride04.h"
 // 遥控器值
@@ -194,9 +194,7 @@ static void chassis_apply_command(float chassis_vx, float chassis_vy, float chas
     up_tx_data.chassis_vx = chassis_vx;
     up_tx_data.chassis_vy = chassis_vy;
     up_tx_data.chassis_yaw = chassis_yaw;
-    x = chassis_vx;
-    y = chassis_vy;
-    w = chassis_yaw;
+    Chassis_SetCommand(chassis_vx, chassis_vy, chassis_yaw);
 }
 
 static float head_clamp_pc_head_radian(uint8_t motor_index, float radian)

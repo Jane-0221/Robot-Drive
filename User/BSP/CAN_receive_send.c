@@ -11,7 +11,7 @@
 #include "string.h"
 #include "Robstride04.h"
 #include "arm.h"
-#include "omni_wheel.h"
+#include "chassis.h"
 #include "stdio.h"
 #include "FreeRTOS.h"
 #include "task.h"
@@ -640,7 +640,7 @@ void HAL_FDCAN_RxFifo0Callback(FDCAN_HandleTypeDef *hfdcan, uint32_t RxFifo0ITs)
     {
       if (rx_header.IdType == FDCAN_EXTENDED_ID)
       {
-        Omni_Wheel_RxCallback(rx_header.Identifier, rx_data);
+        Chassis_RxCallback(rx_header.Identifier, rx_data);
       }
     }
   }

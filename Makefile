@@ -120,6 +120,8 @@ User/Drive/Servo_can.c \
 User/Drive/pt_sensor.c \
 User/Drive/vl53l0x.c \
 User/Hardware/arm.c \
+User/Hardware/chassis.c \
+User/Hardware/mecanum_wheel.c \
 User/Hardware/omni_wheel.c \
 User/Hardware/lift_control.c \
 User/Hardware/pump_control.c \

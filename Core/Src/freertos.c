@@ -37,7 +37,7 @@
 #include "head.h"
 #include "lift_control.h"
 #include "arm_sv.h"
-#include "omni_wheel.h"
+#include "chassis.h"
 #include "Sbus.h"
 #include "stp23l.h"
 #include "uart_protocol.h"
@@ -455,12 +455,10 @@ void Motor_control_Task(void *argument)
     }
     else
     {
-      x = 0.0f;
-      y = 0.0f;
-      w = 0.0f;
+      Chassis_SetCommand(0.0f, 0.0f, 0.0f);
     }
 
-    Omni_Wheel_Update();
+    Chassis_Update();
     osDelay(1);
   }
   /* USER CODE END Motor_control_Task */
